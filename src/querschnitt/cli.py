@@ -10,7 +10,8 @@
     querschnitt metrics | export
 
 Paths default to the environment: QS_DB / QS_PG_DSN (store), QS_INPUTS (data/inputs.jsonl.gz), QS_EXPORT_DIR
-(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite: chapter step only, no subtopics, no ad-hoc topics)."""
+(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite: chapter step only, no subtopics, no ad-hoc topics), QS_STEPS (batch
+steps for the full profile; default: the batch's own)."""
 from __future__ import annotations
 
 import argparse
@@ -32,16 +33,19 @@ def env_path(key: str, default: str) -> Path:
 
 # ---------------------------------------------------------------- compose (lead's module; file writer if it has one)
 def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str]) -> list[dict]:
-    """Topic rows for `ids` from the run's step rows (querschnitt.compose decisions; no recalibration here)."""
+    """Topic rows for `ids` from the run's step rows: compose.decide + compose.topic_rows with the recalibration map
+    eval/calibration.json where it exists (the same rule as querschnitt.export's open topics file)."""
     from . import compose as C
     from .engine import Engine
     from .examples import ExamplePool
     from .scheme import adhoc
-    if hasattr(C, "rows_for"):
-        return list(C.rows_for(run, inputs, ids))
     lock, rows = C.read_run(run)
     pool_p = ROOT / "data/eval/aps_pool.jsonl"
     eng = Engine(None, ExamplePool.load(pool_p) if pool_p.exists() else None)
+    calib = None
+    if (ROOT / "eval/calibration.json").exists():
+        from .calibrate import Calibration
+        calib = Calibration.load(ROOT / "eval/calibration.json")
     T = [adhoc(t) for t in topics]
     out = []
     with gzip.open(inputs, "rt") as f:
@@ -50,8 +54,11 @@ def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str
             if ids is not None and a["id"] not in ids:
                 continue
             dec = C.decide(a, rows, eng.ch1_prompt, T)
-            if len(dec) > 1:
-                out += C.topic_rows(a, dec, lock)
+            if len(dec) <= 1:
+                continue
+            ap = dec.get("aps")
+            cf = (lambda s, v, ap=ap: calib.apply("aps-fed" if (ap and ap.get("examples")) else "aps", v)) if calib else None
+            out += C.topic_rows(a, dec, lock, cf)
     return out
 
 
@@ -178,8 +185,9 @@ def delta(a) -> dict:
         idf = run / f"delta-{dt.date.today().isoformat()}.ids"
         idf.write_text("\n".join(map(str, todo)) + "\n")
         from . import batch
+        steps = ["ch"] if lite else (os.environ.get("QS_STEPS") or "").split()
         args = ["run", "--inputs", str(inputs), "--out", str(run), "--ids", str(idf), "--conc", str(a.conc),
-                "--max-rate", str(a.max_rate), "--topics", *topics] + (["--no-subtopics"] if lite else [])
+                "--max-rate", str(a.max_rate), "--since", "0000", "--topics", *topics] + (["--steps", *steps] if steps else [])
         try:
             batch.main(args)
         except SystemExit as e:
@@ -220,6 +228,19 @@ def nightly(a):
                 pass
 
 
+def shipped_data() -> tuple[str | None, list[str], Path | None]:
+    """(inputs, [topics], static export dir) for `make run`: the full local data if present, else the app's static
+    export, else the test sample (80 OPD affairs with synthetic rows marked model=fixture)."""
+    inp, top = env_path("QS_INPUTS", "data/inputs.jsonl.gz"), ROOT / "data/topics.jsonl.gz"
+    if inp.exists() and top.exists():
+        return str(inp), [str(top)], None
+    exp = ROOT / "app/data"
+    if (exp / "affairs.json").exists() and (exp / "topics.jsonl.gz").exists():
+        return None, [str(exp / "topics.jsonl.gz")], exp
+    fx = ROOT / "tests/fixtures"
+    return str(fx / "inputs_sample.jsonl"), [str(fx / "topics_sample.jsonl")], None
+
+
 # ---------------------------------------------------------------- main
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
@@ -241,6 +262,8 @@ def main(argv=None):
     l.add_argument("--topics", nargs="*", default=[])
     l.add_argument("--inputs")
     l.add_argument("--if-empty", action="store_true", help="only when the store has no rows (make run)")
+    l.add_argument("--auto", action="store_true", help="the shipped data: data/{inputs,topics}.jsonl.gz, else app/data "
+                   "(static export), else the test sample")
     s = sub.add_parser("serve", help="the API (+ app/ at /)")
     s.add_argument("--host", default=os.environ.get("QS_HOST", "127.0.0.1"))
     s.add_argument("--port", type=int, default=int(os.environ.get("QS_PORT", "8000")))
@@ -270,6 +293,10 @@ def main(argv=None):
         if a.if_empty and st.one("SELECT COUNT(*) AS n FROM topics")["n"]:
             print(f"store {st.kind} has rows; nothing loaded (--if-empty)"); return
         t0 = time.time(); n_aff, res = 0, dict(inserted=0)
+        if a.auto and not (a.inputs or a.topics):
+            a.inputs, a.topics, exp = shipped_data()
+            if exp:
+                n_aff = st.load_affairs_export(exp); print(f"affairs {n_aff:,} ← {exp} (static export)")
         if a.inputs:
             n_aff = st.load_affairs(a.inputs); print(f"affairs {n_aff:,} ← {a.inputs}")
         for p in a.topics:

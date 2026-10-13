@@ -273,6 +273,34 @@ class Store:
         self.commit()
         return n
 
+    def load_affairs_export(self, d: str | Path) -> int:
+        """Affair summaries from the static export (app/data: affairs.json columns, bodies.json, detail/*.json), for a
+        clean checkout that ships the export but not inputs.jsonl.gz. No input hash there: such affairs never count
+        as pending."""
+        d = Path(d)
+        cols = json.loads((d / "affairs.json").read_text())["cols"]
+        B = {b["key"]: b for b in json.loads((d / "bodies.json").read_text())} if (d / "bodies.json").exists() else {}
+        det: dict = {}
+        for p in sorted((d / "detail").glob("*.json")) if (d / "detail").exists() else []:
+            det.update({int(k): v for k, v in json.loads(p.read_text()).items()})
+        sql = (f"INSERT INTO qs_affairs ({', '.join(AFF_COLS)}) VALUES ({', '.join('?' * len(AFF_COLS))}) "
+               "ON CONFLICT (id) DO UPDATE SET " + ", ".join(f"{c} = excluded.{c}" for c in AFF_COLS[1:]))
+        buf = []
+        for i, aid in enumerate(cols["id"]):
+            g = lambda k: (cols.get(k) or [None] * (i + 1))[i]
+            b, x = B.get(g("body")) or {}, det.get(aid) or {}
+            r = dict(id=aid, body_key=g("body"), level=b.get("level"), canton=b.get("canton"), parl=b.get("name_de"),
+                     parl_fr=b.get("name_fr"), lang=g("lang"), date=g("date"), number=x.get("number"), title=g("title"),
+                     title_long=(x.get("title_long") or "")[:400], type=g("type_h"), type_h=g("type_h"), state=g("state"),
+                     url=x.get("url"), submitter=g("submitter"), party=g("party"), submitter_type=g("stype"),
+                     has_text=bool(x.get("text")), text_src=x.get("text_src"), input_hash=None, updated=None)
+            r["number"] = None if r["number"] is None else str(r["number"])
+            buf.append(tuple(r.get(c) for c in AFF_COLS))
+        for i in range(0, len(buf), 5000):
+            self.ex(sql, buf[i:i + 5000], many=True)
+        self.commit()
+        return len(buf)
+
     # ------------------------------------------------------------------ reads
     def affair(self, aid: int) -> dict | None:
         r = self.one("SELECT * FROM qs_affairs WHERE id = ?", (aid,))
@@ -400,7 +428,7 @@ class Store:
         """Affairs in scope (begin date ≥ QS_SCOPE_SINCE, default 2025-01-01) whose current input has no current
         machine row in `scheme`: new or changed affairs waiting for the batch."""
         since = since or os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
-        r = self.one("SELECT COUNT(*) AS n FROM qs_affairs a WHERE a.date >= ? AND NOT EXISTS (SELECT 1 FROM topics t "
+        r = self.one("SELECT COUNT(*) AS n FROM qs_affairs a WHERE a.date >= ? AND a.input_hash IS NOT NULL AND NOT EXISTS (SELECT 1 FROM topics t "
                      "WHERE t.affair_id = a.id AND t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'inferred' "
                      "AND (t.input_hash = a.input_hash OR t.input_hash IS NULL))", (since, scheme))
         return int(r["n"])

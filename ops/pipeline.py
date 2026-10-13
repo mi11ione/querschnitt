@@ -9,6 +9,7 @@ PIPE = ROOT / "runs/pipeline"; PIPE.mkdir(parents=True, exist_ok=True)
 INP = "../data/inputs.jsonl.gz"
 PHASES = [
     ("p1-slice", "runs/main", ["--since", "2025-01-01", "--steps", "ch", "sub", "yn"]),
+    ("p1b-aps-gold", "runs/main", ["--ids", "runs/pipeline/ids_s9_gold.txt", "--steps", "ch", "sub"]),
     ("p2-evidence-2026", "runs/main", ["--since", "2026-01-01", "--steps", "ev"]),
     ("p3-evidence-2025", "runs/main", ["--since", "2025-01-01", "--until", "2025-12-31", "--steps", "ev"]),
     ("p4-since-2015-chapters", "runs/main", ["--since", "2015-01-01", "--until", "2024-12-31", "--steps", "ch"]),

@@ -33,7 +33,7 @@ def test_topic_affairs_and_filters(api):
     assert all(x["affair"]["lang"] == "fr" for x in fr["rows"])
     one = api.get("/topics/adhoc/digitalisierung/no/affairs?limit=1&offset=1").json()
     assert len(one["rows"]) == 1 and one["total"] > 1
-    code = api.get(f"/affairs/{AID}/topics").json()["topics"][0]["code"]       # an aps chapter
+    code = next(t["code"] for t in api.get(f"/affairs/{AID}/topics").json()["topics"] if t["scheme"] == "aps")
     short = code.split(":", 1)[1]
     a = api.get(f"/topics/aps/{short}/affairs?level=federal").json()
     assert a["code"] == code and all(x["affair"]["level"] == "federal" for x in a["rows"])

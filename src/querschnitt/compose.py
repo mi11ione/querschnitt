@@ -11,6 +11,7 @@ from __future__ import annotations
 import collections
 import gzip
 import json
+import math
 from pathlib import Path
 
 from . import prompts as P
@@ -18,6 +19,12 @@ from .engine import mean_p, need_ch2, need_yn_b
 from .scheme import APS, adhoc, flat
 
 VERSION = "0.6.0"
+
+
+def geo(a, b):
+    g = [math.exp((math.log(max(x, 1e-12)) + math.log(max(y, 1e-12))) / 2) for x, y in zip(a, b)]
+    s = sum(g)
+    return [v / s for v in g]
 
 
 def argmax(v):
@@ -43,11 +50,12 @@ def read_run(*runs: Path) -> tuple[dict, dict]:
 def chapter_decision(r1: dict, r2: dict | None, rs: dict | None) -> dict:
     PA = mean_p(r1["p"], r2["p"] if r2 else None)
     lane = "please_check" if (r2 and argmax(r1["p"]) != argmax(r2["p"])) else "readings_agree"
-    top = argmax(PA)
+    G = geo(r1["p"], r2["p"]) if r2 else r1["p"]   # S6: "no policy topic" is read from the geometric mean of the readings
+    top = argmax(G)
     out = dict(P=PA, lane=lane, n_readings=2 if r2 else 1)
     if top == 24 or rs is None:
-        rank = sorted(range(25), key=lambda i: -PA[i])
-        out.update(ch=top, conf=PA[top], rank=rank[:3], subs=[], readback=False)
+        rank = sorted(range(25), key=lambda i: -G[i])
+        out.update(ch=top, conf=G[top], rank=rank[:3], subs=[], readback=False)
         return out
     opts = P.subtopic_options(rs["chs"])
     sc = {(c, j): rs["p"][k] * PA[c] for k, (c, j) in enumerate(opts)}

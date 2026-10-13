@@ -40,9 +40,9 @@ def _top(dist: dict[str, float]) -> list[dict]:
 class FakeEndpoint:
     def __init__(self, mode: str = "logprobs", yes_words: list[str] | None = None, fingerprint: str = "fp_fake_1",
                  model: str = "swiss-ai/apertus-v1.5-8b", host: str = "127.0.0.1", port: int = 0, latency: float = 0.0,
-                 n429: int = 0, topic_json: dict | None = None):
+                 n429: int = 0, topic_json: dict | None = None, gen_text: str | None = None):
         self.mode, self.yes_words, self.fp, self.model = mode, [w.lower() for w in (yes_words or YES_WORDS)], fingerprint, model
-        self.latency, self.n429, self.topic_json = latency, n429, topic_json
+        self.latency, self.n429, self.topic_json, self.gen_text = latency, n429, topic_json, gen_text
         self.requests: list[dict] = []
         self.lock = threading.Lock()
         fake = self
@@ -116,6 +116,8 @@ class FakeEndpoint:
                 rest = [c for c in codes if c != top][:4]
                 dist = {top: 0.8, **{c: 0.2 / max(1, len(rest)) for c in rest}}
             content = max(dist, key=dist.get)
+        elif self.gen_text is not None:
+            content = self.gen_text
         elif '"terms"' in user:
             content = json.dumps(self.topic_json or dict(
                 name=dict(de="Wolf und Herdenschutz", fr="loup et protection des troupeaux", it="lupo e protezione delle greggi"),

@@ -1,0 +1,6492 @@
+{
+ "schema": "querschnitt/pruefstand@1",
+ "generated_utc": "2026-10-13T23:17:11Z",
+ "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
+ "build": {
+  "endpoint": "Public AI",
+  "model": "swiss-ai/apertus-v1.5-8b",
+  "system_fingerprint": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ },
+ "conventions": {
+  "ci95": "Wilson for proportions; paired bootstrap 2,000 (percentile) for differences; stratified bootstrap for S8 population estimates",
+  "value": "as stored in the source file (JSON keeps 4 decimals where the source does; display = the results.md form)",
+  "gold": "human = labels made by people (APS editors, Curia tags, DVS list, Grand Council field); ai-judge = blind Claude runs (+ Qwen cross-check)"
+ },
+ "tests": [
+  {
+   "id": "aps_chapter_examples",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, mit fünf APS-Beispielen (D3)",
+   "title_fr": "Chapitre APS contre la rédaction APS, avec cinq exemples APS (D3)",
+   "n": 1357,
+   "design": "Bundesgeschäfte mit APS-Kapitel aus Wayback-Prozessseiten, nicht vorher benutzt; DE-Titel + eingereichter Text (Curia); Kapitelschritt mit den 5 BM25-nächsten APS-gelabelten Geschäften als Beispiele, mit der permutierten Reihenfolge geometrisch gemittelt",
+   "result": {
+    "metric": "chapter top-1 vs APS editors",
+    "value": 0.7222,
+    "ci95": [
+     0.698,
+     0.745
+    ],
+    "k": 980,
+    "n": 1357,
+    "display": "0.722 [0.698, 0.745]",
+    "at": {
+     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "key": "chapter > D3 > top1"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3",
+     "value": 0.8747,
+     "ci95": [
+      0.856,
+      0.891
+     ],
+     "k": 1187,
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D3 > top3"
+     }
+    },
+    {
+     "metric": "paired Δ top-1 D3 − D0",
+     "value": 0.0671,
+     "ci95": [
+      0.0494,
+      0.0847
+     ],
+     "flips_gain_loss": [
+      132,
+      41
+     ],
+     "method": "paired bootstrap 2,000, percentile",
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D3 > diff_top1"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1 vs APS editors",
+     "value": 0.6551,
+     "ci95": [
+      0.629,
+      0.68
+     ],
+     "k": 889,
+     "n": 1357,
+     "display": "0.655 [0.629, 0.680]",
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D0 > top1"
+     },
+     "name": "D0 plain list prompting (v14: chapter step, two code orders)"
+    },
+    {
+     "name": "keyword (APS subtopic-name words, frozen before scoring)",
+     "value": 0.1916,
+     "ci95": [
+      0.172,
+      0.213
+     ],
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "baselines > keyword_top1"
+     }
+    },
+    {
+     "name": "majority chapter (Rechtsordnung)",
+     "value": 0.0796,
+     "ci95": [
+      0.066,
+      0.095
+     ],
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "baselines > majority_top1"
+     }
+    }
+   ],
+   "split": "held-out, pre-registered (nothing tuned on these items)",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S9 — APS extended held-out",
+    "line": 32
+   },
+   "hypothesis": "H9.3 D3 > D0: wins (paired interval excludes 0)",
+   "sources": [
+    "bern/ideation2/spikes/s9-aps/results.json",
+    "bern/ideation2/spikes/s9-aps/results.md",
+    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
+    "bern/ideation2/spikes/s9-aps/raw/"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13T21:21:53Z",
+   "shipped": "where APS-labelled examples exist",
+   "breakdowns": {
+    "period_and_join": {
+     "cells": [
+      {
+       "cell": "pre-2010",
+       "n": 28,
+       "k": 19,
+       "value": 0.6786,
+       "ci95": [
+        0.493,
+        0.821
+       ]
+      },
+      {
+       "cell": "2010-19",
+       "n": 446,
+       "k": 311,
+       "value": 0.6973,
+       "ci95": [
+        0.653,
+        0.738
+       ]
+      },
+      {
+       "cell": "2020+",
+       "n": 883,
+       "k": 650,
+       "value": 0.7361,
+       "ci95": [
+        0.706,
+        0.764
+       ]
+      },
+      {
+       "cell": "join strong",
+       "n": 1321,
+       "k": 958,
+       "value": 0.7252,
+       "ci95": [
+        0.701,
+        0.749
+       ]
+      },
+      {
+       "cell": "join slug_only",
+       "n": 36,
+       "k": 22,
+       "value": 0.6111,
+       "ci95": [
+        0.449,
+        0.752
+       ]
+      }
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "strata > D3"
+     }
+    },
+    "lanes_orders_agree_disagree": {
+     "cells": [
+      {
+       "cell": "orders agree",
+       "n": 828,
+       "share": 0.6102,
+       "share_ci95": [
+        0.584,
+        0.636
+       ],
+       "precision": 0.8128,
+       "k": 673,
+       "ci95": [
+        0.785,
+        0.838
+       ]
+      },
+      {
+       "cell": "orders disagree",
+       "n": 529,
+       "share": 0.3898,
+       "share_ci95": [
+        0.364,
+        0.416
+       ],
+       "precision": 0.5803,
+       "k": 307,
+       "ci95": [
+        0.538,
+        0.622
+       ]
+      }
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "lanes > D3"
+     }
+    },
+    "per_chapter": {
+     "macro_F1": 0.692,
+     "chapters": 22,
+     "worst": [
+      [
+       23,
+       {
+        "n": 1,
+        "P": 0,
+        "R": 0.0,
+        "F1": 0
+       }
+      ],
+      [
+       7,
+       {
+        "n": 104,
+        "P": 0.662,
+        "R": 0.49,
+        "F1": 0.564
+       }
+      ],
+      [
+       0,
+       {
+        "n": 21,
+        "P": 0.52,
+        "R": 0.619,
+        "F1": 0.565
+       }
+      ]
+     ],
+     "best": [
+      [
+       6,
+       {
+        "n": 64,
+        "P": 0.944,
+        "R": 0.797,
+        "F1": 0.864
+       }
+      ],
+      [
+       12,
+       {
+        "n": 85,
+        "P": 0.968,
+        "R": 0.706,
+        "F1": 0.816
+       }
+      ],
+      [
+       9,
+       {
+        "n": 108,
+        "P": 0.951,
+        "R": 0.713,
+        "F1": 0.815
+       }
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s9c-calibration/perlevel.json",
+      "key": "D3"
+     }
+    }
+   },
+   "test": "APS-Kapitel gegen APS-Redaktion, mit fünf APS-Beispielen (D3)",
+   "interval": [
+    0.698,
+    0.745
+   ],
+   "baseline": {
+    "name": "D0 plain list prompting (v14: chapter step, two code orders)",
+    "value": 0.6551,
+    "ci95": [
+     0.629,
+     0.68
+    ]
+   },
+   "file": "bern/ideation2/spikes/s9-aps/results.json"
+  },
+  {
+   "id": "aps_chapter_readback",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, aus dem Unterthema zurückgelesen (D1, ausgeliefert)",
+   "title_fr": "Chapitre APS contre la rédaction APS, relu depuis le sous-thème (D1, livré)",
+   "n": 1357,
+   "design": "wie D3, ohne Beispiele: Kapitelschritt (2 Code-Reihenfolgen) → ein Aufruf über die Unterthemen der Top-2/3-Kapitel → Kapitel des gewählten Unterthemas × Kapitel-Prior (β = 1)",
+   "result": {
+    "metric": "chapter top-1 vs APS editors",
+    "value": 0.7038,
+    "ci95": [
+     0.679,
+     0.727
+    ],
+    "k": 955,
+    "n": 1357,
+    "display": "0.704 [0.679, 0.727]",
+    "at": {
+     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "key": "chapter > D1 > top1"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3",
+     "value": 0.843,
+     "ci95": [
+      0.823,
+      0.861
+     ],
+     "k": 1144,
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D1 > top3"
+     }
+    },
+    {
+     "metric": "paired Δ top-1 D1 − D0",
+     "value": 0.0486,
+     "ci95": [
+      0.0324,
+      0.0656
+     ],
+     "flips_gain_loss": [
+      101,
+      35
+     ],
+     "method": "paired bootstrap 2,000, percentile",
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D1 > diff_top1"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1 vs APS editors",
+     "value": 0.6551,
+     "ci95": [
+      0.629,
+      0.68
+     ],
+     "k": 889,
+     "n": 1357,
+     "display": "0.655 [0.629, 0.680]",
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D0 > top1"
+     },
+     "name": "D0 plain list prompting (v14: chapter step, two code orders)"
+    },
+    {
+     "name": "keyword (APS subtopic-name words, frozen before scoring)",
+     "value": 0.1916,
+     "ci95": [
+      0.172,
+      0.213
+     ],
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "baselines > keyword_top1"
+     }
+    },
+    {
+     "name": "majority chapter (Rechtsordnung)",
+     "value": 0.0796,
+     "ci95": [
+      0.066,
+      0.095
+     ],
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "baselines > majority_top1"
+     }
+    }
+   ],
+   "split": "held-out, pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S9 — APS extended held-out",
+    "line": 32
+   },
+   "hypothesis": "H9.1 D1 > D0: wins",
+   "sources": [
+    "bern/ideation2/spikes/s9-aps/results.json",
+    "bern/ideation2/spikes/s9-aps/results.md",
+    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
+    "bern/ideation2/spikes/s9-aps/raw/"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13T21:21:53Z",
+   "shipped": "default chapter",
+   "breakdowns": {
+    "per_chapter": {
+     "macro_F1": 0.677,
+     "chapters": 22,
+     "worst": [
+      [
+       23,
+       {
+        "n": 1,
+        "P": 0,
+        "R": 0.0,
+        "F1": 0
+       }
+      ],
+      [
+       7,
+       {
+        "n": 104,
+        "P": 0.731,
+        "R": 0.365,
+        "F1": 0.487
+       }
+      ],
+      [
+       20,
+       {
+        "n": 28,
+        "P": 0.846,
+        "R": 0.393,
+        "F1": 0.537
+       }
+      ]
+     ],
+     "best": [
+      [
+       6,
+       {
+        "n": 64,
+        "P": 0.98,
+        "R": 0.766,
+        "F1": 0.86
+       }
+      ],
+      [
+       21,
+       {
+        "n": 29,
+        "P": 0.828,
+        "R": 0.828,
+        "F1": 0.828
+       }
+      ],
+      [
+       11,
+       {
+        "n": 73,
+        "P": 0.914,
+        "R": 0.726,
+        "F1": 0.809
+       }
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s9c-calibration/perlevel.json",
+      "key": "D1"
+     }
+    },
+    "see_also": "neutrality_s9 (party, submitter kind, instrument on D1)"
+   },
+   "test": "APS-Kapitel gegen APS-Redaktion, aus dem Unterthema zurückgelesen (D1, ausgeliefert)",
+   "interval": [
+    0.679,
+    0.727
+   ],
+   "baseline": {
+    "name": "D0 plain list prompting (v14: chapter step, two code orders)",
+    "value": 0.6551,
+    "ci95": [
+     0.629,
+     0.68
+    ]
+   },
+   "file": "bern/ideation2/spikes/s9-aps/results.json"
+  },
+  {
+   "id": "aps_chapter_pooling",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel: deutsche und französische Fassung gemittelt (D2, nicht übernommen)",
+   "title_fr": "Chapitre APS : versions allemande et française moyennées (D2, non retenu)",
+   "n": 1357,
+   "design": "Mittel der Wahrscheinlichkeiten aus D0 (2 deutsche Reihenfolgen) und einem Aufruf auf dem französischen Text",
+   "result": {
+    "metric": "chapter top-1 vs APS editors",
+    "value": 0.6345,
+    "ci95": [
+     0.609,
+     0.66
+    ],
+    "k": 861,
+    "n": 1357,
+    "display": "0.634 [0.609, 0.660]",
+    "at": {
+     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "key": "chapter > D2 > top1"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3",
+     "value": 0.8534,
+     "ci95": [
+      0.834,
+      0.871
+     ],
+     "k": 1158,
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D2 > top3"
+     }
+    },
+    {
+     "metric": "paired Δ top-1 D2 − D0",
+     "value": -0.0206,
+     "ci95": [
+      -0.0368,
+      -0.0044
+     ],
+     "flips_gain_loss": [
+      54,
+      82
+     ],
+     "method": "paired bootstrap 2,000, percentile",
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D2 > diff_top1"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1 vs APS editors",
+     "value": 0.6551,
+     "ci95": [
+      0.629,
+      0.68
+     ],
+     "k": 889,
+     "n": 1357,
+     "display": "0.655 [0.629, 0.680]",
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "chapter > D0 > top1"
+     },
+     "name": "D0 plain list prompting (v14: chapter step, two code orders)"
+    }
+   ],
+   "split": "held-out, pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S9 — APS extended held-out",
+    "line": 32
+   },
+   "hypothesis": "H9.2 D2 > D0: not supported (Δ −0.021, interval below 0); the second language is used for the lane instead",
+   "sources": [
+    "bern/ideation2/spikes/s9-aps/results.json",
+    "bern/ideation2/spikes/s9-aps/results.md",
+    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
+    "bern/ideation2/spikes/s9-aps/raw/"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13T21:21:53Z",
+   "shipped": "no",
+   "test": "APS-Kapitel: deutsche und französische Fassung gemittelt (D2, nicht übernommen)",
+   "interval": [
+    0.609,
+    0.66
+   ],
+   "baseline": {
+    "name": "D0 plain list prompting (v14: chapter step, two code orders)",
+    "value": 0.6551,
+    "ci95": [
+     0.629,
+     0.68
+    ]
+   },
+   "file": "bern/ideation2/spikes/s9-aps/results.json"
+  },
+  {
+   "id": "aps_subtopic",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Unterthema gegen APS-Redaktion, Ende zu Ende (Top-1 / Top-3)",
+   "title_fr": "Sous-thème APS contre la rédaction APS, de bout en bout (top-1 / top-3)",
+   "n": 1221,
+   "design": "D1-Pipeline; Gold = Hauptunterthema der Prozessseite, sofern unter den 190 deutschen Namen",
+   "result": {
+    "metric": "subtopic top-1",
+    "value": 0.5209,
+    "ci95": [
+     0.493,
+     0.549
+    ],
+    "k": 636,
+    "n": 1221,
+    "at": {
+     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "key": "subtopic > D1 (joint L2 x D0-arith prior, beta=1) [pre-registered pipeline] > top1"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "subtopic top-3",
+     "value": 0.6773,
+     "ci95": [
+      0.651,
+      0.703
+     ],
+     "k": 827,
+     "n": 1221,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "subtopic > D1 (joint L2 x D0-arith prior, beta=1) [pre-registered pipeline] > top3"
+     }
+    },
+    {
+     "value": 0.8305,
+     "ci95": [
+      0.81,
+      0.85
+     ],
+     "k": 1127,
+     "n": 1357,
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "subtopic_gold_chapter_in_shortlist"
+     },
+     "metric": "gold chapter inside the D1 shortlist"
+    }
+   ],
+   "baselines": [
+    {
+     "name": "D0 chapter top-1 → best subtopic within it [derived]",
+     "value": 0.4693,
+     "ci95": [
+      0.441,
+      0.497
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "key": "subtopic > D0 chapter top-1 -> best joint-L2 subtopic within it [derived] > top1"
+     }
+    }
+   ],
+   "split": "held-out, pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S9 — APS extended held-out",
+    "line": 32
+   },
+   "sources": [
+    "bern/ideation2/spikes/s9-aps/results.json",
+    "bern/ideation2/spikes/s9-aps/results.md",
+    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
+    "bern/ideation2/spikes/s9-aps/raw/"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13T21:21:53Z",
+   "shipped": "ranked suggestions only",
+   "test": "APS-Unterthema gegen APS-Redaktion, Ende zu Ende (Top-1 / Top-3)",
+   "interval": [
+    0.493,
+    0.549
+   ],
+   "baseline": {
+    "name": "D0 chapter top-1 → best subtopic within it [derived]",
+    "value": 0.4693,
+    "ci95": [
+     0.441,
+     0.497
+    ]
+   },
+   "file": "bern/ideation2/spikes/s9-aps/results.json"
+  },
+  {
+   "id": "aps_calibration",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Konfidenz: erwarteter Kalibrierfehler vor / nach isotoner Rekalibrierung",
+   "title_fr": "Confiance : erreur de calibration attendue avant / après recalibration isotone",
+   "n": 1357,
+   "design": "2-fach kreuzangepasste isotone Regression auf den 1'357 S9-Geschäften; ECE über 10 gleich breite Klassen",
+   "result": {
+    "metric": "ECE D1 raw → isotonic (cross-fit)",
+    "value": 0.037,
+    "raw": 0.279,
+    "ci95": null,
+    "at": {
+     "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+     "key": "D1"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "ECE D0 raw → isotonic (cross-fit)",
+     "raw": 0.262,
+     "value": 0.035,
+     "mean_p_raw": 0.917,
+     "mean_p_cal": 0.656,
+     "acc": 0.655,
+     "at": {
+      "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+      "key": "D0"
+     }
+    },
+    {
+     "metric": "ECE D1 raw → isotonic (cross-fit)",
+     "raw": 0.279,
+     "value": 0.037,
+     "mean_p_raw": 0.983,
+     "mean_p_cal": 0.702,
+     "acc": 0.704,
+     "at": {
+      "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+      "key": "D1"
+     }
+    },
+    {
+     "metric": "ECE D3 raw → isotonic (cross-fit)",
+     "raw": 0.221,
+     "value": 0.017,
+     "mean_p_raw": 0.943,
+     "mean_p_cal": 0.721,
+     "acc": 0.722,
+     "at": {
+      "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+      "key": "D3"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "raw p (no recalibration)",
+     "D0": 0.262,
+     "D1": 0.279,
+     "D3": 0.221
+    }
+   ],
+   "split": "cross-fitted (2 folds, seed 3), no new calls",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S9c calibration (no calls)",
+    "line": 25
+   },
+   "sources": [
+    "bern/ideation2/spikes/s9c-calibration/results.json",
+    "bern/ideation2/spikes/s9c-calibration/calib.py"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "note": "no interval computed for ECE (TO MEASURE: bootstrap)",
+   "test": "Konfidenz: erwarteter Kalibrierfehler vor / nach isotoner Rekalibrierung",
+   "interval": null,
+   "baseline": {
+    "name": "raw p (no recalibration)",
+    "value": null,
+    "ci95": null
+   },
+   "file": "bern/ideation2/spikes/s9c-calibration/results.json"
+  },
+  {
+   "id": "dvs_human30",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "«Digitalisierung»: die 30 von Hand kuratierten DVS-Geschäfte (Recall)",
+   "title_fr": "« Numérique » : les 30 objets choisis à la main par DVS (rappel)",
+   "n": 30,
+   "design": "Ja/Nein-Frage mit Themenbeschreibung, Titel + Langtitel in der Sprache des Geschäfts; Flag bei p ≥ 0.5 (S3), nicht neu angepasst",
+   "result": {
+    "metric": "recall on the 30 public DVS items",
+    "value": 0.9,
+    "k": 27,
+    "n": 30,
+    "ci95": [
+     0.744,
+     0.965
+    ],
+    "display": "27/30 [0.744, 0.965]",
+    "at": {
+     "file": "bern/ideation2/spikes/s8-dvs/results.md",
+     "line": 212,
+     "text": "DVS recall (P8.2, all 30): Apertus 27/30 [0.744, 0.965]"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "recall, begun in the 2026 window",
+     "k": 23,
+     "n": 24,
+     "value": 0.9583333333333334,
+     "ci95": [
+      0.798,
+      0.993
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "line": 214,
+      "text": "Apertus 23/24 [0.798, 0.993]"
+     }
+    },
+    {
+     "metric": "AI judge on the same 30 items (both Claude runs Y), for reference",
+     "k": 27,
+     "n": 30,
+     "value": 0.9,
+     "ci95": [
+      0.74,
+      0.97
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+      "key": "both_Y"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "keyword list (29 de/fr/it stems)",
+     "k": 21,
+     "n": 30,
+     "value": 0.7,
+     "ci95": [
+      0.521,
+      0.833
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "line": 212,
+      "text": "keyword 21/30 [0.521, 0.833]"
+     }
+    },
+    {
+     "name": "keyword list, begun in the window",
+     "k": 16,
+     "n": 24,
+     "ci95": [
+      0.467,
+      0.82
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "line": 214,
+      "text": "keyword 16/24 [0.467, 0.820]"
+     }
+    }
+   ],
+   "split": "pre-registered re-run (P8.2); the yes/no prompt and the 0.5 cut-off were set on these 30 items in S3 E6",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S8 — \"Digitalisierung\" over every affair of 2026",
+    "line": 10
+   },
+   "sources": [
+    "bern/ideation2/spikes/s8-dvs/results.md",
+    "bern/ideation/spikes/s3-accuracy/results.md",
+    "bern/ideation/spikes/s2-oracles/results.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "«Digitalisierung»: die 30 von Hand kuratierten DVS-Geschäfte (Recall)",
+   "interval": [
+    0.744,
+    0.965
+   ],
+   "baseline": {
+    "name": "keyword list (29 de/fr/it stems)",
+    "value": 0.7,
+    "ci95": [
+     0.521,
+     0.833
+    ]
+   },
+   "file": "bern/ideation2/spikes/s8-dvs/results.md"
+  },
+  {
+   "id": "curia_sachbereiche",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Sachbereiche des Bundesparlaments gegen die Curia-Tags, alle Tags pro Geschäft",
+   "title_fr": "Thèmes du Parlement fédéral contre les tags Curia, tous les tags par objet",
+   "n": 200,
+   "design": "Testteil (n = 200) des sauberen Pools (eingereicht ab 6.11.2024, nach dem BFH-Modell); 5 abgerufene getaggte Beispiele (Pool 52'408 Geschäfte vor dem 6.11.2024) + Ja/Nein-Prüfung der Top 6, fusioniert (V3)",
+   "result": {
+    "metric": "micro-F1",
+    "value": 0.654,
+    "ci95": [
+     0.623,
+     0.686
+    ],
+    "n": 200,
+    "at": {
+     "file": "bern/ideation/spikes/s5-aps/results.md",
+     "line": 84,
+     "text": "**V3 fused: 0.9·p(yes) + 0.1·p_E3 ≥ 0.9, 2 orders** | **0.654 [0.623, 0.686]**"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "macro-F1",
+     "value": 0.57,
+     "ci95": [
+      0.52,
+      0.622
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s5-aps/results.md",
+      "line": 84,
+      "text": "**0.570 [0.520, 0.622]**"
+     }
+    },
+    {
+     "metric": "top-1 is a gold tag, no examples (E2, 2 orders)",
+     "value": 0.865,
+     "ci95": [
+      0.811,
+      0.906
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "line": 27,
+      "text": "| E2 desc, average of 2 orders (arith.) |"
+     }
+    },
+    {
+     "metric": "paired Δ micro-F1 V3 − BFH",
+     "ci95": [
+      -0.079,
+      0.01
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s5-aps/results.md",
+      "line": 89,
+      "text": "vs BFH micro **−0.079 to +0.010**"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "BFH Omikuji (trained on 15,007 tagged affairs), thr 0.25",
+     "value": 0.687,
+     "ci95": [
+      0.652,
+      0.722
+     ],
+     "top1": 0.855,
+     "top1_ci95": [
+      0.8,
+      0.897
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "line": 35,
+      "text": "| **BFH Omikuji, thr 0.25 (tuned on BFH's dev)** |"
+     },
+     "training_size_at": {
+      "file": "bern/research/R1-parts/prior-art.md",
+      "line": 10,
+      "text": "15,007 German training docs"
+     }
+    }
+   ],
+   "split": "test n = 200; rules, τ and λ tuned on 100 dev items (tuning split)",
+   "prereg": null,
+   "sources": [
+    "bern/ideation/spikes/s3-accuracy/results.md",
+    "bern/ideation/spikes/s5-aps/results.md",
+    "bern/ideation/spikes/s2-oracles/results.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "Sachbereiche des Bundesparlaments gegen die Curia-Tags, alle Tags pro Geschäft",
+   "interval": [
+    0.623,
+    0.686
+   ],
+   "baseline": {
+    "name": "BFH Omikuji (trained on 15,007 tagged affairs), thr 0.25",
+    "value": 0.687,
+    "ci95": [
+     0.652,
+     0.722
+    ]
+   },
+   "file": "bern/ideation/spikes/s3-accuracy/results.md"
+  },
+  {
+   "id": "bern_directorates",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Bern: federführende Direktion (Schema-Tausch, 8 Direktionen) gegen das Feld des Grossen Rats, nur Titel",
+   "title_fr": "Berne : direction responsable (8 directions) contre le champ du Grand Conseil, titres seuls",
+   "n": 200,
+   "design": "Zufallsstichprobe aus 4'530 Geschäften (ab 2015); Titel DE und FR getrennt, Prompt in der jeweiligen Sprache; Direktionsbeschreibungen vom Agenten geschrieben; Stichwörter vor jedem Resultat eingefroren",
+   "result": {
+    "metric": "accuracy DE title",
+    "value": 0.615,
+    "ci95": [
+     0.546,
+     0.68
+    ],
+    "n": 200,
+    "at": {
+     "file": "bern/ideation/spikes/s6-cantonal/results.md",
+     "line": 63,
+     "text": "| **Apertus, DE title** |"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "accuracy FR title",
+     "value": 0.645,
+     "ci95": [
+      0.577,
+      0.708
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "line": 64,
+      "text": "| **Apertus, FR title (FR prompt)** |"
+     }
+    },
+    {
+     "metric": "DE + FR pooled",
+     "value": 0.645,
+     "ci95": [
+      0.577,
+      0.708
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "line": 65,
+      "text": "| Apertus, DE + FR pooled"
+     }
+    },
+    {
+     "metric": "DE − FR (paired)",
+     "value": -0.03,
+     "ci95": [
+      -0.085,
+      0.025
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "line": 69,
+      "text": "DE/FR parity gap (DE − FR): −0.030"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "keyword stems DE / FR",
+     "value": [
+      0.52,
+      0.495
+     ],
+     "ci95": [
+      [
+       0.451,
+       0.588
+      ],
+      [
+       0.426,
+       0.564
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "line": 66,
+      "text": "| Keyword stems, DE / FR |"
+     }
+    },
+    {
+     "name": "majority class (BVD)",
+     "value": 0.175,
+     "ci95": [
+      0.129,
+      0.234
+     ],
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "line": 67,
+      "text": "| Majority class (BVD) |"
+     }
+    }
+   ],
+   "split": "one run, nothing tuned on the 200",
+   "prereg": null,
+   "sources": [
+    "bern/ideation/spikes/s6-cantonal/results.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "Bern: federführende Direktion (Schema-Tausch, 8 Direktionen) gegen das Feld des Grossen Rats, nur Titel",
+   "interval": [
+    0.546,
+    0.68
+   ],
+   "baseline": {
+    "name": "keyword stems DE / FR",
+    "value": [
+     0.52,
+     0.495
+    ],
+    "ci95": [
+     [
+      0.451,
+      0.588
+     ],
+     [
+      0.426,
+      0.564
+     ]
+    ]
+   },
+   "file": "bern/ideation/spikes/s6-cantonal/results.md"
+  },
+  {
+   "id": "judge_anchor_aps",
+   "gold": "human",
+   "subject": "AI judge (Claude, blind)",
+   "title_de": "Der KI-Richter selbst gegen die APS-Redaktion (Kapitel)",
+   "title_fr": "Le juge IA lui-même contre la rédaction APS (chapitres)",
+   "n": 200,
+   "design": "200 zufällige S9-Geschäfte (Seed 20261014), gleicher Input wie Apertus; zwei blinde Claude-Läufe, S6-Leitfaden",
+   "result": {
+    "value": 0.79,
+    "ci95": [
+     0.728,
+     0.841
+    ],
+    "k": 158,
+    "n": 200,
+    "at": {
+     "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+     "key": "A"
+    },
+    "metric": "judge run A first chapter = editors' chapter"
+   },
+   "results_more": [
+    {
+     "value": 0.79,
+     "ci95": [
+      0.728,
+      0.841
+     ],
+     "k": 158,
+     "n": 200,
+     "at": {
+      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "key": "B"
+     },
+     "metric": "judge run B"
+    },
+    {
+     "value": 0.99,
+     "ci95": [
+      0.964,
+      0.997
+     ],
+     "k": 198,
+     "n": 200,
+     "at": {
+      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "key": "AB_agree"
+     },
+     "metric": "run A = run B"
+    },
+    {
+     "value": 0.9,
+     "ci95": [
+      0.851,
+      0.934
+     ],
+     "k": 180,
+     "n": 200,
+     "at": {
+      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "key": "A_lenient"
+     },
+     "metric": "editors' chapter among the judge's first or second code"
+    }
+   ],
+   "baselines": [
+    {
+     "value": 0.635,
+     "ci95": [
+      0.566,
+      0.699
+     ],
+     "k": 127,
+     "n": 200,
+     "at": {
+      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "key": "apertus_same_items > D0 > apertus_vs_editors"
+     },
+     "name": "Apertus D0 on the same 200"
+    },
+    {
+     "value": 0.695,
+     "ci95": [
+      0.628,
+      0.755
+     ],
+     "k": 139,
+     "n": 200,
+     "at": {
+      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "key": "apertus_same_items > D1 > apertus_vs_editors"
+     },
+     "name": "Apertus D1 on the same 200"
+    },
+    {
+     "value": 0.72,
+     "ci95": [
+      0.654,
+      0.778
+     ],
+     "k": 144,
+     "n": 200,
+     "at": {
+      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "key": "apertus_same_items > D3 > apertus_vs_editors"
+     },
+     "name": "Apertus D3 on the same 200"
+    }
+   ],
+   "split": "random S9 sample, pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S11 annotator anchor",
+    "line": 3
+   },
+   "sources": [
+    "bern/ideation2/spikes/s11-anchor/anchor.json",
+    "bern/ideation2/spikes/s11-anchor/RESULTS.md"
+   ],
+   "build": "judge: Claude (blind agent runs); Apertus rows vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "date": "2026-10-13",
+   "test": "Der KI-Richter selbst gegen die APS-Redaktion (Kapitel)",
+   "interval": [
+    0.728,
+    0.841
+   ],
+   "baseline": {
+    "name": "Apertus D0 on the same 200",
+    "value": 0.635,
+    "ci95": [
+     0.566,
+     0.699
+    ]
+   },
+   "file": "bern/ideation2/spikes/s11-anchor/anchor.json"
+  },
+  {
+   "id": "judge_dvs_human",
+   "gold": "human",
+   "subject": "AI judge (Claude, blind)",
+   "title_de": "Der KI-Richter auf den 30 von Hand kuratierten DVS-Geschäften (Recall)",
+   "title_fr": "Le juge IA sur les 30 objets DVS choisis à la main (rappel)",
+   "n": 30,
+   "design": "30 DVS-Geschäfte gemischt mit 70 zufälligen Geschäften 2026, gemischt; zwei blinde Claude-Läufe, S8-Leitfaden",
+   "result": {
+    "metric": "both runs Y on the DVS items",
+    "k": 27,
+    "n": 30,
+    "value": 0.9,
+    "ci95": [
+     0.74,
+     0.97
+    ],
+    "at": {
+     "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+     "key": "both_Y"
+    },
+    "ci_at": {
+     "file": "bern/ideation2/spikes/s15-judgecheck/RESULTS.md",
+     "line": 6,
+     "text": "0.90 [0.74, 0.97]"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "run A",
+     "k": 27,
+     "n": 30,
+     "at": {
+      "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+      "key": "A_recall"
+     }
+    },
+    {
+     "metric": "run B",
+     "k": 28,
+     "n": 30,
+     "at": {
+      "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+      "key": "B_recall"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "Apertus on the same 30 (S8)",
+     "k": 27,
+     "n": 30
+    },
+    {
+     "name": "keyword list (S8)",
+     "k": 21,
+     "n": 30
+    }
+   ],
+   "split": "pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S15 judge check on the binary task",
+    "line": 27
+   },
+   "sources": [
+    "bern/ideation2/spikes/s15-judgecheck/results.json",
+    "bern/ideation2/spikes/s15-judgecheck/RESULTS.md"
+   ],
+   "build": "judge: Claude (blind agent runs)",
+   "date": "2026-10-13",
+   "note": "judge precision on human negatives: not measured (no human negatives)",
+   "test": "Der KI-Richter auf den 30 von Hand kuratierten DVS-Geschäften (Recall)",
+   "interval": [
+    0.74,
+    0.97
+   ],
+   "baseline": {
+    "name": "Apertus on the same 30 (S8)",
+    "value": null,
+    "ci95": null
+   },
+   "file": "bern/ideation2/spikes/s15-judgecheck/results.json"
+  },
+  {
+   "id": "neutrality_s9",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument",
+   "title_fr": "Neutralité, Confédération (S9, rédaction APS) : langue, parti, auteur, instrument",
+   "n": 1357,
+   "design": "keine neuen Aufrufe; D1 aus S9-Rohdaten neu berechnet (955/1357 wie S9); Partei aus dem OPD-Export",
+   "result": {
+    "metric": "language: DE − FR, paired (identity-order chapter call on DE vs FR text)",
+    "value": 0.0169,
+    "ci95": [
+     -0.0029,
+     0.0361
+    ],
+    "p_mcnemar": 0.1133,
+    "at": {
+     "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+     "key": "S9 > language (paired, same affairs; single identity-order call) > diff_DE_minus_FR"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "DE",
+     "k": 821,
+     "p": 0.605,
+     "ci": [
+      0.5787,
+      0.6307
+     ]
+    },
+    {
+     "metric": "FR",
+     "k": 798,
+     "p": 0.5881,
+     "ci": [
+      0.5617,
+      0.614
+     ]
+    }
+   ],
+   "baselines": [
+    {
+     "name": "keyword top-1 per cell (in breakdowns)"
+    }
+   ],
+   "breakdowns": {
+    "party_D1_top1": {
+     "cells": [
+      {
+       "cell": "SVP",
+       "n": 137,
+       "k": 91,
+       "value": 0.6642,
+       "ci95": [
+        0.5816,
+        0.7379
+       ]
+      },
+      {
+       "cell": "SP",
+       "n": 174,
+       "k": 122,
+       "value": 0.7011,
+       "ci95": [
+        0.6294,
+        0.7642
+       ]
+      },
+      {
+       "cell": "FDP",
+       "n": 146,
+       "k": 98,
+       "value": 0.6712,
+       "ci95": [
+        0.5915,
+        0.7422
+       ]
+      },
+      {
+       "cell": "Mitte",
+       "n": 125,
+       "k": 79,
+       "value": 0.632,
+       "ci95": [
+        0.5447,
+        0.7114
+       ]
+      },
+      {
+       "cell": "Grüne",
+       "n": 95,
+       "k": 55,
+       "value": 0.5789,
+       "ci95": [
+        0.4785,
+        0.6733
+       ]
+      },
+      {
+       "cell": "GLP",
+       "n": 45,
+       "k": 29,
+       "value": 0.6444,
+       "ci95": [
+        0.4984,
+        0.7678
+       ]
+      },
+      {
+       "cell": "other party",
+       "n": 32,
+       "k": 22,
+       "value": 0.6875,
+       "ci95": [
+        0.5143,
+        0.8205
+       ]
+      },
+      {
+       "cell": "committee",
+       "n": 222,
+       "k": 165,
+       "value": 0.7432,
+       "ci95": [
+        0.682,
+        0.7962
+       ]
+      },
+      {
+       "cell": "government",
+       "n": 274,
+       "k": 217,
+       "value": 0.792,
+       "ci95": [
+        0.74,
+        0.8358
+       ]
+      },
+      {
+       "cell": "canton",
+       "n": 74,
+       "k": 54,
+       "value": 0.7297,
+       "ci95": [
+        0.6191,
+        0.8177
+       ]
+      },
+      {
+       "cell": "unknown",
+       "n": 33,
+       "k": 23,
+       "value": 0.697,
+       "ci95": [
+        0.5266,
+        0.8262
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.4655,
+      "p_chi2": 0.4652,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "SP",
+      "lo": "Grüne",
+      "diff": 0.1222,
+      "ci95": [
+       -0.007,
+       0.2419
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > party > D1_top1"
+     }
+    },
+    "party_keyword_top1": {
+     "cells": [
+      {
+       "cell": "SVP",
+       "n": 137,
+       "k": 34,
+       "value": 0.2482,
+       "ci95": [
+        0.1834,
+        0.3267
+       ]
+      },
+      {
+       "cell": "SP",
+       "n": 174,
+       "k": 30,
+       "value": 0.1724,
+       "ci95": [
+        0.1235,
+        0.2355
+       ]
+      },
+      {
+       "cell": "FDP",
+       "n": 146,
+       "k": 26,
+       "value": 0.1781,
+       "ci95": [
+        0.1245,
+        0.2481
+       ]
+      },
+      {
+       "cell": "Mitte",
+       "n": 125,
+       "k": 18,
+       "value": 0.144,
+       "ci95": [
+        0.0931,
+        0.2162
+       ]
+      },
+      {
+       "cell": "Grüne",
+       "n": 95,
+       "k": 19,
+       "value": 0.2,
+       "ci95": [
+        0.1319,
+        0.2914
+       ]
+      },
+      {
+       "cell": "GLP",
+       "n": 45,
+       "k": 4,
+       "value": 0.0889,
+       "ci95": [
+        0.0351,
+        0.2073
+       ]
+      },
+      {
+       "cell": "other party",
+       "n": 32,
+       "k": 3,
+       "value": 0.0938,
+       "ci95": [
+        0.0324,
+        0.2422
+       ]
+      },
+      {
+       "cell": "committee",
+       "n": 222,
+       "k": 39,
+       "value": 0.1757,
+       "ci95": [
+        0.1313,
+        0.2311
+       ]
+      },
+      {
+       "cell": "government",
+       "n": 274,
+       "k": 65,
+       "value": 0.2372,
+       "ci95": [
+        0.1907,
+        0.291
+       ]
+      },
+      {
+       "cell": "canton",
+       "n": 74,
+       "k": 15,
+       "value": 0.2027,
+       "ci95": [
+        0.1269,
+        0.3079
+       ]
+      },
+      {
+       "cell": "unknown",
+       "n": 33,
+       "k": 7,
+       "value": 0.2121,
+       "ci95": [
+        0.1068,
+        0.3775
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.1458,
+      "p_chi2": 0.145,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "SVP",
+      "lo": "GLP",
+      "diff": 0.1593,
+      "ci95": [
+       0.0412,
+       0.2621
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > party > keyword_top1"
+     }
+    },
+    "submitter_kind_D1_top1": {
+     "cells": [
+      {
+       "cell": "member/faction",
+       "n": 754,
+       "k": 496,
+       "value": 0.6578,
+       "ci95": [
+        0.6232,
+        0.6908
+       ]
+      },
+      {
+       "cell": "committee",
+       "n": 222,
+       "k": 165,
+       "value": 0.7432,
+       "ci95": [
+        0.682,
+        0.7962
+       ]
+      },
+      {
+       "cell": "government",
+       "n": 274,
+       "k": 217,
+       "value": 0.792,
+       "ci95": [
+        0.74,
+        0.8358
+       ]
+      },
+      {
+       "cell": "canton",
+       "n": 74,
+       "k": 54,
+       "value": 0.7297,
+       "ci95": [
+        0.6191,
+        0.8177
+       ]
+      },
+      {
+       "cell": "unknown",
+       "n": 33,
+       "k": 23,
+       "value": 0.697,
+       "ci95": [
+        0.5266,
+        0.8262
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.0004,
+      "p_chi2": 0.0006,
+      "df": 4
+     },
+     "largest_gap": {
+      "hi": "government",
+      "lo": "member/faction",
+      "diff": 0.1342,
+      "ci95": [
+       0.0714,
+       0.1912
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > submitter kind > D1_top1"
+     }
+    },
+    "submitter_kind_keyword_top1": {
+     "cells": [
+      {
+       "cell": "member/faction",
+       "n": 754,
+       "k": 134,
+       "value": 0.1777,
+       "ci95": [
+        0.1521,
+        0.2066
+       ]
+      },
+      {
+       "cell": "committee",
+       "n": 222,
+       "k": 39,
+       "value": 0.1757,
+       "ci95": [
+        0.1313,
+        0.2311
+       ]
+      },
+      {
+       "cell": "government",
+       "n": 274,
+       "k": 65,
+       "value": 0.2372,
+       "ci95": [
+        0.1907,
+        0.291
+       ]
+      },
+      {
+       "cell": "canton",
+       "n": 74,
+       "k": 15,
+       "value": 0.2027,
+       "ci95": [
+        0.1269,
+        0.3079
+       ]
+      },
+      {
+       "cell": "unknown",
+       "n": 33,
+       "k": 7,
+       "value": 0.2121,
+       "ci95": [
+        0.1068,
+        0.3775
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.2705,
+      "p_chi2": 0.2739,
+      "df": 4
+     },
+     "largest_gap": {
+      "hi": "government",
+      "lo": "committee",
+      "diff": 0.0615,
+      "ci95": [
+       -0.0108,
+       0.1304
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > submitter kind > keyword_top1"
+     }
+    },
+    "instrument_D1_top1": {
+     "cells": [
+      {
+       "cell": "Motion",
+       "n": 459,
+       "k": 300,
+       "value": 0.6536,
+       "ci95": [
+        0.609,
+        0.6957
+       ]
+      },
+      {
+       "cell": "Postulat",
+       "n": 296,
+       "k": 195,
+       "value": 0.6588,
+       "ci95": [
+        0.603,
+        0.7105
+       ]
+      },
+      {
+       "cell": "Regierungsgeschäft",
+       "n": 274,
+       "k": 217,
+       "value": 0.792,
+       "ci95": [
+        0.74,
+        0.8358
+       ]
+      },
+      {
+       "cell": "Parlamentarische Initiative",
+       "n": 244,
+       "k": 185,
+       "value": 0.7582,
+       "ci95": [
+        0.7007,
+        0.8077
+       ]
+      },
+      {
+       "cell": "Standesinitiative",
+       "n": 74,
+       "k": 54,
+       "value": 0.7297,
+       "ci95": [
+        0.6191,
+        0.8177
+       ]
+      },
+      {
+       "cell": "other type",
+       "n": 10,
+       "k": 4,
+       "value": 0.4,
+       "ci95": [
+        0.1682,
+        0.6873
+       ],
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.0002,
+      "p_chi2": 0.0001,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "Regierungsgeschäft",
+      "lo": "Motion",
+      "diff": 0.1384,
+      "ci95": [
+       0.0685,
+       0.2003
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > instrument > D1_top1"
+     }
+    },
+    "instrument_keyword_top1": {
+     "cells": [
+      {
+       "cell": "Motion",
+       "n": 459,
+       "k": 83,
+       "value": 0.1808,
+       "ci95": [
+        0.1483,
+        0.2186
+       ]
+      },
+      {
+       "cell": "Postulat",
+       "n": 296,
+       "k": 42,
+       "value": 0.1419,
+       "ci95": [
+        0.1067,
+        0.1862
+       ]
+      },
+      {
+       "cell": "Regierungsgeschäft",
+       "n": 274,
+       "k": 65,
+       "value": 0.2372,
+       "ci95": [
+        0.1907,
+        0.291
+       ]
+      },
+      {
+       "cell": "Parlamentarische Initiative",
+       "n": 244,
+       "k": 53,
+       "value": 0.2172,
+       "ci95": [
+        0.1701,
+        0.2731
+       ]
+      },
+      {
+       "cell": "Standesinitiative",
+       "n": 74,
+       "k": 15,
+       "value": 0.2027,
+       "ci95": [
+        0.1269,
+        0.3079
+       ]
+      },
+      {
+       "cell": "other type",
+       "n": 10,
+       "k": 2,
+       "value": 0.2,
+       "ci95": [
+        0.0567,
+        0.5098
+       ],
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.0796,
+      "p_chi2": 0.0797,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "Regierungsgeschäft",
+      "lo": "Postulat",
+      "diff": 0.0953,
+      "ci95": [
+       0.0295,
+       0.1591
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > instrument > keyword_top1"
+     }
+    },
+    "all_11_submitter_categories_test": {
+     "stat": 24.892,
+     "df": 10,
+     "p_perm": 0.0058,
+     "p_chi2": 0.0056,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP",
+      "other party",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S9 > party > D1_top1_all_categories_test"
+     }
+    }
+   },
+   "split": "no new calls; reported whatever it showed",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S14 neutrality (no calls)",
+    "line": 23
+   },
+   "sources": [
+    "bern/ideation2/spikes/s14-neutrality/results.json",
+    "bern/ideation2/spikes/s14-neutrality/results.md"
+   ],
+   "build": "no calls (S9 rows: vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840)",
+   "date": "2026-10-13T21:31:29Z",
+   "test": "Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument",
+   "interval": [
+    -0.0029,
+    0.0361
+   ],
+   "baseline": {
+    "name": "keyword top-1 per cell (in breakdowns)",
+    "value": null,
+    "ci95": null
+   },
+   "file": "bern/ideation2/spikes/s14-neutrality/results.json"
+  },
+  {
+   "id": "free_generation",
+   "gold": "none",
+   "gold_note": "rule check: is the answer one of the listed labels",
+   "subject": "Apertus",
+   "title_de": "Freie Benennung ohne Liste",
+   "title_fr": "Dénomination libre sans liste",
+   "n": 40,
+   "design": "40 Testgeschäfte (DE), Thema frei benennen lassen; dann mit der Curia-Liste",
+   "result": {
+    "metric": "answers outside both the Curia 28 and the APS label sets",
+    "k": 36,
+    "n": 40,
+    "value": 0.9,
+    "ci95": [
+     0.77,
+     0.96
+    ],
+    "at": {
+     "file": "bern/ideation/spikes/s3-accuracy/results.md",
+     "line": 116,
+     "text": "36/40 = 90 % [77, 96]"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "answers 'kein Thema'",
+     "k": 0,
+     "n": 40,
+     "at": {
+      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "line": 116,
+      "text": "**0/40 say \"kein Thema\"**"
+     }
+    },
+    {
+     "metric": "with the Curia list shown: off-list",
+     "k": 0,
+     "n": 40,
+     "at": {
+      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "line": 117,
+      "text": "With the Curia list shown, 0/40 fall outside it"
+     }
+    }
+   ],
+   "baselines": [],
+   "split": "test items",
+   "prereg": null,
+   "sources": [
+    "bern/ideation/spikes/s3-accuracy/results.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "Freie Benennung ohne Liste",
+   "interval": [
+    0.77,
+    0.96
+   ],
+   "baseline": null,
+   "file": "bern/ideation/spikes/s3-accuracy/results.md"
+  },
+  {
+   "id": "dvs_2026",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "«Digitalisierung» in Schweizer Parlamenten 2026, gegen den KI-Richter",
+   "title_fr": "« Numérique » dans les parlements suisses en 2026, contre le juge IA",
+   "n": 14513,
+   "n_checked": 453,
+   "design": "Population: 14'513 Schweizer Geschäfte 1.1.–6.10.2026 (ohne LIE); bewertet: letzte Woche ganz (577) + 37,6 % Zufallsstichprobe (5'338 von 14'212); 464 geprüfte Geschäfte aus vier Schichten (beide / nur Apertus / nur Stichwörter / keines), auf die Population zurückgewichtet; Gold: zwei blinde Claude-Läufe + Stichentscheid, Qwen-SEA-LION als Gegenprobe",
+   "result": {
+    "metric": "precision vs the judge (Swiss)",
+    "value": 0.914,
+    "ci95": [
+     0.876,
+     0.952
+    ],
+    "at": {
+     "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+     "key": "point > aP"
+    },
+    "ci_at": {
+     "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+     "key": "ci > aP"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "recall vs the judge (Swiss)",
+     "value": 0.654,
+     "ci95": [
+      0.486,
+      0.894
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "point > aR"
+     }
+    },
+    {
+     "metric": "Δ precision Apertus − keyword",
+     "value": 0.161,
+     "ci95": [
+      0.122,
+      0.202
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "ci > dP"
+     }
+    },
+    {
+     "metric": "Δ recall Apertus − keyword",
+     "value": 0.049,
+     "ci95": [
+      0.017,
+      0.09
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "ci > dR"
+     }
+    },
+    {
+     "metric": "estimated flags (Swiss)",
+     "value": 653.294,
+     "ci95": [
+      629.023,
+      675.127
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "point > aflags"
+     }
+    },
+    {
+     "metric": "estimated digitalisation affairs (judge positives, Swiss)",
+     "value": 913.256,
+     "ci95": [
+      668.987,
+      1217.298
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "point > pos"
+     }
+    },
+    {
+     "metric": "judge = Qwen alone: precision / recall",
+     "value": [
+      0.863,
+      0.811
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "qwen_only"
+     }
+    },
+    {
+     "metric": "all bodies incl. LIE: precision / recall",
+     "value": [
+      0.917,
+      0.606
+     ],
+     "ci95": [
+      [
+       0.882,
+       0.951
+      ],
+      [
+       0.447,
+       0.815
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score.json",
+      "key": "gold_AB_C"
+     }
+    },
+    {
+     "metric": "gold = majority of Claude A, B, Qwen (all bodies): precision / recall",
+     "value": [
+      0.902,
+      0.603
+     ],
+     "ci95": [
+      [
+       0.861,
+       0.94
+      ],
+      [
+       0.444,
+       0.818
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score.json",
+      "key": "gold_majority_ABQ"
+     }
+    },
+    {
+     "metric": "operating points (cut-off → P, R, flags)",
+     "value": {
+      "0.5": {
+       "P": 0.914,
+       "P_ci": [
+        0.878,
+        0.949
+       ],
+       "R": 0.654,
+       "R_ci": [
+        0.491,
+        0.896
+       ],
+       "flags": 653,
+       "per_week": 16.4
+      },
+      "0.3": {
+       "P": 0.915,
+       "P_ci": [
+        0.878,
+        0.949
+       ],
+       "R": 0.657,
+       "R_ci": [
+        0.494,
+        0.898
+       ],
+       "flags": 656,
+       "per_week": 16.5
+      },
+      "0.2": {
+       "P": 0.915,
+       "P_ci": [
+        0.879,
+        0.949
+       ],
+       "R": 0.66,
+       "R_ci": [
+        0.497,
+        0.902
+       ],
+       "flags": 659,
+       "per_week": 16.5
+      },
+      "0.1": {
+       "P": 0.915,
+       "P_ci": [
+        0.879,
+        0.949
+       ],
+       "R": 0.66,
+       "R_ci": [
+        0.497,
+        0.902
+       ],
+       "flags": 659,
+       "per_week": 16.5
+      }
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/operating_points_ch.json",
+      "key": ""
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "keyword list (29 de/fr/it stems), same input",
+     "precision": 0.753,
+     "precision_ci95": [
+      0.714,
+      0.79
+     ],
+     "recall": 0.605,
+     "recall_ci95": [
+      0.451,
+      0.827
+     ],
+     "flags": 734.167,
+     "flags_ci95": [
+      711.558,
+      756.388
+     ],
+     "qwen_only": [
+      0.691,
+      0.729
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "point > kP"
+     }
+    }
+   ],
+   "judge": {
+    "runs": "Claude A (forward) / B (reverse) + tie-break C on 15",
+    "AB": [
+     460,
+     0.976,
+     0.951
+    ],
+    "AQ": [
+     460,
+     0.909,
+     0.812
+    ],
+    "BQ": [
+     461,
+     0.915,
+     0.824
+    ],
+    "format": "[n, agreement, kappa]",
+    "at": {
+     "file": "bern/ideation2/spikes/s8-dvs/score.json",
+     "key": "annotators"
+    }
+   },
+   "breakdowns": {
+    "positives_in_checked_sample": {
+     "n": 190,
+     "parliaments": 45,
+     "by_level": {
+      "cantonal": 87,
+      "federal": 62,
+      "communal": 41
+     },
+     "by_lang": {
+      "de": 141,
+      "it": 14,
+      "fr": 35
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "key": "positives"
+     }
+    },
+    "strata_confirmations": {
+     "A∩K": {
+      "n": 120,
+      "gold_Y": 117,
+      "gold_N": 3
+     },
+     "A only": {
+      "n": 66,
+      "gold_Y": 49,
+      "gold_N": 17
+     },
+     "neither": {
+      "n": 180,
+      "gold_Y": 4,
+      "gold_N": 176
+     },
+     "K only": {
+      "n": 98,
+      "gold_Y": 29,
+      "gold_N": 69
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/score.json",
+      "key": "by_stratum"
+     }
+    },
+    "language_precision": {
+     "cells": [
+      {
+       "cell": "de",
+       "n": 137,
+       "k": 122,
+       "value": 0.911,
+       "ci95": [
+        0.8664,
+        0.952
+       ],
+       "unweighted": 0.8905
+      },
+      {
+       "cell": "fr",
+       "n": 36,
+       "k": 32,
+       "value": 0.929,
+       "ci95": [
+        0.8489,
+        0.9913
+       ],
+       "unweighted": 0.8889
+      },
+      {
+       "cell": "it",
+       "n": 13,
+       "k": 12,
+       "value": 0.9445,
+       "ci95": [
+        0.8035,
+        1.0
+       ],
+       "unweighted": 0.9231,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.8566,
+      "p_chi2": null,
+      "df": 2
+     },
+     "largest_gap": {
+      "hi": "fr",
+      "lo": "de",
+      "diff": 0.018,
+      "ci95": [
+       -0.0776,
+       0.0933
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > language > aP"
+     }
+    },
+    "language_recall": {
+     "cells": [
+      {
+       "cell": "de",
+       "n": 150,
+       "k": 122,
+       "value": 0.5953,
+       "ci95": [
+        0.4234,
+        0.8795
+       ],
+       "unweighted": 0.8133
+      },
+      {
+       "cell": "fr",
+       "n": 35,
+       "k": 32,
+       "value": 0.574,
+       "ci95": [
+        0.2816,
+        1.0
+       ],
+       "unweighted": 0.9143
+      },
+      {
+       "cell": "it",
+       "n": 14,
+       "k": 12,
+       "value": 0.8949,
+       "ci95": [
+        0.7156,
+        1.0
+       ],
+       "unweighted": 0.8571,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.8972,
+      "p_chi2": null,
+      "df": 2
+     },
+     "largest_gap": {
+      "hi": "de",
+      "lo": "fr",
+      "diff": 0.0213,
+      "ci95": [
+       -0.5004,
+       0.44
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > language > aR"
+     }
+    },
+    "level_precision": {
+     "cells": [
+      {
+       "cell": "federal",
+       "n": 57,
+       "k": 50,
+       "value": 0.8774,
+       "ci95": [
+        0.778,
+        0.9608
+       ],
+       "unweighted": 0.8772
+      },
+      {
+       "cell": "cantonal",
+       "n": 80,
+       "k": 73,
+       "value": 0.9366,
+       "ci95": [
+        0.889,
+        0.9778
+       ],
+       "unweighted": 0.9125
+      },
+      {
+       "cell": "communal",
+       "n": 43,
+       "k": 37,
+       "value": 0.9078,
+       "ci95": [
+        0.8217,
+        0.9725
+       ],
+       "unweighted": 0.8605
+      },
+      {
+       "cell": "other",
+       "n": 6,
+       "k": 6,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.4593,
+      "p_chi2": null,
+      "df": 3
+     },
+     "largest_gap": {
+      "hi": "cantonal",
+      "lo": "federal",
+      "diff": 0.0592,
+      "ci95": [
+       -0.0379,
+       0.1657
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > level > aP"
+     }
+    },
+    "level_recall": {
+     "cells": [
+      {
+       "cell": "federal",
+       "n": 62,
+       "k": 50,
+       "value": 0.4438,
+       "ci95": [
+        0.2424,
+        0.8996
+       ],
+       "unweighted": 0.8065
+      },
+      {
+       "cell": "cantonal",
+       "n": 87,
+       "k": 73,
+       "value": 0.724,
+       "ci95": [
+        0.4965,
+        0.9337
+       ],
+       "unweighted": 0.8391
+      },
+      {
+       "cell": "communal",
+       "n": 41,
+       "k": 37,
+       "value": 0.9297,
+       "ci95": [
+        0.8513,
+        0.9844
+       ],
+       "unweighted": 0.9024
+      },
+      {
+       "cell": "other",
+       "n": 9,
+       "k": 6,
+       "value": 0.1918,
+       "ci95": [
+        0.0388,
+        1.0
+       ],
+       "unweighted": 0.6667,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.1948,
+      "p_chi2": null,
+      "df": 3
+     },
+     "largest_gap": {
+      "hi": "communal",
+      "lo": "federal",
+      "diff": 0.4859,
+      "ci95": [
+       0.0218,
+       0.6916
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > level > aR"
+     }
+    },
+    "region_precision": {
+     "cells": [
+      {
+       "cell": "federal",
+       "n": 57,
+       "k": 50,
+       "value": 0.8774,
+       "ci95": [
+        0.778,
+        0.9608
+       ],
+       "unweighted": 0.8772
+      },
+      {
+       "cell": "Deutschschweiz",
+       "n": 63,
+       "k": 56,
+       "value": 0.9176,
+       "ci95": [
+        0.854,
+        0.9692
+       ],
+       "unweighted": 0.8889
+      },
+      {
+       "cell": "Romandie",
+       "n": 29,
+       "k": 27,
+       "value": 0.9674,
+       "ci95": [
+        0.9117,
+        1.0
+       ],
+       "unweighted": 0.931
+      },
+      {
+       "cell": "Svizzera italiana",
+       "n": 13,
+       "k": 12,
+       "value": 0.9445,
+       "ci95": [
+        0.8035,
+        1.0
+       ],
+       "unweighted": 0.9231,
+       "small": true
+      },
+      {
+       "cell": "bilingual cantons (BE FR VS GR)",
+       "n": 18,
+       "k": 15,
+       "value": 0.8865,
+       "ci95": [
+        0.7406,
+        1.0
+       ],
+       "unweighted": 0.8333,
+       "small": true
+      },
+      {
+       "cell": "other (LIE)",
+       "n": 6,
+       "k": 6,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.6429,
+      "p_chi2": null,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "Romandie",
+      "lo": "federal",
+      "diff": 0.09,
+      "ci95": [
+       -0.0114,
+       0.1985
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > region > aP"
+     }
+    },
+    "party_precision": {
+     "cells": [
+      {
+       "cell": "SVP",
+       "n": 11,
+       "k": 7,
+       "value": 0.6363,
+       "ci95": [
+        0.3101,
+        0.9287
+       ],
+       "unweighted": 0.6364,
+       "small": true
+      },
+      {
+       "cell": "SP",
+       "n": 24,
+       "k": 22,
+       "value": 0.9431,
+       "ci95": [
+        0.85,
+        1.0
+       ],
+       "unweighted": 0.9167
+      },
+      {
+       "cell": "FDP",
+       "n": 15,
+       "k": 12,
+       "value": 0.8073,
+       "ci95": [
+        0.5649,
+        1.0
+       ],
+       "unweighted": 0.8,
+       "small": true
+      },
+      {
+       "cell": "Mitte",
+       "n": 21,
+       "k": 20,
+       "value": 0.9592,
+       "ci95": [
+        0.859,
+        1.0
+       ],
+       "unweighted": 0.9524
+      },
+      {
+       "cell": "Grüne",
+       "n": 19,
+       "k": 19,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "GLP",
+       "n": 15,
+       "k": 13,
+       "value": 0.9138,
+       "ci95": [
+        0.7503,
+        1.0
+       ],
+       "unweighted": 0.8667,
+       "small": true
+      },
+      {
+       "cell": "other party",
+       "n": 22,
+       "k": 22,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0
+      },
+      {
+       "cell": "party unknown",
+       "n": 12,
+       "k": 11,
+       "value": 0.9753,
+       "ci95": [
+        0.9014,
+        1.0
+       ],
+       "unweighted": 0.9167,
+       "small": true
+      },
+      {
+       "cell": "government",
+       "n": 22,
+       "k": 20,
+       "value": 0.9441,
+       "ci95": [
+        0.8541,
+        1.0
+       ],
+       "unweighted": 0.9091
+      },
+      {
+       "cell": "committee",
+       "n": 5,
+       "k": 4,
+       "value": 0.863,
+       "ci95": [
+        0.3706,
+        1.0
+       ],
+       "unweighted": 0.8,
+       "small": true
+      },
+      {
+       "cell": "other group",
+       "n": 1,
+       "k": 1,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "unknown",
+       "n": 19,
+       "k": 15,
+       "value": 0.8354,
+       "ci95": [
+        0.6554,
+        0.967
+       ],
+       "unweighted": 0.7895,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.018,
+      "p_chi2": null,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "Mitte",
+      "lo": "SP",
+      "diff": 0.0161,
+      "ci95": [
+       -0.1044,
+       0.1282
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > party > aP"
+     }
+    },
+    "party_keyword_precision": {
+     "cells": [
+      {
+       "cell": "SVP",
+       "n": 20,
+       "k": 7,
+       "value": 0.4173,
+       "ci95": [
+        0.1732,
+        0.645
+       ],
+       "unweighted": 0.35
+      },
+      {
+       "cell": "SP",
+       "n": 38,
+       "k": 25,
+       "value": 0.7647,
+       "ci95": [
+        0.6376,
+        0.8735
+       ],
+       "unweighted": 0.6579
+      },
+      {
+       "cell": "FDP",
+       "n": 16,
+       "k": 10,
+       "value": 0.6896,
+       "ci95": [
+        0.4383,
+        0.8988
+       ],
+       "unweighted": 0.625,
+       "small": true
+      },
+      {
+       "cell": "Mitte",
+       "n": 19,
+       "k": 15,
+       "value": 0.8456,
+       "ci95": [
+        0.6688,
+        0.9809
+       ],
+       "unweighted": 0.7895,
+       "small": true
+      },
+      {
+       "cell": "Grüne",
+       "n": 21,
+       "k": 11,
+       "value": 0.6529,
+       "ci95": [
+        0.43,
+        0.831
+       ],
+       "unweighted": 0.5238
+      },
+      {
+       "cell": "GLP",
+       "n": 11,
+       "k": 10,
+       "value": 0.9277,
+       "ci95": [
+        0.7443,
+        1.0
+       ],
+       "unweighted": 0.9091,
+       "small": true
+      },
+      {
+       "cell": "other party",
+       "n": 29,
+       "k": 23,
+       "value": 0.8594,
+       "ci95": [
+        0.7363,
+        0.9557
+       ],
+       "unweighted": 0.7931
+      },
+      {
+       "cell": "party unknown",
+       "n": 7,
+       "k": 5,
+       "value": 0.8653,
+       "ci95": [
+        0.5622,
+        1.0
+       ],
+       "unweighted": 0.7143,
+       "small": true
+      },
+      {
+       "cell": "government",
+       "n": 25,
+       "k": 20,
+       "value": 0.8711,
+       "ci95": [
+        0.7284,
+        0.9688
+       ],
+       "unweighted": 0.8
+      },
+      {
+       "cell": "committee",
+       "n": 6,
+       "k": 4,
+       "value": 0.759,
+       "ci95": [
+        0.3064,
+        1.0
+       ],
+       "unweighted": 0.6667,
+       "small": true
+      },
+      {
+       "cell": "other group",
+       "n": 2,
+       "k": 2,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "unknown",
+       "n": 24,
+       "k": 14,
+       "value": 0.683,
+       "ci95": [
+        0.4939,
+        0.8462
+       ],
+       "unweighted": 0.5833
+      }
+     ],
+     "test": {
+      "p_perm": 0.0212,
+      "p_chi2": null,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "SP",
+      "lo": "SVP",
+      "diff": 0.3474,
+      "ci95": [
+       0.074,
+       0.6227
+      ],
+      "basis": "cells n>=20; paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > party > kP"
+     }
+    },
+    "canton_precision": {
+     "cells": [
+      {
+       "cell": "federal",
+       "n": 57,
+       "k": 50,
+       "value": 0.8774,
+       "ci95": [
+        0.778,
+        0.9608
+       ],
+       "unweighted": 0.8772
+      },
+      {
+       "cell": "BS",
+       "n": 17,
+       "k": 17,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "ZH",
+       "n": 16,
+       "k": 15,
+       "value": 0.9574,
+       "ci95": [
+        0.8598,
+        1.0
+       ],
+       "unweighted": 0.9375,
+       "small": true
+      },
+      {
+       "cell": "TI",
+       "n": 13,
+       "k": 12,
+       "value": 0.9445,
+       "ci95": [
+        0.8035,
+        1.0
+       ],
+       "unweighted": 0.9231,
+       "small": true
+      },
+      {
+       "cell": "BE",
+       "n": 12,
+       "k": 11,
+       "value": 0.9449,
+       "ci95": [
+        0.8101,
+        1.0
+       ],
+       "unweighted": 0.9167,
+       "small": true
+      },
+      {
+       "cell": "VD",
+       "n": 11,
+       "k": 10,
+       "value": 0.9389,
+       "ci95": [
+        0.7849,
+        1.0
+       ],
+       "unweighted": 0.9091,
+       "small": true
+      },
+      {
+       "cell": "GE",
+       "n": 10,
+       "k": 9,
+       "value": 0.9731,
+       "ci95": [
+        0.8935,
+        1.0
+       ],
+       "unweighted": 0.9,
+       "small": true
+      },
+      {
+       "cell": "LIE",
+       "n": 6,
+       "k": 6,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "SG",
+       "n": 6,
+       "k": 6,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "AG",
+       "n": 5,
+       "k": 5,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "NE",
+       "n": 5,
+       "k": 5,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "VS",
+       "n": 5,
+       "k": 3,
+       "value": 0.6939,
+       "ci95": [
+        0.0,
+        1.0
+       ],
+       "unweighted": 0.6,
+       "small": true
+      },
+      {
+       "cell": "ZG",
+       "n": 5,
+       "k": 2,
+       "value": 0.5408,
+       "ci95": [
+        0.0,
+        1.0
+       ],
+       "unweighted": 0.4,
+       "small": true
+      },
+      {
+       "cell": "JU",
+       "n": 3,
+       "k": 3,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "SH",
+       "n": 3,
+       "k": 3,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "SO",
+       "n": 3,
+       "k": 2,
+       "value": 0.6103,
+       "ci95": [
+        0.0,
+        1.0
+       ],
+       "unweighted": 0.6667,
+       "small": true
+      },
+      {
+       "cell": "AR",
+       "n": 2,
+       "k": 2,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "LU",
+       "n": 2,
+       "k": 2,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "BL",
+       "n": 1,
+       "k": 1,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "FR",
+       "n": 1,
+       "k": 1,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "OW",
+       "n": 1,
+       "k": 1,
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "unweighted": 1.0,
+       "small": true
+      },
+      {
+       "cell": "TG",
+       "n": 1,
+       "k": 0,
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "unweighted": 0.0,
+       "small": true
+      },
+      {
+       "cell": "UR",
+       "n": 1,
+       "k": 0,
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "unweighted": 0.0,
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.0122,
+      "p_chi2": null,
+      "df": 20
+     },
+     "largest_gap": {
+      "hi": "BS",
+      "lo": "ZG",
+      "diff": 0.4592,
+      "ci95": [
+       0.0,
+       1.0
+      ],
+      "basis": "no 2 cells with n>=20: cells n>=5 (small); paired over full-packet resamples"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S8 > canton (cantonal+communal bodies; federal separate) > aP"
+     }
+    },
+    "per_body_flags": {
+     "note": "flag counts per parliament in the design sample (all bodies, 20:30 UTC snapshot); est. = census + N_R,body × SRS share, point only; no judge gold per body",
+     "rows": [
+      {
+       "body": "CHE",
+       "level": "federal",
+       "N window": 3162,
+       "sample n": 1457,
+       "flags (sample)": 91,
+       "est. flags": 177.1,
+       "kw (sample)": 104
+      },
+      {
+       "body": "BS",
+       "level": "cantonal",
+       "N window": 919,
+       "sample n": 349,
+       "flags (sample)": 17,
+       "est. flags": 44.8,
+       "kw (sample)": 23
+      },
+      {
+       "body": "GE",
+       "level": "cantonal",
+       "N window": 612,
+       "sample n": 240,
+       "flags (sample)": 9,
+       "est. flags": 24.2,
+       "kw (sample)": 10
+      },
+      {
+       "body": 261,
+       "level": "communal",
+       "N window": 554,
+       "sample n": 242,
+       "flags (sample)": 12,
+       "est. flags": 25.1,
+       "kw (sample)": 19
+      },
+      {
+       "body": "VD",
+       "level": "cantonal",
+       "N window": 549,
+       "sample n": 209,
+       "flags (sample)": 12,
+       "est. flags": 31.7,
+       "kw (sample)": 14
+      },
+      {
+       "body": "TI",
+       "level": "cantonal",
+       "N window": 540,
+       "sample n": 230,
+       "flags (sample)": 10,
+       "est. flags": 21.9,
+       "kw (sample)": 14
+      },
+      {
+       "body": "BE",
+       "level": "cantonal",
+       "N window": 500,
+       "sample n": 187,
+       "flags (sample)": 16,
+       "est. flags": 42.8,
+       "kw (sample)": 12
+      },
+      {
+       "body": "BL",
+       "level": "cantonal",
+       "N window": 460,
+       "sample n": 154,
+       "flags (sample)": 1,
+       "est. flags": 3.0,
+       "kw (sample)": 4
+      },
+      {
+       "body": "ZH",
+       "level": "cantonal",
+       "N window": 440,
+       "sample n": 168,
+       "flags (sample)": 5,
+       "est. flags": 13.1,
+       "kw (sample)": 7
+      },
+      {
+       "body": "VS",
+       "level": "cantonal",
+       "N window": 393,
+       "sample n": 136,
+       "flags (sample)": 9,
+       "est. flags": 26.0,
+       "kw (sample)": 10
+      },
+      {
+       "body": "LU",
+       "level": "cantonal",
+       "N window": 387,
+       "sample n": 154,
+       "flags (sample)": 1,
+       "est. flags": 2.5,
+       "kw (sample)": 6
+      },
+      {
+       "body": "AG",
+       "level": "cantonal",
+       "N window": 342,
+       "sample n": 127,
+       "flags (sample)": 2,
+       "est. flags": 5.4,
+       "kw (sample)": 2
+      },
+      {
+       "body": 1711,
+       "level": "communal",
+       "N window": 318,
+       "sample n": 124,
+       "flags (sample)": 3,
+       "est. flags": 7.7,
+       "kw (sample)": 1
+      },
+      {
+       "body": "SG",
+       "level": "cantonal",
+       "N window": 293,
+       "sample n": 94,
+       "flags (sample)": 5,
+       "est. flags": 15.8,
+       "kw (sample)": 4
+      },
+      {
+       "body": "LIE",
+       "level": "other",
+       "N window": 277,
+       "sample n": 146,
+       "flags (sample)": 10,
+       "est. flags": 17.0,
+       "kw (sample)": 11
+      },
+      {
+       "body": "SO",
+       "level": "cantonal",
+       "N window": 268,
+       "sample n": 88,
+       "flags (sample)": 5,
+       "est. flags": 15.2,
+       "kw (sample)": 6
+      },
+      {
+       "body": 351,
+       "level": "communal",
+       "N window": 267,
+       "sample n": 97,
+       "flags (sample)": 2,
+       "est. flags": 5.5,
+       "kw (sample)": 3
+      },
+      {
+       "body": "FR",
+       "level": "cantonal",
+       "N window": 249,
+       "sample n": 85,
+       "flags (sample)": 1,
+       "est. flags": 3.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": 6621,
+       "level": "communal",
+       "N window": 246,
+       "sample n": 93,
+       "flags (sample)": 4,
+       "est. flags": 10.6,
+       "kw (sample)": 4
+      },
+      {
+       "body": "NE",
+       "level": "cantonal",
+       "N window": 235,
+       "sample n": 90,
+       "flags (sample)": 5,
+       "est. flags": 13.1,
+       "kw (sample)": 4
+      },
+      {
+       "body": 5192,
+       "level": "communal",
+       "N window": 207,
+       "sample n": 67,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": 5586,
+       "level": "communal",
+       "N window": 194,
+       "sample n": 73,
+       "flags (sample)": 1,
+       "est. flags": 2.7,
+       "kw (sample)": 2
+      },
+      {
+       "body": "JU",
+       "level": "cantonal",
+       "N window": 183,
+       "sample n": 75,
+       "flags (sample)": 6,
+       "est. flags": 15.3,
+       "kw (sample)": 5
+      },
+      {
+       "body": "TG",
+       "level": "cantonal",
+       "N window": 153,
+       "sample n": 66,
+       "flags (sample)": 1,
+       "est. flags": 2.3,
+       "kw (sample)": 0
+      },
+      {
+       "body": "ZG",
+       "level": "cantonal",
+       "N window": 152,
+       "sample n": 56,
+       "flags (sample)": 4,
+       "est. flags": 10.9,
+       "kw (sample)": 4
+      },
+      {
+       "body": 1061,
+       "level": "communal",
+       "N window": 131,
+       "sample n": 38,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": "GR",
+       "level": "cantonal",
+       "N window": 104,
+       "sample n": 41,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": "SH",
+       "level": "cantonal",
+       "N window": 103,
+       "sample n": 36,
+       "flags (sample)": 5,
+       "est. flags": 14.3,
+       "kw (sample)": 6
+      },
+      {
+       "body": 2939,
+       "level": "communal",
+       "N window": 102,
+       "sample n": 42,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": 2196,
+       "level": "communal",
+       "N window": 101,
+       "sample n": 40,
+       "flags (sample)": 1,
+       "est. flags": 2.5,
+       "kw (sample)": 1
+      },
+      {
+       "body": 5002,
+       "level": "communal",
+       "N window": 100,
+       "sample n": 34,
+       "flags (sample)": 1,
+       "est. flags": 3.2,
+       "kw (sample)": 1
+      },
+      {
+       "body": 6643,
+       "level": "communal",
+       "N window": 100,
+       "sample n": 41,
+       "flags (sample)": 2,
+       "est. flags": 4.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": 3203,
+       "level": "communal",
+       "N window": 100,
+       "sample n": 37,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 230,
+       "level": "communal",
+       "N window": 98,
+       "sample n": 30,
+       "flags (sample)": 2,
+       "est. flags": 6.5,
+       "kw (sample)": 2
+      },
+      {
+       "body": 5254,
+       "level": "communal",
+       "N window": 97,
+       "sample n": 41,
+       "flags (sample)": 4,
+       "est. flags": 9.7,
+       "kw (sample)": 0
+      },
+      {
+       "body": 5113,
+       "level": "communal",
+       "N window": 97,
+       "sample n": 33,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 62,
+       "level": "communal",
+       "N window": 83,
+       "sample n": 30,
+       "flags (sample)": 3,
+       "est. flags": 8.3,
+       "kw (sample)": 1
+      },
+      {
+       "body": "SZ",
+       "level": "cantonal",
+       "N window": 72,
+       "sample n": 28,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": "GL",
+       "level": "cantonal",
+       "N window": 71,
+       "sample n": 23,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 2829,
+       "level": "communal",
+       "N window": 71,
+       "sample n": 24,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": "UR",
+       "level": "cantonal",
+       "N window": 69,
+       "sample n": 29,
+       "flags (sample)": 1,
+       "est. flags": 3.1,
+       "kw (sample)": 0
+      },
+      {
+       "body": 198,
+       "level": "communal",
+       "N window": 69,
+       "sample n": 28,
+       "flags (sample)": 2,
+       "est. flags": 4.9,
+       "kw (sample)": 2
+      },
+      {
+       "body": 942,
+       "level": "communal",
+       "N window": 66,
+       "sample n": 24,
+       "flags (sample)": 2,
+       "est. flags": 5.5,
+       "kw (sample)": 2
+      },
+      {
+       "body": "OW",
+       "level": "cantonal",
+       "N window": 64,
+       "sample n": 31,
+       "flags (sample)": 2,
+       "est. flags": 4.1,
+       "kw (sample)": 2
+      },
+      {
+       "body": 2703,
+       "level": "communal",
+       "N window": 63,
+       "sample n": 24,
+       "flags (sample)": 2,
+       "est. flags": 5.2,
+       "kw (sample)": 0
+      },
+      {
+       "body": 3427,
+       "level": "communal",
+       "N window": 61,
+       "sample n": 29,
+       "flags (sample)": 2,
+       "est. flags": 4.3,
+       "kw (sample)": 2
+      },
+      {
+       "body": 296,
+       "level": "communal",
+       "N window": 58,
+       "sample n": 22,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 1024,
+       "level": "communal",
+       "N window": 54,
+       "sample n": 17,
+       "flags (sample)": 1,
+       "est. flags": 3.3,
+       "kw (sample)": 1
+      },
+      {
+       "body": 3901,
+       "level": "communal",
+       "N window": 50,
+       "sample n": 20,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4001,
+       "level": "communal",
+       "N window": 50,
+       "sample n": 23,
+       "flags (sample)": 1,
+       "est. flags": 2.2,
+       "kw (sample)": 1
+      },
+      {
+       "body": "AI",
+       "level": "cantonal",
+       "N window": 43,
+       "sample n": 14,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4082,
+       "level": "communal",
+       "N window": 41,
+       "sample n": 17,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 361,
+       "level": "communal",
+       "N window": 38,
+       "sample n": 13,
+       "flags (sample)": 1,
+       "est. flags": 2.9,
+       "kw (sample)": 1
+      },
+      {
+       "body": 4045,
+       "level": "communal",
+       "N window": 38,
+       "sample n": 18,
+       "flags (sample)": 1,
+       "est. flags": 2.1,
+       "kw (sample)": 0
+      },
+      {
+       "body": "NW",
+       "level": "cantonal",
+       "N window": 37,
+       "sample n": 12,
+       "flags (sample)": 1,
+       "est. flags": 3.1,
+       "kw (sample)": 1
+      },
+      {
+       "body": 247,
+       "level": "communal",
+       "N window": 36,
+       "sample n": 16,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 2831,
+       "level": "communal",
+       "N window": 36,
+       "sample n": 16,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": "AR",
+       "level": "cantonal",
+       "N window": 35,
+       "sample n": 19,
+       "flags (sample)": 2,
+       "est. flags": 3.9,
+       "kw (sample)": 2
+      },
+      {
+       "body": 1058,
+       "level": "communal",
+       "N window": 34,
+       "sample n": 15,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4671,
+       "level": "communal",
+       "N window": 33,
+       "sample n": 9,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 66,
+       "level": "communal",
+       "N window": 32,
+       "sample n": 10,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 191,
+       "level": "communal",
+       "N window": 31,
+       "sample n": 15,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 6458,
+       "level": "communal",
+       "N window": 30,
+       "sample n": 16,
+       "flags (sample)": 2,
+       "est. flags": 3.8,
+       "kw (sample)": 1
+      },
+      {
+       "body": 2581,
+       "level": "communal",
+       "N window": 30,
+       "sample n": 15,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 243,
+       "level": "communal",
+       "N window": 29,
+       "sample n": 14,
+       "flags (sample)": 1,
+       "est. flags": 2.1,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4566,
+       "level": "communal",
+       "N window": 26,
+       "sample n": 9,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 2937,
+       "level": "communal",
+       "N window": 26,
+       "sample n": 11,
+       "flags (sample)": 1,
+       "est. flags": 2.5,
+       "kw (sample)": 2
+      },
+      {
+       "body": 6421,
+       "level": "communal",
+       "N window": 26,
+       "sample n": 16,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 306,
+       "level": "communal",
+       "N window": 26,
+       "sample n": 10,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 1059,
+       "level": "communal",
+       "N window": 25,
+       "sample n": 7,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 121,
+       "level": "communal",
+       "N window": 24,
+       "sample n": 6,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 404,
+       "level": "communal",
+       "N window": 21,
+       "sample n": 6,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 3443,
+       "level": "communal",
+       "N window": 20,
+       "sample n": 8,
+       "flags (sample)": 2,
+       "est. flags": 5.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": 293,
+       "level": "communal",
+       "N window": 16,
+       "sample n": 5,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 131,
+       "level": "communal",
+       "N window": 15,
+       "sample n": 6,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 1
+      },
+      {
+       "body": 6153,
+       "level": "communal",
+       "N window": 15,
+       "sample n": 5,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 53,
+       "level": "communal",
+       "N window": 14,
+       "sample n": 9,
+       "flags (sample)": 1,
+       "est. flags": 1.6,
+       "kw (sample)": 1
+      },
+      {
+       "body": 3001,
+       "level": "communal",
+       "N window": 14,
+       "sample n": 5,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4401,
+       "level": "communal",
+       "N window": 10,
+       "sample n": 4,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4289,
+       "level": "communal",
+       "N window": 10,
+       "sample n": 3,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 616,
+       "level": "communal",
+       "N window": 10,
+       "sample n": 3,
+       "flags (sample)": 1,
+       "est. flags": 3.3,
+       "kw (sample)": 1
+      },
+      {
+       "body": 6248,
+       "level": "communal",
+       "N window": 10,
+       "sample n": 2,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 743,
+       "level": "communal",
+       "N window": 7,
+       "sample n": 3,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 6037,
+       "level": "communal",
+       "N window": 6,
+       "sample n": 1,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      },
+      {
+       "body": 4201,
+       "level": "communal",
+       "N window": 6,
+       "sample n": 3,
+       "flags (sample)": 2,
+       "est. flags": 4.0,
+       "kw (sample)": 2
+      },
+      {
+       "body": 329,
+       "level": "communal",
+       "N window": 5,
+       "sample n": 2,
+       "flags (sample)": 0,
+       "est. flags": 0.0,
+       "kw (sample)": 0
+      }
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "line": 75,
+      "text": "### By body (counts in the design sample"
+     }
+    },
+    "per_level_flags": {
+     "rows": [
+      {
+       "level": "federal",
+       "N window": 3162,
+       "sample n": 1457,
+       "Apertus flags (sample)": 91,
+       "est. flags [95%]": "177.1 [144.9, 218.4]",
+       "kw flags (sample)": 104,
+       "est. kw [95%]": "211.3 [175.0, 256.3]"
+      },
+      {
+       "level": "cantonal",
+       "N window": 7273,
+       "sample n": 2741,
+       "Apertus flags (sample)": 120,
+       "est. flags [95%]": "320.1 [268.6, 381.1]",
+       "kw flags (sample)": 139,
+       "est. kw [95%]": "369.7 [314.1, 434.5]"
+      },
+      {
+       "level": "communal",
+       "N window": 4077,
+       "sample n": 1571,
+       "Apertus flags (sample)": 57,
+       "est. flags [95%]": "145.3 [112.4, 187.7]",
+       "kw flags (sample)": 56,
+       "est. kw [95%]": "142.6 [110.1, 184.7]"
+      },
+      {
+       "level": "other",
+       "N window": 277,
+       "sample n": 146,
+       "Apertus flags (sample)": 10,
+       "est. flags [95%]": "17.0 [10.0, 31.1]",
+       "kw flags (sample)": 11,
+       "est. kw [95%]": "18.0 [11.0, 32.1]"
+      }
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "line": 60,
+      "text": "### By level (estimated window totals"
+     }
+    },
+    "per_language_flags": {
+     "rows": [
+      {
+       "lang": "de",
+       "N window": 11160,
+       "sample n": 4409,
+       "Apertus flags (sample)": 209,
+       "est. flags [95%]": "494.1 [431.8, 565.8]",
+       "kw flags (sample)": 238,
+       "est. kw [95%]": "576.5 [508.4, 653.8]"
+      },
+      {
+       "lang": "fr",
+       "N window": 2552,
+       "sample n": 1075,
+       "Apertus flags (sample)": 54,
+       "est. flags [95%]": "129.0 [99.2, 167.8]",
+       "kw flags (sample)": 56,
+       "est. kw [95%]": "126.1 [97.4, 163.9]"
+      },
+      {
+       "lang": "it",
+       "N window": 1077,
+       "sample n": 431,
+       "Apertus flags (sample)": 15,
+       "est. flags [95%]": "36.9 [22.5, 60.9]",
+       "kw flags (sample)": 16,
+       "est. kw [95%]": "39.6 [24.5, 64.2]"
+      }
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "line": 68,
+      "text": "### By prompt language (estimated window totals"
+     }
+    },
+    "breakdown_note": "language/level/region/party/canton cells are on all 464 checked items (incl. LIE), weighted (S14)"
+   },
+   "split": "pre-registered; cut-off p ≥ 0.5 fixed before the run (S3), not re-fitted",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S8 — \"Digitalisierung\" over every affair of 2026",
+    "line": 10
+   },
+   "prereg_more": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S8 reporting addition",
+    "line": 10
+   },
+   "sources": [
+    "bern/ideation2/spikes/s8-dvs/score_ch.json",
+    "bern/ideation2/spikes/s8-dvs/score.json",
+    "bern/ideation2/spikes/s8-dvs/results.md",
+    "bern/ideation2/spikes/s8-dvs/operating_points_ch.json",
+    "bern/ideation2/spikes/s8-dvs/score.py",
+    "bern/ideation2/spikes/s8q-crossfamily/ann_Q.tsv"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs); Qwen-SEA-LION aisingapore/Qwen-SEA-LION-v4-32B-IT",
+   "date": "2026-10-13",
+   "test": "«Digitalisierung» in Schweizer Parlamenten 2026, gegen den KI-Richter",
+   "interval": [
+    0.876,
+    0.952
+   ],
+   "baseline": {
+    "name": "keyword list (29 de/fr/it stems), same input",
+    "value": 0.753,
+    "ci95": [
+     0.714,
+     0.79
+    ]
+   },
+   "file": "bern/ideation2/spikes/s8-dvs/score_ch.json"
+  },
+  {
+   "id": "dvs_correction_loop",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Korrekturschleife (simuliert): 60 Richter-Labels als erste Entscheide einer Redaktion",
+   "title_fr": "Boucle de correction (simulée) : 60 étiquettes du juge comme premières décisions",
+   "n": 404,
+   "design": "die ersten 60 geprüften Geschäfte (feste Zufallsreihenfolge) als Beispiele, je 4 nächste (BM25); F1 auf den übrigen 404 gegen denselben Richter; ungewichtet",
+   "result": {
+    "metric": "F1 after (with examples)",
+    "value": 0.906,
+    "ci95": null,
+    "at": {
+     "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+     "key": "after > F1"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "Δ F1",
+     "value": 0.04,
+     "ci95": [
+      0.007,
+      0.075
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+      "key": "dF1"
+     }
+    },
+    {
+     "metric": "precision / recall after",
+     "value": [
+      0.917,
+      0.895
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+      "key": "after"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "same prompt without examples (before)",
+     "F1": 0.866,
+     "precision": 0.91,
+     "recall": 0.826,
+     "at": {
+      "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+      "key": "before"
+     }
+    }
+   ],
+   "split": "pre-registered (P8.5); unweighted, sample over-represents flagged affairs",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "Secondary: P8.5 correction loop",
+    "line": 25
+   },
+   "sources": [
+    "bern/ideation2/spikes/s8-dvs/loop.json",
+    "bern/ideation2/spikes/s8-dvs/loop.py"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "Korrekturschleife (simuliert): 60 Richter-Labels als erste Entscheide einer Redaktion",
+   "interval": null,
+   "baseline": {
+    "name": "same prompt without examples (before)",
+    "value": 0.91,
+    "ci95": null
+   },
+   "file": "bern/ideation2/spikes/s8-dvs/loop.json"
+  },
+  {
+   "id": "dvs_text_lever",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "«Digitalisierung» mit eingereichtem Text statt nur Titel (Bund)",
+   "title_fr": "« Numérique » avec le texte déposé au lieu du titre seul (fédéral)",
+   "n": 120,
+   "design": "S8-Paket, Bundesgeschäfte mit Curia-DE-Text (120); eine Reihenfolge; Titel + Langtitel + erste 1'500 Zeichen",
+   "result": {
+    "metric": "precision / recall, title + text",
+    "value": [
+     1.0,
+     0.6785714285714286
+    ],
+    "ci95": [
+     [
+      0.908,
+      1.0
+     ],
+     [
+      0.548,
+      0.786
+     ]
+    ],
+    "at": {
+     "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+     "key": "all > title_text"
+    },
+    "ci_at": {
+     "file": "bern/ideation2/spikes/s13-timing/results.md",
+     "line": 33,
+     "text": "| title + text | 1.000 [0.908, 1.000]"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "Δ recall",
+     "value": -0.0892857142857143,
+     "ci95": [
+      -0.16981132075471705,
+      -0.019607843137254943
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+      "key": "all > dRecall"
+     }
+    },
+    {
+     "metric": "Δ F1",
+     "value": -0.018412438625204475,
+     "ci95": [
+      -0.08349026993094799,
+      0.039570491151322384
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+      "key": "all > dF1"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "title only (same items, same order)",
+     "value": [
+      0.8958333333333334,
+      0.7678571428571429
+     ],
+     "ci95": [
+      [
+       0.778,
+       0.955
+      ],
+      [
+       0.642,
+       0.859
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s13-timing/results.md",
+      "line": 32,
+      "text": "| title only (key p_a>=0.5) | 0.896 [0.778, 0.955]"
+     }
+    }
+   ],
+   "split": "pre-registered (S8b)",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S8b text lever",
+    "line": 21
+   },
+   "sources": [
+    "bern/ideation2/spikes/s13-timing/s8b.json",
+    "bern/ideation2/spikes/s13-timing/results.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "«Digitalisierung» mit eingereichtem Text statt nur Titel (Bund)",
+   "interval": [
+    [
+     0.908,
+     1.0
+    ],
+    [
+     0.548,
+     0.786
+    ]
+   ],
+   "baseline": {
+    "name": "title only (same items, same order)",
+    "value": [
+     0.8958333333333334,
+     0.7678571428571429
+    ],
+    "ci95": [
+     [
+      0.778,
+      0.955
+     ],
+     [
+      0.642,
+      0.859
+     ]
+    ]
+   },
+   "file": "bern/ideation2/spikes/s13-timing/s8b.json"
+  },
+  {
+   "id": "evidence_support",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Beleg: der zitierte Satz stützt das Thema (blinder KI-Richter)",
+   "title_fr": "Preuve : la phrase citée soutient le thème (juge IA à l'aveugle)",
+   "n": 120,
+   "design": "120 zufällige S9-Geschäfte mit DE-Text; geschlossene Wahl über die nummerierten Sätze; Code prüft exakte Teilzeichenkette; Richter: zwei blinde Claude-Läufe + Stichentscheid",
+   "result": {
+    "value": 0.85,
+    "ci95": [
+     0.7753,
+     0.903
+    ],
+    "k": 102,
+    "n": 120,
+    "at": {
+     "file": "bern/ideation2/spikes/s12-evidence/results.json",
+     "key": "support > overall"
+    },
+    "metric": "sentence supports the D1 chapter"
+   },
+   "results_more": [
+    {
+     "value": 0.9024,
+     "ci95": [
+      0.8191,
+      0.9497
+     ],
+     "k": 74,
+     "n": 82,
+     "at": {
+      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "key": "support > d1_right"
+     },
+     "metric": "when the chapter is right (APS editors)"
+    },
+    {
+     "value": 0.7368,
+     "ci95": [
+      0.5799,
+      0.8503
+     ],
+     "k": 28,
+     "n": 38,
+     "at": {
+      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "key": "support > d1_wrong"
+     },
+     "metric": "when the chapter is wrong"
+    },
+    {
+     "value": 1.0,
+     "ci95": [
+      0.969,
+      1.0
+     ],
+     "k": 120,
+     "n": 120,
+     "at": {
+      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "key": "substring_pass"
+     },
+     "metric": "quote is an exact substring"
+    },
+    {
+     "value": 0.9917,
+     "ci95": [
+      0.9543,
+      0.9985
+     ],
+     "k": 119,
+     "n": 120,
+     "at": {
+      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "key": "ab_agreement"
+     },
+     "metric": "judge run A = run B",
+     "kappa": 0.9681
+    }
+   ],
+   "baselines": [],
+   "split": "random S9 sample, pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S12 evidence support",
+    "line": 14
+   },
+   "sources": [
+    "bern/ideation2/spikes/s12-evidence/results.json",
+    "bern/ideation2/spikes/s12-evidence/results.md",
+    "bern/ideation2/spikes/s12-evidence/score.py"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "Beleg: der zitierte Satz stützt das Thema (blinder KI-Richter)",
+   "interval": [
+    0.7753,
+    0.903
+   ],
+   "baseline": null,
+   "file": "bern/ideation2/spikes/s12-evidence/results.json"
+  },
+  {
+   "id": "aps_cantonal_communal",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel, Kantone und Gemeinden, gegen den KI-Richter",
+   "title_fr": "Chapitre APS, cantons et communes, contre le juge IA",
+   "n": 153,
+   "design": "160 Geschäfte ab 2015 (100 kantonal, 60 kommunal; de/fr/it); Kapitel aus dem Unterthema; Gold: zwei blinde Claude-Läufe, wo beide übereinstimmen (153); Gegenprobe Mehrheit Claude ×2 + Qwen (S7)",
+   "result": {
+    "value": 0.686,
+    "ci95": [
+     0.609,
+     0.754
+    ],
+    "k": 105,
+    "n": 153,
+    "at": {
+     "file": "bern/ideation/spikes/s6-cantonal/score.json",
+     "key": "accuracy > all > final_top1 > strict"
+    },
+    "metric": "final chapter = consensus gold"
+   },
+   "results_more": [
+    {
+     "value": 0.684,
+     "ci95": [
+      0.607,
+      0.751
+     ],
+     "k": 108,
+     "n": 158,
+     "at": {
+      "file": "bern/ideation/spikes/s7-crossfamily/score.json",
+      "key": "aps > apertus > (c) majority of 3 first choices > all"
+     },
+     "metric": "gold = majority of Claude A, B, Qwen"
+    },
+    {
+     "value": 0.625,
+     "ci95": [
+      0.548,
+      0.696
+     ],
+     "k": 100,
+     "n": 160,
+     "at": {
+      "file": "bern/ideation/spikes/s7-crossfamily/score.json",
+      "key": "aps > apertus > (b) Qwen first choice > all"
+     },
+     "metric": "gold = Qwen alone"
+    },
+    {
+     "value": 0.837,
+     "ci95": [
+      0.77,
+      0.887
+     ],
+     "k": 128,
+     "n": 153,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > all > l1_top3 > strict"
+     },
+     "metric": "chapter top-3 (chapter step)"
+    }
+   ],
+   "baselines": [],
+   "judge": {
+    "AB_agreement": 0.956,
+    "kappa": 0.952,
+    "at": {
+     "file": "bern/ideation/spikes/s6-cantonal/score.json",
+     "key": "agreement > A_vs_B"
+    }
+   },
+   "breakdowns": {
+    "level_cantonal": {
+     "value": 0.726,
+     "ci95": [
+      0.629,
+      0.806
+     ],
+     "k": 69,
+     "n": 95,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > level=cantonal > final_top1 > strict"
+     },
+     "cell": "level=cantonal"
+    },
+    "level_communal": {
+     "value": 0.621,
+     "ci95": [
+      0.492,
+      0.734
+     ],
+     "k": 36,
+     "n": 58,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > level=communal > final_top1 > strict"
+     },
+     "cell": "level=communal"
+    },
+    "lang_de": {
+     "value": 0.672,
+     "ci95": [
+      0.553,
+      0.772
+     ],
+     "k": 45,
+     "n": 67,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > lang=de > final_top1 > strict"
+     },
+     "cell": "lang=de"
+    },
+    "lang_fr": {
+     "value": 0.708,
+     "ci95": [
+      0.568,
+      0.818
+     ],
+     "k": 34,
+     "n": 48,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > lang=fr > final_top1 > strict"
+     },
+     "cell": "lang=fr"
+    },
+    "lang_it": {
+     "value": 0.684,
+     "ci95": [
+      0.525,
+      0.809
+     ],
+     "k": 26,
+     "n": 38,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > lang=it > final_top1 > strict"
+     },
+     "cell": "lang=it"
+    },
+    "with_text": {
+     "value": 0.708,
+     "ci95": [
+      0.622,
+      0.782
+     ],
+     "k": 85,
+     "n": 120,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > text > final_top1 > strict"
+     },
+     "cell": "text"
+    },
+    "title_only": {
+     "value": 0.606,
+     "ci95": [
+      0.437,
+      0.753
+     ],
+     "k": 20,
+     "n": 33,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > title-only > final_top1 > strict"
+     },
+     "cell": "title-only"
+    },
+    "first_reading_p_ge_0.9": {
+     "value": 0.742,
+     "ci95": [
+      0.642,
+      0.821
+     ],
+     "k": 66,
+     "n": 89,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > L1 first order p>=0.9 > final_top1 > strict"
+     },
+     "cell": "L1 first order p>=0.9"
+    },
+    "second_reading_run": {
+     "value": 0.609,
+     "ci95": [
+      0.487,
+      0.719
+     ],
+     "k": 39,
+     "n": 64,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > L1 second order run > final_top1 > strict"
+     },
+     "cell": "L1 second order run"
+    },
+    "readings_disagree": {
+     "value": 0.543,
+     "ci95": [
+      0.382,
+      0.695
+     ],
+     "k": 19,
+     "n": 35,
+     "at": {
+      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "key": "accuracy > orders disagree > final_top1 > strict"
+     },
+     "cell": "orders disagree"
+    },
+    "canton": {
+     "cells": [
+      {
+       "cell": "TI",
+       "n": 38,
+       "k": 26,
+       "value": 0.6842,
+       "ci95": [
+        0.5254,
+        0.8092
+       ]
+      },
+      {
+       "cell": "JU",
+       "n": 18,
+       "k": 10,
+       "value": 0.5556,
+       "ci95": [
+        0.3372,
+        0.7544
+       ],
+       "small": true
+      },
+      {
+       "cell": "ZH",
+       "n": 14,
+       "k": 10,
+       "value": 0.7143,
+       "ci95": [
+        0.4535,
+        0.8828
+       ],
+       "small": true
+      },
+      {
+       "cell": "AG",
+       "n": 10,
+       "k": 4,
+       "value": 0.4,
+       "ci95": [
+        0.1682,
+        0.6873
+       ],
+       "small": true
+      },
+      {
+       "cell": "VD",
+       "n": 10,
+       "k": 7,
+       "value": 0.7,
+       "ci95": [
+        0.3968,
+        0.8922
+       ],
+       "small": true
+      },
+      {
+       "cell": "SG",
+       "n": 9,
+       "k": 7,
+       "value": 0.7778,
+       "ci95": [
+        0.4526,
+        0.9368
+       ],
+       "small": true
+      },
+      {
+       "cell": "VS",
+       "n": 9,
+       "k": 8,
+       "value": 0.8889,
+       "ci95": [
+        0.565,
+        0.9801
+       ],
+       "small": true
+      },
+      {
+       "cell": "GE",
+       "n": 6,
+       "k": 4,
+       "value": 0.6667,
+       "ci95": [
+        0.3,
+        0.9032
+       ],
+       "small": true
+      },
+      {
+       "cell": "TG",
+       "n": 6,
+       "k": 3,
+       "value": 0.5,
+       "ci95": [
+        0.1876,
+        0.8124
+       ],
+       "small": true
+      },
+      {
+       "cell": "BE",
+       "n": 5,
+       "k": 4,
+       "value": 0.8,
+       "ci95": [
+        0.3755,
+        0.9638
+       ],
+       "small": true
+      },
+      {
+       "cell": "BL",
+       "n": 5,
+       "k": 3,
+       "value": 0.6,
+       "ci95": [
+        0.2307,
+        0.8824
+       ],
+       "small": true
+      },
+      {
+       "cell": "LU",
+       "n": 5,
+       "k": 5,
+       "value": 1.0,
+       "ci95": [
+        0.5655,
+        1.0
+       ],
+       "small": true
+      },
+      {
+       "cell": "SO",
+       "n": 5,
+       "k": 5,
+       "value": 1.0,
+       "ci95": [
+        0.5655,
+        1.0
+       ],
+       "small": true
+      },
+      {
+       "cell": "FR",
+       "n": 4,
+       "k": 3,
+       "value": 0.75,
+       "ci95": [
+        0.3006,
+        0.9544
+       ],
+       "small": true
+      },
+      {
+       "cell": "NE",
+       "n": 4,
+       "k": 4,
+       "value": 1.0,
+       "ci95": [
+        0.5101,
+        1.0
+       ],
+       "small": true
+      },
+      {
+       "cell": "BS",
+       "n": 2,
+       "k": 1,
+       "value": 0.5,
+       "ci95": [
+        0.0945,
+        0.9055
+       ],
+       "small": true
+      },
+      {
+       "cell": "GR",
+       "n": 1,
+       "k": 0,
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.7935
+       ],
+       "small": true
+      },
+      {
+       "cell": "SZ",
+       "n": 1,
+       "k": 1,
+       "value": 1.0,
+       "ci95": [
+        0.2065,
+        1.0
+       ],
+       "small": true
+      },
+      {
+       "cell": "ZG",
+       "n": 1,
+       "k": 0,
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.7935
+       ],
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.3043,
+      "p_chi2": 0.3085,
+      "df": 18
+     },
+     "largest_gap": {
+      "hi": "LU",
+      "lo": "AG",
+      "diff": 0.6,
+      "ci95": [
+       0.3,
+       0.9
+      ],
+      "basis": "no 2 cells with n>=20: cells n>=5 (small)"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S6 > canton > strict"
+     }
+    },
+    "region": {
+     "cells": [
+      {
+       "cell": "Deutschschweiz",
+       "n": 58,
+       "k": 39,
+       "value": 0.6724,
+       "ci95": [
+        0.5442,
+        0.7792
+       ]
+      },
+      {
+       "cell": "Romandie",
+       "n": 38,
+       "k": 25,
+       "value": 0.6579,
+       "ci95": [
+        0.4989,
+        0.7879
+       ]
+      },
+      {
+       "cell": "Svizzera italiana",
+       "n": 38,
+       "k": 26,
+       "value": 0.6842,
+       "ci95": [
+        0.5254,
+        0.8092
+       ]
+      },
+      {
+       "cell": "bilingual cantons (BE FR VS GR)",
+       "n": 19,
+       "k": 15,
+       "value": 0.7895,
+       "ci95": [
+        0.5667,
+        0.9149
+       ],
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.7886,
+      "p_chi2": 0.7688,
+      "df": 3
+     },
+     "largest_gap": {
+      "hi": "Svizzera italiana",
+      "lo": "Romandie",
+      "diff": 0.0263,
+      "ci95": [
+       -0.1842,
+       0.2368
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S6 > region > strict"
+     }
+    },
+    "party": {
+     "cells": [
+      {
+       "cell": "SVP",
+       "n": 20,
+       "k": 11,
+       "value": 0.55,
+       "ci95": [
+        0.3421,
+        0.7418
+       ]
+      },
+      {
+       "cell": "SP",
+       "n": 28,
+       "k": 23,
+       "value": 0.8214,
+       "ci95": [
+        0.6441,
+        0.9212
+       ]
+      },
+      {
+       "cell": "FDP",
+       "n": 16,
+       "k": 12,
+       "value": 0.75,
+       "ci95": [
+        0.505,
+        0.8982
+       ],
+       "small": true
+      },
+      {
+       "cell": "Mitte",
+       "n": 6,
+       "k": 3,
+       "value": 0.5,
+       "ci95": [
+        0.1876,
+        0.8124
+       ],
+       "small": true
+      },
+      {
+       "cell": "Grüne",
+       "n": 7,
+       "k": 4,
+       "value": 0.5714,
+       "ci95": [
+        0.2505,
+        0.8418
+       ],
+       "small": true
+      },
+      {
+       "cell": "GLP",
+       "n": 4,
+       "k": 4,
+       "value": 1.0,
+       "ci95": [
+        0.5101,
+        1.0
+       ],
+       "small": true
+      },
+      {
+       "cell": "other party",
+       "n": 24,
+       "k": 18,
+       "value": 0.75,
+       "ci95": [
+        0.551,
+        0.88
+       ]
+      },
+      {
+       "cell": "party unknown",
+       "n": 17,
+       "k": 11,
+       "value": 0.6471,
+       "ci95": [
+        0.413,
+        0.8269
+       ],
+       "small": true
+      },
+      {
+       "cell": "government",
+       "n": 6,
+       "k": 5,
+       "value": 0.8333,
+       "ci95": [
+        0.4365,
+        0.9699
+       ],
+       "small": true
+      },
+      {
+       "cell": "other group",
+       "n": 1,
+       "k": 0,
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.7935
+       ],
+       "small": true
+      },
+      {
+       "cell": "unknown",
+       "n": 24,
+       "k": 14,
+       "value": 0.5833,
+       "ci95": [
+        0.3883,
+        0.7553
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.1718,
+      "p_chi2": 0.1701,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "SP",
+      "lo": "SVP",
+      "diff": 0.2714,
+      "ci95": [
+       -0.0071,
+       0.5286
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S6 > party > strict"
+     }
+    }
+   },
+   "split": "one run, nothing tuned on these items",
+   "prereg": null,
+   "sources": [
+    "bern/ideation/spikes/s6-cantonal/score.json",
+    "bern/ideation/spikes/s6-cantonal/results.md",
+    "bern/ideation/spikes/s7-crossfamily/score.json",
+    "bern/ideation/spikes/s7-crossfamily/results.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs); Qwen-SEA-LION",
+   "date": "2026-10-13",
+   "test": "APS-Kapitel, Kantone und Gemeinden, gegen den KI-Richter",
+   "interval": [
+    0.609,
+    0.754
+   ],
+   "baseline": null,
+   "file": "bern/ideation/spikes/s6-cantonal/score.json"
+  },
+  {
+   "id": "aps_bilingual",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel, zweisprachige Kantone (BE, FR, VS), nur Titel: Deutsch gegen Französisch",
+   "title_fr": "Chapitre APS, cantons bilingues (BE, FR, VS), titres seuls : allemand contre français",
+   "n": 210,
+   "design": "210 Grossrats-Geschäfte 2025–26 (70 je Kanton), Titel getrennt auf Deutsch und Französisch bewertet; Gold: zwei blinde Claude-Läufe + Stichentscheid, je zur Hälfte deutsch / französisch gezeigt",
+   "result": {
+    "value": 0.543,
+    "ci95": [
+     0.475,
+     0.609
+    ],
+    "k": 114,
+    "n": 210,
+    "at": {
+     "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+     "key": "accuracy > de"
+    },
+    "metric": "chapter top-1, German title"
+   },
+   "results_more": [
+    {
+     "value": 0.529,
+     "ci95": [
+      0.461,
+      0.595
+     ],
+     "k": 111,
+     "n": 210,
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "accuracy > fr"
+     },
+     "metric": "chapter top-1, French title"
+    },
+    {
+     "value": 0.552,
+     "ci95": [
+      0.485,
+      0.618
+     ],
+     "k": 116,
+     "n": 210,
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "accuracy > pooled"
+     },
+     "metric": "chapter top-1, averaged"
+    },
+    {
+     "metric": "DE − FR (paired)",
+     "value": 0.014,
+     "ci95": [
+      -0.043,
+      0.076
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "paired_diff > de-fr"
+     }
+    },
+    {
+     "metric": "gold in top 3 (DE / FR / averaged)",
+     "value": [
+      0.771,
+      0.738,
+      0.81
+     ],
+     "ci95": [
+      [
+       0.71,
+       0.823
+      ],
+      [
+       0.675,
+       0.793
+      ],
+      [
+       0.751,
+       0.857
+      ]
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/secondary.txt",
+      "lines": [
+       1,
+       2,
+       3
+      ]
+     }
+    }
+   ],
+   "baselines": [],
+   "judge": {
+    "AB": {
+     "n": 210,
+     "k": 201,
+     "p": 0.957,
+     "ci": [
+      0.921,
+      0.977
+     ]
+    },
+    "kappa": 0.954,
+    "at": {
+     "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+     "key": "annotators"
+    }
+   },
+   "breakdowns": {
+    "languages_agree": {
+     "value": 0.622,
+     "ci95": [
+      0.541,
+      0.696
+     ],
+     "k": 92,
+     "n": 148,
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "strata > languages agree > de"
+     },
+     "share": {
+      "n": 210,
+      "k": 148,
+      "p": 0.705,
+      "ci": [
+       0.64,
+       0.762
+      ]
+     }
+    },
+    "languages_disagree_de": {
+     "value": 0.355,
+     "ci95": [
+      0.247,
+      0.479
+     ],
+     "k": 22,
+     "n": 62,
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "strata > languages disagree (please check) > de"
+     }
+    },
+    "languages_disagree_fr": {
+     "value": 0.306,
+     "ci95": [
+      0.206,
+      0.43
+     ],
+     "k": 19,
+     "n": 62,
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "strata > languages disagree (please check) > fr"
+     }
+    },
+    "languages_disagree_pooled": {
+     "value": 0.387,
+     "ci95": [
+      0.276,
+      0.512
+     ],
+     "k": 24,
+     "n": 62,
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "strata > languages disagree (please check) > pooled"
+     }
+    },
+    "please_check_share_weighted": {
+     "value": 0.2975,
+     "ci95": [
+      0.236,
+      0.362
+     ],
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "key": "no_gold > please_check_weighted"
+     }
+    },
+    "canton": {
+     "BE": {
+      "de": {
+       "value": 0.571,
+       "ci95": [
+        0.455,
+        0.681
+       ],
+       "k": 40,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=BE > de"
+       }
+      },
+      "fr": {
+       "value": 0.543,
+       "ci95": [
+        0.427,
+        0.654
+       ],
+       "k": 38,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=BE > fr"
+       }
+      },
+      "pooled": {
+       "value": 0.529,
+       "ci95": [
+        0.413,
+        0.641
+       ],
+       "k": 37,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=BE > pooled"
+       }
+      }
+     },
+     "FR": {
+      "de": {
+       "value": 0.529,
+       "ci95": [
+        0.413,
+        0.641
+       ],
+       "k": 37,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=FR > de"
+       }
+      },
+      "fr": {
+       "value": 0.543,
+       "ci95": [
+        0.427,
+        0.654
+       ],
+       "k": 38,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=FR > fr"
+       }
+      },
+      "pooled": {
+       "value": 0.571,
+       "ci95": [
+        0.455,
+        0.681
+       ],
+       "k": 40,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=FR > pooled"
+       }
+      }
+     },
+     "VS": {
+      "de": {
+       "value": 0.529,
+       "ci95": [
+        0.413,
+        0.641
+       ],
+       "k": 37,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=VS > de"
+       }
+      },
+      "fr": {
+       "value": 0.5,
+       "ci95": [
+        0.386,
+        0.614
+       ],
+       "k": 35,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=VS > fr"
+       }
+      },
+      "pooled": {
+       "value": 0.557,
+       "ci95": [
+        0.441,
+        0.668
+       ],
+       "k": 39,
+       "n": 70,
+       "at": {
+        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "key": "strata > canton=VS > pooled"
+       }
+      }
+     }
+    },
+    "canton_test": {
+     "cells": [
+      {
+       "cell": "BE",
+       "n": 70,
+       "k": 37,
+       "value": 0.5286,
+       "ci95": [
+        0.4132,
+        0.641
+       ]
+      },
+      {
+       "cell": "FR",
+       "n": 70,
+       "k": 40,
+       "value": 0.5714,
+       "ci95": [
+        0.4548,
+        0.6806
+       ]
+      },
+      {
+       "cell": "VS",
+       "n": 70,
+       "k": 39,
+       "value": 0.5571,
+       "ci95": [
+        0.4408,
+        0.6675
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.9116,
+      "p_chi2": 0.8739,
+      "df": 2
+     },
+     "largest_gap": {
+      "hi": "FR",
+      "lo": "BE",
+      "diff": 0.0428,
+      "ci95": [
+       -0.1286,
+       0.2
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S10 > canton > pooled"
+     }
+    },
+    "shown_language": {
+     "cells": [
+      {
+       "cell": "de",
+       "n": 105,
+       "k": 65,
+       "value": 0.619,
+       "ci95": [
+        0.5235,
+        0.7062
+       ]
+      },
+      {
+       "cell": "fr",
+       "n": 105,
+       "k": 51,
+       "value": 0.4857,
+       "ci95": [
+        0.3923,
+        0.5801
+       ]
+      }
+     ],
+     "test": {
+      "p_perm": 0.0722,
+      "p_chi2": 0.052,
+      "df": 1
+     },
+     "largest_gap": {
+      "hi": "de",
+      "lo": "fr",
+      "diff": 0.1333,
+      "ci95": [
+       -0.0095,
+       0.2667
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S10 > shown language > pooled"
+     }
+    },
+    "party": {
+     "cells": [
+      {
+       "cell": "SVP",
+       "n": 35,
+       "k": 20,
+       "value": 0.5714,
+       "ci95": [
+        0.4086,
+        0.7202
+       ]
+      },
+      {
+       "cell": "SP",
+       "n": 33,
+       "k": 20,
+       "value": 0.6061,
+       "ci95": [
+        0.4368,
+        0.7532
+       ]
+      },
+      {
+       "cell": "FDP",
+       "n": 19,
+       "k": 12,
+       "value": 0.6316,
+       "ci95": [
+        0.4104,
+        0.8085
+       ],
+       "small": true
+      },
+      {
+       "cell": "Mitte",
+       "n": 30,
+       "k": 17,
+       "value": 0.5667,
+       "ci95": [
+        0.392,
+        0.7262
+       ]
+      },
+      {
+       "cell": "Grüne",
+       "n": 17,
+       "k": 6,
+       "value": 0.3529,
+       "ci95": [
+        0.1731,
+        0.587
+       ],
+       "small": true
+      },
+      {
+       "cell": "GLP",
+       "n": 13,
+       "k": 7,
+       "value": 0.5385,
+       "ci95": [
+        0.2914,
+        0.7679
+       ],
+       "small": true
+      },
+      {
+       "cell": "other party",
+       "n": 11,
+       "k": 6,
+       "value": 0.5455,
+       "ci95": [
+        0.2801,
+        0.7873
+       ],
+       "small": true
+      },
+      {
+       "cell": "party unknown",
+       "n": 2,
+       "k": 1,
+       "value": 0.5,
+       "ci95": [
+        0.0945,
+        0.9055
+       ],
+       "small": true
+      },
+      {
+       "cell": "government",
+       "n": 41,
+       "k": 22,
+       "value": 0.5366,
+       "ci95": [
+        0.3875,
+        0.6794
+       ]
+      },
+      {
+       "cell": "unknown",
+       "n": 9,
+       "k": 5,
+       "value": 0.5556,
+       "ci95": [
+        0.2666,
+        0.8112
+       ],
+       "small": true
+      }
+     ],
+     "test": {
+      "p_perm": 0.6135,
+      "p_chi2": 0.5965,
+      "df": 5
+     },
+     "largest_gap": {
+      "hi": "SP",
+      "lo": "Mitte",
+      "diff": 0.0394,
+      "ci95": [
+       -0.2152,
+       0.2727
+      ],
+      "basis": "cells n>=20"
+     },
+     "at": {
+      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "key": "S10 > party > pooled"
+     }
+    },
+    "clerk_load": {
+     "value": "0.2975 × weekly volume (median 10.0, mean 25.5, p90 76.7) = 3.0 / 7.6 / 22.8 a week",
+     "at": {
+      "file": "bern/ideation2/spikes/s10-bilingual/results.md",
+      "line": 79,
+      "text": "Clerk load: please-check 0.2975"
+     }
+    }
+   },
+   "split": "pre-registered",
+   "prereg": {
+    "file": "bern/ideation2/PREREG.md",
+    "anchor": "## S10 — bilingual cantonal parliaments",
+    "line": 49
+   },
+   "sources": [
+    "bern/ideation2/spikes/s10-bilingual/score.json",
+    "bern/ideation2/spikes/s10-bilingual/results.md",
+    "bern/ideation2/spikes/s10-bilingual/secondary.txt",
+    "bern/ideation2/spikes/s10-bilingual/scripts/score.py"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-13",
+   "test": "APS-Kapitel, zweisprachige Kantone (BE, FR, VS), nur Titel: Deutsch gegen Französisch",
+   "interval": [
+    0.475,
+    0.609
+   ],
+   "baseline": null,
+   "file": "bern/ideation2/spikes/s10-bilingual/score.json"
+  },
+  {
+   "id": "neutrality_judge_sets",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Neutralität auf den Richter-Sets (S8, S6, S10): Sprache, Ebene, Region, Kanton, Partei",
+   "title_fr": "Neutralité sur les jeux du juge (S8, S6, S10) : langue, niveau, région, canton, parti",
+   "n": null,
+   "design": "keine neuen Aufrufe; Permutationstest (5'000) über Zellen; Zellen n < 20 werden nicht gelesen",
+   "result": {
+    "metric": "S8 precision by language, permutation p",
+    "value": 0.8566,
+    "at": {
+     "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+     "key": "S8 > language > aP > test > p_perm"
+    }
+   },
+   "results_more": [
+    {
+     "metric": "S8 recall by language, permutation p",
+     "value": 0.8972
+    },
+    {
+     "metric": "S8 precision by level, permutation p",
+     "value": 0.4593
+    },
+    {
+     "metric": "S8 precision by party, permutation p",
+     "value": 0.018
+    },
+    {
+     "metric": "S8 precision gap among party cells n ≥ 20",
+     "value": 0.0161,
+     "ci95": [
+      -0.1044,
+      0.1282
+     ]
+    },
+    {
+     "metric": "S6 language, permutation p",
+     "value": 0.926
+    },
+    {
+     "metric": "S6 party, permutation p",
+     "value": 0.1718
+    },
+    {
+     "metric": "S6 canton, permutation p",
+     "value": 0.3043
+    },
+    {
+     "metric": "S10 canton, permutation p",
+     "value": 0.9116
+    },
+    {
+     "metric": "S10 party, permutation p",
+     "value": 0.6135
+    }
+   ],
+   "baselines": [
+    {
+     "name": "keyword precision by party (S8)",
+     "p_perm": 0.0212
+    }
+   ],
+   "breakdowns": {
+    "see": "dvs_2026, aps_cantonal_communal, aps_bilingual breakdowns"
+   },
+   "split": "no new calls; reported whatever it showed",
+   "prereg": {
+    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "anchor": "S14 neutrality (no calls)",
+    "line": 23
+   },
+   "sources": [
+    "bern/ideation2/spikes/s14-neutrality/results.json",
+    "bern/ideation2/spikes/s14-neutrality/results.md"
+   ],
+   "build": "no calls",
+   "date": "2026-10-13T21:31:29Z",
+   "test": "Neutralität auf den Richter-Sets (S8, S6, S10): Sprache, Ebene, Region, Kanton, Partei",
+   "interval": null,
+   "baseline": {
+    "name": "keyword precision by party (S8)",
+    "value": null,
+    "ci95": null
+   },
+   "file": "bern/ideation2/spikes/s14-neutrality/results.json"
+  }
+ ],
+ "curves": {
+  "aps_d3": {
+   "n": 1357,
+   "points": [
+    {
+     "coverage": 0.05,
+     "n": 68,
+     "correct": 68,
+     "precision": 1.0,
+     "ci": [
+      0.947,
+      1.0
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 1.0
+    },
+    {
+     "coverage": 0.1,
+     "n": 136,
+     "correct": 133,
+     "precision": 0.9779,
+     "ci": [
+      0.937,
+      0.992
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.967
+    },
+    {
+     "coverage": 0.15,
+     "n": 204,
+     "correct": 196,
+     "precision": 0.9608,
+     "ci": [
+      0.925,
+      0.98
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.942
+    },
+    {
+     "coverage": 0.2,
+     "n": 271,
+     "correct": 260,
+     "precision": 0.9594,
+     "ci": [
+      0.929,
+      0.977
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.942
+    },
+    {
+     "coverage": 0.25,
+     "n": 339,
+     "correct": 324,
+     "precision": 0.9558,
+     "ci": [
+      0.928,
+      0.973
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.942
+    },
+    {
+     "coverage": 0.3,
+     "n": 407,
+     "correct": 389,
+     "precision": 0.9558,
+     "ci": [
+      0.931,
+      0.972
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.926
+    },
+    {
+     "coverage": 0.35,
+     "n": 475,
+     "correct": 444,
+     "precision": 0.9347,
+     "ci": [
+      0.909,
+      0.954
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.795
+    },
+    {
+     "coverage": 0.4,
+     "n": 543,
+     "correct": 496,
+     "precision": 0.9134,
+     "ci": [
+      0.887,
+      0.934
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.795
+    },
+    {
+     "coverage": 0.45,
+     "n": 611,
+     "correct": 552,
+     "precision": 0.9034,
+     "ci": [
+      0.877,
+      0.924
+     ],
+     "p_raw_threshold": 0.9999,
+     "p_cal_insample": 0.795
+    },
+    {
+     "coverage": 0.5,
+     "n": 678,
+     "correct": 607,
+     "precision": 0.8953,
+     "ci": [
+      0.87,
+      0.916
+     ],
+     "p_raw_threshold": 0.9997,
+     "p_cal_insample": 0.795
+    },
+    {
+     "coverage": 0.55,
+     "n": 746,
+     "correct": 653,
+     "precision": 0.8753,
+     "ci": [
+      0.85,
+      0.897
+     ],
+     "p_raw_threshold": 0.9992,
+     "p_cal_insample": 0.708
+    },
+    {
+     "coverage": 0.6,
+     "n": 814,
+     "correct": 704,
+     "precision": 0.8649,
+     "ci": [
+      0.84,
+      0.887
+     ],
+     "p_raw_threshold": 0.9984,
+     "p_cal_insample": 0.708
+    },
+    {
+     "coverage": 0.65,
+     "n": 882,
+     "correct": 752,
+     "precision": 0.8526,
+     "ci": [
+      0.828,
+      0.874
+     ],
+     "p_raw_threshold": 0.9963,
+     "p_cal_insample": 0.708
+    },
+    {
+     "coverage": 0.7,
+     "n": 950,
+     "correct": 800,
+     "precision": 0.8421,
+     "ci": [
+      0.818,
+      0.864
+     ],
+     "p_raw_threshold": 0.9901,
+     "p_cal_insample": 0.69
+    },
+    {
+     "coverage": 0.75,
+     "n": 1018,
+     "correct": 844,
+     "precision": 0.8291,
+     "ci": [
+      0.805,
+      0.851
+     ],
+     "p_raw_threshold": 0.9766,
+     "p_cal_insample": 0.543
+    },
+    {
+     "coverage": 0.8,
+     "n": 1086,
+     "correct": 878,
+     "precision": 0.8085,
+     "ci": [
+      0.784,
+      0.831
+     ],
+     "p_raw_threshold": 0.9385,
+     "p_cal_insample": 0.475
+    },
+    {
+     "coverage": 0.85,
+     "n": 1153,
+     "correct": 903,
+     "precision": 0.7832,
+     "ci": [
+      0.758,
+      0.806
+     ],
+     "p_raw_threshold": 0.8808,
+     "p_cal_insample": 0.42
+    },
+    {
+     "coverage": 0.9,
+     "n": 1221,
+     "correct": 934,
+     "precision": 0.7649,
+     "ci": [
+      0.74,
+      0.788
+     ],
+     "p_raw_threshold": 0.78,
+     "p_cal_insample": 0.398
+    },
+    {
+     "coverage": 0.95,
+     "n": 1289,
+     "correct": 961,
+     "precision": 0.7455,
+     "ci": [
+      0.721,
+      0.769
+     ],
+     "p_raw_threshold": 0.6096,
+     "p_cal_insample": 0.345
+    },
+    {
+     "coverage": 1.0,
+     "n": 1357,
+     "correct": 980,
+     "precision": 0.7222,
+     "ci": [
+      0.698,
+      0.745
+     ],
+     "p_raw_threshold": 0.2975,
+     "p_cal_insample": 0.0
+    }
+   ],
+   "operating_point": {
+    "coverage": 0.7,
+    "n": 950,
+    "correct": 800,
+    "precision": 0.8421,
+    "ci": [
+     0.818,
+     0.864
+    ],
+    "p_raw_threshold": 0.9901,
+    "p_cal_insample": 0.69,
+    "note": "shipped dial default: 70% of affairs pass (VISION §4.1); the rest go to 'please check'"
+   },
+   "design": "D3 five APS-labelled examples",
+   "source": "eval/aps_curves.json (recomputed by eval/scripts/aps_curves.py from S9 raw; 50/70/90/100% equal S9 results.json for D3)",
+   "check_vs_s9_results": [
+    {
+     "coverage": 0.5,
+     "precision": 0.8953,
+     "ci": [
+      0.87,
+      0.916
+     ]
+    },
+    {
+     "coverage": 0.7,
+     "precision": 0.8421,
+     "ci": [
+      0.818,
+      0.864
+     ]
+    },
+    {
+     "coverage": 0.9,
+     "precision": 0.7649,
+     "ci": [
+      0.74,
+      0.788
+     ]
+    },
+    {
+     "coverage": 1.0,
+     "precision": 0.7222,
+     "ci": [
+      0.698,
+      0.745
+     ]
+    }
+   ]
+  },
+  "aps_d1": {
+   "n": 1357,
+   "points": [
+    {
+     "coverage": 0.05,
+     "n": 68,
+     "correct": 62,
+     "precision": 0.9118,
+     "ci": [
+      0.821,
+      0.959
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.926
+    },
+    {
+     "coverage": 0.1,
+     "n": 136,
+     "correct": 127,
+     "precision": 0.9338,
+     "ci": [
+      0.879,
+      0.965
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.926
+    },
+    {
+     "coverage": 0.15,
+     "n": 204,
+     "correct": 188,
+     "precision": 0.9216,
+     "ci": [
+      0.876,
+      0.951
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.884
+    },
+    {
+     "coverage": 0.2,
+     "n": 271,
+     "correct": 243,
+     "precision": 0.8967,
+     "ci": [
+      0.855,
+      0.928
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.86
+    },
+    {
+     "coverage": 0.25,
+     "n": 339,
+     "correct": 297,
+     "precision": 0.8761,
+     "ci": [
+      0.837,
+      0.907
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.86
+    },
+    {
+     "coverage": 0.3,
+     "n": 407,
+     "correct": 358,
+     "precision": 0.8796,
+     "ci": [
+      0.844,
+      0.908
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.86
+    },
+    {
+     "coverage": 0.35,
+     "n": 475,
+     "correct": 418,
+     "precision": 0.88,
+     "ci": [
+      0.848,
+      0.906
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.86
+    },
+    {
+     "coverage": 0.4,
+     "n": 543,
+     "correct": 480,
+     "precision": 0.884,
+     "ci": [
+      0.854,
+      0.908
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.86
+    },
+    {
+     "coverage": 0.45,
+     "n": 611,
+     "correct": 530,
+     "precision": 0.8674,
+     "ci": [
+      0.838,
+      0.892
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.771
+    },
+    {
+     "coverage": 0.5,
+     "n": 678,
+     "correct": 586,
+     "precision": 0.8643,
+     "ci": [
+      0.836,
+      0.888
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.771
+    },
+    {
+     "coverage": 0.55,
+     "n": 746,
+     "correct": 638,
+     "precision": 0.8552,
+     "ci": [
+      0.828,
+      0.879
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.771
+    },
+    {
+     "coverage": 0.6,
+     "n": 814,
+     "correct": 688,
+     "precision": 0.8452,
+     "ci": [
+      0.819,
+      0.868
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.68
+    },
+    {
+     "coverage": 0.65,
+     "n": 882,
+     "correct": 730,
+     "precision": 0.8277,
+     "ci": [
+      0.801,
+      0.851
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.606
+    },
+    {
+     "coverage": 0.7,
+     "n": 950,
+     "correct": 769,
+     "precision": 0.8095,
+     "ci": [
+      0.783,
+      0.833
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.606
+    },
+    {
+     "coverage": 0.75,
+     "n": 1018,
+     "correct": 813,
+     "precision": 0.7986,
+     "ci": [
+      0.773,
+      0.822
+     ],
+     "p_raw_threshold": 1.0,
+     "p_cal_insample": 0.606
+    },
+    {
+     "coverage": 0.8,
+     "n": 1086,
+     "correct": 855,
+     "precision": 0.7873,
+     "ci": [
+      0.762,
+      0.811
+     ],
+     "p_raw_threshold": 0.9998,
+     "p_cal_insample": 0.519
+    },
+    {
+     "coverage": 0.85,
+     "n": 1153,
+     "correct": 885,
+     "precision": 0.7676,
+     "ci": [
+      0.742,
+      0.791
+     ],
+     "p_raw_threshold": 0.9988,
+     "p_cal_insample": 0.378
+    },
+    {
+     "coverage": 0.9,
+     "n": 1221,
+     "correct": 909,
+     "precision": 0.7445,
+     "ci": [
+      0.719,
+      0.768
+     ],
+     "p_raw_threshold": 0.9915,
+     "p_cal_insample": 0.378
+    },
+    {
+     "coverage": 0.95,
+     "n": 1289,
+     "correct": 936,
+     "precision": 0.7261,
+     "ci": [
+      0.701,
+      0.75
+     ],
+     "p_raw_threshold": 0.908,
+     "p_cal_insample": 0.284
+    },
+    {
+     "coverage": 1.0,
+     "n": 1357,
+     "correct": 955,
+     "precision": 0.7038,
+     "ci": [
+      0.679,
+      0.727
+     ],
+     "p_raw_threshold": 0.3303,
+     "p_cal_insample": 0.0
+    }
+   ],
+   "operating_point": {
+    "coverage": 0.7,
+    "n": 950,
+    "correct": 769,
+    "precision": 0.8095,
+    "ci": [
+     0.783,
+     0.833
+    ],
+    "p_raw_threshold": 1.0,
+    "p_cal_insample": 0.606,
+    "note": "shipped dial default: 70% of affairs pass (VISION §4.1); the rest go to 'please check'"
+   },
+   "design": "D1 read back from the subtopic",
+   "source": "eval/aps_curves.json (recomputed by eval/scripts/aps_curves.py from S9 raw; 50/70/90/100% equal S9 results.json for D3)"
+  }
+ },
+ "to_measure": [
+  "Basel-Stadt oracle (2,437 hand-tagged motions) as human cantonal gold",
+  "FR/IT rows with the headline Curia design + BFH on the same items",
+  "municipal slice grown to ~200",
+  "read-back combined with examples (D1 × D3) on the S9 items",
+  "recalibration refit on the build that serves at the event",
+  "S8 estimates recomputed on the full 2026 census (the census run had scored 8,139 affairs when it was paused)",
+  "ECE intervals (bootstrap)",
+  "judge precision on human negatives",
+  "Romansh"
+ ]
+}

@@ -1,0 +1,367 @@
+section	line	written	context	source_value	file	key	status	correct	note
+§0	6	33,195	covers every affair begun since 1 Jan 2025 (33,195, `ideation2/census_count	33195	bern/ideation2/census_counts.json	begin_2025_2026	OK		
+§0	6	44	5 (33,195, `ideation2/census_counts.json`; ≈ 44 h at S8's sustained 0.71	44.3	derived	(33,195 × 1.431 + 33,195 + 33,195) calls / 0.714 req/s = 159,500 s; 1.431 = S6 second-order share 0.431 (ideation/spikes/s6-cantonal/results.md A1 table); 0.714 = S8 P8.6	ROUNDED		approximation marked in the text
+§0	6	0.714	ensus_counts.json`; ≈ 44 h at S8's sustained 0.714 requests/s, ≈ 63 h at th	0.714	bern/ideation2/spikes/s8-dvs/results.md	P8.6 line: '0.714 req/s overall (5,975 calls / 8,366 s)'	OK		
+§0	6	63	≈ 44 h at S8's sustained 0.714 requests/s, ≈ 63 h at the slowest spike r	63.3	derived	113,859 calls / 0.5 req/s = 227,700 s	ROUNDED		approximation marked in the text
+§0	6	0.5	uests/s, ≈ 63 h at the slowest spike rate of 0.5); older affairs follow,	0.5	bern/ideation/spikes/s3-accuracy/results.md	line 10: 'about 0.5 requests/s at 8 workers'	MISMATCH	the slowest multi-worker spike rate (0.5 req/s, S3) — S1 at 1 worker measured 0.41 req/s (≈ 77 h)	'slowest spike rate' is not true as written: S1 measured 0.41 req/s at concurrency 1 (s1-runtime/results.md line 86)
+§0	8	1,357	- **Measured on human labels:** against 1,357 held-out federal affairs	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§0	8	0.704	er (read back from the subtopic) is right in 0.704, and 0.722 where APS-lab	0.704	bern/ideation2/spikes/s9-aps/results.md	D1 top-1	OK		
+§0	8	0.722	ck from the subtopic) is right in 0.704, and 0.722 where APS-labelled examp	0.722	bern/ideation2/spikes/s9-aps/results.md	D3 top-1	OK		
+§0	8	0.655	abelled examples exist (plain list prompting 0.655, keywords 0.192); of the	0.655	bern/ideation2/spikes/s9-aps/results.md	D0 top-1	OK		
+§0	8	0.192	exist (plain list prompting 0.655, keywords 0.192); of the 30 digitalisati	0.192	bern/ideation2/spikes/s9-aps/results.md	Baselines: keyword top-1	OK		
+§0	8	30	ist prompting 0.655, keywords 0.192); of the 30 digitalisation affairs D	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§0	8	27	ed by hand on its public page, it recognises 27 (keywords 21).	27	bern/ideation2/spikes/s8-dvs/results.md	'DVS recall (P8.2, all 30): Apertus 27/30 [0.744, 0.965]'	OK		
+§0	8	21	its public page, it recognises 27 (keywords 21).	21	bern/ideation2/spikes/s8-dvs/results.md	'keyword 21/30 [0.521, 0.833]'	OK		
+§0	9	900	ed by the open-weights Qwen) estimates about 900 digitalisation affairs i	913.256	bern/ideation2/spikes/s8-dvs/score_ch.json	point > pos (Swiss)	ROUNDED		approximation marked in the text
+§0	9	45	about 900 digitalisation affairs in at least 45 Swiss parliaments, commu	45	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > parliaments	OK		
+§0	9	91%	liaments, communes included, and agrees with 91% of Querschnitt's flags a	0.914	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP	ROUNDED		
+§0	9	75%	rees with 91% of Querschnitt's flags against 75% of keyword hits (Qwen al	0.753	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kP	MISMATCH	75.3%	rounded in Querschnitt's favour
+§0	9	86%	ags against 75% of keyword hits (Qwen alone: 86% vs 69%).	0.863	bern/ideation2/spikes/s8-dvs/score_ch.json	qwen_only > aP	ROUNDED		
+§0	9	69%	inst 75% of keyword hits (Qwen alone: 86% vs 69%).	0.691	bern/ideation2/spikes/s8-dvs/score_ch.json	qwen_only > kP	MISMATCH	69.1%	rounded in Querschnitt's favour
+§0	9	seven (data-centre affairs)		7	bern/ideation2/spikes/s8-dvs/results.md	Examples: data centres VD D029, GE D051, SH D139, VD D162, BE D093, CHE D462, CHE D298	OK		spelled-out number
+§0	9	two (keyword list on the data-centre affairs)		2	bern/ideation2/spikes/s8-dvs/results.md	'5 of 7 missed by the keyword list' → keyword flags 2	OK		spelled-out number
+§1	13	28	pic is a file: APS, the Federal Parliament's 28 Sachbereiche, Bern's dir	28	bern/ideation/spikes/s3-accuracy/results.md	"'Curia needs 29 codes (28 labels + ""none"")'"	OK		
+§1	14	60	e for later decisions (in a simulation where 60 AI-judge labels stand in	60	bern/ideation2/spikes/s8-dvs/loop.json	PREREG P8.5 'the first 60 annotated items'	OK		
+§1	14	0.866	s decisions, F1 against that judge rose from 0.866 to 0.906; §3).	0.866	bern/ideation2/spikes/s8-dvs/loop.json	before > F1	OK		
+§1	14	0.906	ns, F1 against that judge rose from 0.866 to 0.906; §3).	0.906	bern/ideation2/spikes/s8-dvs/loop.json	after > F1	OK		
+§1	15	79%	abels is measured (it matches APS editors on 79% of chapters, S11, and sa	0.790	bern/ideation2/spikes/s11-anchor/anchor.json	A[2]	OK		
+§1	15	27	ors on 79% of chapters, S11, and says yes to 27 of the 30 human-curated	27	bern/ideation2/spikes/s15-judgecheck/results.json	both_Y	OK		
+§1	15	30	of chapters, S11, and says yes to 27 of the 30 human-curated DVS items,	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§1	16	33,195	e event, every affair begun in 2025 or 2026 (33,195 in the 6 Oct export) car	33195	bern/ideation2/census_counts.json	begin_2025_2026	OK		
+§3	35	30	and from POLITmonitor; its public page shows 30 federal and cantonal aff	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§3	37	14,790	**Design.** Population: the 14,790 affairs begun 1 Jan–6 Oc	14790	bern/ideation2/spikes/s8-dvs/results.md	'Window affairs (begin_date 2026-01-01..2026-10-06): 14790'	OK		
+§3	37	14,513	ffairs begun 1 Jan–6 Oct 2026 (6 Oct export; 14,513 Swiss, the rest from Lie	14513	bern/ideation2/spikes/s8-dvs/results.md	Gold-based results / PREREG-ADDENDA S8 reporting addition; 14,790 − 277 LIE (By level table 'other 277')	OK		
+§3	37	577	ed for this estimate: the last week in full (577) and a uniform random 37	577	bern/ideation2/spikes/s8-dvs/results.md	'census C ... N=n=577'	OK		
+§3	37	37.6%	last week in full (577) and a uniform random 37.6% of the rest (5,338 of 14	0.3756	bern/ideation2/spikes/s8-dvs/results.md	'sampling fraction 0.3756'	ROUNDED		
+§3	37	5,338	577) and a uniform random 37.6% of the rest (5,338 of 14,212); the read of	5338	bern/ideation2/spikes/s8-dvs/results.md	'n_R=5338'	OK		
+§3	37	14,212	a uniform random 37.6% of the rest (5,338 of 14,212); the read of the remain	14212	bern/ideation2/spikes/s8-dvs/results.md	'N_R=14212'	OK		
+§3	37	8,139	the remaining affairs resumes in the build (8,139 scored when it was pause	8139	bern/ideation2/spikes/s8-dvs/results.md	'Scored so far:     8139 order-A rows'	OK		
+§3	37	0.5	ion with the topic's scope note; flag at p ≥ 0.5, fixed before the run (S	0.5	bern/ideation2/PREREG.md	S8: 'Flag = p ≥ 0.5 (the S3/S4 cut-off, not re-fitted)'	OK		
+§3	37	29	aseline on the same input: a keyword list of 29 German, French and Itali	29	bern/ideation/spikes/s4-blindcheck/results.md	'Regex of 29 de/fr/it stems'	OK		
+§3	37	464	German, French and Italian stems (S4). Gold: 464 affairs sampled across f	464	bern/ideation2/spikes/s8-dvs/score.json	annotators > nA	OK		
+§3	37	0.976	udge — two runs of a Claude model (agreement 0.976), a third run settling t	0.976	bern/ideation2/spikes/s8-dvs/score.json	annotators > AB[1]	OK		
+§3	37	15	(agreement 0.976), a third run settling the 15 disagreements — and, as	15	bern/ideation2/spikes/s8-dvs/score.json	annotators > disagreements	OK		
+§3	37	30	r family. How far to trust the judge: on the 30 human-curated DVS items	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§3	37	27	urated DVS items both Claude runs say yes to 27 (S15, mixed blind among	27	bern/ideation2/spikes/s15-judgecheck/results.json	both_Y	OK		
+§3	37	70	e runs say yes to 27 (S15, mixed blind among 70 other affairs); on 200 f	70	bern/ideation2/spikes/s15-judgecheck/RESULTS.md	'+ 70 random 2026 affairs'	OK		
+§3	37	200	S15, mixed blind among 70 other affairs); on 200 federal affairs with an	200	bern/ideation2/spikes/s11-anchor/anchor.json	A[1]	OK		
+§3	37	25	eral affairs with an APS editors' chapter (a 25-way task) it matches the	25	bern/ideation2/spikes/s9-aps/scripts/analyze.py	docstring: 'Chapter vectors (25 = 24 APS chapters + none)'	OK		
+§3	37	79%	er (a 25-way task) it matches the editors in 79% [73%, 84%] (S11); Qwen a	0.790	bern/ideation2/spikes/s11-anchor/anchor.json	A[2]	OK		
+§3	37	73%	25-way task) it matches the editors in 79% [73%, 84%] (S11); Qwen and th	0.728	bern/ideation2/spikes/s11-anchor/anchor.json	A[3]	MISMATCH	72.8%	interval bound rounded inward (more confidence than the source)
+§3	37	84%	ay task) it matches the editors in 79% [73%, 84%] (S11); Qwen and the Cla	0.841	bern/ideation2/spikes/s11-anchor/anchor.json	A[4]	MISMATCH	84.1%	interval bound rounded inward (more confidence than the source)
+§3	37	0.81	] (S11); Qwen and the Claude runs agree at κ 0.81–0.82. Estimates are weig	0.812	bern/ideation2/spikes/s8-dvs/score.json	annotators > AQ[2] (kappa)	ROUNDED		
+§3	37	0.82	1); Qwen and the Claude runs agree at κ 0.81–0.82. Estimates are weighted	0.824	bern/ideation2/spikes/s8-dvs/score.json	annotators > BQ[2] (kappa)	ROUNDED		
+§3	37	two runs / a third run (judge)		2+1	bern/ideation2/spikes/s8-dvs/score.json	annotators nA, nB 464; nC 15	OK		spelled-out number
+§3	39	95%	¦ 2026, Swiss parliaments (estimated, 95% interval) ¦ Querschnitt	95%	bern/ideation2/PREREG.md	'Intervals: Wilson (proportions), paired bootstrap 2,000 resamples' (95% intervals)	OK		
+§3	39	29	5% interval) ¦ Querschnitt ¦ Keyword search (29 stems, de/fr/it) ¦	29	bern/ideation/spikes/s4-blindcheck/results.md	'Regex of 29 de/fr/it stems'	OK		
+§3	41	653	¦ Affairs flagged ¦ 653 ¦ 734 ¦	653.294	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aflags	ROUNDED		
+§3	41	734	¦ Affairs flagged ¦ 653 ¦ 734 ¦	734.167	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kflags	ROUNDED		
+§3	42	0.914	judge on flags (precision vs the judge) ¦ **0.914** [0.876, 0.952] ¦ 0.753	0.914	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP	OK		
+§3	42	0.876	flags (precision vs the judge) ¦ **0.914** [0.876, 0.952] ¦ 0.753 [0.714,	0.876	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > aP[0]	OK		
+§3	42	0.952	(precision vs the judge) ¦ **0.914** [0.876, 0.952] ¦ 0.753 [0.714, 0.790]	0.952	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > aP[1]	OK		
+§3	42	0.753	n vs the judge) ¦ **0.914** [0.876, 0.952] ¦ 0.753 [0.714, 0.790] ¦	0.753	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kP	OK	75.3%	
+§3	42	0.714	e judge) ¦ **0.914** [0.876, 0.952] ¦ 0.753 [0.714, 0.790] ¦	0.714	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > kP[0]	OK		
+§3	42	0.790	) ¦ **0.914** [0.876, 0.952] ¦ 0.753 [0.714, 0.790] ¦	0.790	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > kP[1]	OK		
+§3	43	0.654	ge's positives found (recall vs the judge) ¦ 0.654 [0.486, 0.894] ¦ 0.605 [	0.654	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aR	OK		
+§3	43	0.486	sitives found (recall vs the judge) ¦ 0.654 [0.486, 0.894] ¦ 0.605 [0.451,	0.486	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > aR[0]	OK		
+§3	43	0.894	found (recall vs the judge) ¦ 0.654 [0.486, 0.894] ¦ 0.605 [0.451, 0.827]	0.894	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > aR[1]	OK		
+§3	43	0.605	ecall vs the judge) ¦ 0.654 [0.486, 0.894] ¦ 0.605 [0.451, 0.827] ¦	0.605	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kR	OK		
+§3	43	0.451	s the judge) ¦ 0.654 [0.486, 0.894] ¦ 0.605 [0.451, 0.827] ¦	0.451	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > kR[0]	OK		
+§3	43	0.827	udge) ¦ 0.654 [0.486, 0.894] ¦ 0.605 [0.451, 0.827] ¦	0.827	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > kR[1]	OK		
+§3	44	+0.161	¦ Difference ¦ precision +0.161 [+0.122, +0.202]; recall	0.161	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP − point > kP (0.914 − 0.753)	OK		
+§3	44	+0.122	¦ Difference ¦ precision +0.161 [+0.122, +0.202]; recall +0.049	0.122	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > dP[0]	OK		
+§3	44	+0.202	¦ Difference ¦ precision +0.161 [+0.122, +0.202]; recall +0.049 [+0.017,	0.202	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > dP[1]	OK		
+§3	44	+0.049	¦ precision +0.161 [+0.122, +0.202]; recall +0.049 [+0.017, +0.090] ¦ ¦	0.049	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aR − point > kR (0.654 − 0.605)	OK		
+§3	44	+0.017	sion +0.161 [+0.122, +0.202]; recall +0.049 [+0.017, +0.090] ¦ ¦	0.017	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > dR[0]	OK		
+§3	44	+0.090	161 [+0.122, +0.202]; recall +0.049 [+0.017, +0.090] ¦ ¦	0.090	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > dR[1]	OK		
+§3	45	0.863	udge = Qwen alone (open weights) ¦ precision 0.863, recall 0.811 ¦ 0.691, 0	0.863	bern/ideation2/spikes/s8-dvs/score_ch.json	qwen_only > aP	OK		
+§3	45	0.811	one (open weights) ¦ precision 0.863, recall 0.811 ¦ 0.691, 0.729 ¦	0.811	bern/ideation2/spikes/s8-dvs/score_ch.json	qwen_only > aR	OK		
+§3	45	0.691	n weights) ¦ precision 0.863, recall 0.811 ¦ 0.691, 0.729 ¦	0.691	bern/ideation2/spikes/s8-dvs/score_ch.json	qwen_only > kP	OK	69.1%	
+§3	45	0.729	ts) ¦ precision 0.863, recall 0.811 ¦ 0.691, 0.729 ¦	0.729	bern/ideation2/spikes/s8-dvs/score_ch.json	qwen_only > kR	OK		
+§3	46	30	¦ Human-curated positives: the 30 public DVS items ¦ 27 re	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§3	46	27	curated positives: the 30 public DVS items ¦ 27 recognised (23 of the 24	27	bern/ideation2/spikes/s8-dvs/results.md	'DVS recall (P8.2, all 30): Apertus 27/30 [0.744, 0.965]'	OK		
+§3	46	23	es: the 30 public DVS items ¦ 27 recognised (23 of the 24 begun in 2026)	23	bern/ideation2/spikes/s8-dvs/results.md	'(P8.2, begin_date in window): Apertus 23/24'	OK		
+§3	46	24	public DVS items ¦ 27 recognised (23 of the 24 begun in 2026) ¦ 21 ¦	24	bern/ideation2/spikes/s8-dvs/results.md	'Apertus 23/24'	OK		
+§3	46	21	27 recognised (23 of the 24 begun in 2026) ¦ 21 ¦	21	bern/ideation2/spikes/s8-dvs/results.md	'keyword 21/30 [0.521, 0.833]'	OK		
+§3	48	913	w much there is (judge-based estimates):** ≈ 913 digitalisation affairs [	913.256	bern/ideation2/spikes/s8-dvs/score_ch.json	point > pos	ROUNDED		approximation marked in the text
+§3	48	669	estimates):** ≈ 913 digitalisation affairs [669, 1,217] — about 23 a wee	668.987	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > pos[0]	ROUNDED		
+§3	48	1,217	mates):** ≈ 913 digitalisation affairs [669, 1,217] — about 23 a week out o	1217.298	bern/ideation2/spikes/s8-dvs/score_ch.json	ci > pos[1]	ROUNDED		
+§3	48	23	digitalisation affairs [669, 1,217] — about 23 a week out of about 364	22.9	derived	bern/ideation2/spikes/s8-dvs/score_ch.json point > pos 913.256 / 39.86 weeks (1 Jan–6 Oct 2026 = 279 days)	ROUNDED		approximation marked in the text
+§3	48	364	[669, 1,217] — about 23 a week out of about 364 new affairs. Querschnitt	364.1	derived	14,513 / 39.86 weeks	ROUNDED		approximation marked in the text
+§3	48	16	out 364 new affairs. Querschnitt flags about 16 a week, about 15 of them	16.4	bern/ideation2/spikes/s8-dvs/operating_points_ch.json	0.5 > per_week	ROUNDED		approximation marked in the text
+§3	48	15	rs. Querschnitt flags about 16 a week, about 15 of them confirmed by the	15.0	derived	16.4 × 0.914 (operating_points_ch.json 0.5 > per_week × score_ch.json point > aP)	OK		
+§3	48	18	med by the judge; keyword search flags about 18, about 14 confirmed.	18.4	derived	734.167 / 39.86	ROUNDED		approximation marked in the text
+§3	48	14	judge; keyword search flags about 18, about 14 confirmed.	13.9	derived	18.4 × 0.753	ROUNDED		approximation marked in the text
+§3	49	190	- **Where:** the 190 confirmed Swiss affairs	190	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > n	OK		
+§3	49	45	wiss affairs in the checked sample come from 45 parliaments; 87 are cant	45	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > parliaments	OK		
+§3	49	87	the checked sample come from 45 parliaments; 87 are cantonal, 62 federal	87	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > by_level > cantonal	OK		
+§3	49	62	e come from 45 parliaments; 87 are cantonal, 62 federal and 41 communal	62	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > by_level > federal	OK		
+§3	49	41	parliaments; 87 are cantonal, 62 federal and 41 communal (Stadtrat Bern,	41	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > by_level > communal	OK		
+§3	49	141	zona, Aarau, Kloten, Winterthur and others); 141 German, 35 French, 14 It	141	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > by_lang > de	OK		
+§3	49	35	Kloten, Winterthur and others); 141 German, 35 French, 14 Italian.	35	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > by_lang > fr	OK		
+§3	49	14	nterthur and others); 141 German, 35 French, 14 Italian.	14	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > by_lang > it	OK		
+§3	50	16	r, then two affairs in the Federal Assembly (16 and 30 Sep). Querschnitt	16	bern/ideation2/spikes/s8-dvs/results.md	'CHE D462 (16 Sep, A only)'	OK		
+§3	50	29	"confirms all seven; five contain none of the 29 stems (""Data centers : p"	29	bern/ideation/spikes/s4-blindcheck/results.md	'Regex of 29 de/fr/it stems'	OK		
+§3	50	five contain none of the 29 stems		5	bern/ideation2/spikes/s8-dvs/results.md	'5 of 7 missed by the keyword list' (A only)	OK		spelled-out number
+§3	50	seven (data centres, judge confirms all seven)		7	bern/ideation2/spikes/s8-dvs/results.md	Examples: data centres … 7 blind-confirmed	OK		spelled-out number
+§3	50	two affairs in the Federal Assembly		2	bern/ideation2/spikes/s8-dvs/results.md	CHE D462 (16 Sep), CHE D298 (30 Sep)	OK		spelled-out number
+§3	52	60	scored against the same judge):** the first 60 checked affairs, with th	60	bern/ideation2/spikes/s8-dvs/loop.json	PREREG P8.5 'the first 60 annotated items'	OK		
+§3	52	4	s first decisions and are shown as examples (4 nearest per affair); on	4	bern/ideation2/PREREG.md	P8.5 'the 4 most similar of those 60'	OK		
+§3	52	404	xamples (4 nearest per affair); on the other 404 checked affairs F1 rises	404	bern/ideation2/spikes/s8-dvs/loop.json	n	OK		
+§3	52	0.866	the other 404 checked affairs F1 rises from 0.866 to 0.906 (+0.040 [+0.007	0.866	bern/ideation2/spikes/s8-dvs/loop.json	before > F1	OK		
+§3	52	0.906	r 404 checked affairs F1 rises from 0.866 to 0.906 (+0.040 [+0.007, +0.075]	0.906	bern/ideation2/spikes/s8-dvs/loop.json	after > F1	OK		
+§3	52	+0.040	hecked affairs F1 rises from 0.866 to 0.906 (+0.040 [+0.007, +0.075]); recal	0.040	bern/ideation2/spikes/s8-dvs/loop.json	dF1	OK		
+§3	52	+0.007	ffairs F1 rises from 0.866 to 0.906 (+0.040 [+0.007, +0.075]); recall 0.826	0.007	bern/ideation2/spikes/s8-dvs/loop.json	dF1_ci[0]	OK		
+§3	52	+0.075	1 rises from 0.866 to 0.906 (+0.040 [+0.007, +0.075]); recall 0.826 → 0.895,	0.075	bern/ideation2/spikes/s8-dvs/loop.json	dF1_ci[1]	OK		
+§3	52	0.826	6 to 0.906 (+0.040 [+0.007, +0.075]); recall 0.826 → 0.895, precision 0.910	0.826	bern/ideation2/spikes/s8-dvs/loop.json	before > R	OK		
+§3	52	0.895	06 (+0.040 [+0.007, +0.075]); recall 0.826 → 0.895, precision 0.910 → 0.917	0.895	bern/ideation2/spikes/s8-dvs/loop.json	after > R	OK		
+§3	52	0.910	7, +0.075]); recall 0.826 → 0.895, precision 0.910 → 0.917 (unweighted, on	0.910	bern/ideation2/spikes/s8-dvs/loop.json	before > P (0.91)	OK		
+§3	52	0.917	5]); recall 0.826 → 0.895, precision 0.910 → 0.917 (unweighted, on a sample	0.917	bern/ideation2/spikes/s8-dvs/loop.json	after > P	OK		
+§3	53	4	- **Recall is the open edge:** 4 of 180 checked affairs t	4	bern/ideation2/spikes/s8-dvs/score.json	by_stratum > neither > gold_Y	OK		
+§3	53	180	- **Recall is the open edge:** 4 of 180 checked affairs that nei	180	bern/ideation2/spikes/s8-dvs/score.json	by_stratum > neither > n	OK		
+§3	53	0.1	s not help: the misses are confident (at p ≥ 0.1 recall vs the judge is 0	0.1	bern/ideation2/spikes/s8-dvs/operating_points_ch.json	key '0.1'	OK		
+§3	53	0.660	confident (at p ≥ 0.1 recall vs the judge is 0.660, flags 659 instead of 65	0.66	bern/ideation2/spikes/s8-dvs/operating_points_ch.json	0.1 > R	OK		
+§3	53	659	p ≥ 0.1 recall vs the judge is 0.660, flags 659 instead of 653), so reca	659	bern/ideation2/spikes/s8-dvs/operating_points_ch.json	0.1 > flags	OK		
+§3	53	653	vs the judge is 0.660, flags 659 instead of 653), so recall comes from e	653	bern/ideation2/spikes/s8-dvs/operating_points_ch.json	0.5 > flags	OK		
+§3	53	120	oes not help recall at the fixed cut-off: on 120 federal affairs it makes	120	bern/ideation2/spikes/s13-timing/s8b.json	all > n	OK		
+§3	53	0.896	fairs it makes the model stricter (precision 0.896 → 1.000, recall 0.768 →	0.896	bern/ideation2/spikes/s13-timing/results.md	S8b table: title only P 0.896	OK		
+§3	53	1.000	makes the model stricter (precision 0.896 → 1.000, recall 0.768 → 0.679; S	1.000	bern/ideation2/spikes/s13-timing/results.md	title + text P 1.000	OK		
+§3	53	0.768	el stricter (precision 0.896 → 1.000, recall 0.768 → 0.679; S8b). In that s	0.768	bern/ideation2/spikes/s13-timing/results.md	title only R 0.768	OK		
+§3	53	0.679	ter (precision 0.896 → 1.000, recall 0.768 → 0.679; S8b). In that simulatio	0.679	bern/ideation2/spikes/s13-timing/results.md	title + text R 0.679	OK		
+§6.1	96	95%	All rows: Public AI, build `…dd237840`; 95% intervals; settings fixe	95%	bern/ideation2/PREREG.md	'Intervals: Wilson (proportions), paired bootstrap 2,000 resamples' (95% intervals)	OK		
+§6.1	101	1,357	gistered), with five APS-labelled examples ¦ 1,357 ¦ top-1 0.722 [0.698, 0.	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§6.1	101	0.722	h five APS-labelled examples ¦ 1,357 ¦ top-1 0.722 [0.698, 0.745], top-3 0.	0.722	bern/ideation2/spikes/s9-aps/results.md	D3 top-1	OK		
+§6.1	101	0.698	APS-labelled examples ¦ 1,357 ¦ top-1 0.722 [0.698, 0.745], top-3 0.875 ¦ p	0.698	bern/ideation2/spikes/s9-aps/results.md	D3 top-1 CI	OK		
+§6.1	101	0.745	elled examples ¦ 1,357 ¦ top-1 0.722 [0.698, 0.745], top-3 0.875 ¦ plain li	0.745	bern/ideation2/spikes/s9-aps/results.md	D3 top-1 CI	OK		
+§6.1	101	0.875	¦ 1,357 ¦ top-1 0.722 [0.698, 0.745], top-3 0.875 ¦ plain list prompting (	0.875	bern/ideation2/spikes/s9-aps/results.md	D3 top-3	OK		
+§6.1	101	0.655	5], top-3 0.875 ¦ plain list prompting (v14) 0.655; keyword 0.192; majority	0.655	bern/ideation2/spikes/s9-aps/results.md	D0 top-1	OK		
+§6.1	101	0.192	¦ plain list prompting (v14) 0.655; keyword 0.192; majority 0.080 ¦ S9 ¦	0.192	bern/ideation2/spikes/s9-aps/results.md	Baselines: keyword top-1	OK		
+§6.1	101	0.080	ompting (v14) 0.655; keyword 0.192; majority 0.080 ¦ S9 ¦	0.080	bern/ideation2/spikes/s9-aps/results.md	Baselines: majority top-1	OK		
+§6.1	101	five APS-labelled examples		5	bern/ideation2/spikes/s9-aps/results.md	D3: 'the 5 BM25-nearest gold affairs'	OK		spelled-out number
+§6.1	102	1,357	— read back from the subtopic, no examples ¦ 1,357 ¦ top-1 0.704 [0.679, 0.	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§6.1	102	0.704	om the subtopic, no examples ¦ 1,357 ¦ top-1 0.704 [0.679, 0.727], top-3 0.	0.704	bern/ideation2/spikes/s9-aps/results.md	D1 top-1	OK		
+§6.1	102	0.679	subtopic, no examples ¦ 1,357 ¦ top-1 0.704 [0.679, 0.727], top-3 0.843 ¦ s	0.679	bern/ideation2/spikes/s9-aps/results.md	D1 CI	OK		
+§6.1	102	0.727	c, no examples ¦ 1,357 ¦ top-1 0.704 [0.679, 0.727], top-3 0.843 ¦ same ¦ S	0.727	bern/ideation2/spikes/s9-aps/results.md	D1 CI	OK		
+§6.1	102	0.843	¦ 1,357 ¦ top-1 0.704 [0.679, 0.727], top-3 0.843 ¦ same ¦ S9 ¦	0.843	bern/ideation2/spikes/s9-aps/results.md	D1 top-3	OK		
+§6.1	103	1,221	vs APS editors, end to end (top-1 / top-3) ¦ 1,221 ¦ 0.521 / 0.677 ¦ — ¦ S9	1221	bern/ideation2/spikes/s9-aps/results.md	subtopic n	OK		
+§6.1	103	0.521	ditors, end to end (top-1 / top-3) ¦ 1,221 ¦ 0.521 / 0.677 ¦ — ¦ S9 ¦	0.521	bern/ideation2/spikes/s9-aps/results.md	subtopic top-1	OK		
+§6.1	103	0.677	end to end (top-1 / top-3) ¦ 1,221 ¦ 0.521 / 0.677 ¦ — ¦ S9 ¦	0.677	bern/ideation2/spikes/s9-aps/results.md	subtopic top-3	OK		
+§6.1	104	30	"¦ ""Digitalisierung"": the 30 human-curated public DVS"	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§6.1	104	30	30 human-curated public DVS items (recall) ¦ 30 ¦ 27/30 (the AI judge, f	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§6.1	104	27/30	man-curated public DVS items (recall) ¦ 30 ¦ 27/30 (the AI judge, for refer	27/30	bern/ideation2/spikes/s8-dvs/results.md	'DVS recall (P8.2, all 30): Apertus 27/30'	OK		
+§6.1	104	27/30	) ¦ 30 ¦ 27/30 (the AI judge, for reference: 27/30, S15) ¦ keyword 21/30 ¦	27/30	bern/ideation2/spikes/s15-judgecheck/results.json	both_Y / n_dvs	OK		
+§6.1	104	21/30	judge, for reference: 27/30, S15) ¦ keyword 21/30 ¦ S8, S15 ¦	21/30	bern/ideation2/spikes/s8-dvs/results.md	'keyword 21/30'	OK		
+§6.1	105	200	ent's own tags (Curia), all tags per affair; 200 affairs submitted after	200	bern/ideation/spikes/s3-accuracy/results.md	'Headline numbers are test, n = 200' (clean pool: submitted ≥ 2024-11-06, after the BFH upload; s2-oracles line 29)	OK		
+§6.1	105	200	ubmitted after the BFH model was published ¦ 200 ¦ micro-F1 0.654 [0.62,	200	bern/ideation/spikes/s3-accuracy/results.md	'Headline numbers are test, n = 200' (clean pool: submitted ≥ 2024-11-06, after the BFH upload; s2-oracles line 29)	OK		
+§6.1	105	0.654	the BFH model was published ¦ 200 ¦ micro-F1 0.654 [0.62, 0.69] with five r	0.654	bern/ideation/spikes/s5-aps/results.md	Q4 table V3 fused micro-F1	OK		
+§6.1	105	0.62	model was published ¦ 200 ¦ micro-F1 0.654 [0.62, 0.69] with five retriev	0.623	bern/ideation/spikes/s5-aps/results.md	V3 CI	ROUNDED		
+§6.1	105	0.69	was published ¦ 200 ¦ micro-F1 0.654 [0.62, 0.69] with five retrieved tag	0.686	bern/ideation/spikes/s5-aps/results.md	V3 CI	ROUNDED		
+§6.1	105	52,408	] with five retrieved tagged examples (pool: 52,408 affairs tagged before 6	52408	bern/ideation/spikes/s3-accuracy/results.md	'drawn from 52,408 Curia-tagged affairs submitted before 2024-11-06'	OK		
+§6.1	105	0.865	p 6; without examples top-1 is a gold tag in 0.865 ¦ BFH, trained on 15,007	0.865	bern/ideation/spikes/s3-accuracy/results.md	E2 desc, average of 2 orders: top-1 P 0.865	OK		
+§6.1	105	15,007	p-1 is a gold tag in 0.865 ¦ BFH, trained on 15,007 tagged affairs: micro-F1	15007	bern/research/R1-parts/prior-art.md	'15,007 German training docs'	OK		
+§6.1	105	0.687	, trained on 15,007 tagged affairs: micro-F1 0.687 [0.65, 0.72], top-1 0.85	0.687	bern/ideation/spikes/s3-accuracy/results.md	BFH Omikuji thr 0.25 micro-F1	OK		
+§6.1	105	0.65	ed on 15,007 tagged affairs: micro-F1 0.687 [0.65, 0.72], top-1 0.855; pai	0.652	bern/ideation/spikes/s3-accuracy/results.md	BFH CI	ROUNDED		
+§6.1	105	0.72	15,007 tagged affairs: micro-F1 0.687 [0.65, 0.72], top-1 0.855; paired mi	0.722	bern/ideation/spikes/s3-accuracy/results.md	BFH CI	MISMATCH	0.722 (or [0.65, 0.73] rounded outward)	interval bound rounded inward (more confidence than the source)
+§6.1	105	0.855	affairs: micro-F1 0.687 [0.65, 0.72], top-1 0.855; paired micro difference	0.855	bern/ideation/spikes/s3-accuracy/results.md	BFH top-1 P	OK		
+§6.1	105	−0.08	0.72], top-1 0.855; paired micro difference −0.08 to +0.01 ¦ S3, S5 ¦	-0.079	bern/ideation/spikes/s5-aps/results.md	'vs BFH micro **−0.079 to +0.010**'	ROUNDED		
+§6.1	105	+0.01	op-1 0.855; paired micro difference −0.08 to +0.01 ¦ S3, S5 ¦	0.010	bern/ideation/spikes/s5-aps/results.md	'−0.079 to +0.010'	OK		
+§6.1	106	8	¦ Bern lead directorate (scheme swap, 8 directorates) vs the Gra	8	bern/ideation/spikes/s6-cantonal/results.md	'Scheme: 8 directorates'	OK		
+§6.1	106	200	Council's own field, titles only, DE / FR ¦ 200 ¦ 0.615 / 0.645, gap n.s	200	bern/ideation/spikes/s6-cantonal/results.md	'A2 ... (200 Grand Council affairs)'	OK		
+§6.1	106	0.615	il's own field, titles only, DE / FR ¦ 200 ¦ 0.615 / 0.645, gap n.s. ¦ keyw	0.615	bern/ideation/spikes/s6-cantonal/results.md	Apertus, DE title	OK		
+§6.1	106	0.645	field, titles only, DE / FR ¦ 200 ¦ 0.615 / 0.645, gap n.s. ¦ keyword 0.52	0.645	bern/ideation/spikes/s6-cantonal/results.md	Apertus, FR title	OK		
+§6.1	106	0.520	FR ¦ 200 ¦ 0.615 / 0.645, gap n.s. ¦ keyword 0.520 / 0.495; majority 0.175	0.520	bern/ideation/spikes/s6-cantonal/results.md	Keyword stems DE	OK		
+§6.1	106	0.495	¦ 0.615 / 0.645, gap n.s. ¦ keyword 0.520 / 0.495; majority 0.175 ¦ S6 ¦	0.495	bern/ideation/spikes/s6-cantonal/results.md	Keyword stems FR	OK		
+§6.1	106	0.175	, gap n.s. ¦ keyword 0.520 / 0.495; majority 0.175 ¦ S6 ¦	0.175	bern/ideation/spikes/s6-cantonal/results.md	Majority class (BVD)	OK		
+§6.1	107	120	ntence supports the topic (blind AI judge) ¦ 120 ¦ 0.850 [0.775, 0.903];	120	bern/ideation2/spikes/s12-evidence/results.json	support > overall > n	OK		
+§6.1	107	0.850	supports the topic (blind AI judge) ¦ 120 ¦ 0.850 [0.775, 0.903]; substrin	0.850	bern/ideation2/spikes/s12-evidence/results.json	support > overall > rate (0.85)	OK		
+§6.1	107	0.775	ts the topic (blind AI judge) ¦ 120 ¦ 0.850 [0.775, 0.903]; substring check	0.775	bern/ideation2/spikes/s12-evidence/results.json	support > overall > ci95[0] (0.7753)	OK		
+§6.1	107	0.903	topic (blind AI judge) ¦ 120 ¦ 0.850 [0.775, 0.903]; substring check 120/12	0.903	bern/ideation2/spikes/s12-evidence/results.json	support > overall > ci95[1]	OK		
+§6.1	107	120/120	120 ¦ 0.850 [0.775, 0.903]; substring check 120/120 ¦ — ¦ S12 ¦	120/120	bern/ideation2/spikes/s12-evidence/results.json	substring_pass k/n	OK		
+§6.1	108	200	vs APS editors (Claude, blind, same input) ¦ 200 ¦ 0.790 [0.728, 0.841];	200	bern/ideation2/spikes/s11-anchor/anchor.json	A[1]	OK		
+§6.1	108	0.790	editors (Claude, blind, same input) ¦ 200 ¦ 0.790 [0.728, 0.841]; Apertus	0.790	bern/ideation2/spikes/s11-anchor/anchor.json	A[2]	OK		
+§6.1	108	0.728	s (Claude, blind, same input) ¦ 200 ¦ 0.790 [0.728, 0.841]; Apertus on the	0.728	bern/ideation2/spikes/s11-anchor/anchor.json	A[3]	OK		
+§6.1	108	0.841	de, blind, same input) ¦ 200 ¦ 0.790 [0.728, 0.841]; Apertus on the same it	0.841	bern/ideation2/spikes/s11-anchor/anchor.json	A[4]	OK		
+§6.1	108	0.695	90 [0.728, 0.841]; Apertus on the same items 0.695 (read-back), 0.720 (exam	0.695	bern/ideation2/spikes/s11-anchor/anchor.json	apertus_same_items > D1 > apertus_vs_editors[2]	OK		
+§6.1	108	0.720	Apertus on the same items 0.695 (read-back), 0.720 (examples) ¦ — ¦ S11 ¦	0.720	bern/ideation2/spikes/s11-anchor/anchor.json	apertus_same_items > D3 > apertus_vs_editors[2]	OK		
+§6.1	109	14,513	ss parliaments, 2026, vs the AI judge (§3) ¦ 14,513 (453 checked) ¦ precisio	14513	bern/ideation2/spikes/s8-dvs/results.md	Gold-based results / PREREG-ADDENDA S8 reporting addition; 14,790 − 277 LIE (By level table 'other 277')	OK		
+§6.1	109	453	aments, 2026, vs the AI judge (§3) ¦ 14,513 (453 checked) ¦ precision 0.9	453	bern/ideation2/spikes/s8-dvs/key.jsonl	464 packet items − 11 LIE (FACTCHECK.md)	OK		
+§6.1	109	0.914	udge (§3) ¦ 14,513 (453 checked) ¦ precision 0.914, recall 0.654 ¦ keyword	0.914	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP	OK		
+§6.1	109	0.654	,513 (453 checked) ¦ precision 0.914, recall 0.654 ¦ keyword 0.753, 0.605 ¦	0.654	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aR	OK		
+§6.1	109	0.753	d) ¦ precision 0.914, recall 0.654 ¦ keyword 0.753, 0.605 ¦ S8 ¦	0.753	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kP	OK	75.3%	
+§6.1	109	0.605	ecision 0.914, recall 0.654 ¦ keyword 0.753, 0.605 ¦ S8 ¦	0.605	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kR	OK		
+§6.1	110	0.95	nal + communal, vs the AI judge (two runs, κ 0.95) ¦ 153 ¦ 0.686 (cantonal	0.952	bern/ideation/spikes/s6-cantonal/score.json	agreement > A_vs_B > kappa	ROUNDED		
+§6.1	110	153	mmunal, vs the AI judge (two runs, κ 0.95) ¦ 153 ¦ 0.686 (cantonal 0.726,	153	bern/ideation/spikes/s6-cantonal/score.json	accuracy > all > final_top1 > strict > n	OK		
+§6.1	110	0.686	, vs the AI judge (two runs, κ 0.95) ¦ 153 ¦ 0.686 (cantonal 0.726, communa	0.686	bern/ideation/spikes/s6-cantonal/score.json	accuracy > all > final_top1 > strict > acc	OK		
+§6.1	110	0.726	e (two runs, κ 0.95) ¦ 153 ¦ 0.686 (cantonal 0.726, communal 0.621; de 0.67	0.726	bern/ideation/spikes/s6-cantonal/score.json	level=cantonal	OK		
+§6.1	110	0.621	.95) ¦ 153 ¦ 0.686 (cantonal 0.726, communal 0.621; de 0.672, fr 0.708, it	0.621	bern/ideation/spikes/s6-cantonal/score.json	level=communal	OK		
+§6.1	110	0.672	¦ 0.686 (cantonal 0.726, communal 0.621; de 0.672, fr 0.708, it 0.684); ma	0.672	bern/ideation/spikes/s6-cantonal/score.json	lang=de	OK		
+§6.1	110	0.708	cantonal 0.726, communal 0.621; de 0.672, fr 0.708, it 0.684); majority of	0.708	bern/ideation/spikes/s6-cantonal/score.json	lang=fr	OK		
+§6.1	110	0.684	.726, communal 0.621; de 0.672, fr 0.708, it 0.684); majority of Claude ×2	0.684	bern/ideation/spikes/s6-cantonal/score.json	lang=it	OK		
+§6.1	110	2	72, fr 0.708, it 0.684); majority of Claude ×2 + Qwen as gold: 0.684 ¦	2	bern/ideation/spikes/s7-crossfamily/results.md	'Majority of 3 (A, B, Qwen)': two Claude runs + Qwen	OK		
+§6.1	110	0.684	.684); majority of Claude ×2 + Qwen as gold: 0.684 ¦ — ¦ S6, S7 ¦	0.684	bern/ideation/spikes/s7-crossfamily/score.json	aps > apertus > (c) majority of 3 first choices > all > acc	OK		
+§6.1	111	210	, German vs French, vs the AI judge (§6.3) ¦ 210 ¦ 0.543 vs 0.529, gap no	210	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > n	OK		
+§6.1	111	0.543	an vs French, vs the AI judge (§6.3) ¦ 210 ¦ 0.543 vs 0.529, gap not measur	0.543	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > p	OK		
+§6.1	111	0.529	nch, vs the AI judge (§6.3) ¦ 210 ¦ 0.543 vs 0.529, gap not measurable ¦ —	0.529	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > fr > p	OK		
+§6.1	112	40	¦ Free generation, no list ¦ 40 ¦ 36/40 labels outside e	40	bern/ideation/spikes/s3-accuracy/results.md	'Free generation (40 test affairs, DE)'	OK		
+§6.1	112	36/40	¦ Free generation, no list ¦ 40 ¦ 36/40 labels outside every sch	36/40	bern/ideation/spikes/s3-accuracy/results.md	'36/40 = 90 % [77, 96]'	OK		
+§6.1	112	0/40	"st ¦ 40 ¦ 36/40 labels outside every scheme; 0/40 ""no topic"" ¦ — ¦ S3 ¦"	0/40	bern/ideation/spikes/s3-accuracy/results.md	"'0/40 say ""kein Thema""'"	OK		
+§6.2	115	1,357	1,357 federal affairs with an	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§6.2	115	883	ayback process pages not used before (2020+: 883, 2010–19: 446, earlier 2	883	bern/ideation2/spikes/s9-aps/results.md	periods 2020+	OK		
+§6.2	115	446	pages not used before (2020+: 883, 2010–19: 446, earlier 28); German tit	446	bern/ideation2/spikes/s9-aps/results.md	periods 2010-19	OK		
+§6.2	115	28	ed before (2020+: 883, 2010–19: 446, earlier 28); German title + submitt	28	bern/ideation2/spikes/s9-aps/results.md	periods pre-2010	OK		
+§6.2	115	Four designs		4	bern/ideation2/spikes/s9-aps/results.md	D0, D1, D2, D3	OK		spelled-out number
+§6.2	117	95%	¦ Design ¦ top-1 ¦ Δ vs D0 [paired 95%] ¦ Verdict ¦	95%	bern/ideation2/PREREG.md	'Intervals: Wilson (proportions), paired bootstrap 2,000 resamples' (95% intervals)	OK		
+§6.2	119	0.655	¦ D0 chapter step, two code orders (v14) ¦ 0.655 [0.629, 0.680] ¦ — ¦ — ¦	0.655	bern/ideation2/spikes/s9-aps/results.md	D0 top-1	OK		
+§6.2	119	0.629	chapter step, two code orders (v14) ¦ 0.655 [0.629, 0.680] ¦ — ¦ — ¦	0.629	bern/ideation2/spikes/s9-aps/results.md	D0 CI	OK		
+§6.2	119	0.680	step, two code orders (v14) ¦ 0.655 [0.629, 0.680] ¦ — ¦ — ¦	0.680	bern/ideation2/spikes/s9-aps/results.md	D0 CI	OK		
+§6.2	120	0.704	¦ D1 chapter read back from the subtopic ¦ 0.704 [0.679, 0.727] ¦ +0.049	0.704	bern/ideation2/spikes/s9-aps/results.md	D1 top-1	OK		
+§6.2	120	0.679	chapter read back from the subtopic ¦ 0.704 [0.679, 0.727] ¦ +0.049 [+0.032	0.679	bern/ideation2/spikes/s9-aps/results.md	D1 CI	OK		
+§6.2	120	0.727	read back from the subtopic ¦ 0.704 [0.679, 0.727] ¦ +0.049 [+0.032, +0.06	0.727	bern/ideation2/spikes/s9-aps/results.md	D1 CI	OK		
+§6.2	120	+0.049	k from the subtopic ¦ 0.704 [0.679, 0.727] ¦ +0.049 [+0.032, +0.066] ¦ shipp	0.049	bern/ideation2/spikes/s9-aps/results.md	D1 Δ top-1 vs D0	OK		
+§6.2	120	+0.032	he subtopic ¦ 0.704 [0.679, 0.727] ¦ +0.049 [+0.032, +0.066] ¦ shipped ¦	0.032	bern/ideation2/spikes/s9-aps/results.md	D1 Δ CI	OK		
+§6.2	120	+0.066	pic ¦ 0.704 [0.679, 0.727] ¦ +0.049 [+0.032, +0.066] ¦ shipped ¦	0.066	bern/ideation2/spikes/s9-aps/results.md	D1 Δ CI	OK		
+§6.2	121	0.634	¦ D2 German + French versions averaged ¦ 0.634 ¦ −0.021 [−0.037, −0.004	0.634	bern/ideation2/spikes/s9-aps/results.md	D2 top-1	OK		
+§6.2	121	−0.021	German + French versions averaged ¦ 0.634 ¦ −0.021 [−0.037, −0.004] ¦ dropp	-0.021	bern/ideation2/spikes/s9-aps/results.md	D2 Δ	OK		
+§6.2	121	−0.037	+ French versions averaged ¦ 0.634 ¦ −0.021 [−0.037, −0.004] ¦ dropped for t	-0.037	bern/ideation2/spikes/s9-aps/results.md	D2 Δ CI	OK		
+§6.2	121	−0.004	versions averaged ¦ 0.634 ¦ −0.021 [−0.037, −0.004] ¦ dropped for the label	-0.004	bern/ideation2/spikes/s9-aps/results.md	D2 Δ CI	OK		
+§6.2	122	0.722	¦ D3 five APS-labelled examples ¦ 0.722 [0.698, 0.745] ¦ +0.067	0.722	bern/ideation2/spikes/s9-aps/results.md	D3 top-1	OK		
+§6.2	122	0.698	¦ D3 five APS-labelled examples ¦ 0.722 [0.698, 0.745] ¦ +0.067 [+0.049	0.698	bern/ideation2/spikes/s9-aps/results.md	D3 top-1 CI	OK		
+§6.2	122	0.745	3 five APS-labelled examples ¦ 0.722 [0.698, 0.745] ¦ +0.067 [+0.049, +0.08	0.745	bern/ideation2/spikes/s9-aps/results.md	D3 top-1 CI	OK		
+§6.2	122	+0.067	S-labelled examples ¦ 0.722 [0.698, 0.745] ¦ +0.067 [+0.049, +0.085] ¦ shipp	0.067	bern/ideation2/spikes/s9-aps/results.md	D3 Δ top-1 vs D0	OK		
+§6.2	122	+0.049	ed examples ¦ 0.722 [0.698, 0.745] ¦ +0.067 [+0.049, +0.085] ¦ shipped where	0.049	bern/ideation2/spikes/s9-aps/results.md	D3 Δ CI	OK		
+§6.2	122	+0.085	les ¦ 0.722 [0.698, 0.745] ¦ +0.067 [+0.049, +0.085] ¦ shipped where example	0.085	bern/ideation2/spikes/s9-aps/results.md	D3 Δ CI	OK		
+§6.2	123	0.677	- Per chapter: macro-F1 0.677 (read-back) and 0.692 (e	0.677	bern/ideation2/spikes/s9c-calibration/perlevel.json	D1 > macro_F1	OK		
+§6.2	123	0.692	Per chapter: macro-F1 0.677 (read-back) and 0.692 (examples) over the 22 c	0.692	bern/ideation2/spikes/s9c-calibration/perlevel.json	D3 > macro_F1	OK		
+§6.2	123	22	77 (read-back) and 0.692 (examples) over the 22 chapters present (S9c `p	22	bern/ideation2/spikes/s9c-calibration/perlevel.json	D1 > chapters	OK		
+§6.2	124	61.0%	- Lanes (D0): the two orders agree on 61.0% of affairs, precision 0.	0.610	bern/ideation2/spikes/s9-aps/results.md	Lanes D0 orders agree share	OK		
+§6.2	124	0.781	orders agree on 61.0% of affairs, precision 0.781; disagree 39.0%, precisi	0.781	bern/ideation2/spikes/s9-aps/results.md	Lanes D0 agree precision	OK		
+§6.2	124	39.0%	61.0% of affairs, precision 0.781; disagree 39.0%, precision 0.458. With e	0.390	bern/ideation2/spikes/s9-aps/results.md	Lanes D0 disagree share	OK		
+§6.2	124	0.458	, precision 0.781; disagree 39.0%, precision 0.458. With examples (D3): 0.8	0.458	bern/ideation2/spikes/s9-aps/results.md	Lanes D0 disagree precision	OK		
+§6.2	124	0.813	39.0%, precision 0.458. With examples (D3): 0.813 / 0.580.	0.813	bern/ideation2/spikes/s9-aps/results.md	Lanes D3 agree precision	OK		
+§6.2	124	0.580	precision 0.458. With examples (D3): 0.813 / 0.580.	0.580	bern/ideation2/spikes/s9-aps/results.md	Lanes D3 disagree precision	OK		
+§6.2	125	0.262	s over-confident (expected calibration error 0.262 / 0.279 / 0.221 for D0 /	0.262	bern/ideation2/spikes/s9c-calibration/results.json	D0 > ece_raw	OK		
+§6.2	125	0.279	onfident (expected calibration error 0.262 / 0.279 / 0.221 for D0 / D1 / D3	0.279	bern/ideation2/spikes/s9c-calibration/results.json	D1 > ece_raw	OK		
+§6.2	125	0.221	(expected calibration error 0.262 / 0.279 / 0.221 for D0 / D1 / D3); cross	0.221	bern/ideation2/spikes/s9c-calibration/results.json	D3 > ece_raw	OK		
+§6.2	125	0.035	s-fitted isotonic recalibration brings it to 0.035 / 0.037 / 0.017 (S9c). C	0.035	bern/ideation2/spikes/s9c-calibration/results.json	D0 > ece_isotonic_crossfit	OK		
+§6.2	125	0.037	isotonic recalibration brings it to 0.035 / 0.037 / 0.017 (S9c). Coverage–	0.037	bern/ideation2/spikes/s9c-calibration/results.json	D1 > ece_isotonic_crossfit	OK		
+§6.2	125	0.017	c recalibration brings it to 0.035 / 0.037 / 0.017 (S9c). Coverage–precisio	0.017	bern/ideation2/spikes/s9c-calibration/results.json	D3 > ece_isotonic_crossfit	OK		
+§6.2	125	0.895	017 (S9c). Coverage–precision with examples: 0.895 at 50% coverage, 0.842 a	0.895	bern/ideation2/spikes/s9-aps/results.md	D3 coverage 50%	OK		
+§6.2	125	50%	. Coverage–precision with examples: 0.895 at 50% coverage, 0.842 at 70%,	0.50	bern/ideation2/spikes/s9-aps/results.md	coverage 50%	OK		
+§6.2	125	0.842	cision with examples: 0.895 at 50% coverage, 0.842 at 70%, 0.765 at 90% (pu	0.842	bern/ideation2/spikes/s9-aps/results.md	D3 coverage 70%	OK		
+§6.2	125	70%	th examples: 0.895 at 50% coverage, 0.842 at 70%, 0.765 at 90% (published	0.70	bern/ideation2/spikes/s9-aps/results.md	coverage 70%	OK		
+§6.2	125	0.765	amples: 0.895 at 50% coverage, 0.842 at 70%, 0.765 at 90% (published per bu	0.765	bern/ideation2/spikes/s9-aps/results.md	D3 coverage 90%	OK		
+§6.2	125	90%	.895 at 50% coverage, 0.842 at 70%, 0.765 at 90% (published per build).	0.90	bern/ideation2/spikes/s9-aps/results.md	coverage 90%	OK		
+§6.3	128	210	210 Grand Council affairs of	210	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > n	OK		
+§6.3	128	0.957	ld = the blind AI judge (two runs, agreement 0.957, κ 0.954, + tie-break ru	0.957	bern/ideation2/spikes/s10-bilingual/score.json	annotators > AB_agree > p	OK		
+§6.3	128	0.954	blind AI judge (two runs, agreement 0.957, κ 0.954, + tie-break run), half	0.954	bern/ideation2/spikes/s10-bilingual/score.json	annotators > kappa_AB	OK		
+§6.3	132	0.543	¦ Chapter top-1 ¦ 0.543 [0.475, 0.609] ¦ 0.529 [	0.543	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > p	OK		
+§6.3	132	0.475	¦ Chapter top-1 ¦ 0.543 [0.475, 0.609] ¦ 0.529 [0.461,	0.475	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > ci[0]	OK		
+§6.3	132	0.609	¦ Chapter top-1 ¦ 0.543 [0.475, 0.609] ¦ 0.529 [0.461, 0.595]	0.609	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > ci[1]	OK		
+§6.3	132	0.529	¦ Chapter top-1 ¦ 0.543 [0.475, 0.609] ¦ 0.529 [0.461, 0.595] ¦ 0.552 [	0.529	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > fr > p	OK		
+§6.3	132	0.461	hapter top-1 ¦ 0.543 [0.475, 0.609] ¦ 0.529 [0.461, 0.595] ¦ 0.552 [0.485,	0.461	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > fr > ci[0]	OK		
+§6.3	132	0.595	top-1 ¦ 0.543 [0.475, 0.609] ¦ 0.529 [0.461, 0.595] ¦ 0.552 [0.485, 0.618]	0.595	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > fr > ci[1]	OK		
+§6.3	132	0.552	.543 [0.475, 0.609] ¦ 0.529 [0.461, 0.595] ¦ 0.552 [0.485, 0.618] ¦	0.552	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > pooled > p	OK		
+§6.3	132	0.485	.475, 0.609] ¦ 0.529 [0.461, 0.595] ¦ 0.552 [0.485, 0.618] ¦	0.485	bern/ideation2/spikes/s10-bilingual/score.json	pooled ci[0]	OK		
+§6.3	132	0.618	.609] ¦ 0.529 [0.461, 0.595] ¦ 0.552 [0.485, 0.618] ¦	0.618	bern/ideation2/spikes/s10-bilingual/score.json	pooled ci[1]	OK		
+§6.3	133	0.771	¦ Gold in top 3 ¦ 0.771 ¦ 0.738 ¦ 0.810 ¦	0.771	bern/ideation2/spikes/s10-bilingual/secondary.txt	line 1 top3	OK		
+§6.3	133	0.738	¦ Gold in top 3 ¦ 0.771 ¦ 0.738 ¦ 0.810 ¦	0.738	bern/ideation2/spikes/s10-bilingual/secondary.txt	line 2 top3	OK		
+§6.3	133	0.810	¦ Gold in top 3 ¦ 0.771 ¦ 0.738 ¦ 0.810 ¦	0.810	bern/ideation2/spikes/s10-bilingual/secondary.txt	line 3 top3 (0.81)	OK		
+§6.3	134	+0.014	- French vs German: +0.014 for German [−0.043, +0.0	0.014	bern/ideation2/spikes/s10-bilingual/score.json	paired_diff > de-fr > diff	OK		
+§6.3	134	−0.043	- French vs German: +0.014 for German [−0.043, +0.076] — no measurable	-0.043	bern/ideation2/spikes/s10-bilingual/score.json	paired_diff > de-fr > ci[0]	OK		
+§6.3	134	+0.076	French vs German: +0.014 for German [−0.043, +0.076] — no measurable gap at	0.076	bern/ideation2/spikes/s10-bilingual/score.json	paired_diff > de-fr > ci[1]	OK		
+§6.3	134	210	[−0.043, +0.076] — no measurable gap at n = 210 (not a proof of equality	210	bern/ideation2/spikes/s10-bilingual/score.json	accuracy > de > n	OK		
+§6.3	135	70.5%	- The two languages agree on 70.5%: there the chapter is ri	70.5%	bern/ideation2/spikes/s10-bilingual/results.md	'languages agree (148, 70.5%)'	OK		
+§6.3	135	0.622	gree on 70.5%: there the chapter is right in 0.622; where they disagree (29	0.622	bern/ideation2/spikes/s10-bilingual/score.json	strata > languages agree > de > p	OK		
+§6.3	135	29.5%	pter is right in 0.622; where they disagree (29.5%) German is right in 0.35	29.5%	bern/ideation2/spikes/s10-bilingual/results.md	'disagree (62, 29.5%)'	OK		
+§6.3	135	0.355	ere they disagree (29.5%) German is right in 0.355, French 0.306 — the bili	0.355	bern/ideation2/spikes/s10-bilingual/score.json	strata > languages disagree > de > p	OK		
+§6.3	135	0.306	ree (29.5%) German is right in 0.355, French 0.306 — the bilingual lane sen	0.306	bern/ideation2/spikes/s10-bilingual/score.json	strata > languages disagree > fr > p	OK		
+§6.3	136	0.2975	load: the canton-weighted disagreement share 0.2975 × the weekly volume of t	0.2975	bern/ideation2/spikes/s10-bilingual/score.json	no_gold > please_check_weighted	OK		
+§6.3	136	10	ekly volume of the three parliaments (median 10, mean 25.5, p90 76.7 aff	10.0	bern/ideation2/spikes/s10-bilingual/results.md	'Clerk load: ... (median 10.0, mean 25.5, p90 76.7 ...) = 3.0 / 7.6 / 22.8'	OK		
+§6.3	136	25.5	me of the three parliaments (median 10, mean 25.5, p90 76.7 affairs a week	25.5	bern/ideation2/spikes/s10-bilingual/results.md	Clerk load line	OK		
+§6.3	136	76.7	three parliaments (median 10, mean 25.5, p90 76.7 affairs a week) = 3.0 /	76.7	bern/ideation2/spikes/s10-bilingual/results.md	Clerk load line	OK		
+§6.3	136	3.0	an 10, mean 25.5, p90 76.7 affairs a week) = 3.0 / 7.6 / 22.8 items a wee	3.0	bern/ideation2/spikes/s10-bilingual/results.md	Clerk load line	OK		
+§6.3	136	7.6	mean 25.5, p90 76.7 affairs a week) = 3.0 / 7.6 / 22.8 items a week in `	7.6	bern/ideation2/spikes/s10-bilingual/results.md	Clerk load line	OK		
+§6.3	136	22.8	25.5, p90 76.7 affairs a week) = 3.0 / 7.6 / 22.8 items a week in `please	22.8	bern/ideation2/spikes/s10-bilingual/results.md	Clerk load line	OK		
+§6.4	139	1,357	no measurable difference in any test — same 1,357 federal affairs scored f	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§6.4	139	+0.017	s scored from the German vs the French text: +0.017 [−0.003, +0.036]; S6 de/	0.017	bern/ideation2/spikes/s14-neutrality/results.md	Summary 1: 'DE−FR is +0.017 [−0.003, +0.036]'	OK		
+§6.4	139	−0.003	from the German vs the French text: +0.017 [−0.003, +0.036]; S6 de/fr/it p	-0.003	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	139	+0.036	e German vs the French text: +0.017 [−0.003, +0.036]; S6 de/fr/it p = 0.93;	0.036	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	139	0.93	xt: +0.017 [−0.003, +0.036]; S6 de/fr/it p = 0.93; S8 precision and recall	0.93	bern/ideation2/spikes/s14-neutrality/results.md	Summary 1: 'S6: de/fr/it ... p=0.93'	OK		
+§6.4	139	0.86	.93; S8 precision and recall by language p = 0.86 / 0.90; S10 (§6.3).	0.86	bern/ideation2/spikes/s14-neutrality/results.md	Summary 1: 'S8 ... (p=0.86)'	OK		
+§6.4	139	0.90	precision and recall by language p = 0.86 / 0.90; S10 (§6.3).	0.90	bern/ideation2/spikes/s14-neutrality/results.md	Summary 1: 'recall p=0.90'	OK		
+§6.4	140	0.701	accuracy among the six main parties (S9: SP 0.701 … Grüne 0.579, p = 0.47;	0.701	bern/ideation2/spikes/s14-neutrality/results.md	Summary 2: 'Grüne 0.579 to SP 0.701, p=0.47'	OK		
+§6.4	140	0.579	g the six main parties (S9: SP 0.701 … Grüne 0.579, p = 0.47; S6 p = 0.17;	0.579	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	140	0.47	ain parties (S9: SP 0.701 … Grüne 0.579, p = 0.47; S6 p = 0.17; S10 p = 0.	0.47	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	140	0.17	S9: SP 0.701 … Grüne 0.579, p = 0.47; S6 p = 0.17; S10 p = 0.61). One smal	0.17	bern/ideation2/spikes/s14-neutrality/results.md	Summary 2: 'S6: p=0.17'	OK		
+§6.4	140	0.61	Grüne 0.579, p = 0.47; S6 p = 0.17; S10 p = 0.61). One small S8 cell (SVP	0.61	bern/ideation2/spikes/s14-neutrality/results.md	Summary 2: 'S10: p=0.61'	OK		
+§6.4	140	7	0.17; S10 p = 0.61). One small S8 cell (SVP, 7 of 11 flags confirmed) i	7	bern/ideation2/spikes/s14-neutrality/results.md	Summary 2: 'SVP cell: 7/11 confirmed'	OK		
+§6.4	140	11	S10 p = 0.61). One small S8 cell (SVP, 7 of 11 flags confirmed) is lowe	11	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	140	7/20	the keyword baseline dips on the same items (7/20), and among cells with n	7/20	bern/ideation2/spikes/s14-neutrality/results.md	'Keyword precision dips for SVP too (7/20'	OK		
+§6.4	140	20	same items (7/20), and among cells with n ≥ 20 the precision gap is +0.	20	bern/ideation2/spikes/s14-neutrality/results.md	'Among cells with n ≥ 20'	OK		
+§6.4	140	+0.016	among cells with n ≥ 20 the precision gap is +0.016 [−0.104, +0.128].	0.016	bern/ideation2/spikes/s14-neutrality/results.md	'+0.016 [−0.104, +0.128]'	OK		
+§6.4	140	−0.104	lls with n ≥ 20 the precision gap is +0.016 [−0.104, +0.128].	-0.104	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	140	+0.128	n ≥ 20 the precision gap is +0.016 [−0.104, +0.128].	0.128	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	140	six main parties		6	bern/ideation2/spikes/s14-neutrality/results.md	'Party tests run over the 6 main parties'	OK		spelled-out number
+§6.4	141	0.877	- **Level:** S8 precision federal 0.877, cantonal 0.937, communa	0.877	bern/ideation2/spikes/s14-neutrality/results.md	Summary 4: federal 0.877	OK		
+§6.4	141	0.937	evel:** S8 precision federal 0.877, cantonal 0.937, communal 0.908 (p = 0.4	0.937	bern/ideation2/spikes/s14-neutrality/results.md	cantonal 0.937	OK		
+§6.4	141	0.908	sion federal 0.877, cantonal 0.937, communal 0.908 (p = 0.46).	0.908	bern/ideation2/spikes/s14-neutrality/results.md	communal 0.908	OK		
+§6.4	141	0.46	l 0.877, cantonal 0.937, communal 0.908 (p = 0.46).	0.46	bern/ideation2/spikes/s14-neutrality/results.md	'p=0.46'	OK		
+§6.4	142	0.91	rge enough (S10 Bern / Fribourg / Valais p = 0.91; S6 p = 0.30); most S8 c	0.91	bern/ideation2/spikes/s14-neutrality/results.md	Summary 5: 'S10 ... p=0.91'	OK		
+§6.4	142	0.30	10 Bern / Fribourg / Valais p = 0.91; S6 p = 0.30); most S8 canton cells h	0.30	bern/ideation2/spikes/s14-neutrality/results.md	'S6 (19 cantons, all small): p=0.30'	OK		
+§6.4	142	20	S6 p = 0.30); most S8 canton cells have n < 20 and are not read.	20	bern/ideation2/spikes/s14-neutrality/results.md	'Among cells with n ≥ 20'	OK		
+§6.4	143	0.792	he submitter type — Federal Council business 0.792 vs members' motions 0.65	0.792	bern/ideation2/spikes/s14-neutrality/results.md	Summary 3: 'Bundesrat business scores 0.792'	OK		
+§6.4	143	0.654	l Council business 0.792 vs members' motions 0.654 (+0.138 [+0.069, +0.200]	0.654	bern/ideation2/spikes/s14-neutrality/results.md	'against member motions 0.654'	OK		
+§6.4	143	+0.138	il business 0.792 vs members' motions 0.654 (+0.138 [+0.069, +0.200]); the k	0.138	bern/ideation2/spikes/s14-neutrality/results.md	'Regierungsgeschäft − Motion is +0.138 [0.069, 0.200]'	OK		
+§6.4	143	+0.069	ess 0.792 vs members' motions 0.654 (+0.138 [+0.069, +0.200]); the keyword b	0.069	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.4	143	+0.200	2 vs members' motions 0.654 (+0.138 [+0.069, +0.200]); the keyword baseline	0.200	bern/ideation2/spikes/s14-neutrality/results.md	same	OK		
+§6.5	146	2,437	Basel-Stadt oracle (2,437 hand-tagged motions, dow	2437	bern/research/R1-opd-topics.md	Basel-Stadt '2,437' hand-tagged motions	OK		
+§6.5	146	200	on the same items; municipal slice grown to ~200; read-back combined with	200	bern/VISION-topics-v2.md	§6.5 plan: 'municipal slice grown to ~200' (target, not a measurement)	OK		
+§8.1	175	5	### 8.1 Gate 1 — 5 min live demo + 3 min Q&	5	bern/BUILD-BRIEF.md	'≈5 min live demo + 3 min Q&A'; finals '5 min'	OK		
+§8.1	175	3	### 8.1 Gate 1 — 5 min live demo + 3 min Q&A (partner: OpenPa	3	bern/BUILD-BRIEF.md	'3 min Q&A'	OK		
+§8.1	178	30	"¦ 0:00–1:30 ¦ Karte, ""Digitalisierun"	30	bern/ideation/spikes/s2-oracles/results.md	B. DVS list: '30 items, 30/30 matched to OPD affairs'	OK		
+§8.1	178	27	on DVS's public page, Querschnitt recognises 27; keyword search 21. In o	27	bern/ideation2/spikes/s8-dvs/results.md	'DVS recall (P8.2, all 30): Apertus 27/30 [0.744, 0.965]'	OK		
+§8.1	178	21	e, Querschnitt recognises 27; keyword search 21. In our AI-judge-checked	21	bern/ideation2/spikes/s8-dvs/results.md	'keyword 21/30 [0.521, 0.833]'	OK		
+§8.1	178	900	wo. Across 2026, an AI judge estimates about 900 digitalisation affairs i	913.256	bern/ideation2/spikes/s8-dvs/score_ch.json	point > pos (Swiss)	ROUNDED		approximation marked in the text
+§8.1	178	45	about 900 digitalisation affairs in at least 45 Swiss parliaments. `[1]`	45	bern/ideation2/spikes/s8-dvs/score_ch.json	positives > parliaments	OK		
+§8.1	178	seven data-centre affairs; flags all seven, the keyword list two		7; 2	bern/ideation2/spikes/s8-dvs/results.md	Examples line; 5 of 7 missed by keywords	OK		spelled-out number
+§8.1	179	50	ions stream in for last week (S13: the first 50 after 12.6–75 s on a sha	50	bern/ideation2/spikes/s13-timing/results.md	S13 table 'first 50 decisions'	OK		
+§8.1	179	12.6	"am in for last week (S13: the first 50 after 12.6–75 s on a shared key). """	12.607	bern/ideation2/spikes/s13-timing/results.md	S13 table wolf: first 50 decisions 12.607 s	MISMATCH	12.607 s (or 13 s)	rounded in Querschnitt's favour
+§8.1	179	75	"for last week (S13: the first 50 after 12.6–75 s on a shared key). ""No"	75.108	bern/ideation2/spikes/s13-timing/results.md	S13 table hitze: first 50 decisions 75.108 s (max of the three)	MISMATCH	75.108 s (or 76 s)	rounded in Querschnitt's favour
+§8.1	180	1,357	2:10–2:50 ¦ Prüfstand, human labels first ¦ 1,357 held-out affairs labelle	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§8.1	180	0.704	lled by APS editors, pre-registered: chapter 0.704 shipped, 0.722 with APS	0.704	bern/ideation2/spikes/s9-aps/results.md	D1 top-1	OK		
+§8.1	180	0.722	tors, pre-registered: chapter 0.704 shipped, 0.722 with APS examples, vs pl	0.722	bern/ideation2/spikes/s9-aps/results.md	D3 top-1	OK		
+§8.1	180	0.655	0.722 with APS examples, vs plain prompting 0.655 vs keywords 0.192; no me	0.655	bern/ideation2/spikes/s9-aps/results.md	D0 top-1	OK		
+§8.1	180	0.192	amples, vs plain prompting 0.655 vs keywords 0.192; no measurable language	0.192	bern/ideation2/spikes/s9-aps/results.md	Baselines: keyword top-1	OK		
+§8.1	180	91%	hapter accuracy; the AI-judge rows for 2026 (91% of our flags vs 75% of k	0.914	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP	ROUNDED		
+§8.1	180	75%	AI-judge rows for 2026 (91% of our flags vs 75% of keyword hits) marked	0.753	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kP	MISMATCH	75.3%	rounded in Querschnitt's favour
+§8.1	180	0.687	al row where the trained BFH model is ahead (0.687 vs 0.654, n.s.). ¦	0.687	bern/ideation/spikes/s3-accuracy/results.md	BFH Omikuji thr 0.25 micro-F1	OK		
+§8.1	180	0.654	ere the trained BFH model is ahead (0.687 vs 0.654, n.s.). ¦	0.654	bern/ideation/spikes/s5-aps/results.md	Q4 table V3 fused micro-F1	OK		
+§8.1	183	2	agrees); POLITmonitor scheme as a file (V9, 2–3 h); where it runs (`li	—	—	planning estimate (§11 table, V9 '2–3 h'); no results file	NOT FOUND		
+§8.1	183	3	grees); POLITmonitor scheme as a file (V9, 2–3 h); where it runs (`lite	—	—	planning estimate (§11 table, V9 '2–3 h'); no results file	NOT FOUND		
+§8.1	183	0.654	it + quality gate + `GET /changes`); recall (0.654 on titles; editor exampl	0.654	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aR	OK		
+§8.1	183	27/30	the judge is (Claude runs + Qwen; DVS items 27/30; APS chapters 79%); priv	27/30	bern/ideation2/spikes/s15-judgecheck/results.json	both_Y / n_dvs	OK		
+§8.1	183	79%	e runs + Qwen; DVS items 27/30; APS chapters 79%); private subscriptions;	0.790	bern/ideation2/spikes/s11-anchor/anchor.json	A[2]	OK		
+§8.2	185	seven in ten	the case (plain words; spoken numbers: 900, seven in ten, nine in ten)	0.704	bern/ideation2/spikes/s9-aps/results.md	D1 top-1	ROUNDED		approximation marked in the text
+§8.2	185	nine in ten	in words; spoken numbers: 900, seven in ten, nine in ten)	0.914	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP	ROUNDED		approximation marked in the text
+§8.2	185	5	### 8.2 Finals — 5 min, jurors who did not	5	bern/BUILD-BRIEF.md	'≈5 min live demo + 3 min Q&A'; finals '5 min'	OK		
+§8.2	185	900	read the case (plain words; spoken numbers: 900, seven in ten, nine in t	913.256	bern/ideation2/spikes/s8-dvs/score_ch.json	point > pos (Swiss)	ROUNDED		approximation marked in the text
+§8.2	188	90	"line in French) ""OpenParlData collects about 90 parliaments, four langua"	90	bern/research/R1-parts/deck-topic-classification.md	line 43: 'Collects data from **90 Swiss parliaments**'	OK		
+§8.2	188	50	about 90 parliaments, four languages, about 50 new affairs a day — and	50.4	derived	bern/ideation2/census_counts.json begin_2025 18,404 / 365	ROUNDED		approximation marked in the text
+§8.2	190	0.704	n human labels, one table on screen (chapter 0.704 · with examples 0.722 ·	0.704	bern/ideation2/spikes/s9-aps/results.md	D1 top-1	OK		
+§8.2	190	0.722	ble on screen (chapter 0.704 · with examples 0.722 · plain prompting 0.655	0.722	bern/ideation2/spikes/s9-aps/results.md	D3 top-1	OK		
+§8.2	190	0.655	.704 · with examples 0.722 · plain prompting 0.655 · keywords 0.192 · subto	0.655	bern/ideation2/spikes/s9-aps/results.md	D0 top-1	OK		
+§8.2	190	0.192	"les 0.722 · plain prompting 0.655 · keywords 0.192 · subtopic 0.521): ""Agai"	0.192	bern/ideation2/spikes/s9-aps/results.md	Baselines: keyword top-1	OK		
+§8.2	190	0.521	"prompting 0.655 · keywords 0.192 · subtopic 0.521): ""Against 1,357 federal"	0.521	bern/ideation2/spikes/s9-aps/results.md	subtopic top-1	OK		
+§8.2	190	1,357	"· keywords 0.192 · subtopic 0.521): ""Against 1,357 federal affairs labelled"	1357	bern/ideation2/spikes/s9-aps/results.md	Setup: items built	OK		
+§8.2	191	nine in ten	irs on digitalisation; the judge agrees with nine in ten of our flags, and with t	0.914	bern/ideation2/spikes/s8-dvs/score_ch.json	point > aP	ROUNDED		approximation marked in the text
+§8.2	191	three in four	"rees with nine in ten of our flags, and with three in four keyword hits."" ¦"	0.753	bern/ideation2/spikes/s8-dvs/score_ch.json	point > kP	ROUNDED		approximation marked in the text
+§8.2	191	900	dge checked by an open model estimates about 900 affairs on digitalisatio	913.256	bern/ideation2/spikes/s8-dvs/score_ch.json	point > pos (Swiss)	ROUNDED		approximation marked in the text
+§8.2	191	seven affairs; flags all seven, the keyword list two		7; 2	bern/ideation2/spikes/s8-dvs/results.md	Examples line; 5 of 7 missed by keywords	OK		spelled-out number
+§8.2	192	50	ive while the pitch goes on (measured: first 50 decisions after 13–75 s	50	bern/ideation2/spikes/s13-timing/results.md	S13 table 'first 50 decisions'	OK		
+§8.2	192	13	goes on (measured: first 50 decisions after 13–75 s on a shared key). ¦	12.607	bern/ideation2/spikes/s13-timing/results.md	S13 table wolf: first 50 decisions 12.607 s	ROUNDED	12.607 s (or 13 s)	
+§8.2	192	75	es on (measured: first 50 decisions after 13–75 s on a shared key). ¦	75.108	bern/ideation2/spikes/s13-timing/results.md	S13 table hitze: first 50 decisions 75.108 s (max of the three)	MISMATCH	75.108 s (or 76 s)	rounded in Querschnitt's favour
+§8.2	193	0.615	ncil affairs routed in German and in French (0.615 / 0.645 against the Gran	0.615	bern/ideation/spikes/s6-cantonal/results.md	Apertus, DE title	OK		
+§8.2	193	0.645	airs routed in German and in French (0.615 / 0.645 against the Grand Counci	0.645	bern/ideation/spikes/s6-cantonal/results.md	Apertus, FR title	OK		
+§8.2	193	0.520	inst the Grand Council's own field; keywords 0.520 / 0.495). Then a communa	0.520	bern/ideation/spikes/s6-cantonal/results.md	Keyword stems DE	OK		
+§8.2	193	0.495	Grand Council's own field; keywords 0.520 / 0.495). Then a communal affair	0.495	bern/ideation/spikes/s6-cantonal/results.md	Keyword stems FR	OK		
+§8.2	195	10	"ons; ""the nightly model time costs under USD 10 a year at list price, be"	8.9	derived	50 affairs × USD 0.49 / 1,000 × 365 (S5 USD 0.39 + S3 yes/no 0.037 + S12 evidence 0.051; FACTCHECK.md)	OK		'under USD 10 a year' holds: 8.9

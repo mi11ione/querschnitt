@@ -1,0 +1,361 @@
+"""Render docs/PRUEFSTAND.md from eval/pruefstand.json (no calls). Every number links to the file it comes from.
+Run: python3 -I querschnitt/eval/scripts/render_pruefstand.py"""
+import json, os
+
+EVAL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+QS = os.path.dirname(EVAL)
+DOC = os.path.join(QS, "docs", "PRUEFSTAND.md")
+P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+T = {t["id"]: t for t in P["tests"]}
+UP = "../../../"  # docs/ -> querschnitt/ -> bern/ -> hackapertus root
+
+
+def href(at):
+    if isinstance(at, dict):
+        f = at["file"]; ln = at.get("line") or (at.get("lines") or [None])[0]
+        return UP + f + (f"#L{ln}" if ln else "")
+    return UP + at
+
+
+def num(v, d=3):
+    if v is None: return "—"
+    if isinstance(v, bool): return str(v)
+    if isinstance(v, int): return f"{v:,}"
+    if abs(v) >= 100: return f"{round(v):,}" if d == 0 else (f"{v:,.1f}" if v != int(v) else f"{int(v):,}")
+    s = f"{v:.{d}f}"
+    return s.replace("-", "−")
+
+
+def sgn(v, d=3):
+    return ("+" if v > 0 else "") + num(v, d)
+
+
+def ci(c, d=3, signed=False):
+    if not c: return ""
+    f = sgn if signed else num
+    return f" [{f(c[0], d)}, {f(c[1], d)}]"
+
+
+def L(text, at):
+    return f"[{text}]({href(at)})"
+
+
+def r(block, d=3, signed=False):
+    """value [lo, hi] linked to block['at']."""
+    v = block.get("value")
+    txt = (sgn(v, d) if signed else num(v, d)) + ci(block.get("ci95"), d, signed)
+    return L(txt, block["at"]) if "at" in block else txt
+
+
+def kn(k, n, at):
+    return L(f"{k}/{n}", at)
+
+
+out = []
+w = out.append
+b = P["build"]
+w("# Prüfstand")
+w("")
+w(f"Every measured test behind Querschnitt, as one ruled table each. Human labels first, then the blind AI judge. Model `{b['model']}` on "
+  f"{b['endpoint']}, build `…{b['system_fingerprint'][-8:]}` on every Apertus call. Intervals are 95%: Wilson for proportions, paired "
+  "bootstrap (2,000) for differences, stratified bootstrap for population estimates. Machine-readable: [`eval/pruefstand.json`](../eval/pruefstand.json) "
+  "(file and key for every value); claims register: [`eval/claims.tsv`](../eval/claims.tsv); check any text with `python3 -I tools/claims_check.py FILE`. "
+  "Links point into the evaluation workspace (`bern/ideation*/spikes/`).")
+w("")
+
+# ------------------------------------------------------------------ human
+w("## Human labels")
+w("")
+d3, d1, d2 = T["aps_chapter_examples"], T["aps_chapter_readback"], T["aps_chapter_pooling"]
+w(f"### 1 · APS chapter vs APS editors — {num(d1['n'], 0)} held-out federal affairs, pre-registered (S9)")
+w("")
+w(f"Wayback process pages not used before; German title + submitted text; nothing tuned on these items. "
+  f"Pre-registration: {L('PREREG.md § S9', d1['prereg'])}.")
+w("")
+w("| Design | top-1 | top-3 | Δ top-1 vs D0, paired | |")
+w("|---|---|---|---|---|")
+for t, name, ship in ((d3, "D3 chapter step with five APS-labelled examples", "shipped where examples exist"),
+                      (d1, "D1 chapter read back from the subtopic", "shipped"),
+                      (d2, "D2 German + French averaged", "dropped for the label")):
+    w(f"| {name} | {r(t['result'])} | {r(t['results_more'][0])} | {r(t['results_more'][1], signed=True)} | {ship} |")
+bl = d1["baselines"]
+w(f"| D0 plain list prompting (v14) | {r(bl[0])} | — | — | baseline |")
+w(f"| keyword (APS subtopic words, frozen) | {r(bl[1])} | — | — | baseline |")
+w(f"| majority chapter | {r(bl[2])} | — | — | baseline |")
+w("")
+st = d3["breakdowns"]["period_and_join"]
+w("Per period, D3: " + " · ".join(f"{c['cell']} {L(num(c['value']) + ci(c['ci95']) + ', n ' + str(c['n']), st['at'])}" for c in st["cells"][:3]) + ".")
+ln = d3["breakdowns"]["lanes_orders_agree_disagree"]
+w("Lanes (the two code orders agree / disagree): " + " · ".join(
+    f"{c['cell']} {L(num(c['share']), ln['at'])} of affairs, D3 precision {L(num(c['precision']) + ci(c['ci95']), ln['at'])}" for c in ln["cells"]) + ".")
+pc1, pc3 = d1["breakdowns"]["per_chapter"], d3["breakdowns"]["per_chapter"]
+w(f"Per chapter: macro-F1 {L(num(pc1['macro_F1']), pc1['at'])} (D1), {L(num(pc3['macro_F1']), pc3['at'])} (D3) over the "
+  f"{L(str(pc1['chapters']), pc1['at'])} chapters present.")
+w("")
+
+cal = T["aps_calibration"]
+w("**Confidence (S9c, 2-fold cross-fitted isotonic recalibration, no new calls).** Expected calibration error:")
+w("")
+w("| | D0 | D1 | D3 |")
+w("|---|---|---|---|")
+rm = {x["metric"].split()[1]: x for x in cal["results_more"]}
+w("| raw p | " + " | ".join(L(num(rm[d]["raw"]), rm[d]["at"]) for d in ("D0", "D1", "D3")) + " |")
+w("| recalibrated | " + " | ".join(L(num(rm[d]["value"]), rm[d]["at"]) for d in ("D0", "D1", "D3")) + " |")
+w("")
+cur = P["curves"]
+w("**Coverage–precision** (top-1 precision on the affairs that pass, ranked by confidence; the rest go to `please check`). "
+  "Shipped dial default: 70% pass.")
+w("")
+w("| coverage | " + " | ".join(f"{int(p['coverage'] * 100)}%" for p in cur["aps_d3"]["points"] if p["coverage"] in (0.5, 0.6, 0.7, 0.8, 0.9, 1.0)) + " |")
+w("|---|" + "---|" * 6)
+cf = "../eval/aps_curves.json"
+for k, nm in (("aps_d3", "D3 examples"), ("aps_d1", "D1 read-back")):
+    pts = [p for p in cur[k]["points"] if p["coverage"] in (0.5, 0.6, 0.7, 0.8, 0.9, 1.0)]
+    w(f"| {nm} | " + " | ".join(f"[{num(p['precision'])}{ci(p['ci'])}]({cf})" + (" ◀" if p["coverage"] == 0.7 else "") for p in pts) + " |")
+w("")
+w(f"Recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 points at 50, 70, 90 and 100% equal "
+  f"{L('S9 results.json', {'file': 'bern/ideation2/spikes/s9-aps/results.json'})}.")
+w("")
+
+sub = T["aps_subtopic"]
+w(f"### 2 · APS subtopic vs APS editors, end to end (S9)")
+w("")
+w("| n | top-1 | top-3 | gold chapter in the shortlist | baseline: D0 chapter → best subtopic |")
+w("|---|---|---|---|---|")
+w(f"| {num(sub['n'], 0)} | {r(sub['result'])} | {r(sub['results_more'][0])} | {r(sub['results_more'][1])} | {r(sub['baselines'][0])} |")
+w("")
+w("Subtopics ship as ranked suggestions, not as a lane.")
+w("")
+
+dv = T["dvs_human30"]
+w("### 3 · “Digitalisierung”: the 30 affairs DVS curates by hand (recall)")
+w("")
+w("| | all 30 | begun in 2026 |")
+w("|---|---|---|")
+w(f"| Querschnitt (yes/no, p ≥ 0.5) | {L('27/30', dv['result']['at'])}{ci(dv['result']['ci95'])} | {L('23/24', dv['results_more'][0]['at'])}{ci(dv['results_more'][0]['ci95'])} |")
+w(f"| keyword list (29 stems, de/fr/it) | {L('21/30', dv['baselines'][0]['at'])}{ci(dv['baselines'][0]['ci95'])} | {L('16/24', dv['baselines'][1]['at'])}{ci(dv['baselines'][1]['ci95'])} |")
+w(f"| the AI judge, for reference (S15) | {L('27/30', dv['results_more'][1]['at'])} [0.74, 0.97] | — |")
+w("")
+w(f"Split: {dv['split']}.")
+w("")
+
+cu = T["curia_sachbereiche"]
+w("### 4 · Federal Sachbereiche vs Parliament's own Curia tags (all tags per affair)")
+w("")
+w("| n = 200, submitted after the BFH model | micro-F1 | macro-F1 | top-1 is a gold tag |")
+w("|---|---|---|---|")
+bf = cu["baselines"][0]
+w(f"| Apertus: 5 retrieved tagged examples + yes/no check of the top 6 | {r(cu['result'])} | {r(cu['results_more'][0])} | "
+  f"{r(cu['results_more'][1])} (no examples) |")
+w(f"| BFH model, trained on {L('15,007', bf['training_size_at'])} tagged affairs | {r(bf)} | {L('0.577 [0.525, 0.642]', bf['at'])} | "
+  f"{L(num(bf['top1']) + ci(bf['top1_ci95']), bf['at'])} |")
+w("")
+w(f"Paired micro-F1 difference Apertus − BFH: {L('−0.079 to +0.010', cu['results_more'][2]['at'])}. Split: {cu['split']}. "
+  "Example pool: 52,408 affairs tagged before 6 Nov 2024.")
+w("")
+
+be = T["bern_directorates"]
+w("### 5 · Bern: lead directorate (8 directorates, scheme swap) vs the Grand Council's own field, titles only")
+w("")
+w("| n = 200 | German title | French title | DE + FR averaged |")
+w("|---|---|---|---|")
+w(f"| Apertus | {r(be['result'])} | {r(be['results_more'][0])} | {r(be['results_more'][1])} |")
+kb = be["baselines"][0]
+w(f"| keyword stems | {L(num(kb['value'][0]) + ci(kb['ci95'][0]), kb['at'])} | {L(num(kb['value'][1]) + ci(kb['ci95'][1]), kb['at'])} | — |")
+w(f"| majority class | {r(be['baselines'][1])} | | |")
+w("")
+w(f"German − French, paired: {r(be['results_more'][2], signed=True)}.")
+w("")
+
+an, jd = T["judge_anchor_aps"], T["judge_dvs_human"]
+w("### 6 · The AI judge itself against human labels")
+w("")
+w("| Test | n | AI judge (Claude, blind) | Apertus, same items |")
+w("|---|---|---|---|")
+bl = {x["name"]: x for x in an["baselines"]}
+w(f"| APS chapter = APS editors' chapter (S11) | 200 | {r(an['result'])}; second code included {r(an['results_more'][2])}; "
+  f"run A = run B {r(an['results_more'][1])} | D1 {r(bl['Apertus D1 on the same 200'])} · D3 {r(bl['Apertus D3 on the same 200'])} |")
+w(f"| says yes to the 30 DVS items (S15) | 30 | {L('27/30', jd['result']['at'])}{ci(jd['result']['ci95'])} both runs "
+  f"(run B {L('28 of 30', jd['results_more'][1]['at'])}) | {L('27/30', T['dvs_human30']['result']['at'])} |")
+w("")
+w("The judge's precision on human negatives is not measured (no human negatives exist).")
+w("")
+
+ns = T["neutrality_s9"]
+bd = ns["breakdowns"]
+w("### 7 · Neutrality on human labels (S9, no new calls)")
+w("")
+w(f"Language, same {num(ns['n'], 0)} affairs scored from the German vs the French text (paired): German − French "
+  f"{r(ns['result'], signed=True)}, McNemar p {ns['result']['p_mcnemar']}.")
+w("")
+
+
+def cell_table(title, blocks, labels):
+    """blocks: list of cells() dicts with the same cell order; labels: column names."""
+    w(f"| {title} | " + " | ".join(labels) + " |")
+    w("|---|" + "---|" * len(labels))
+    names = [c["cell"] for c in blocks[0]["cells"]]
+    for i, nm in enumerate(names):
+        row = []
+        for bk in blocks:
+            c = next((x for x in bk["cells"] if x["cell"] == nm), None)
+            row.append("—" if c is None else L(num(c["value"]) + ci(c["ci95"]) + f", n {c['n']}", bk["at"]) + (" (small)" if c.get("small") else ""))
+        w(f"| {nm} | " + " | ".join(row) + " |")
+    tests = []
+    for bk in blocks:
+        t = bk["test"]; g = bk.get("largest_gap") or {}
+        s = f"p {t['p_perm']}" if t.get("p_perm") is not None else ""
+        if g.get("diff") is not None:
+            s += f"; gap {g['hi']} − {g['lo']} {sgn(g['diff'])}{ci(g['ci95'], signed=True)}"
+        tests.append(L(s, bk["at"]) if s else "—")
+    w("| *test (cells n ≥ 20)* | " + " | ".join(tests) + " |")
+    w("")
+
+
+cell_table("S9 by party", [bd["party_D1_top1"], bd["party_keyword_top1"]], ["D1 top-1", "keyword top-1"])
+cell_table("S9 by instrument", [bd["instrument_D1_top1"], bd["instrument_keyword_top1"]], ["D1 top-1", "keyword top-1"])
+w("Reading: no measurable difference by language or among the six main parties; government business scores higher than members' "
+  "motions, and the keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.")
+w("")
+
+fg = T["free_generation"]
+w("### 8 · Free naming without a list (rule check)")
+w("")
+w(f"Asked to name a topic freely, Apertus answered outside both the Curia 28 and the APS label sets in {L('36/40', fg['result']['at'])} "
+  f"(90% [77%, 96%]) and never answered “no topic” ({L('0/40', fg['results_more'][0]['at'])}); with the list shown, "
+  f"{L('0/40', fg['results_more'][1]['at'])} were off-list. Every shipped decision is a choice among listed codes.")
+w("")
+
+# ------------------------------------------------------------------ AI judge
+w("## AI-judge rows")
+w("")
+w("Gold where no official labels exist: a blind AI judge (two runs of a Claude model + a tie-break run, cross-checked by the open-weights "
+  "Qwen-SEA-LION). Its agreement with human labels is in §6 above. Every figure below is agreement with that judge.")
+w("")
+s8 = T["dvs_2026"]
+m = {x["metric"]: x for x in s8["results_more"]}
+kb = s8["baselines"][0]
+w(f"### 9 · “Digitalisierung” in Swiss parliaments, 2026 (S8, pre-registered)")
+w("")
+w(f"Population {num(s8['n'], 0)} Swiss affairs begun 1 Jan–6 Oct 2026; {num(s8['n_checked'], 0)} checked by the judge across four strata, "
+  "weighted back to the population. Flag at p ≥ 0.5, fixed before the run.")
+w("")
+ch = {"file": "bern/ideation2/spikes/s8-dvs/score_ch.json"}
+w("| estimated, 95% interval | Querschnitt | keyword list (29 stems) | difference |")
+w("|---|---|---|---|")
+w(f"| precision vs the judge | {r(s8['result'])} | {L(num(kb['precision']) + ci(kb['precision_ci95']), ch)} | "
+  f"{r(m['Δ precision Apertus − keyword'], signed=True)} |")
+w(f"| recall vs the judge | {r(m['recall vs the judge (Swiss)'])} | {L(num(kb['recall']) + ci(kb['recall_ci95']), ch)} | "
+  f"{r(m['Δ recall Apertus − keyword'], signed=True)} |")
+af = m['estimated flags (Swiss)']
+w(f"| affairs flagged | {L(num(af['value'], 0) + ' [' + num(af['ci95'][0], 0) + ', ' + num(af['ci95'][1], 0) + ']', ch)} | "
+  f"{L(num(kb['flags'], 0) + ' [' + num(kb['flags_ci95'][0], 0) + ', ' + num(kb['flags_ci95'][1], 0) + ']', ch)} | |")
+q = m["judge = Qwen alone: precision / recall"]
+w(f"| judge = Qwen alone: precision / recall | {L(num(q['value'][0]) + ' / ' + num(q['value'][1]), q['at'])} | "
+  f"{L(num(kb['qwen_only'][0]) + ' / ' + num(kb['qwen_only'][1]), q['at'])} | |")
+w("")
+pos = m["estimated digitalisation affairs (judge positives, Swiss)"]
+w(f"Estimated digitalisation affairs: {L(num(pos['value'], 0) + ' [' + num(pos['ci95'][0], 0) + ', ' + num(pos['ci95'][1], 0) + ']', pos['at'])}. "
+  f"Judge: run A = run B {L(num(s8['judge']['AB'][1]), s8['judge']['at'])} (κ {L(num(s8['judge']['AB'][2]), s8['judge']['at'])}); "
+  f"Qwen vs the runs κ {L(num(s8['judge']['AQ'][2]), s8['judge']['at'])} / {L(num(s8['judge']['BQ'][2]), s8['judge']['at'])}.")
+w("")
+bd = s8["breakdowns"]
+pz = bd["positives_in_checked_sample"]
+w(f"Judge-confirmed Swiss positives in the checked sample: {L(str(pz['n']), pz['at'])} from {L(str(pz['parliaments']), pz['at'])} parliaments — "
+  + L(f"cantonal {pz['by_level']['cantonal']}, federal {pz['by_level']['federal']}, communal {pz['by_level']['communal']}; "
+      f"German {pz['by_lang']['de']}, French {pz['by_lang']['fr']}, Italian {pz['by_lang']['it']}", pz['at']) + ".")
+w("")
+w("Per language and level (all 464 checked items incl. Liechtenstein, weighted; S14):")
+w("")
+cell_table("S8 by language", [bd["language_precision"], bd["language_recall"]], ["precision", "recall"])
+cell_table("S8 by level", [bd["level_precision"], bd["level_recall"]], ["precision", "recall"])
+cell_table("S8 by submitter party", [bd["party_precision"], bd["party_keyword_precision"]], ["Querschnitt precision", "keyword precision"])
+w("The party test (p 0.018) comes from the small SVP cell (7 of 11 confirmed); keyword precision dips on the same items (7/20). "
+  "Among cells with n ≥ 20 the gap is +0.016 [−0.104, +0.128]. Canton cells are below n = 20 except BS and are not read.")
+w("")
+pb = bd["per_body_flags"]
+w(f"Per parliament (flag counts in the scored sample, {L('S8 results', pb['at'])}; estimated flags point only, no per-body gold) — the ten largest:")
+w("")
+w("| body | level | affairs in 2026 | scored | flagged | est. flags | keyword hits |")
+w("|---|---|---|---|---|---|---|")
+for row in pb["rows"][:10]:
+    w(f"| {row['body']} | {row['level']} | " + " | ".join(L(num(row[k], 1) if isinstance(row[k], float) else num(row[k], 0), pb['at'])
+                                                          for k in ('N window', 'sample n', 'flags (sample)', 'est. flags', 'kw (sample)')) + " |")
+w("")
+w(f"All bodies: [`eval/pruefstand.json`](../eval/pruefstand.json) → `dvs_2026.breakdowns.per_body_flags`.")
+w("")
+
+lp, tx, ev = T["dvs_correction_loop"], T["dvs_text_lever"], T["evidence_support"]
+w("### 10 · Correction loop, text input, evidence")
+w("")
+w("| Test | n | Result | Same items, without |")
+w("|---|---|---|---|")
+w(f"| Correction loop (simulated, P8.5): 60 judge labels shown as an editor's first decisions, 4 nearest per affair | {lp['n']} | "
+  f"F1 {r(lp['result'])}; Δ {r(lp['results_more'][0], signed=True)} | F1 {L(num(lp['baselines'][0]['F1']), lp['baselines'][0]['at'])} |")
+tv = tx["result"]; tb = tx["baselines"][0]
+w(f"| Submitted text added to title (S8b, federal) | {tx['n']} | precision {L(num(tv['value'][0]) + ci(tv['ci95'][0]), tv['ci_at'])}, "
+  f"recall {L(num(tv['value'][1]) + ci(tv['ci95'][1]), tv['ci_at'])}; Δ recall {r(tx['results_more'][0], signed=True)} | "
+  f"title only: {L(num(tb['value'][0]) + ci(tb['ci95'][0]) + ', ' + num(tb['value'][1]) + ci(tb['ci95'][1]), tb['at'])} |")
+em = {x["metric"]: x for x in ev["results_more"]}
+w(f"| Evidence: the quoted sentence supports the chapter (S12) | {ev['n']} | {r(ev['result'])}; chapter right {r(em['when the chapter is right (APS editors)'])}, "
+  f"wrong {r(em['when the chapter is wrong'])} | exact-substring check {L('120/120', em['quote is an exact substring']['at'])} |")
+w("")
+w("The loop row is unweighted and on a sample that over-represents flagged affairs; text makes the model stricter, not more complete.")
+w("")
+
+s6 = T["aps_cantonal_communal"]
+bd = s6["breakdowns"]
+w("### 11 · APS chapter, cantonal and communal (S6, cross-checked S7)")
+w("")
+w("| cell | top-1 vs the judge | n |")
+w("|---|---|---|")
+w(f"| all | {r(s6['result'])} | {L(str(s6['result']['n']), s6['result']['at'])} |")
+for k, nm in (("level_cantonal", "cantonal"), ("level_communal", "communal"), ("lang_de", "German"), ("lang_fr", "French"), ("lang_it", "Italian"),
+              ("with_text", "with text"), ("title_only", "title only"), ("first_reading_p_ge_0.9", "first reading p ≥ 0.9"),
+              ("readings_disagree", "the two readings disagree")):
+    c = bd[k]; w(f"| {nm} | {r(c)} | {L(str(c['n']), c['at'])} |")
+mj = s6["results_more"][0]
+w(f"| gold = majority of Claude ×2 + Qwen | {r(mj)} | {L(str(mj['n']), mj['at'])} |")
+w("")
+cell_table("S6 by canton", [bd["canton"]], ["top-1"])
+
+s10 = T["aps_bilingual"]
+bd = s10["breakdowns"]
+w("### 12 · Bilingual cantons BE, FR, VS — German vs French titles (S10, pre-registered)")
+w("")
+w("| n = 210 | German | French | averaged |")
+w("|---|---|---|---|")
+w(f"| chapter top-1 | {r(s10['result'])} | {r(s10['results_more'][0])} | {r(s10['results_more'][1])} |")
+t3 = s10["results_more"][3]
+w(f"| gold in top 3 | {L(num(t3['value'][0]), t3['at'])} | {L(num(t3['value'][1]), t3['at'])} | {L(num(t3['value'][2]), t3['at'])} |")
+for c in ("BE", "FR", "VS"):
+    x = bd["canton"][c]
+    w(f"| {c} | {r(x['de'])} | {r(x['fr'])} | {r(x['pooled'])} |")
+w("")
+ag = bd["languages_agree"]
+w(f"German − French {r(s10['results_more'][2], signed=True)} (paired; no measurable gap at n = 210). The two languages agree on "
+  f"{L('70.5%', ag['at'])}: chapter right {r(ag)}; where they disagree, German {r(bd['languages_disagree_de'])}, French "
+  f"{r(bd['languages_disagree_fr'])} — that third goes to a person. Clerk load: {L(bd['clerk_load']['value'], bd['clerk_load']['at'])}.")
+w("")
+
+# ------------------------------------------------------------------ limits
+w("## Limits")
+w("")
+w("- Recall for “Digitalisierung” on titles is 0.654 [0.486, 0.894] against the judge; most of the interval comes from 4 judge positives "
+  "among 180 checked affairs that neither method flagged. The 30 DVS items are the human recall check; the yes/no prompt and the 0.5 cut-off "
+  "were set on those same items (S3), so a held-out human recall test is the partner's full list (`make eval GOLD=…`).")
+w("- APS subtopics reach 0.521 top-1 end to end and ship as ranked suggestions.")
+w("- Short, title-only cantonal and communal affairs are the hardest input (0.543 / 0.529 on bilingual titles; S6 0.606 title-only vs 0.708 with text).")
+w("- On the Federal Parliament's own multi-tag task the trained BFH model is ahead (micro-F1 0.687 vs 0.654, paired −0.079 to +0.010); "
+  "the Curia design was tuned on 100 dev items.")
+w("- Where no official labels exist, the gold is the AI judge. It matches APS editors on 0.790 [0.728, 0.841] of chapters and says yes to "
+  "27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.")
+w("- All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.")
+w("")
+w("## To measure")
+w("")
+for x in P["to_measure"]:
+    w(f"- {x}")
+w("")
+open(DOC, "w", encoding="utf-8").write("\n".join(out))
+print("wrote", DOC, len(out), "lines")

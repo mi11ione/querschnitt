@@ -15,7 +15,7 @@ from pathlib import Path
 
 from . import prompts as P
 from .engine import mean_p, need_ch2, need_yn_b
-from .scheme import APS, adhoc
+from .scheme import APS, adhoc, flat
 
 VERSION = "0.6.0"
 
@@ -99,7 +99,51 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
                     continue
             out[t["id"]] = yn_decision(ra, rb, t.get("cutoff", 0.5))
             out[t["id"]]["meta"] = ra["meta"]
+            out[t["id"]]["evidence"] = evidence_of(a, t["names"]["de"], rows)
+    if "aps" in out:
+        d = out["aps"]
+        if d["ch"] < 24:
+            d["evidence"] = evidence_of(a, APS.names["de"][d["ch"]], rows)
+        bi = bilingual(a, rows)
+        if bi:
+            d["bilingual"] = bi
+            d["lane"] = bi["lane"]
+    if a["body"] == "BE" and a["lang"] in ("de", "fr"):
+        sch = flat("be-directorates")
+        u, p, codes = P.flat_prompt(sch, a["title"], a["lang"])
+        r = rows.get(P.pid(u, p))
+        if r:
+            i = argmax(r["p"])
+            out["be-directorates"] = dict(code=(sch["options"][i]["code"] if i < len(sch["options"]) else sch["none"]["code"]),
+                                          p=r["p"][i], gold=a.get("dept") or None)
     return out
+
+
+BILINGUAL = {"BE", "FR", "VS"}
+
+
+def bilingual(a: dict, rows: dict) -> dict | None:
+    """Bilingual parliaments: the German and the French title are the two readings (S10); they disagree → please check."""
+    if a["body"] not in BILINGUAL or a.get("alt_lang") not in ("de", "fr") or a["lang"] not in ("de", "fr"):
+        return None
+    m = dict(title=a["title"], title_long=a["title_long"], text="", lang=a["lang"])
+    o = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])
+    rm, ro = rows.get(P.pid(*P.chapter_prompt(m, list(range(25))))), rows.get(P.pid(*P.chapter_prompt(o, list(range(25)))))
+    if not (rm and ro):
+        return None
+    tm, to = argmax(rm["p"]), argmax(ro["p"])
+    return dict(lane="readings_agree" if tm == to else "please_check", top={a["lang"]: tm, a["alt_lang"]: to})
+
+
+def evidence_of(a: dict, name: str, rows: dict) -> dict | None:
+    sents = P.sentences(a)
+    if not sents:
+        return None
+    u, p = P.evidence_prompt([x for _, x in sents], name)
+    r = rows.get(P.pid(u, p))
+    if not r or not r.get("ok"):
+        return None
+    return dict(field=r["field"], start=r["start"], end=r["end"], quote=r["quote"])
 
 
 def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "") -> list[dict]:

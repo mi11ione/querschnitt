@@ -86,7 +86,8 @@ def run(args):
             n_signers=x["n_signers"], dept=x["dept"],
             aps=dict(rank=a["rank"], conf_raw=round(a["conf"], 4), p=[round(a["P"][i], 4) for i in a["rank"]], lane=a["lane"],
                      subs=[[s, round(p, 4)] for s, p in a["subs"]], readings=a["n_readings"], examples=a.get("examples"),
-                     pids=a["pids"], evidence=a.get("evidence")) if a else None,
+                     pids=a["pids"], evidence=a.get("evidence"), bilingual=a.get("bilingual")) if a else None,
+            be=d.get("be-directorates"),
             dig=dict(p=round(g["p"], 4), p_a=round(g["p_a"], 4), p_b=None if g["p_b"] is None else round(g["p_b"], 4),
                      lane=g["lane"], evidence=g.get("evidence")) if g else None,
             build=lock["fp"], model=lock["model"])

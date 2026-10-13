@@ -11,4 +11,4 @@ Short list of things only you can do. Everything else is running or decided.
    finishes around Thu 00:00, evidence quotes by Thu midday, and the since-2015 chapter pass gets ≈ 60–70% done by Sat night.
    The whole back catalogue (325k affairs, chapter step, ≈ 420k requests) would need ≈ 3× the rate. If Public AI raises the
    limit for this key (or you want a dedicated key for the run), say so and put the key at
-   `~/.config/hackapertus/publicai.key` (or tell me the path); the runner picks up `control` changes without a restart.
+   `~/.config/hackapertus/publicai.key` (or tell me the path); the run reads a new ceiling from `runs/main/control.json` (`{"max_rate": 4}`) each minute.

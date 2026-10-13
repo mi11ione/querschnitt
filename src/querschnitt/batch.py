@@ -235,6 +235,14 @@ class Runner:
 
         def ticker():
             while not self.stop.wait(60):
+                try:  # live rate ceiling: <out>/control.json {"max_rate": 2.5}
+                    c = json.loads((self.out / "control.json").read_text())
+                    mr = float(c.get("max_rate", self.client.guard.max_rate))
+                    if 0.05 <= mr <= 20 and mr != self.client.guard.max_rate:
+                        with self.client.guard.cv:
+                            self.client.guard.max_rate = mr; self.client.guard.rate = min(self.client.guard.rate, mr)
+                except (FileNotFoundError, ValueError):
+                    pass
                 self.progress(len(items))
         threading.Thread(target=ticker, daemon=True).start()
         with ThreadPoolExecutor(self.args.conc) as ex:

@@ -128,6 +128,10 @@ YN = {"de": ("Geschäft", "Titel", "Langtitel", "Nein, anderes Thema", "Antworte
       "it": ("Oggetto", "Titolo", "Titolo lungo", "No, altro tema", "Rispondi solo con la lettera in JSON: {\"risposta\": \"<lettera>\"}", "risposta")}
 
 
+EX_YN_HEAD = {"de": "Beispiele, von einer Redaktorin entschieden:", "fr": "Exemples décidés par une rédactrice :",
+              "it": "Esempi decisi da una redattrice:"}
+
+
 def yesno_prompt(topic: dict, lang: str, title: str, title_long: str, order: str = "a",
                  examples: list[tuple[str, bool]] | None = None) -> tuple[str, str]:
     """order 'a': A = yes; order 'b': A = no. Title + long title (first 400 chars each), in the affair's language.
@@ -137,11 +141,9 @@ def yesno_prompt(topic: dict, lang: str, title: str, title_long: str, order: str
     opts = [("A", yes), ("B", no)] if order == "a" else [("A", no), ("B", yes)]
     blk = f"{ti}: {title[:400]}" + (f"\n{tl}: {title_long[:400]}" if title_long and title_long != title else "")
     ex = ""
-    if examples:
+    if examples:  # P8.5 loop format (S8): the 4 most similar decided affairs, "- Titel: … → A/B"
         yc, nc = ("A", "B") if order == "a" else ("B", "A")
-        head = {"de": "Frühere Entscheide (zur Orientierung):", "fr": "Décisions antérieures (pour orientation) :",
-                "it": "Decisioni precedenti (per orientamento):"}[lang]
-        ex = head + "\n" + "\n".join(f"- {t[:200]} → {yc if y else nc}" for t, y in examples) + "\n\n"
+        ex = EX_YN_HEAD[lang] + "\n" + "\n".join(f"- {ti}: {t[:300]} → {yc if y else nc}" for t, y in examples) + "\n\n"
     u = f"{q}\n\n" + "\n".join(f"{c} = {s}" for c, s in opts) + f"\n\n{ex}{item}:\n{blk}\n\n{fmt}"
     return u, '{"' + key + '": "'
 

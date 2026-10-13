@@ -163,10 +163,12 @@ class Runner:
                     m = dict(title=a["title"], title_long=a["title_long"], text="", lang=a["lang"])
                     u, p = P.chapter_prompt(m, list(range(25)))
                     self._step(P.pid(u, p), lambda: dict(self.engine.ch_lang(m), aid=a["id"], ih=ih))
-            if "be" in S and a["body"] == "BE" and a["lang"] in ("de", "fr"):
+            if "be" in S and a["body"] == "BE":
                 sch = flat("be-directorates")
-                u, p, codes = P.flat_prompt(sch, a["title"], a["lang"])
-                self._step(P.pid(u, p), lambda: dict(self.engine.flat(sch, a["title"], a["lang"]), aid=a["id"], ih=ih))
+                for t, l in ((a["title"], a["lang"]), (a.get("title_alt"), a.get("alt_lang"))):
+                    if t and l in ("de", "fr"):
+                        u, p, codes = P.flat_prompt(sch, t, l)
+                        self._step(P.pid(u, p), lambda t=t, l=l: dict(self.engine.flat(sch, t, l), aid=a["id"], ih=ih))
             if "ev" in S:
                 self.evidence(a, r1, r2, ih)
             self.counts["affairs"] += 1

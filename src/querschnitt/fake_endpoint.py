@@ -118,7 +118,7 @@ class FakeEndpoint:
             content = max(dist, key=dist.get)
         elif self.gen_text is not None:
             content = self.gen_text
-        elif '"terms"' in user:
+        elif '"terms"' in user or '"scope"' in user:
             content = json.dumps(self.topic_json or dict(
                 name=dict(de="Wolf und Herdenschutz", fr="loup et protection des troupeaux", it="lupo e protezione delle greggi"),
                 scope=dict(de="Wolf, Herdenschutz, Abschuss", fr="loup, protection des troupeaux, tirs", it="lupo, protezione, abbattimenti"),

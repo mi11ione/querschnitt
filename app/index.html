@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Querschnitt</title>
+<meta name="description" content="Ein Themenfeld für jedes Schweizer Parlament: APS-Kapitel, Ad-hoc-Themen und Belege für OpenParlData-Geschäfte.">
+<link rel="preload" href="fonts/public-sans-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/fragment-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23111'/%3E%3Crect x='3' y='7' width='10' height='2' fill='%23fff'/%3E%3C/svg%3E">
+</head>
+<body class="loading">
+<div class="app">
+<header class="bar">
+ <span class="wm">Querschnitt</span>
+ <nav class="views" role="tablist" aria-label="Ansichten">
+  <button class="view" role="tab" type="button" id="t-karte" aria-controls="v-karte">Karte</button>
+  <button class="view" role="tab" type="button" id="t-neu" aria-controls="v-neu">Neues Thema</button>
+  <button class="view" role="tab" type="button" id="t-pruef" aria-controls="v-pruef">Prüfstand</button>
+ </nav>
+ <div class="tools">
+  <span id="fixture" class="sig" hidden></span>
+  <span id="mode"></span>
+  <span><button class="tb mono" type="button" id="l-de">DE</button> <button class="tb mono" type="button" id="l-fr">FR</button></span>
+  <span id="build"></span>
+ </div>
+</header>
+<div class="ctxw"><p class="ctx" id="facts">…</p></div>
+<main>
+ <section class="viewp" id="v-karte" role="tabpanel" aria-labelledby="t-karte"></section>
+ <section class="viewp" id="v-neu" role="tabpanel" aria-labelledby="t-neu" hidden></section>
+ <section class="viewp" id="v-pruef" role="tabpanel" aria-labelledby="t-pruef" hidden></section>
+</main>
+<footer><p id="prov"></p><p class="key" id="keys"></p></footer>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,793 @@
+{
+ "rows": [
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "fünf APS-Beispiele (D3)",
+   "design_fr": "cinq exemples APS (D3)",
+   "n": 1357,
+   "result": "top-1 0.722 · top-3 0.875",
+   "interval": [
+    0.698,
+    0.745
+   ],
+   "baseline": "Listen-Prompt 0.655 · Stichwort 0.192 · Mehrheit 0.080",
+   "split": "held-out, vorregistriert",
+   "file": "ideation2/spikes/s9-aps/results.md"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "Kapitel aus Unterthema (D1, ausgeliefert)",
+   "design_fr": "chapitre déduit du sous-thème (D1, livré)",
+   "n": 1357,
+   "result": "top-1 0.704 · top-3 0.843",
+   "interval": [
+    0.679,
+    0.727
+   ],
+   "baseline": "Listen-Prompt 0.655",
+   "split": "held-out, vorregistriert",
+   "file": "ideation2/spikes/s9-aps/results.md"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "Listen-Prompt, zwei Reihenfolgen (D0)",
+   "design_fr": "liste, deux ordres (D0)",
+   "n": 1357,
+   "result": "top-1 0.655",
+   "interval": [
+    0.629,
+    0.68
+   ],
+   "baseline": "—",
+   "split": "held-out, vorregistriert",
+   "file": "ideation2/spikes/s9-aps/results.md"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "DE + FR gemittelt (D2)",
+   "design_fr": "DE + FR moyennés (D2)",
+   "n": 1357,
+   "result": "top-1 0.634",
+   "interval": null,
+   "baseline": "Δ vs D0 −0.021 [−0.037, −0.004]",
+   "split": "held-out, vorregistriert",
+   "file": "ideation2/spikes/s9-aps/results.md"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "Unterthema, durchgehend",
+   "design_fr": "sous-thème, de bout en bout",
+   "n": 1221,
+   "result": "top-1 0.521 · top-3 0.677",
+   "interval": null,
+   "baseline": "—",
+   "split": "held-out, vorregistriert",
+   "file": "ideation2/spikes/s9-aps/results.md"
+  },
+  {
+   "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",
+   "test_fr": "« numérique » : 30 objets DVS choisis à la main (rappel)",
+   "gold": "human",
+   "design": "Ja/Nein mit Umfangnotiz",
+   "design_fr": "oui/non avec note de portée",
+   "n": 30,
+   "result": "27/30",
+   "interval": null,
+   "baseline": "Stichwort 21/30 · KI-Richter 27/30",
+   "split": "alle öffentlichen Einträge",
+   "file": "ideation2/spikes/s8-dvs/results.md"
+  },
+  {
+   "test": "Sachbereiche Bund vs. Curia-Tags",
+   "test_fr": "Domaines fédéraux vs tags Curia",
+   "gold": "human",
+   "design": "fünf getaggte Beispiele + Ja/Nein Top 6",
+   "design_fr": "cinq exemples + oui/non top 6",
+   "n": 200,
+   "result": "micro-F1 0.654",
+   "interval": [
+    0.623,
+    0.686
+   ],
+   "baseline": "BFH (trainiert, 15'007) 0.687 [0.652, 0.722]",
+   "split": "nach BFH-Publikation eingereicht",
+   "file": "ideation/spikes/s5",
+   "baseline_fr": "BFH (entraîné, 15 007) 0,687 [0,652, 0,722]"
+  },
+  {
+   "test": "Bern, Leitdirektion (8), Titel, DE / FR",
+   "test_fr": "Berne, direction responsable (8), titres, DE / FR",
+   "gold": "human",
+   "design": "Schema-Tausch",
+   "design_fr": "changement de schéma",
+   "n": 200,
+   "result": "0.615 / 0.645",
+   "interval": null,
+   "baseline": "Stichwort 0.520 / 0.495 · Mehrheit 0.175",
+   "split": "Grossratsfeld",
+   "file": "ideation/spikes/s6"
+  },
+  {
+   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
+   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
+   "gold": "judge",
+   "design": "Präzision",
+   "design_fr": "précision",
+   "n": 14513,
+   "result": "0.914",
+   "interval": [
+    0.876,
+    0.952
+   ],
+   "baseline": "Stichwort 0.753 [0.714, 0.790]",
+   "split": "453 geprüft, gewichtet",
+   "file": "ideation2/spikes/s8-dvs/results.md"
+  },
+  {
+   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
+   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
+   "gold": "judge",
+   "design": "Recall",
+   "design_fr": "rappel",
+   "n": 14513,
+   "result": "0.654",
+   "interval": [
+    0.486,
+    0.894
+   ],
+   "baseline": "Stichwort 0.605 [0.451, 0.827]",
+   "split": "453 geprüft, gewichtet",
+   "file": "ideation2/spikes/s8-dvs/results.md"
+  },
+  {
+   "test": "Beleg stützt das Thema (blinder KI-Richter)",
+   "test_fr": "L'extrait soutient le thème (juge IA aveugle)",
+   "gold": "judge",
+   "design": "zitierter Satz",
+   "design_fr": "phrase citée",
+   "n": 120,
+   "result": "0.850 · Teilstring 120/120",
+   "interval": [
+    0.775,
+    0.903
+   ],
+   "baseline": "—",
+   "split": "Stichprobe",
+   "file": "ideation2/spikes/s12-evidence"
+  },
+  {
+   "test": "APS-Kapitel, kantonal + kommunal vs. KI-Richter",
+   "test_fr": "Chapitre APS, cantonal + communal vs juge IA",
+   "gold": "judge",
+   "design": "Kapitel",
+   "design_fr": "chapitre",
+   "n": 153,
+   "result": "0.686 · kantonal 0.726 · kommunal 0.621",
+   "interval": null,
+   "baseline": "—",
+   "split": "zwei Läufe, κ 0.95",
+   "file": "ideation/spikes/s7"
+  },
+  {
+   "test": "Zweisprachige Kantone, Titel, DE vs. FR",
+   "test_fr": "Cantons bilingues, titres, DE vs FR",
+   "gold": "judge",
+   "design": "Deutsch",
+   "design_fr": "allemand",
+   "n": 210,
+   "result": "0.543",
+   "interval": [
+    0.475,
+    0.609
+   ],
+   "baseline": "—",
+   "split": "vorregistriert",
+   "file": "ideation2/spikes/s10-bilingual"
+  },
+  {
+   "test": "Zweisprachige Kantone, Titel, DE vs. FR",
+   "test_fr": "Cantons bilingues, titres, DE vs FR",
+   "gold": "judge",
+   "design": "Französisch",
+   "design_fr": "français",
+   "n": 210,
+   "result": "0.529",
+   "interval": [
+    0.461,
+    0.595
+   ],
+   "baseline": "Differenz +0.014 [−0.043, +0.076]",
+   "split": "vorregistriert",
+   "file": "ideation2/spikes/s10-bilingual"
+  },
+  {
+   "test": "KI-Richter selbst vs. APS-Redaktion",
+   "test_fr": "Le juge IA vs rédaction APS",
+   "gold": "judge",
+   "design": "Claude, blind, gleicher Input",
+   "design_fr": "Claude, aveugle, même entrée",
+   "n": 200,
+   "result": "0.790",
+   "interval": [
+    0.728,
+    0.841
+   ],
+   "baseline": "Apertus 0.695 / 0.720",
+   "split": "Stichprobe",
+   "file": "ideation2/spikes/s11-anchor"
+  }
+ ],
+ "curve": {
+  "test": "APS-Kapitel, 1'357 Bundesgeschäfte, fünf APS-Beispiele (D3)",
+  "test_fr": "Chapitre APS, 1 357 objets fédéraux, cinq exemples APS (D3)",
+  "n": 1357,
+  "x": "coverage",
+  "y": "precision",
+  "points": [
+   [
+    0.0074,
+    1.0
+   ],
+   [
+    0.0147,
+    1.0
+   ],
+   [
+    0.0221,
+    1.0
+   ],
+   [
+    0.0295,
+    1.0
+   ],
+   [
+    0.0368,
+    1.0
+   ],
+   [
+    0.0442,
+    1.0
+   ],
+   [
+    0.0516,
+    1.0
+   ],
+   [
+    0.059,
+    0.9875
+   ],
+   [
+    0.0663,
+    0.9889
+   ],
+   [
+    0.0737,
+    0.97
+   ],
+   [
+    0.0811,
+    0.9727
+   ],
+   [
+    0.0884,
+    0.975
+   ],
+   [
+    0.0958,
+    0.9769
+   ],
+   [
+    0.1032,
+    0.9786
+   ],
+   [
+    0.1105,
+    0.98
+   ],
+   [
+    0.1179,
+    0.9812
+   ],
+   [
+    0.1253,
+    0.9765
+   ],
+   [
+    0.1326,
+    0.9722
+   ],
+   [
+    0.14,
+    0.9684
+   ],
+   [
+    0.1474,
+    0.96
+   ],
+   [
+    0.1548,
+    0.9571
+   ],
+   [
+    0.1621,
+    0.9591
+   ],
+   [
+    0.1695,
+    0.9565
+   ],
+   [
+    0.1769,
+    0.9583
+   ],
+   [
+    0.1842,
+    0.96
+   ],
+   [
+    0.1916,
+    0.9615
+   ],
+   [
+    0.199,
+    0.9593
+   ],
+   [
+    0.2063,
+    0.9607
+   ],
+   [
+    0.2137,
+    0.9586
+   ],
+   [
+    0.2211,
+    0.9567
+   ],
+   [
+    0.2284,
+    0.9581
+   ],
+   [
+    0.2358,
+    0.9594
+   ],
+   [
+    0.2432,
+    0.9576
+   ],
+   [
+    0.2506,
+    0.9559
+   ],
+   [
+    0.2579,
+    0.9571
+   ],
+   [
+    0.2653,
+    0.9583
+   ],
+   [
+    0.2727,
+    0.9568
+   ],
+   [
+    0.28,
+    0.9579
+   ],
+   [
+    0.2874,
+    0.9564
+   ],
+   [
+    0.2948,
+    0.955
+   ],
+   [
+    0.3021,
+    0.9561
+   ],
+   [
+    0.3095,
+    0.9524
+   ],
+   [
+    0.3169,
+    0.9512
+   ],
+   [
+    0.3242,
+    0.95
+   ],
+   [
+    0.3316,
+    0.9467
+   ],
+   [
+    0.339,
+    0.9435
+   ],
+   [
+    0.3464,
+    0.9383
+   ],
+   [
+    0.3537,
+    0.9333
+   ],
+   [
+    0.3611,
+    0.9306
+   ],
+   [
+    0.3685,
+    0.926
+   ],
+   [
+    0.3758,
+    0.9255
+   ],
+   [
+    0.3832,
+    0.9231
+   ],
+   [
+    0.3906,
+    0.917
+   ],
+   [
+    0.3979,
+    0.9148
+   ],
+   [
+    0.4053,
+    0.9127
+   ],
+   [
+    0.4127,
+    0.9107
+   ],
+   [
+    0.42,
+    0.9105
+   ],
+   [
+    0.4274,
+    0.9069
+   ],
+   [
+    0.4348,
+    0.9051
+   ],
+   [
+    0.4422,
+    0.9067
+   ],
+   [
+    0.4495,
+    0.9033
+   ],
+   [
+    0.4569,
+    0.9
+   ],
+   [
+    0.4643,
+    0.9
+   ],
+   [
+    0.4716,
+    0.8984
+   ],
+   [
+    0.479,
+    0.8954
+   ],
+   [
+    0.4864,
+    0.8955
+   ],
+   [
+    0.4937,
+    0.894
+   ],
+   [
+    0.5011,
+    0.8941
+   ],
+   [
+    0.5085,
+    0.8928
+   ],
+   [
+    0.5158,
+    0.8929
+   ],
+   [
+    0.5232,
+    0.8887
+   ],
+   [
+    0.5306,
+    0.8861
+   ],
+   [
+    0.538,
+    0.8808
+   ],
+   [
+    0.5453,
+    0.8757
+   ],
+   [
+    0.5527,
+    0.8733
+   ],
+   [
+    0.5601,
+    0.8724
+   ],
+   [
+    0.5674,
+    0.8714
+   ],
+   [
+    0.5748,
+    0.8679
+   ],
+   [
+    0.5822,
+    0.8671
+   ],
+   [
+    0.5895,
+    0.8662
+   ],
+   [
+    0.5969,
+    0.8654
+   ],
+   [
+    0.6043,
+    0.8634
+   ],
+   [
+    0.6116,
+    0.8627
+   ],
+   [
+    0.619,
+    0.8607
+   ],
+   [
+    0.6264,
+    0.86
+   ],
+   [
+    0.6338,
+    0.857
+   ],
+   [
+    0.6411,
+    0.854
+   ],
+   [
+    0.6485,
+    0.8534
+   ],
+   [
+    0.6559,
+    0.8528
+   ],
+   [
+    0.6632,
+    0.8511
+   ],
+   [
+    0.6706,
+    0.8505
+   ],
+   [
+    0.678,
+    0.8467
+   ],
+   [
+    0.6853,
+    0.8441
+   ],
+   [
+    0.6927,
+    0.8426
+   ],
+   [
+    0.7001,
+    0.8421
+   ],
+   [
+    0.7074,
+    0.8406
+   ],
+   [
+    0.7148,
+    0.8381
+   ],
+   [
+    0.7222,
+    0.8388
+   ],
+   [
+    0.7296,
+    0.8374
+   ],
+   [
+    0.7369,
+    0.833
+   ],
+   [
+    0.7443,
+    0.8307
+   ],
+   [
+    0.7517,
+    0.8284
+   ],
+   [
+    0.759,
+    0.8262
+   ],
+   [
+    0.7664,
+    0.8231
+   ],
+   [
+    0.7738,
+    0.819
+   ],
+   [
+    0.7811,
+    0.8179
+   ],
+   [
+    0.7885,
+    0.8121
+   ],
+   [
+    0.7959,
+    0.8083
+   ],
+   [
+    0.8032,
+    0.8073
+   ],
+   [
+    0.8106,
+    0.8055
+   ],
+   [
+    0.818,
+    0.7991
+   ],
+   [
+    0.8254,
+    0.7973
+   ],
+   [
+    0.8327,
+    0.7929
+   ],
+   [
+    0.8401,
+    0.7886
+   ],
+   [
+    0.8475,
+    0.7852
+   ],
+   [
+    0.8548,
+    0.7819
+   ],
+   [
+    0.8622,
+    0.7821
+   ],
+   [
+    0.8696,
+    0.7771
+   ],
+   [
+    0.8769,
+    0.7723
+   ],
+   [
+    0.8843,
+    0.7692
+   ],
+   [
+    0.8917,
+    0.7678
+   ],
+   [
+    0.899,
+    0.7648
+   ],
+   [
+    0.9064,
+    0.761
+   ],
+   [
+    0.9138,
+    0.7581
+   ],
+   [
+    0.9211,
+    0.7568
+   ],
+   [
+    0.9285,
+    0.7532
+   ],
+   [
+    0.9359,
+    0.7512
+   ],
+   [
+    0.9433,
+    0.7484
+   ],
+   [
+    0.9506,
+    0.7457
+   ],
+   [
+    0.958,
+    0.7423
+   ],
+   [
+    0.9654,
+    0.7389
+   ],
+   [
+    0.9727,
+    0.7341
+   ],
+   [
+    0.9801,
+    0.7323
+   ],
+   [
+    0.9875,
+    0.7291
+   ],
+   [
+    0.9948,
+    0.7252
+   ],
+   [
+    1.0,
+    0.7222
+   ]
+  ],
+  "op": {
+   "coverage": 0.6102,
+   "precision": 0.8128,
+   "n": 828,
+   "label_de": "ausgeliefert: Lesarten einig",
+   "label_fr": "livré : lectures concordantes"
+  },
+  "file": "ideation2/spikes/s9-aps/results.json"
+ },
+ "build": "dd237840",
+ "source": "VISION-topics-v2 §6.1 (measured rows as published); curve recomputed from S9 raw"
+}

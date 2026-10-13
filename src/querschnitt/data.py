@@ -24,6 +24,16 @@ def clean(s: str | None) -> str:
     return re.sub(r"\s+", " ", html.unescape(TAG.sub(" ", s or ""))).strip()
 
 
+def demojibake(s: str) -> str:
+    """Repair UTF-8 read as Latin-1 upstream ("GrÃ¼ne" → "Grüne"); unchanged when it does not apply."""
+    if s and ("Ã" in s or "Â" in s):
+        try:
+            return s.encode("latin-1").decode("utf-8")
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            return s
+    return s
+
+
 def rows(path: Path):
     with gzip.open(path, "rt") as f:
         for line in f:
@@ -178,8 +188,8 @@ def submitters(d: Path, ids: set[int]) -> dict[int, dict]:
             continue
         rank = (r.get("position") or 99, r["id"])
         if a not in best or rank < best[a][0]:
-            best[a] = (rank, dict(name=r.get("fullname") or "", party=r.get("party_harmonized_de") or r.get("party_de") or "",
-                                  party_fr=r.get("party_harmonized_fr") or r.get("party_fr") or "", kind=r.get("type") or ""))
+            best[a] = (rank, dict(name=demojibake(r.get("fullname") or ""), party=demojibake(r.get("party_harmonized_de") or r.get("party_de") or ""),
+                                  party_fr=demojibake(r.get("party_harmonized_fr") or r.get("party_fr") or ""), kind=r.get("type") or ""))
     out = {a: dict(v[1], n=n_cos[a]) for a, v in best.items()}
     for a, v in dept.items():
         out.setdefault(a, dict(name="", party="", party_fr="", kind="", n=n_cos[a]))["dept"] = v

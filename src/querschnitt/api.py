@@ -177,8 +177,8 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
                            payload.get("limit"), payload.get("generate", True))
         except ValueError as e:
             raise HTTPException(422, str(e))
-        return {"slug": job.slug, "topic": job.topic, "terms": job.terms, "period": job.period,
-                "stream": f"/adhoc/{job.slug}/stream"}
+        return {"slug": job.slug, "topic": job.topic, "terms": job.terms, "terms_pending": job.terms_thread.is_alive(),
+                "period": job.period, "stream": f"/adhoc/{job.slug}/stream"}
 
     def _job(slug: str):
         job = ah.jobs.get(slug)

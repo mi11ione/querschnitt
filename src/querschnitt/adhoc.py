@@ -1,11 +1,12 @@
 """Neues Thema: a topic in one sentence → a yes/no topic file → one Apertus decision per affair, streamed.
 
 1. Topic. One plain generation request (user message only, no system message, no prefill) asks Apertus for the topic's
-   name and scope note in de/fr/it and up to six search terms per language, as JSON. The scope note in the sentence's own
-   language is the sentence itself. Unparseable or missing fields fall back to the sentence verbatim in every frame.
-   The question is built in the frame of the shipped "Digitalisierung" file (S3 E6 / S8), so `prompts.yesno_prompt`
-   is unchanged.
-2. Terms. A proposed term is kept only if it occurs in the corpus titles (count shown); nothing else is stored.
+   name in de/fr/it and a literal translation of the sentence, as JSON; the scope note in the sentence's own language
+   is the sentence itself. Unparseable or missing fields fall back to the sentence verbatim in every frame. The
+   question is built in the frame of the shipped "Digitalisierung" file (S3 E6 / S8), so `prompts.yesno_prompt` is
+   unchanged.
+2. Terms. A second request, sent in parallel and off the critical path, proposes up to six search terms per language;
+   a term is kept only if it occurs in the corpus titles (count shown), and nothing else is stored.
 3. Period. Default: the newest 7 days in the loaded affairs. Inside the scored slice (begin date ≥ QS_SCORED_SINCE,
    default 2025-01-01) every affair is read. Before it, candidates = title hits of the kept terms ∪ affairs whose stored
    APS subtopic (rank ≤ 3) is one Apertus names as able to hold the topic (a closed choice over the 190 subtopics,
@@ -46,14 +47,17 @@ FRAME = {  # question and yes answer, the frame of schemes/adhoc/digitalisierung
     "it": ("Il seguente oggetto parlamentare riguarda il tema «{name}»{scope}?", "Sì, l'oggetto riguarda il tema «{name}»"),
 }
 TOPIC_PROMPT = (
-    "Eine Redaktion beschreibt in einem Satz ein Thema, nach dem sie parlamentarische Geschäfte aller Schweizer Parlamente "
-    "durchsuchen will:\n\n«{sentence}»\n\n"
-    "Gib dem Thema einen kurzen Namen (höchstens fünf Wörter) auf Deutsch, Französisch und Italienisch, übersetze den Satz "
-    "als Umschreibung des Themas in diese drei Sprachen und schlage pro Sprache bis zu sechs Suchbegriffe vor (einzelne "
-    "Wörter oder Wortstämme, wie sie in Titeln von Geschäften vorkommen).\n\n"
-    "Antworte nur mit JSON in dieser Form:\n"
-    '{{"name": {{"de": "…", "fr": "…", "it": "…"}}, "scope": {{"de": "…", "fr": "…", "it": "…"}}, '
-    '"terms": {{"de": ["…"], "fr": ["…"], "it": ["…"]}}}}')
+    "Eine Redaktion beschreibt in einem Satz ein Thema, nach dem sie parlamentarische Geschäfte durchsuchen will:\n\n"
+    "«{sentence}»\n\n"
+    "Gib dem Thema einen kurzen Namen (höchstens vier Wörter) und übersetze den Satz wörtlich, ohne Zusätze, auf Deutsch, "
+    "Französisch und Italienisch.\n\n"
+    "Antworte nur mit JSON in einer Zeile:\n"
+    '{{"name": {{"de": "…", "fr": "…", "it": "…"}}, "scope": {{"de": "…", "fr": "…", "it": "…"}}}}')
+TERMS_PROMPT = (
+    "Schlage Suchbegriffe für das Thema «{sentence}» vor, wie sie in Titeln von parlamentarischen Geschäften der Schweiz "
+    "vorkommen: pro Sprache bis zu sechs einzelne Wörter oder Wortstämme.\n\n"
+    "Antworte nur mit JSON in einer Zeile:\n"
+    '{{"terms": {{"de": ["…"], "fr": ["…"], "it": ["…"]}}}}')
 SUB_PROMPT = (
     "Welche Unterthemen der Année Politique Suisse können parlamentarische Geschäfte zum Thema «{name}» ({scope}) "
     "enthalten?\n\nUnterthemen:\n{lines}\n\nAntworte nur mit JSON: {{\"subtopics\": [<höchstens fünf Nummern>]}}")
@@ -163,12 +167,29 @@ class Adhoc:
             self.calls += n
 
     # ------------------------------------------------------------------ topic, terms, period
-    def generate(self, sentence: str) -> tuple[dict | None, dict]:
+    def generate(self, sentence: str, prompt: str = TOPIC_PROMPT, max_tokens: int = 200) -> tuple[dict | None, dict]:
+        """One plain generation request (user message only) → the first JSON object in the answer."""
         self._count()
-        ch, meta = self.client.chat([{"role": "user", "content": TOPIC_PROMPT.format(sentence=_clean(sentence, 400))}],
-                                    max_tokens=600, logprobs=None)
+        ch, meta = self.client.chat([{"role": "user", "content": prompt.format(sentence=_clean(sentence, 400))}],
+                                    max_tokens=max_tokens, logprobs=None)
         text = (ch.get("message") or {}).get("content") or ""
         return parse_json(text), dict(meta, raw=text[:2000])
+
+    def _terms(self, box: dict, sentence: str, given: dict | None):
+        """Search terms off the critical path: generated in parallel with the name/scope request, verified against the
+        corpus once the job exists, then sent as a `terms` event."""
+        meta = {}
+        try:
+            if given is None:
+                v, meta = self.generate(sentence, TERMS_PROMPT, 160)
+                given = v.get("terms") if isinstance((v or {}).get("terms"), dict) else {}
+        except Exception as e:  # noqa: BLE001 — no terms: the candidate step uses stored subtopics only
+            given, meta = {}, dict(error=repr(e)[:300])
+        box["ready"].wait()
+        job = box["job"]
+        job.terms = self.verify_terms(given or {})
+        job.info["terms_generation"] = {k: meta.get(k) for k in ("usd", "lat", "error") if k in meta}
+        job.emit("terms", dict(terms=job.terms))
 
     def term_hits(self, term: str) -> int:
         t = term.strip()
@@ -195,9 +216,15 @@ class Adhoc:
             out[l] = kept
         return out
 
-    def newest_week(self) -> tuple[str, str]:
+    def newest_week(self, min_day: int | None = None) -> tuple[str, str]:
+        """The 7 days ending at the newest begin date (≤ today) on which at least QS_WEEK_MIN_DAY (default 20) affairs
+        began; the last days of an export are sparse (affairs dated ahead, late entries), so they do not end the week."""
+        min_day = min_day or int(os.environ.get("QS_WEEK_MIN_DAY", "20"))
         today = dt.date.today().isoformat()
-        r = self.store.one("SELECT MAX(date) AS d FROM qs_affairs WHERE date <= ? AND date <> ''", (today,))
+        r = self.store.one("SELECT MAX(date) AS d FROM (SELECT date FROM qs_affairs WHERE date <= ? AND date <> '' "
+                           "GROUP BY date HAVING COUNT(*) >= ?) x", (today, min_day))
+        if not (r and r["d"]):
+            r = self.store.one("SELECT MAX(date) AS d FROM qs_affairs WHERE date <= ? AND date <> ''", (today,))
         end = dt.date.fromisoformat(r["d"]) if r and r["d"] else dt.date.today()
         return (end - dt.timedelta(days=6)).isoformat(), end.isoformat()
 
@@ -240,6 +267,8 @@ class Adhoc:
         job.info.update(mode="all" if not before else "candidates", period=[f, t], in_period=len(rows), scored_slice_from=cut)
         items = inside
         if before:
+            if getattr(job, "terms_thread", None):
+                job.terms_thread.join(timeout=120)                  # candidates need the corpus-checked terms
             subs, meta = self.propose_subtopics(job.topic) if self.store.one(
                 "SELECT 1 AS x FROM topics WHERE scheme = 'aps' AND level = 2 LIMIT 1") else ([], {})
             job.topic["subtopics"] = subs
@@ -260,7 +289,13 @@ class Adhoc:
             outside.sort(key=lambda r: (r["date"], r["id"]), reverse=True)
             job.info.update(candidates=len(cand), non_candidates=len(non), outside_n=len(outside), subtopics=subs,
                             term_hits=n_terms)
-            items = inside + cand + outside
+            if limit:                                  # a capped run keeps a third of its reads for the outside sample
+                k = min(len(outside), max(1, limit // 3))
+                outside = outside[:k]
+                items = (inside + cand)[:limit - k] + outside
+                job.info["outside_n"] = len(outside)
+            else:
+                items = inside + cand + outside
         if limit:
             items = items[:limit]
         job.info["total"] = len(items)
@@ -273,32 +308,35 @@ class Adhoc:
         if not sentence or not sentence.strip():
             raise ValueError("sentence is required")
         lang = lang if lang in LANGS else "de"
+        box = dict(ready=threading.Event())
+        tt = threading.Thread(target=self._terms, args=(box, sentence, terms if (terms is not None or generate) else {}),
+                              daemon=True, name="adhoc-terms")
+        tt.start()
         gen, meta = (None, {})
         if generate:
             try:
                 gen, meta = self.generate(sentence)
             except Exception as e:  # noqa: BLE001 — the fallback frame needs no model
                 meta = dict(error=repr(e)[:300])
-        base = slugify((gen or {}).get("name", {}).get("de") if isinstance((gen or {}).get("name"), dict) else sentence) \
-            if gen else slugify(sentence)
+        base = slugify(gen["name"].get("de") or sentence) if (gen and isinstance(gen.get("name"), dict)) else slugify(sentence)
         slug = self._unique(base)
         topic = build_topic(sentence, lang, gen, slug)
-        proposed = terms if terms is not None else ((gen or {}).get("terms") if isinstance((gen or {}).get("terms"), dict) else {})
-        kept = self.verify_terms(proposed)
         ex = []
         for e in examples or []:
             if isinstance(e, dict):
                 title = e.get("title") or ((self.store.affair(int(e["id"])) or {}).get("title") if e.get("id") else None)
                 if title:
                     ex.append((title, bool(e.get("match", e.get("yes", True)))))
-        job = Job(slug, topic, kept, self.period(period, date_from, date_to), ex)
+        job = Job(slug, topic, {l: [] for l in LANGS}, self.period(period, date_from, date_to), ex)
         job.info["generation"] = {k: meta.get(k) for k in ("model", "fp", "usd", "lat", "error") if k in meta}
+        job.terms_thread = tt
+        box["job"] = job; box["ready"].set()
         with self.lock:
             self.jobs[slug] = job
         d = self.out / slug
         d.mkdir(parents=True, exist_ok=True)
-        (d / "topic.json").write_text(json.dumps(dict(topic=topic, terms=kept, period=job.period, examples=ex,
-                                                      generation=meta), ensure_ascii=False, indent=1))
+        (d / "topic.json").write_text(json.dumps(dict(topic=topic, period=job.period, examples=ex, generation=meta),
+                                                 ensure_ascii=False, indent=1))
         threading.Thread(target=self._run, args=(job, limit), daemon=True, name=f"adhoc-{slug}").start()
         return job
 

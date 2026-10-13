@@ -1,0 +1,72 @@
+# App (workstream F)
+
+Static single-page app in `app/`: vanilla ES modules, no build step, no runtime libraries (the map is pre-projected
+at build time), fonts self-hosted. It reads `app/data/*.json` (CONTRACT §3) and uses the live API when one answers.
+
+## Run
+```
+.venv/bin/python -m querschnitt.export --out app/data     # real export (lead)
+python3 app/dev/make_geo.py                               # app/data/geo.json (+ data-fixture/geo.json); re-run if export wipes app/data
+cd app && python3 -m http.server 8765                     # http://127.0.0.1:8765/
+```
+- Live API: same origin, or `?api=http://127.0.0.1:8000` (the API then needs CORS for the app's origin).
+- `?lang=fr` or keys `d`/`f` switch the interface; every affair stays in its own language.
+- URL hash keeps state: `#karte?t=adhoc/digitalisierung&a=340652&p=BE&w=60-80&m=pult&tab=todo&q=rechenzentr`.
+- Dev: `python3 app/dev/mock_api.py 8766` serves `app/` plus a stand-in API (DEV ONLY: its stream is a word match, not
+  model output) to exercise Pult POSTs and the Neues Thema stream. `node app/dev/shoot.mjs` drives headless Chrome over
+  CDP (no npm deps): console errors, horizontal-overflow check, screenshots into `app/dev/shots/`.
+- `app/dev/make_fixture.py` builds `app/data-fixture/` (real S8 rows + OPD inputs, same format as the export, chapters
+  empty). The app loads each file from `data/` first, then `data-fixture/`; the bar shows `Fixture` in red when meta comes
+  from the fixture. Do not deploy `app/data-fixture/` or `app/dev/`.
+
+## Files
+`index.html` · `css/app.css` (tokens from the gleichlaut register shell) · `js/main.js` shell, keys, hash ·
+`js/data.js` loading, normalisation, topics, decisions, API · `js/board.js` Karte + Pult + list + export ·
+`js/map.js` · `js/timeline.js` · `js/vlist.js` (virtualised list, 52 px rows) · `js/case.js` detail ·
+`js/picker.js` · `js/neu.js` Neues Thema · `js/pruef.js` Prüfstand · `fonts/` (Public Sans variable, Fragment Mono;
+OFL texts beside them, fontsource 5.2.7 / 5.2.8) · `dev/geo-src/` swiss-maps 4.7.0 `2026/ch-combined.json` + licence.
+
+Geometry: swiss-maps 4.7.0 (Interactive Things, BSD-3-Clause code; geodata BFS GEOSTAT / swisstopo, attributed in the
+footer; the package README calls the geodata non-commercial). `make_geo.py` projects WGS84 → LV95 (swisstopo
+approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), writes canton paths, lakes, outline and
+2,113 commune centroids keyed by BFS number: 160 KB.
+
+## Behaviour (decisions taken)
+- Topic accessors: Digitalisierung = `dig_p/dig_flag/dig_lane`; chapter = `ch == i` (rank 1), subtopic = `subs[0] == 1000*i+j`;
+  `lane`/`dig_lane` accept 0/1 or strings. Chapter `null` = not yet scored: such rows never count as zero.
+- Map: grey class = hits / scored rows of the parliament in the period (quintile breaks of the non-zero shares, legend
+  shows min … max). Hatched when no scored row in the period, coverage < 25 %, or `title_only_share` ≥ 50 %. Coverage =
+  scored in period / `n_by_month` in period if bodies carry it, else `n_dig` (or `n_scored` for APS) / `n_affairs`.
+  Red tick = undecided rows in the lane `please_check` for the topic and period. Click = filter to that parliament.
+- Timeline and map follow the list filters (type, status, party, search with `a|b` = or); the timeline ignores its own
+  brush, the map ignores the parliament selection.
+- Pult tabs: `zu prüfen` = undecided rows that are flagged or in `please_check` (please_check first, then newest);
+  `übernommen` = confirmed; `Status geändert` = confirmed rows whose OPD state differs from the state at confirmation;
+  `erledigt` = every decided row. Week line = ISO week of `meta.generated_at`. Budget is a per-browser setting.
+- Decisions: `[1]` POST `/affairs/{id}/topics/{code}/confirm` (code `adhoc/digitalisierung:yes` or `aps:…`, body
+  `{by, scheme}`), `[2]` reject, `[0]` skip (no row), `[u]` undo (local). Static mode stores them in localStorage and says
+  so in the state line. Live mode also imports `GET /changes?since=1970…` (array or `{rows}`).
+- CSV (`[e]`): Datum, Ebene, Kanton, Parlament, Geschäftsnummer, Titel, Sprache, Typ, Status, Urheber/in, Partei, Link,
+  Thema, p, Spur, Entscheid, Entschieden von, Entschieden am, OPD-ID, Build; last line = method line (count, topic,
+  period, scored share per parliament with "ab {year}", build, "maschinelle Vorschläge, wahrscheinlich unvollständig").
+- Neues Thema: `POST /adhoc {sentence, lang (guessed de/fr/it), period: "last_week", examples?, terms?}`; renders
+  `topic.terms` (array or `{lang: [..]}`) as one editable mono line (Enter re-posts with `terms`); SSE accepted shapes:
+  default `message` `{id, p, flag?, t}`, event `progress` `{read, total}`, event `done` (or `{done: true}`). Save keeps the
+  decisions in this browser and adds the topic to the Karte picker. Static mode: field disabled + one line.
+- Prüfstand reads `pruefstand.json` as `{rows: [{test, test_fr, gold: human|judge, design, design_fr, n, result,
+  interval, baseline, split, file}], curve: {test, n, points: [[coverage, precision]…], op: {coverage, precision, n,
+  label_de, label_fr}, file}}` (a plain array of rows also works). The fixture version transcribes VISION §6.1 and
+  recomputes the S9 D3 curve from raw rows; op = the `readings_agree` lane (coverage 0.6102, precision 0.8128, n 828).
+- Numbers: shares and p are truncated, never rounded up; de-CH / fr-CH grouping.
+
+## Requests to the export (lead)
+1. `pruefstand.json` in the export (format above); until then the app falls back to the fixture file and says so.
+2. `bodies[].n_by_month` (`{"2026-01": n}`, all affairs) so coverage and hatching follow the brushed period; today 88 of
+   89 bodies are below 50 % on the since-2025 denominator because Digitalisierung covers 2026.
+3. CHE `name_de` is "Schweiz": please emit `Bundesversammlung` / `Assemblée fédérale` (app overrides for now).
+4. `meta.nightly.new_rows` (or `/metrics.rows_last_night`) for "letzte Nacht" in the fact line.
+5. A `type` column (own-language type name) where `type_h` is empty (many VD/GE rows), and optional `type_h_fr`.
+6. 24 `party` values arrive double-encoded (`Die GrÃ¼ne`); fix at source if possible.
+7. Evidence: app accepts `{field: title|title_long|text, start|char_start, end|char_end, quote}` in `detail.dig` / `detail.aps`
+   and falls back to searching the quote if offsets do not match the shown text.
+8. `app/data/geo.json` is written by `app/dev/make_geo.py`; the export must not delete it (or call the script).

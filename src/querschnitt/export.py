@@ -59,6 +59,7 @@ def run(args):
     cols = collections.defaultdict(list)
     detail = collections.defaultdict(dict)
     cov = collections.defaultdict(collections.Counter)
+    months = collections.defaultdict(collections.Counter)
     tfile = gzip.open(out / "topics.jsonl.gz.tmp", "wt") if args.topics_file else None
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     n_dec = collections.Counter()
@@ -68,11 +69,12 @@ def run(args):
         c = cov[x["body"]]
         c["n"] += 1; c["scored"] += bool(a); c["dig"] += bool(g); c["title_only"] += not x["text"]
         c["check"] += bool(a and a["lane"] == "please_check")
+        months[x["body"]][x["date"][:7]] += 1
         if not (a or g):
             continue
         n_dec["aps"] += bool(a); n_dec["dig"] += bool(g)
         cal = calib.apply("aps-fed" if (a and a.get("examples")) else "aps", a["conf"]) if (a and calib) else None
-        for k, v in (("id", x["id"]), ("body", x["body"]), ("date", x["date"]), ("type_h", x["type_h"] or x["type"]),
+        for k, v in (("id", x["id"]), ("body", x["body"]), ("date", x["date"]), ("type_h", x["type_h"] or x["type"]), ("type", x["type"]), ("type_h_fr", x.get("type_h_fr") or ""),
                      ("state", x["state"]), ("lang", x["text_lang"] or x["lang"]), ("title", x["title"]), ("party", x["party"]),
                      ("submitter", x["submitter"]), ("stype", x["submitter_type"]),
                      ("ch", a["ch"] if a else None), ("ch_p", round(cal if cal is not None else a["conf"], 3) if a else None),
@@ -103,11 +105,13 @@ def run(args):
     bodies = []
     for key, c in sorted(cov.items(), key=lambda kv: -kv[1]["n"]):
         b = B.get(key) or {}
-        bodies.append(dict(key=key, name_de=b.get("legislative_name_de") or b.get("name_de") or key,
-                           name_fr=b.get("legislative_name_fr") or b.get("name_fr") or key, place_de=b.get("name_de"), place_fr=b.get("name_fr"),
+        fed = key == "CHE"
+        bodies.append(dict(key=key, name_de="Bundesversammlung" if fed else (b.get("legislative_name_de") or b.get("name_de") or key),
+                           name_fr="Assemblée fédérale" if fed else (b.get("legislative_name_fr") or b.get("name_fr") or key), place_de=b.get("name_de"), place_fr=b.get("name_fr"),
                            level=level(key, B), canton=b.get("canton_key") or (key if len(key) == 2 else None), lang=b.get("lang"),
                            n_affairs=c["n"], n_scored=c["scored"], n_dig=c["dig"], n_check=c["check"],
-                           title_only_share=round(c["title_only"] / c["n"], 3), covered_from=first_year[key]))
+                           title_only_share=round(c["title_only"] / c["n"], 3), covered_from=first_year[key],
+                           n_by_month=dict(sorted(months[key].items()))))
     jdump(out / "bodies.json", bodies)
     jdump(out / "scheme_aps.json", dict(
         chapters=[dict(i=i, code=APS.codes[i], de=APS.short(i, "de"), fr=APS.short(i, "fr"), it=APS.short(i, "it")) for i in range(25)],
@@ -118,7 +122,13 @@ def run(args):
                 since=args.since, until=X[0]["date"] if X else None, affairs=tot, parliaments=len(cov),
                 scored=n_dec["aps"], scored_share=round(n_dec["aps"] / tot, 4) if tot else 0, dig_scored=n_dec["dig"],
                 please_check=sum(c["check"] for c in cov.values()), calibration=bool(calib))
+    nl = ROOT / "runs/nightly/last.json"
+    if nl.exists():
+        meta["nightly"] = json.loads(nl.read_text())
     jdump(out / "meta.json", meta)
+    pf = ROOT / "eval/pruefstand_app.json"
+    if pf.exists():
+        (out / "pruefstand.json").write_text(pf.read_text())
     print(json.dumps(meta, indent=1))
 
 

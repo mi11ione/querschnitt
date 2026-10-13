@@ -180,6 +180,12 @@ def delta(a) -> dict:
     topics = [] if lite else adhoc_topics()
     usd0 = ledger_usd(run / "ledger.jsonl")
     rows_in, build = 0, None
+    if todo and a.model and (run / "PID").exists():
+        try:
+            os.kill(int((run / "PID").read_text()), 0)
+            raise SystemExit(f"{run}: a batch is running there (PID file); the delta never shares a live run dir")
+        except (ProcessLookupError, ValueError):
+            pass
     if todo and a.model:
         run.mkdir(parents=True, exist_ok=True)
         idf = run / f"delta-{dt.date.today().isoformat()}.ids"

@@ -12,7 +12,7 @@ Human labels first. Full table with intervals, baselines and source files: [docs
 
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
-| APS chapter vs APS editors, held-out federal affairs, pre-registered | 1,357 | 0.704 read back from the subtopic; 0.722 with five APS-labelled examples | plain list prompting 0.655 · keywords 0.192 |
+| APS chapter vs APS editors, held-out federal affairs, pre-registered | 1,357 | **0.748** [0.725, 0.771] as shipped (five APS-labelled examples, chapter read back from the subtopic); 0.704 read-back alone | plain list prompting 0.655 · keywords 0.192 |
 | "Digitalisierung": the 30 affairs DVS curated by hand on its public page | 30 | 27 recognised | keywords 21 |
 | Bern's lead directorate (scheme swap, 8 directorates) vs the Grand Council's own field, DE / FR | 200 | 0.615 / 0.645 | keywords 0.520 / 0.495 |
 | Evidence: the quoted sentence supports the topic (blind AI judge) | 120 | 0.850 | — |

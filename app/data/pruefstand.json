@@ -30,7 +30,7 @@
     0.717,
     0.763
    ],
-   "baseline": "D3 0.722: Δ +0.018 [+0.002, +0.033]",
+   "baseline": "D3 0.722: Δ +0.018 [+0.002, +0.034]",
    "split": "held-out, vorregistriert (S16)",
    "split_fr": "hors échantillon, préenregistré (S16)",
    "file": "querschnitt/eval/s16/results.md"

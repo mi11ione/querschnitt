@@ -65,6 +65,18 @@ class Engine:
         d, meta = self._ask(u, p, P.CODES)
         return dict(step="ch2", pid=P.pid(u, p), codes=d, p=probs(d, P.CODES, P.S1PERM), meta=meta)
 
+    def ch_lang(self, a: dict) -> dict:
+        """Chapter reading of one language version (identity order); bilingual parliaments' second reading (S10)."""
+        u, p = P.chapter_prompt(a, list(range(25)))
+        d, meta = self._ask(u, p, P.CODES)
+        return dict(step=f"bi:{a['lang']}", pid=P.pid(u, p), codes=d, p=probs(d, P.CODES), meta=meta)
+
+    def flat(self, scheme: dict, title: str, lang: str) -> dict:
+        """A flat scheme file (e.g. Bern's directorates, S6): one closed choice over its options + none."""
+        u, p, codes = P.flat_prompt(scheme, title, lang)
+        d, meta = self._ask(u, p, codes)
+        return dict(step=f"flat:{scheme['id']}", pid=P.pid(u, p), codes=d, p=probs(d, codes), lang=lang, meta=meta)
+
     def sub(self, a: dict, chs: list[int]) -> dict:
         u, p, opts, codes = P.subtopic_prompt(a, chs)
         d, meta = self._ask(u, p, codes)

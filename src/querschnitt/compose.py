@@ -24,16 +24,20 @@ def argmax(v):
     return max(range(len(v)), key=lambda i: v[i])
 
 
-def read_run(run: Path) -> tuple[dict, dict]:
-    """-> (lock, rows by pid) for the locked build."""
-    st = json.loads((run / "state.json").read_text())
-    rows = {}
-    for p in sorted((run / st["lock"]["key"]).glob("*.jsonl")):
-        for line in open(p):
-            if line.strip():
-                r = json.loads(line)
-                rows[r["pid"]] = r
-    return st["lock"], rows
+def read_run(*runs: Path) -> tuple[dict, dict]:
+    """-> (lock, rows by pid) over one or more run dirs; all must be locked to the same build (never mixed)."""
+    rows, lock = {}, None
+    for run in runs:
+        st = json.loads((Path(run) / "state.json").read_text())
+        if lock and st["lock"]["fp"] != lock["fp"]:
+            raise ValueError(f"{run}: build {st['lock']['fp']} != {lock['fp']}")
+        lock = lock or st["lock"]
+        for p in sorted((Path(run) / st["lock"]["key"]).glob("*.jsonl")):
+            for line in open(p):
+                if line.strip():
+                    r = json.loads(line)
+                    rows[r["pid"]] = r
+    return lock, rows
 
 
 def chapter_decision(r1: dict, r2: dict | None, rs: dict | None) -> dict:

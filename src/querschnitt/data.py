@@ -232,6 +232,8 @@ def build(d: Path, out: Path, since: str = "0000", docs_path: Path | None = None
                     text, src = r["head"][:1500], f"doc:{r['id']}"
             sub = S.get(a["id"])
             body = a["body_key"]
+            alt = next((l for l in ("fr", "de", "it") if l != tl and (a.get(f"title_{l}") or "").strip()
+                        and clean(a.get(f"title_{l}")) != title), None)
             x = dict(id=a["id"], body=body, level=level(body, B), canton=(B.get(body) or {}).get("canton_key") or (body if len(body) == 2 else None),
                      parl=parl_name(body, B, "de"), parl_fr=parl_name(body, B, "fr"), lang=lang, text_lang=tl, number=a.get("number"),
                      date=(a.get("begin_date") or "")[:10], title=title, title_long=tlong, text=text, text_src=src, text_kind=kind,
@@ -240,7 +242,8 @@ def build(d: Path, out: Path, since: str = "0000", docs_path: Path | None = None
                      state=a.get(f"state_name_{tl}") or a.get("state_name_de") or "",
                      url=a.get(f"url_external_{tl}") or a.get("url_external_de") or a.get("url_external_fr") or "",
                      submitter=(sub or {}).get("name", ""), party=(sub or {}).get("party", ""), n_signers=(sub or {}).get("n", 0),
-                     submitter_type=submitter_type(a, sub), dept=(sub or {}).get("dept", ""), updated=a.get("updated_at"))
+                     submitter_type=submitter_type(a, sub), dept=(sub or {}).get("dept", ""), updated=a.get("updated_at"),
+                     alt_lang=alt, title_alt=clean(a.get(f"title_{alt}")) if alt else "", title_long_alt=clean(a.get(f"title_long_{alt}")) if alt else "")
             x["input_hash"] = input_hash(x)
             stats["rows"] += 1; stats[f"text_{kind}"] += 1; stats[f"level_{x['level']}"] += 1
             f.write(json.dumps(x, ensure_ascii=False) + "\n")

@@ -1,0 +1,298 @@
+"""`querschnitt` command line.
+
+    querschnitt build-inputs --export data/opd --out data/inputs.jsonl.gz
+    querschnitt run --inputs data/inputs.jsonl.gz --out runs/main [batch options]     (wraps querschnitt.batch)
+    querschnitt load [--topics topics.jsonl.gz] [--inputs data/inputs.jsonl.gz] [--if-empty]
+    querschnitt serve [--host 127.0.0.1] [--port 8000]
+    querschnitt delta --since yesterday [--plan] [--no-fetch] [--no-model]
+    querschnitt nightly --at 02:30                                                      (delta once a day, forever)
+    querschnitt eval GOLD.csv [--scheme adhoc/digitalisierung] [--out result.json]
+    querschnitt metrics | export
+
+Paths default to the environment: QS_DB / QS_PG_DSN (store), QS_INPUTS (data/inputs.jsonl.gz), QS_EXPORT_DIR
+(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite: chapter step only, no subtopics, no ad-hoc topics)."""
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import gzip
+import json
+import os
+import sys
+import time
+from pathlib import Path
+
+from .store import ROOT, Store, metrics_line, parse_ts
+
+
+def env_path(key: str, default: str) -> Path:
+    p = Path(os.environ.get(key) or default)
+    return p if p.is_absolute() else ROOT / p
+
+
+# ---------------------------------------------------------------- compose (lead's module; file writer if it has one)
+def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str]) -> list[dict]:
+    """Topic rows for `ids` from the run's step rows (querschnitt.compose decisions; no recalibration here)."""
+    from . import compose as C
+    from .engine import Engine
+    from .examples import ExamplePool
+    from .scheme import adhoc
+    if hasattr(C, "rows_for"):
+        return list(C.rows_for(run, inputs, ids))
+    lock, rows = C.read_run(run)
+    pool_p = ROOT / "data/eval/aps_pool.jsonl"
+    eng = Engine(None, ExamplePool.load(pool_p) if pool_p.exists() else None)
+    T = [adhoc(t) for t in topics]
+    out = []
+    with gzip.open(inputs, "rt") as f:
+        for line in f:
+            a = json.loads(line)
+            if ids is not None and a["id"] not in ids:
+                continue
+            dec = C.decide(a, rows, eng.ch1_prompt, T)
+            if len(dec) > 1:
+                out += C.topic_rows(a, dec, lock)
+    return out
+
+
+# ---------------------------------------------------------------- delta
+SINGLES = ("affairs", "bodies", "contributors")
+
+
+def fetch_exports(export: Path, plan: bool = False) -> dict:
+    """Download the export files data.build reads when the published index says they changed (created / size)."""
+    from . import net
+    idx = net.get_json(net.EXPORTS + "index.json")
+    state_p = export / ".qs_fetch.json"
+    state = json.loads(state_p.read_text()) if state_p.exists() else {}
+    jobs = []
+    for f in idx["files"]:
+        if f["type"] == "single" and f["entity"] in SINGLES:
+            jobs.append((f["filename"], f["url"], f["size"], f.get("created")))
+        elif f["type"] == "split" and f["entity"] == "texts":
+            jobs += [("texts/" + g["filename"], g["url"], g["size"], g.get("created")) for g in f["files"]]
+    todo = [j for j in jobs if state.get(j[0]) != [j[2], j[3]] or not (export / j[0]).exists()]
+    out = dict(index_generated=idx.get("generated_at"), files=len(jobs), changed=len(todo), bytes=sum(j[2] for j in todo),
+               docs={g["filename"]: g["url"] for f in idx["files"] if f["entity"] == "docs" for g in f.get("files", [])})
+    if plan:
+        return out
+    for fn, url, size, created in todo:
+        net.download(url, export / fn)
+        state[fn] = [size, created]
+        state_p.write_text(json.dumps(state, indent=0))
+    (export / "index.json").write_text(json.dumps(idx))
+    return out
+
+
+def changed_affairs(export: Path, since: dt.datetime, known: dict[int, str]) -> tuple[set[int], set[str]]:
+    """Affairs new to the store or updated / begun since `since` → (ids, body keys)."""
+    from .net import ndjson
+    s = since.isoformat()[:19]
+    ids, bodies = set(), set()
+    for a in ndjson(export / "affairs.ndjson.gz"):
+        if a["id"] not in known or (a.get("updated_at") or "")[:19] >= s or (a.get("begin_date") or "")[:19] >= s:
+            ids.add(a["id"]); bodies.add(a["body_key"])
+    return ids, bodies
+
+
+def fetch_docs(export: Path, urls: dict[str, str], bodies: set[str], ids: set[int]) -> int:
+    """Stream docs_<body>.ndjson.gz for the touched bodies and append the slim rows of the touched affairs to
+    docs_slim.jsonl.gz (the format of tools/stream_docs.py; duplicates are harmless to data.pick_doc)."""
+    from . import net
+    from .data import clean
+    n = 0
+    with gzip.open(export / "docs_slim.jsonl.gz", "at") as o:
+        for b in sorted(bodies):
+            url = urls.get(f"docs_{b}.ndjson.gz")
+            if not url:
+                continue
+            for d in net.stream_ndjson(url):
+                if d.get("affair_id") not in ids or not d.get("text"):
+                    continue
+                t = clean(d["text"])
+                if len(t) <= 200:
+                    continue
+                o.write(json.dumps(dict(id=d["id"], a=d["affair_id"], b=d["body_key"], name=d.get("name"), cat=d.get("category_harmonized"),
+                                        cat_raw=d.get("category_de") or d.get("category_fr") or d.get("category_it"), lang=d.get("language"),
+                                        date=(d.get("date") or "")[:10], url=d.get("url"), url_oparl=d.get("url_oparl"), n=len(t),
+                                        head=t[:2000]), ensure_ascii=False) + "\n")
+                n += 1
+            time.sleep(1.5)
+    return n
+
+
+def ledger_usd(p: Path) -> float:
+    if not p.exists():
+        return 0.0
+    tot = 0.0
+    for line in p.read_text().splitlines():
+        try:
+            tot += json.loads(line)["usd"]
+        except (ValueError, KeyError):
+            pass
+    return tot
+
+
+def delta(a) -> dict:
+    """Nightly: fresh export → inputs → new/changed affairs (input hash) → batch → topic rows → store → one line."""
+    from . import data
+    from .scheme import adhoc_topics
+    t0 = time.time()
+    st = Store()
+    export, inputs, run = env_path("QS_EXPORT_DIR", a.export or "data/opd"), env_path("QS_INPUTS", a.inputs or "data/inputs.jsonl.gz"), \
+        env_path("QS_RUN_DIR", a.run_dir or "runs/main")
+    lite = (os.environ.get("QS_PROFILE") or a.profile) == "lite"
+    since = parse_ts(a.since)
+    log = dict(since=since.isoformat(), profile="lite" if lite else "full")
+    if a.fetch:
+        export.mkdir(parents=True, exist_ok=True)
+        f = fetch_exports(export, plan=a.plan)
+        log["fetch"] = {k: v for k, v in f.items() if k != "docs"}
+        if a.plan:
+            print(json.dumps(log, indent=1)); return log
+    known = {r["id"]: r["input_hash"] for r in st.all("SELECT id, input_hash FROM qs_affairs")}
+    ids, bodies = changed_affairs(export, since, known)
+    log.update(touched=len(ids), bodies=len(bodies))
+    if a.fetch and ids:
+        log["docs_rows"] = fetch_docs(export, f["docs"], bodies, ids)
+    tmp = inputs.with_name(inputs.name.replace(".jsonl.gz", ".new.jsonl.gz"))
+    docs = export / "docs_slim.jsonl.gz"
+    log["build"] = data.build(export, tmp, docs_path=docs if docs.exists() else Path("/nonexistent"))
+    scope = os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
+    scored = {r["affair_id"] for r in st.all("SELECT DISTINCT affair_id FROM topics WHERE provenance = 'inferred'")}
+    todo = []
+    with gzip.open(tmp, "rt") as fh:
+        for line in fh:
+            x = json.loads(line)
+            if known.get(x["id"]) != x["input_hash"] and (x["date"] >= scope or x["id"] in scored):
+                todo.append((x["date"], x["id"]))
+    todo = [i for _, i in sorted(todo, reverse=True)][: a.max_affairs or None]
+    os.replace(tmp, inputs)
+    st.load_affairs(inputs)
+    log["todo"] = len(todo)
+    topics = [] if lite else adhoc_topics()
+    usd0 = ledger_usd(run / "ledger.jsonl")
+    rows_in, build = 0, None
+    if todo and a.model:
+        run.mkdir(parents=True, exist_ok=True)
+        idf = run / f"delta-{dt.date.today().isoformat()}.ids"
+        idf.write_text("\n".join(map(str, todo)) + "\n")
+        from . import batch
+        args = ["run", "--inputs", str(inputs), "--out", str(run), "--ids", str(idf), "--conc", str(a.conc),
+                "--max-rate", str(a.max_rate), "--topics", *topics] + (["--no-subtopics"] if lite else [])
+        try:
+            batch.main(args)
+        except SystemExit as e:
+            log["batch"] = f"stopped: {e}"
+        if (run / "state.json").exists():
+            rows = compose_rows(run, inputs, set(todo), topics)
+            res = st.load_topics(rows)
+            rows_in = res["inserted"]; log["load"] = res
+            build = json.loads((run / "state.json").read_text())["lock"]["fp"]
+    usd = ledger_usd(run / "ledger.jsonl") - usd0
+    pending = st.pending()
+    wall = time.time() - t0
+    st.log_run("delta", affairs=len(todo), rows=rows_in, wall_s=round(wall, 1), usd=round(usd, 6), pending=pending, build=build,
+               note=json.dumps(log, ensure_ascii=False)[:4000])
+    line = metrics_line(st.metrics())
+    log["line"] = line
+    print(line, flush=True)
+    return log
+
+
+def nightly(a):
+    """Run `delta --since yesterday` once a day at --at (local time), forever; one log line per night."""
+    while True:
+        h, m = map(int, a.at.split(":"))
+        now = dt.datetime.now()
+        nxt = now.replace(hour=h, minute=m, second=0, microsecond=0)
+        if nxt <= now:
+            nxt += dt.timedelta(days=1)
+        print(f"{now:%Y-%m-%d %H:%M} next delta at {nxt:%Y-%m-%d %H:%M}", flush=True)
+        time.sleep((nxt - now).total_seconds())
+        try:
+            delta(a)
+        except Exception as e:  # noqa: BLE001 — logged; the next night retries
+            print(f"{dt.datetime.now():%Y-%m-%d %H:%M} delta failed: {e!r}", flush=True)
+            try:
+                Store().log_run("delta", note=f"failed: {e!r}"[:4000])
+            except Exception:  # noqa: BLE001
+                pass
+
+
+# ---------------------------------------------------------------- main
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "run":                       # pass-through to the resumable batch runner
+        from . import batch
+        return batch.main(argv)
+    if argv and argv[0] == "eval":
+        from . import evaluate
+        return evaluate.main(argv[1:])
+    ap = argparse.ArgumentParser(prog="querschnitt", description=__doc__.split("\n\n")[0])
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    b = sub.add_parser("build-inputs", help="OPD export dir → inputs.jsonl.gz")
+    b.add_argument("--export", default=os.environ.get("QS_EXPORT_DIR", "data/opd"))
+    b.add_argument("--out", default=os.environ.get("QS_INPUTS", "data/inputs.jsonl.gz"))
+    b.add_argument("--docs", help="docs_slim.jsonl.gz (default: <export>/docs_slim.jsonl.gz)")
+    sub.add_parser("run", help="the corpus batch (querschnitt run --help)")
+    sub.add_parser("eval", help="score a labelled CSV (querschnitt eval --help)")
+    l = sub.add_parser("load", help="topic rows and affair summaries → store")
+    l.add_argument("--topics", nargs="*", default=[])
+    l.add_argument("--inputs")
+    l.add_argument("--if-empty", action="store_true", help="only when the store has no rows (make run)")
+    s = sub.add_parser("serve", help="the API (+ app/ at /)")
+    s.add_argument("--host", default=os.environ.get("QS_HOST", "127.0.0.1"))
+    s.add_argument("--port", type=int, default=int(os.environ.get("QS_PORT", "8000")))
+    for name in ("delta", "nightly"):
+        d = sub.add_parser(name, help="nightly export delta" if name == "delta" else "delta once a day")
+        d.add_argument("--since", default="yesterday")
+        d.add_argument("--export"); d.add_argument("--inputs"); d.add_argument("--run-dir")
+        d.add_argument("--profile", default="full", choices=["full", "lite"])
+        d.add_argument("--plan", action="store_true", help="robots + index only: print what would be downloaded")
+        d.add_argument("--no-fetch", dest="fetch", action="store_false", help="use the export files on disk")
+        d.add_argument("--no-model", dest="model", action="store_false", help="inputs and affairs only, no batch")
+        d.add_argument("--max-affairs", type=int)
+        d.add_argument("--conc", type=int, default=int(os.environ.get("QS_CONC", "3")))
+        d.add_argument("--max-rate", type=float, default=float(os.environ.get("QS_MAX_RATE", "1.0")))
+        if name == "nightly":
+            d.add_argument("--at", default=os.environ.get("QS_NIGHTLY_AT", "02:30"))
+    sub.add_parser("metrics", help="print the /metrics line")
+    sub.add_parser("export", help="static export for the app (app/data/)")
+    a = ap.parse_args(argv)
+
+    if a.cmd == "build-inputs":
+        from . import data
+        exp = Path(a.export)
+        print(json.dumps(data.build(exp, Path(a.out), docs_path=Path(a.docs) if a.docs else None), indent=1))
+    elif a.cmd == "load":
+        st = Store()
+        if a.if_empty and st.one("SELECT COUNT(*) AS n FROM topics")["n"]:
+            print(f"store {st.kind} has rows; nothing loaded (--if-empty)"); return
+        t0 = time.time(); n_aff, res = 0, dict(inserted=0)
+        if a.inputs:
+            n_aff = st.load_affairs(a.inputs); print(f"affairs {n_aff:,} ← {a.inputs}")
+        for p in a.topics:
+            res = st.load_topics(p); print(f"topics ← {p}: {res}")
+        st.log_run("load", affairs=n_aff, rows=res["inserted"], wall_s=round(time.time() - t0, 1), pending=st.pending(),
+                   note=json.dumps(dict(inputs=a.inputs, topics=a.topics)))
+        print(metrics_line(st.metrics()))
+    elif a.cmd == "serve":
+        from .api import serve
+        serve(a.host, a.port)
+    elif a.cmd == "delta":
+        delta(a)
+    elif a.cmd == "nightly":
+        nightly(a)
+    elif a.cmd == "metrics":
+        print(metrics_line(Store().metrics()))
+    elif a.cmd == "export":
+        try:
+            from . import export  # the lead's module
+        except ImportError:
+            sys.exit("export: not built yet (querschnitt.export is written by the engine workstream)")
+        return export.main(argv[1:])
+
+
+if __name__ == "__main__":
+    sys.exit(main())

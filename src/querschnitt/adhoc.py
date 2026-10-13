@@ -35,6 +35,7 @@ from . import scheme as S
 from .client import BuildChanged, Client, Endpoint
 from .compose import VERSION, yn_decision
 from .engine import Engine, need_yn_b
+from .evaluate import wilson
 from .scheme import APS
 from .store import ROOT, Store
 
@@ -57,15 +58,6 @@ SUB_PROMPT = (
     "Welche Unterthemen der Année Politique Suisse können parlamentarische Geschäfte zum Thema «{name}» ({scope}) "
     "enthalten?\n\nUnterthemen:\n{lines}\n\nAntworte nur mit JSON: {{\"subtopics\": [<höchstens fünf Nummern>]}}")
 SUBS = [(code, f"{APS.sub_name[code]} ({APS.short(c)})") for c in range(24) for code in APS.sub_codes[c]]
-
-
-def wilson(k: int, n: int, z: float = 1.959964) -> tuple[float | None, float | None]:
-    if n == 0:
-        return None, None
-    ph = k / n; d = 1 + z * z / n
-    c = (ph + z * z / (2 * n)) / d
-    h = z * math.sqrt(ph * (1 - ph) / n + z * z / (4 * n * n)) / d
-    return max(0.0, c - h), min(1.0, c + h)
 
 
 def slugify(s: str, n: int = 40) -> str:

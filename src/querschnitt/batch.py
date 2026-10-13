@@ -24,7 +24,9 @@ from . import prompts as P
 from .client import BuildChanged, Client, Endpoint
 from .engine import Engine, mean_p, need_ch2, need_yn_b
 from .examples import ExamplePool
-from .scheme import adhoc
+from .scheme import APS, adhoc, flat
+
+BILINGUAL = {"BE", "FR", "VS"}
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -81,7 +83,7 @@ class Store:
             self.build_dir().mkdir(exist_ok=True)
 
     def write(self, row: dict):
-        fn = row["step"] if not row["step"].startswith("yn:") else "yn_" + row["step"].split(":")[1].split("/")[-1]
+        fn = ("yn_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("yn:") else row["step"].replace(":", "_").replace("/", "_")
         with self.lock:
             f = self.files.get(fn)
             if f is None:
@@ -131,23 +133,42 @@ class Runner:
     def affair(self, a: dict):
         if self.stop.is_set():
             return
+        S, ih = self.args.steps, a["input_hash"]
         try:
             built = self.engine.ch1_prompt(a)
-            r1 = self._step(P.pid(built[0], built[1]), lambda: dict(self.engine.ch1(a, built), aid=a["id"], ih=a["input_hash"]))
+            r1 = self._step(P.pid(built[0], built[1]), lambda: dict(self.engine.ch1(a, built), aid=a["id"], ih=ih)) if "ch" in S \
+                else self.store.done.get(P.pid(built[0], built[1]))
             r2 = None
-            if need_ch2(r1["p"]):
+            if r1 and need_ch2(r1["p"]):
                 u, p = P.chapter_prompt(a, P.S1PERM)
-                r2 = self._step(P.pid(u, p), lambda: dict(self.engine.ch2(a), aid=a["id"], ih=a["input_hash"]))
-            if self.args.subtopics:
+                r2 = self._step(P.pid(u, p), lambda: dict(self.engine.ch2(a), aid=a["id"], ih=ih)) if "ch" in S \
+                    else self.store.done.get(P.pid(u, p))
+            if "sub" in S and r1 and (r2 or not need_ch2(r1["p"])):
                 chs = P.subtopic_chapters(mean_p(r1["p"], r2["p"] if r2 else None))
                 u, p, _, _ = P.subtopic_prompt(a, chs)
-                self._step(P.pid(u, p), lambda: dict(self.engine.sub(a, chs), aid=a["id"], ih=a["input_hash"]))
-            for t in self.topics:
-                u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a")
-                ra = self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "a"), aid=a["id"], ih=a["input_hash"]))
-                if need_yn_b(ra["p_yes"]):
-                    u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b")
-                    self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b"), aid=a["id"], ih=a["input_hash"]))
+                self._step(P.pid(u, p), lambda: dict(self.engine.sub(a, chs), aid=a["id"], ih=ih))
+            if "yn" in S:
+                for t in self.topics:
+                    u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a")
+                    ra = self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "a"), aid=a["id"], ih=ih))
+                    if need_yn_b(ra["p_yes"]):
+                        u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b")
+                        self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b"), aid=a["id"], ih=ih))
+            if "bi" in S and a["body"] in BILINGUAL and a.get("alt_lang") in ("de", "fr"):
+                # bilingual parliaments: the other language version is the second reading (S10: titles only)
+                b = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])
+                u, p = P.chapter_prompt(b, list(range(25)))
+                self._step(P.pid(u, p), lambda: dict(self.engine.ch_lang(b), aid=a["id"], ih=ih))
+                if a["lang"] in ("de", "fr"):
+                    m = dict(title=a["title"], title_long=a["title_long"], text="", lang=a["lang"])
+                    u, p = P.chapter_prompt(m, list(range(25)))
+                    self._step(P.pid(u, p), lambda: dict(self.engine.ch_lang(m), aid=a["id"], ih=ih))
+            if "be" in S and a["body"] == "BE" and a["lang"] in ("de", "fr"):
+                sch = flat("be-directorates")
+                u, p, codes = P.flat_prompt(sch, a["title"], a["lang"])
+                self._step(P.pid(u, p), lambda: dict(self.engine.flat(sch, a["title"], a["lang"]), aid=a["id"], ih=ih))
+            if "ev" in S:
+                self.evidence(a, r1, r2, ih)
             self.counts["affairs"] += 1
         except (BuildChanged, InterruptedError):
             self.stop.set()
@@ -157,6 +178,25 @@ class Runner:
                 f.write(json.dumps(dict(ts=time.time(), aid=a["id"], err=repr(e)[:400])) + "\n")
             if "BUDGET" in str(e) or self.counts["errors"] > 200:
                 self.halt("Errors", repr(e)[:400])
+
+    def evidence(self, a, r1, r2, ih):
+        """Evidence sentence for what an editor sees: the shipped chapter (where the read-back exists) and every
+        ad-hoc flag or please-check row."""
+        from .compose import decide
+        d = decide(a, self.store.done, self.engine.ch1_prompt, self.topics)
+        jobs = []
+        if d.get("aps") and d["aps"]["ch"] < 24 and (a["text"] or a["title_long"]):
+            jobs.append(APS.names["de"][d["aps"]["ch"]])
+        for t in self.topics:
+            v = d.get(t["id"])
+            if v and (v["flag"] or v["lane"] == "please_check"):
+                jobs.append(t["names"]["de"])
+        for name in jobs:
+            sents = P.sentences(a)
+            if not sents:
+                continue
+            u, p = P.evidence_prompt([x for _, x in sents], name)
+            self._step(P.pid(u, p), lambda: dict(self.engine.evidence(a, name) or {}, aid=a["id"], ih=ih, name=name))
 
     def halt(self, title: str, body: str):
         self.stop.set()
@@ -171,9 +211,9 @@ class Runner:
         c = self.client.stats
         txt = (f"# Querschnitt corpus run\n\n- Status: **{status}** · updated {time.strftime('%Y-%m-%d %H:%M:%S')} · PID {os.getpid()}\n"
                f"- Scope: begin date {self.args.since} … {self.args.until}, newest first · topics: {', '.join(self.args.topics) or '—'}"
-               f" · subtopics {'on' if self.args.subtopics else 'off'} · examples {'on' if self.args.examples else 'off'}\n"
+               f" · steps {' '.join(self.args.steps)} · examples {'on' if self.args.examples else 'off'}\n"
                f"- Affairs complete this session: **{self.counts['affairs']:,} / {total:,}** (cached steps reused: {self.counts['cached']:,})\n"
-               f"- Calls this session: {self.counts['calls']:,} (ch1 {self.counts['ch1']:,}, ch2 {self.counts['ch2']:,}, sub {self.counts['sub']:,}, yn {self.counts['yn']:,})"
+               f"- Calls this session: {self.counts['calls']:,} ({', '.join(f'{k} {v:,}' for k, v in self.counts.items() if k not in ('calls', 'affairs', 'cached', 'errors'))})"
                f" · errors {self.counts['errors']}\n"
                f"- Rate: {rate10:.2f} req/s (last 10 min) · guard {self.client.guard.rate:.2f}/s (cap {self.client.guard.max_rate}) · HTTP 429s {c['n429']:,} · transient {c['transient']}\n"
                f"- List-price estimate (ledger): USD {self.client.spent:.3f} of cap {self.args.cap}\n"
@@ -215,7 +255,7 @@ def main(argv=None):
     r.add_argument("--ids")
     r.add_argument("--limit", type=int)
     r.add_argument("--topics", nargs="*", default=["digitalisierung"])
-    r.add_argument("--no-subtopics", dest="subtopics", action="store_false")
+    r.add_argument("--steps", nargs="*", default=["ch", "sub", "yn"], help="ch sub yn bi be ev")
     r.add_argument("--no-examples", dest="examples", action="store_false")
     r.add_argument("--conc", type=int, default=6)
     r.add_argument("--max-rate", type=float, default=1.6)

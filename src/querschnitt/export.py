@@ -41,7 +41,7 @@ def jdump(p: Path, obj):
 
 def run(args):
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
-    lock, rows = read_run(Path(args.run))
+    lock, rows = read_run(*[Path(r) for r in args.run.split(",")])
     eng = Engine(None, ExamplePool.load(ROOT / "data/eval/aps_pool.jsonl"))
     topics = [adhoc("digitalisierung")]
     calib = Calibration.load(ROOT / "eval/calibration.json") if (ROOT / "eval/calibration.json").exists() else None
@@ -123,7 +123,7 @@ def run(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", default=str(ROOT / "runs/main"))
+    ap.add_argument("--run", default=f"{ROOT / 'runs/main'},{ROOT / 'runs/side'}")
     ap.add_argument("--inputs", default=str(ROOT.parent / "data/inputs.jsonl.gz"))
     ap.add_argument("--opd", default=str(ROOT.parent / "data/opd-new"))
     ap.add_argument("--out", default=str(ROOT / "app/data"))

@@ -1,1 +1,60 @@
 # Querschnitt
+
+**One topic field for every Swiss parliament.** Querschnitt gives each OpenParlData affair — federal, cantonal and communal,
+German, French and Italian — an Année Politique Suisse (APS) chapter with ranked subtopics, a lane that says when a person
+should check, and a quoted sentence from the affair that supports it. A new topic is a file: written once, applied to every
+parliament, no training. Every topic decision is made by [Apertus](https://www.swiss-ai.org/apertus), Switzerland's open model.
+
+Built for Hack Apertus Liebefeld (18–19 Oct 2026), challenge «Topic classification for OpenParlData».
+
+## Measured
+Human labels first. Full table with intervals, baselines and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md).
+
+| Test | n | Querschnitt | Baseline on the same items |
+|---|---|---|---|
+| APS chapter vs APS editors, held-out federal affairs, pre-registered | 1,357 | 0.704 read back from the subtopic; 0.722 with five APS-labelled examples | plain list prompting 0.655 · keywords 0.192 |
+| "Digitalisierung": the 30 affairs DVS curated by hand on its public page | 30 | 27 recognised | keywords 21 |
+| Bern's lead directorate (scheme swap, 8 directorates) vs the Grand Council's own field, DE / FR | 200 | 0.615 / 0.645 | keywords 0.520 / 0.495 |
+| Evidence: the quoted sentence supports the topic (blind AI judge) | 120 | 0.850 | — |
+
+## Quick start
+```sh
+make run                    # API + app on the shipped data at http://127.0.0.1:8000 (SQLite; no model calls)
+make test
+make eval GOLD=my.csv       # score any labelled CSV (affair_id,label) against the stored topic rows
+```
+Model calls need an OpenAI-compatible endpoint serving Apertus (`QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY`); Public AI's
+`swiss-ai/apertus-v1.5-8b` route is the default. `python tools/probe_endpoint.py` checks any endpoint (log-probabilities,
+prefill, served build, throughput) before a run.
+
+## How it works
+- **Closed choices only.** Every classification step — chapter, subtopic, yes/no for an ad-hoc topic, evidence sentence — is
+  a choice among listed codes, read from Apertus's next-token probabilities. A label outside the scheme is never stored.
+  Asked to name a topic freely, Apertus answered outside the scheme in 36 of 40 affairs; with the list shown, in 0 of 40.
+- **Chapter, then subtopic, read back.** Two readings of the chapter question in two code orders (the second only when the
+  first is below p 0.9); one request over the subtopics of the top two or three chapters; the shipped chapter is the one read
+  back from the chosen subtopic. Federal affairs see the five most similar APS-labelled affairs as examples.
+- **Lanes.** The two readings agree → `readings_agree`; they disagree → `please_check`. In bilingual parliaments (Bern,
+  Fribourg, Valais) the German and the French version are the two readings.
+- **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored with
+  its character offsets.
+- **Schemes are files.** `src/querschnitt/schemes/`: `aps.yaml` (24 chapters × 190 subtopics, APS identifiers),
+  `be-directorates.yaml` (Bern's 8 directorates), `adhoc/digitalisierung.yaml` (question with scope note in de/fr/it).
+  A new scheme or topic is a new file; nothing is trained.
+- **Builds are never mixed.** Every row names the served model, its `system_fingerprint`, the prompt id and the input hash;
+  a run locks the first build it sees and stops on any other. Prompts are pinned byte-identical to the measured ones by tests.
+
+## Output
+A `topics` row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); Postgres DDL in [sql/topics.sql](sql/topics.sql)):
+`affair_id, scheme, level, code, rank, p, lane, status (suggested|confirmed|rejected), provenance (inferred|confirmed),
+evidence {source, char_start, char_end, quote}, model, build, prompt_id, input_hash, valid_from, valid_to`.
+Generated and confirmed content stay distinguishable; a correction adds a row and never overwrites one.
+
+## Model roles
+Apertus (`swiss-ai/apertus-v1.5-8b` on Public AI) makes every topic decision. Retrieval of examples is BM25 in code. In the
+evaluation only, blind Claude runs and the open-weights Qwen-SEA-LION serve as annotators where no human labels exist; every
+figure measured against them is labelled as agreement with that judge. The code was written with Claude Code.
+
+## Licences
+Code Apache-2.0 ([LICENSE](LICENSE)); documentation CC BY 4.0; the topics file CDLA-Permissive-2.0. Source data: OpenParlData
+bulk exports (files.openparldata.ch). APS chapter codes and subtopic identifiers as published by Année Politique Suisse.

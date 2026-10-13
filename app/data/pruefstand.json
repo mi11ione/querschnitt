@@ -4,6 +4,41 @@
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
    "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
    "gold": "human",
+   "design": "Beispiele + Rücklesen, Produktionsregel (D4s, ausgeliefert)",
+   "design_fr": "exemples + relecture, règle de production (D4s, livré)",
+   "n": 1357,
+   "result": "top-1 0.748 · top-3 0.856",
+   "interval": [
+    0.725,
+    0.771
+   ],
+   "baseline": "Listen-Prompt 0.655 · Stichwort 0.192 · Mehrheit 0.080",
+   "baseline_fr": "liste 0,655 · mots-clés 0,192 · majorité 0,080",
+   "split": "held-out, vorregistriert (S16)",
+   "split_fr": "hors échantillon, préenregistré (S16)",
+   "file": "querschnitt/eval/s16/results.md"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "Beispiele + Rücklesen, beide Lesarten (D4)",
+   "design_fr": "exemples + relecture, deux lectures (D4)",
+   "n": 1357,
+   "result": "top-1 0.740 · top-3 0.883",
+   "interval": [
+    0.717,
+    0.763
+   ],
+   "baseline": "D3 0.722: Δ +0.018 [+0.002, +0.033]",
+   "split": "held-out, vorregistriert (S16)",
+   "split_fr": "hors échantillon, préenregistré (S16)",
+   "file": "querschnitt/eval/s16/results.md"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
    "design": "fünf APS-Beispiele (D3)",
    "design_fr": "cinq exemples APS (D3)",
    "n": 1357,

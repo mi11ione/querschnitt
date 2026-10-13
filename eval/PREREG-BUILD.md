@@ -24,3 +24,12 @@ blind run (C) decides where A and B differ on the first chapter. Consensus = A i
 Outcomes: shipped production chapter vs consensus, top-1 (Wilson 95%), by language and by lane (readings agree / please check);
 top-3 from the chapter ranking; baselines on the same items: the majority chapter of the sample's consensus (computed after) and
 the frozen S9 keyword baseline (`ideation2/spikes/s9-aps/data/keywords_frozen.json`). κ between A and B. Reported as measured.
+
+## 2026-10-14 01:35 CEST — S18 Bern directorates on the production run (written before any S18 row is read)
+Items: every Kanton Bern Grand Council affair begun 1 Jan 2025–11 Oct 2026 with a German or French title and a lead-directorate
+entry in OPD's contributors export (role `leading_department`); the entry's first token maps to the 8 directorates (BKD, BVD,
+DIJ, FIN, GSI, SID, STA, WEU); "GR"/"Grosser Rat" entries map to "none of these". Prediction: the `be-directorates` scheme file
+(S6 prompt, title only, the affair's language), argmax over the 9 options. Outcomes: accuracy (Wilson 95%) overall, German vs
+French titles, and on the affairs whose title exists in both languages (each language scored; paired difference). Baselines on
+the same items: the S6 keyword stems (frozen 13 Oct, `ideation/spikes/s6-cantonal/scripts/be_scheme.py`) and the majority
+directorate. Reported as measured.

@@ -48,3 +48,12 @@ def test_flat_be_directorates():
     for lang in ("de", "fr"):
         u, p, codes = P.flat_prompt(s, "Neubau Gymnasium Biel: Planungskredit", lang)
         assert h(u, p) == fx[lang] and codes[-1] == "I"
+
+
+def test_language_frames_match_s6():
+    fx = json.loads((pathlib.Path(__file__).parent / "fixtures" / "s6_prompt_hashes.json").read_text())
+    for lang, v in fx.items():
+        a = v["a"]
+        assert h(*P.chapter_prompt(a, list(range(25)))) == v["l1_id"], lang
+        assert h(*P.chapter_prompt(a, P.S1PERM)) == v["l1_s1"], lang
+        assert h(*P.subtopic_prompt(a, [16, 17, 2])[:2]) == v["l2"], lang

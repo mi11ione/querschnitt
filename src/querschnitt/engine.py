@@ -47,7 +47,7 @@ class Engine:
 
     # ------------------------------------------------------------------ prompts (pure; used for cache keys too)
     def ch1_prompt(self, a: dict):
-        ex = self.examples.neighbours(a) if (self.examples and a.get("level") == "federal") else None
+        ex = self.examples.neighbours(a) if (self.examples and a.get("level") == "federal" and a.get("lang") == "de") else None
         if ex:
             u, p = P.chapter_prompt_examples(a, list(range(25)), [(e["title"], e["chapter"]) for e in ex])
             return u, p, [e["oid"] for e in ex]

@@ -1,0 +1,112 @@
+"""The topic engine: every decision is a choice among listed codes, read from Apertus's next-token distribution.
+
+Steps per affair (all measured in the spikes; S-numbers name the evaluation):
+  ch1   APS chapter, codes A–Y in identity order; for federal affairs with APS-labelled neighbours, the five most similar
+        labelled affairs are shown as examples (S9 D3)
+  ch2   the same question in a second code order (S1 permutation) when ch1's top probability is below 0.9 (S6)
+  sub   one request over the subtopics of the top 2–3 chapters, top chapter first (S5/S9 D1); the shipped chapter is the
+        one read back from the chosen subtopic
+  yn:<topic>  ad-hoc yes/no (S3 E6 frame), order a (A = yes); order b when 0.1 < p < 0.9 (S8)
+  ev    evidence: one numbered sentence of the input, checked as an exact substring (S12)
+A step's row stores the raw code log-probabilities, the served model and fingerprint, and the prompt id; `compose`
+turns rows into topic rows."""
+from __future__ import annotations
+
+import math
+import threading
+
+from . import prompts as P
+from .client import Client, generated_code, read_codes
+from .scheme import APS
+
+
+def probs(d: dict[str, float], codes: list[str], perm: list[int] | None = None) -> list[float]:
+    """Code log-probabilities -> normalised probability per option (perm maps code position -> option index)."""
+    n = len(codes)
+    pv = [0.0] * n
+    for c, l in d.items():
+        i = codes.index(c)
+        pv[perm[i] if perm else i] = math.exp(l)
+    s = sum(pv)
+    return [v / s for v in pv] if s else pv
+
+
+class Engine:
+    def __init__(self, client: Client, examples=None, stop: threading.Event | None = None):
+        self.client, self.examples, self.stop = client, examples, stop
+
+    def _ask(self, user: str, prefill: str, codes: list[str], max_tokens: int = 1) -> tuple[dict, dict]:
+        ch, meta = self.client.chat([{"role": "user", "content": user}, {"role": "assistant", "content": prefill}],
+                                    max_tokens=max_tokens, stop=self.stop)
+        d = read_codes(ch, codes)
+        if not d:  # endpoint without log-probabilities: the generated code, checked against the list
+            g = generated_code(ch, codes)
+            d = {g: 0.0} if g else {}
+        meta["mass"] = round(sum(math.exp(v) for v in d.values()), 5)
+        return d, meta
+
+    # ------------------------------------------------------------------ prompts (pure; used for cache keys too)
+    def ch1_prompt(self, a: dict):
+        ex = self.examples.neighbours(a) if (self.examples and a.get("level") == "federal") else None
+        if ex:
+            u, p = P.chapter_prompt_examples(a, list(range(25)), [(e["title"], e["chapter"]) for e in ex])
+            return u, p, [e["oid"] for e in ex]
+        u, p = P.chapter_prompt(a, list(range(25)))
+        return u, p, None
+
+    # ------------------------------------------------------------------ steps
+    def ch1(self, a: dict, built=None) -> dict:
+        u, p, ex = built or self.ch1_prompt(a)
+        d, meta = self._ask(u, p, P.CODES)
+        return dict(step="ch1", pid=P.pid(u, p), codes=d, p=probs(d, P.CODES), ex=ex, meta=meta)
+
+    def ch2(self, a: dict) -> dict:
+        u, p = P.chapter_prompt(a, P.S1PERM)
+        d, meta = self._ask(u, p, P.CODES)
+        return dict(step="ch2", pid=P.pid(u, p), codes=d, p=probs(d, P.CODES, P.S1PERM), meta=meta)
+
+    def sub(self, a: dict, chs: list[int]) -> dict:
+        u, p, opts, codes = P.subtopic_prompt(a, chs)
+        d, meta = self._ask(u, p, codes)
+        return dict(step="sub", pid=P.pid(u, p), codes=d, chs=chs, p=probs(d, codes), meta=meta)
+
+    def yn(self, topic: dict, a: dict, order: str = "a", examples=None) -> dict:
+        u, p = P.yesno_prompt(topic, a["lang"], a["title"], a["title_long"], order, examples)
+        d, meta = self._ask(u, p, ["A", "B"])
+        pa, pb = math.exp(d.get("A", -50)), math.exp(d.get("B", -50))
+        py = (pa if order == "a" else pb) / (pa + pb)
+        return dict(step=f"yn:{topic['id']}:{order}", pid=P.pid(u, p), codes=d, p_yes=py, meta=meta)
+
+    def evidence(self, a: dict, name: str) -> dict | None:
+        sents = P.sentences(a)
+        if not sents:
+            return None
+        u, p = P.evidence_prompt([s for _, s in sents], name)
+        codes = [str(i) for i in range(1, len(sents) + 1)]
+        ch, meta = self.client.chat([{"role": "user", "content": u}, {"role": "assistant", "content": p}], max_tokens=3,
+                                    stop=self.stop)
+        d = read_codes(ch, codes)
+        if d:
+            k = max(d, key=d.get)
+        else:
+            raw = ((ch.get("message") or {}).get("content") or "").strip().strip('"').split('"')[0].strip()
+            k = raw if raw in codes else None
+        if not k:
+            return dict(step="ev", pid=P.pid(u, p), ok=False, meta=meta)
+        src, s = sents[int(k) - 1]
+        hay = dict(P.evidence_parts(a))[src]
+        i = hay.find(s)
+        return dict(step="ev", pid=P.pid(u, p), ok=i >= 0, field=src, start=i, end=i + len(s), quote=s, k=int(k),
+                    p=round(math.exp(d[k]), 4) if d else None, meta=meta)
+
+
+def need_ch2(p1: list[float]) -> bool:
+    return max(p1) < 0.9
+
+
+def mean_p(p1: list[float], p2: list[float] | None) -> list[float]:
+    return [(x + y) / 2 for x, y in zip(p1, p2)] if p2 else list(p1)
+
+
+def need_yn_b(p_a: float) -> bool:
+    return 0.1 < p_a < 0.9

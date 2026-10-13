@@ -1,0 +1,34 @@
+{
+ "affair": {
+  "title": "Rechenzentren im Kanton Bern",
+  "title_long": "Wie viel Strom brauchen Rechenzentren im Kanton Bern? Die Regierung wird gebeten …",
+  "text": "Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, Der Regierungsrat wird beauftragt, "
+ },
+ "examples": [
+  [
+   "Digitale Verwaltung jetzt",
+   2
+  ],
+  [
+   "Mehr Hausärzte",
+   16
+  ]
+ ],
+ "q1_id": "335d2e77e75befaa95736eccc429f96921f6c28694a6ba0a83d6c4d684eb05f1",
+ "q1_s1": "e61a6e46a61ef38248a9222f186c95d884d4c8eeb547a348db0a906d31c790cf",
+ "q1_mem": "3b9a61ca64b51a66476a70dd57f049fe45ef6621c685534ea80416dfdc2939e2",
+ "s1perm5": [
+  13,
+  19,
+  5,
+  22,
+  23
+ ],
+ "q2": "997985c069afd69f5c327dce460636e82d6ed9800d74645a2cbd6622a82b5292",
+ "e6_de_a": "d7a42e1001920885892ec98c41bbafb3e02871db65fcc4c3cd285159e3e1672e",
+ "e6_de_b": "46b972ad3c16a33b6f90ee95d24514be7179487f4bc858e8bb7a41354cd542b4",
+ "e6_fr_a": "98701f90fcc7462efba966fd68510a4c9698226275f90d64ce456b59fdb14f7d",
+ "e6_fr_b": "bc8a1c24f2765c48e76b0e4122d81aadbf9ea629c936f72e699758b8692732dc",
+ "e6_it_a": "20bb4ab768056a9f7d481125cf0db71800dbade121a77460ccca5b40d2d1db9c",
+ "e6_it_b": "b2186132bf2762846b52062d25b294d235b623070da11da2bed028d89f6020da"
+}

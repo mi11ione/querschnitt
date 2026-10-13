@@ -1,0 +1,108 @@
+id: be-directorates
+kind: flat
+title:
+  de: 'Kanton Bern: federführende Direktion (8 Direktionen + Staatskanzlei)'
+  fr: 'Canton de Berne : direction compétente'
+source: Structure of the Bern cantonal administration since 2020; one-line remits written for this scheme (not an official text).
+gold: OPD contributors role leading_department (Grand Council affairs)
+frame:
+  de:
+    ask: Welche Direktion des Kantons Bern ist für das folgende Geschäft des Grossen Rates federführend?
+    head: Direktionen
+    item: Geschäft
+    title: Titel
+    fmt: 'Antworte nur mit dem Buchstaben der Direktion als JSON: {"direktion": "<Buchstabe>"}'
+    key: direktion
+  fr:
+    ask: Quelle direction du canton de Berne est compétente pour l'objet suivant du Grand Conseil ?
+    head: Directions
+    item: Objet
+    title: Titre
+    fmt: 'Réponds uniquement par la lettre de la direction en JSON : {"direction": "<lettre>"}'
+    key: direction
+options:
+- code: be:BKD
+  abbr:
+    de: BKD
+    fr: INC
+  name:
+    de: Bildungs- und Kulturdirektion
+    fr: Direction de l'instruction publique et de la culture
+  remit:
+    de: Volksschule, Mittelschulen, Berufsbildung, Hochschulen, Kultur und Denkmalpflege
+    fr: école obligatoire, écoles moyennes, formation professionnelle, hautes écoles, culture et monuments historiques
+- code: be:BVD
+  abbr:
+    de: BVD
+    fr: DTT
+  name:
+    de: Bau- und Verkehrsdirektion
+    fr: Direction des travaux publics et des transports
+  remit:
+    de: Strassen, öffentlicher Verkehr, Wasserbau, Wasser und Abfall, kantonale Gebäude und Grundstücke, Geoinformation
+    fr: routes, transports publics, aménagement des eaux, eau et déchets, bâtiments et immeubles cantonaux, géoinformation
+- code: be:DIJ
+  abbr:
+    de: DIJ
+    fr: DIJ
+  name:
+    de: Direktion für Inneres und Justiz
+    fr: Direction de l'intérieur et de la justice
+  remit:
+    de: Gemeinden und Raumordnung, Kindes- und Erwachsenenschutz, Jugendamt, Sozialversicherungen, Kirchen, Grundbuch und Handelsregister, Regierungsstatthalterämter
+    fr: communes et aménagement du territoire, protection de l'enfant et de l'adulte, office des mineurs, assurances sociales, Eglises, registre foncier et registre du commerce, préfectures
+- code: be:FIN
+  abbr:
+    de: FIN
+    fr: FIN
+  name:
+    de: Finanzdirektion
+    fr: Direction des finances
+  remit:
+    de: Kantonsfinanzen, Voranschlag und Finanzplan, Steuern, Finanzausgleich, Personal des Kantons, Informatik und Organisation
+    fr: finances cantonales, budget et plan financier, impôts, péréquation financière, personnel cantonal, informatique et organisation
+- code: be:GSI
+  abbr:
+    de: GSI
+    fr: DSSI
+  name:
+    de: Gesundheits-, Sozial- und Integrationsdirektion
+    fr: Direction de la santé, des affaires sociales et de l'intégration
+  remit:
+    de: Gesundheit und Spitäler, Sozialhilfe, Integration, Familie, Menschen mit Behinderungen, Alter, Betreuung von Asylsuchenden und Flüchtlingen
+    fr: santé et hôpitaux, aide sociale, intégration, famille, personnes en situation de handicap, personnes âgées, prise en charge des requérants d'asile et des réfugiés
+- code: be:SID
+  abbr:
+    de: SID
+    fr: DSE
+  name:
+    de: Sicherheitsdirektion
+    fr: Direction de la sécurité
+  remit:
+    de: Polizei, Migration und Personenstand, Justizvollzug, Strassenverkehr und Schifffahrt (Fahrzeuge, Ausweise), Bevölkerungsschutz, Sport und Militär
+    fr: police, migrations et état civil, exécution judiciaire, circulation routière et navigation (véhicules, permis), protection de la population, sport et affaires militaires
+- code: be:STA
+  abbr:
+    de: STA
+    fr: CHA
+  name:
+    de: Staatskanzlei
+    fr: Chancellerie d'Etat
+  remit:
+    de: 'Stabsstelle von Regierungsrat und Grossem Rat: Regierungsgeschäfte, Wahlen und Abstimmungen, Kommunikation, Zweisprachigkeit und Übersetzung, Aussenbeziehungen'
+    fr: 'état-major du Conseil-exécutif et du Grand Conseil : affaires gouvernementales, élections et votations, communication, bilinguisme et traduction, relations extérieures'
+- code: be:WEU
+  abbr:
+    de: WEU
+    fr: DEEE
+  name:
+    de: Wirtschafts-, Energie- und Umweltdirektion
+    fr: Direction de l'économie, de l'énergie et de l'environnement
+  remit:
+    de: Wirtschaft und Arbeitsmarkt, Landwirtschaft und Natur, Wald und Naturgefahren, Energie, Umwelt und Klima
+    fr: économie et marché du travail, agriculture et nature, forêts et dangers naturels, énergie, environnement et climat
+none:
+  code: be:none
+  name:
+    de: Keine dieser Direktionen (Geschäft des Grossen Rates selbst, z. B. Wahlen, Ratsorgane, Verfahren)
+    fr: Aucune de ces directions (affaire du Grand Conseil lui-même, p. ex. élections, organes du Conseil, procédure)

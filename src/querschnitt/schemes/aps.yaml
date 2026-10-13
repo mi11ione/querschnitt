@@ -1,0 +1,727 @@
+id: aps
+title:
+  de: 'Année Politique Suisse: 24 Kapitel, 190 Unterthemen'
+  fr: 'Année Politique Suisse : 24 chapitres, 190 sous-thèmes'
+source: https://anneepolitique.swiss (chapter codes and keyword ids as published; Italian names are an unofficial translation)
+levels: 2
+chapters:
+- code: aps:1.1.1.
+  name:
+    de: Politische Grundfragen
+    fr: Problèmes politiques fondamentaux
+    it: Questioni politiche fondamentali
+  subtopics:
+  - code: aps:kw:1811765
+    name:
+      de: Verfassungsfragen
+  - code: aps:kw:1606390
+    name:
+      de: Nationale Identität
+  - code: aps:kw:1453303
+    name:
+      de: Landes- und Weltausstellungen
+  - code: aps:kw:1136816
+    name:
+      de: Staatsjubiläen
+  - code: aps:kw:1439409
+    name:
+      de: Image der Schweiz im Ausland
+  - code: aps:kw:1387698
+    name:
+      de: Stimmung in der Bevölkerung
+- code: aps:1.1.2.
+  name:
+    de: Rechtsordnung
+    fr: Ordre juridique
+    it: Ordinamento giuridico
+  subtopics:
+  - code: aps:kw:1050971
+    name:
+      de: Bürgerrecht
+  - code: aps:kw:1414872
+    name:
+      de: Niederlassungsrecht
+  - code: aps:kw:1372697
+    name:
+      de: Stimm- und Wahlrecht
+  - code: aps:kw:1016350
+    name:
+      de: Datenschutz und Statistik
+  - code: aps:kw:1945631
+    name:
+      de: Grundrechte
+  - code: aps:kw:1802204
+    name:
+      de: Öffentliche Ordnung
+  - code: aps:kw:1711965
+    name:
+      de: Innere Sicherheit
+  - code: aps:kw:1166866
+    name:
+      de: Kriminalität
+  - code: aps:kw:1759315
+    name:
+      de: Polizei
+  - code: aps:kw:1628747
+    name:
+      de: Äussere Sicherheit
+  - code: aps:kw:1809610
+    name:
+      de: Rechtshilfe
+  - code: aps:kw:1100105
+    name:
+      de: Strafrecht
+  - code: aps:kw:1003272
+    name:
+      de: Privatrecht
+- code: aps:1.1.3.
+  name:
+    de: Institutionen und Volksrechte
+    fr: Institutions et droits populaires
+    it: Istituzioni e diritti popolari
+  subtopics:
+  - code: aps:kw:1516542
+    name:
+      de: Bundesrat
+  - code: aps:kw:1938557
+    name:
+      de: Regierungspolitik
+  - code: aps:kw:1041276
+    name:
+      de: Bundesverwaltung - Organisation
+  - code: aps:kw:1246267
+    name:
+      de: Bundesverwaltung - Personal
+  - code: aps:kw:1901818
+    name:
+      de: Parlamentsmandat
+  - code: aps:kw:1831161
+    name:
+      de: Parlamentsorganisation
+  - code: aps:kw:1981944
+    name:
+      de: Organisation der Bundesrechtspflege
+  - code: aps:kw:1742839
+    name:
+      de: Volksrechte
+  - code: aps:kw:1997366
+    name:
+      de: Wahl- und Abstimmungsverfahren
+- code: aps:1.1.4.
+  name:
+    de: Föderativer Aufbau
+    fr: Structures fédéralistes
+    it: Struttura federalista
+  subtopics:
+  - code: aps:kw:1163015
+    name:
+      de: Beziehungen zwischen Bund und Kantonen
+  - code: aps:kw:1867716
+    name:
+      de: Interkantonale Zusammenarbeit
+  - code: aps:kw:1717061
+    name:
+      de: Städte, Regionen, Gemeinden
+  - code: aps:kw:1850818
+    name:
+      de: Territorialfragen
+  - code: aps:kw:1243459
+    name:
+      de: Jurafrage
+- code: aps:1.1.5.
+  name:
+    de: Wahlen
+    fr: Elections
+    it: Elezioni
+  subtopics:
+  - code: aps:kw:1644386
+    name:
+      de: Wahlen in kantonale Parlamente
+  - code: aps:kw:1371489
+    name:
+      de: Wahlen in kantonale Regierungen
+  - code: aps:kw:1461600
+    name:
+      de: Kantonale Ersatzwahlen
+  - code: aps:kw:1163111
+    name:
+      de: Kommunale Wahlen
+  - code: aps:kw:1185638
+    name:
+      de: Kommunale Ersatzwahlen
+  - code: aps:kw:1453989
+    name:
+      de: Eidgenössische Wahlen
+  - code: aps:kw:1496036
+    name:
+      de: Ständeratsersatzwahlen
+- code: aps:1.2.
+  name:
+    de: Aussenpolitik
+    fr: Politique étrangère
+    it: Politica estera
+  subtopics:
+  - code: aps:kw:1716030
+    name:
+      de: Beziehungen zur EU
+  - code: aps:kw:1788733
+    name:
+      de: Beziehungen zu internationalen Organisationen
+  - code: aps:kw:1142780
+    name:
+      de: Zwischenstaatliche Beziehungen
+  - code: aps:kw:1074875
+    name:
+      de: Gute Dienste
+  - code: aps:kw:1724602
+    name:
+      de: Auslandschweizer
+  - code: aps:kw:1757753
+    name:
+      de: Entwicklungspolitik
+  - code: aps:kw:1160888
+    name:
+      de: Aussenwirtschaftspolitik
+- code: aps:1.3.
+  name:
+    de: Landesverteidigung
+    fr: Armée
+    it: Difesa nazionale
+  subtopics:
+  - code: aps:kw:1612123
+    name:
+      de: Landesverteidigung und Gesellschaft
+  - code: aps:kw:1955992
+    name:
+      de: Militäreinsätze
+  - code: aps:kw:1583449
+    name:
+      de: Militärorganisation
+  - code: aps:kw:1304734
+    name:
+      de: Ausrüstung und Beschaffung
+  - code: aps:kw:1935391
+    name:
+      de: Zivildienst und Dienstverweigerung
+  - code: aps:kw:1223772
+    name:
+      de: Bevölkerungsschutz
+- code: aps:1.4.1.
+  name:
+    de: Wirtschaftspolitik
+    fr: Politique économique
+    it: Politica economica
+  subtopics:
+  - code: aps:kw:1099014
+    name:
+      de: Konjunkturlage- und politik
+  - code: aps:kw:1606021
+    name:
+      de: Strukturpolitik
+  - code: aps:kw:1393668
+    name:
+      de: Wettbewerb
+  - code: aps:kw:1023427
+    name:
+      de: Gesellschaftsrecht
+  - code: aps:kw:1106754
+    name:
+      de: Wirtschaftsordnung
+- code: aps:1.4.2.
+  name:
+    de: Geld, Währung und Kredit
+    fr: Crédit et monnaie
+    it: Moneta, valuta e credito
+  subtopics:
+  - code: aps:kw:1834664
+    name:
+      de: Finanzmarkt
+  - code: aps:kw:1599723
+    name:
+      de: Geldpolitik
+  - code: aps:kw:1503274
+    name:
+      de: Makroprudenzielle Regulierung
+  - code: aps:kw:1961581
+    name:
+      de: Nationalbank
+  - code: aps:kw:1190892
+    name:
+      de: Internationale Finanzinstitutionen
+  - code: aps:kw:1401071
+    name:
+      de: Wettbewerbsfähigkeit
+  - code: aps:kw:1352686
+    name:
+      de: Banken
+  - code: aps:kw:1989729
+    name:
+      de: Börsen
+  - code: aps:kw:1621088
+    name:
+      de: Versicherungen
+  - code: aps:kw:1808428
+    name:
+      de: Kapitalmarkt
+- code: aps:1.4.3.
+  name:
+    de: Landwirtschaft
+    fr: Agriculture
+    it: Agricoltura
+  subtopics:
+  - code: aps:kw:1917645
+    name:
+      de: Agrarpolitik
+  - code: aps:kw:1693262
+    name:
+      de: Internationale Landwirtschaftspolitik
+  - code: aps:kw:1096015
+    name:
+      de: Landwirt (Beruf)
+  - code: aps:kw:1115656
+    name:
+      de: Landwirtschaft und Umweltschutz
+  - code: aps:kw:1716937
+    name:
+      de: Agrarprodukte
+  - code: aps:kw:1047434
+    name:
+      de: Tierische Produktion
+  - code: aps:kw:1402123
+    name:
+      de: Pflanzliche Produktion
+  - code: aps:kw:1996740
+    name:
+      de: Lebensmittel
+  - code: aps:kw:1933829
+    name:
+      de: Tierhaltung, -versuche und -schutz
+  - code: aps:kw:1571228
+    name:
+      de: Forstwirtschaft
+  - code: aps:kw:1887709
+    name:
+      de: Fischerei
+  - code: aps:kw:1771678
+    name:
+      de: Jagd
+- code: aps:1.5.
+  name:
+    de: Öffentliche Finanzen
+    fr: Finances publiques
+    it: Finanze pubbliche
+  subtopics:
+  - code: aps:kw:1399238
+    name:
+      de: Direkte Steuern
+  - code: aps:kw:1000389
+    name:
+      de: Indirekte Steuern
+  - code: aps:kw:1237828
+    name:
+      de: Finanz- und Ausgabenordnung
+  - code: aps:kw:1391299
+    name:
+      de: Finanzplan und Sanierungsmassnahmen
+  - code: aps:kw:1149826
+    name:
+      de: Staatsrechnung
+  - code: aps:kw:1662849
+    name:
+      de: Voranschlag
+  - code: aps:kw:1949376
+    name:
+      de: Finanzausgleich
+  - code: aps:kw:1125071
+    name:
+      de: Finanzhaushalt der Kantone und Gemeinden
+- code: aps:1.6.1.
+  name:
+    de: Energie
+    fr: Energie
+    it: Energia
+  subtopics:
+  - code: aps:kw:1011149
+    name:
+      de: Energiepolitik
+  - code: aps:kw:1479182
+    name:
+      de: Netz und Vertrieb
+  - code: aps:kw:1322191
+    name:
+      de: Wasserkraft
+  - code: aps:kw:1937608
+    name:
+      de: Kernenergie
+  - code: aps:kw:1945353
+    name:
+      de: Alternativenergien
+  - code: aps:kw:1518474
+    name:
+      de: Erdöl und Erdgas
+- code: aps:1.6.2.
+  name:
+    de: Verkehr und Kommunikation
+    fr: Transports et communications
+    it: Trasporti e comunicazioni
+  subtopics:
+  - code: aps:kw:1050979
+    name:
+      de: Verkehrspolitik
+  - code: aps:kw:1778080
+    name:
+      de: Strassenverkehr
+  - code: aps:kw:1703201
+    name:
+      de: Eisenbahn
+  - code: aps:kw:1016102
+    name:
+      de: Agglomerationsverkehr, öffentlicher Verkehr
+  - code: aps:kw:1203623
+    name:
+      de: Schiffahrt
+  - code: aps:kw:1471972
+    name:
+      de: Luftfahrt
+  - code: aps:kw:1349029
+    name:
+      de: Post und Telekommunikation
+- code: aps:1.6.3.
+  name:
+    de: Raumplanung und Wohnungswesen
+    fr: Aménagement du territoire et logement
+    it: Pianificazione del territorio e alloggio
+  subtopics:
+  - code: aps:kw:1411270
+    name:
+      de: Mietwesen
+  - code: aps:kw:1115973
+    name:
+      de: Raumplanung
+  - code: aps:kw:1606020
+    name:
+      de: Bodenrecht
+  - code: aps:kw:1351171
+    name:
+      de: Wohnungsbau und -eigentum
+  - code: aps:kw:1103106
+    name:
+      de: Wohnqualität
+- code: aps:1.6.4.
+  name:
+    de: Umweltschutz
+    fr: Protection de l'environnement
+    it: Protezione dell'ambiente
+  subtopics:
+  - code: aps:kw:1268287
+    name:
+      de: Naturschutz
+  - code: aps:kw:1690300
+    name:
+      de: Naturgefahren
+  - code: aps:kw:1152317
+    name:
+      de: Gewässerschutz
+  - code: aps:kw:1745914
+    name:
+      de: Luftreinhaltung
+  - code: aps:kw:1042171
+    name:
+      de: Lärmschutz
+  - code: aps:kw:1971512
+    name:
+      de: Bodenschutz
+  - code: aps:kw:1481593
+    name:
+      de: Allgemeiner Umweltschutz
+  - code: aps:kw:1893942
+    name:
+      de: Klimapolitik
+  - code: aps:kw:1983479
+    name:
+      de: Abfälle
+- code: aps:1.7.1.
+  name:
+    de: Bevölkerung und Arbeit
+    fr: Population et travail
+    it: Popolazione e lavoro
+  subtopics:
+  - code: aps:kw:1719208
+    name:
+      de: Bevölkerungsentwicklung
+  - code: aps:kw:1834603
+    name:
+      de: Arbeitsmarkt
+  - code: aps:kw:1743978
+    name:
+      de: Löhne
+  - code: aps:kw:1039725
+    name:
+      de: Arbeitszeit
+  - code: aps:kw:1017708
+    name:
+      de: Kollektive Arbeitsbeziehungen
+  - code: aps:kw:1123055
+    name:
+      de: Arbeitnehmerschutz
+  - code: aps:kw:1081518
+    name:
+      de: Arbeitsrecht
+- code: aps:1.7.2.
+  name:
+    de: Gesundheit, Sozialhilfe, Sport
+    fr: Santé, assistance sociale, sport
+    it: Sanità, assistenza sociale, sport
+  subtopics:
+  - code: aps:kw:1374918
+    name:
+      de: Gesundheitspolitik
+  - code: aps:kw:1580741
+    name:
+      de: Ärzte und Pflegepersonal
+  - code: aps:kw:1378948
+    name:
+      de: Medikamente
+  - code: aps:kw:1719427
+    name:
+      de: Epidemien
+  - code: aps:kw:1070466
+    name:
+      de: Medizinische Forschung
+  - code: aps:kw:1607297
+    name:
+      de: Suchtmittel
+  - code: aps:kw:1453568
+    name:
+      de: Sozialhilfe
+  - code: aps:kw:1316367
+    name:
+      de: Sport
+- code: aps:1.7.3.
+  name:
+    de: Sozialversicherungen
+    fr: Assurances sociales
+    it: Assicurazioni sociali
+  subtopics:
+  - code: aps:kw:1712419
+    name:
+      de: Alters- und Hinterlassenenversicherung (AHV)
+  - code: aps:kw:1812640
+    name:
+      de: Invalidenversicherung (IV)
+  - code: aps:kw:1337121
+    name:
+      de: Ergänzungsleistungen (EL)
+  - code: aps:kw:1240998
+    name:
+      de: Erwerbsersatzordnung (EO)
+  - code: aps:kw:1736935
+    name:
+      de: Berufliche Vorsorge
+  - code: aps:kw:1506148
+    name:
+      de: Private Vorsorge
+  - code: aps:kw:1982565
+    name:
+      de: Krankenversicherung
+  - code: aps:kw:1988778
+    name:
+      de: Unfallversicherung
+  - code: aps:kw:1014827
+    name:
+      de: Arbeitslosenversicherung (ALV)
+- code: aps:1.7.4.
+  name:
+    de: Soziale Gruppen
+    fr: Groupes sociaux
+    it: Gruppi sociali
+  subtopics:
+  - code: aps:kw:1608666
+    name:
+      de: Migrationspolitik
+  - code: aps:kw:1253721
+    name:
+      de: Asylpolitik
+  - code: aps:kw:1777432
+    name:
+      de: Familienpolitik
+  - code: aps:kw:1530463
+    name:
+      de: Frauen und Gleichstellungspolitik
+  - code: aps:kw:1986590
+    name:
+      de: Kinder- und Jugendpolitik
+  - code: aps:kw:1252061
+    name:
+      de: Alterspolitik
+  - code: aps:kw:1727708
+    name:
+      de: Menschen mit Behinderungen
+  - code: aps:kw:1880851
+    name:
+      de: LGBTQIA+
+- code: aps:1.8.1.
+  name:
+    de: Bildung und Forschung
+    fr: Enseignement et recherche
+    it: Istruzione e ricerca
+  subtopics:
+  - code: aps:kw:1268797
+    name:
+      de: Grundschulen
+  - code: aps:kw:1104958
+    name:
+      de: Mittelschulen
+  - code: aps:kw:1579967
+    name:
+      de: Berufsbildung
+  - code: aps:kw:1522104
+    name:
+      de: Hochschulen
+  - code: aps:kw:1026681
+    name:
+      de: Forschung
+- code: aps:1.8.2.
+  name:
+    de: Kultur, Sprache, Kirchen
+    fr: Culture, langues, églises
+    it: Cultura, lingue, chiese
+  subtopics:
+  - code: aps:kw:1272595
+    name:
+      de: Kulturpolitik
+  - code: aps:kw:1148816
+    name:
+      de: Urheberrecht
+  - code: aps:kw:1998161
+    name:
+      de: Heimatschutz und Denkmalpflege
+  - code: aps:kw:1855254
+    name:
+      de: Archive, Bibliotheken, Museen
+  - code: aps:kw:1247895
+    name:
+      de: Buchmarkt
+  - code: aps:kw:1020052
+    name:
+      de: Musik
+  - code: aps:kw:1917461
+    name:
+      de: Film
+  - code: aps:kw:1103770
+    name:
+      de: Sprachen
+  - code: aps:kw:1898459
+    name:
+      de: Fahrende
+  - code: aps:kw:1621592
+    name:
+      de: Kirchen und religionspolitische Fragen
+- code: aps:1.8.3.
+  name:
+    de: Medien
+    fr: Médias
+    it: Media
+  subtopics:
+  - code: aps:kw:1036406
+    name:
+      de: Radio und Fernsehen
+  - code: aps:kw:1374261
+    name:
+      de: Presse
+  - code: aps:kw:1464372
+    name:
+      de: Medienpolitische Grundfragen
+  - code: aps:kw:1883059
+    name:
+      de: Telekommunikation
+  - code: aps:kw:1905586
+    name:
+      de: Neue Medien
+  - code: aps:kw:1347505
+    name:
+      de: Meinungsforschung
+- code: aps:2.0.1.
+  name:
+    de: Parteien
+    fr: Partis
+    it: Partiti
+  subtopics:
+  - code: aps:kw:1139123
+    name:
+      de: Parteiensystem
+  - code: aps:kw:1551472
+    name:
+      de: Grosse Parteien
+  - code: aps:kw:1172721
+    name:
+      de: Linke und ökologische Parteien
+  - code: aps:kw:1032246
+    name:
+      de: Liberale Parteien
+  - code: aps:kw:1390583
+    name:
+      de: Konservative und Rechte Parteien
+  - code: aps:kw:1891060
+    name:
+      de: Andere Parteien
+- code: aps:2.0.2.
+  name:
+    de: Verbände
+    fr: Associations
+    it: Associazioni
+  subtopics:
+  - code: aps:kw:1320413
+    name:
+      de: Industrie, Handel und Unternehmer
+  - code: aps:kw:1039646
+    name:
+      de: Arbeitgeber
+  - code: aps:kw:1839903
+    name:
+      de: Landwirtschaft
+  - code: aps:kw:1524120
+    name:
+      de: Gewerbe, Dienstleistungen, Konsum
+  - code: aps:kw:1965849
+    name:
+      de: Arbeitnehmer, Gewerkschaften
+  - code: aps:kw:1112218
+    name:
+      de: Gesundheit
+  - code: aps:kw:1864411
+    name:
+      de: Sozialwesen, Soziale Gruppen
+  - code: aps:kw:1312660
+    name:
+      de: Raumplanung und Wohnungswesen
+  - code: aps:kw:1961109
+    name:
+      de: Verkehr
+  - code: aps:kw:1191290
+    name:
+      de: Energie
+  - code: aps:kw:1141499
+    name:
+      de: Natur und Umwelt
+  - code: aps:kw:1469368
+    name:
+      de: Bildung
+  - code: aps:kw:1697273
+    name:
+      de: Kultur, Medien und Sprachen
+  - code: aps:kw:1812478
+    name:
+      de: Kirche, Religion
+  - code: aps:kw:1713599
+    name:
+      de: Freizeit, Tourismus, Gastgewerbe
+  - code: aps:kw:1146556
+    name:
+      de: Überparteiliche politische Interessen / Think Tanks
+none:
+  code: aps:none
+  name:
+    de: Kein Sachthema (Wahl oder Ernennung von Personen, Einbürgerung, Rücktritt, Verfahrensfragen des Rats)
+    fr: Aucun thème politique (élection ou nomination de personnes, naturalisation, démission, procédure du conseil)
+    it: Nessun tema politico (elezione o nomina di persone, naturalizzazione, dimissioni, procedura del consiglio)

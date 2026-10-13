@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+runs/
+data/*.sqlite
+data/cache/
+app/data-fixture/
+app/dev/shots/
+.DS_Store
+node_modules/

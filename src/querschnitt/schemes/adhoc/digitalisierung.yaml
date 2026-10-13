@@ -1,0 +1,14 @@
+id: adhoc/digitalisierung
+names: {de: Digitalisierung, fr: numérique, it: digitalizzazione}
+aliases: [Digitalisierung, numérique, digitalisation, digitalizzazione, digital]
+# The question per language, with the scope note in parentheses, and the yes answer. Frozen since S3 (E6); S8 measured it.
+question:
+  de: "Betrifft das folgende parlamentarische Geschäft das Thema «Digitalisierung» (digitale Transformation der Verwaltung, E-Government, digitale Infrastruktur, Daten, Cybersicherheit, digitale Souveränität)?"
+  fr: "L'objet parlementaire suivant concerne-t-il le thème « numérique » (transformation numérique de l'administration, cyberadministration, infrastructure numérique, données, cybersécurité, souveraineté numérique) ?"
+  it: "Il seguente oggetto parlamentare riguarda il tema «digitalizzazione» (trasformazione digitale dell'amministrazione, e-government, infrastruttura digitale, dati, cibersicurezza, sovranità digitale)?"
+answer_yes:
+  de: "Ja, das Geschäft betrifft Digitalisierung"
+  fr: "Oui, l'objet concerne le numérique"
+  it: "Sì, l'oggetto riguarda la digitalizzazione"
+cutoff: 0.5
+owner: DVS (Digitale Verwaltung Schweiz) use case

@@ -37,3 +37,23 @@ jobs:
           curl -fsS "http://127.0.0.1:8000/coverage" | head -c 300
           docker logs qs | tail -5; docker rm -f qs
       - run: docker compose --profile full config -q && QS_PG_DSN=postgresql://x@y/z docker compose --profile lite config -q
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: full profile up (Postgres + API + app + nightly; no model key, so no model calls)
+        run: |
+          QS_API_KEY= docker compose --profile full up -d --build
+          for i in $(seq 1 90); do curl -fsS http://127.0.0.1:8000/health && break; sleep 2; done
+          curl -fsS http://127.0.0.1:8000/metrics; echo
+          curl -fsS -o /dev/null -w "app %{http_code}\n" http://127.0.0.1:8000/
+          echo "## footprint (docker stats, idle)" >> "$GITHUB_STEP_SUMMARY"
+          docker stats --no-stream --format "| {{.Name}} | {{.MemUsage}} |" | tee -a "$GITHUB_STEP_SUMMARY"
+          docker images querschnitt --format "image {{.Size}}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: lite profile against the same Postgres
+        run: |
+          QS_PG_DSN=postgresql://querschnitt:querschnitt@db:5432/querschnitt QS_API_KEY= docker compose --profile lite up -d nightly-lite
+          sleep 10; docker compose --profile lite logs nightly-lite --tail 5
+          docker stats --no-stream --format "| {{.Name}} | {{.MemUsage}} |" | grep lite | tee -a "$GITHUB_STEP_SUMMARY"
+      - if: always()
+        run: docker compose --profile full --profile lite down -v

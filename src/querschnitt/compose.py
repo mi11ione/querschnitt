@@ -16,7 +16,7 @@ from pathlib import Path
 
 from . import prompts as P
 from .engine import mean_p, need_ch2, need_yn_b
-from .scheme import APS, adhoc, flat
+from .scheme import APS, adhoc, flat, named_schemes
 
 VERSION = "0.6.0"
 
@@ -131,6 +131,19 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
             other = next((v for l, v in reads.items() if l != a["lang"]), None)
             out["be-directorates"] = dict(code=code, p=p, gold=a.get("dept") or None, readings={l: v[0] for l, v in reads.items()},
                                           lane="please_check" if (other and other[0] != code) else "readings_agree")
+    for sch in named_schemes():   # a parliament's own scheme file (e.g. Basel-Stadt's themes): two code orders, lane
+        if sch.get("body") != a["body"]:
+            continue
+        n = len(sch["options"]) + 1
+        ra = rows.get(P.pid(*P.named_prompt(sch, a)[:2]))
+        if not ra:
+            continue
+        rb = rows.get(P.pid(*P.named_prompt(sch, a, P.named_perm(n))[:2])) if max(ra["p"]) < 0.9 else None
+        if max(ra["p"]) < 0.9 and not rb:
+            continue
+        pm = mean_p(ra["p"], rb["p"] if rb else None); i = argmax(pm)
+        code = sch["options"][i]["code"] if i < len(sch["options"]) else sch["none"]["code"]
+        out[sch["id"]] = dict(code=code, p=pm[i], lane="please_check" if (rb and argmax(ra["p"]) != argmax(rb["p"])) else "readings_agree")
     return out
 
 

@@ -50,3 +50,13 @@ def flat(name: str) -> dict:
 
 def named(name: str) -> dict:
     return flat(name)
+
+
+def named_schemes() -> list[dict]:
+    """Every named scheme file (topic names only) with the parliament it applies to (`body`)."""
+    out = []
+    for p in sorted(HERE.glob("*.yaml")):
+        d = yaml.safe_load(p.read_text())
+        if d.get("kind") == "named":
+            out.append(d)
+    return out

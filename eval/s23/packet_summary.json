@@ -1,0 +1,35 @@
+{
+ "run_files": [
+  "runs/ev/dd237840-20261014/ev.jsonl"
+ ],
+ "ev_rows": 3838,
+ "frame": {
+  "chapter": 3340,
+  "digitalisierung": 498
+ },
+ "packet": 200,
+ "by_kind": {
+  "chapter": 100,
+  "digitalisierung": 100
+ },
+ "distinct_affairs": 200,
+ "substring_ok": 198,
+ "ih_match": 198,
+ "by_level": {
+  "cantonal": 102,
+  "communal": 33,
+  "federal": 61,
+  "other": 4
+ },
+ "by_lang": {
+  "de": 152,
+  "fr": 32,
+  "it": 16
+ },
+ "by_field": {
+  "title": 65,
+  "title_long": 9,
+  "text": 126
+ },
+ "seed": 20261023
+}

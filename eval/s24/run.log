@@ -1,0 +1,13 @@
+
+'Lehrpersonenmangel an den Schulen und Massnahmen gegen den Mangel an Lehrerinnen und Lehrern' -> lehrpersonenmangel (7.3 s)
+  de: Betrifft das folgende parlamentarische Geschäft das Thema «Lehrpersonenmangel» (Lehrpersonenmangel an den Schulen und Massnahmen gegen den Mangel an Lehrerinnen und Lehrern)?
+  fr: L'objet parlementaire suivant concerne-t-il le thème « Pénurie d'enseignants » (Pénurie d'enseignants dans les écoles et mesures contre la pénurie d'enseignantes et d'enseignants) ?
+  it: Il seguente oggetto parlamentare riguarda il tema «Carenza di insegnanti» (Carenza di insegnanti nelle scuole e misure contro la carenza di insegnanti)?
+  terms: {'de': [], 'fr': [], 'it': []}
+  read 0 / flagged 0 / 1.0 s · decision 1 at 8.88 s
+  read 9 / flagged 0 / 9.6 s · decision 10 at 17.93 s
+  read 19 / flagged 0 / 31.1 s · decision 20 at 39.86 s
+  read 39 / flagged 0 / 59.6 s · decision 40 at 68.44 s
+  read 59 / flagged 0 / 87.0 s · decision 60 at 95.83 s
+  read 79 / flagged 0 / 112.1 s · decision 80 at 120.97 s
+  done: 98 read, 0 flagged, first at 8.88 s, all at 152.44 s; summary {"read": 98, "flagged": 0, "seconds": 145.0, "period_name": "last_week", "estimate": {"affairs": 98, "mode": "all", "rate": 1.6, "calls_per_affair": 1.15, "budget": null, "seconds": 70}, "mode": "all", "period": ["2026-10-06", "2026-10-12"], "in_period": 98, "scored_slice_from": "2025-01-01", "total": 98, "terms_generation": {"usd": 3.74e-05, "lat": 5.55, "ct": 107, "raw": "{\"terms\": {\"de\": [\

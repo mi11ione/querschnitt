@@ -169,6 +169,44 @@
    "file": "ideation2/spikes/s9-aps/results.json"
   },
   {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "Unterthema, durchgehend, ausgeliefertes Design (D4)",
+   "design_fr": "sous-thème, de bout en bout, design livré (D4)",
+   "n": 1221,
+   "result": "top-1 0.538 · top-3 0.699 · bei richtigem Kapitel 0.727",
+   "result_fr": "top-1 0,538 · top-3 0,699 · si chapitre juste 0,727",
+   "interval": [
+    0.51,
+    0.567
+   ],
+   "baseline": "D1 0.520 · D0 0.464",
+   "baseline_fr": "D1 0,520 · D0 0,464",
+   "split": "nach S16 aus seinen Zeilen berechnet",
+   "split_fr": "calculé après S16 à partir de ses lignes",
+   "file": "querschnitt/eval/s16/hierarchical.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "D4, hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 makro",
+   "design_fr": "D4, F1 hiérarchique (chapitre + sous-thème) · F1 macro par chapitre",
+   "n": 1221,
+   "result": "hF 0.640 · Makro-F1 0.705 (alle 1'357)",
+   "result_fr": "hF 0,640 · F1 macro 0,705 (les 1 357)",
+   "interval": [
+    0.616,
+    0.663
+   ],
+   "baseline": "hF D1 0.612 · D0 0.561 · Stichwort 0.135",
+   "baseline_fr": "hF D1 0,612 · D0 0,561 · mots-clés 0,135",
+   "split": "nach S16 aus seinen Zeilen berechnet",
+   "split_fr": "calculé après S16 à partir de ses lignes",
+   "file": "querschnitt/eval/s16/hierarchical.json"
+  },
+  {
    "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",
    "test_fr": "« numérique » : 30 objets DVS choisis à la main (rappel)",
    "gold": "human",

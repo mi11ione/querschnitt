@@ -21,9 +21,10 @@ from .compose import VERSION, decide, read_run, topic_rows
 from .data import load_bodies, level, parl_name
 from .engine import Engine
 from .examples import ExamplePool
-from .scheme import APS, adhoc, flat
+from .scheme import APS, adhoc, flat, named_schemes
 
 ROOT = Path(__file__).resolve().parents[2]
+NAMED_IDS = set()
 KW = re.compile(json.loads((ROOT / "eval/kw_digitalisierung.json").read_text())["kw"], re.I)
 
 
@@ -41,6 +42,7 @@ def jdump(p: Path, obj):
 
 def run(args):
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    NAMED_IDS.update(s["id"] for s in named_schemes())
     lock, rows = read_run(*[Path(r) for r in args.run.split(",")])
     eng = Engine(None, ExamplePool.load(ROOT / "data/eval/aps_pool.jsonl"))
     topics = [adhoc("digitalisierung")]
@@ -84,7 +86,9 @@ def run(args):
                      ("dig_lane", int(g["lane"] == "please_check") if g else None), ("kw", int(bool(KW.search(kw_text(x))))),
                      ("be", d["be-directorates"]["code"].split(":")[1] if d.get("be-directorates") else None),
                      ("be_lane", (d["be-directorates"]["lane"] == "please_check") * 1 if d.get("be-directorates") else None),
-                     ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None)):
+                     ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None),
+                     ("own", next(([k, v["code"].split(":", 1)[1], int(v["lane"] == "please_check")] for k, v in d.items()
+                                   if k in NAMED_IDS), None))):
             cols[k].append(v)
         detail[x["id"] // 1000][x["id"]] = dict(
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
@@ -127,7 +131,10 @@ def run(args):
         topics=[dict(id=t["id"], names=t["names"], aliases=t.get("aliases", [])) for t in topics],
         schemes=[dict(id="be-directorates", body="BE", title=flat("be-directorates")["title"],
                       options=[dict(code=o["code"].split(":")[1], abbr=o["abbr"], name=o["name"]) for o in flat("be-directorates")["options"]]
-                      + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]))
+                      + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]
+                + [dict(id=s["id"], body=s.get("body"), kind="named", title=s["title"],
+                        options=[dict(code=o["code"].split(":", 1)[1], name=o["name"]) for o in s["options"]]
+                        + [dict(code=s["none"]["code"].split(":", 1)[1], name=s["none"]["name"])]) for s in named_schemes()]))
     tot = sum(c["n"] for c in cov.values())
     meta = dict(generated_at=now, version=VERSION, model=lock["model"], build=lock["fp"], build_short=lock["fp"][-8:],
                 since=args.since, until=min(X[0]["date"], time.strftime("%Y-%m-%d")) if X else None,

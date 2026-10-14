@@ -159,6 +159,39 @@ w(f"| {num(sub['n'], 0)} | {r(sub['result'])} | {r(sub['results_more'][0])} | {r
 w("")
 w("Subtopics ship as ranked suggestions, not as a lane.")
 w("")
+th = T["aps_hierarchical_d4"]
+N_ALL = th["results_more"][-1]["n"]
+hm = {x["metric"]: x for x in th["results_more"]}; hb = {x["name"]: x for x in th["baselines"]}
+w(f"**Hierarchical metrics of the shipped design D4** — computed after S16 from its rows (not pre-registered; no new calls) by "
+  f"[`eval/s16/hierarchical.py`](../eval/s16/hierarchical.py). Same {num(th['n'], 0)} items as above (chapter + subtopic gold); "
+  "hierarchical precision / recall / F1 after Kiritchenko et al. (predicted and gold sets augmented with their ancestors, levels "
+  "chapter and subtopic, micro-averaged); per-chapter F1 is the chapter top-1, one vs rest, macro over the "
+  f"{L(str(hm['per-chapter F1, macro over the chapters present (D4)']['chapters']), hm['per-chapter F1, macro over the chapters present (D4)']['at'])} "
+  f"chapters present, on all {num(hm['per-chapter F1, macro over the chapters present (D4)']['n'], 0)} items. Intervals: Wilson for the subtopic "
+  "rates, percentile bootstrap 2,000 for hP/hR/hF and macro-F1 (stratified by gold chapter), bounds rounded outward.")
+w("")
+w("| Design | subtopic top-1 | subtopic top-3 | subtopic top-1 when the chapter is right | hP | hR | hF | per-chapter macro-F1 |")
+w("|---|---|---|---|---|---|---|---|")
+g4 = hm["subtopic top-1 given the chapter is right (D4)"]
+w(f"| **D4 shipped** | **{r(hm['subtopic top-1 end to end (D4)'])}** | {r(hm['subtopic top-3 end to end (D4)'])} | {r(g4)} (n {num(g4['n'])}) | "
+  f"{r(hm['hierarchical precision (D4)'])} | {r(hm['hierarchical recall (D4)'])} | **{r(th['result'])}** | "
+  f"{r(hm['per-chapter F1, macro over the chapters present (D4)'])} |")
+HN = {"D1": "D1 read back from the subtopic, no examples (same items)", "D0": "D0 plain list prompting, best subtopic within its chapter (same items)",
+      "keyword": "keyword (APS subtopic words, frozen; chapter only)"}
+for d, nm in (("D1", "D1 read-back, no examples"), ("D0", "D0 list prompting → best subtopic in its chapter"), ("keyword", "keyword (chapter only)")):
+    if d == "keyword":
+        sub_cells = "— | — | —"
+    else:
+        gx = hb[f"{d} subtopic top-1 given chapter right"]
+        sub_cells = f"{r(hb[f'{d} subtopic top-1'])} | {r(hb[f'{d} subtopic top-3'])} | {r(gx)} (n {num(gx['n'])})"
+    w(f"| {nm} | {sub_cells} | {r(hb[f'{d} hP'])} | {r(hb[f'{d} hR'])} | {r(hb[HN[d]])} | {r(hb[f'{d} per-chapter macro-F1'])} |")
+w("")
+ah = th["breakdowns"]["all_items_hF"]
+w(f"D4 and D1 always name one chapter and one subtopic, so hP = hR = hF for them (the mean of chapter and subtopic top-1); "
+  f"D0 predicts the chapter only when its chapter is not in the subtopic shortlist, the keyword baseline always. "
+  f"The conditional rate is over each design's own correct-chapter items, so it is not a paired comparison. "
+  f"On all {num(N_ALL, 0)} items (gold depth 1 where the main subtopic is not among the 190): D4 hF {r(ah)}.")
+w("")
 
 dv = T["dvs_human30"]
 w("### 3 · “Digitalisierung”: the 30 affairs DVS curates by hand (recall)")

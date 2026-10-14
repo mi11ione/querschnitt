@@ -1,0 +1,8 @@
+INFO:     Started server process [30915]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8796 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56187 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56188 - "POST /adhoc HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56205 - "GET /adhoc/lehrpersonenmangel/stream HTTP/1.1" 200 OK
+INFO:     Shutting down

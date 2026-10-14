@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T12:15:44Z",
+ "generated_utc": "2026-10-14T15:13:18Z",
  "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
  "build": {
   "endpoint": "Public AI",
@@ -2750,6 +2750,1272 @@
      "0.49",
      "0.5",
      "0.54"
+    ]
+   }
+  },
+  {
+   "id": "aps_hierarchical_d4",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Unterthema und Hierarchie, Bundesgeschäfte: ausgeliefertes Design D4 (nach S16 aus seinen Zeilen berechnet)",
+   "title_fr": "Sous-thème APS et hiérarchie, objets fédéraux : design livré D4 (calculé après S16 à partir de ses lignes)",
+   "n": 1221,
+   "design": "die S9-Geschäfte mit Hauptunterthema unter den 190 Namen; D4-Zeilen aus S16 (Unterthema-Rangliste = p(Unterthema) × Prior); hierarchisches P/R/F1 nach Kiritchenko (Mengen um Vorfahren ergänzt; Ebenen Kapitel + Unterthema; mikro); Kapitel-F1 je Kapitel, Makro",
+   "result": {
+    "metric": "hierarchical F1 (D4, chapter + subtopic, micro)",
+    "value": 0.64004914004914,
+    "ci95": [
+     0.616,
+     0.663
+    ],
+    "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+    "at": {
+     "file": "bern/querschnitt/eval/s16/hierarchical.json",
+     "key": "designs > D4 > hierarchical > sub_gold_items > hF"
+    },
+    "shown": {
+     "value": [
+      "0.6",
+      "0.64",
+      "0.6400"
+     ],
+     "ci95": [
+      "0.6",
+      "0.61",
+      "0.67",
+      "0.7"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "subtopic top-1 end to end (D4)",
+     "value": 0.5389025389025389,
+     "ci95": [
+      0.51,
+      0.567
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > subtopic > top1"
+     },
+     "k": 658,
+     "n": 1221,
+     "shown": {
+      "value": [
+       "0.5",
+       "0.53",
+       "0.538",
+       "0.5389"
+      ],
+      "ci95": [
+       "0.5",
+       "0.57",
+       "0.6"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-3 end to end (D4)",
+     "value": 0.6994266994266994,
+     "ci95": [
+      0.673,
+      0.725
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > subtopic > top3"
+     },
+     "k": 854,
+     "n": 1221,
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69",
+       "0.6994"
+      ],
+      "ci95": [
+       "0.6",
+       "0.67",
+       "0.73",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-1 given the chapter is right (D4)",
+     "value": 0.7270718232044199,
+     "ci95": [
+      0.697,
+      0.756
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > subtopic > top1_given_chapter_right"
+     },
+     "k": 658,
+     "n": 905,
+     "shown": {
+      "value": [
+       "0.7",
+       "0.72",
+       "0.7270"
+      ],
+      "ci95": [
+       "0.6",
+       "0.69",
+       "0.76",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "hierarchical precision (D4)",
+     "value": 0.64004914004914,
+     "ci95": [
+      0.616,
+      0.663
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > hierarchical > sub_gold_items > hP"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.64",
+       "0.6400"
+      ],
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.67",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "hierarchical recall (D4)",
+     "value": 0.64004914004914,
+     "ci95": [
+      0.616,
+      0.663
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > hierarchical > sub_gold_items > hR"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.64",
+       "0.6400"
+      ],
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.67",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "per-chapter F1, macro over the chapters present (D4)",
+     "value": 0.7057749464217465,
+     "ci95": [
+      0.68,
+      0.729
+     ],
+     "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > per_chapter > macro_F1"
+     },
+     "n": 1357,
+     "chapters": 22,
+     "shown": {
+      "value": [
+       "0.7",
+       "0.70",
+       "0.705",
+       "0.7057"
+      ],
+      "ci95": [
+       "0.6",
+       "0.73",
+       "0.8"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "hierarchical F1 (D1)",
+     "value": 0.6122031122031122,
+     "ci95": [
+      0.586,
+      0.637
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > hierarchical > sub_gold_items > hF"
+     },
+     "name": "D1 read back from the subtopic, no examples (same items)",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.61",
+       "0.6122"
+      ],
+      "ci95": [
+       "0.5",
+       "0.58",
+       "0.64",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "hierarchical F1 (D0)",
+     "value": 0.5619596541786744,
+     "ci95": [
+      0.535,
+      0.588
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > hierarchical > sub_gold_items > hF"
+     },
+     "name": "D0 plain list prompting, best subtopic within its chapter (same items)",
+     "shown": {
+      "value": [
+       "0.5",
+       "0.56",
+       "0.561",
+       "0.5619"
+      ],
+      "ci95": [
+       "0.5",
+       "0.53",
+       "0.59",
+       "0.6"
+      ]
+     }
+    },
+    {
+     "metric": "hierarchical F1 (keyword)",
+     "value": 0.13595413595413597,
+     "ci95": [
+      0.121,
+      0.151
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > keyword > hierarchical > sub_gold_items > hF"
+     },
+     "name": "keyword (APS subtopic words, frozen; chapter only)",
+     "shown": {
+      "value": [
+       "0.1",
+       "0.13",
+       "0.135",
+       "0.1359"
+      ],
+      "ci95": [
+       "0.1",
+       "0.12",
+       "0.16",
+       "0.2"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-1 (D1)",
+     "value": 0.5208845208845209,
+     "ci95": [
+      0.492,
+      0.549
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > subtopic > top1"
+     },
+     "k": 636,
+     "n": 1221,
+     "name": "D1 subtopic top-1",
+     "shown": {
+      "value": [
+       "0.5",
+       "0.52",
+       "0.520",
+       "0.5208"
+      ],
+      "ci95": [
+       "0.4",
+       "0.49",
+       "0.55",
+       "0.6"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-3 (D1)",
+     "value": 0.6773136773136773,
+     "ci95": [
+      0.65,
+      0.703
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > subtopic > top3"
+     },
+     "k": 827,
+     "n": 1221,
+     "name": "D1 subtopic top-3",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.67",
+       "0.6773"
+      ],
+      "ci95": [
+       "0.6",
+       "0.71",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-1 given chapter right (D1)",
+     "value": 0.740395809080326,
+     "ci95": [
+      0.71,
+      0.769
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > subtopic > top1_given_chapter_right"
+     },
+     "k": 636,
+     "n": 859,
+     "name": "D1 subtopic top-1 given chapter right",
+     "shown": {
+      "value": [
+       "0.7",
+       "0.74",
+       "0.7403"
+      ],
+      "ci95": [
+       "0.7",
+       "0.77",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-1 (D0)",
+     "value": 0.4643734643734644,
+     "ci95": [
+      0.436,
+      0.493
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > subtopic > top1"
+     },
+     "k": 567,
+     "n": 1221,
+     "name": "D0 subtopic top-1",
+     "shown": {
+      "value": [
+       "0.4",
+       "0.46",
+       "0.4643"
+      ],
+      "ci95": [
+       "0.4",
+       "0.43",
+       "0.5",
+       "0.50"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-3 (D0)",
+     "value": 0.5962325962325963,
+     "ci95": [
+      0.568,
+      0.624
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > subtopic > top3"
+     },
+     "k": 728,
+     "n": 1221,
+     "name": "D0 subtopic top-3",
+     "shown": {
+      "value": [
+       "0.5",
+       "0.59",
+       "0.5962"
+      ],
+      "ci95": [
+       "0.5",
+       "0.56",
+       "0.63",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-1 given chapter right (D0)",
+     "value": 0.7105263157894737,
+     "ci95": [
+      0.678,
+      0.741
+     ],
+     "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > subtopic > top1_given_chapter_right"
+     },
+     "k": 567,
+     "n": 798,
+     "name": "D0 subtopic top-1 given chapter right",
+     "shown": {
+      "value": [
+       "0.7",
+       "0.71",
+       "0.710",
+       "0.7105"
+      ],
+      "ci95": [
+       "0.6",
+       "0.67",
+       "0.75",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "hP (D1)",
+     "value": 0.6122031122031122,
+     "ci95": [
+      0.586,
+      0.637
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > hierarchical > sub_gold_items > hP"
+     },
+     "name": "D1 hP",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.61",
+       "0.6122"
+      ],
+      "ci95": [
+       "0.5",
+       "0.58",
+       "0.64",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "hR (D1)",
+     "value": 0.6122031122031122,
+     "ci95": [
+      0.586,
+      0.637
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > hierarchical > sub_gold_items > hR"
+     },
+     "name": "D1 hR",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.61",
+       "0.6122"
+      ],
+      "ci95": [
+       "0.5",
+       "0.58",
+       "0.64",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "hP (D0)",
+     "value": 0.5649834437086093,
+     "ci95": [
+      0.539,
+      0.591
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > hierarchical > sub_gold_items > hP"
+     },
+     "name": "D0 hP",
+     "shown": {
+      "value": [
+       "0.5",
+       "0.56",
+       "0.564",
+       "0.5649"
+      ],
+      "ci95": [
+       "0.5",
+       "0.53",
+       "0.6",
+       "0.60"
+      ]
+     }
+    },
+    {
+     "metric": "hR (D0)",
+     "value": 0.558968058968059,
+     "ci95": [
+      0.533,
+      0.585
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > hierarchical > sub_gold_items > hR"
+     },
+     "name": "D0 hR",
+     "shown": {
+      "value": [
+       "0.5",
+       "0.55",
+       "0.558",
+       "0.5589"
+      ],
+      "ci95": [
+       "0.5",
+       "0.53",
+       "0.59",
+       "0.6"
+      ]
+     }
+    },
+    {
+     "metric": "hP (keyword)",
+     "value": 0.20393120393120392,
+     "ci95": [
+      0.181,
+      0.227
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > keyword > hierarchical > sub_gold_items > hP"
+     },
+     "name": "keyword hP",
+     "shown": {
+      "value": [
+       "0.2",
+       "0.20",
+       "0.203",
+       "0.2039"
+      ],
+      "ci95": [
+       "0.1",
+       "0.18",
+       "0.23",
+       "0.3"
+      ]
+     }
+    },
+    {
+     "metric": "hR (keyword)",
+     "value": 0.10196560196560196,
+     "ci95": [
+      0.09,
+      0.114
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > keyword > hierarchical > sub_gold_items > hR"
+     },
+     "name": "keyword hR",
+     "shown": {
+      "value": [
+       "0.1",
+       "0.10",
+       "0.101",
+       "0.1019"
+      ],
+      "ci95": [
+       "0.0",
+       "0.12",
+       "0.2"
+      ]
+     }
+    },
+    {
+     "metric": "per-chapter macro-F1 (D1)",
+     "value": 0.6767693339159058,
+     "ci95": [
+      0.651,
+      0.701
+     ],
+     "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D1 > per_chapter > macro_F1"
+     },
+     "name": "D1 per-chapter macro-F1",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.67",
+       "0.676",
+       "0.6767"
+      ],
+      "ci95": [
+       "0.6",
+       "0.65",
+       "0.71",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "per-chapter macro-F1 (D0)",
+     "value": 0.625859541572709,
+     "ci95": [
+      0.598,
+      0.652
+     ],
+     "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D0 > per_chapter > macro_F1"
+     },
+     "name": "D0 per-chapter macro-F1",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.62",
+       "0.625",
+       "0.6258"
+      ],
+      "ci95": [
+       "0.5",
+       "0.59",
+       "0.66",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "per-chapter macro-F1 (keyword)",
+     "value": 0.16575255798514218,
+     "ci95": [
+      0.145,
+      0.185
+     ],
+     "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > keyword > per_chapter > macro_F1"
+     },
+     "name": "keyword per-chapter macro-F1",
+     "shown": {
+      "value": [
+       "0.1",
+       "0.16",
+       "0.165",
+       "0.1657"
+      ],
+      "ci95": [
+       "0.1",
+       "0.14",
+       "0.19",
+       "0.2"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "per_chapter_D4": {
+     "cells": [
+      {
+       "cell": "Politische Grundfragen",
+       "n": 21,
+       "value": 0.5909090909090909,
+       "ci95": [
+        0.425,
+        0.74
+       ],
+       "shown": {
+        "value": [
+         "0.5",
+         "0.59",
+         "0.590",
+         "0.5909"
+        ],
+        "ci95": [
+         "0.4",
+         "0.42",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "cell": "Rechtsordnung",
+       "n": 108,
+       "value": 0.6691729323308271,
+       "ci95": [
+        0.609,
+        0.722
+       ],
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66",
+         "0.6691"
+        ],
+        "ci95": [
+         "0.6",
+         "0.60",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "cell": "Institutionen und Volksrechte",
+       "n": 84,
+       "value": 0.7398843930635838,
+       "ci95": [
+        0.666,
+        0.807
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73",
+         "0.739",
+         "0.7398"
+        ],
+        "ci95": [
+         "0.6",
+         "0.66",
+         "0.81",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Föderativer Aufbau",
+       "n": 18,
+       "value": 0.6976744186046512,
+       "ci95": [
+        0.553,
+        0.838
+       ],
+       "small": true,
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69",
+         "0.697",
+         "0.6976"
+        ],
+        "ci95": [
+         "0.5",
+         "0.55",
+         "0.84",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Aussenpolitik",
+       "n": 57,
+       "value": 0.7,
+       "ci95": [
+        0.63,
+        0.773
+       ],
+       "shown": {
+        "ci95": [
+         "0.6",
+         "0.78",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "cell": "Landesverteidigung",
+       "n": 64,
+       "value": 0.8793103448275862,
+       "ci95": [
+        0.807,
+        0.935
+       ],
+       "shown": {
+        "value": [
+         "0.8",
+         "0.87",
+         "0.8793"
+        ],
+        "ci95": [
+         "0.8",
+         "0.80",
+         "0.94",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "cell": "Wirtschaftspolitik",
+       "n": 104,
+       "value": 0.5595238095238095,
+       "ci95": [
+        0.466,
+        0.648
+       ],
+       "shown": {
+        "value": [
+         "0.5",
+         "0.55",
+         "0.559",
+         "0.5595"
+        ],
+        "ci95": [
+         "0.4",
+         "0.46",
+         "0.65",
+         "0.7"
+        ]
+       }
+      },
+      {
+       "cell": "Geld, Währung und Kredit",
+       "n": 54,
+       "value": 0.7010309278350515,
+       "ci95": [
+        0.597,
+        0.796
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.70",
+         "0.7010"
+        ],
+        "ci95": [
+         "0.5",
+         "0.59",
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "cell": "Landwirtschaft",
+       "n": 108,
+       "value": 0.87,
+       "ci95": [
+        0.818,
+        0.918
+       ],
+       "shown": {
+        "value": [
+         "0.8"
+        ],
+        "ci95": [
+         "0.8",
+         "0.81",
+         "0.92",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "cell": "Öffentliche Finanzen",
+       "n": 59,
+       "value": 0.7413793103448276,
+       "ci95": [
+        0.649,
+        0.824
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74",
+         "0.7413"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Energie",
+       "n": 73,
+       "value": 0.8529411764705882,
+       "ci95": [
+        0.781,
+        0.914
+       ],
+       "shown": {
+        "value": [
+         "0.8",
+         "0.85",
+         "0.852",
+         "0.8529"
+        ],
+        "ci95": [
+         "0.7",
+         "0.78",
+         "0.92",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "cell": "Verkehr und Kommunikation",
+       "n": 85,
+       "value": 0.8322147651006712,
+       "ci95": [
+        0.765,
+        0.892
+       ],
+       "shown": {
+        "value": [
+         "0.8",
+         "0.83",
+         "0.8322"
+        ],
+        "ci95": [
+         "0.7",
+         "0.76",
+         "0.9",
+         "0.90"
+        ]
+       }
+      },
+      {
+       "cell": "Raumplanung und Wohnungswesen",
+       "n": 51,
+       "value": 0.7608695652173914,
+       "ci95": [
+        0.651,
+        0.848
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.76",
+         "0.760",
+         "0.7608"
+        ],
+        "ci95": [
+         "0.6",
+         "0.65",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Umweltschutz",
+       "n": 75,
+       "value": 0.6735751295336787,
+       "ci95": [
+        0.61,
+        0.736
+       ],
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67",
+         "0.673",
+         "0.6735"
+        ],
+        "ci95": [
+         "0.6",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "cell": "Bevölkerung und Arbeit",
+       "n": 40,
+       "value": 0.7272727272727273,
+       "ci95": [
+        0.613,
+        0.827
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.72",
+         "0.7272"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Gesundheit, Sozialhilfe, Sport",
+       "n": 102,
+       "value": 0.7729468599033816,
+       "ci95": [
+        0.71,
+        0.833
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.77",
+         "0.772",
+         "0.7729"
+        ],
+        "ci95": [
+         "0.7",
+         "0.84",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Sozialversicherungen",
+       "n": 82,
+       "value": 0.7904191616766467,
+       "ci95": [
+        0.722,
+        0.856
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79",
+         "0.7904"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.86",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Soziale Gruppen",
+       "n": 82,
+       "value": 0.6867469879518072,
+       "ci95": [
+        0.613,
+        0.763
+       ],
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68",
+         "0.686",
+         "0.6867"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.77",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "cell": "Bildung und Forschung",
+       "n": 32,
+       "value": 0.7936507936507936,
+       "ci95": [
+        0.688,
+        0.893
+       ],
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79",
+         "0.793",
+         "0.7936"
+        ],
+        "ci95": [
+         "0.6",
+         "0.68",
+         "0.9",
+         "0.90"
+        ]
+       }
+      },
+      {
+       "cell": "Kultur, Sprache, Kirchen",
+       "n": 28,
+       "value": 0.6511627906976745,
+       "ci95": [
+        0.473,
+        0.809
+       ],
+       "shown": {
+        "value": [
+         "0.6",
+         "0.65",
+         "0.6511"
+        ],
+        "ci95": [
+         "0.4",
+         "0.47",
+         "0.81",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "cell": "Medien",
+       "n": 29,
+       "value": 0.8363636363636363,
+       "ci95": [
+        0.716,
+        0.932
+       ],
+       "shown": {
+        "value": [
+         "0.8",
+         "0.83",
+         "0.8363"
+        ],
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.94",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "cell": "Verbände",
+       "n": 1,
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "small": true
+      }
+     ],
+     "metric": "F1 per chapter (one vs rest), stratified bootstrap 2,000",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > per_chapter > by_chapter"
+     }
+    },
+    "all_items_hF": {
+     "metric": "hierarchical F1 on all 1,357 items (gold depth 1 where the main subtopic is not among the 190)",
+     "value": 0.6284958427815571,
+     "ci95": [
+      0.605,
+      0.653
+     ],
+     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
+     "at": {
+      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "key": "designs > D4 > hierarchical > all_items > hF"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.62",
+       "0.6284"
+      ],
+      "ci95": [
+       "0.6",
+       "0.60",
+       "0.66",
+       "0.7"
+      ]
+     }
+    }
+   },
+   "split": "held-out S9 items; computed after S16 from its rows (not pre-registered; no new calls)",
+   "prereg": null,
+   "sources": [
+    "bern/querschnitt/eval/s16/hierarchical.json",
+    "bern/querschnitt/eval/s16/hierarchical.py",
+    "bern/querschnitt/eval/s16/raw.jsonl",
+    "bern/ideation2/spikes/s9-aps/raw/",
+    "bern/ideation2/spikes/s9-aps/data/items.json"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-14",
+   "shipped": "ranked subtopic suggestions (federal affairs, D4)",
+   "test": "APS-Unterthema und Hierarchie, Bundesgeschäfte: ausgeliefertes Design D4 (nach S16 aus seinen Zeilen berechnet)",
+   "interval": [
+    0.616,
+    0.663
+   ],
+   "baseline": {
+    "name": "D1 read back from the subtopic, no examples (same items)",
+    "value": 0.6122031122031122,
+    "ci95": [
+     0.586,
+     0.637
+    ],
+    "shown": {
+     "value": [
+      "0.6",
+      "0.61",
+      "0.6122"
+     ],
+     "ci95": [
+      "0.5",
+      "0.58",
+      "0.64",
+      "0.7"
+     ]
+    }
+   },
+   "file": "bern/querschnitt/eval/s16/hierarchical.json",
+   "key": "designs > D4 > hierarchical > sub_gold_items > hF",
+   "shown": {
+    "interval": [
+     "0.6",
+     "0.61",
+     "0.66"
     ]
    }
   },

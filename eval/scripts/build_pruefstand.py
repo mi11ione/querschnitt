@@ -648,6 +648,54 @@ tests.append(dict(
     split="cross-fitted (2 folds), no new calls", prereg=pre16, sources=[S16R, f"{QE}/calibration.json", f"{QE}/s16/analyze.py"],
     build=B16, model=MODEL, date="2026-10-14", note="no interval computed for ECE (TO MEASURE: bootstrap)"))
 
+# ---------------------------------------------------------------- hierarchical metrics of D4 (computed after S16 from its rows)
+HR = f"{QE}/s16/hierarchical.json"
+NHS = g(HR, "n_sub_gold")
+
+
+def hblk(d, *keys, metric):
+    """value + outward interval (already outward in the file) at designs > d > keys."""
+    b = g(HR, "designs", d, *keys)
+    o = {"metric": metric, "value": b["value"], "ci95": b["ci95"], "ci_method": b.get("ci_method"), "at": loc(HR, "designs", d, *keys)}
+    if "k" in b: o.update(k=b["k"], n=b["n"])
+    return o
+
+
+HS = ("hierarchical", "sub_gold_items")
+pcd4 = g(HR, "designs", "D4", "per_chapter")
+tests.append(dict(
+    id="aps_hierarchical_d4", gold="human", subject="Apertus",
+    title_de="APS-Unterthema und Hierarchie, Bundesgeschäfte: ausgeliefertes Design D4 (nach S16 aus seinen Zeilen berechnet)",
+    title_fr="Sous-thème APS et hiérarchie, objets fédéraux : design livré D4 (calculé après S16 à partir de ses lignes)",
+    n=NHS, design="die S9-Geschäfte mit Hauptunterthema unter den 190 Namen; D4-Zeilen aus S16 (Unterthema-Rangliste = p(Unterthema) × Prior); "
+    "hierarchisches P/R/F1 nach Kiritchenko (Mengen um Vorfahren ergänzt; Ebenen Kapitel + Unterthema; mikro); Kapitel-F1 je Kapitel, Makro",
+    result=hblk("D4", *HS, "hF", metric="hierarchical F1 (D4, chapter + subtopic, micro)"),
+    results_more=[hblk("D4", "subtopic", "top1", metric="subtopic top-1 end to end (D4)"),
+                  hblk("D4", "subtopic", "top3", metric="subtopic top-3 end to end (D4)"),
+                  hblk("D4", "subtopic", "top1_given_chapter_right", metric="subtopic top-1 given the chapter is right (D4)"),
+                  hblk("D4", *HS, "hP", metric="hierarchical precision (D4)"),
+                  hblk("D4", *HS, "hR", metric="hierarchical recall (D4)"),
+                  dict(hblk("D4", "per_chapter", "macro_F1", metric="per-chapter F1, macro over the chapters present (D4)"),
+                       n=pcd4["n"], chapters=pcd4["chapters"])],
+    baselines=[dict(hblk(d, *HS, "hF", metric=f"hierarchical F1 ({d})"), name=nm) for d, nm in
+               (("D1", "D1 read back from the subtopic, no examples (same items)"),
+                ("D0", "D0 plain list prompting, best subtopic within its chapter (same items)"),
+                ("keyword", "keyword (APS subtopic words, frozen; chapter only)"))] +
+              [dict(hblk(d, "subtopic", k, metric=f"{m} ({d})"), name=f"{d} {m}") for d in ("D1", "D0")
+               for k, m in (("top1", "subtopic top-1"), ("top3", "subtopic top-3"), ("top1_given_chapter_right", "subtopic top-1 given chapter right"))] +
+              [dict(hblk(d, *HS, x, metric=f"{x} ({d})"), name=f"{d} {x}") for d in ("D1", "D0", "keyword") for x in ("hP", "hR")] +
+              [dict(hblk(d, "per_chapter", "macro_F1", metric=f"per-chapter macro-F1 ({d})"), name=f"{d} per-chapter macro-F1")
+               for d in ("D1", "D0", "keyword")],
+    breakdowns={"per_chapter_D4": {"cells": [{"cell": v["chapter"], "n": v["n_gold"], "value": v["F1"], "ci95": v["ci95"],
+                                              **({"small": True} if v["n_gold"] < 20 else {})} for v in pcd4["by_chapter"].values()],
+                                   "metric": "F1 per chapter (one vs rest), stratified bootstrap 2,000",
+                                   "at": loc(HR, "designs", "D4", "per_chapter", "by_chapter")},
+                "all_items_hF": hblk("D4", "hierarchical", "all_items", "hF",
+                                     metric="hierarchical F1 on all 1,357 items (gold depth 1 where the main subtopic is not among the 190)")},
+    split="held-out S9 items; computed after S16 from its rows (not pre-registered; no new calls)", prereg=None,
+    sources=[HR, f"{QE}/s16/hierarchical.py", f"{QE}/s16/raw.jsonl", f"{I2}/s9-aps/raw/", f"{I2}/s9-aps/data/items.json"],
+    build=B16, model=MODEL, date="2026-10-14", shipped="ranked subtopic suggestions (federal affairs, D4)"))
+
 s18 = g(S18R)
 tests.append(dict(
     id="bern_directorates_production", gold="human", subject="Apertus",
@@ -777,6 +825,7 @@ for t_ in tests:
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
 ORDER = ["aps_chapter_shipped_d4", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
+         "aps_hierarchical_d4",
          "aps_calibration_shipped", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
          "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
@@ -1021,6 +1070,23 @@ row(*APS, "human", "DE + FR gemittelt (D2)", "DE + FR moyennés (D2)", T2["n"], 
     f"Δ vs D0 {F.signed(p3(d2d['value']))} {sciv(d2d['ci95'])}", fr(f"Δ vs D0 {F.signed(p3(d2d['value']))} {sciv(d2d['ci95'])}"), *SPLIT_S9, T2["file"])
 row(*APS, "human", "Unterthema, durchgehend", "sous-thème, de bout en bout", TS["n"],
     f"top-1 {p3(TS['result']['value'])} · top-3 {p3(TS['results_more'][0]['value'])}", iv(TS["result"]["ci95"]), "—", "—", *SPLIT_S9, TS["file"])
+TH = TD["aps_hierarchical_d4"]; mh = {x["metric"]: x for x in TH["results_more"]}; bh = {x["name"]: x for x in TH["baselines"]}
+SPLIT_H = ("nach S16 aus seinen Zeilen berechnet", "calculé après S16 à partir de ses lignes")
+s1, s3_, sg = (mh[f"subtopic {k} (D4)"] for k in ("top-1 end to end", "top-3 end to end", "top-1 given the chapter is right"))
+row(*APS, "human", "Unterthema, durchgehend, ausgeliefertes Design (D4)", "sous-thème, de bout en bout, design livré (D4)", TH["n"],
+    f"top-1 {p3(s1['value'])} · top-3 {p3(s3_['value'])} · bei richtigem Kapitel {p3(sg['value'])}", iv(s1["ci95"]),
+    f"D1 {p3(bh['D1 subtopic top-1']['value'])} · D0 {p3(bh['D0 subtopic top-1']['value'])}",
+    fr(f"D1 {p3(bh['D1 subtopic top-1']['value'])} · D0 {p3(bh['D0 subtopic top-1']['value'])}"), *SPLIT_H, TH["file"],
+    result_fr=fr(f"top-1 {p3(s1['value'])} · top-3 {p3(s3_['value'])} · si chapitre juste {p3(sg['value'])}"))
+mf = mh["per-chapter F1, macro over the chapters present (D4)"]
+hf_b = {d: bh[n]["value"] for d, n in (("D1", "D1 read back from the subtopic, no examples (same items)"),
+                                        ("D0", "D0 plain list prompting, best subtopic within its chapter (same items)"),
+                                        ("kw", "keyword (APS subtopic words, frozen; chapter only)"))}
+row(*APS, "human", "D4, hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 makro", "D4, F1 hiérarchique (chapitre + sous-thème) · F1 macro par chapitre",
+    TH["n"], f"hF {p3(TH['result']['value'])} · Makro-F1 {p3(mf['value'])} (alle {p3(mf['n'])})", iv(TH["result"]["ci95"]),
+    f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · Stichwort {p3(hf_b['kw'])}",
+    fr(f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · mots-clés {p3(hf_b['kw'])}"), *SPLIT_H, TH["file"],
+    result_fr=fr(f"hF {p3(TH['result']['value'])} · F1 macro {p3(mf['value'])} (les {F.t(mf['n'], sep=' ')})"))
 
 dv = TD["dvs_human30"]
 row("«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)", "« numérique » : 30 objets DVS choisis à la main (rappel)", "human",

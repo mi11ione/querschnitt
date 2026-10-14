@@ -168,3 +168,17 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 - Saved topics: the scored period is the weeks where ≥ 50 % of all affairs carry a decision (a `period: [from, to]` in
   the topic entry would override it); the Karte opens brushed to it, the timeline hatches the weeks outside, the subtitle
   says «bewertet dd.mm.–dd.mm.yyyy»; their small maps follow Digitalisierung in the atlas, marked «gespeichert».
+
+## Juror round 3 (14 Oct)
+- Lane = `pass` / `please_check` (calibrated p < 0.7, or DE/FR disagree in bilingual parliaments). The decision graphic
+  explains the readings («Lesarten einig / uneinig», «DE und FR einig / uneinig») without red, and adds the lane line
+  only when a person is needed: «bitte prüfen: p 0.283 < 0.7». No label equates lane and reading agreement; CSV lane =
+  «bitte prüfen» / «ohne Prüfung».
+- Prüfstand: shipped point = p ≥ 0.7 (0.6684, 0.8644 from eval/lanes/results.json, via make_confusion.py
+  `lanes_tau`, used when `curve.op` is still the readings point); the readings-agree point stays as a grey dot; the
+  lanes bar shows p ≥ 0.7 (66.8 %, 0.864) vs p < 0.7 (0.491).
+- Saved topics without a Prüfstand row (`measured` in the topic entry, or a pruefstand row with `topic` = id) are
+  marked «nicht gemessen» in the picker and on their atlas maps.
+- Überblick: «47 % gehen an eine Person» = please-check rows / scored APS rows in 2025–26 (count on hover); weeks
+  count the main slice only.
+- No «Beleg» block without a quote: the text shows under «Text», and is omitted when there is none.

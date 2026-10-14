@@ -42,8 +42,16 @@ export function renderPruef(root) {
     tb.append(body); sec.append(h('div', { class: 'tw' }, tb)); left.append(sec);
   }
   if (SRC['pruefstand.json'] === 'data-fixture/') left.append(h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `pruefstand.json ${L.fromFixture}`));
-  if (P.curve) right.append(chart(P.curve));
-  if (D.conf) right.append(lanesBar(D.conf), confusion(D.conf));
+  if (P.curve) {
+    // the shipped operating point is the calibrated lane (p ≥ 0.7); the readings-agree point stays as a grey reference
+    const lt = D.conf && D.conf.lanes_tau, cv = { ...P.curve };
+    if (lt && cv.op && Math.abs(cv.op.coverage - lt.readings_agree.coverage) < 1e-4) {
+      cv.op2 = { ...cv.op, label_de: t().readAgree, label_fr: t().readAgree };
+      cv.op = { coverage: lt.pass_.coverage, precision: lt.pass_.precision, n: lt.pass_.n, label_de: 'ausgeliefert: p ≥ 0.7', label_fr: 'livré : p ≥ 0,7' };
+    }
+    right.append(chart(cv));
+  }
+  if (D.conf) right.append(D.conf.lanes_tau ? lanesTau(D.conf.lanes_tau) : lanesBar(D.conf), confusion(D.conf));
   bindTips(right);
 }
 
@@ -66,10 +74,14 @@ function chart(cv) {
   svg.append(s('line', { class: 'ax', x1: ml, x2: W - mr, y1: H - mb, y2: H - mb }), s('line', { class: 'ax', x1: ml, x2: ml, y1: mt, y2: H - mb }));
   const xl = s('text', { x: W - mr, y: H - 4, 'text-anchor': 'end' }); xl.textContent = `${L.cpX} %`; svg.append(xl);
   svg.append(s('path', { class: 'ln', d: pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join('') }));
+  if (cv.op2) {
+    const ox = X(cv.op2.coverage), oy = Y(cv.op2.precision);
+    svg.append(s('circle', { class: 'op2', cx: ox, cy: oy, r: 4, tabindex: '0', 'data-tip': `${cv.op2.label_de && UI.lang === 'fr' ? cv.op2.label_fr : cv.op2.label_de}: ${pct(cv.op2.coverage)} · ${p3(cv.op2.precision)}` }));
+  }
   if (cv.op) {
     const ox = X(cv.op.coverage), oy = Y(cv.op.precision);
     svg.append(s('circle', { class: 'op', cx: ox, cy: oy, r: 5 }));
-    const tx = s('text', { x: ox - 9, y: oy + 20, class: 'opl', 'text-anchor': 'end' }); tx.textContent = `${pct(cv.op.coverage)} · ${p3(cv.op.precision)}`; svg.append(tx);
+    const tx = s('text', { x: ox + 8, y: oy - 9, class: 'opl' }); tx.textContent = `${pct(cv.op.coverage)} · ${p3(cv.op.precision)}`; svg.append(tx);
   }
   return h('div', { class: 'chart' },
     h('h3', {}, L.cpTitle),
@@ -109,4 +121,16 @@ function confusion(cf) {
   });
   return h('div', { class: 'cfw' }, h('h3', {}, L.confusion),
     h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, `${L.rowsGold} · ${L.colsPred} · n ${num(cf.n)} · top-1 ${p3(cf.correct / cf.n)}`), svg);
+}
+
+// the two lanes of the shipped rule as one split bar: width = share of affairs, dark part = precision in that lane
+function lanesTau(lt) {
+  const L = t(), a = lt.pass_.coverage;
+  const seg = (w, x, cls, lab) => h('span', { class: `lseg ${cls}`, style: `width:${w * 100}%`, tabindex: '0', 'data-tip': `${lab} · ${pct(w)} (n ${num(x.n)}) · ${L.cpY} ${p3(x.precision)} [${x.ci.join(', ')}]` },
+    h('span', { class: 'lok', style: `width:${x.precision * 100}%` }));
+  return h('div', { class: 'lanes' }, h('h3', {}, L.lanesT),
+    h('div', { class: 'lbar' }, seg(a, lt.pass_, 'ag', L.shipped), seg(1 - a, lt.check, 'dis', L.laneCheck)),
+    h('div', { class: 'llab' }, h('span', { style: `width:${a * 100}%` }, `${L.shipped} · ${pct(a)} · ${p3(lt.pass_.precision)}`),
+      h('span', { style: `width:${(1 - a) * 100}%` }, h('span', { class: 'rtick' }), ` ${L.laneCheck} · ${p3(lt.check.precision)}`)),
+    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:6px 0 0' }, `${L.cpY}: ${L.dark}; n ${num(lt.pass_.n + lt.check.n)} · D4 · ${lt.file}`));
 }

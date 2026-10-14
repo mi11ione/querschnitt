@@ -545,7 +545,7 @@ export class Board {
     for (const i of items) {
       const d = det.get(i) || {}, b = D.B.get(c.body[i]) || {}, dec = getDec(tp, c.id[i]);
       lines.push([c.date[i], LV[c.lvl[i]], b.canton || '', bodyName(c.body[i]), d.number || c.number[i] || '', c.title[i], c.lang[i], typeOf(i), c.state[i],
-        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, tp.codeAt(i)) : tname, p3(tp.p(i)), L.lanes[tp.check(i) ? 'please_check' : 'readings_agree'],
+        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, tp.codeAt(i)) : tname, p3(tp.p(i)), tp.check(i) ? L.lanes.please_check : L.lanes.pass,
         dec ? (L.decided[dec.d] || dec.d) + (dec.code ? ` ${dec.code}` : '') : L.suggested, dec ? dec.by : '', dec ? dec.at : '', c.id[i], (d.build || D.meta.build || '').slice(-8)].map(q).join(','));
     }
     // method line: affairs found, scored share per parliament, machine suggestions

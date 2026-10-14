@@ -389,3 +389,7 @@ body.v-ueber .ctxw{display:none}
 .atl-n .nm{overflow-wrap:normal;word-break:normal;hyphens:auto;-webkit-hyphens:auto}
 .tl .unsc{opacity:.7}
 .atl-n .sv{font:400 var(--f1)/1 var(--mono);color:var(--ink2)}
+.chart .op2{fill:var(--r3);stroke:var(--paper);stroke-width:1}
+.picker .lb li .nmx{font:400 var(--f1)/1 var(--mono);color:var(--ink2)}
+.atl-cell .sv{display:block;margin-top:2px;font:400 var(--f1)/1.4 var(--mono);color:var(--ink2)}
+.atl-n .nm{hyphens:none}

@@ -84,5 +84,32 @@
     0.54
    ]
   }
+ },
+ "S17_communal_post_hoc": {
+  "note": "post hoc on the S17 production slice (AI-judge consensus gold, n 200); calibration map fitted on federal S16 items",
+  "calibrated_tau_0_7": {
+   "coverage": 0.635,
+   "precision": 0.8189,
+   "k": 104,
+   "n": 127
+  },
+  "calibrated_tau_0_7_check": {
+   "coverage": 0.365,
+   "precision": 0.3288,
+   "k": 24,
+   "n": 73
+  },
+  "readings_agree": {
+   "coverage": 0.775,
+   "precision": 0.6774,
+   "k": 105,
+   "n": 155
+  },
+  "readings_disagree": {
+   "coverage": 0.225,
+   "precision": 0.5111,
+   "k": 23,
+   "n": 45
+  }
  }
 }

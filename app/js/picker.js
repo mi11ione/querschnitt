@@ -35,7 +35,7 @@ export class Picker {
         const i = this.items.length; this.items.push(tp);
         const cd = tp.kind === 'chapter' ? tp.code.replace('aps:', '') : tp.kind === 'sub' ? '' : tp.kind === 'live' ? 'neu' : tp.kind === 'be' ? tp.scope : tp.kind === 'all' ? '' : 'ad hoc';
         frag.push(h('li', { 'data-i': i, role: 'option', class: `${tp.kind === 'sub' ? 'sub' : ''} ${tp.count ? '' : 'off'}` },
-          h('span', { class: 'cd' }, cd), h('span', { class: 'nm' }, this.label(tp)), h('span', { class: 'n' }, tp.count ? num(tp.count) : '–')));
+          h('span', { class: 'cd' }, cd), h('span', { class: 'nm' }, this.label(tp), tp.saved && !tp.measured ? h('span', { class: 'nmx' }, ` · ${t().notMeasured}`) : ''), h('span', { class: 'n' }, tp.count ? num(tp.count) : '–')));
       }
     }
     this.lb.replaceChildren(...frag);

@@ -37,11 +37,15 @@ export class Atlas {
     }
     // one fixed, doubling ramp for every small map, so the maps compare at a glance
     const brk = [0.000001, 0.025, 0.05, 0.1, 0.2];
+    // share of scored APS rows that go to a person (lane please check), main slice
+    let nS = 0, nC = 0;
+    for (let i = 0; i < D.n; i++) if (c.ch[i] >= 0 && c.day[i] >= D.dmin) { nS++; if (c.lane[i] === 1) nC++; }
+    const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('b', { class: 'sig' }, pct(nS ? nC / nS : NaN, 0).replace(/\s/g, '\u2009')), h('span', {}, L.bigShare));
     // big numbers
-    const weeks = Math.floor((D.dmax - D.w0) / 7) + 1;
+    const weeks = Math.floor((D.dmax - D.dmin) / 7) + 1;
     const big = h('div', { class: 'big' },
       bigN(num(scoredAny), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
-      bigN(num(m.please_check ?? 0), L.bigWaiting, (m.please_check || 0) > 0));
+      bigShare);
     // shared defs: every canton path once, used by every small map
     const [, , W, H] = D.geo.viewBox;
     const defs = s('svg', { width: 0, height: 0, class: 'atl-defs', 'aria-hidden': 'true' });
@@ -64,7 +68,8 @@ export class Atlas {
         if (!st.n[j2]) svg.append(s('use', { href: `#cp-${k}`, fill: 'url(#atl-h)', class: 'atl-hz' }));
       }
       const cell = h('button', { class: `atl-cell ${j === 0 ? 'first' : ''}`, type: 'button', onclick: () => this.openTopic(tp), 'aria-label': name },
-        svg, h('span', { class: 'atl-n' }, h('span', { class: 'nm' }, name, tp.saved ? h('span', { class: 'sv' }, ` ${L.savedMark}`) : ''), h('span', { class: 'ct' }, num(tp.count))));
+        svg, h('span', { class: 'atl-n' }, h('span', { class: 'nm' }, name), h('span', { class: 'ct' }, num(tp.count))),
+        tp.saved ? h('span', { class: 'sv' }, tp.measured ? L.savedMark : L.notMeasured) : '');
       grid.append(cell);
     });
     const legend = h('p', { class: 'atl-leg' }, L.atlasLeg, ' ',

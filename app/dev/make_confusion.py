@@ -39,11 +39,15 @@ def main():
         lanes["agree" if ag else "disagree"][0] += 1
         lanes["agree" if ag else "disagree"][1] += int(pr == g)
     res = json.load(open(S16 / "results.json"))
+    lr = REPO / "eval" / "lanes" / "results.json"
+    tau = json.load(open(lr))["D4"] if lr.exists() else None
     n = len(ids)
     out = dict(design="D4", n=n, correct=sum(m[i][i] for i in range(K)), m=m,
                lanes=dict(agree_n=lanes["agree"][0], agree_k=lanes["agree"][1], disagree_n=lanes["disagree"][0], disagree_k=lanes["disagree"][1],
                           published=res.get("lanes_D4")),
-               file="querschnitt/eval/s16/raw.jsonl + ideation2/spikes/s9-aps/data/items.json")
+               file="querschnitt/eval/s16/raw.jsonl + ideation2/spikes/s9-aps/data/items.json",
+               lanes_tau=dict(pass_=tau["calibrated_tau_0_7"], check=tau["calibrated_tau_0_7_check"], readings_agree=tau["readings_agree"],
+                              file="querschnitt/eval/lanes/results.json") if tau else None)
     s = json.dumps(out, separators=(",", ":"))
     for d in (APP / "data", APP / "data-fixture"):
         (d / "pruef_confusion.json").write_text(s)

@@ -97,7 +97,8 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     : tp && tp.kind === 'be' ? evOf(d.be) || evOf(d.aps) : evOf(d.aps) || evOf(d.dig)) || evOf(d) : null;
   if (d && d.number) refFull.append(` · ${d.number}`);
   // text
-  const tsec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.evidence, h('span', { class: 'sp' }, ev ? `${ev.field || ''} ${ev.start ?? ev.char_start ?? ''}–${ev.end ?? ev.char_end ?? ''}` : L.noEvidence)));
+  // with a quote: «Beleg» with the passage marked; without: the text under «Text», no stub
+  const tsec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, ev ? L.evidence : L.text, ev ? h('span', { class: 'sp' }, `${ev.field || ''} ${ev.start ?? ev.char_start ?? ''}–${ev.end ?? ev.char_end ?? ''}`) : ''));
   // the affair in the interface language where it has that version; the original stays visible beside it
   const useAlt = d && d.title_alt && d.alt_lang === UI.lang && d.alt_lang !== lang;
   if (useAlt) {
@@ -139,7 +140,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     if (x) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${x.flag ? L.yes : L.no} · p ${p3(x.p)}`));
   }
   if (tp && tp.saved && tp.scored(i)) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${tp.hit(i) ? L.yes : L.no} · p ${p3(tp.p(i))}`),
-    h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: tp.check(i) ? 'sig' : '' }, L.lanes[tp.check(i) ? 'please_check' : 'readings_agree'])));
+    tp.check(i) ? h('span', { class: 'sub2 sig' }, L.lanes.please_check) : '');
   // a parliament's own scheme (Basel-Stadt): the model's theme, its lane, and the canton's own label beside it
   const own = c.own[i], ownT = own && TOPIC_BY_ID.get(own[0]);
   if (ownT) {
@@ -147,7 +148,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     const g = c.ownGold[i], pc = own[2] === 1;
     const m = g && g[0] ? (g[0] === own[1] ? '[=]' : g[1] === own[1] ? '[= 2]' : '[≠]') : null;
     add(L.theme, h('span', {}, nm(own[1])),
-      h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: pc ? 'sig' : '' }, L.lanes[pc ? 'please_check' : 'readings_agree'])),
+      pc ? h('span', { class: 'sub2 sig' }, L.lanes.please_check) : '',
       g && g[0] ? h('span', { class: 'sub2' }, h('span', { class: m === '[≠]' && pc ? 'sig' : '' }, `${m} `), `${L.cantonTheme}: ${nm(g[0])}${g[1] ? ` · ${nm(g[1])}` : ''}`) : '',
       g && g[0] ? h('span', { class: 'sub2 dim' }, L.bsCredit) : '');
   }
@@ -174,7 +175,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   // order: the decision graphic first (the topic in view leads), then the quoted passage, subtopics, metadata
   const tsec2 = h('div', { class: 'sec first' });
   if (chart && tp && (tp.kind === 'chapter' || tp.kind === 'sub')) tsec2.append(chart.el, facts); else { tsec2.append(facts); if (chart) tsec2.append(chart.el); }
-  holder.append(tsec2, tsec);
+  holder.append(tsec2); if (tsec.children.length > 1) holder.append(tsec);
   if (chart && chart.subs) holder.append(h('div', { class: 'sec' }, chart.subs));
   if (groupSec) holder.append(groupSec);
   // provenance
@@ -210,7 +211,9 @@ function yesNoGraphic(p, dig, check, flag, kw) {
     h('span', { class: `rk ${r.strong ? 'on' : 'dim'}` }, r.label),
     h('span', { class: 'rbar cut' }, bar(r.v, r.tone, '', r.thin), h('span', { class: 'cutl', style: `left:${cut * 100}%` })),
     h('span', { class: 'rv' }, r.value)));
-  el.append(h('p', { class: 'dgn' }, check ? h('span', { class: 'sig' }, `${L.lanes.please_check}`) : L.lanes.readings_agree, ` · ${kw ? L.kwYes : L.kwNo}`));
+  const both = dig && dig.p_a != null && dig.p_b != null;
+  el.append(h('p', { class: 'dgn' }, both ? `${(dig.p_a >= cut) === (dig.p_b >= cut) ? L.readAgree : L.readDisagree} · ` : '', kw ? L.kwYes : L.kwNo));
+  if (check) el.append(h('p', { class: 'dgn' }, h('span', { class: 'sig' }, L.lanes.please_check)));
   return el;
 }
 
@@ -222,7 +225,7 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const rank = (aps && aps.rank) || (ch >= 0 ? [ch] : []);
   const praw = (aps && (aps.p_raw || aps.p)) || [chp];
   // one p per row, the same number as in the list and the Pult: the calibrated p of the shipped chapter; raw values only on hover
-  const pShip = aps && aps.p && aps.p[0] != null ? aps.p[0] : (Number.isNaN(chp) ? null : chp);
+  const pShip = aps && aps.p_cal != null ? aps.p_cal : aps && aps.p && aps.p[0] != null ? aps.p[0] : (Number.isNaN(chp) ? null : chp);
   const bil = aps && aps.bilingual && aps.bilingual.reads ? aps.bilingual : null;
   const reads = bil ? bil.reads : aps && aps.reads;
   const rnames = bil ? (bil.langs || ['de', 'fr']).map(x => x.toUpperCase()) : [L.read1, L.read2].slice(0, (aps && aps.read_names && aps.read_names.length) || 2);
@@ -230,8 +233,9 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const rp = (k, r) => reads && reads[k] && reads[k][r] != null ? reads[k][r] : null;
   const top = [];
   for (let r = 0; r < nR; r++) { let best = null, bv = -1; for (const k of Object.keys(reads)) { const v = rp(k, r); if (v != null && v > bv) { bv = v; best = +k; } } top.push(best); }
-  const disagree = nR > 1 && top[0] != null && top[1] != null && top[0] !== top[1];
-  const lane = bil ? bil.lane : (aps && aps.lane) || (laneCheck ? 'please_check' : 'readings_agree');
+  const disagree = typeof (aps && aps.readings) === 'string' && !bil ? aps.readings === 'disagree' : (nR > 1 && top[0] != null && top[1] != null && top[0] !== top[1]);
+  // the lane: please check when the calibrated p is below 0.7, or (bilingual parliaments) when DE and FR disagree
+  const lane = (aps && aps.lane) || (laneCheck ? 'please_check' : 'pass');
   const keys = [...rank];
   if (reads) for (const k of Object.keys(reads).sort((a, b) => Math.max(...reads[b]) - Math.max(...reads[a]))) if (!keys.includes(+k)) keys.push(+k);
   const shown = keys.slice(0, 5);
@@ -245,10 +249,14 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
     el.append(h('div', { class: 'dgr', 'data-tip': tip, tabindex: '0' },
       h('span', { class: `rk ${shipped ? 'on' : ''}` }, chapterName(k)),
       h('span', { class: 'rbar' }, v != null ? bar(v, shipped ? 'ink' : 'grey') : h('span', { class: 'vb none' }), ...subs.map(x => bar(x.v, x.tone, '', true))),
-      h('span', { class: 'rv' }, shipped && pShip != null ? p3(pShip) : '', tick ? h('span', { class: 'rtick' }) : '')));
+      h('span', { class: 'rv' }, shipped && pShip != null ? p3(pShip) : '')));
   }
-  el.append(h('p', { class: 'dgn' }, h('span', { class: lane === 'please_check' ? 'sig' : '' }, L.lanes[lane] || lane),
-    disagree ? ` · ${rnames[0]} → ${chapterName(top[0])}, ${rnames[1]} → ${chapterName(top[1])}` : nR > 1 ? ` · ${rnames.join(' = ')}` : ''));
+  // explanation (the two readings), then the lane only when a person is needed
+  if (nR > 1) el.append(h('p', { class: 'dgn' }, disagree ? `${bil ? L.langsDisagree : L.readDisagree} · ${rnames[0]} → ${chapterName(top[0])}, ${rnames[1]} → ${chapterName(top[1])}` : (bil ? L.langsAgree : L.readAgree)));
+  if (lane === 'please_check') {
+    const low = pShip != null && pShip < 0.7;
+    el.append(h('p', { class: 'dgn' }, h('span', { class: 'sig' }, `${L.lanes.please_check}: ${low ? `p ${p3(pShip)} < 0.7` : bil && disagree ? L.langsDisagree : ''}`)));
+  }
   const subs = aps && aps.subs ? aps.subs : [];
   let se = null;
   if (subs.length) {

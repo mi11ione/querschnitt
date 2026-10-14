@@ -177,7 +177,8 @@ function buildTopics() {
     let a = Infinity, z = -Infinity;
     for (let w = 0; w < D.nWeeks; w++) if (aw[w] && sw[w] / aw[w] >= 0.5) { a = Math.min(a, D.w0 + w * 7); z = Math.max(z, Math.min(D.dmax, D.w0 + w * 7 + 6)); }
     if (x.period && x.period[0]) { a = dayNum(String(x.period[0]).slice(0, 10)); z = Math.min(D.dmax, dayNum(String(x.period[1]).slice(0, 10))); }
-    addTopic({ id: x.id, kind: 'adhoc', saved: true, scheme: x.id, code: `${x.id}:yes`, names: x.names || { de: slug, fr: slug }, aliases: [...Object.values(x.names || {}), slug],
+    const measured = !!x.measured || ((D.pruef && (D.pruef.rows || D.pruef)) || []).some(r => r.topic === x.id);
+    addTopic({ id: x.id, kind: 'adhoc', saved: true, measured, scheme: x.id, code: `${x.id}:yes`, names: x.names || { de: slug, fr: slug }, aliases: [...Object.values(x.names || {}), slug],
       scoredDays: a <= z ? [a, z] : null, scored: i => !Number.isNaN(P[i]), hit: i => F[i] === 1, p: i => P[i], check: i => Ln[i] === 1, coverage: () => null, count: 0 });
   }
   const chs = (D.scheme && D.scheme.chapters) || [];

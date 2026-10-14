@@ -35,6 +35,10 @@ readings agree and 0.586 where they disagree; on Basel-Stadt with examples 0.651
 accuracy without any training step: on Basel-Stadt by +0.028 (S21), on the federal APS affairs by +0.067 (S9).
 
 ## 3. Where no human labels exist: a blind AI judge
+**Evidence on production rows (S23):** for 200 random stored quotes of 2026, a blind judge (two runs, κ 0.92, tie-break)
+finds that the quoted sentence supports the topic in 0.815 [0.755, 0.863] of cases (chapter quotes 0.830, Digitalisierung
+0.800); the quote is an exact substring at its stored offsets in 198 of 198 affairs whose text has not changed since.
+
 For "Digitalisierung" across all Swiss parliaments in 2026 and for cantonal and communal APS chapters, gold comes from a
 blind AI judge (two runs of a Claude model + a tie-break run, cross-checked by the open-weights Qwen-SEA-LION). Against
 human labels the judge matches APS editors on 0.790 of chapters and says yes to 27 of the 30 DVS items. Against that judge,
@@ -47,7 +51,8 @@ On the production run itself, 200 random communal affairs of 2026 were judged bl
 0.135); where the readings agree 0.677, in the please-check lane 0.511; German 0.631, French 0.687, Italian 0.625.
 
 ## 4. Neutrality
-No measurable difference between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
+No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the
+Italian text give 0.703, from the German text 0.703 (difference +0.0007 [−0.020, +0.021], S22). Between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
 titles); federal APS chapters from German vs French text +0.016 [−0.003, +0.037]. No measurable difference in chapter
 accuracy among the six main parties. What does differ is the submitter type: Federal Council business is easier than
 members' motions (0.792 vs 0.653), and quality is reported per submitter type.

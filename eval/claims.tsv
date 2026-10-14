@@ -663,3 +663,20 @@ S16-hier	-	0.185	S16 hierarchical keyword per-chapter macro-F1 — 95% upper bou
 S16-hier	-	1,221	S16 hierarchical items with chapter + subtopic gold	1221	bern/querschnitt/eval/s16/hierarchical.json	n_sub_gold	OK		count
 S16-hier	-	1,357	S16 hierarchical all items	1357	bern/querschnitt/eval/s16/hierarchical.json	n_items	OK		count
 S16-hier	-	22	S16 hierarchical chapters present in the gold (macro-F1)	22	bern/querschnitt/eval/s16/hierarchical.json	designs > D4 > per_chapter > chapters	OK		count
+S22	-	1,350	S22 n	1350	bern/querschnitt/eval/s22/results.json	n	OK		
+S22	-	0.703	S22 it_top1 (0.7030)	0.703	bern/querschnitt/eval/s22/results.json	it_top1 (0.7030)	OK		
+S22	-	0.703	S22 de_top1 (0.7037, truncated)	0.7037	bern/querschnitt/eval/s22/results.json	de_top1 (0.7037, truncated)	OK		
+S22	-	0.678	S22 it ci0	0.678	bern/querschnitt/eval/s22/results.json	it ci0	OK		
+S22	-	0.727	S22 it ci1	0.727	bern/querschnitt/eval/s22/results.json	it ci1	OK		
+S22	-	0.728	S22 de ci1	0.728	bern/querschnitt/eval/s22/results.json	de ci1	OK		
+S22	-	0.0007	S22 diff	0.0007	bern/querschnitt/eval/s22/results.json	diff (0.0007, rounded to 3 dp: ≥ 0.0005)	OK		
+S22	-	0.020	S22 diff ci0 abs	0.02	bern/querschnitt/eval/s22/results.json	diff ci0 abs	OK		
+S22	-	0.021	S22 diff ci1 outward	0.0207	bern/querschnitt/eval/s22/results.json	diff ci1 outward	OK		
+S23	-	0.815	S23 support overall 163/200	0.815	bern/querschnitt/eval/s23/results.json	support overall	OK		
+S23	-	0.755	S23 ci0	0.755	bern/querschnitt/eval/s23/results.json	ci0	OK		
+S23	-	0.863	S23 ci1	0.863	bern/querschnitt/eval/s23/results.json	ci1	OK		
+S23	-	0.830	S23 chapter 83/100	0.83	bern/querschnitt/eval/s23/results.json	chapter	OK		
+S23	-	0.800	S23 digitalisierung 80/100	0.8	bern/querschnitt/eval/s23/results.json	dig	OK		
+S23	-	0.92	S23 kappa A/B 0.921	0.921	bern/querschnitt/eval/s23/results.json	kappa	OK		
+S23	-	198/198	S23 substring, input unchanged	198	bern/querschnitt/eval/s23/results.json	substring	OK		
+S23	-	200	S23 n	200	bern/querschnitt/eval/s23/results.json	n	OK		

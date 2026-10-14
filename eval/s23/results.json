@@ -1,0 +1,304 @@
+{
+ "prereg": "eval/PREREG-BUILD.md — 2026-10-14 17:10 CEST — S23 evidence on production rows",
+ "n_packet": 200,
+ "by_kind": {
+  "chapter": 100,
+  "digitalisierung": 100
+ },
+ "fingerprints": [
+  "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ ],
+ "tie_break_rule": "label = A if A == B, else C (blind third run on the disagreeing ids only)",
+ "n_disagree": 5,
+ "n_tiebroken": 5,
+ "unresolved": [],
+ "support": {
+  "overall": {
+   "k": 163,
+   "n": 200,
+   "rate": 0.815,
+   "ci95": [
+    0.755,
+    0.863
+   ],
+   "ci95_exact": [
+    0.7554281794988185,
+    0.8626988367726394
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "chapter": {
+   "k": 83,
+   "n": 100,
+   "rate": 0.83,
+   "ci95": [
+    0.744,
+    0.892
+   ],
+   "ci95_exact": [
+    0.7445181876635703,
+    0.8910652394022684
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "digitalisierung": {
+   "k": 80,
+   "n": 100,
+   "rate": 0.8,
+   "ci95": [
+    0.711,
+    0.867
+   ],
+   "ci95_exact": [
+    0.7111690380734977,
+    0.8666340774409013
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  }
+ },
+ "substring": {
+  "all_rows": {
+   "k": 198,
+   "n": 200,
+   "rate": 0.99,
+   "ci95": [
+    0.964,
+    0.998
+   ],
+   "ci95_exact": [
+    0.9642775148038205,
+    0.9972533993962251
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "input_unchanged": {
+   "k": 198,
+   "n": 198,
+   "rate": 1.0,
+   "ci95": [
+    0.98,
+    1.0
+   ],
+   "ci95_exact": [
+    0.9809672535295005,
+    1.0
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "input_changed_since_row": 2,
+  "method": "inputs[field][start:end] == stored quote (current inputs.jsonl.gz)"
+ },
+ "ab_agreement": {
+  "k": 195,
+  "n": 200,
+  "rate": 0.975,
+  "ci95": [
+   0.942,
+   0.99
+  ],
+  "ci95_exact": [
+   0.9428208558483829,
+   0.9892754385292123
+  ],
+  "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+ },
+ "ab_kappa": 0.9211356466876971,
+ "per_annotator": {
+  "A": {
+   "overall": {
+    "k": 161,
+    "n": 200,
+    "rate": 0.805,
+    "ci95": [
+     0.744,
+     0.854
+    ],
+    "ci95_exact": [
+     0.744558352034882,
+     0.8539455843549424
+    ],
+    "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+   },
+   "chapter": {
+    "k": 81,
+    "n": 100,
+    "rate": 0.81,
+    "ci95": [
+     0.722,
+     0.875
+    ],
+    "ci95_exact": [
+     0.7222097592919214,
+     0.8748534600729574
+    ],
+    "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+   },
+   "digitalisierung": {
+    "k": 80,
+    "n": 100,
+    "rate": 0.8,
+    "ci95": [
+     0.711,
+     0.867
+    ],
+    "ci95_exact": [
+     0.7111690380734977,
+     0.8666340774409013
+    ],
+    "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+   }
+  },
+  "B": {
+   "overall": {
+    "k": 160,
+    "n": 200,
+    "rate": 0.8,
+    "ci95": [
+     0.739,
+     0.85
+    ],
+    "ci95_exact": [
+     0.7391436038882958,
+     0.8495487925607118
+    ],
+    "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+   },
+   "chapter": {
+    "k": 81,
+    "n": 100,
+    "rate": 0.81,
+    "ci95": [
+     0.722,
+     0.875
+    ],
+    "ci95_exact": [
+     0.7222097592919214,
+     0.8748534600729574
+    ],
+    "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+   },
+   "digitalisierung": {
+    "k": 79,
+    "n": 100,
+    "rate": 0.79,
+    "ci95": [
+     0.7,
+     0.859
+    ],
+    "ci95_exact": [
+     0.7001985069803768,
+     0.8583445046835422
+    ],
+    "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+   }
+  }
+ },
+ "by_field": {
+  "title": {
+   "k": 55,
+   "n": 65,
+   "rate": 0.8461538461538461,
+   "ci95": [
+    0.739,
+    0.915
+   ],
+   "ci95_exact": [
+    0.7394445429998054,
+    0.9142299793820102
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "title_long": {
+   "k": 8,
+   "n": 9,
+   "rate": 0.8888888888888888,
+   "ci95": [
+    0.564,
+    0.981
+   ],
+   "ci95_exact": [
+    0.5649937852319399,
+    0.9801096286728695
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "text": {
+   "k": 100,
+   "n": 126,
+   "rate": 0.7936507936507936,
+   "ci95": [
+    0.714,
+    0.856
+   ],
+   "ci95_exact": [
+    0.7148135106579152,
+    0.8551116905102774
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  }
+ },
+ "by_level": {
+  "cantonal": {
+   "k": 86,
+   "n": 102,
+   "rate": 0.8431372549019608,
+   "ci95": [
+    0.76,
+    0.902
+   ],
+   "ci95_exact": [
+    0.7602877113371933,
+    0.9010779520692556
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "communal": {
+   "k": 22,
+   "n": 33,
+   "rate": 0.6666666666666666,
+   "ci95": [
+    0.496,
+    0.803
+   ],
+   "ci95_exact": [
+    0.4960758179994997,
+    0.8024997053219629
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "federal": {
+   "k": 51,
+   "n": 61,
+   "rate": 0.8360655737704918,
+   "ci95": [
+    0.723,
+    0.909
+   ],
+   "ci95_exact": [
+    0.7238692567544832,
+    0.9084408651425705
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  },
+  "other": {
+   "k": 4,
+   "n": 4,
+   "rate": 1.0,
+   "ci95": [
+    0.51,
+    1.0
+   ],
+   "ci95_exact": [
+    0.5100999795960008,
+    1.0
+   ],
+   "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals"
+  }
+ },
+ "s12_descriptive": {
+  "rate": 0.85,
+  "n": 120,
+  "note": "S12 spike (120 federal affairs, D1 chapter, German); descriptive comparison only, no test",
+  "file": "/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s12-evidence/results.json"
+ }
+}

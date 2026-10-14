@@ -21,7 +21,7 @@ from .compose import VERSION, decide, read_run, topic_rows
 from .data import load_bodies, level, parl_name
 from .engine import Engine
 from .examples import ExamplePool
-from .scheme import APS, adhoc, flat, named_schemes
+from .scheme import APS, adhoc, adhoc_topics, flat, named_schemes
 
 ROOT = Path(__file__).resolve().parents[2]
 NAMED_IDS = set()
@@ -46,7 +46,7 @@ def run(args):
     NAMED_IDS.update(s["id"] for s in named_schemes())
     lock, rows = read_run(*[Path(r) for r in args.run.split(",")])
     eng = Engine(None, ExamplePool.load(ROOT / "data/eval/aps_pool.jsonl"))
-    topics = [adhoc("digitalisierung")]
+    topics = [adhoc("digitalisierung")] + [adhoc(t) for t in adhoc_topics() if t != "digitalisierung"]   # every saved topic file
     calib = Calibration.load(ROOT / "eval/calibration.json") if (ROOT / "eval/calibration.json").exists() else None
     B = load_bodies(Path(args.opd))
     first_year = collections.defaultdict(lambda: "9999")
@@ -106,7 +106,9 @@ def run(args):
                      ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None),
                      ("own", next(([k, v["code"].split(":", 1)[1], int(v["lane"] == "please_check")] for k, v in d.items()
                                    if k in NAMED_IDS), None)),
-                     ("own_gold", gold_own.get((x["body"], x["number"])))):
+                     ("own_gold", gold_own.get((x["body"], x["number"]))),
+                     ("adhoc", {k.split("/", 1)[1]: [round(v["p"], 3), int(v["flag"]), int(v["lane"] == "please_check")]
+                                for k, v in d.items() if k.startswith("adhoc/") and k != "adhoc/digitalisierung"} or None)):
             cols[k].append(v)
         detail[x["id"] // 1000][x["id"]] = dict(
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
@@ -146,7 +148,8 @@ def run(args):
     jdump(out / "scheme_aps.json", dict(
         chapters=[dict(i=i, code=APS.codes[i], de=APS.short(i, "de"), fr=APS.short(i, "fr"), it=APS.short(i, "it")) for i in range(25)],
         subtopics={str(1000 * i + j): dict(code=APS.sub_codes[i][j], de=APS.subs_de[i][j], ch=i) for i in range(24) for j in range(len(APS.subs_de[i]))},
-        topics=[dict(id=t["id"], names=t["names"], aliases=t.get("aliases", [])) for t in topics],
+        topics=[dict(id=t["id"], names=t["names"], aliases=t.get("aliases", []), question=t.get("question"),
+                     source=t.get("source")) for t in topics],
         schemes=[dict(id="be-directorates", body="BE", title=flat("be-directorates")["title"],
                       options=[dict(code=o["code"].split(":")[1], abbr=o["abbr"], name=o["name"]) for o in flat("be-directorates")["options"]]
                       + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]
@@ -172,7 +175,7 @@ def run(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev", "s20") if (ROOT / "runs" / r / "state.json").exists()))
+    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev", "s20", "s19") if (ROOT / "runs" / r / "state.json").exists()))
     ap.add_argument("--inputs", default=str(ROOT.parent / "data/inputs.jsonl.gz"))
     ap.add_argument("--opd", default=str(ROOT.parent / "data/opd-new"))
     ap.add_argument("--out", default=str(ROOT / "app/data"))

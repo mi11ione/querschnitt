@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T15:21:16Z",
+ "generated_utc": "2026-10-14T18:16:11Z",
  "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
  "build": {
   "endpoint": "Public AI",
@@ -381,7 +381,7 @@
        ]
       }
      },
-     "rule": "the two code orders (with examples / without) agree on the top chapter → lane 'readings agree'; else 'please check'",
+     "rule": "the two code orders (with examples / without) agree on the top chapter → lane 'readings agree'; else 'please check' (the lane rule until 14 Oct; replaced by recalibrated p < 0.7 → 'please check', see aps_lane_rule)",
      "at": {
       "file": "bern/querschnitt/eval/s16/results.json",
       "key": "lanes_D4"
@@ -928,12 +928,18 @@
      }
     }
    },
-   "split": "held-out S9 items, pre-registered (S16 decision rule fixed before any call: ship D4 if its top-1 ≥ D3's)",
+   "split": "pre-registered (S16), measured on the S9 items; the D4 design was chosen after S9 on the same items (D4 combines D1 and D3), so this is not a held-out result; fresh held-out set: S25 (pre-registered, running) (S16 decision rule fixed before any call: ship D4 if its top-1 ≥ D3's)",
    "prereg": {
     "file": "bern/querschnitt/eval/PREREG-BUILD.md",
     "anchor": "— S16 read-back combined with examples",
     "line": 6
    },
+   "prereg_more": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S25 fresh APS-labelled federal affairs",
+    "line": 85
+   },
+   "heldout_test": "fresh held-out set: S25 (pre-registered, running; no result yet)",
    "decision": "D4 shipped for federal affairs (pre-registered rule: D4 if its top-1 ≥ D3's). The corpus run uses D4 as registered: both code orders always, examples on the first. D4s (secondary) is reported, not shipped.",
    "decision_at": {
     "file": "bern/querschnitt/eval/s16/results.json",
@@ -1190,7 +1196,7 @@
      }
     }
    ],
-   "split": "held-out, pre-registered secondary (S16)",
+   "split": "pre-registered secondary (S16), measured on the S9 items; designed after S9 on the same items (a variant of D4, which combines D1 and D3), so not a held-out result",
    "prereg": {
     "file": "bern/querschnitt/eval/PREREG-BUILD.md",
     "anchor": "— S16 read-back combined with examples",
@@ -3970,8 +3976,13 @@
      }
     }
    },
-   "split": "held-out S9 items; computed after S16 from its rows (not pre-registered; no new calls)",
+   "split": "S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items (it combines D1 and D3), so not a held-out result; fresh held-out set: S25 (pre-registered, running)",
    "prereg": null,
+   "prereg_more": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S25 fresh APS-labelled federal affairs",
+    "line": 85
+   },
    "sources": [
     "bern/querschnitt/eval/s16/hierarchical.json",
     "bern/querschnitt/eval/s16/hierarchical.py",
@@ -4114,6 +4125,330 @@
    },
    "file": "bern/querschnitt/eval/s16/results.json",
    "key": "calibration > aps-fed"
+  },
+  {
+   "id": "aps_lane_rule",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Lane-Regel, Bundesgeschäfte: «bitte prüfen», wenn das rekalibrierte p < 0.7 (nach S16 aus seinen Zeilen berechnet; hold-out getestet in S25)",
+   "title_fr": "Règle de voie, objets fédéraux : « à vérifier » si le p recalibré < 0,7 (calculé après S16 à partir de ses lignes ; testé hors échantillon dans S25)",
+   "n": 1357,
+   "design": "die 1'357 S9-Geschäfte, S16-Zeilen; p isoton rekalibriert, 2-fach kreuzangepasst (Seed 3, wie S9c); ausgeliefert: p ≥ 0.7 → durchgelassen, sonst «bitte prüfen»; verglichen mit der bisherigen Regel «Lesarten einig» und mit dem rekalibrierten p bei gleicher Abdeckung",
+   "result": {
+    "metric": "D4: precision of the affairs passed at recalibrated p ≥ 0.7 (shipped lane rule)",
+    "value": 0.8644,
+    "ci95": [
+     0.84,
+     0.886
+    ],
+    "k": 784,
+    "n": 907,
+    "coverage": 0.6684,
+    "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+    "at": {
+     "file": "bern/querschnitt/eval/lanes/results.json",
+     "key": "D4 > calibrated_tau_0_7"
+    },
+    "shown": {
+     "value": [
+      "0.8",
+      "0.86"
+     ],
+     "ci95": [
+      "0.8",
+      "0.89",
+      "0.9"
+     ],
+     "coverage": [
+      "0.6",
+      "0.66"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "D4: precision of the rest (recalibrated p < 0.7 → please check)",
+     "value": 0.4911,
+     "ci95": [
+      0.445,
+      0.538
+     ],
+     "k": 221,
+     "n": 450,
+     "coverage": 0.3316,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D4 > calibrated_tau_0_7_check"
+     },
+     "shown": {
+      "value": [
+       "0.4",
+       "0.49"
+      ],
+      "ci95": [
+       "0.4",
+       "0.44",
+       "0.54",
+       "0.6"
+      ],
+      "coverage": [
+       "0.3",
+       "0.33",
+       "0.331"
+      ]
+     }
+    },
+    {
+     "metric": "D4: recalibrated p, top affairs at the readings-agree coverage",
+     "value": 0.8668,
+     "ci95": [
+      0.842,
+      0.888
+     ],
+     "k": 755,
+     "n": 871,
+     "coverage": 0.6419,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D4 > calibrated_same_coverage"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.86",
+       "0.866"
+      ],
+      "ci95": [
+       "0.8",
+       "0.84",
+       "0.89",
+       "0.9"
+      ],
+      "coverage": [
+       "0.6",
+       "0.64",
+       "0.641"
+      ]
+     }
+    },
+    {
+     "metric": "D1: precision passed at recalibrated p ≥ 0.7",
+     "value": 0.8432,
+     "ci95": [
+      0.816,
+      0.867
+     ],
+     "k": 683,
+     "n": 810,
+     "coverage": 0.5969,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D1 > calibrated_tau_0_7"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.84"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ],
+      "coverage": [
+       "0.5",
+       "0.59",
+       "0.596"
+      ]
+     }
+    },
+    {
+     "metric": "D1: precision of the rest (please check)",
+     "value": 0.4973,
+     "ci95": [
+      0.455,
+      0.54
+     ],
+     "k": 272,
+     "n": 547,
+     "coverage": 0.4031,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D1 > calibrated_tau_0_7_check"
+     },
+     "shown": {
+      "value": [
+       "0.4",
+       "0.49"
+      ],
+      "ci95": [
+       "0.4",
+       "0.45",
+       "0.6"
+      ],
+      "coverage": [
+       "0.4",
+       "0.40"
+      ]
+     }
+    },
+    {
+     "metric": "D1: recalibrated p at the readings-agree coverage",
+     "value": 0.8394,
+     "ci95": [
+      0.812,
+      0.863
+     ],
+     "k": 695,
+     "n": 828,
+     "coverage": 0.6102,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D1 > calibrated_same_coverage"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.83"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ],
+      "coverage": [
+       "0.6",
+       "0.61"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "D4: readings agree (earlier lane rule)",
+     "value": 0.8266,
+     "ci95": [
+      0.8,
+      0.851
+     ],
+     "k": 720,
+     "n": 871,
+     "coverage": 0.6419,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D4 > readings_agree"
+     },
+     "name": "D4 readings agree (lane rule until 14 Oct)",
+     "shown": {
+      "value": [
+       "0.8",
+       "0.82",
+       "0.826"
+      ],
+      "ci95": [
+       "0.86",
+       "0.9"
+      ],
+      "coverage": [
+       "0.6",
+       "0.64",
+       "0.641"
+      ]
+     }
+    },
+    {
+     "metric": "D1: readings agree",
+     "value": 0.7971,
+     "ci95": [
+      0.768,
+      0.824
+     ],
+     "k": 660,
+     "n": 828,
+     "coverage": 0.6102,
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
+     "at": {
+      "file": "bern/querschnitt/eval/lanes/results.json",
+      "key": "D1 > readings_agree"
+     },
+     "name": "D1 readings agree",
+     "shown": {
+      "value": [
+       "0.7",
+       "0.79"
+      ],
+      "ci95": [
+       "0.7",
+       "0.76",
+       "0.83",
+       "0.9"
+      ],
+      "coverage": [
+       "0.6",
+       "0.61"
+      ]
+     }
+    }
+   ],
+   "split": "S9 items (S16 rows); rule chosen after S16 on these items, calibration 2-fold cross-fitted (not pre-registered; no new calls); tested held out in S25 (pre-registered, running)",
+   "prereg": null,
+   "prereg_more": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S25 fresh APS-labelled federal affairs",
+    "line": 85
+   },
+   "heldout_test": "S25 (pre-registered, running; no result yet)",
+   "sources": [
+    "bern/querschnitt/eval/lanes/results.json",
+    "bern/querschnitt/eval/lanes/analyze.py",
+    "bern/querschnitt/eval/s16/results.json",
+    "bern/querschnitt/eval/s16/analyze.py",
+    "bern/querschnitt/eval/s16/raw.jsonl"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-14",
+   "shipped": "lane rule of the APS chapter (D4 federal, D1 elsewhere; src/querschnitt/compose.py LANE_TAU): please check when the recalibrated p < 0.7, or when the German and French readings of a bilingual parliament disagree",
+   "test": "Lane-Regel, Bundesgeschäfte: «bitte prüfen», wenn das rekalibrierte p < 0.7 (nach S16 aus seinen Zeilen berechnet; hold-out getestet in S25)",
+   "interval": [
+    0.84,
+    0.886
+   ],
+   "baseline": {
+    "name": "D4 readings agree (lane rule until 14 Oct)",
+    "value": 0.8266,
+    "ci95": [
+     0.8,
+     0.851
+    ],
+    "shown": {
+     "value": [
+      "0.8",
+      "0.82",
+      "0.826"
+     ],
+     "ci95": [
+      "0.86",
+      "0.9"
+     ]
+    }
+   },
+   "file": "bern/querschnitt/eval/lanes/results.json",
+   "key": "D4 > calibrated_tau_0_7",
+   "shown": {
+    "interval": [
+     "0.8",
+     "0.88"
+    ]
+   }
   },
   {
    "id": "aps_calibration",
@@ -18075,6 +18410,36 @@
     }
    ],
    "operating_point": {
+    "coverage": 0.6684,
+    "precision": 0.8644,
+    "n": 907,
+    "k": 784,
+    "ci": [
+     0.84,
+     0.886
+    ],
+    "note": "shipped operating point (14 Oct): pass when the recalibrated p ≥ 0.7 (2-fold cross-fitted on the S16 items); the rest go to 'please check'. Computed after S16 from its rows; tested held out in S25",
+    "at": {
+     "file": "bern/querschnitt/eval/lanes/results.json",
+     "key": "D4 > calibrated_tau_0_7"
+    },
+    "shown": {
+     "coverage": [
+      "0.6",
+      "0.66"
+     ],
+     "precision": [
+      "0.8",
+      "0.86"
+     ],
+     "ci": [
+      "0.8",
+      "0.89",
+      "0.9"
+     ]
+    }
+   },
+   "operating_point_old": {
     "coverage": 0.6419,
     "precision": 0.8266,
     "n": 871,
@@ -18082,7 +18447,7 @@
      0.8,
      0.851
     ],
-    "note": "shipped operating point: the lane where both readings agree; the rest go to 'please check'",
+    "note": "lane rule until 14 Oct: both readings agree",
     "at": {
      "file": "bern/querschnitt/eval/s16/results.json",
      "key": "lanes_D4"
@@ -19789,6 +20154,14 @@
   }
  },
  "to_measure": [
+  {
+   "item": "S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — running, no result yet",
+   "prereg": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S25 fresh APS-labelled federal affairs",
+    "line": 85
+   }
+  },
   {
    "item": "S19: three new ad-hoc topics (wolf, heat protection, AI in schools) against a blind judge — running, no result yet",
    "prereg": {

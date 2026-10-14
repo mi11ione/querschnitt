@@ -77,10 +77,13 @@ w("## Human labels")
 w("")
 d4, d4s = T["aps_chapter_shipped_d4"], T["aps_chapter_d4s"]
 d3, d1, d2 = T["aps_chapter_examples"], T["aps_chapter_readback"], T["aps_chapter_pooling"]
-w(f"### 1 · APS chapter vs APS editors — {num(d4['n'], 0)} held-out federal affairs, pre-registered (S9, S16)")
+w(f"### 1 · APS chapter vs APS editors — {num(d4['n'], 0)} federal affairs, pre-registered (S9, S16)")
 w("")
-w(f"Wayback process pages not used before; German title + submitted text; nothing tuned on these items. "
-  f"Pre-registration: {L('PREREG.md § S9', d1['prereg'])}; the shipped federal design and its decision rule: {L('PREREG-BUILD.md § S16', d4['prereg'])}.")
+w(f"Wayback process pages not used before; German title + submitted text. "
+  f"Pre-registration: {L('PREREG.md § S9', d1['prereg'])}; the shipped federal design and its decision rule: {L('PREREG-BUILD.md § S16', d4['prereg'])}. "
+  "D0–D3 are held out on these items (S9, nothing tuned on them). D4 is pre-registered (S16) and measured on the same S9 items, but its "
+  "design was chosen after S9 on those items (D4 combines D1 and D3), so its row is not a held-out result; the fresh held-out set is "
+  f"S25 ({L('PREREG-BUILD.md § S25', d4['prereg_more'])}, pre-registered, running, no result yet).")
 w("")
 w("| Design | top-1 | top-3 | Δ top-1, paired | |")
 w("|---|---|---|---|---|")
@@ -104,8 +107,30 @@ w("")
 ln4 = d4["breakdowns"]["lanes"]; la, ld = ln4["agree"], ln4["disagree"]
 w(f"**Lanes of D4** (the reading with examples and the reading without agree / disagree on the chapter): readings agree on "
   f"{L(F.pct(la['share']), ln4['at'])} of affairs ({L(num(la['n']), ln4['at'])}), precision {L(num(la['precision']) + ci(la['ci95']), ln4['at'])}; "
-  f"they disagree on {L(num(ld['n']), ln4['at'])}, precision {L(num(ld['precision']) + ci(ld['ci95']), ln4['at'])} — those go to `please check`. "
-  "This lane is the shipped operating point.")
+  f"they disagree on {L(num(ld['n']), ln4['at'])}, precision {L(num(ld['precision']) + ci(ld['ci95']), ln4['at'])}. "
+  "This was the lane rule until 14 Oct; the shipped rule is now the recalibrated p (below).")
+w("")
+lr = T["aps_lane_rule"]; lrm = {x["metric"]: x for x in lr["results_more"]}; lrb = {x["name"]: x for x in lr["baselines"]}
+w(f"**Lane rule: `please check` when the recalibrated p < 0.7** — computed after S16 from its rows (not pre-registered; no new calls); "
+  f"tested held out in S25 ({L('PREREG-BUILD.md § S25', lr['prereg_more'])}, pre-registered, running). The isotonic map is 2-fold "
+  f"cross-fitted on the {num(lr['n'], 0)} S16 items, so every affair's recalibrated p comes from the half it was not fitted on "
+  "([`eval/lanes/analyze.py`](../eval/lanes/analyze.py) → [`eval/lanes/results.json`](../eval/lanes/results.json)). The threshold was "
+  "chosen on these same items, so the numbers below are in-sample for the choice of rule. In production the rule is "
+  "`LANE_TAU` in [`src/querschnitt/compose.py`](../src/querschnitt/compose.py); a bilingual parliament whose German and French readings "
+  "disagree still goes to `please check`.")
+w("")
+w("| Design | rule | passed (share of affairs, n) | precision of the passed | `please check`: precision (n) |")
+w("|---|---|---|---|---|")
+for d in ("D4", "D1"):
+    tp = lr["result"] if d == "D4" else lrm["D1: precision passed at recalibrated p ≥ 0.7"]
+    tc = lrm["D4: precision of the rest (recalibrated p < 0.7 → please check)" if d == "D4" else "D1: precision of the rest (please check)"]
+    ra = lrb["D4 readings agree (lane rule until 14 Oct)" if d == "D4" else "D1 readings agree"]
+    sc = lrm["D4: recalibrated p, top affairs at the readings-agree coverage" if d == "D4" else "D1: recalibrated p at the readings-agree coverage"]
+    nm = "**D4** (federal)" if d == "D4" else "D1 (no APS examples)"
+    w(f"| {nm} | **recalibrated p ≥ 0.7 (shipped)** | {L(F.pct(tp['coverage']), tp['at'])}, {L(num(tp['n']), tp['at'])} | **{r(tp)}** | "
+      f"{r(tc)} ({L(num(tc['n']), tc['at'])}) |")
+    w(f"| {nm} | readings agree (rule until 14 Oct) | {L(F.pct(ra['coverage']), ra['at'])}, {L(num(ra['n']), ra['at'])} | {r(ra)} | — |")
+    w(f"| {nm} | recalibrated p, same share as readings agree | {L(F.pct(sc['coverage']), sc['at'])}, {L(num(sc['n']), sc['at'])} | {r(sc)} | — |")
 w("")
 cal4 = d4["breakdowns"]["calibration"]; cs = T["aps_calibration_shipped"]
 w(f"**Calibration of D4** ({L('S16', cal4['at'])}; isotonic, 2-fold cross-fitted, n {num(cal4['n'])}; the map the production run reads, "
@@ -143,11 +168,13 @@ for k, nm, link in (("aps_d4", "**D4 shipped** (S16)", href(cur["aps_d4"]["at"])
     pts = [p for p in cur[k]["points"] if p["coverage"] in GRID]
     w(f"| {nm} | " + " | ".join(f"[{num(p['precision'])}{ci(p['ci'])}]({link})" for p in pts) + " |")
 w("")
-op = cur["aps_d4"]["operating_point"]
+op, oo = cur["aps_d4"]["operating_point"], cur["aps_d4"]["operating_point_old"]
 w(f"D4 points are read from {L('S16 coverage_precision', cur['aps_d4']['at'])} (one point per affair). "
   f"S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at "
   f"50, 70, 90 and 100% equal {L('S9 results.json', {'file': 'bern/ideation2/spikes/s9-aps/results.json'})}. The app's chart is the D4 curve with "
-  f"the shipped operating point marked: readings agree, coverage {L(F.pct(op['coverage']), op['at'])}, precision {L(num(op['precision']), op['at'])}.")
+  f"the shipped operating point marked: recalibrated p ≥ 0.7, coverage {L(F.pct(op['coverage']), op['at'])}, precision "
+  f"{L(num(op['precision']) + ci(op['ci']), op['at'])} (chosen after S16 on these items; tested held out in S25); the earlier point, readings "
+  f"agree, is shown for comparison: coverage {L(F.pct(oo['coverage']), oo['at'])}, precision {L(num(oo['precision']) + ci(oo['ci']), oo['at'])}.")
 w("")
 
 sub = T["aps_subtopic"]
@@ -329,8 +356,9 @@ def cell_table(title, blocks, labels):
 
 cell_table("S9 by party", [bd["party_D1_top1"], bd["party_keyword_top1"]], ["D1 top-1", "keyword top-1"])
 cell_table("S9 by instrument", [bd["instrument_D1_top1"], bd["instrument_keyword_top1"]], ["D1 top-1", "keyword top-1"])
-w("Reading: no measurable difference by language or among the six main parties; government business scores higher than members' "
-  "motions, and the keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.")
+w("Reading: top-1 differs too little to measure with these sample sizes by language and among the six main parties (this is not "
+  "evidence of no difference; the party gaps' intervals are wide). Government business scores higher than members' motions, and the "
+  "keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.")
 w("")
 
 fg = T["free_generation"]

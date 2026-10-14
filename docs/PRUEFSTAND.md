@@ -4,9 +4,9 @@ Every measured test behind Querschnitt, as one ruled table each. Human labels fi
 
 ## Human labels
 
-### 1 · APS chapter vs APS editors — 1,357 held-out federal affairs, pre-registered (S9, S16)
+### 1 · APS chapter vs APS editors — 1,357 federal affairs, pre-registered (S9, S16)
 
-Wayback process pages not used before; German title + submitted text; nothing tuned on these items. Pre-registration: [PREREG.md § S9](../../../bern/ideation2/PREREG.md#L32); the shipped federal design and its decision rule: [PREREG-BUILD.md § S16](../../../bern/querschnitt/eval/PREREG-BUILD.md#L6).
+Wayback process pages not used before; German title + submitted text. Pre-registration: [PREREG.md § S9](../../../bern/ideation2/PREREG.md#L32); the shipped federal design and its decision rule: [PREREG-BUILD.md § S16](../../../bern/querschnitt/eval/PREREG-BUILD.md#L6). D0–D3 are held out on these items (S9, nothing tuned on them). D4 is pre-registered (S16) and measured on the same S9 items, but its design was chosen after S9 on those items (D4 combines D1 and D3), so its row is not a held-out result; the fresh held-out set is S25 ([PREREG-BUILD.md § S25](../../../bern/querschnitt/eval/PREREG-BUILD.md#L85), pre-registered, running, no result yet).
 
 | Design | top-1 | top-3 | Δ top-1, paired | |
 |---|---|---|---|---|
@@ -21,7 +21,18 @@ Wayback process pages not used before; German title + submitted text; nothing tu
 
 Decision ([S16 results](../../../bern/querschnitt/eval/s16/results.json)): D4 shipped for federal affairs (pre-registered rule: D4 if its top-1 ≥ D3's). The corpus run uses D4 as registered: both code orders always, examples on the first. D4s (secondary) is reported, not shipped.
 
-**Lanes of D4** (the reading with examples and the reading without agree / disagree on the chapter): readings agree on [64.1%](../../../bern/querschnitt/eval/s16/results.json) of affairs ([871](../../../bern/querschnitt/eval/s16/results.json)), precision [0.826 [0.800, 0.851]](../../../bern/querschnitt/eval/s16/results.json); they disagree on [486](../../../bern/querschnitt/eval/s16/results.json), precision [0.586 [0.542, 0.630]](../../../bern/querschnitt/eval/s16/results.json) — those go to `please check`. This lane is the shipped operating point.
+**Lanes of D4** (the reading with examples and the reading without agree / disagree on the chapter): readings agree on [64.1%](../../../bern/querschnitt/eval/s16/results.json) of affairs ([871](../../../bern/querschnitt/eval/s16/results.json)), precision [0.826 [0.800, 0.851]](../../../bern/querschnitt/eval/s16/results.json); they disagree on [486](../../../bern/querschnitt/eval/s16/results.json), precision [0.586 [0.542, 0.630]](../../../bern/querschnitt/eval/s16/results.json). This was the lane rule until 14 Oct; the shipped rule is now the recalibrated p (below).
+
+**Lane rule: `please check` when the recalibrated p < 0.7** — computed after S16 from its rows (not pre-registered; no new calls); tested held out in S25 ([PREREG-BUILD.md § S25](../../../bern/querschnitt/eval/PREREG-BUILD.md#L85), pre-registered, running). The isotonic map is 2-fold cross-fitted on the 1,357 S16 items, so every affair's recalibrated p comes from the half it was not fitted on ([`eval/lanes/analyze.py`](../eval/lanes/analyze.py) → [`eval/lanes/results.json`](../eval/lanes/results.json)). The threshold was chosen on these same items, so the numbers below are in-sample for the choice of rule. In production the rule is `LANE_TAU` in [`src/querschnitt/compose.py`](../src/querschnitt/compose.py); a bilingual parliament whose German and French readings disagree still goes to `please check`.
+
+| Design | rule | passed (share of affairs, n) | precision of the passed | `please check`: precision (n) |
+|---|---|---|---|---|
+| **D4** (federal) | **recalibrated p ≥ 0.7 (shipped)** | [66.8%](../../../bern/querschnitt/eval/lanes/results.json), [907](../../../bern/querschnitt/eval/lanes/results.json) | **[0.864 [0.840, 0.886]](../../../bern/querschnitt/eval/lanes/results.json)** | [0.491 [0.445, 0.538]](../../../bern/querschnitt/eval/lanes/results.json) ([450](../../../bern/querschnitt/eval/lanes/results.json)) |
+| **D4** (federal) | readings agree (rule until 14 Oct) | [64.1%](../../../bern/querschnitt/eval/lanes/results.json), [871](../../../bern/querschnitt/eval/lanes/results.json) | [0.826 [0.800, 0.851]](../../../bern/querschnitt/eval/lanes/results.json) | — |
+| **D4** (federal) | recalibrated p, same share as readings agree | [64.1%](../../../bern/querschnitt/eval/lanes/results.json), [871](../../../bern/querschnitt/eval/lanes/results.json) | [0.866 [0.842, 0.888]](../../../bern/querschnitt/eval/lanes/results.json) | — |
+| D1 (no APS examples) | **recalibrated p ≥ 0.7 (shipped)** | [59.6%](../../../bern/querschnitt/eval/lanes/results.json), [810](../../../bern/querschnitt/eval/lanes/results.json) | **[0.843 [0.816, 0.867]](../../../bern/querschnitt/eval/lanes/results.json)** | [0.497 [0.455, 0.540]](../../../bern/querschnitt/eval/lanes/results.json) ([547](../../../bern/querschnitt/eval/lanes/results.json)) |
+| D1 (no APS examples) | readings agree (rule until 14 Oct) | [61.0%](../../../bern/querschnitt/eval/lanes/results.json), [828](../../../bern/querschnitt/eval/lanes/results.json) | [0.797 [0.768, 0.824]](../../../bern/querschnitt/eval/lanes/results.json) | — |
+| D1 (no APS examples) | recalibrated p, same share as readings agree | [61.0%](../../../bern/querschnitt/eval/lanes/results.json), [828](../../../bern/querschnitt/eval/lanes/results.json) | [0.839 [0.812, 0.863]](../../../bern/querschnitt/eval/lanes/results.json) | — |
 
 **Calibration of D4** ([S16](../../../bern/querschnitt/eval/s16/results.json); isotonic, 2-fold cross-fitted, n 1,357; the map the production run reads, [`eval/calibration.json`](../eval/calibration.json)): expected calibration error [0.2463](../../../bern/querschnitt/eval/s16/results.json) raw → [0.0211](../../../bern/querschnitt/eval/s16/results.json) recalibrated (D1, same file: [0.2791](../../../bern/querschnitt/eval/s16/results.json) → [0.0319](../../../bern/querschnitt/eval/s16/results.json)).
 
@@ -44,7 +55,7 @@ Per chapter: macro-F1 [0.677](../../../bern/ideation2/spikes/s9c-calibration/per
 | D3 examples (S9) | [0.895 [0.869, 0.917]](../eval/aps_curves.json) | [0.864 [0.839, 0.887]](../eval/aps_curves.json) | [0.842 [0.817, 0.864]](../eval/aps_curves.json) | [0.808 [0.783, 0.831]](../eval/aps_curves.json) | [0.764 [0.740, 0.788]](../eval/aps_curves.json) | [0.722 [0.697, 0.746]](../eval/aps_curves.json) |
 | D1 read-back (S9) | [0.864 [0.836, 0.889]](../eval/aps_curves.json) | [0.845 [0.818, 0.869]](../eval/aps_curves.json) | [0.809 [0.783, 0.834]](../eval/aps_curves.json) | [0.787 [0.761, 0.811]](../eval/aps_curves.json) | [0.744 [0.719, 0.769]](../eval/aps_curves.json) | [0.703 [0.678, 0.728]](../eval/aps_curves.json) |
 
-D4 points are read from [S16 coverage_precision](../../../bern/querschnitt/eval/s16/results.json) (one point per affair). S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at 50, 70, 90 and 100% equal [S9 results.json](../../../bern/ideation2/spikes/s9-aps/results.json). The app's chart is the D4 curve with the shipped operating point marked: readings agree, coverage [64.1%](../../../bern/querschnitt/eval/s16/results.json), precision [0.826](../../../bern/querschnitt/eval/s16/results.json).
+D4 points are read from [S16 coverage_precision](../../../bern/querschnitt/eval/s16/results.json) (one point per affair). S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at 50, 70, 90 and 100% equal [S9 results.json](../../../bern/ideation2/spikes/s9-aps/results.json). The app's chart is the D4 curve with the shipped operating point marked: recalibrated p ≥ 0.7, coverage [66.8%](../../../bern/querschnitt/eval/lanes/results.json), precision [0.864 [0.840, 0.886]](../../../bern/querschnitt/eval/lanes/results.json) (chosen after S16 on these items; tested held out in S25); the earlier point, readings agree, is shown for comparison: coverage [64.1%](../../../bern/querschnitt/eval/s16/results.json), precision [0.826 [0.800, 0.851]](../../../bern/querschnitt/eval/s16/results.json).
 
 ### 2 · APS subtopic vs APS editors, end to end (S9)
 
@@ -159,7 +170,7 @@ Shares are k / n recovered from the stored 4-decimal values and truncated; the d
 | other type | [0.400 [0.168, 0.688], n 10](../../../bern/ideation2/spikes/s14-neutrality/results.json) (small) | [0.200 [0.056, 0.510], n 10](../../../bern/ideation2/spikes/s14-neutrality/results.json) (small) |
 | *test (cells n ≥ 20)* | [p 0.0002; gap Regierungsgeschäft − Motion +0.138 [+0.068, +0.201]](../../../bern/ideation2/spikes/s14-neutrality/results.json) | [p 0.0796; gap Regierungsgeschäft − Postulat +0.095 [+0.029, +0.160]](../../../bern/ideation2/spikes/s14-neutrality/results.json) |
 
-Reading: no measurable difference by language or among the six main parties; government business scores higher than members' motions, and the keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.
+Reading: top-1 differs too little to measure with these sample sizes by language and among the six main parties (this is not evidence of no difference; the party gaps' intervals are wide). Government business scores higher than members' motions, and the keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.
 
 ### 9 · Free naming without a list (rule check)
 
@@ -334,6 +345,7 @@ German − French [+0.014 [−0.043, +0.076]](../../../bern/ideation2/spikes/s10
 
 ## To measure
 
+- S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — running, no result yet (pre-registered: [PREREG-BUILD.md § S25](../../../bern/querschnitt/eval/PREREG-BUILD.md#L85))
 - S19: three new ad-hoc topics (wolf, heat protection, AI in schools) against a blind judge — running, no result yet (pre-registered: [PREREG-BUILD.md § S19](../../../bern/querschnitt/eval/PREREG-BUILD.md#L37))
 - FR/IT rows with the headline Curia design + BFH on the same items
 - recalibration refit on the build that serves at the event

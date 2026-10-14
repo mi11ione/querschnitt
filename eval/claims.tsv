@@ -690,3 +690,4 @@ lanes	-	64.1%	lane rule	0.6419	bern/querschnitt/eval/lanes/results.json	D4 readi
 lanes	-	two thirds	lane rule	0.6684	bern/querschnitt/eval/lanes/results.json	0.6684	OK		
 lanes	-	0.7	lane rule	0.7	bern/querschnitt/eval/lanes/results.json	LANE_TAU	OK		
 cost	-	13.3	wall hours of the job when cost was measured	13.3	bern/querschnitt/eval/cost/results.json	wall_hours_so_far	OK		
+lanes	-	59.6%	lane rule, D1 share passed at recalibrated p ≥ 0.7	0.5969	bern/querschnitt/eval/lanes/results.json	D1 calibrated_tau_0_7 coverage	OK		truncated (59.69%)

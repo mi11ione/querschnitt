@@ -8,7 +8,7 @@
 2. Terms. A second request, sent in parallel and off the critical path, proposes up to six search terms per language;
    a term is kept only if it occurs in the corpus titles (count shown), and nothing else is stored.
 3. Period. Default: the newest 7 days in the loaded affairs. Inside the scored slice (begin date ≥ QS_SCORED_SINCE,
-   default 2025-01-01) every affair is read. Before it, candidates = title hits of the kept terms ∪ affairs whose stored
+   default 2025-01-01) every affair is read. Before it, candidates = title hits of the kept, non-broad terms ∪ affairs whose stored
    APS subtopic (rank ≤ 3) is one Apertus names as able to hold the topic (a closed choice over the 190 subtopics,
    checked against the list); a random outside sample (QS_OUTSIDE_N, default 40) is read as well and its flag rate,
    with a Wilson interval, estimates what the candidate step misses (VISION §4.1).
@@ -20,7 +20,6 @@ from __future__ import annotations
 
 import datetime as dt
 import json
-import math
 import os
 import random
 import re
@@ -47,10 +46,10 @@ FRAME = {  # question and yes answer, the frame of schemes/adhoc/digitalisierung
     "it": ("Il seguente oggetto parlamentare riguarda il tema «{name}»{scope}?", "Sì, l'oggetto riguarda il tema «{name}»"),
 }
 TOPIC_PROMPT = (
-    "Eine Redaktion beschreibt in einem Satz ein Thema, nach dem sie parlamentarische Geschäfte durchsuchen will:\n\n"
-    "«{sentence}»\n\n"
-    "Gib dem Thema einen kurzen Namen (höchstens vier Wörter) und übersetze den Satz wörtlich, ohne Zusätze, auf Deutsch, "
-    "Französisch und Italienisch.\n\n"
+    "Thema, in einem Satz: «{sentence}»\n\n"
+    "1. Gib dem Thema einen kurzen Namen (höchstens vier Wörter) auf Deutsch, Französisch und Italienisch.\n"
+    "2. Übersetze nur den Satz zwischen « und » auf Deutsch, Französisch und Italienisch, Wort für Wort, ohne Einleitung "
+    "und ohne Zusätze.\n\n"
     "Antworte nur mit JSON in einer Zeile:\n"
     '{{"name": {{"de": "…", "fr": "…", "it": "…"}}, "scope": {{"de": "…", "fr": "…", "it": "…"}}}}')
 TERMS_PROMPT = (
@@ -88,6 +87,18 @@ def parse_json(text: str) -> dict | None:
     return None
 
 
+def parse_terms(text: str) -> dict:
+    """{"terms": {lang: [...]}} from a generated text; a list cut off by the token limit keeps its complete items."""
+    v = parse_json(text)
+    if isinstance((v or {}).get("terms"), dict):
+        return v["terms"]
+    out = {}
+    for l in LANGS:
+        m = re.search(rf'"{l}"\s*:\s*\[(.*?)(?:\]|$)', text, re.S)
+        out[l] = re.findall(r'"([^"\n]{2,60})"', m.group(1)) if m else []
+    return out
+
+
 def _clean(s, n: int) -> str:
     return re.sub(r"\s+", " ", str(s or "")).strip().strip('"«»').strip()[:n]
 
@@ -100,6 +111,8 @@ def build_topic(sentence: str, lang: str, gen: dict | None, slug: str) -> dict:
         nm = _clean(((gen or {}).get("name") or {}).get(l) if isinstance((gen or {}).get("name"), dict) else None, 80)
         sc = _clean(((gen or {}).get("scope") or {}).get(l) if isinstance((gen or {}).get("scope"), dict) else None, 300)
         names[l] = nm or sentence
+        if sc and len(sc) > 1.6 * len(sentence) + 30:     # a paraphrase with framing, not a translation: name only
+            sc = names[l] if nm else sentence
         scopes[l] = sentence if l == lang else (sc or sentence)
     q, yes = {}, {}
     for l in LANGS:
@@ -181,14 +194,14 @@ class Adhoc:
         meta = {}
         try:
             if given is None:
-                v, meta = self.generate(sentence, TERMS_PROMPT, 160)
-                given = v.get("terms") if isinstance((v or {}).get("terms"), dict) else {}
+                _, meta = self.generate(sentence, TERMS_PROMPT, 320)
+                given = parse_terms(meta.get("raw") or "")
         except Exception as e:  # noqa: BLE001 — no terms: the candidate step uses stored subtopics only
             given, meta = {}, dict(error=repr(e)[:300])
         box["ready"].wait()
         job = box["job"]
         job.terms = self.verify_terms(given or {})
-        job.info["terms_generation"] = {k: meta.get(k) for k in ("usd", "lat", "error") if k in meta}
+        job.info["terms_generation"] = {k: meta.get(k) for k in ("usd", "lat", "ct", "error", "raw") if k in meta}
         job.emit("terms", dict(terms=job.terms))
 
     def term_hits(self, term: str) -> int:
@@ -201,8 +214,11 @@ class Adhoc:
         return int(r["n"])
 
     def verify_terms(self, terms: dict) -> dict:
-        """Keep a proposed term only if it occurs in the corpus titles."""
+        """Keep a proposed term only if it occurs in the corpus titles. A term found in more than QS_TERM_BROAD (0.5%) of
+        the titles in its language is kept but marked `broad` and not used to pick candidates."""
         out = {}
+        share = float(os.environ.get("QS_TERM_BROAD", "0.005"))
+        n_lang = {r["lang"]: r["n"] for r in self.store.all("SELECT lang, COUNT(*) AS n FROM qs_affairs GROUP BY lang")}
         for l in LANGS:
             seen, kept = set(), []
             for t in (terms or {}).get(l) or []:
@@ -212,7 +228,7 @@ class Adhoc:
                 seen.add(t.lower())
                 n = self.term_hits(t)
                 if n:
-                    kept.append(dict(term=t, hits=n))
+                    kept.append(dict(term=t, hits=n, broad=n > share * max(1, n_lang.get(l, 0))))
             out[l] = kept
         return out
 
@@ -272,7 +288,7 @@ class Adhoc:
             subs, meta = self.propose_subtopics(job.topic) if self.store.one(
                 "SELECT 1 AS x FROM topics WHERE scheme = 'aps' AND level = 2 LIMIT 1") else ([], {})
             job.topic["subtopics"] = subs
-            terms = [x["term"].lower() for l in LANGS for x in job.terms.get(l, [])]
+            terms = [x["term"].lower() for l in LANGS for x in job.terms.get(l, []) if not x.get("broad")]
             hit = {r["id"] for r in before if any(w in (r["title"] + " " + (r["title_long"] or "")).lower() for w in terms)}
             n_terms = len(hit)
             if subs:
@@ -330,6 +346,7 @@ class Adhoc:
         job = Job(slug, topic, {l: [] for l in LANGS}, self.period(period, date_from, date_to), ex)
         job.info["generation"] = {k: meta.get(k) for k in ("model", "fp", "usd", "lat", "error") if k in meta}
         job.terms_thread = tt
+        job.emit("topic", dict(slug=job.slug, topic=job.topic, period=job.period))       # always the first event
         box["job"] = job; box["ready"].set()
         with self.lock:
             self.jobs[slug] = job
@@ -337,8 +354,19 @@ class Adhoc:
         d.mkdir(parents=True, exist_ok=True)
         (d / "topic.json").write_text(json.dumps(dict(topic=topic, period=job.period, examples=ex, generation=meta),
                                                  ensure_ascii=False, indent=1))
-        threading.Thread(target=self._run, args=(job, limit), daemon=True, name=f"adhoc-{slug}").start()
+        job.thread = threading.Thread(target=self._run, args=(job, limit), daemon=True, name=f"adhoc-{slug}")
+        job.thread.start()
         return job
+
+    def shutdown(self, timeout: float = 15.0):
+        """Stop every running job (in-flight requests finish or are interrupted at the rate guard) and wait for them."""
+        jobs = list(self.jobs.values())
+        for j in jobs:
+            j.stop.set()
+        t_end = time.time() + timeout
+        for j in jobs:
+            if getattr(j, "thread", None):
+                j.thread.join(max(0.0, t_end - time.time()))
 
     def _unique(self, base: str) -> str:
         s, k = base, 2
@@ -347,12 +375,11 @@ class Adhoc:
         return s
 
     def _run(self, job: Job, limit: int | None):
-        job.emit("topic", dict(slug=job.slug, topic=job.topic, terms=job.terms, period=job.period))
         try:
             items = self.select(job, limit)
         except Exception as e:  # noqa: BLE001
-            job.error = repr(e)[:300]; job.done = True
-            job.emit("error", dict(error=job.error)); return
+            job.error = repr(e)[:300]
+            job.emit("error", dict(error=job.error)); job.done = True; return
         job.emit("progress", self._progress(job))
         eng = Engine(self.client, None, job.stop)
         out = (self.out / job.slug / "decisions.jsonl").open("a")
@@ -390,12 +417,14 @@ class Adhoc:
                 list(ex.map(one, items))
         finally:
             out.close()
-            job.done = True
+            if getattr(job, "terms_thread", None):
+                job.terms_thread.join(timeout=60)          # the terms event precedes `done`
             s = job.summary()
             if job.error:
                 s["error"] = job.error
             (self.out / job.slug / "summary.json").write_text(json.dumps(s, ensure_ascii=False, indent=1))
             job.emit("done", s)
+            job.done = True                                # after the last event: a stream never ends before `done`
 
     def _progress(self, job: Job) -> dict:
         s = job.summary()
@@ -420,8 +449,8 @@ class Adhoc:
                    created_by=by or None)
         p = Path(os.environ.get("QS_ADHOC_DIR") or S.HERE / "adhoc") / f"{slug}.yaml"
         p.parent.mkdir(parents=True, exist_ok=True)
-        head = (f"# Ad-hoc topic, written by Neues Thema from one sentence. Question and yes answer per language in the frame of\n"
-                f"# digitalisierung.yaml; terms occur in corpus titles; examples are editor decisions. Cut-off fixed at 0.5.\n")
+        head = ("# Ad-hoc topic, written by Neues Thema from one sentence. Question and yes answer per language in the frame of\n"
+                "# digitalisierung.yaml; terms occur in corpus titles; examples are editor decisions. Cut-off fixed at 0.5.\n")
         p.write_text(head + yaml.safe_dump(doc, allow_unicode=True, sort_keys=False, width=140))
         S.adhoc.cache_clear()
         n = 0

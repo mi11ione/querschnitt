@@ -107,6 +107,7 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
                     continue
             out[t["id"]] = yn_decision(ra, rb, t.get("cutoff", 0.5))
             out[t["id"]]["meta"] = ra["meta"]
+            out[t["id"]]["pids"] = [ra["pid"]] + ([rb["pid"]] if rb else [])
             out[t["id"]]["evidence"] = evidence_of(a, t["names"]["de"], rows)
     if "aps" in out:
         d = out["aps"]
@@ -173,5 +174,5 @@ def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "")
     for key, v in dec.items():
         if key.startswith("adhoc/"):
             out.append(dict(base, scheme=key, level=1, code=f"{key}:{'yes' if v['flag'] else 'no'}", rank=1, p_raw=round(v["p"], 4),
-                            p=round(v["p"], 4), lane=v["lane"], cutoffs_id=f"{key}@0.5", prompt_id=None, evidence=v.get("evidence")))
+                            p=round(v["p"], 4), lane=v["lane"], cutoffs_id=f"{key}@0.5", prompt_id=",".join(v.get("pids") or []) or None, evidence=v.get("evidence")))
     return out

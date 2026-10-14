@@ -14,7 +14,12 @@ FIX = pathlib.Path(__file__).parent / "fixtures"
 
 @pytest.fixture
 def store(tmp_path):
-    s = Store(path=str(tmp_path / "t.sqlite"), dsn="")
+    """SQLite per test; with QS_TEST_ALL_PG=1 and QS_TEST_PG_DSN, the same tests on Postgres (tables emptied first)."""
+    if os.environ.get("QS_TEST_ALL_PG") and os.environ.get("QS_TEST_PG_DSN"):
+        s = Store(dsn=os.environ["QS_TEST_PG_DSN"])
+        s.ex("TRUNCATE topics, qs_affairs, qs_runs RESTART IDENTITY"); s.commit()
+    else:
+        s = Store(path=str(tmp_path / "t.sqlite"), dsn="")
     s.load_affairs(FIX / "inputs_sample.jsonl")
     s.load_topics(FIX / "topics_sample.jsonl")
     yield s
@@ -45,3 +50,4 @@ def api(store, fake, tmp_path, monkeypatch):
     with TestClient(app) as c:
         c.ah = ah
         yield c
+    ah.shutdown()                          # (also run by the app's lifespan) no job outlives its fake endpoint

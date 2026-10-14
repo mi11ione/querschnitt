@@ -4,7 +4,7 @@ AID = 341382
 
 def test_health_metrics(api):
     h = api.get("/health").json()
-    assert h["ok"] and h["store"] == "sqlite" and h["rows"] == 504
+    assert h["ok"] and h["store"] in ("sqlite", "postgres") and h["rows"] == 504
     m = api.get("/metrics").json()
     for k in ("affairs", "rows", "pending", "last_run", "line"):
         assert k in m

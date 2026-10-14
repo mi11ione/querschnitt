@@ -6,6 +6,7 @@ Every response is JSON in the shapes of the static export; rows carry `label` {d
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import os
 import re
@@ -102,7 +103,13 @@ def split_scheme_code(rest: str, store: Store) -> tuple[str, str]:
 def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: str | Path | None = None) -> FastAPI:
     st = store or Store()
     ah = adhoc or Adhoc(st)
-    app = FastAPI(title="Querschnitt", version=VERSION, description="Topic rows for OpenParlData affairs, decided by Apertus.")
+    @contextlib.asynccontextmanager
+    async def lifespan(_app):
+        yield
+        ah.shutdown()                      # running Neues-Thema jobs stop with the server
+
+    app = FastAPI(title="Querschnitt", version=VERSION, description="Topic rows for OpenParlData affairs, decided by Apertus.",
+                  lifespan=lifespan)
     app.state.store, app.state.adhoc, app.state.t0 = st, ah, time.time()
     app.add_middleware(CORSMiddleware, allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?",
                        allow_methods=["GET", "POST", "PUT", "OPTIONS"], allow_headers=["*"])

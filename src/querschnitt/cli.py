@@ -91,15 +91,54 @@ def fetch_exports(export: Path, plan: bool = False) -> dict:
     return out
 
 
-def changed_affairs(export: Path, since: dt.datetime, known: dict[int, str]) -> tuple[set[int], set[str]]:
-    """Affairs new to the store or updated / begun since `since` → (ids, body keys)."""
+def changed_affairs(export: Path, since: dt.datetime, known: dict[int, str]) -> tuple[set[int], set[str], set[int]]:
+    """(new to the store or begun since `since`, their bodies, updated since `since`). Documents are streamed for the
+    first set only: OPD refreshes `updated_at` broadly (82,995 affairs between 10 and 11 Oct 2026), so updated-only
+    affairs are rebuilt from titles, texts and the documents already on disk."""
     from .net import ndjson
     s = since.isoformat()[:19]
-    ids, bodies = set(), set()
+    ids, bodies, upd = set(), set(), set()
     for a in ndjson(export / "affairs.ndjson.gz"):
-        if a["id"] not in known or (a.get("updated_at") or "")[:19] >= s or (a.get("begin_date") or "")[:19] >= s:
+        if a["id"] not in known or (a.get("begin_date") or "")[:19] >= s:
             ids.add(a["id"]); bodies.add(a["body_key"])
-    return ids, bodies
+        elif (a.get("updated_at") or "")[:19] >= s:
+            upd.add(a["id"])
+    return ids, bodies, upd
+
+
+def build_touched(export: Path, prev: Path, touched: set[int], out: Path, work: Path) -> dict:
+    """Inputs for the touched affairs only (data.build over a filtered view of the export: their affairs and documents,
+    the full bodies, contributors and texts files), merged into the previous inputs file. Memory follows the delta, not
+    the corpus (a full rebuild holds every document head: 4.8 GB peak RSS on the 11 Oct export)."""
+    import shutil
+    from . import data
+    from .net import ndjson
+    v = work / "export-view"
+    shutil.rmtree(v, ignore_errors=True); v.mkdir(parents=True)
+    for f in ("bodies.ndjson.gz", "contributors.ndjson.gz", "texts"):
+        (v / f).symlink_to((export / f).resolve())
+    with gzip.open(v / "affairs.ndjson.gz", "wt") as o:
+        for a in ndjson(export / "affairs.ndjson.gz"):
+            if a["id"] in touched:
+                o.write(json.dumps(a, ensure_ascii=False) + "\n")
+    docs = export / "docs_slim.jsonl.gz"
+    with gzip.open(v / "docs_slim.jsonl.gz", "wt") as o:
+        if docs.exists():
+            for d in ndjson(docs):
+                if d["a"] in touched:
+                    o.write(json.dumps(d, ensure_ascii=False) + "\n")
+    part = work / "inputs-touched.jsonl.gz"
+    st = data.build(v, part, docs_path=v / "docs_slim.jsonl.gz")
+    with gzip.open(out, "wt") as o:
+        with gzip.open(prev, "rt") as f:
+            for line in f:
+                if json.loads(line)["id"] not in touched:
+                    o.write(line)
+        with gzip.open(part, "rt") as f:
+            for line in f:
+                o.write(line)
+    shutil.rmtree(v, ignore_errors=True); part.unlink(missing_ok=True)
+    return st
 
 
 def fetch_docs(export: Path, urls: dict[str, str], bodies: set[str], ids: set[int]) -> int:
@@ -158,13 +197,16 @@ def delta(a) -> dict:
         if a.plan:
             print(json.dumps(log, indent=1)); return log
     known = {r["id"]: r["input_hash"] for r in st.all("SELECT id, input_hash FROM qs_affairs")}
-    ids, bodies = changed_affairs(export, since, known)
-    log.update(touched=len(ids), bodies=len(bodies))
+    ids, bodies, upd = changed_affairs(export, since, known)
+    log.update(new_or_begun=len(ids), bodies=len(bodies), updated_only=len(upd))
     if a.fetch and ids:
         log["docs_rows"] = fetch_docs(export, f["docs"], bodies, ids)
     tmp = inputs.with_name(inputs.name.replace(".jsonl.gz", ".new.jsonl.gz"))
     docs = export / "docs_slim.jsonl.gz"
-    log["build"] = data.build(export, tmp, docs_path=docs if docs.exists() else Path("/nonexistent"))
+    if inputs.exists() and not a.full_rebuild:
+        log["build"] = build_touched(export, inputs, ids | upd, tmp, run.parent / "delta-work")
+    else:
+        log["build"] = data.build(export, tmp, docs_path=docs if docs.exists() else Path("/nonexistent"))
     scope = os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
     scored = {r["affair_id"] for r in st.all("SELECT DISTINCT affair_id FROM topics WHERE provenance = 'inferred'")}
     todo = []
@@ -282,6 +324,7 @@ def main(argv=None):
         d.add_argument("--no-fetch", dest="fetch", action="store_false", help="use the export files on disk")
         d.add_argument("--no-model", dest="model", action="store_false", help="inputs and affairs only, no batch")
         d.add_argument("--max-affairs", type=int)
+        d.add_argument("--full-rebuild", action="store_true", help="rebuild every input (first night; ~5 GB RAM peak)")
         d.add_argument("--conc", type=int, default=int(os.environ.get("QS_CONC", "3")))
         d.add_argument("--max-rate", type=float, default=float(os.environ.get("QS_MAX_RATE", "1.0")))
         if name == "nightly":

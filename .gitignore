@@ -9,3 +9,7 @@ app/data-fixture/
 app/dev/shots/
 .DS_Store
 node_modules/
+data/*.sqlite-wal
+data/*.sqlite-shm
+*.sqlite-wal
+*.sqlite-shm

@@ -91,7 +91,7 @@ def test_coverage_and_metrics(store):
     assert cov["CHE"]["affairs"] >= cov["CHE"]["scored"] > 0
     assert 0 <= cov["CHE"]["scored_share"] <= 1
     m = store.metrics()
-    assert m["rows"] > 0 and m["affairs"] == 80 and m["store"] == "sqlite"
+    assert m["rows"] > 0 and m["affairs"] == 80 and m["store"] == store.kind
 
 
 def test_postgres_if_available():
@@ -111,4 +111,22 @@ def test_postgres_if_available():
     assert r["provenance"] == "confirmed" and isinstance(r["valid_from"], str)
     assert isinstance(s.topics_for(AID, "aps")[0]["evidence"], dict)
     assert s.coverage() and s.metrics()["store"] == "postgres"
+    s.close()
+
+
+def test_load_affairs_from_static_export(tmp_path):
+    """make run on a clean checkout: affair summaries from app/data (columnar affairs.json, bodies.json, detail/)."""
+    d = tmp_path / "data"; (d / "detail").mkdir(parents=True)
+    (d / "affairs.json").write_text(json.dumps(dict(n=2, cols=dict(id=[5001, 5002], body=["CHE", "351"], date=["2026-10-01", "2026-09-30"],
+        type_h=["Motion", "Interpellation"], state=["eingereicht", ""], lang=["de", "de"], title=["A", "B"], party=["FDP", ""],
+        submitter=["X", ""], stype=["member", "member"]))))
+    (d / "bodies.json").write_text(json.dumps([dict(key="CHE", name_de="Bundesversammlung", name_fr="Assemblée fédérale", level="federal"),
+                                               dict(key="351", name_de="Stadtrat Bern", name_fr="Conseil de ville de Berne", level="communal")]))
+    (d / "detail" / "5.json").write_text(json.dumps({"5001": dict(title_long="Langtitel A", text="x" * 50, url="https://x", number=26.4)}))
+    s = Store(path=str(tmp_path / "e.sqlite"), dsn="")
+    assert s.load_affairs_export(d) == 2
+    a = s.affair(5001)
+    assert a["level"] == "federal" and a["parl"] == "Bundesversammlung" and a["title_long"] == "Langtitel A" and a["has_text"]
+    assert s.affair(5002)["level"] == "communal" and s.affair(5002)["has_text"] is False
+    assert s.pending("2000-01-01") == 0                    # no input hash: never pending
     s.close()

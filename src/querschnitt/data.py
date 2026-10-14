@@ -75,9 +75,14 @@ PARL_FALLBACK = {"CHE": "Bundesversammlung", "LIE": "Landtag (Liechtenstein)"}
 
 
 def parl_name(key: str, B: dict, lang: str = "de") -> str:
+    """The parliament's name in `lang`: its own name when that is its language, else OPD's translation (OPD's French
+    field holds the English "Grand Council" for some cantons; that one is replaced by "Grand Conseil")."""
     b = B.get(key) or {}
-    return (b.get(f"legislative_name_{lang}") or b.get("legislative_name") or PARL_FALLBACK.get(key)
-            or b.get(f"name_{lang}") or b.get("name") or key)
+    own = (b.get("lang") or "").lower() == lang and b.get("legislative_name")
+    tr = b.get(f"legislative_name_{lang}")
+    if tr == "Grand Council" and lang == "fr":
+        tr = "Grand Conseil"
+    return own or tr or b.get("legislative_name") or PARL_FALLBACK.get(key) or b.get(f"name_{lang}") or b.get("name") or key
 
 
 # ---------------------------------------------------------------- text choice

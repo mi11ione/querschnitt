@@ -1,0 +1,73 @@
+# Two profiles (docs/SERVICE.md, "Footprints"):
+#   lite  nightly chapter-only delta into an EXISTING Postgres (OPD's ~20 GB VPS): QS_PG_DSN=postgresql://… docker compose --profile lite up -d
+#   full  Postgres + API + app + nightly delta (all steps, saved ad-hoc topics): docker compose --profile full up -d
+# The model endpoint and key come from the environment (QS_BASE_URL, QS_MODEL, QS_API_KEY); nothing secret is in the image.
+name: querschnitt
+
+x-common: &common
+  build: .
+  image: querschnitt:latest
+  restart: unless-stopped
+  logging: {driver: json-file, options: {max-size: "10m", max-file: "3"}}
+
+x-model-env: &model-env
+  QS_BASE_URL: ${QS_BASE_URL:-https://api.publicai.co/v1}
+  QS_MODEL: ${QS_MODEL:-swiss-ai/apertus-v1.5-8b}
+  QS_API_KEY: ${QS_API_KEY:-}
+  QS_MAX_RATE: ${QS_MAX_RATE:-1.0}
+  QS_NIGHTLY_AT: ${QS_NIGHTLY_AT:-02:30}
+
+services:
+  db:
+    image: postgres:16-alpine
+    profiles: [full]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: querschnitt
+      POSTGRES_PASSWORD: ${QS_PG_PASSWORD:-querschnitt}
+      POSTGRES_DB: querschnitt
+    volumes: [pg:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U querschnitt -d querschnitt"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    <<: *common
+    profiles: [full]
+    depends_on: {db: {condition: service_healthy}}
+    environment:
+      <<: *model-env
+      QS_PG_DSN: postgresql://querschnitt:${QS_PG_PASSWORD:-querschnitt}@db:5432/querschnitt
+    ports: ["127.0.0.1:${QS_PORT:-8000}:8000"]
+    volumes: [runs:/app/runs, adhoc:/app/src/querschnitt/schemes/adhoc]
+
+  nightly:
+    <<: *common
+    profiles: [full]
+    depends_on: {db: {condition: service_healthy}}
+    command: ["python", "-m", "querschnitt", "nightly"]
+    environment:
+      <<: *model-env
+      QS_PG_DSN: postgresql://querschnitt:${QS_PG_PASSWORD:-querschnitt}@db:5432/querschnitt
+      QS_PROFILE: full
+    volumes: [data:/app/data, runs:/app/runs, adhoc:/app/src/querschnitt/schemes/adhoc]
+    healthcheck: {disable: true}
+
+  nightly-lite:
+    <<: *common
+    profiles: [lite]
+    command: ["python", "-m", "querschnitt", "nightly"]
+    environment:
+      <<: *model-env
+      QS_PG_DSN: ${QS_PG_DSN:?set QS_PG_DSN to the existing Postgres (the topics table is created if missing)}
+      QS_PROFILE: lite
+    volumes: [data:/app/data, runs:/app/runs]
+    healthcheck: {disable: true}
+
+volumes:
+  pg: {}
+  data: {}
+  runs: {}
+  adhoc: {}

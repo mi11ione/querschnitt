@@ -391,7 +391,21 @@ class Store:
         return self._out(self.one("SELECT * FROM topics WHERE row_id = ?", (rid,)))
 
     # ------------------------------------------------------------------ coverage, metrics, runs
+    def state_key(self) -> tuple:
+        """Changes whenever rows or affairs change (cache key for whole-table aggregates)."""
+        r = self.one("SELECT MAX(row_id) AS m, COUNT(*) AS n FROM topics")
+        u = self.one("SELECT MAX(valid_to) AS v FROM topics")
+        a = self.one("SELECT COUNT(*) AS n FROM qs_affairs")
+        return r["m"], r["n"], str(u["v"]), a["n"]
+
     def coverage(self, scheme: str = "aps", full_share: float = 0.9) -> list[dict]:
+        key = (scheme, full_share, self.state_key())
+        c = getattr(self, "_cov", {})
+        if key not in c:
+            self._cov = {key: self._coverage(scheme, full_share)}
+        return self._cov[key]
+
+    def _coverage(self, scheme: str = "aps", full_share: float = 0.9) -> list[dict]:
         """Per body: affairs, scored (a current row in `scheme`), scored share, title-only share (scored affairs without
         text beyond the title), covered_from = the first year from which every later year has scored share ≥ 0.9."""
         rows = self.all(

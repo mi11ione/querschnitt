@@ -1,0 +1,39 @@
+name: ci
+on: [push, pull_request]
+permissions: {contents: read}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env: {POSTGRES_USER: qs, POSTGRES_PASSWORD: qs, POSTGRES_DB: qs}
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U qs" --health-interval 5s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -e ".[dev,pg]"
+      - name: tests (SQLite + Postgres store; fake model endpoint, no network calls to any model)
+        run: make test PY=python
+        env: {QS_TEST_PG_DSN: "postgresql://qs:qs@localhost:5432/qs"}
+      - name: the store, API, eval and Neues-Thema tests again on Postgres
+        run: python -m pytest -q tests/test_store.py tests/test_api.py tests/test_eval.py tests/test_adhoc.py
+        env: {QS_TEST_PG_DSN: "postgresql://qs:qs@localhost:5432/qs", QS_TEST_ALL_PG: "1"}
+      - name: make run smoke (load shipped data, /health, /metrics)
+        run: make smoke PY=python
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t querschnitt .
+      - name: image smoke (non-root, API answers)
+        run: |
+          test "$(docker run --rm querschnitt id -u)" = "10001"
+          docker run -d --name qs -p 127.0.0.1:8000:8000 querschnitt
+          for i in $(seq 1 60); do curl -fsS http://127.0.0.1:8000/health && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8000/metrics
+          curl -fsS "http://127.0.0.1:8000/coverage" | head -c 300
+          docker logs qs | tail -5; docker rm -f qs
+      - run: docker compose --profile full config -q && QS_PG_DSN=postgresql://x@y/z docker compose --profile lite config -q

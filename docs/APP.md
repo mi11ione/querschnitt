@@ -182,3 +182,10 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 - Überblick: «47 % gehen an eine Person» = please-check rows / scored APS rows in 2025–26 (count on hover); weeks
   count the main slice only.
 - No «Beleg» block without a quote: the text shows under «Text», and is omitted when there is none.
+
+## Anbindung (14 Oct)
+- 5th tab «Anbindung» / «Intégration» (key `i`, `#anb`): the `topics` columns of 0001_topics.up.sql (machine columns
+  grey, decision columns black), the Hop main path of load_topics.hpl with its skip branches and the run line of
+  upstream/hop/README.md, `GET /changes?after=` live (first 3 rows, total, next) or the stored sample marked «Beispiel»,
+  last night's line from meta.nightly, and the compose footprint from eval/ci_footprint.txt with the CI run link.
+- Data: `python3 app/dev/make_integration.py` → app/data/integration.json (no runtime fetch of repo files).

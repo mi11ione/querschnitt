@@ -15,16 +15,35 @@
    ],
    "baseline": "Listen-Prompt 0.655 · Stichwort 0.191 · Mehrheit 0.079",
    "baseline_fr": "liste 0,655 · mots-clés 0,191 · majorité 0,079",
-   "split": "held-out, vorregistriert (S16)",
-   "split_fr": "hors échantillon, préenregistré (S16)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (vorregistriert, läuft)",
+   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (préenregistré, en cours)",
    "file": "querschnitt/eval/s16/results.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
    "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
    "gold": "human",
-   "design": "D4, Lesarten einig (64.1% der Geschäfte)",
-   "design_fr": "D4, lectures concordantes (64,1% des objets)",
+   "design": "D4, ausgeliefert: rekalibriertes p ≥ 0.7 (66.8% der Geschäfte)",
+   "design_fr": "D4, livré : p recalibré ≥ 0,7 (66,8% des objets)",
+   "n": 907,
+   "result": "0.864",
+   "result_fr": "0,864",
+   "interval": [
+    0.84,
+    0.886
+   ],
+   "baseline": "p < 0.7 → bitte prüfen: 0.491 [0.445, 0.538] (n 450) · Lesarten einig 0.826 [0.800, 0.851]",
+   "baseline_fr": "p < 0,7 → à vérifier : 0,491 [0,445, 0,538] (n 450) · lectures concordantes 0,826 [0,800, 0,851]",
+   "split": "nach S16 aus seinen Zeilen gewählt, 2-fach kreuzangepasst; hold-out getestet in S25 (vorregistriert, läuft)",
+   "split_fr": "choisie après S16 à partir de ses lignes, validation croisée à 2 plis ; testée hors échantillon dans S25 (préenregistré, en cours)",
+   "file": "querschnitt/eval/lanes/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "D4, Lesarten einig (bisherige Regel; 64.1% der Geschäfte)",
+   "design_fr": "D4, lectures concordantes (règle précédente ; 64,1% des objets)",
    "n": 871,
    "result": "0.826",
    "result_fr": "0,826",
@@ -34,8 +53,8 @@
    ],
    "baseline": "uneinig → bitte prüfen: 0.586 [0.542, 0.630] (n 486)",
    "baseline_fr": "discordantes → à vérifier : 0,586 [0,542, 0,630] (n 486)",
-   "split": "held-out, vorregistriert (S16)",
-   "split_fr": "hors échantillon, préenregistré (S16)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (vorregistriert, läuft)",
+   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (préenregistré, en cours)",
    "file": "querschnitt/eval/s16/results.json"
   },
   {
@@ -69,8 +88,8 @@
    ],
    "baseline": "D3 0.722",
    "baseline_fr": "D3 0,722",
-   "split": "held-out, vorregistriert (S16)",
-   "split_fr": "hors échantillon, préenregistré (S16)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (vorregistriert, läuft)",
+   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (préenregistré, en cours)",
    "file": "querschnitt/eval/s16/results.json"
   },
   {
@@ -5964,14 +5983,23 @@
    ]
   ],
   "op": {
+   "coverage": 0.6684,
+   "precision": 0.8644,
+   "n": 907,
+   "label_de": "ausgeliefert: p ≥ 0.7",
+   "label_fr": "livré : p ≥ 0,7",
+   "file": "querschnitt/eval/lanes/results.json"
+  },
+  "op_old": {
    "coverage": 0.6419,
    "precision": 0.8266,
    "n": 871,
    "label_de": "Lesarten einig",
-   "label_fr": "lectures concordantes"
+   "label_fr": "lectures concordantes",
+   "file": "querschnitt/eval/s16/results.json"
   },
   "file": "querschnitt/eval/s16/results.json"
  },
  "build": "dd237840",
- "source": "derived from eval/pruefstand.json by eval/scripts/build_pruefstand.py (values truncated, interval bounds outward); curve: S16 coverage_precision aps-fed, operating point = the lane where both readings agree (lanes_D4)"
+ "source": "derived from eval/pruefstand.json by eval/scripts/build_pruefstand.py (values truncated, interval bounds outward); curve: S16 coverage_precision aps-fed; op = the shipped lane rule, pass at recalibrated p ≥ 0.7 (eval/lanes/results.json D4 > calibrated_tau_0_7; chosen after S16 on its rows, tested held out in S25); op_old = readings agree (lanes_D4)"
 }

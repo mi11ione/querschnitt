@@ -5,8 +5,9 @@ import { Board } from './board.js';
 import { Neu, loadSaved } from './neu.js';
 import { renderPruef, testCount } from './pruef.js';
 import { Atlas } from './atlas.js';
+import { renderAnb } from './anb.js';
 
-const VIEWS = ['ueber', 'karte', 'neu', 'pruef'];
+const VIEWS = ['ueber', 'karte', 'neu', 'pruef', 'anb'];
 let view = 'ueber', karte = null, neu = null, atlas = null;
 
 function setLang(l) {
@@ -17,12 +18,13 @@ function setLang(l) {
   if (neu) neu.relang();
   if (view === 'pruef') renderPruef($('#v-pruef'));
   if (view === 'ueber') atlas.render();
+  if (view === 'anb') renderAnb($('#v-anb'));
 }
 
 function renderShell() {
   const L = t(), m = D.meta;
   // bar
-  const counts = { ueber: num(atlas ? atlas.topics().length : 0), karte: num(D.n), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
+  const counts = { anb: '', ueber: num(atlas ? atlas.topics().length : 0), karte: num(D.n), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
   for (const v of VIEWS) {
     const b = $(`#t-${v}`); b.replaceChildren(L[v], h('span', { class: 'c' }, counts[v]));
     b.setAttribute('aria-selected', String(v === view));
@@ -68,6 +70,7 @@ function show(v) {
   for (const x of VIEWS) { $(`#v-${x}`).hidden = x !== v; $(`#t-${x}`).setAttribute('aria-selected', String(x === v)); }
   if (v === 'pruef') renderPruef($('#v-pruef'));
   if (v === 'ueber') atlas.render();
+  if (v === 'anb') renderAnb($('#v-anb'));
   if (v === 'neu' && !neu) neu = new Neu($('#v-neu'));
   if (v === 'neu' && neu) neu.board.refresh();
   writeHash();
@@ -105,6 +108,7 @@ function keys(e) {
   if (k === 'd' || k === 'f') { setLang(k === 'd' ? 'de' : 'fr'); e.preventDefault(); return; }
   if (k === 'm') { show('karte'); return; }
   if (k === 'a') { show('ueber'); return; }
+  if (k === 'i') { show('anb'); return; }
   if (k === 'n') { show('neu'); return; }
   if (k === 'b') { show('pruef'); return; }
   if (!b) return;

@@ -67,6 +67,10 @@ const SCEN = [
   { name: 'basel-detail-1440', w: 1440, h: 900, url: '#karte?t=bs-themen', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'basel-pult-1440', w: 1440, h: 900, url: '#karte?t=bs-themen&m=pult&tab=todo', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'saved-1440', w: 1440, h: 900, url: '#karte?t=adhoc%2Fwolf' },
+  { name: 'anb-1440', w: 1440, h: 900, url: '#anb' },
+  { name: 'anb-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#anb' },
+  { name: 'anb-375', w: 375, h: 812, mobile: true, url: '#anb', full: true },
+  { name: 'anb-live-1440', live: true, w: 1440, h: 900, url: '#anb' },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 

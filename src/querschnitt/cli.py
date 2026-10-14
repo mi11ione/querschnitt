@@ -296,6 +296,9 @@ def main(argv=None):
     if argv and argv[0] == "eval":
         from . import evaluate
         return evaluate.main(argv[1:])
+    if argv and argv[0] == "export":                    # pass-through to the static export (its own flags)
+        from . import export
+        return export.main(argv[1:])
     ap = argparse.ArgumentParser(prog="querschnitt", description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build-inputs", help="OPD export dir → inputs.jsonl.gz")

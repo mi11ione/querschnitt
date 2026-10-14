@@ -1,5 +1,5 @@
 #!/bin/sh
-# Unattended nightly delta (ops/nightly-loop.sh, 07:05 CEST, after OPD's ~06:35 export): fresh export → new/changed affairs → batch →
+# Unattended nightly delta (ops/nightly-loop.sh, 09:15 CEST, after OPD's ~08:10 CEST export): fresh export → new/changed affairs → batch →
 # store → one metrics line. On even days of the month the endpoint is cut for the first pass (`--no-model`): new rows wait
 # as pending; the second pass with the endpoint drains them, and the log records pending count and minutes to drain.
 cd "$(dirname "$0")/.." || exit 1
@@ -10,7 +10,7 @@ day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
   echo "== $(date '+%F %T') nightly start (endpoint cut for first pass: $cut)"
   t0=$(date +%s)
   # the store mirrors the corpus run first (latest export of its rows; reloading identical rows adds nothing)
-  $PY -m querschnitt export --out app/data --topics-file > /dev/null && $PY -m querschnitt load --auto
+  $PY -m querschnitt.export --out app/data > /dev/null && $PY -m querschnitt load --auto
   if [ "$cut" = 1 ]; then
     caffeinate -i $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0
     echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics

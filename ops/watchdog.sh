@@ -1,6 +1,7 @@
 #!/bin/sh
 # Every 5 min, for side runs started with ops/run-start.sh (runs/main resumes through ops/pipeline.py):
 #  - paused for disk ("Disk low" STOP.md) → resume with the recorded ARGS once > 3 GB are free;
+#  - stopped on errors (an endpoint outage: "Errors" STOP.md) → resume once ops/endpoint_ok.py gets the locked build back;
 #  - alive but stalled (no ledger line for 20 min since its start, e.g. after a network outage) → graceful restart from cache.
 cd "$(dirname "$0")/.." || exit 1
 echo $$ > runs/watchdog.pid
@@ -13,6 +14,13 @@ while true; do
     if [ -f "$d/STOP.md" ] && grep -q "Disk low" "$d/STOP.md" && [ "$free" -gt 3000000 ]; then
       mv "$d/STOP.md" "$d/STOP-$(date +%Y%m%d-%H%M%S).md"
       echo "$(date '+%F %T') resume $d" >> runs/watchdog.log
+      # shellcheck disable=SC2046
+      ops/run-start.sh "$d" $(tr '\n' ' ' < "$d/ARGS") >> runs/watchdog.log 2>&1
+    elif [ -f "$d/STOP.md" ] && grep -q "^# Errors" "$d/STOP.md" && ! { [ -f "$d/PID" ] && kill -0 "$(cat "$d/PID")" 2>/dev/null; } \
+         && .venv/bin/python ops/endpoint_ok.py "$d" >> runs/watchdog.log 2>&1; then
+      mv "$d/STOP.md" "$d/STOP-$(date +%Y%m%d-%H%M%S).md"
+      echo "$(date '+%F %T') endpoint back (locked build) → resume $d" >> runs/watchdog.log
+      rm -f "$d/PID"
       # shellcheck disable=SC2046
       ops/run-start.sh "$d" $(tr '\n' ' ' < "$d/ARGS") >> runs/watchdog.log 2>&1
     elif [ -f "$d/PID" ] && kill -0 "$(cat "$d/PID")" 2>/dev/null && [ -f "$d/ledger.jsonl" ]; then

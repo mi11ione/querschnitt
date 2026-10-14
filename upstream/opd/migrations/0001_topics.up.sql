@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS topics (
   label_rm              text,
   p                     real        CHECK (p IS NULL OR (p >= 0 AND p <= 1)),          -- recalibrated probability
   p_raw                 real        CHECK (p_raw IS NULL OR (p_raw >= 0 AND p_raw <= 1)), -- model probability before
-  lane                  text        CHECK (lane IN ('readings_agree', 'please_check')),
+  lane                  text        CHECK (lane IN ('pass', 'please_check', 'readings_agree')),
   status                text        NOT NULL DEFAULT 'suggested' CHECK (status IN ('suggested', 'confirmed', 'rejected')),
   provenance            text        NOT NULL DEFAULT 'inferred' CHECK (provenance IN ('inferred', 'confirmed')),
   evidence_field        text        CHECK (evidence_field IN ('title', 'title_long', 'text', 'doc')),

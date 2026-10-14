@@ -11,7 +11,7 @@
 | rank | int | 1 = shipped label; 2–3 = ranked suggestions |
 | p | real | recalibrated probability (raw `p_raw` kept beside it) |
 | p_raw | real | engine probability before recalibration |
-| lane | text | `readings_agree` · `please_check` |
+| lane | text | `pass` · `please_check` (recalibrated p < 0.7, or German and French readings disagree in a bilingual parliament); `readings_agree` in rows made before 14 Oct |
 | status | text | `suggested` · `confirmed` · `rejected` |
 | provenance | text | `inferred` · `confirmed` |
 | evidence | jsonb | `{"source": "text:7100" \| "doc:4711" \| "title", "field": "title\|title_long\|text", "char_start": 212, "char_end": 318, "quote": "…"}` |

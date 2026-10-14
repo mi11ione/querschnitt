@@ -120,7 +120,14 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
         bi = bilingual(a, rows)
         if bi:
             d["bilingual"] = bi
-            d["lane"] = bi["lane"]
+        # Lane (14 Oct, chosen on the S16 items, 2-fold cross-fitted; tested held out in S25): a person checks when the
+        # recalibrated p is below LANE_TAU, or when the German and French readings of a bilingual parliament disagree.
+        # The two readings stay in the row (`readings`) as the explanation.
+        d["readings"] = "agree" if d["lane"] == "readings_agree" else "disagree"
+        cal = calibrated(d)
+        d["p_cal"] = cal
+        low = cal is not None and cal < LANE_TAU
+        d["lane"] = "please_check" if (low or (bi and bi["lane"] == "please_check") or (cal is None and d["readings"] == "disagree")) else "pass"
     if a["body"] == "BE" and a["lang"] in ("de", "fr"):
         sch = flat("be-directorates")
         reads = {}
@@ -149,6 +156,21 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
         code = sch["options"][i]["code"] if i < len(sch["options"]) else sch["none"]["code"]
         out[sch["id"]] = dict(code=code, p=pm[i], lane="please_check" if (rb and argmax(ra["p"]) != argmax(rb["p"])) else "readings_agree")
     return out
+
+
+LANE_TAU = 0.7
+_CAL = []
+
+
+def calibrated(d: dict):
+    """Recalibrated chapter confidence (eval/calibration.json, fitted per build): `aps-fed` for the federal design with
+    examples, else `aps`. None without a calibration file."""
+    if not _CAL:
+        from .calibrate import Calibration
+        f = Path(__file__).resolve().parents[2] / "eval/calibration.json"
+        _CAL.append(Calibration.load(f) if f.exists() else None)
+    c = _CAL[0]
+    return c.apply("aps-fed" if d.get("examples") else "aps", d["conf"]) if c else None
 
 
 BILINGUAL = {"BE", "FR", "VS"}   # fallback for inputs built before the `bilingual` field (OPD body languages)

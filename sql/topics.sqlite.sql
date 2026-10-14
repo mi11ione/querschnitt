@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS topics (
   rank          INTEGER NOT NULL DEFAULT 1,
   p             REAL,
   p_raw         REAL,
-  lane          TEXT CHECK (lane IN ('readings_agree', 'please_check')),
+  lane          TEXT CHECK (lane IN ('pass', 'please_check', 'readings_agree')),
   status        TEXT    NOT NULL DEFAULT 'suggested' CHECK (status IN ('suggested', 'confirmed', 'rejected')),
   provenance    TEXT    NOT NULL DEFAULT 'inferred' CHECK (provenance IN ('inferred', 'confirmed')),
   evidence      TEXT,
@@ -44,6 +44,9 @@ CREATE INDEX IF NOT EXISTS qs_affairs_body_date ON qs_affairs (body_key, date);
 CREATE INDEX IF NOT EXISTS qs_affairs_date ON qs_affairs (date);
 CREATE TABLE IF NOT EXISTS qs_bodies (
   key TEXT PRIMARY KEY, name_de TEXT, name_fr TEXT, level TEXT, canton TEXT, lang TEXT, covered_from INTEGER
+);
+CREATE TABLE IF NOT EXISTS qs_queue (
+  affair_id INTEGER PRIMARY KEY, input_hash TEXT, reason TEXT, queued_at TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS qs_runs (
   id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT NOT NULL, kind TEXT NOT NULL, affairs INTEGER, rows INTEGER,

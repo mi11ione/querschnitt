@@ -162,12 +162,16 @@ def evidence_parts(a: dict) -> list[tuple[str, str]]:
     return parts
 
 
+PATHLIKE = re.compile(r"[A-Za-z]:\\|\\[^\s]|\.(docx?|pdf|xlsx?)\b|https?://", re.I)
+
+
 def sentences(a: dict) -> list[tuple[str, str]]:
+    """Candidate evidence sentences (≥ 25 characters); file paths, document names and URLs are never offered."""
     out = []
     for src, part in evidence_parts(a):
         for s in SPLIT.split(part):
             s = s.strip()
-            if len(s) >= 25:
+            if len(s) >= 25 and not PATHLIKE.search(s):
                 out.append((src, s))
     return out[:40]
 

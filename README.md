@@ -17,7 +17,7 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
-| APS chapter vs APS editors, held-out federal affairs | 1,357 | **0.740** [0.716, 0.764] as shipped; where the two readings agree (64% of affairs) 0.826 [0.800, 0.851] | plain list prompting 0.655 · keywords 0.191 |
+| APS chapter vs APS editors, federal affairs (pre-registered; the shipped design combines the two best designs measured earlier on the same items — a fresh held-out set is S25) | 1,357 | **0.740** [0.716, 0.764] as shipped; the 66.8% that pass without a check (recalibrated p ≥ 0.7, cross-fitted) 0.864 [0.840, 0.886] | plain list prompting 0.655 · keywords 0.191 |
 | The same affairs from the Italian vs the German text (read-back design, no examples) | 1,350 | Italian 0.702 [0.678, 0.727] · German 0.703 [0.678, 0.728]; difference +0.0007 [−0.020, +0.021] | — |
 | Bern's 8 directorates as a scheme file vs the Grand Council's own lead-directorate field, 2025–26, DE / FR titles | 531 | 0.651 [0.610, 0.691] / 0.650; DE–FR +0.001 [−0.031, +0.034] | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt's own 46 themes as a scheme file (names only) vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
@@ -40,10 +40,12 @@ prefill, served build, throughput, replay of stored prompts) before a run.
 - **Closed choices only.** Chapter, subtopic, yes/no for an ad-hoc topic, evidence sentence: each is a choice among listed
   codes, read from Apertus's next-token probabilities, so a label outside the scheme is never stored. (Asked to name a topic
   freely, Apertus answered outside the scheme in 36 of 40 affairs; with the list shown, in 0 of 40.)
-- **Two readings, one lane.** The chapter question is read twice — for federal affairs once with the five most similar
+- **Two readings, one confidence, one lane.** The chapter question is read twice — for federal affairs once with the five most similar
   APS-labelled affairs as examples and once without, in two code orders; elsewhere in two code orders (the second only when
   the first is below p 0.9); in bilingual parliaments (Bern, Fribourg, Valais, from OPD's body languages) in German and in
-  French. Readings agree → `readings_agree`; they disagree → `please_check`, and a person decides.
+  French. The two readings feed the confidence and stay visible as the explanation; the lane is `please_check` when the
+  recalibrated p is below 0.7 or the German and French readings disagree, otherwise `pass` (on the federal APS affairs,
+  cross-fitted: 66.8% pass at precision 0.864; the readings-agree rule gave 0.826 at 64.1%).
 - **Read back from the subtopic.** One request over the subtopics of the top two or three chapters; the shipped chapter is
   the one read back from the chosen subtopic; the top three subtopics ship as ranked suggestions.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored
@@ -71,14 +73,14 @@ prefill, served build, throughput, replay of stored prompts) before a run.
 
 ## Runtime and cost (measured on the corpus run, Public AI list price — [`eval/cost/results.json`](eval/cost/results.json))
 - USD 0.333 per 1,000 affairs for chapter, subtopic and one ad-hoc topic (USD 0.314 chapter step alone).
-- About 61.5 minutes per 1,000 affairs at this job's own 0.969 requests/s on a key shared with other jobs.
-- All 326,123 OPD affairs, chapter step: 843,173 requests, USD 102.24, about 241.8 h at that rate — a projection, not run;
+- About 61.5 minutes per 1,000 affairs at this job's average 0.969 requests/s over its first 13.3 h on a key shared with
+  other jobs (lower while several jobs share the key).
+- All 326,123 OPD affairs, chapter step: 843,173 requests, USD 102.24, about 241.8 h at that average rate — a projection, not run;
   a dedicated endpoint shortens it in proportion to its rate.
 
 ## Model roles
-Apertus makes every topic decision, through Public AI's route `swiss-ai/apertus-v1.5-8b` (served build `…dd237840`; its
-16-way parallel build tag and an MMLU spot check in our notes point to the 70B weights behind this route name, see
-[upstream/APERTUS-NOTES.md](upstream/APERTUS-NOTES.md)). Retrieval of examples is BM25 in code. In the evaluation only,
+Apertus makes every topic decision, through Public AI's route `swiss-ai/apertus-v1.5-8b` (served build `…dd237840` on
+every call reported here; measured behaviour of this route: [upstream/APERTUS-NOTES.md](upstream/APERTUS-NOTES.md)). Retrieval of examples is BM25 in code. In the evaluation only,
 blind Claude runs and the open-weights Qwen-SEA-LION serve as annotators where no human labels exist; every figure measured
 against them is labelled as agreement with that judge. The code was written with Claude Code.
 

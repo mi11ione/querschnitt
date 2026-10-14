@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS topics (
   rank          smallint    NOT NULL DEFAULT 1,   -- 1 = shipped label; 2-3 = ranked suggestions
   p             real,                             -- recalibrated probability
   p_raw         real,                             -- engine probability before recalibration
-  lane          text CHECK (lane IN ('readings_agree', 'please_check')),
+  lane          text CHECK (lane IN ('pass', 'please_check', 'readings_agree')),
   status        text        NOT NULL DEFAULT 'suggested' CHECK (status IN ('suggested', 'confirmed', 'rejected')),
   provenance    text        NOT NULL DEFAULT 'inferred' CHECK (provenance IN ('inferred', 'confirmed')),
   evidence      jsonb,                            -- {source, field, char_start, char_end, quote}
@@ -52,6 +52,11 @@ CREATE INDEX IF NOT EXISTS qs_affairs_date ON qs_affairs (date);
 -- qs_bodies: parliament names and the year OPD's data for it starts (the export's bodies.json, or the inputs).
 CREATE TABLE IF NOT EXISTS qs_bodies (
   key text PRIMARY KEY, name_de text, name_fr text, level text, canton text, lang text, covered_from integer
+);
+-- qs_queue: the nightly's queue: affairs new or changed since the previous nightly and not yet scored (input hash as
+-- queued). A pass without the endpoint fills it; the next model pass scores exactly these, whatever its --since says.
+CREATE TABLE IF NOT EXISTS qs_queue (
+  affair_id bigint PRIMARY KEY, input_hash text, reason text, queued_at timestamptz NOT NULL DEFAULT now()
 );
 -- qs_runs: one line per load / nightly delta (the /metrics source).
 CREATE TABLE IF NOT EXISTS qs_runs (

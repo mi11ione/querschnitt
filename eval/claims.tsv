@@ -681,3 +681,12 @@ S23	-	0.92	S23 kappa A/B 0.921	0.921	bern/querschnitt/eval/s23/results.json	kapp
 S23	-	198/198	S23 substring, input unchanged	198	bern/querschnitt/eval/s23/results.json	substring	OK		
 S23	-	200	S23 n	200	bern/querschnitt/eval/s23/results.json	n	OK		
 S23	-	198/200	S23 substring at stored offsets, all rows	198/200	bern/querschnitt/eval/s23/results.json	substring > all_rows (k, n)	OK		
+lanes	-	66.8%	lane rule	0.6684	bern/querschnitt/eval/lanes/results.json	D4 calibrated_tau_0_7 coverage	OK		
+lanes	-	0.864	lane rule	0.8644	bern/querschnitt/eval/lanes/results.json	D4 calibrated_tau_0_7 precision	OK		
+lanes	-	0.840	lane rule	0.84	bern/querschnitt/eval/lanes/results.json	ci0	OK		
+lanes	-	0.886	lane rule	0.886	bern/querschnitt/eval/lanes/results.json	ci1	OK		
+lanes	-	0.491	lane rule	0.4911	bern/querschnitt/eval/lanes/results.json	D4 check precision	OK		
+lanes	-	64.1%	lane rule	0.6419	bern/querschnitt/eval/lanes/results.json	D4 readings_agree coverage	OK		
+lanes	-	two thirds	lane rule	0.6684	bern/querschnitt/eval/lanes/results.json	0.6684	OK		
+lanes	-	0.7	lane rule	0.7	bern/querschnitt/eval/lanes/results.json	LANE_TAU	OK		
+cost	-	13.3	wall hours of the job when cost was measured	13.3	bern/querschnitt/eval/cost/results.json	wall_hours_so_far	OK		

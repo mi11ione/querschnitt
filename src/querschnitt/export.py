@@ -18,7 +18,7 @@ from pathlib import Path
 from . import prompts as P
 from .calibrate import Calibration
 from .compose import VERSION, decide, read_run, topic_rows
-from .data import load_bodies, level
+from .data import load_bodies, level, parl_name
 from .engine import Engine
 from .examples import ExamplePool
 from .scheme import APS, adhoc, flat
@@ -70,8 +70,6 @@ def run(args):
         c["n"] += 1; c["scored"] += bool(a); c["dig"] += bool(g); c["title_only"] += not x["text"]
         c["check"] += bool(a and a["lane"] == "please_check")
         months[x["body"]][x["date"][:7]] += 1
-        if not (a or g):
-            continue
         n_dec["aps"] += bool(a); n_dec["dig"] += bool(g)
         cal = calib.apply("aps-fed" if (a and a.get("examples")) else "aps", a["conf"]) if (a and calib) else None
         for k, v in (("id", x["id"]), ("body", x["body"]), ("date", x["date"]), ("type_h", x["type_h"] or x["type"]), ("type", x["type"]), ("type_h_fr", x.get("type_h_fr") or ""),
@@ -83,10 +81,12 @@ def run(args):
                      ("dig_p", round(g["p"], 3) if g else None), ("dig_flag", int(g["flag"]) if g else None),
                      ("dig_lane", int(g["lane"] == "please_check") if g else None), ("kw", int(bool(KW.search(kw_text(x))))),
                      ("be", d["be-directorates"]["code"].split(":")[1] if d.get("be-directorates") else None),
+                     ("be_lane", (d["be-directorates"]["lane"] == "please_check") * 1 if d.get("be-directorates") else None),
                      ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None)):
             cols[k].append(v)
         detail[x["id"] // 1000][x["id"]] = dict(
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
+            alt_lang=x.get("alt_lang"), title_alt=x.get("title_alt") or None, title_long_alt=x.get("title_long_alt") or None,
             n_signers=x["n_signers"], dept=x["dept"],
             aps=dict(rank=a["rank"], conf_raw=round(a["conf"], 4), p=[round(a["P"][i], 4) for i in a["rank"]], lane=a["lane"],
                      subs=[[s, round(p, 4)] for s, p in a["subs"]], readings=a["n_readings"], examples=a.get("examples"),
@@ -108,8 +108,8 @@ def run(args):
     for key, c in sorted(cov.items(), key=lambda kv: -kv[1]["n"]):
         b = B.get(key) or {}
         fed = key == "CHE"
-        bodies.append(dict(key=key, name_de="Bundesversammlung" if fed else (b.get("legislative_name_de") or b.get("name_de") or key),
-                           name_fr="Assemblée fédérale" if fed else (b.get("legislative_name_fr") or b.get("name_fr") or key), place_de=b.get("name_de"), place_fr=b.get("name_fr"),
+        bodies.append(dict(key=key, name_de="Bundesversammlung" if fed else parl_name(key, B, "de"),
+                           name_fr="Assemblée fédérale" if fed else parl_name(key, B, "fr"), place_de=b.get("name_de"), place_fr=b.get("name_fr"),
                            level=level(key, B), canton=b.get("canton_key") or (key if len(key) == 2 else None), lang=b.get("lang"),
                            n_affairs=c["n"], n_scored=c["scored"], n_dig=c["dig"], n_check=c["check"],
                            title_only_share=round(c["title_only"] / c["n"], 3), covered_from=first_year[key],

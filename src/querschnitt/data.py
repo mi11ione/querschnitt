@@ -259,6 +259,8 @@ def build(d: Path, out: Path, since: str = "0000", docs_path: Path | None = None
                      submitter=(sub or {}).get("name", ""), party=(sub or {}).get("party", ""), n_signers=(sub or {}).get("n", 0),
                      submitter_type=submitter_type(a, sub), dept=(sub or {}).get("dept", ""), updated=a.get("updated_at"),
                      alt_lang=alt, title_alt=clean(a.get(f"title_{alt}")) if alt else "", title_long_alt=clean(a.get(f"title_long_{alt}")) if alt else "")
+            langs = {l.strip().lower() for l in ((B.get(body) or {}).get("languages") or "").split(",") if l.strip()}
+            x["bilingual"] = {"de", "fr"} <= langs
             x["input_hash"] = input_hash(x)
             stats["rows"] += 1; stats[f"text_{kind}"] += 1; stats[f"level_{x['level']}"] += 1
             f.write(json.dumps(x, ensure_ascii=False) + "\n")

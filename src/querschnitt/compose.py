@@ -119,21 +119,27 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
             d["lane"] = bi["lane"]
     if a["body"] == "BE" and a["lang"] in ("de", "fr"):
         sch = flat("be-directorates")
-        u, p, codes = P.flat_prompt(sch, a["title"], a["lang"])
-        r = rows.get(P.pid(u, p))
-        if r:
-            i = argmax(r["p"])
-            out["be-directorates"] = dict(code=(sch["options"][i]["code"] if i < len(sch["options"]) else sch["none"]["code"]),
-                                          p=r["p"][i], gold=a.get("dept") or None)
+        reads = {}
+        for t, l in ((a["title"], a["lang"]), (a.get("title_alt"), a.get("alt_lang"))):
+            if t and l in ("de", "fr"):
+                r = rows.get(P.pid(*P.flat_prompt(sch, t, l)[:2]))
+                if r:
+                    i = argmax(r["p"])
+                    reads[l] = ((sch["options"][i]["code"] if i < len(sch["options"]) else sch["none"]["code"]), r["p"][i])
+        if a["lang"] in reads:
+            code, p = reads[a["lang"]]
+            other = next((v for l, v in reads.items() if l != a["lang"]), None)
+            out["be-directorates"] = dict(code=code, p=p, gold=a.get("dept") or None, readings={l: v[0] for l, v in reads.items()},
+                                          lane="please_check" if (other and other[0] != code) else "readings_agree")
     return out
 
 
-BILINGUAL = {"BE", "FR", "VS"}
+BILINGUAL = {"BE", "FR", "VS"}   # fallback for inputs built before the `bilingual` field (OPD body languages)
 
 
 def bilingual(a: dict, rows: dict) -> dict | None:
     """Bilingual parliaments: the German and the French title are the two readings (S10); they disagree → please check."""
-    if a["body"] not in BILINGUAL or a.get("alt_lang") not in ("de", "fr") or a["lang"] not in ("de", "fr"):
+    if not a.get("bilingual", a["body"] in BILINGUAL) or a.get("alt_lang") not in ("de", "fr") or a["lang"] not in ("de", "fr"):
         return None
     m = dict(title=a["title"], title_long=a["title_long"], text="", lang=a["lang"])
     o = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])
@@ -152,7 +158,8 @@ def evidence_of(a: dict, name: str, rows: dict) -> dict | None:
     r = rows.get(P.pid(u, p))
     if not r or not r.get("ok"):
         return None
-    return dict(field=r["field"], start=r["start"], end=r["end"], quote=r["quote"])
+    src = a.get("text_src") if r["field"] == "text" else r["field"]
+    return dict(source=src, field=r["field"], char_start=r["start"], char_end=r["end"], start=r["start"], end=r["end"], quote=r["quote"])
 
 
 def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "") -> list[dict]:

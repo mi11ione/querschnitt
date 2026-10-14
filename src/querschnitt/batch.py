@@ -26,7 +26,7 @@ from .engine import Engine, mean_p, need_ch2, need_yn_b
 from .examples import ExamplePool
 from .scheme import APS, adhoc, flat, named
 
-BILINGUAL = {"BE", "FR", "VS"}
+BILINGUAL = {"BE", "FR", "VS"}   # fallback for inputs built before the `bilingual` field (OPD body languages)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -160,7 +160,7 @@ class Runner:
                     if need_yn_b(ra["p_yes"]):
                         u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b")
                         self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b"), aid=a["id"], ih=ih))
-            if "bi" in S and a["body"] in BILINGUAL and a.get("alt_lang") in ("de", "fr"):
+            if "bi" in S and a.get("bilingual", a["body"] in BILINGUAL) and a.get("alt_lang") in ("de", "fr"):
                 # bilingual parliaments: the other language version is the second reading (S10: titles only)
                 b = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])
                 u, p = P.chapter_prompt(b, list(range(25)))

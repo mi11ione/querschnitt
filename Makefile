@@ -66,3 +66,8 @@ up-lite:
 
 clean-db:
 	rm -f data/querschnitt.sqlite data/querschnitt.sqlite-wal data/querschnitt.sqlite-shm
+
+# the scored data (app/data + data/{inputs,topics}.jsonl.gz) ships as a GitHub release asset, not in git history
+DATA_TAG ?= data-latest
+data:
+	@mkdir -p app/data data && curl -fsSL https://github.com/mi11ione/querschnitt/releases/download/$(DATA_TAG)/querschnitt-data.tar.gz | tar -xz

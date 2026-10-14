@@ -90,7 +90,10 @@ def run(args):
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
             alt_lang=x.get("alt_lang"), title_alt=x.get("title_alt") or None, title_long_alt=x.get("title_long_alt") or None,
             n_signers=x["n_signers"], dept=x["dept"],
-            aps=dict(rank=a["rank"], conf_raw=round(a["conf"], 4), p=[r["p"] for r in ar], p_raw=[r["p_raw"] for r in ar],
+            aps=dict(reads={str(i): [round(a["R1"][i], 3)] + ([round(a["R2"][i], 3)] if a.get("R2") else [])
+                               for i in sorted(range(25), key=lambda i: -(a["P"][i]))[:6]},
+                     read_names=["Reihenfolge A", "Reihenfolge B"] if a.get("R2") else ["Reihenfolge A"],
+                     rank=a["rank"], conf_raw=round(a["conf"], 4), p=[r["p"] for r in ar], p_raw=[r["p_raw"] for r in ar],
                      p_step=[round(a["P"][i], 4) for i in a["rank"]], lane=a["lane"],
                      subs=[[s, round(p, 4)] for s, p in a["subs"]], readings=a["n_readings"], examples=a.get("examples"),
                      pids=a["pids"], evidence=a.get("evidence"), bilingual=a.get("bilingual")) if a else None,

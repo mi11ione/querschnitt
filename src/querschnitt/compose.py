@@ -52,7 +52,7 @@ def chapter_decision(r1: dict, r2: dict | None, rs: dict | None) -> dict:
     lane = "please_check" if (r2 and argmax(r1["p"]) != argmax(r2["p"])) else "readings_agree"
     G = geo(r1["p"], r2["p"]) if r2 else r1["p"]   # S6: "no policy topic" is read from the geometric mean of the readings
     top = argmax(G)
-    out = dict(P=PA, lane=lane, n_readings=2 if r2 else 1)
+    out = dict(P=PA, lane=lane, n_readings=2 if r2 else 1, R1=r1["p"], R2=r2["p"] if r2 else None)
     if top == 24 or rs is None:
         rank = sorted(range(25), key=lambda i: -G[i])
         out.update(ch=top, conf=G[top], rank=rank[:3], subs=[], readback=False)
@@ -147,7 +147,9 @@ def bilingual(a: dict, rows: dict) -> dict | None:
     if not (rm and ro):
         return None
     tm, to = argmax(rm["p"]), argmax(ro["p"])
-    return dict(lane="readings_agree" if tm == to else "please_check", top={a["lang"]: tm, a["alt_lang"]: to})
+    top6 = sorted(range(25), key=lambda i: -(rm["p"][i] + ro["p"][i]))[:6]
+    return dict(lane="readings_agree" if tm == to else "please_check", top={a["lang"]: tm, a["alt_lang"]: to},
+                reads={str(i): [round(rm["p"][i], 3), round(ro["p"][i], 3)] for i in top6}, langs=[a["lang"], a["alt_lang"]])
 
 
 def evidence_of(a: dict, name: str, rows: dict) -> dict | None:

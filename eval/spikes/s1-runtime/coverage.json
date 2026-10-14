@@ -1,0 +1,43 @@
+{
+ "n_affairs": 325691,
+ "by_level": {
+  "cantonal": 167133,
+  "communal": 84493,
+  "other": 4378,
+  "federal": 69687
+ },
+ "with_substantive_text_row": 71995,
+ "with_doc_ok": 109105,
+ "with_any_text_or_doc": 179714,
+ "title_only_share": 0.4482,
+ "title_only_by_level": {
+  "cantonal": 0.5682,
+  "communal": 0.5341,
+  "other": 0.1131,
+  "federal": 0.0774
+ },
+ "ondisk_extracted_affairs": 5795,
+ "fed_texts_ondisk": 15,
+ "sample": {
+  "n": 110,
+  "by": {
+   "federal/it/text": 5,
+   "federal/de/text": 5,
+   "federal/fr/text": 5,
+   "federal/de/title": 9,
+   "federal/fr/title": 9,
+   "federal/it/title": 9,
+   "cantonal/de/text": 14,
+   "cantonal/fr/text": 9,
+   "cantonal/it/text": 8,
+   "cantonal/fr/title": 2,
+   "cantonal/it/title": 2,
+   "communal/de/text": 14,
+   "communal/fr/text": 7,
+   "communal/it/text": 8,
+   "communal/fr/title": 2,
+   "communal/de/title": 2
+  }
+ },
+ "fresh_pool": 260
+}

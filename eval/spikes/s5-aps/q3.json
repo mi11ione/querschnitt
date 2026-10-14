@@ -1,0 +1,222 @@
+{
+ "n_dev": 88,
+ "n_test": 186,
+ "builds": {
+  "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 874
+ },
+ "designs": {
+  "DE only (e3a, 1 call)": {
+   "rule": "thr@0.01",
+   "micro": 0.57,
+   "ci": [
+    0.533,
+    0.605
+   ],
+   "macro": 0.473,
+   "ci_macro": [
+    0.423,
+    0.532
+   ],
+   "P": 0.645,
+   "R": 0.51,
+   "avg_pred": 1.85,
+   "top1_prec": [
+    0.86,
+    [
+     0.803,
+     0.903
+    ]
+   ],
+   "top3_recall": 0.602,
+   "top2": 0.575
+  },
+  "FR only (e4fra, 1 call)": {
+   "rule": "thr@0.005",
+   "micro": 0.59,
+   "ci": [
+    0.552,
+    0.628
+   ],
+   "macro": 0.475,
+   "ci_macro": [
+    0.425,
+    0.532
+   ],
+   "P": 0.644,
+   "R": 0.545,
+   "avg_pred": 1.98,
+   "top1_prec": [
+    0.833,
+    [
+     0.773,
+     0.88
+    ]
+   ],
+   "top3_recall": 0.637,
+   "top2": 0.587
+  },
+  "DE+FR pooled, arith mean of probs (2 calls)": {
+   "rule": "thr@0.005",
+   "micro": 0.607,
+   "ci": [
+    0.572,
+    0.641
+   ],
+   "macro": 0.51,
+   "ci_macro": [
+    0.465,
+    0.572
+   ],
+   "P": 0.595,
+   "R": 0.618,
+   "avg_pred": 2.43,
+   "top1_prec": [
+    0.86,
+    [
+     0.803,
+     0.903
+    ]
+   ],
+   "top3_recall": 0.662,
+   "top2": 0.61
+  },
+  "DE+FR pooled, sum of log-probs (2 calls)": {
+   "rule": "rel@0.01",
+   "micro": 0.597,
+   "ci": [
+    0.559,
+    0.631
+   ],
+   "macro": 0.486,
+   "ci_macro": [
+    0.438,
+    0.54
+   ],
+   "P": 0.673,
+   "R": 0.536,
+   "avg_pred": 1.86,
+   "top1_prec": [
+    0.849,
+    [
+     0.791,
+     0.894
+    ]
+   ],
+   "top3_recall": 0.653,
+   "top2": 0.59
+  },
+  "ref: DE 2 orders arith (e3a+e3b, 2 calls)": {
+   "rule": "thr@0.005",
+   "micro": 0.584,
+   "ci": [
+    0.547,
+    0.619
+   ],
+   "macro": 0.502,
+   "ci_macro": [
+    0.455,
+    0.563
+   ],
+   "P": 0.58,
+   "R": 0.589,
+   "avg_pred": 2.37,
+   "top1_prec": [
+    0.876,
+    [
+     0.821,
+     0.916
+    ]
+   ],
+   "top3_recall": 0.646,
+   "top2": 0.595
+  },
+  "DE 2 orders + FR, arith (3 calls)": {
+   "rule": "rel@0.05",
+   "micro": 0.649,
+   "ci": [
+    0.611,
+    0.683
+   ],
+   "macro": 0.548,
+   "ci_macro": [
+    0.504,
+    0.61
+   ],
+   "P": 0.697,
+   "R": 0.607,
+   "avg_pred": 2.04,
+   "top1_prec": [
+    0.882,
+    [
+     0.827,
+     0.921
+    ]
+   ],
+   "top3_recall": 0.664,
+   "top2": 0.62
+  }
+ },
+ "top1_agree_de_fr_test": 130,
+ "paired_vs_DE_only": {
+  "FR only (e4fra, 1 call)": {
+   "d_micro": [
+    -0.016,
+    0.057
+   ],
+   "d_top1": [
+    -0.081,
+    0.027
+   ]
+  },
+  "DE+FR pooled, arith mean of probs (2 calls)": {
+   "d_micro": [
+    0.013,
+    0.06
+   ],
+   "d_top1": [
+    -0.038,
+    0.038
+   ]
+  },
+  "DE+FR pooled, sum of log-probs (2 calls)": {
+   "d_micro": [
+    0.002,
+    0.05
+   ],
+   "d_top1": [
+    -0.048,
+    0.027
+   ]
+  },
+  "ref: DE 2 orders arith (e3a+e3b, 2 calls)": {
+   "d_micro": [
+    -0.006,
+    0.038
+   ],
+   "d_top1": [
+    -0.016,
+    0.048
+   ]
+  },
+  "DE 2 orders + FR, arith (3 calls)": {
+   "d_micro": [
+    0.053,
+    0.107
+   ],
+   "d_top1": [
+    -0.016,
+    0.059
+   ]
+  }
+ },
+ "pooled_arith_vs_DE2orders": {
+  "d_top1": [
+   -0.054,
+   0.027
+  ],
+  "d_micro": [
+   -0.008,
+   0.051
+  ]
+ }
+}

@@ -33,7 +33,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from querschnitt import prompts as P  # noqa: E402
 from querschnitt.scheme import APS  # noqa: E402
 
-S9 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s9-aps")
+S9 = HERE.parent / "spikes/s9-aps"  # vendored S9 (eval/spikes/)
 B, SEED = 2000, 20261016
 load = lambda p: {json.loads(l)["oid"]: json.loads(l) for l in open(p)}
 items = {it["oid"]: it for it in json.load(open(S9 / "data/items.json"))}

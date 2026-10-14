@@ -299,6 +299,6 @@
   "rate": 0.85,
   "n": 120,
   "note": "S12 spike (120 federal affairs, D1 chapter, German); descriptive comparison only, no test",
-  "file": "/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s12-evidence/results.json"
+  "file": "eval/spikes/s12-evidence/results.json"
  }
 }

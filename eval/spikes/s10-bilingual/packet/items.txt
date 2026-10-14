@@ -1,0 +1,1327 @@
+=== B001 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: [Pourquoi le Conseil d’Etat ne donne-t-il pas suite à la motion visant à interdire les publicités sexistes ?]
+
+=== B002 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Opération Béluga, le Valais doit participer à la réflexion sur une caisse intercantonale publique
+Titre long: Postulat urgent Vincent Baud, Le Centre, Mathieu Clerc, Les Vert.e.s, Martine Tristan, PLR/FDP, et Sarah Constantin, PS/GC : Opération Béluga, le Valais doit participer à la réflexion sur une caisse intercantonale publique 2025.02.001
+
+=== B003 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Postulat
+
+Titre: Renforcer la liberté d’expression et la liberté économique (Trump ne gouverne que les États-Unis, pas le canton de Berne)
+
+=== B004 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Dekret
+
+Titel: Strategie Nachhaltige Entwicklung – Aktionsplan 2027 – 2031
+
+=== B005 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Autre affaire
+
+Titre: Motions d`ordre Session d`automne 2026
+
+=== B006 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Schriftliche Anfrage
+
+Titel: Immobilienbesitz im Wallis: Aufteilung und Steuerwert
+Langtitel: SA_2026.09.348_EIN_Final Immobilienbesitz im Wallis: Aufteilung und Steuerwert
+
+=== B007 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Gestaffelte Errichtung der Windmessmasten und Kosteneinsparungen angesichts des anspruchsvollen Haushaltsumfelds
+
+=== B008 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Standesinitiative Kanton Bern: Obligatorischen Schulsport erhalten und Gesundheit schützen
+
+=== B009 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Rapport
+
+Titre: Reconnaissance pérenne de la course Morat-Fribourg – rapport sur mandat 2024-GC-304
+
+=== B010 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Finances
+
+Titre: Autorité de protection de l’enfant et de l’adulte (APEA), Autorité de protection de l’enfant et de l’adulte (GP 4458500001). Crédit supplémentaire 2024 dépassement du budget global. Crédit supplémentaire 2024
+
+=== B011 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Rückbau Simmewehr: Handlungsspielräume des Kantons Bern
+
+=== B012 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Motion
+
+Titel: Der Kanton Wallis als Vorreiter bei den Studiendarlehen?
+Langtitel: Motion Mathieu Clerc, Les Vert.e.s, Mathieu Couturier, PLR/FDP, Aurélie Pont, PS, und Jérôme Desmeules, UDC: Der Kanton Wallis als Vorreiter bei den Studiendarlehen? 2025.09.408
+
+=== B013 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Séparation des activités de Groupe E
+
+=== B014 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Nouveau centre d’Avry : un projet d’importance pour Sarine-Ouest ! Qu’attend l’Etat ?
+
+=== B015 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Une assurance perte de gain pour les personnes au chômage est nécessaire
+Titre long: POS_2025.09.378_DEP_Final Une assurance perte de gain pour les personnes au chômage est nécessaire
+
+=== B016 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Quel avenir pour la géothermie dans le canton de Fribourg ?
+
+=== B017 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Loi
+
+Titre: Loi sur les écoles de musique (LEMu)
+
+=== B018 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Motion
+
+Titre: La crédibilité avant la symbolique
+Titre long: MO_2025.12.558_DEP_Final La crédibilité avant la symbolique
+
+=== B019 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Frage
+
+Titel: Weniger Verzug dank mehr KI
+Langtitel: Frage Le Centre, durch Delphine Michaud und Nathan Bender: Weniger Verzug dank mehr KI 2026.06.185
+
+=== B020 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Aufnahme von Buslinien für Tourismus und Freizeit in das kantonale Grundangebot ermöglichen
+
+=== B021 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Autre affaire
+
+Titre: Motions d`ordre de la Session d`hiver 2025
+
+=== B022 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Ist die ausserschulische Betreuung für Kinder mit besonderen Bedürfnissen ausgelegt?
+
+=== B023 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Informatikstrategie: mehr Mittel und griffige Massnahmen
+Langtitel: Postulat neo - Die sozialliberale Mitte, durch Marie-Claude Schöpfer-Pfaffen, Philipp Loretan, Marco Wenger und Thomas Matter: Informatikstrategie: mehr Mittel und griffige Massnahmen 2025.06.264
+
+=== B024 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Logiciel pour les teneurs de registres
+Titre long: Interpellation SVPO, par Daiana Squaratti, Barbara Anthamatten, Christian Gasser et Patric Zimmermann : Logiciel pour les teneurs de registres 2025.09.389
+
+=== B025 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titel: Änderung der Regionalisierung im Sozialhilfegesetz (SHG)
+
+=== B026 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titel: Auslagerung von Aufgaben des Staates Wallis: tatsächliche Kosten, fehlende VZE usw.
+Langtitel: Interpellation PS, durch Anne-Laure Secco und Clément Borgeaud: Auslagerung von Aufgaben des Staates Wallis: tatsächliche Kosten, fehlende VZE usw. 2025.11.502
+
+=== B027 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Gesetz
+
+Titel: Gesetz zur Änderung des Gesetzes über die Haftung der Gemeinwesen und ihrer Amtsträger - direkte Folge von der Motion 2025-GC-210
+
+=== B028 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Mindestdistanz von Windrädern zu bewohntem Gebiet
+
+=== B029 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Finanzhaushalt
+
+Titel: Geschäftsbericht 2024 mit Jahresrechnung
+
+=== B030 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: [Financement de la transition énergétique des PPE : Fribourg peut-il faire aussi bien que le Valais ?]
+
+=== B031 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Berücksichtigung des Einkommens des Konkubinatspartners für die Bestimmung des Anspruchs auf individuelle Prämienverbilligungen
+Langtitel: Postulat Le Centre, durch Christelle Farquet: Berücksichtigung des Einkommens des Konkubinatspartners für die Bestimmung des Anspruchs auf individuelle Prämienverbilligungen 2025.02.008
+
+=== B032 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Pisciculture d’Estavayer-le-Lac : Etat et suivi de l’exploitation et situation des alevins de brochets ?
+
+=== B033 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Kredit
+
+Titel: Subventionierung der Sportanlagen im Zielgelände von Les Barzettes in Crans-Montana
+Langtitel: Eintretensdebatte: Beschluss über die Subventionierung der Sportanlagen im Zielgelände von Les Barzettes in Crans-Montana
+
+=== B034 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Retards dans le traitement de l’impôt à la source et des RHT : quelles mesures immédiates pour préserver la liquidité des entreprises ?
+
+=== B035 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Welche Auswirkungen hat die Abschaffung der Französischprüfung und des Allgemeinwissenstests, um zur Polizeischule zugelassen zu werden, auf die Zweisprachigkeit und die Sicherheit im Kanton Bern?
+
+=== B036 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: -
+
+Titre: Loi sur l'introduction du Code civil suisse (Li CC). Modification
+
+=== B037 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Prämienverbilligungen jetzt ausbauen!
+
+=== B038 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Wildruhezonen im Kanton Freiburg - Auswirkungen für den Schweizerischen Modellflugverband
+
+=== B039 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Modification de l’article 16 de la loi sur la mobilité entrée en vigueur en janvier 2023
+
+=== B040 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Perturbations majeures du trafic dans le Simmental en raison de l’assainissement de l’A6 : le Conseil-exécutif doit intervenir
+Titre long: Le Conseil-exécutif doit intervenir : le trafic dans le Simmental est insoutenable en raison de l’assainissement de l’A6
+
+=== B041 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Frage
+
+Titel: Gleichbehandlung der Betreiber
+Langtitel: Frage neo - Die sozialliberale Mitte, durch Gerhard Kiechler, Melanie Burgener, Marco Wenger und Philipp Loretan: Gleichbehandlung der Betreiber 2026.06.192
+
+=== B042 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Gesetz
+
+Titel: Gesetz über die Walliser Schule
+Langtitel: Eintretensdebatte: Gesetz über die Walliser Schule (erste Lesung)
+
+=== B043 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Entscheid des Bundesgerichts umsetzen!
+
+=== B044 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Bericht Dritte
+
+Titel: Tätigkeitsbericht 2024 der Gerichtsbehörden und der Staatsanwaltschaft des Kantons Bern
+
+=== B045 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Postulat
+
+Titre: Redéfinir la valeur seuil applicable aux installations photovoltaïques dans la fortune privée
+
+=== B046 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Innovation, regionale Wertschöpfung und Public Value: Welche Rolle kann der Kanton Bern übernehmen?
+
+=== B047 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Postulat
+
+Titel: Nutzung digitaler Geräte in Gemeinschaftsräumen an den Schulen: Wirkungsanalyse und Vorschläge zur Stärkung des sozialen Zusammenhalts
+
+=== B048 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: [Die Zukunft der Walliser Suonen: Wo steht der Kanton?]
+Titre long: INT_2026.09.387_DEP_Final
+
+=== B049 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Rapport CE
+
+Titre: Mise en œuvre des objectifs stratégiques et de la vision 2030 (Programme gouvernemental de législature 2023 à 2026). Rapport 2024
+
+=== B050 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Rendre possible l’aide militaire en cas de catastrophe : il y a un vide juridique à combler
+
+=== B051 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Investir suffisamment de ressources dans la protection et la promotion de la nature
+
+=== B052 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Schwammstadt, Entsiegelung und Hitzeminderung: Wo steht der Kanton Bern und wie unterstützt er die Gemeinden konkret?
+
+=== B053 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Nouveau financement de l'HFR : une société immobilière pour mieux maîtriser les risques financiers ?
+
+=== B054 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Traité de soumission à l’UE : immigration de masse à l’aide sociale ?
+
+=== B055 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Financement préventif pour les matériaux contaminés par des PFAS (« taxe anticipée d’élimination »)
+
+=== B056 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: -
+
+Titel: Schluss mit illegalem Camping
+Langtitel: 2025.11.482 Schluss mit illegalem Camping
+
+=== B057 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Die lokale Wirtschaft durch Barzahlungen unterstützen
+Langtitel: POS_2026.03.065_EIN_Final Die lokale Wirtschaft durch Barzahlungen unterstützen
+
+=== B058 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Comment concilier une demande croissante et des ressources limitées?
+Titre long: INT_2025.12.556_DEP_Final CDTEA: comment concilier une demande croissante et des ressources limitées?
+
+=== B059 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Loi
+
+Titre: Loi sur le Grand Conseil (LGC) (Révision totale)
+
+=== B060 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Bericht
+
+Titel: Warum werden die Medienmitteilungen des Staatsrates nicht direkt an die Bevölkerung verteilt ? (Bericht zum Postulat 2024-GC-1) - direkte Folge
+
+=== B061 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Pour une réforme des exigences scolaires et préscolaires répondant aux besoins des familles, en tenant compte des écoles privées
+
+=== B062 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Implication accrue du Valais dans la stratégie nationale
+Titre long: INT_2025.11.465_DEP_Final Lutte contre la criminalité itinérante: Implication accrue du Valais dans la stratégie nationale
+
+=== B063 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Auftrag
+
+Titel: Den Aufwand des Staats verringern und die Kaufkraft erhalten
+
+=== B064 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Vernehmlassung
+
+Titel: Konsultation zum Gesetz über die Verwaltungs- und Betriebsgesellschaft des Flughafens Sitten
+
+=== B065 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Forêts privées : déclarer des terrains « refuges sans chasse » à la demande des propriétaires pour des raisons éthiques
+
+=== B066 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Rapport d'activité
+
+Titre: Conseil de la magistrature (2025)
+
+=== B067 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titel: [Modification de la loi sur les eaux]
+
+=== B068 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Service de pédiatrie de l'HFR : point de situation
+
+=== B069 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Saturation récurrente des urgences de l’hôpital fribourgeois. Quid ?
+
+=== B070 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Égalité de traitement en faveur des professeurs de musique
+Titre long: POS_2025.09.390_DEP_Final Égalité de traitement en faveur des professeurs de musique
+
+=== B071 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Ausländerrechtliche Administrativhaft im Kanton Bern
+
+=== B072 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Update für das Zuteilungssystem der Garantiesitze im Wahlkreis Biel-Seeland – keine Rechte ohne Pflichten
+
+=== B073 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Affaires gouvernementales
+
+Titre: Décision concernant l’octroi d’une subvention cantonale à l’Association Saint-Raphaël pour la démolition et la reconstruction du Foyer pour Jeunes Travailleurs (FJT) à Sion
+Titre long: Entrée en matière: Décision concernant l’octroi d’une subvention cantonale à l’Association Saint-Raphaël pour la démolition et la reconstruction du Foyer pour Jeunes Travailleurs (FJT) à Sion
+
+=== B074 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titel: [Pour des impôts sur les entreprises favorisant la protection du climat]
+
+=== B075 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Schriftliche Anfrage
+
+Titel: Umnutzung von Parzellen, auf denen die Reben gerodet wurden, als Fruchtfolgeflächen
+Langtitel: SA_2026.09.286_EIN_Final Umnutzung von Parzellen, auf denen die Reben gerodet wurden, als Fruchtfolgeflächen
+
+=== B076 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Divers
+
+Titre: Présentation du nouveau site Parlinfo
+
+=== B077 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Bericht GR
+
+Titel: Bericht der Justizkommission zum Geschäftsbericht 2024 der Gerichtsbehörden und der Staatsanwaltschaft und zum Aufsichtsbesuch 2025
+
+=== B078 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Kreditgeschäft RR
+
+Titel: Programm Bildung und Kultur, Finanzierung der Massnahmen für eine Versuchsphase in den Jahren 2011 bis 2014 aus Staatsmitteln (ERZ) und aus dem Lotteriefonds (POM); mehrjähriger Verpflichtungskredit
+
+=== B079 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Affaire de crédit GC
+
+Titre: Administration des finances (AF) : autorisation de dépenses pour les licences SAP 2026. Crédit d’objet 2026
+
+=== B080 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Ambulante Physiotherapie: Welche Vision verfolgt der Staatsrat angesichts der aktuellen Tariflage?
+
+=== B081 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Tätigkeitsbericht
+
+Titel: Kommission für auswärtige Angelegenheiten des Grossen Rates: Tätigkeitsbericht 2025
+
+=== B082 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: [Une formation pour les curateurs et curatrices volontaires ?]
+
+=== B083 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Lärmradar-Tests auf Walliser Strassen
+Langtitel: POS_2025.12.570_EIN_Final Lärmradar-Tests auf Walliser Strassen
+
+=== B084 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Gesetz
+
+Titel: Dekret zur Änderung des Ausführungsgesetzes zum Bundesgesetz über die Raumplanung
+Langtitel: Eintretensdebatte: Dekret zur Änderung des Ausführungsgesetzes zum Bundesgesetz über die Raumplanung (erste Lesung)
+
+=== B085 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Sécurité des personnes âgées et des résident-e-s dans les EMS : comment s’effectuent la gestion et les contrôles autour de la polymédication ?
+
+=== B086 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Quels enseignements ?
+Titre long: INT_2025.12.548_DEP_Final Droit du travail et apprentissage : quels enseignements ?
+
+=== B087 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: Centre d’urgences des médecins généralistes du Haut-Valais (HANOW)
+Titre long: Question neo - Die sozialliberale Mitte, par Martin Kalbermatter : Centre d’urgences des médecins généralistes du Haut-Valais (HANOW) 2026.03.032
+
+=== B088 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Bearbeitungszeit von Bodenrechtsanfragen bei den Regierungsstatthalterämtern
+
+=== B089 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Individualbesteuerung: Welche Auswirkungen für den Kanton, die Gemeinden und die Steuerpflichtigen, besonders die Familien?
+
+=== B090 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Bericht
+
+Titel: Bericht der Staatsanwaltschaft für das Jahr 2024
+
+=== B091 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Garantir des conditions-cadres acceptables pour les communes
+Titre long: INT_2025.12.601_DEP_Final Révision de la LPIEN: garantir des conditions-cadres acceptables pour les communes
+
+=== B092 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Virage ambulatoire : la limite tarifaire prévue met-elle en danger un modèle de santé qui a fait ses preuves ?
+
+=== B093 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Dekret
+
+Titel: Standesinitiative zur Vereinfachung der Mitteilungspflicht für Nährstoffe und Pflanzenschutzmittel (digiFLUX)
+
+=== B094 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Loi
+
+Titre: Loi sur l'Autorité de surveillance des institutions de prévoyance et des fondations (LABSPF)
+
+=== B095 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Postulat
+
+Titel: Bekämpfung der Schwarzarbeit: Stand der Dinge
+
+=== B096 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Formation des médiatrices et des médiateurs
+
+=== B097 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Resolution
+
+Titel: Abkommen mit der EU
+Langtitel: Resolution UDC, durch Damien Raboud: Abkommen mit der EU 2025.06.290
+
+=== B098 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: La BCF au service de la population et des entreprises du canton de Fribourg ?
+
+=== B099 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Bericht
+
+Titel: Für bessere öffentliche Verkehrsverbindungen zwischen dem Saane- und dem Broyebezirk (Bericht zum Postulat 2020-GC-211]
+
+=== B100 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titel: Inverkehrsetzung von ausländischen Fahrzeugen: mehr Kontrollen und Sanktionen
+Langtitel: INT_2025.12.565_EIN_Final Inverkehrsetzung von ausländischen Fahrzeugen: mehr Kontrollen und Sanktionen
+
+=== B101 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Protection contre l’usurpation d’identité en lien avec le permis de séjour et les prestations publiques
+
+=== B102 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Schriftliche Anfrage
+
+Titel: Zivildienstleistende an den Walliser Schulen
+Langtitel: SA_2025.12.596_Zivildienstleistende an den Walliser Schulen
+
+=== B103 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titel: Strategie des Spital Wallis für das Spitalzentrum des französischsprachigen Wallis: Quo vadis?
+Langtitel: Interpellation UDC, durch Bruno Perroud: Strategie des Spital Wallis für das Spitalzentrum des französischsprachigen Wallis: Quo vadis? 2025.11.439
+
+=== B104 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Affaire de crédit GC
+
+Titre: Subvention cantonale destinée au financement des centres d’intervention spéciaux de sapeurs-pompiers pour la lutte contre les accidents causés par les hydrocarbures et les accidents dits ABC. Crédit d’objet 2027–2030
+
+=== B105 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Frage
+
+Titel: Audit der Stiftung Mitmänsch Oberwallis
+Langtitel: Frage PS, durch Rahel Zimmermann: Audit der Stiftung Mitmänsch Oberwallis 2026.06.179
+
+=== B106 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Resolution
+
+Titel: Für eine angemessene und ökologisch verantwortungsvolle Sanierung illegaler, nicht kontaminierter Erdaufschüttungen
+
+=== B107 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titel: Anreize zur Senkung der grauen Energie im Bauwesen
+
+=== B108 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Dringliche Interpellation
+
+Titel: Spital Wallis: Teure Pflästerlipolitik?
+Langtitel: Dringliche Interpellation PLR/FDP, durch Mathieu Couturier und Sonia Tauss-Cornut: Spital Wallis: Teure Pflästerlipolitik? 2025.05.122
+
+=== B109 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titel: Besserer Schutz für Kinder in der Nothilfe, um ihr Recht auf Bildung sicherzustellen
+Langtitel: Interpellation Paola Riva Gapany, PS, und Aurélie Pont, PS: Besserer Schutz für Kinder in der Nothilfe, um ihr Recht auf Bildung sicherzustellen 2025.02.030
+
+=== B110 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Dringliches Postulat
+
+Titel: Finanzierung der SDA durch den Kanton Wallis stoppen. Wahrung von Pressefreiheit und Unabhängigkeit.
+Langtitel: Dringliches Postulat Die Mitte Oberwallis, durch Rahel Pirovino-Indermitte, Aron Pfammatter, Christian Rieder und Bernd Kalbermatten: Finanzierung der SDA durch den Kanton Wallis stoppen. Wahrung von Pressefreiheit und Unabhängigkeit. 2025.02.044
+
+=== B111 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Sicherung der deutschsprachigen Berufsbildung im Kanton Freiburg
+
+=== B112 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Pour une régulation renforcée du sanglier dans le canton de Fribourg afin de prévenir les dégâts agricoles et les risques sanitaires liés à la peste porcine africaine
+
+=== B113 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Soutien à l'entretien du parc immobilier valaisan et aux entreprises formatrices
+Titre long: Postulat PLR/FDP, par Christian Florey et Stève Delasoie : Soutien à l'entretien du parc immobilier valaisan et aux entreprises formatrices 2025.09.314
+
+=== B114 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Rapport CE
+
+Titre: Stratégie Administration numérique et TIC du canton de Berne 2026–2030
+
+=== B115 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: Combien de procédures de demande d'accès LIPDA en cours?
+Titre long: Question UDC, par François Quennoz : Combien de procédures de demande d'accès LIPDA en cours? 2025.12.550
+
+=== B116 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Schriftliche Anfrage
+
+Titel: Dépistage du cancer du sein: Quel âge de prise en charge en Valais
+Langtitel: QE_2026.05.148_Dépistage du cancer du sein: Quel âge de prise en charge en Valais
+
+=== B117 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: Le transport de marchandises sur la ligne Sud-Léman, est-il encore d'actualité ?
+Titre long: HQ_2026.09.270_DEP_Final Le transport de marchandises sur la ligne Sud-Léman, est-il encore d'actualité ?
+
+=== B118 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Wie steht es um die Arbeiten zur Motion 029-2022?
+
+=== B119 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Aufenthaltstaxe: Warum benachteiligt der Staatsrat die Alphütten? Will der Freiburger Tourismusverband um jeden Preis Geld einnehmen?
+
+=== B120 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Participation cantonale d’au moins 30 % au financement du travail social en milieu scolaire
+
+=== B121 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Travaux non conformes, circonstances particulières.
+
+=== B122 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Gesetz
+
+Titel: Steuergesetz (StG) (Änderung)
+
+=== B123 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Résidences secondaires: quel avenir fiscal après la fin de la valeur locative?
+Titre long: Interpellation urgente Le Centre, par Baptiste Darbellay, Maxime Moix et Claire-Lise Bonvin : Résidences secondaires: quel avenir fiscal après la fin de la valeur locative? 2025.11.413
+
+=== B124 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Übrige Geschäfte
+
+Titel: Sportfonds. Genehmigung der Jahresrechnung 2024
+
+=== B125 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Restreignons l’essor des appartements business
+
+=== B126 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Mieux vaut prévenir que guérir
+Titre long: POS_2025.09.384_DEP_Final Mieux vaut prévenir que guérir
+
+=== B127 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Pour une taxe sur les locaux commerciaux vides
+
+=== B128 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Pour un soutien cantonal à l'installation de systèmes de récupération des eaux de pluie
+Titre long: POS_2025.11.481_DEP_Final Pour un soutien cantonal à l'installation de systèmes de récupération des eaux de pluie
+
+=== B129 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Der Regierungsrat soll sich beim Bund für die raschere Ausschaffung abgewiesener Asylbewerber einsetzen
+
+=== B130 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Für die Rehabilitierung der Bauernkrieger und die Einrichtung eines Gedenkortes in Bern (Richtlinienmotion)
+
+=== B131 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Tätigkeitsbericht
+
+Titel: Freiburger Netzwerk für psychische Gesundheit (FNPG) : Jahresbericht 2025
+
+=== B132 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Motion
+
+Titre: Décret sur la reconstruction de Blatten
+Titre long: Motion urgente Martin Kalbermatter, neo - Die sozialliberale Mitte, Nathan Bender, Le Centre, Christian Gasser, SVPO, et Emmanuel Revaz, Les Vert.e.s : Décret sur la reconstruction de Blatten 2025.06.217
+
+=== B133 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Affaires gouvernementales
+
+Titre: Décision concernant l'approbation de diverses conventions-programmes entre la Confédération et le canton du Valais
+Titre long: Entrée en matière et lecture: Décision concernant l'approbation de diverses conventions-programmes entre la Confédération et le canton du Valais
+
+=== B134 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: Attaques des loups dans les alpages
+Titre long: Question Die Mitte Oberwallis, par Karl Kummer : Attaques des loups dans les alpages 2025.06.239
+
+=== B135 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: Des toilettes mixtes dans les écoles primaires, une fausse bonne idée?
+Titre long: Question Le Centre, par David Mariétan : Des toilettes mixtes dans les écoles primaires, une fausse bonne idée? 2025.11.438
+
+=== B136 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Supprimer les incohérences entre la loi sur l'énergie et l'ordonnance sur l'énergie: article 7 OcEne
+Titre long: Postulat SVPO, par Andreas Aquilino et Christian Gasser : Supprimer les incohérences entre la loi sur l'énergie et l'ordonnance sur l'énergie: article 7 OcEne 2025.05.187
+
+=== B137 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: -
+
+Titel: Sicherheitsaspekte im Zusammenhang mit der Interaktion zwischen Hunden, Menschen und anderen Tieren
+Langtitel: 2026.05.154 Sicherheitsaspekte im Zusammenhang mit der Interaktion zwischen Hunden, Menschen und anderen Tieren
+
+=== B138 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Couper dans le sport alors que la Suisse vibre pour l’Euro Féminin 2025 – quelle réaction du Conseil d’État ?
+
+=== B139 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Affaires gouvernementales
+
+Titre: Modification de la loi fixant le traitement des employés de l'Etat du Valais (première lecture)
+Titre long: Entrée en matière: Modification de la loi fixant le traitement des employés de l'Etat du Valais (première lecture)
+
+=== B140 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Kreditgeschäft GR
+
+Titel: Bern, Brünnenstrasse 66, Archäologischer Dienst, Erweiterung Behälterlager und Umbau Untergeschoss, Verpflichtungskredit für die Ausführung
+
+=== B141 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Zukunft der Handelsmittelschule Neuenstadt
+
+=== B142 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Affaire de crédit GC
+
+Titre: Office de l’agriculture et de la nature (OAN) ; lutte contre le frelon asiatique ; crédit d’objet 2027-2030
+
+=== B143 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Bericht Dritte
+
+Titel: Bericht 2025 der Datenschutzaufsichtsstelle des Kantons Bern
+
+=== B144 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Frage
+
+Titel: Auswirkungen der Umsetzung der Individualbesteuerung im Kanton Wallis
+Langtitel: Frage Die Mitte Oberwallis, durch Aron Pfammatter und Rahel Pirovino-Indermitte: Auswirkungen der Umsetzung der Individualbesteuerung im Kanton Wallis 2026.09.291
+
+=== B145 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Rapport d'activité
+
+Titre: Commission interparlementaire de contrôle de la Haute école spécialisée de Suisse occidentale (CIP HES-SO) (2023)
+
+=== B146 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Unrechtmässig gewährte Ergänzungsleistungen an ausländische Personen?
+
+=== B147 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Rapport CE
+
+Titre: Stratégie Eau 2040 du canton de Berne
+
+=== B148 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Was unternimmt der Regierungsrat, damit gestützt auf die Kantonale Sportförderung rasch auch Beiträge an den Bau von Sportanlagen gesprochen werden können, die in einem regionalen Richtplan enthalten sind?
+
+=== B149 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titel: Administrativhaft: Wie werden Inhaftierte unterstützt?
+Langtitel: Interpellation Aude Rapin, PS: Administrativhaft: Wie werden Inhaftierte unterstützt? 2025.05.154
+
+=== B150 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Une crèche est un service public
+
+=== B151 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Révision totale de la loi sur la scolarité obligatoire
+
+=== B152 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Wie erreicht der Kanton Bern die Sanierungsziele im Falle der Abschaffung des Eigenmietwerts und Wegfalls des Gebäudeprogramms?
+
+=== B153 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Macht Groupe E Verlustgeschäfte?
+
+=== B154 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Droits de douane punitifs américains: le Conseil d'État doit agir
+Titre long: Interpellation urgente Joachim Felix Correia, PS, et Blaise Carron, PS : Droits de douane punitifs américains: le Conseil d'État doit agir 2025.09.329
+
+=== B155 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Modernisierung touristischer Infrastrukturen erleichtern – Verfahren vereinfachen (Tourismusstrategie)
+
+=== B156 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Finanzhaushalt
+
+Titel: Tiefbauamt; Produktgruppe "Infrastrukturen". Nachkredit 2024
+
+=== B157 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Conséquences de l’abandon de la valeur locative pour les finances du canton de Berne et celles de ses communes
+
+=== B158 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Fit für die Steuererklärung
+Langtitel: Postulat Die Mitte Oberwallis, durch Matthias Hildbrand, Claudia Noti und Markus Ammann: Fit für die Steuererklärung 2025.06.251
+
+=== B159 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Question
+
+Titre: [Steuerdeckel bei der Vermögenssteuer: Verteilungswirkung und fiskalische Auswirkungen]
+Titre long: QE_2026.06.237_DEP_Final
+
+=== B160 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Après la décision relative à SIRIUS3, il faut assumer les responsabilités et ne pas abandonner les communes à leur sort
+
+=== B161 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titel: Für die Zulassung von Körperkameras bei der Kantonspolizei
+
+=== B162 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Tätigkeitsbericht
+
+Titel: KGV Kantonale Gebäudeversicherung - Jahresbericht 2024
+
+=== B163 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Resolution
+
+Titel: Für eine zweite Nationalsprache ab der Primarschule in der ganzen Schweiz
+
+=== B164 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Verbot linksextremistischer und gewalttätiger Gruppierungen wie «Antifa» und «Schwarzer Block»
+
+=== B165 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Kreditgeschäft RR
+
+Titel: Grossratsbeschluss betreffend Äufnung des Fonds zur Deckung von Investitionsspitzen mit CHF 100 Millionen zulasten der Rechnung 2009.
+
+=== B166 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Chancengleichheit sowie bessere soziale und politische Teilhabe für gehörlose und hörbehinderte Menschen (Richtlinienmotion)
+
+=== B167 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Soirée « Résistance » organisée par Fri-Son le 22 février 2025
+
+=== B168 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: L’IA comme facteur de promotion économique : le canton de Berne exploite-t-il son potentiel ?
+
+=== B169 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Répercussions financières du paquet d’accords Suisse-UE pour le canton de Berne
+
+=== B170 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: [Problématique des pollutions des cours d’eau, processus d’alerte et sanctions, qu’en est-il ?]
+
+=== B171 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: D’où vient le bois utilisé pour la construction du Campus Biel/Bienne ?
+
+=== B172 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Finances
+
+Titre: Office des mineurs (OM), Pilotage et surveillance de la protection de l’enfant (GP 4456510000); dépassement du budget global. Crédit supplémentaire 2024
+
+=== B173 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: Ordonnances du DETEC et conséquences sur les parcs solaires alpins valaisans
+Titre long: Question Les Vert.e.s, par Jérémy Savioz : Ordonnances du DETEC et conséquences sur les parcs solaires alpins valaisans 2025.06.223
+
+=== B174 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Accès libre et intégral, sans aucune restriction, aux dossiers de demandes de permis de construire durant le délai de mise à l’enquête publique ?
+
+=== B175 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Menschen in bernischen Kollektivunterkünften vor Hitze schützen
+
+=== B176 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Les informations circulent-elles efficacement et sont-elles à jour ?
+Titre long: INT_2026.09.313_DEP_Final Registre des armes à feux : les informations circulent-elles efficacement et sont-elles à jour ?
+
+=== B177 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Base légale cantonale relative aux déductions fiscales pour la restauration de monuments historiques (art. 9 al. 3 nLHID)Dispositions transitoires concernant les avantages fiscaux pour les travaux d’économie d’énergie et de protection de l’environnement (art. 78h al. 2 nLHID)
+
+=== B178 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Dringliche Interpellation
+
+Titel: Campingplatz Bella Tola: die Spitze des Eisbergs
+Langtitel: Dringliche Interpellation Les Vert.e.s, durch Jérémy Savioz: Campingplatz Bella Tola: die Spitze des Eisbergs 2026.05.125
+
+=== B179 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Comprendre les facteurs de réussite régionaux
+Titre long: POS_2026.06.246_DEP_Final Marché du travail valaisan : comprendre les facteurs de réussite régionaux
+
+=== B180 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: Pour un réseau mobile résistant en cas de crise
+Titre long: Postulat urgent SVPO, par Romano Amacker, Daniela Pollinger, Barbara Anthamatten et Renato Karlen : Pour un réseau mobile résistant en cas de crise 2025.05.116
+
+=== B181 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Motion
+
+Titre: Notification d’actes le week-end et les jours fériés par courrier A Plus : une motion pour moderniser la procédure administrative fribourgeoise et les autres lois cantonales de procédure
+
+=== B182 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Gesetz
+
+Titel: Änderung des Jugendgesetzes
+Langtitel: Eintretensdebatte: Änderung des Jugendgesetzes (erste Lesung)
+
+=== B183 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Gesetz
+
+Titel: Gesetz über den Steuerfuss der direkten Kantonssteuern für die Steuerperiode 2027
+
+=== B184 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Überprüfung der Zusammenarbeit zwischen Kantons- und Gemeindepolizei
+Langtitel: POS_2025.12.599_EIN_Final Überprüfung der Zusammenarbeit zwischen Kantons- und Gemeindepolizei
+
+=== B185 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: La Caisse de prévoyance de l’Etat de Fribourg veut-elle vider les quartiers populaires de leurs habitant-e-s ?
+
+=== B186 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Die Digitalisierung der Verwaltung muss geordnet angegangen werden!
+Langtitel: Postulat Die Mitte Oberwallis, durch Aurel Schmid, Aron Pfammatter, Andrea Amherd-Burgener und Rahel Pirovino-Indermitte: Die Digitalisierung der Verwaltung muss geordnet angegangen werden! 2025.06.253
+
+=== B187 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titel: Horizon Europe — Chancen für Hochschulen und Unternehmen im Kanton Bern
+
+=== B188 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Interpellation
+
+Titre: Comment le canton de Berne atténue-t-il les coupes dans le budget Jeunesse et Sport ?
+
+=== B189 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titel: Informations- und Datenaustausch mit fortführenden Schulen (besser) gewährleisten (Richtlinienmotion)
+
+=== B190 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Décret
+
+Titre: Crédit d'étude en vue de la réalisation du tunnel de Chrummmatt à Flamatt
+
+=== B191 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Il n'existe toujours pas de cadre juridique pragmatique régissant l'exploitation du sous-sol. Quelle sera la suite ?
+
+=== B192 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Quel soutien au développement de la recharge bidirectionnelle ?
+
+=== B193 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Neue Pflästerung im Burgquartier – Auswirkungen auf die Zugänglichkeit
+
+=== B194 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Motion
+
+Titre: Réduire la densité réglementaire dans le canton du Valais
+Titre long: Motion Marie-Claude Schöpfer-Pfaffen, neo - Die sozialliberale Mitte, Urs Juon, Die Mitte Oberwallis, et Martin Kalbermatter, neo - Die sozialliberale Mitte : Réduire la densité réglementaire dans le canton du Valais 2025.02.081
+
+=== B195 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Affaires gouvernementales
+
+Titre: Loi sur la corporation de droit public pour la promotion du Valais "Valais/Wallis Promotion" (première lecture)
+Titre long: Entrée en matière: Loi sur la corporation de droit public pour la promotion du Valais "Valais/Wallis Promotion" (première lecture)
+
+=== B196 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Divers
+
+Titre: Prolongation du mandat de la Présidente ad hoc Chantal Ding
+
+=== B197 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Anfrage
+
+Titel: Wie wird sich das Sparprogramm des Bundes auf den Kanton Freiburg auswirken?
+
+=== B198 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Postulat
+
+Titel: Landwirtschaftliches Institut Grangeneuve/Amt für Landwirtschaft: Verfahrensabläufe klären, finanzielle Blockaden vermeiden und auf die Unzufriedenheit der Landwirte reagieren
+
+=== B199 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Postulat
+
+Titre: Pour un usage responsable et éthique de l’IA au sein de l’Etat : création d’un bureau cantonal
+
+=== B200 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Heure des questions
+
+Titre: HQ_2026.06.176_Une immigration incontrôlée engendre des coûts qui se chiffrent en millions
+
+=== B201 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Loi
+
+Titre: Loi modifiant les règles de procédure administrative relatives à la notification d'actes
+
+=== B202 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Ecole primaire de Bellegarde – Maintien du cercle scolaire germanophone
+
+=== B203 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Vereinfachung bei der Wohnbauhilfe
+Langtitel: Postulat SVPO, durch Martin Giachino, Christian Gasser, Romano Amacker und Diego Schmid: Vereinfachung bei der Wohnbauhilfe 2025.06.284
+
+=== B204 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Mandat
+
+Titre: Groupe E : Protégeons les intérêts de l'Etat et des citoyens de ce canton
+
+=== B205 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Motion
+
+Titre: Financement des prestations des sages-femmes non prises en charge
+
+=== B206 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titre: [Transportkosten für Berufsorientierung in Berg- und Randgemeinden]
+Titre long: POS_2026.09.330_DEP_Final
+
+=== B207 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Interpellation
+
+Titre: Du triazole dans le Léman: pas de risques pour la santé, vraiment?
+Titre long: Interpellation urgente Les Vert.e.s, par Emmanuel Revaz et Carole Morisod : Du triazole dans le Léman: pas de risques pour la santé, vraiment? 2025.11.427
+
+=== B208 ===
+Parlament: Grosser Rat des Kantons Bern (Kanton)
+Typ: Übrige Geschäfte
+
+Titel: Lotteriefonds. Genehmigung der Jahresrechnung 2024
+
+=== B209 ===
+Parlament: Grosser Rat des Kantons Freiburg (Kanton)
+Typ: Question
+
+Titre: Compétences linguistiques requises pour l’entrée à l’école obligatoire en 1H : qu’en est-il ?
+
+=== B210 ===
+Parlament: Grosser Rat des Kantons Wallis (Kanton)
+Typ: Postulat
+
+Titel: Einführung eines eintägigen Kurses für Richterinnen und Richter bei Amtsantritt
+Langtitel: Postulat Die Mitte Oberwallis, durch Charlotte Salzmann-Briand, Bernd Kalbermatten und Marceline Gemmet: Einführung eines eintägigen Kurses für Richterinnen und Richter bei Amtsantritt 2025.02.028

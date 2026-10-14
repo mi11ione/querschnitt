@@ -1,0 +1,7086 @@
+{
+ "generated_utc": "2026-10-13T21:31:29Z",
+ "small_threshold": 20,
+ "S9_check": {
+  "n": 1357,
+  "D1_top1_k": 955,
+  "s9_results_json_top1_k": 955,
+  "match": true,
+  "kw_top1_k": 260
+ },
+ "S9": {
+  "party": {
+   "D1_top1": {
+    "overall": {
+     "n": 1357,
+     "k": 955,
+     "p": 0.7038,
+     "ci": [
+      0.6789,
+      0.7274
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 137,
+      "k": 91,
+      "p": 0.6642,
+      "ci": [
+       0.5816,
+       0.7379
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 174,
+      "k": 122,
+      "p": 0.7011,
+      "ci": [
+       0.6294,
+       0.7642
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 146,
+      "k": 98,
+      "p": 0.6712,
+      "ci": [
+       0.5915,
+       0.7422
+      ],
+      "small": false
+     },
+     {
+      "cell": "Mitte",
+      "n": 125,
+      "k": 79,
+      "p": 0.632,
+      "ci": [
+       0.5447,
+       0.7114
+      ],
+      "small": false
+     },
+     {
+      "cell": "Grüne",
+      "n": 95,
+      "k": 55,
+      "p": 0.5789,
+      "ci": [
+       0.4785,
+       0.6733
+      ],
+      "small": false
+     },
+     {
+      "cell": "GLP",
+      "n": 45,
+      "k": 29,
+      "p": 0.6444,
+      "ci": [
+       0.4984,
+       0.7678
+      ],
+      "small": false
+     },
+     {
+      "cell": "other party",
+      "n": 32,
+      "k": 22,
+      "p": 0.6875,
+      "ci": [
+       0.5143,
+       0.8205
+      ],
+      "small": false
+     },
+     {
+      "cell": "committee",
+      "n": 222,
+      "k": 165,
+      "p": 0.7432,
+      "ci": [
+       0.682,
+       0.7962
+      ],
+      "small": false
+     },
+     {
+      "cell": "government",
+      "n": 274,
+      "k": 217,
+      "p": 0.792,
+      "ci": [
+       0.74,
+       0.8358
+      ],
+      "small": false
+     },
+     {
+      "cell": "canton",
+      "n": 74,
+      "k": 54,
+      "p": 0.7297,
+      "ci": [
+       0.6191,
+       0.8177
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 33,
+      "k": 23,
+      "p": 0.697,
+      "ci": [
+       0.5266,
+       0.8262
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 4.611,
+     "df": 5,
+     "p_perm": 0.4655,
+     "p_chi2": 0.4652,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SP",
+     "lo": "Grüne",
+     "diff": 0.1222,
+     "ci": [
+      -0.007,
+      0.2419
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "D1_top3": {
+    "overall": {
+     "n": 1357,
+     "k": 1144,
+     "p": 0.843,
+     "ci": [
+      0.8227,
+      0.8614
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 137,
+      "k": 110,
+      "p": 0.8029,
+      "ci": [
+       0.7284,
+       0.8609
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 174,
+      "k": 148,
+      "p": 0.8506,
+      "ci": [
+       0.7901,
+       0.8959
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 146,
+      "k": 125,
+      "p": 0.8562,
+      "ci": [
+       0.7901,
+       0.904
+      ],
+      "small": false
+     },
+     {
+      "cell": "Mitte",
+      "n": 125,
+      "k": 99,
+      "p": 0.792,
+      "ci": [
+       0.7127,
+       0.8539
+      ],
+      "small": false
+     },
+     {
+      "cell": "Grüne",
+      "n": 95,
+      "k": 68,
+      "p": 0.7158,
+      "ci": [
+       0.6181,
+       0.7967
+      ],
+      "small": false
+     },
+     {
+      "cell": "GLP",
+      "n": 45,
+      "k": 39,
+      "p": 0.8667,
+      "ci": [
+       0.7382,
+       0.9374
+      ],
+      "small": false
+     },
+     {
+      "cell": "other party",
+      "n": 32,
+      "k": 24,
+      "p": 0.75,
+      "ci": [
+       0.5789,
+       0.8675
+      ],
+      "small": false
+     },
+     {
+      "cell": "committee",
+      "n": 222,
+      "k": 199,
+      "p": 0.8964,
+      "ci": [
+       0.8493,
+       0.93
+      ],
+      "small": false
+     },
+     {
+      "cell": "government",
+      "n": 274,
+      "k": 242,
+      "p": 0.8832,
+      "ci": [
+       0.8398,
+       0.916
+      ],
+      "small": false
+     },
+     {
+      "cell": "canton",
+      "n": 74,
+      "k": 62,
+      "p": 0.8378,
+      "ci": [
+       0.7376,
+       0.9047
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 33,
+      "k": 28,
+      "p": 0.8485,
+      "ci": [
+       0.6908,
+       0.9335
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 10.703,
+     "df": 5,
+     "p_perm": 0.0596,
+     "p_chi2": 0.0576,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "GLP",
+     "lo": "Grüne",
+     "diff": 0.1509,
+     "ci": [
+      0.0105,
+      0.2807
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "keyword_top1": {
+    "overall": {
+     "n": 1357,
+     "k": 260,
+     "p": 0.1916,
+     "ci": [
+      0.1715,
+      0.2134
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 137,
+      "k": 34,
+      "p": 0.2482,
+      "ci": [
+       0.1834,
+       0.3267
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 174,
+      "k": 30,
+      "p": 0.1724,
+      "ci": [
+       0.1235,
+       0.2355
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 146,
+      "k": 26,
+      "p": 0.1781,
+      "ci": [
+       0.1245,
+       0.2481
+      ],
+      "small": false
+     },
+     {
+      "cell": "Mitte",
+      "n": 125,
+      "k": 18,
+      "p": 0.144,
+      "ci": [
+       0.0931,
+       0.2162
+      ],
+      "small": false
+     },
+     {
+      "cell": "Grüne",
+      "n": 95,
+      "k": 19,
+      "p": 0.2,
+      "ci": [
+       0.1319,
+       0.2914
+      ],
+      "small": false
+     },
+     {
+      "cell": "GLP",
+      "n": 45,
+      "k": 4,
+      "p": 0.0889,
+      "ci": [
+       0.0351,
+       0.2073
+      ],
+      "small": false
+     },
+     {
+      "cell": "other party",
+      "n": 32,
+      "k": 3,
+      "p": 0.0938,
+      "ci": [
+       0.0324,
+       0.2422
+      ],
+      "small": false
+     },
+     {
+      "cell": "committee",
+      "n": 222,
+      "k": 39,
+      "p": 0.1757,
+      "ci": [
+       0.1313,
+       0.2311
+      ],
+      "small": false
+     },
+     {
+      "cell": "government",
+      "n": 274,
+      "k": 65,
+      "p": 0.2372,
+      "ci": [
+       0.1907,
+       0.291
+      ],
+      "small": false
+     },
+     {
+      "cell": "canton",
+      "n": 74,
+      "k": 15,
+      "p": 0.2027,
+      "ci": [
+       0.1269,
+       0.3079
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 33,
+      "k": 7,
+      "p": 0.2121,
+      "ci": [
+       0.1068,
+       0.3775
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 8.21,
+     "df": 5,
+     "p_perm": 0.1458,
+     "p_chi2": 0.145,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SVP",
+     "lo": "GLP",
+     "diff": 0.1593,
+     "ci": [
+      0.0412,
+      0.2621
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "D1_top1_all_categories_test": {
+    "stat": 24.892,
+    "df": 10,
+    "p_perm": 0.0058,
+    "p_chi2": 0.0056,
+    "cells_tested": [
+     "SVP",
+     "SP",
+     "FDP",
+     "Mitte",
+     "Grüne",
+     "GLP",
+     "other party",
+     "committee",
+     "government",
+     "canton",
+     "unknown"
+    ]
+   }
+  },
+  "submitter kind": {
+   "D1_top1": {
+    "overall": {
+     "n": 1357,
+     "k": 955,
+     "p": 0.7038,
+     "ci": [
+      0.6789,
+      0.7274
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "n": 754,
+      "k": 496,
+      "p": 0.6578,
+      "ci": [
+       0.6232,
+       0.6908
+      ],
+      "small": false
+     },
+     {
+      "cell": "committee",
+      "n": 222,
+      "k": 165,
+      "p": 0.7432,
+      "ci": [
+       0.682,
+       0.7962
+      ],
+      "small": false
+     },
+     {
+      "cell": "government",
+      "n": 274,
+      "k": 217,
+      "p": 0.792,
+      "ci": [
+       0.74,
+       0.8358
+      ],
+      "small": false
+     },
+     {
+      "cell": "canton",
+      "n": 74,
+      "k": 54,
+      "p": 0.7297,
+      "ci": [
+       0.6191,
+       0.8177
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 33,
+      "k": 23,
+      "p": 0.697,
+      "ci": [
+       0.5266,
+       0.8262
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 19.764,
+     "df": 4,
+     "p_perm": 0.0004,
+     "p_chi2": 0.0006,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "government",
+     "lo": "member/faction",
+     "diff": 0.1342,
+     "ci": [
+      0.0714,
+      0.1912
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "D1_top3": {
+    "overall": {
+     "n": 1357,
+     "k": 1144,
+     "p": 0.843,
+     "ci": [
+      0.8227,
+      0.8614
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "n": 754,
+      "k": 613,
+      "p": 0.813,
+      "ci": [
+       0.7836,
+       0.8392
+      ],
+      "small": false
+     },
+     {
+      "cell": "committee",
+      "n": 222,
+      "k": 199,
+      "p": 0.8964,
+      "ci": [
+       0.8493,
+       0.93
+      ],
+      "small": false
+     },
+     {
+      "cell": "government",
+      "n": 274,
+      "k": 242,
+      "p": 0.8832,
+      "ci": [
+       0.8398,
+       0.916
+      ],
+      "small": false
+     },
+     {
+      "cell": "canton",
+      "n": 74,
+      "k": 62,
+      "p": 0.8378,
+      "ci": [
+       0.7376,
+       0.9047
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 33,
+      "k": 28,
+      "p": 0.8485,
+      "ci": [
+       0.6908,
+       0.9335
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 13.283,
+     "df": 4,
+     "p_perm": 0.0124,
+     "p_chi2": 0.01,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "committee",
+     "lo": "member/faction",
+     "diff": 0.0834,
+     "ci": [
+      0.0341,
+      0.1295
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "keyword_top1": {
+    "overall": {
+     "n": 1357,
+     "k": 260,
+     "p": 0.1916,
+     "ci": [
+      0.1715,
+      0.2134
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "n": 754,
+      "k": 134,
+      "p": 0.1777,
+      "ci": [
+       0.1521,
+       0.2066
+      ],
+      "small": false
+     },
+     {
+      "cell": "committee",
+      "n": 222,
+      "k": 39,
+      "p": 0.1757,
+      "ci": [
+       0.1313,
+       0.2311
+      ],
+      "small": false
+     },
+     {
+      "cell": "government",
+      "n": 274,
+      "k": 65,
+      "p": 0.2372,
+      "ci": [
+       0.1907,
+       0.291
+      ],
+      "small": false
+     },
+     {
+      "cell": "canton",
+      "n": 74,
+      "k": 15,
+      "p": 0.2027,
+      "ci": [
+       0.1269,
+       0.3079
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 33,
+      "k": 7,
+      "p": 0.2121,
+      "ci": [
+       0.1068,
+       0.3775
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 5.133,
+     "df": 4,
+     "p_perm": 0.2705,
+     "p_chi2": 0.2739,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "government",
+     "lo": "committee",
+     "diff": 0.0615,
+     "ci": [
+      -0.0108,
+      0.1304
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "instrument": {
+   "D1_top1": {
+    "overall": {
+     "n": 1357,
+     "k": 955,
+     "p": 0.7038,
+     "ci": [
+      0.6789,
+      0.7274
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "n": 459,
+      "k": 300,
+      "p": 0.6536,
+      "ci": [
+       0.609,
+       0.6957
+      ],
+      "small": false
+     },
+     {
+      "cell": "Postulat",
+      "n": 296,
+      "k": 195,
+      "p": 0.6588,
+      "ci": [
+       0.603,
+       0.7105
+      ],
+      "small": false
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "n": 274,
+      "k": 217,
+      "p": 0.792,
+      "ci": [
+       0.74,
+       0.8358
+      ],
+      "small": false
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "n": 244,
+      "k": 185,
+      "p": 0.7582,
+      "ci": [
+       0.7007,
+       0.8077
+      ],
+      "small": false
+     },
+     {
+      "cell": "Standesinitiative",
+      "n": 74,
+      "k": 54,
+      "p": 0.7297,
+      "ci": [
+       0.6191,
+       0.8177
+      ],
+      "small": false
+     },
+     {
+      "cell": "other type",
+      "n": 10,
+      "k": 4,
+      "p": 0.4,
+      "ci": [
+       0.1682,
+       0.6873
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 26.772,
+     "df": 5,
+     "p_perm": 0.0002,
+     "p_chi2": 0.0001,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Regierungsgeschäft",
+     "lo": "Motion",
+     "diff": 0.1384,
+     "ci": [
+      0.0685,
+      0.2003
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "D1_top3": {
+    "overall": {
+     "n": 1357,
+     "k": 1144,
+     "p": 0.843,
+     "ci": [
+      0.8227,
+      0.8614
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "n": 459,
+      "k": 373,
+      "p": 0.8126,
+      "ci": [
+       0.7744,
+       0.8457
+      ],
+      "small": false
+     },
+     {
+      "cell": "Postulat",
+      "n": 296,
+      "k": 246,
+      "p": 0.8311,
+      "ci": [
+       0.7842,
+       0.8695
+      ],
+      "small": false
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "n": 274,
+      "k": 242,
+      "p": 0.8832,
+      "ci": [
+       0.8398,
+       0.916
+      ],
+      "small": false
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "n": 244,
+      "k": 215,
+      "p": 0.8811,
+      "ci": [
+       0.8345,
+       0.916
+      ],
+      "small": false
+     },
+     {
+      "cell": "Standesinitiative",
+      "n": 74,
+      "k": 62,
+      "p": 0.8378,
+      "ci": [
+       0.7376,
+       0.9047
+      ],
+      "small": false
+     },
+     {
+      "cell": "other type",
+      "n": 10,
+      "k": 6,
+      "p": 0.6,
+      "ci": [
+       0.3127,
+       0.8318
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 14.025,
+     "df": 5,
+     "p_perm": 0.0176,
+     "p_chi2": 0.0155,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Regierungsgeschäft",
+     "lo": "Motion",
+     "diff": 0.0706,
+     "ci": [
+      0.0159,
+      0.121
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "keyword_top1": {
+    "overall": {
+     "n": 1357,
+     "k": 260,
+     "p": 0.1916,
+     "ci": [
+      0.1715,
+      0.2134
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "n": 459,
+      "k": 83,
+      "p": 0.1808,
+      "ci": [
+       0.1483,
+       0.2186
+      ],
+      "small": false
+     },
+     {
+      "cell": "Postulat",
+      "n": 296,
+      "k": 42,
+      "p": 0.1419,
+      "ci": [
+       0.1067,
+       0.1862
+      ],
+      "small": false
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "n": 274,
+      "k": 65,
+      "p": 0.2372,
+      "ci": [
+       0.1907,
+       0.291
+      ],
+      "small": false
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "n": 244,
+      "k": 53,
+      "p": 0.2172,
+      "ci": [
+       0.1701,
+       0.2731
+      ],
+      "small": false
+     },
+     {
+      "cell": "Standesinitiative",
+      "n": 74,
+      "k": 15,
+      "p": 0.2027,
+      "ci": [
+       0.1269,
+       0.3079
+      ],
+      "small": false
+     },
+     {
+      "cell": "other type",
+      "n": 10,
+      "k": 2,
+      "p": 0.2,
+      "ci": [
+       0.0567,
+       0.5098
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 9.845,
+     "df": 5,
+     "p_perm": 0.0796,
+     "p_chi2": 0.0797,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Regierungsgeschäft",
+     "lo": "Postulat",
+     "diff": 0.0953,
+     "ci": [
+      0.0295,
+      0.1591
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "language (paired, same affairs; single identity-order call)": {
+   "n": 1357,
+   "DE": {
+    "k": 821,
+    "p": 0.605,
+    "ci": [
+     0.5787,
+     0.6307
+    ]
+   },
+   "FR": {
+    "k": 798,
+    "p": 0.5881,
+    "ci": [
+     0.5617,
+     0.614
+    ]
+   },
+   "diff_DE_minus_FR": 0.0169,
+   "diff_ci": [
+    -0.0029,
+    0.0361
+   ],
+   "only_DE_right": 108,
+   "only_FR_right": 85,
+   "mcnemar_chi2": 2.508,
+   "p_mcnemar": 0.1133
+  },
+  "canton/region": "not available: federal submitters carry no canton in the OPD contributors export; Standesinitiativen appear as the \"canton\" submitter cell"
+ },
+ "S8_check": {
+  "n": 464,
+  "gold_missing": 0,
+  "gold_Y": 199
+ },
+ "S8": {
+  "language": {
+   "aP": {
+    "overall": {
+     "n": 186,
+     "k": 166,
+     "p": 0.8925,
+     "ci": [
+      0.8398,
+      0.9293
+     ],
+     "p_w": 0.9168
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 137,
+      "k": 122,
+      "p": 0.8905,
+      "ci": [
+       0.8272,
+       0.9325
+      ],
+      "small": false,
+      "p_w": 0.911,
+      "ci_w": [
+       0.8664,
+       0.952
+      ]
+     },
+     {
+      "cell": "fr",
+      "n": 36,
+      "k": 32,
+      "p": 0.8889,
+      "ci": [
+       0.7468,
+       0.9559
+      ],
+      "small": false,
+      "p_w": 0.929,
+      "ci_w": [
+       0.8489,
+       0.9913
+      ]
+     },
+     {
+      "cell": "it",
+      "n": 13,
+      "k": 12,
+      "p": 0.9231,
+      "ci": [
+       0.6669,
+       0.9863
+      ],
+      "small": true,
+      "p_w": 0.9445,
+      "ci_w": [
+       0.8035,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 0.261,
+     "df": 2,
+     "p_perm": 0.8566,
+     "p_chi2": null,
+     "cells_tested": [
+      "de",
+      "fr",
+      "it"
+     ]
+    },
+    "gap": {
+     "hi": "fr",
+     "lo": "de",
+     "diff": 0.018,
+     "ci": [
+      -0.0776,
+      0.0933
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "aR": {
+    "overall": {
+     "n": 199,
+     "k": 166,
+     "p": 0.8342,
+     "ci": [
+      0.7763,
+      0.8794
+     ],
+     "p_w": 0.6059
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 150,
+      "k": 122,
+      "p": 0.8133,
+      "ci": [
+       0.7434,
+       0.8676
+      ],
+      "small": false,
+      "p_w": 0.5953,
+      "ci_w": [
+       0.4234,
+       0.8795
+      ]
+     },
+     {
+      "cell": "fr",
+      "n": 35,
+      "k": 32,
+      "p": 0.9143,
+      "ci": [
+       0.7762,
+       0.9704
+      ],
+      "small": false,
+      "p_w": 0.574,
+      "ci_w": [
+       0.2816,
+       1.0
+      ]
+     },
+     {
+      "cell": "it",
+      "n": 14,
+      "k": 12,
+      "p": 0.8571,
+      "ci": [
+       0.6006,
+       0.9599
+      ],
+      "small": true,
+      "p_w": 0.8949,
+      "ci_w": [
+       0.7156,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 5.116,
+     "df": 2,
+     "p_perm": 0.8972,
+     "p_chi2": null,
+     "cells_tested": [
+      "de",
+      "fr",
+      "it"
+     ]
+    },
+    "gap": {
+     "hi": "de",
+     "lo": "fr",
+     "diff": 0.0213,
+     "ci": [
+      -0.5004,
+      0.44
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kP": {
+    "overall": {
+     "n": 218,
+     "k": 146,
+     "p": 0.6697,
+     "ci": [
+      0.6048,
+      0.7287
+     ],
+     "p_w": 0.7602
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 166,
+      "k": 113,
+      "p": 0.6807,
+      "ci": [
+       0.6064,
+       0.7469
+      ],
+      "small": false,
+      "p_w": 0.7553,
+      "ci_w": [
+       0.7042,
+       0.8022
+      ]
+     },
+     {
+      "cell": "fr",
+      "n": 38,
+      "k": 23,
+      "p": 0.6053,
+      "ci": [
+       0.4472,
+       0.744
+      ],
+      "small": false,
+      "p_w": 0.771,
+      "ci_w": [
+       0.6395,
+       0.8703
+      ]
+     },
+     {
+      "cell": "it",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true,
+      "p_w": 0.7898,
+      "ci_w": [
+       0.5579,
+       0.9591
+      ]
+     }
+    ],
+    "test": {
+     "stat": 0.114,
+     "df": 2,
+     "p_perm": 0.938,
+     "p_chi2": null,
+     "cells_tested": [
+      "de",
+      "fr",
+      "it"
+     ]
+    },
+    "gap": {
+     "hi": "fr",
+     "lo": "de",
+     "diff": 0.0157,
+     "ci": [
+      -0.1379,
+      0.1411
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kR": {
+    "overall": {
+     "n": 199,
+     "k": 146,
+     "p": 0.7337,
+     "ci": [
+      0.6682,
+      0.7902
+     ],
+     "p_w": 0.5635
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 150,
+      "k": 113,
+      "p": 0.7533,
+      "ci": [
+       0.6786,
+       0.8154
+      ],
+      "small": false,
+      "p_w": 0.5748,
+      "ci_w": [
+       0.4081,
+       0.8476
+      ]
+     },
+     {
+      "cell": "fr",
+      "n": 35,
+      "k": 23,
+      "p": 0.6571,
+      "ci": [
+       0.4915,
+       0.7917
+      ],
+      "small": false,
+      "p_w": 0.4652,
+      "ci_w": [
+       0.2166,
+       0.8545
+      ]
+     },
+     {
+      "cell": "it",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true,
+      "p_w": 0.7898,
+      "ci_w": [
+       0.5428,
+       0.9547
+      ]
+     }
+    ],
+    "test": {
+     "stat": 4.369,
+     "df": 2,
+     "p_perm": 0.8764,
+     "p_chi2": null,
+     "cells_tested": [
+      "de",
+      "fr",
+      "it"
+     ]
+    },
+    "gap": {
+     "hi": "de",
+     "lo": "fr",
+     "diff": 0.1096,
+     "ci": [
+      -0.347,
+      0.4819
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   }
+  },
+  "level": {
+   "aP": {
+    "overall": {
+     "n": 186,
+     "k": 166,
+     "p": 0.8925,
+     "ci": [
+      0.8398,
+      0.9293
+     ],
+     "p_w": 0.9168
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 57,
+      "k": 50,
+      "p": 0.8772,
+      "ci": [
+       0.7675,
+       0.9392
+      ],
+      "small": false,
+      "p_w": 0.8774,
+      "ci_w": [
+       0.778,
+       0.9608
+      ]
+     },
+     {
+      "cell": "cantonal",
+      "n": 80,
+      "k": 73,
+      "p": 0.9125,
+      "ci": [
+       0.8302,
+       0.957
+      ],
+      "small": false,
+      "p_w": 0.9366,
+      "ci_w": [
+       0.889,
+       0.9778
+      ]
+     },
+     {
+      "cell": "communal",
+      "n": 43,
+      "k": 37,
+      "p": 0.8605,
+      "ci": [
+       0.7274,
+       0.9344
+      ],
+      "small": false,
+      "p_w": 0.9078,
+      "ci_w": [
+       0.8217,
+       0.9725
+      ]
+     },
+     {
+      "cell": "other",
+      "n": 6,
+      "k": 6,
+      "p": 1.0,
+      "ci": [
+       0.6097,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 2.165,
+     "df": 3,
+     "p_perm": 0.4593,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "cantonal",
+      "communal",
+      "other"
+     ]
+    },
+    "gap": {
+     "hi": "cantonal",
+     "lo": "federal",
+     "diff": 0.0592,
+     "ci": [
+      -0.0379,
+      0.1657
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "aR": {
+    "overall": {
+     "n": 199,
+     "k": 166,
+     "p": 0.8342,
+     "ci": [
+      0.7763,
+      0.8794
+     ],
+     "p_w": 0.6059
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 62,
+      "k": 50,
+      "p": 0.8065,
+      "ci": [
+       0.6915,
+       0.8857
+      ],
+      "small": false,
+      "p_w": 0.4438,
+      "ci_w": [
+       0.2424,
+       0.8996
+      ]
+     },
+     {
+      "cell": "cantonal",
+      "n": 87,
+      "k": 73,
+      "p": 0.8391,
+      "ci": [
+       0.7478,
+       0.9017
+      ],
+      "small": false,
+      "p_w": 0.724,
+      "ci_w": [
+       0.4965,
+       0.9337
+      ]
+     },
+     {
+      "cell": "communal",
+      "n": 41,
+      "k": 37,
+      "p": 0.9024,
+      "ci": [
+       0.7745,
+       0.9614
+      ],
+      "small": false,
+      "p_w": 0.9297,
+      "ci_w": [
+       0.8513,
+       0.9844
+      ]
+     },
+     {
+      "cell": "other",
+      "n": 9,
+      "k": 6,
+      "p": 0.6667,
+      "ci": [
+       0.3542,
+       0.8794
+      ],
+      "small": true,
+      "p_w": 0.1918,
+      "ci_w": [
+       0.0388,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 36.371,
+     "df": 3,
+     "p_perm": 0.1948,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "cantonal",
+      "communal",
+      "other"
+     ]
+    },
+    "gap": {
+     "hi": "communal",
+     "lo": "federal",
+     "diff": 0.4859,
+     "ci": [
+      0.0218,
+      0.6916
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kP": {
+    "overall": {
+     "n": 218,
+     "k": 146,
+     "p": 0.6697,
+     "ci": [
+      0.6048,
+      0.7287
+     ],
+     "p_w": 0.7602
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 70,
+      "k": 43,
+      "p": 0.6143,
+      "ci": [
+       0.4972,
+       0.7195
+      ],
+      "small": false,
+      "p_w": 0.6882,
+      "ci_w": [
+       0.5825,
+       0.7809
+      ]
+     },
+     {
+      "cell": "cantonal",
+      "n": 99,
+      "k": 69,
+      "p": 0.697,
+      "ci": [
+       0.6005,
+       0.7787
+      ],
+      "small": false,
+      "p_w": 0.7862,
+      "ci_w": [
+       0.7184,
+       0.8469
+      ]
+     },
+     {
+      "cell": "communal",
+      "n": 42,
+      "k": 27,
+      "p": 0.6429,
+      "ci": [
+       0.4917,
+       0.7701
+      ],
+      "small": false,
+      "p_w": 0.7599,
+      "ci_w": [
+       0.6386,
+       0.8639
+      ]
+     },
+     {
+      "cell": "other",
+      "n": 7,
+      "k": 7,
+      "p": 1.0,
+      "ci": [
+       0.6457,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 4.564,
+     "df": 3,
+     "p_perm": 0.18,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "cantonal",
+      "communal",
+      "other"
+     ]
+    },
+    "gap": {
+     "hi": "cantonal",
+     "lo": "federal",
+     "diff": 0.098,
+     "ci": [
+      -0.0282,
+      0.2284
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kR": {
+    "overall": {
+     "n": 199,
+     "k": 146,
+     "p": 0.7337,
+     "ci": [
+      0.6682,
+      0.7902
+     ],
+     "p_w": 0.5635
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 62,
+      "k": 43,
+      "p": 0.6935,
+      "ci": [
+       0.5703,
+       0.7942
+      ],
+      "small": false,
+      "p_w": 0.4183,
+      "ci_w": [
+       0.229,
+       0.8431
+      ]
+     },
+     {
+      "cell": "cantonal",
+      "n": 87,
+      "k": 69,
+      "p": 0.7931,
+      "ci": [
+       0.6965,
+       0.8649
+      ],
+      "small": false,
+      "p_w": 0.6988,
+      "ci_w": [
+       0.4724,
+       0.9045
+      ]
+     },
+     {
+      "cell": "communal",
+      "n": 41,
+      "k": 27,
+      "p": 0.6585,
+      "ci": [
+       0.5055,
+       0.7844
+      ],
+      "small": false,
+      "p_w": 0.765,
+      "ci_w": [
+       0.645,
+       0.8664
+      ]
+     },
+     {
+      "cell": "other",
+      "n": 9,
+      "k": 7,
+      "p": 0.7778,
+      "ci": [
+       0.4526,
+       0.9368
+      ],
+      "small": true,
+      "p_w": 0.2012,
+      "ci_w": [
+       0.0443,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 23.358,
+     "df": 3,
+     "p_perm": 0.3623,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "cantonal",
+      "communal",
+      "other"
+     ]
+    },
+    "gap": {
+     "hi": "communal",
+     "lo": "federal",
+     "diff": 0.3467,
+     "ci": [
+      -0.1143,
+      0.5669
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   }
+  },
+  "region": {
+   "aP": {
+    "overall": {
+     "n": 186,
+     "k": 166,
+     "p": 0.8925,
+     "ci": [
+      0.8398,
+      0.9293
+     ],
+     "p_w": 0.9168
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 57,
+      "k": 50,
+      "p": 0.8772,
+      "ci": [
+       0.7675,
+       0.9392
+      ],
+      "small": false,
+      "p_w": 0.8774,
+      "ci_w": [
+       0.778,
+       0.9608
+      ]
+     },
+     {
+      "cell": "Deutschschweiz",
+      "n": 63,
+      "k": 56,
+      "p": 0.8889,
+      "ci": [
+       0.788,
+       0.9451
+      ],
+      "small": false,
+      "p_w": 0.9176,
+      "ci_w": [
+       0.854,
+       0.9692
+      ]
+     },
+     {
+      "cell": "Romandie",
+      "n": 29,
+      "k": 27,
+      "p": 0.931,
+      "ci": [
+       0.7804,
+       0.9809
+      ],
+      "small": false,
+      "p_w": 0.9674,
+      "ci_w": [
+       0.9117,
+       1.0
+      ]
+     },
+     {
+      "cell": "Svizzera italiana",
+      "n": 13,
+      "k": 12,
+      "p": 0.9231,
+      "ci": [
+       0.6669,
+       0.9863
+      ],
+      "small": true,
+      "p_w": 0.9445,
+      "ci_w": [
+       0.8035,
+       1.0
+      ]
+     },
+     {
+      "cell": "bilingual cantons (BE FR VS GR)",
+      "n": 18,
+      "k": 15,
+      "p": 0.8333,
+      "ci": [
+       0.6078,
+       0.9416
+      ],
+      "small": true,
+      "p_w": 0.8865,
+      "ci_w": [
+       0.7406,
+       1.0
+      ]
+     },
+     {
+      "cell": "other (LIE)",
+      "n": 6,
+      "k": 6,
+      "p": 1.0,
+      "ci": [
+       0.6097,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 3.027,
+     "df": 5,
+     "p_perm": 0.6429,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "Deutschschweiz",
+      "Romandie",
+      "Svizzera italiana",
+      "bilingual cantons (BE FR VS GR)",
+      "other (LIE)"
+     ]
+    },
+    "gap": {
+     "hi": "Romandie",
+     "lo": "federal",
+     "diff": 0.09,
+     "ci": [
+      -0.0114,
+      0.1985
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "aR": {
+    "overall": {
+     "n": 199,
+     "k": 166,
+     "p": 0.8342,
+     "ci": [
+      0.7763,
+      0.8794
+     ],
+     "p_w": 0.6059
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 62,
+      "k": 50,
+      "p": 0.8065,
+      "ci": [
+       0.6915,
+       0.8857
+      ],
+      "small": false,
+      "p_w": 0.4438,
+      "ci_w": [
+       0.2424,
+       0.8996
+      ]
+     },
+     {
+      "cell": "Deutschschweiz",
+      "n": 68,
+      "k": 56,
+      "p": 0.8235,
+      "ci": [
+       0.7164,
+       0.8961
+      ],
+      "small": false,
+      "p_w": 0.8781,
+      "ci_w": [
+       0.8179,
+       0.9377
+      ]
+     },
+     {
+      "cell": "Romandie",
+      "n": 29,
+      "k": 27,
+      "p": 0.931,
+      "ci": [
+       0.7804,
+       0.9809
+      ],
+      "small": false,
+      "p_w": 0.5622,
+      "ci_w": [
+       0.2638,
+       1.0
+      ]
+     },
+     {
+      "cell": "Svizzera italiana",
+      "n": 14,
+      "k": 12,
+      "p": 0.8571,
+      "ci": [
+       0.6006,
+       0.9599
+      ],
+      "small": true,
+      "p_w": 0.8949,
+      "ci_w": [
+       0.7156,
+       1.0
+      ]
+     },
+     {
+      "cell": "bilingual cantons (BE FR VS GR)",
+      "n": 17,
+      "k": 15,
+      "p": 0.8824,
+      "ci": [
+       0.6566,
+       0.9671
+      ],
+      "small": true,
+      "p_w": 0.9214,
+      "ci_w": [
+       0.8011,
+       1.0
+      ]
+     },
+     {
+      "cell": "other (LIE)",
+      "n": 9,
+      "k": 6,
+      "p": 0.6667,
+      "ci": [
+       0.3542,
+       0.8794
+      ],
+      "small": true,
+      "p_w": 0.1918,
+      "ci_w": [
+       0.0388,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 46.603,
+     "df": 5,
+     "p_perm": 0.2244,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "Deutschschweiz",
+      "Romandie",
+      "Svizzera italiana",
+      "bilingual cantons (BE FR VS GR)",
+      "other (LIE)"
+     ]
+    },
+    "gap": {
+     "hi": "Deutschschweiz",
+     "lo": "federal",
+     "diff": 0.4343,
+     "ci": [
+      -0.0313,
+      0.6493
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kP": {
+    "overall": {
+     "n": 218,
+     "k": 146,
+     "p": 0.6697,
+     "ci": [
+      0.6048,
+      0.7287
+     ],
+     "p_w": 0.7602
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 70,
+      "k": 43,
+      "p": 0.6143,
+      "ci": [
+       0.4972,
+       0.7195
+      ],
+      "small": false,
+      "p_w": 0.6882,
+      "ci_w": [
+       0.5825,
+       0.7809
+      ]
+     },
+     {
+      "cell": "Deutschschweiz",
+      "n": 81,
+      "k": 54,
+      "p": 0.6667,
+      "ci": [
+       0.5585,
+       0.7597
+      ],
+      "small": false,
+      "p_w": 0.7582,
+      "ci_w": [
+       0.6798,
+       0.8265
+      ]
+     },
+     {
+      "cell": "Romandie",
+      "n": 29,
+      "k": 19,
+      "p": 0.6552,
+      "ci": [
+       0.4734,
+       0.8006
+      ],
+      "small": false,
+      "p_w": 0.7894,
+      "ci_w": [
+       0.6434,
+       0.8952
+      ]
+     },
+     {
+      "cell": "Svizzera italiana",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true,
+      "p_w": 0.7898,
+      "ci_w": [
+       0.5579,
+       0.9591
+      ]
+     },
+     {
+      "cell": "bilingual cantons (BE FR VS GR)",
+      "n": 17,
+      "k": 13,
+      "p": 0.7647,
+      "ci": [
+       0.5274,
+       0.9045
+      ],
+      "small": true,
+      "p_w": 0.8427,
+      "ci_w": [
+       0.6733,
+       0.9666
+      ]
+     },
+     {
+      "cell": "other (LIE)",
+      "n": 7,
+      "k": 7,
+      "p": 1.0,
+      "ci": [
+       0.6457,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 5.037,
+     "df": 5,
+     "p_perm": 0.3571,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "Deutschschweiz",
+      "Romandie",
+      "Svizzera italiana",
+      "bilingual cantons (BE FR VS GR)",
+      "other (LIE)"
+     ]
+    },
+    "gap": {
+     "hi": "Romandie",
+     "lo": "federal",
+     "diff": 0.1012,
+     "ci": [
+      -0.0789,
+      0.26
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kR": {
+    "overall": {
+     "n": 199,
+     "k": 146,
+     "p": 0.7337,
+     "ci": [
+      0.6682,
+      0.7902
+     ],
+     "p_w": 0.5635
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 62,
+      "k": 43,
+      "p": 0.6935,
+      "ci": [
+       0.5703,
+       0.7942
+      ],
+      "small": false,
+      "p_w": 0.4183,
+      "ci_w": [
+       0.229,
+       0.8431
+      ]
+     },
+     {
+      "cell": "Deutschschweiz",
+      "n": 68,
+      "k": 54,
+      "p": 0.7941,
+      "ci": [
+       0.6836,
+       0.8732
+      ],
+      "small": false,
+      "p_w": 0.8642,
+      "ci_w": [
+       0.8002,
+       0.9217
+      ]
+     },
+     {
+      "cell": "Romandie",
+      "n": 29,
+      "k": 19,
+      "p": 0.6552,
+      "ci": [
+       0.4734,
+       0.8006
+      ],
+      "small": false,
+      "p_w": 0.452,
+      "ci_w": [
+       0.198,
+       0.8655
+      ]
+     },
+     {
+      "cell": "Svizzera italiana",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true,
+      "p_w": 0.7898,
+      "ci_w": [
+       0.5428,
+       0.9547
+      ]
+     },
+     {
+      "cell": "bilingual cantons (BE FR VS GR)",
+      "n": 17,
+      "k": 13,
+      "p": 0.7647,
+      "ci": [
+       0.5274,
+       0.9045
+      ],
+      "small": true,
+      "p_w": 0.8427,
+      "ci_w": [
+       0.6654,
+       0.9649
+      ]
+     },
+     {
+      "cell": "other (LIE)",
+      "n": 9,
+      "k": 7,
+      "p": 0.7778,
+      "ci": [
+       0.4526,
+       0.9368
+      ],
+      "small": true,
+      "p_w": 0.2012,
+      "ci_w": [
+       0.0443,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 44.882,
+     "df": 5,
+     "p_perm": 0.1386,
+     "p_chi2": null,
+     "cells_tested": [
+      "federal",
+      "Deutschschweiz",
+      "Romandie",
+      "Svizzera italiana",
+      "bilingual cantons (BE FR VS GR)",
+      "other (LIE)"
+     ]
+    },
+    "gap": {
+     "hi": "Deutschschweiz",
+     "lo": "federal",
+     "diff": 0.4459,
+     "ci": [
+      0.0066,
+      0.6504
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   }
+  },
+  "canton (cantonal+communal bodies; federal separate)": {
+   "aP": {
+    "overall": {
+     "n": 186,
+     "k": 166,
+     "p": 0.8925,
+     "ci": [
+      0.8398,
+      0.9293
+     ],
+     "p_w": 0.9168
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 57,
+      "k": 50,
+      "p": 0.8772,
+      "ci": [
+       0.7675,
+       0.9392
+      ],
+      "small": false,
+      "p_w": 0.8774,
+      "ci_w": [
+       0.778,
+       0.9608
+      ]
+     },
+     {
+      "cell": "BS",
+      "n": 17,
+      "k": 17,
+      "p": 1.0,
+      "ci": [
+       0.8157,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "ZH",
+      "n": 16,
+      "k": 15,
+      "p": 0.9375,
+      "ci": [
+       0.7167,
+       0.9889
+      ],
+      "small": true,
+      "p_w": 0.9574,
+      "ci_w": [
+       0.8598,
+       1.0
+      ]
+     },
+     {
+      "cell": "TI",
+      "n": 13,
+      "k": 12,
+      "p": 0.9231,
+      "ci": [
+       0.6669,
+       0.9863
+      ],
+      "small": true,
+      "p_w": 0.9445,
+      "ci_w": [
+       0.8035,
+       1.0
+      ]
+     },
+     {
+      "cell": "BE",
+      "n": 12,
+      "k": 11,
+      "p": 0.9167,
+      "ci": [
+       0.6461,
+       0.9851
+      ],
+      "small": true,
+      "p_w": 0.9449,
+      "ci_w": [
+       0.8101,
+       1.0
+      ]
+     },
+     {
+      "cell": "VD",
+      "n": 11,
+      "k": 10,
+      "p": 0.9091,
+      "ci": [
+       0.6226,
+       0.9838
+      ],
+      "small": true,
+      "p_w": 0.9389,
+      "ci_w": [
+       0.7849,
+       1.0
+      ]
+     },
+     {
+      "cell": "GE",
+      "n": 10,
+      "k": 9,
+      "p": 0.9,
+      "ci": [
+       0.5958,
+       0.9821
+      ],
+      "small": true,
+      "p_w": 0.9731,
+      "ci_w": [
+       0.8935,
+       1.0
+      ]
+     },
+     {
+      "cell": "LIE",
+      "n": 6,
+      "k": 6,
+      "p": 1.0,
+      "ci": [
+       0.6097,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SG",
+      "n": 6,
+      "k": 6,
+      "p": 1.0,
+      "ci": [
+       0.6097,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AG",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "NE",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "VS",
+      "n": 5,
+      "k": 3,
+      "p": 0.6,
+      "ci": [
+       0.2307,
+       0.8824
+      ],
+      "small": true,
+      "p_w": 0.6939,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "ZG",
+      "n": 5,
+      "k": 2,
+      "p": 0.4,
+      "ci": [
+       0.1176,
+       0.7693
+      ],
+      "small": true,
+      "p_w": 0.5408,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "JU",
+      "n": 3,
+      "k": 3,
+      "p": 1.0,
+      "ci": [
+       0.4385,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SH",
+      "n": 3,
+      "k": 3,
+      "p": 1.0,
+      "ci": [
+       0.4385,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SO",
+      "n": 3,
+      "k": 2,
+      "p": 0.6667,
+      "ci": [
+       0.2077,
+       0.9385
+      ],
+      "small": true,
+      "p_w": 0.6103,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AR",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "LU",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "BL",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "FR",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "OW",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "TG",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true,
+      "p_w": 0.0,
+      "ci_w": [
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "cell": "UR",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true,
+      "p_w": 0.0,
+      "ci_w": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 49.396,
+     "df": 20,
+     "p_perm": 0.0122,
+     "p_chi2": null,
+     "cells_tested": [
+      "BS",
+      "ZH",
+      "TI",
+      "BE",
+      "VD",
+      "GE",
+      "SG",
+      "AG",
+      "NE",
+      "VS",
+      "ZG",
+      "JU",
+      "SH",
+      "SO",
+      "AR",
+      "LU",
+      "BL",
+      "FR",
+      "OW",
+      "TG",
+      "UR"
+     ]
+    },
+    "gap": {
+     "hi": "BS",
+     "lo": "ZG",
+     "diff": 0.4592,
+     "ci": [
+      0.0,
+      1.0
+     ],
+     "basis": "no 2 cells with n>=20: cells n>=5 (small); paired over full-packet resamples"
+    }
+   },
+   "aR": {
+    "overall": {
+     "n": 199,
+     "k": 166,
+     "p": 0.8342,
+     "ci": [
+      0.7763,
+      0.8794
+     ],
+     "p_w": 0.6059
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 62,
+      "k": 50,
+      "p": 0.8065,
+      "ci": [
+       0.6915,
+       0.8857
+      ],
+      "small": false,
+      "p_w": 0.4438,
+      "ci_w": [
+       0.2424,
+       0.8996
+      ]
+     },
+     {
+      "cell": "BS",
+      "n": 20,
+      "k": 17,
+      "p": 0.85,
+      "ci": [
+       0.6396,
+       0.9476
+      ],
+      "small": false,
+      "p_w": 0.8999,
+      "ci_w": [
+       0.7717,
+       1.0
+      ]
+     },
+     {
+      "cell": "ZH",
+      "n": 18,
+      "k": 15,
+      "p": 0.8333,
+      "ci": [
+       0.6078,
+       0.9416
+      ],
+      "small": true,
+      "p_w": 0.8822,
+      "ci_w": [
+       0.7231,
+       1.0
+      ]
+     },
+     {
+      "cell": "TI",
+      "n": 14,
+      "k": 12,
+      "p": 0.8571,
+      "ci": [
+       0.6006,
+       0.9599
+      ],
+      "small": true,
+      "p_w": 0.8949,
+      "ci_w": [
+       0.7156,
+       1.0
+      ]
+     },
+     {
+      "cell": "BE",
+      "n": 11,
+      "k": 11,
+      "p": 1.0,
+      "ci": [
+       0.7412,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "VD",
+      "n": 11,
+      "k": 10,
+      "p": 0.9091,
+      "ci": [
+       0.6226,
+       0.9838
+      ],
+      "small": true,
+      "p_w": 0.9389,
+      "ci_w": [
+       0.7662,
+       1.0
+      ]
+     },
+     {
+      "cell": "GE",
+      "n": 9,
+      "k": 9,
+      "p": 1.0,
+      "ci": [
+       0.7008,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "LIE",
+      "n": 9,
+      "k": 6,
+      "p": 0.6667,
+      "ci": [
+       0.3542,
+       0.8794
+      ],
+      "small": true,
+      "p_w": 0.1918,
+      "ci_w": [
+       0.0388,
+       1.0
+      ]
+     },
+     {
+      "cell": "SG",
+      "n": 6,
+      "k": 6,
+      "p": 1.0,
+      "ci": [
+       0.6097,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AG",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "LU",
+      "n": 5,
+      "k": 2,
+      "p": 0.4,
+      "ci": [
+       0.1176,
+       0.7693
+      ],
+      "small": true,
+      "p_w": 0.4798,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "NE",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "JU",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true,
+      "p_w": 0.1284,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SH",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true,
+      "p_w": 0.8413,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "VS",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true,
+      "p_w": 0.8193,
+      "ci_w": [
+       0.25,
+       1.0
+      ]
+     },
+     {
+      "cell": "SO",
+      "n": 3,
+      "k": 2,
+      "p": 0.6667,
+      "ci": [
+       0.2077,
+       0.9385
+      ],
+      "small": true,
+      "p_w": 0.7345,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AR",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "BL",
+      "n": 2,
+      "k": 1,
+      "p": 0.5,
+      "ci": [
+       0.0945,
+       0.9055
+      ],
+      "small": true,
+      "p_w": 0.6386,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "ZG",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "FR",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "GR",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true,
+      "p_w": 0.0,
+      "ci_w": [
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "cell": "OW",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 33.825,
+     "df": 19,
+     "p_perm": 0.3349,
+     "p_chi2": null,
+     "cells_tested": [
+      "BS",
+      "ZH",
+      "TI",
+      "BE",
+      "VD",
+      "GE",
+      "SG",
+      "AG",
+      "LU",
+      "NE",
+      "JU",
+      "SH",
+      "VS",
+      "SO",
+      "AR",
+      "BL",
+      "ZG",
+      "FR",
+      "GR",
+      "OW"
+     ]
+    },
+    "gap": {
+     "hi": "BE",
+     "lo": "LU",
+     "diff": 0.5202,
+     "ci": [
+      0.0,
+      1.0
+     ],
+     "basis": "no 2 cells with n>=20: cells n>=5 (small); paired over full-packet resamples"
+    }
+   },
+   "kP": {
+    "overall": {
+     "n": 218,
+     "k": 146,
+     "p": 0.6697,
+     "ci": [
+      0.6048,
+      0.7287
+     ],
+     "p_w": 0.7602
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 70,
+      "k": 43,
+      "p": 0.6143,
+      "ci": [
+       0.4972,
+       0.7195
+      ],
+      "small": false,
+      "p_w": 0.6882,
+      "ci_w": [
+       0.5825,
+       0.7809
+      ]
+     },
+     {
+      "cell": "ZH",
+      "n": 23,
+      "k": 15,
+      "p": 0.6522,
+      "ci": [
+       0.4489,
+       0.8119
+      ],
+      "small": false,
+      "p_w": 0.758,
+      "ci_w": [
+       0.5714,
+       0.896
+      ]
+     },
+     {
+      "cell": "BS",
+      "n": 21,
+      "k": 16,
+      "p": 0.7619,
+      "ci": [
+       0.5491,
+       0.8937
+      ],
+      "small": false,
+      "p_w": 0.8385,
+      "ci_w": [
+       0.6759,
+       0.9554
+      ]
+     },
+     {
+      "cell": "TI",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true,
+      "p_w": 0.7898,
+      "ci_w": [
+       0.5579,
+       0.9591
+      ]
+     },
+     {
+      "cell": "VD",
+      "n": 14,
+      "k": 8,
+      "p": 0.5714,
+      "ci": [
+       0.3259,
+       0.7862
+      ],
+      "small": true,
+      "p_w": 0.6902,
+      "ci_w": [
+       0.4309,
+       0.8845
+      ]
+     },
+     {
+      "cell": "GE",
+      "n": 10,
+      "k": 6,
+      "p": 0.6,
+      "ci": [
+       0.3127,
+       0.8318
+      ],
+      "small": true,
+      "p_w": 0.7939,
+      "ci_w": [
+       0.469,
+       0.9705
+      ]
+     },
+     {
+      "cell": "BE",
+      "n": 9,
+      "k": 8,
+      "p": 0.8889,
+      "ci": [
+       0.565,
+       0.9801
+      ],
+      "small": true,
+      "p_w": 0.9339,
+      "ci_w": [
+       0.7794,
+       1.0
+      ]
+     },
+     {
+      "cell": "LIE",
+      "n": 7,
+      "k": 7,
+      "p": 1.0,
+      "ci": [
+       0.6457,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "LU",
+      "n": 7,
+      "k": 4,
+      "p": 0.5714,
+      "ci": [
+       0.2505,
+       0.8418
+      ],
+      "small": true,
+      "p_w": 0.6137,
+      "ci_w": [
+       0.1429,
+       1.0
+      ]
+     },
+     {
+      "cell": "SH",
+      "n": 6,
+      "k": 4,
+      "p": 0.6667,
+      "ci": [
+       0.3,
+       0.9032
+      ],
+      "small": true,
+      "p_w": 0.759,
+      "ci_w": [
+       0.3064,
+       1.0
+      ]
+     },
+     {
+      "cell": "VS",
+      "n": 6,
+      "k": 3,
+      "p": 0.5,
+      "ci": [
+       0.1876,
+       0.8124
+      ],
+      "small": true,
+      "p_w": 0.6018,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "BL",
+      "n": 5,
+      "k": 2,
+      "p": 0.4,
+      "ci": [
+       0.1176,
+       0.7693
+      ],
+      "small": true,
+      "p_w": 0.4798,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AG",
+      "n": 4,
+      "k": 4,
+      "p": 1.0,
+      "ci": [
+       0.5101,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SG",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true,
+      "p_w": 0.8413,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SO",
+      "n": 4,
+      "k": 2,
+      "p": 0.5,
+      "ci": [
+       0.15,
+       0.85
+      ],
+      "small": true,
+      "p_w": 0.5,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "NE",
+      "n": 3,
+      "k": 3,
+      "p": 1.0,
+      "ci": [
+       0.4385,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "ZG",
+      "n": 3,
+      "k": 2,
+      "p": 0.6667,
+      "ci": [
+       0.2077,
+       0.9385
+      ],
+      "small": true,
+      "p_w": 0.7794,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AR",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "JU",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "FR",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "GR",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "OW",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true,
+      "p_w": 0.0,
+      "ci_w": [
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "cell": "SZ",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true,
+      "p_w": 0.0,
+      "ci_w": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 19.831,
+     "df": 20,
+     "p_perm": 0.5167,
+     "p_chi2": null,
+     "cells_tested": [
+      "ZH",
+      "BS",
+      "TI",
+      "VD",
+      "GE",
+      "BE",
+      "LU",
+      "SH",
+      "VS",
+      "BL",
+      "AG",
+      "SG",
+      "SO",
+      "NE",
+      "ZG",
+      "AR",
+      "JU",
+      "FR",
+      "GR",
+      "OW",
+      "SZ"
+     ]
+    },
+    "gap": {
+     "hi": "BS",
+     "lo": "ZH",
+     "diff": 0.0805,
+     "ci": [
+      -0.1485,
+      0.2995
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kR": {
+    "overall": {
+     "n": 199,
+     "k": 146,
+     "p": 0.7337,
+     "ci": [
+      0.6682,
+      0.7902
+     ],
+     "p_w": 0.5635
+    },
+    "cells": [
+     {
+      "cell": "federal",
+      "n": 62,
+      "k": 43,
+      "p": 0.6935,
+      "ci": [
+       0.5703,
+       0.7942
+      ],
+      "small": false,
+      "p_w": 0.4183,
+      "ci_w": [
+       0.229,
+       0.8431
+      ]
+     },
+     {
+      "cell": "BS",
+      "n": 20,
+      "k": 16,
+      "p": 0.8,
+      "ci": [
+       0.584,
+       0.9193
+      ],
+      "small": false,
+      "p_w": 0.8665,
+      "ci_w": [
+       0.7156,
+       0.9706
+      ]
+     },
+     {
+      "cell": "ZH",
+      "n": 18,
+      "k": 15,
+      "p": 0.8333,
+      "ci": [
+       0.6078,
+       0.9416
+      ],
+      "small": true,
+      "p_w": 0.9067,
+      "ci_w": [
+       0.769,
+       1.0
+      ]
+     },
+     {
+      "cell": "TI",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true,
+      "p_w": 0.7898,
+      "ci_w": [
+       0.5428,
+       0.9547
+      ]
+     },
+     {
+      "cell": "BE",
+      "n": 11,
+      "k": 8,
+      "p": 0.7273,
+      "ci": [
+       0.4343,
+       0.9025
+      ],
+      "small": true,
+      "p_w": 0.8249,
+      "ci_w": [
+       0.5699,
+       1.0
+      ]
+     },
+     {
+      "cell": "VD",
+      "n": 11,
+      "k": 8,
+      "p": 0.7273,
+      "ci": [
+       0.4343,
+       0.9025
+      ],
+      "small": true,
+      "p_w": 0.8167,
+      "ci_w": [
+       0.5579,
+       1.0
+      ]
+     },
+     {
+      "cell": "GE",
+      "n": 9,
+      "k": 6,
+      "p": 0.6667,
+      "ci": [
+       0.3542,
+       0.8794
+      ],
+      "small": true,
+      "p_w": 0.7794,
+      "ci_w": [
+       0.469,
+       1.0
+      ]
+     },
+     {
+      "cell": "LIE",
+      "n": 9,
+      "k": 7,
+      "p": 0.7778,
+      "ci": [
+       0.4526,
+       0.9368
+      ],
+      "small": true,
+      "p_w": 0.2012,
+      "ci_w": [
+       0.0443,
+       1.0
+      ]
+     },
+     {
+      "cell": "SG",
+      "n": 6,
+      "k": 3,
+      "p": 0.5,
+      "ci": [
+       0.1876,
+       0.8124
+      ],
+      "small": true,
+      "p_w": 0.6386,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AG",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true,
+      "p_w": 0.876,
+      "ci_w": [
+       0.469,
+       1.0
+      ]
+     },
+     {
+      "cell": "LU",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true,
+      "p_w": 0.8266,
+      "ci_w": [
+       0.3333,
+       1.0
+      ]
+     },
+     {
+      "cell": "NE",
+      "n": 5,
+      "k": 3,
+      "p": 0.6,
+      "ci": [
+       0.2307,
+       0.8824
+      ],
+      "small": true,
+      "p_w": 0.726,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "JU",
+      "n": 4,
+      "k": 2,
+      "p": 0.5,
+      "ci": [
+       0.15,
+       0.85
+      ],
+      "small": true,
+      "p_w": 0.1001,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SH",
+      "n": 4,
+      "k": 4,
+      "p": 1.0,
+      "ci": [
+       0.5101,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "VS",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true,
+      "p_w": 0.8193,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "SO",
+      "n": 3,
+      "k": 2,
+      "p": 0.6667,
+      "ci": [
+       0.2077,
+       0.9385
+      ],
+      "small": true,
+      "p_w": 0.7345,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "AR",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "BL",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "ZG",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "FR",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "GR",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "OW",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true,
+      "p_w": 0.0,
+      "ci_w": [
+       0.0,
+       0.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 23.242,
+     "df": 19,
+     "p_perm": 0.8406,
+     "p_chi2": null,
+     "cells_tested": [
+      "BS",
+      "ZH",
+      "TI",
+      "BE",
+      "VD",
+      "GE",
+      "SG",
+      "AG",
+      "LU",
+      "NE",
+      "JU",
+      "SH",
+      "VS",
+      "SO",
+      "AR",
+      "BL",
+      "ZG",
+      "FR",
+      "GR",
+      "OW"
+     ]
+    },
+    "gap": {
+     "hi": "ZH",
+     "lo": "SG",
+     "diff": 0.2681,
+     "ci": [
+      -0.1066,
+      0.8775
+     ],
+     "basis": "no 2 cells with n>=20: cells n>=5 (small); paired over full-packet resamples"
+    }
+   }
+  },
+  "party": {
+   "aP": {
+    "overall": {
+     "n": 186,
+     "k": 166,
+     "p": 0.8925,
+     "ci": [
+      0.8398,
+      0.9293
+     ],
+     "p_w": 0.9168
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 11,
+      "k": 7,
+      "p": 0.6364,
+      "ci": [
+       0.3538,
+       0.8483
+      ],
+      "small": true,
+      "p_w": 0.6363,
+      "ci_w": [
+       0.3101,
+       0.9287
+      ]
+     },
+     {
+      "cell": "SP",
+      "n": 24,
+      "k": 22,
+      "p": 0.9167,
+      "ci": [
+       0.7415,
+       0.9768
+      ],
+      "small": false,
+      "p_w": 0.9431,
+      "ci_w": [
+       0.85,
+       1.0
+      ]
+     },
+     {
+      "cell": "FDP",
+      "n": 15,
+      "k": 12,
+      "p": 0.8,
+      "ci": [
+       0.5481,
+       0.9295
+      ],
+      "small": true,
+      "p_w": 0.8073,
+      "ci_w": [
+       0.5649,
+       1.0
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "n": 21,
+      "k": 20,
+      "p": 0.9524,
+      "ci": [
+       0.7733,
+       0.9915
+      ],
+      "small": false,
+      "p_w": 0.9592,
+      "ci_w": [
+       0.859,
+       1.0
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "n": 19,
+      "k": 19,
+      "p": 1.0,
+      "ci": [
+       0.8318,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "GLP",
+      "n": 15,
+      "k": 13,
+      "p": 0.8667,
+      "ci": [
+       0.6212,
+       0.9626
+      ],
+      "small": true,
+      "p_w": 0.9138,
+      "ci_w": [
+       0.7503,
+       1.0
+      ]
+     },
+     {
+      "cell": "other party",
+      "n": 22,
+      "k": 22,
+      "p": 1.0,
+      "ci": [
+       0.8513,
+       1.0
+      ],
+      "small": false,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "party unknown",
+      "n": 12,
+      "k": 11,
+      "p": 0.9167,
+      "ci": [
+       0.6461,
+       0.9851
+      ],
+      "small": true,
+      "p_w": 0.9753,
+      "ci_w": [
+       0.9014,
+       1.0
+      ]
+     },
+     {
+      "cell": "government",
+      "n": 22,
+      "k": 20,
+      "p": 0.9091,
+      "ci": [
+       0.7218,
+       0.9747
+      ],
+      "small": false,
+      "p_w": 0.9441,
+      "ci_w": [
+       0.8541,
+       1.0
+      ]
+     },
+     {
+      "cell": "committee",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true,
+      "p_w": 0.863,
+      "ci_w": [
+       0.3706,
+       1.0
+      ]
+     },
+     {
+      "cell": "other group",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "unknown",
+      "n": 19,
+      "k": 15,
+      "p": 0.7895,
+      "ci": [
+       0.5667,
+       0.9149
+      ],
+      "small": true,
+      "p_w": 0.8354,
+      "ci_w": [
+       0.6554,
+       0.967
+      ]
+     }
+    ],
+    "test": {
+     "stat": 13.665,
+     "df": 5,
+     "p_perm": 0.018,
+     "p_chi2": null,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.0161,
+     "ci": [
+      -0.1044,
+      0.1282
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "aR": {
+    "overall": {
+     "n": 199,
+     "k": 166,
+     "p": 0.8342,
+     "ci": [
+      0.7763,
+      0.8794
+     ],
+     "p_w": 0.6059
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 10,
+      "k": 7,
+      "p": 0.7,
+      "ci": [
+       0.3968,
+       0.8922
+      ],
+      "small": true,
+      "p_w": 0.7354,
+      "ci_w": [
+       0.4089,
+       1.0
+      ]
+     },
+     {
+      "cell": "SP",
+      "n": 32,
+      "k": 22,
+      "p": 0.6875,
+      "ci": [
+       0.5143,
+       0.8205
+      ],
+      "small": false,
+      "p_w": 0.4547,
+      "ci_w": [
+       0.205,
+       0.8731
+      ]
+     },
+     {
+      "cell": "FDP",
+      "n": 15,
+      "k": 12,
+      "p": 0.8,
+      "ci": [
+       0.5481,
+       0.9295
+      ],
+      "small": true,
+      "p_w": 0.325,
+      "ci_w": [
+       0.1075,
+       1.0
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "n": 21,
+      "k": 20,
+      "p": 0.9524,
+      "ci": [
+       0.7733,
+       0.9915
+      ],
+      "small": false,
+      "p_w": 0.9843,
+      "ci_w": [
+       0.9395,
+       1.0
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "n": 20,
+      "k": 19,
+      "p": 0.95,
+      "ci": [
+       0.7639,
+       0.9911
+      ],
+      "small": false,
+      "p_w": 0.9597,
+      "ci_w": [
+       0.8663,
+       1.0
+      ]
+     },
+     {
+      "cell": "GLP",
+      "n": 15,
+      "k": 13,
+      "p": 0.8667,
+      "ci": [
+       0.6212,
+       0.9626
+      ],
+      "small": true,
+      "p_w": 0.8793,
+      "ci_w": [
+       0.6797,
+       1.0
+      ]
+     },
+     {
+      "cell": "other party",
+      "n": 28,
+      "k": 22,
+      "p": 0.7857,
+      "ci": [
+       0.6046,
+       0.8979
+      ],
+      "small": false,
+      "p_w": 0.4755,
+      "ci_w": [
+       0.2168,
+       0.9502
+      ]
+     },
+     {
+      "cell": "party unknown",
+      "n": 12,
+      "k": 11,
+      "p": 0.9167,
+      "ci": [
+       0.6461,
+       0.9851
+      ],
+      "small": true,
+      "p_w": 0.3253,
+      "ci_w": [
+       0.0995,
+       1.0
+      ]
+     },
+     {
+      "cell": "government",
+      "n": 22,
+      "k": 20,
+      "p": 0.9091,
+      "ci": [
+       0.7218,
+       0.9747
+      ],
+      "small": false,
+      "p_w": 0.9441,
+      "ci_w": [
+       0.8506,
+       1.0
+      ]
+     },
+     {
+      "cell": "committee",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true,
+      "p_w": 0.863,
+      "ci_w": [
+       0.4,
+       1.0
+      ]
+     },
+     {
+      "cell": "other group",
+      "n": 2,
+      "k": 1,
+      "p": 0.5,
+      "ci": [
+       0.0945,
+       0.9055
+      ],
+      "small": true,
+      "p_w": 0.6386,
+      "ci_w": [
+       0.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "unknown",
+      "n": 17,
+      "k": 15,
+      "p": 0.8824,
+      "ci": [
+       0.6566,
+       0.9671
+      ],
+      "small": true,
+      "p_w": 0.9237,
+      "ci_w": [
+       0.8009,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 36.774,
+     "df": 5,
+     "p_perm": 0.2917,
+     "p_chi2": null,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.5296,
+     "ci": [
+      0.0975,
+      0.782
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kP": {
+    "overall": {
+     "n": 218,
+     "k": 146,
+     "p": 0.6697,
+     "ci": [
+      0.6048,
+      0.7287
+     ],
+     "p_w": 0.7602
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 20,
+      "k": 7,
+      "p": 0.35,
+      "ci": [
+       0.1812,
+       0.5671
+      ],
+      "small": false,
+      "p_w": 0.4173,
+      "ci_w": [
+       0.1732,
+       0.645
+      ]
+     },
+     {
+      "cell": "SP",
+      "n": 38,
+      "k": 25,
+      "p": 0.6579,
+      "ci": [
+       0.4989,
+       0.7879
+      ],
+      "small": false,
+      "p_w": 0.7647,
+      "ci_w": [
+       0.6376,
+       0.8735
+      ]
+     },
+     {
+      "cell": "FDP",
+      "n": 16,
+      "k": 10,
+      "p": 0.625,
+      "ci": [
+       0.3864,
+       0.8152
+      ],
+      "small": true,
+      "p_w": 0.6896,
+      "ci_w": [
+       0.4383,
+       0.8988
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "n": 19,
+      "k": 15,
+      "p": 0.7895,
+      "ci": [
+       0.5667,
+       0.9149
+      ],
+      "small": true,
+      "p_w": 0.8456,
+      "ci_w": [
+       0.6688,
+       0.9809
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "n": 21,
+      "k": 11,
+      "p": 0.5238,
+      "ci": [
+       0.3237,
+       0.7166
+      ],
+      "small": false,
+      "p_w": 0.6529,
+      "ci_w": [
+       0.43,
+       0.831
+      ]
+     },
+     {
+      "cell": "GLP",
+      "n": 11,
+      "k": 10,
+      "p": 0.9091,
+      "ci": [
+       0.6226,
+       0.9838
+      ],
+      "small": true,
+      "p_w": 0.9277,
+      "ci_w": [
+       0.7443,
+       1.0
+      ]
+     },
+     {
+      "cell": "other party",
+      "n": 29,
+      "k": 23,
+      "p": 0.7931,
+      "ci": [
+       0.6161,
+       0.9015
+      ],
+      "small": false,
+      "p_w": 0.8594,
+      "ci_w": [
+       0.7363,
+       0.9557
+      ]
+     },
+     {
+      "cell": "party unknown",
+      "n": 7,
+      "k": 5,
+      "p": 0.7143,
+      "ci": [
+       0.3589,
+       0.9178
+      ],
+      "small": true,
+      "p_w": 0.8653,
+      "ci_w": [
+       0.5622,
+       1.0
+      ]
+     },
+     {
+      "cell": "government",
+      "n": 25,
+      "k": 20,
+      "p": 0.8,
+      "ci": [
+       0.6087,
+       0.9114
+      ],
+      "small": false,
+      "p_w": 0.8711,
+      "ci_w": [
+       0.7284,
+       0.9688
+      ]
+     },
+     {
+      "cell": "committee",
+      "n": 6,
+      "k": 4,
+      "p": 0.6667,
+      "ci": [
+       0.3,
+       0.9032
+      ],
+      "small": true,
+      "p_w": 0.759,
+      "ci_w": [
+       0.3064,
+       1.0
+      ]
+     },
+     {
+      "cell": "other group",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "unknown",
+      "n": 24,
+      "k": 14,
+      "p": 0.5833,
+      "ci": [
+       0.3883,
+       0.7553
+      ],
+      "small": false,
+      "p_w": 0.683,
+      "ci_w": [
+       0.4939,
+       0.8462
+      ]
+     }
+    ],
+    "test": {
+     "stat": 13.553,
+     "df": 5,
+     "p_perm": 0.0212,
+     "p_chi2": null,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SP",
+     "lo": "SVP",
+     "diff": 0.3474,
+     "ci": [
+      0.074,
+      0.6227
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   },
+   "kR": {
+    "overall": {
+     "n": 199,
+     "k": 146,
+     "p": 0.7337,
+     "ci": [
+      0.6682,
+      0.7902
+     ],
+     "p_w": 0.5635
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 10,
+      "k": 7,
+      "p": 0.7,
+      "ci": [
+       0.3968,
+       0.8922
+      ],
+      "small": true,
+      "p_w": 0.7905,
+      "ci_w": [
+       0.4617,
+       1.0
+      ]
+     },
+     {
+      "cell": "SP",
+      "n": 32,
+      "k": 25,
+      "p": 0.7812,
+      "ci": [
+       0.6124,
+       0.8898
+      ],
+      "small": false,
+      "p_w": 0.4958,
+      "ci_w": [
+       0.2353,
+       0.9303
+      ]
+     },
+     {
+      "cell": "FDP",
+      "n": 15,
+      "k": 10,
+      "p": 0.6667,
+      "ci": [
+       0.4171,
+       0.8482
+      ],
+      "small": true,
+      "p_w": 0.3096,
+      "ci_w": [
+       0.1017,
+       0.9524
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "n": 21,
+      "k": 15,
+      "p": 0.7143,
+      "ci": [
+       0.5004,
+       0.8619
+      ],
+      "small": false,
+      "p_w": 0.7748,
+      "ci_w": [
+       0.5814,
+       0.9177
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "n": 20,
+      "k": 11,
+      "p": 0.55,
+      "ci": [
+       0.3421,
+       0.7418
+      ],
+      "small": false,
+      "p_w": 0.6628,
+      "ci_w": [
+       0.4379,
+       0.8458
+      ]
+     },
+     {
+      "cell": "GLP",
+      "n": 15,
+      "k": 10,
+      "p": 0.6667,
+      "ci": [
+       0.4171,
+       0.8482
+      ],
+      "small": true,
+      "p_w": 0.7737,
+      "ci_w": [
+       0.5398,
+       0.941
+      ]
+     },
+     {
+      "cell": "other party",
+      "n": 28,
+      "k": 23,
+      "p": 0.8214,
+      "ci": [
+       0.6441,
+       0.9212
+      ],
+      "small": false,
+      "p_w": 0.4904,
+      "ci_w": [
+       0.2149,
+       0.971
+      ]
+     },
+     {
+      "cell": "party unknown",
+      "n": 12,
+      "k": 5,
+      "p": 0.4167,
+      "ci": [
+       0.1933,
+       0.6805
+      ],
+      "small": true,
+      "p_w": 0.1937,
+      "ci_w": [
+       0.0425,
+       0.7794
+      ]
+     },
+     {
+      "cell": "government",
+      "n": 22,
+      "k": 20,
+      "p": 0.9091,
+      "ci": [
+       0.7218,
+       0.9747
+      ],
+      "small": false,
+      "p_w": 0.9441,
+      "ci_w": [
+       0.8462,
+       1.0
+      ]
+     },
+     {
+      "cell": "committee",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true,
+      "p_w": 0.863,
+      "ci_w": [
+       0.3706,
+       1.0
+      ]
+     },
+     {
+      "cell": "other group",
+      "n": 2,
+      "k": 2,
+      "p": 1.0,
+      "ci": [
+       0.3424,
+       1.0
+      ],
+      "small": true,
+      "p_w": 1.0,
+      "ci_w": [
+       1.0,
+       1.0
+      ]
+     },
+     {
+      "cell": "unknown",
+      "n": 17,
+      "k": 14,
+      "p": 0.8235,
+      "ci": [
+       0.5897,
+       0.9381
+      ],
+      "small": true,
+      "p_w": 0.8855,
+      "ci_w": [
+       0.7406,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 14.859,
+     "df": 5,
+     "p_perm": 0.9724,
+     "p_chi2": null,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.279,
+     "ci": [
+      -0.2416,
+      0.5795
+     ],
+     "basis": "cells n>=20; paired over full-packet resamples"
+    }
+   }
+  }
+ },
+ "S8_metric_names": {
+  "aP": "Apertus precision (p_yes>=0.5)",
+  "aR": "Apertus recall",
+  "kP": "keyword precision",
+  "kR": "keyword recall"
+ },
+ "S6_check": {
+  "n": 160,
+  "strict_n": 153,
+  "strict_k": 105,
+  "lenient_k": 120
+ },
+ "S6": {
+  "language": {
+   "strict": {
+    "overall": {
+     "n": 153,
+     "k": 105,
+     "p": 0.6863,
+     "ci": [
+      0.6089,
+      0.7545
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 67,
+      "k": 45,
+      "p": 0.6716,
+      "ci": [
+       0.5526,
+       0.7721
+      ],
+      "small": false
+     },
+     {
+      "cell": "fr",
+      "n": 48,
+      "k": 34,
+      "p": 0.7083,
+      "ci": [
+       0.5682,
+       0.8176
+      ],
+      "small": false
+     },
+     {
+      "cell": "it",
+      "n": 38,
+      "k": 26,
+      "p": 0.6842,
+      "ci": [
+       0.5254,
+       0.8092
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 0.176,
+     "df": 2,
+     "p_perm": 0.926,
+     "p_chi2": 0.9158,
+     "cells_tested": [
+      "de",
+      "fr",
+      "it"
+     ]
+    },
+    "gap": {
+     "hi": "fr",
+     "lo": "de",
+     "diff": 0.0367,
+     "ci": [
+      -0.1393,
+      0.2037
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "lenient": {
+    "overall": {
+     "n": 160,
+     "k": 120,
+     "p": 0.75,
+     "ci": [
+      0.6776,
+      0.8107
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 72,
+      "k": 53,
+      "p": 0.7361,
+      "ci": [
+       0.6242,
+       0.8241
+      ],
+      "small": false
+     },
+     {
+      "cell": "fr",
+      "n": 49,
+      "k": 36,
+      "p": 0.7347,
+      "ci": [
+       0.5974,
+       0.8379
+      ],
+      "small": false
+     },
+     {
+      "cell": "it",
+      "n": 39,
+      "k": 31,
+      "p": 0.7949,
+      "ci": [
+       0.6447,
+       0.8922
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 0.554,
+     "df": 2,
+     "p_perm": 0.7708,
+     "p_chi2": 0.758,
+     "cells_tested": [
+      "de",
+      "fr",
+      "it"
+     ]
+    },
+    "gap": {
+     "hi": "it",
+     "lo": "fr",
+     "diff": 0.0602,
+     "ci": [
+      -0.1188,
+      0.2344
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "level": {
+   "strict": {
+    "overall": {
+     "n": 153,
+     "k": 105,
+     "p": 0.6863,
+     "ci": [
+      0.6089,
+      0.7545
+     ]
+    },
+    "cells": [
+     {
+      "cell": "cantonal",
+      "n": 95,
+      "k": 69,
+      "p": 0.7263,
+      "ci": [
+       0.6292,
+       0.8059
+      ],
+      "small": false
+     },
+     {
+      "cell": "communal",
+      "n": 58,
+      "k": 36,
+      "p": 0.6207,
+      "ci": [
+       0.492,
+       0.7344
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 1.866,
+     "df": 1,
+     "p_perm": 0.2168,
+     "p_chi2": 0.1719,
+     "cells_tested": [
+      "cantonal",
+      "communal"
+     ]
+    },
+    "gap": {
+     "hi": "cantonal",
+     "lo": "communal",
+     "diff": 0.1056,
+     "ci": [
+      -0.0505,
+      0.2684
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "lenient": {
+    "overall": {
+     "n": 160,
+     "k": 120,
+     "p": 0.75,
+     "ci": [
+      0.6776,
+      0.8107
+     ]
+    },
+    "cells": [
+     {
+      "cell": "cantonal",
+      "n": 100,
+      "k": 74,
+      "p": 0.74,
+      "ci": [
+       0.6463,
+       0.816
+      ],
+      "small": false
+     },
+     {
+      "cell": "communal",
+      "n": 60,
+      "k": 46,
+      "p": 0.7667,
+      "ci": [
+       0.6456,
+       0.8556
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 0.142,
+     "df": 1,
+     "p_perm": 0.8524,
+     "p_chi2": 0.7061,
+     "cells_tested": [
+      "cantonal",
+      "communal"
+     ]
+    },
+    "gap": {
+     "hi": "communal",
+     "lo": "cantonal",
+     "diff": 0.0267,
+     "ci": [
+      -0.11,
+      0.1633
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "region": {
+   "strict": {
+    "overall": {
+     "n": 153,
+     "k": 105,
+     "p": 0.6863,
+     "ci": [
+      0.6089,
+      0.7545
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Deutschschweiz",
+      "n": 58,
+      "k": 39,
+      "p": 0.6724,
+      "ci": [
+       0.5442,
+       0.7792
+      ],
+      "small": false
+     },
+     {
+      "cell": "Romandie",
+      "n": 38,
+      "k": 25,
+      "p": 0.6579,
+      "ci": [
+       0.4989,
+       0.7879
+      ],
+      "small": false
+     },
+     {
+      "cell": "Svizzera italiana",
+      "n": 38,
+      "k": 26,
+      "p": 0.6842,
+      "ci": [
+       0.5254,
+       0.8092
+      ],
+      "small": false
+     },
+     {
+      "cell": "bilingual cantons (BE FR VS GR)",
+      "n": 19,
+      "k": 15,
+      "p": 0.7895,
+      "ci": [
+       0.5667,
+       0.9149
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 1.135,
+     "df": 3,
+     "p_perm": 0.7886,
+     "p_chi2": 0.7688,
+     "cells_tested": [
+      "Deutschschweiz",
+      "Romandie",
+      "Svizzera italiana",
+      "bilingual cantons (BE FR VS GR)"
+     ]
+    },
+    "gap": {
+     "hi": "Svizzera italiana",
+     "lo": "Romandie",
+     "diff": 0.0263,
+     "ci": [
+      -0.1842,
+      0.2368
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "lenient": {
+    "overall": {
+     "n": 160,
+     "k": 120,
+     "p": 0.75,
+     "ci": [
+      0.6776,
+      0.8107
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Deutschschweiz",
+      "n": 63,
+      "k": 46,
+      "p": 0.7302,
+      "ci": [
+       0.6097,
+       0.8242
+      ],
+      "small": false
+     },
+     {
+      "cell": "Romandie",
+      "n": 38,
+      "k": 27,
+      "p": 0.7105,
+      "ci": [
+       0.5524,
+       0.83
+      ],
+      "small": false
+     },
+     {
+      "cell": "Svizzera italiana",
+      "n": 39,
+      "k": 31,
+      "p": 0.7949,
+      "ci": [
+       0.6447,
+       0.8922
+      ],
+      "small": false
+     },
+     {
+      "cell": "bilingual cantons (BE FR VS GR)",
+      "n": 20,
+      "k": 16,
+      "p": 0.8,
+      "ci": [
+       0.584,
+       0.9193
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 1.134,
+     "df": 3,
+     "p_perm": 0.776,
+     "p_chi2": 0.769,
+     "cells_tested": [
+      "Deutschschweiz",
+      "Romandie",
+      "Svizzera italiana",
+      "bilingual cantons (BE FR VS GR)"
+     ]
+    },
+    "gap": {
+     "hi": "bilingual cantons (BE FR VS GR)",
+     "lo": "Romandie",
+     "diff": 0.0895,
+     "ci": [
+      -0.1395,
+      0.2974
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "canton": {
+   "strict": {
+    "overall": {
+     "n": 153,
+     "k": 105,
+     "p": 0.6863,
+     "ci": [
+      0.6089,
+      0.7545
+     ]
+    },
+    "cells": [
+     {
+      "cell": "TI",
+      "n": 38,
+      "k": 26,
+      "p": 0.6842,
+      "ci": [
+       0.5254,
+       0.8092
+      ],
+      "small": false
+     },
+     {
+      "cell": "JU",
+      "n": 18,
+      "k": 10,
+      "p": 0.5556,
+      "ci": [
+       0.3372,
+       0.7544
+      ],
+      "small": true
+     },
+     {
+      "cell": "ZH",
+      "n": 14,
+      "k": 10,
+      "p": 0.7143,
+      "ci": [
+       0.4535,
+       0.8828
+      ],
+      "small": true
+     },
+     {
+      "cell": "AG",
+      "n": 10,
+      "k": 4,
+      "p": 0.4,
+      "ci": [
+       0.1682,
+       0.6873
+      ],
+      "small": true
+     },
+     {
+      "cell": "VD",
+      "n": 10,
+      "k": 7,
+      "p": 0.7,
+      "ci": [
+       0.3968,
+       0.8922
+      ],
+      "small": true
+     },
+     {
+      "cell": "SG",
+      "n": 9,
+      "k": 7,
+      "p": 0.7778,
+      "ci": [
+       0.4526,
+       0.9368
+      ],
+      "small": true
+     },
+     {
+      "cell": "VS",
+      "n": 9,
+      "k": 8,
+      "p": 0.8889,
+      "ci": [
+       0.565,
+       0.9801
+      ],
+      "small": true
+     },
+     {
+      "cell": "GE",
+      "n": 6,
+      "k": 4,
+      "p": 0.6667,
+      "ci": [
+       0.3,
+       0.9032
+      ],
+      "small": true
+     },
+     {
+      "cell": "TG",
+      "n": 6,
+      "k": 3,
+      "p": 0.5,
+      "ci": [
+       0.1876,
+       0.8124
+      ],
+      "small": true
+     },
+     {
+      "cell": "BE",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true
+     },
+     {
+      "cell": "BL",
+      "n": 5,
+      "k": 3,
+      "p": 0.6,
+      "ci": [
+       0.2307,
+       0.8824
+      ],
+      "small": true
+     },
+     {
+      "cell": "LU",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "SO",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "FR",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true
+     },
+     {
+      "cell": "NE",
+      "n": 4,
+      "k": 4,
+      "p": 1.0,
+      "ci": [
+       0.5101,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "BS",
+      "n": 2,
+      "k": 1,
+      "p": 0.5,
+      "ci": [
+       0.0945,
+       0.9055
+      ],
+      "small": true
+     },
+     {
+      "cell": "GR",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true
+     },
+     {
+      "cell": "SZ",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "ZG",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 20.442,
+     "df": 18,
+     "p_perm": 0.3043,
+     "p_chi2": 0.3085,
+     "cells_tested": [
+      "TI",
+      "JU",
+      "ZH",
+      "AG",
+      "VD",
+      "SG",
+      "VS",
+      "GE",
+      "TG",
+      "BE",
+      "BL",
+      "LU",
+      "SO",
+      "FR",
+      "NE",
+      "BS",
+      "GR",
+      "SZ",
+      "ZG"
+     ]
+    },
+    "gap": {
+     "hi": "LU",
+     "lo": "AG",
+     "diff": 0.6,
+     "ci": [
+      0.3,
+      0.9
+     ],
+     "basis": "no 2 cells with n>=20: cells n>=5 (small)"
+    }
+   },
+   "lenient": {
+    "overall": {
+     "n": 160,
+     "k": 120,
+     "p": 0.75,
+     "ci": [
+      0.6776,
+      0.8107
+     ]
+    },
+    "cells": [
+     {
+      "cell": "TI",
+      "n": 39,
+      "k": 31,
+      "p": 0.7949,
+      "ci": [
+       0.6447,
+       0.8922
+      ],
+      "small": false
+     },
+     {
+      "cell": "JU",
+      "n": 18,
+      "k": 11,
+      "p": 0.6111,
+      "ci": [
+       0.3862,
+       0.797
+      ],
+      "small": true
+     },
+     {
+      "cell": "ZH",
+      "n": 14,
+      "k": 11,
+      "p": 0.7857,
+      "ci": [
+       0.5241,
+       0.9243
+      ],
+      "small": true
+     },
+     {
+      "cell": "AG",
+      "n": 12,
+      "k": 7,
+      "p": 0.5833,
+      "ci": [
+       0.3195,
+       0.8067
+      ],
+      "small": true
+     },
+     {
+      "cell": "SG",
+      "n": 10,
+      "k": 7,
+      "p": 0.7,
+      "ci": [
+       0.3968,
+       0.8922
+      ],
+      "small": true
+     },
+     {
+      "cell": "VD",
+      "n": 10,
+      "k": 8,
+      "p": 0.8,
+      "ci": [
+       0.4902,
+       0.9433
+      ],
+      "small": true
+     },
+     {
+      "cell": "VS",
+      "n": 10,
+      "k": 9,
+      "p": 0.9,
+      "ci": [
+       0.5958,
+       0.9821
+      ],
+      "small": true
+     },
+     {
+      "cell": "SO",
+      "n": 7,
+      "k": 6,
+      "p": 0.8571,
+      "ci": [
+       0.4869,
+       0.9743
+      ],
+      "small": true
+     },
+     {
+      "cell": "GE",
+      "n": 6,
+      "k": 4,
+      "p": 0.6667,
+      "ci": [
+       0.3,
+       0.9032
+      ],
+      "small": true
+     },
+     {
+      "cell": "TG",
+      "n": 6,
+      "k": 5,
+      "p": 0.8333,
+      "ci": [
+       0.4365,
+       0.9699
+      ],
+      "small": true
+     },
+     {
+      "cell": "BE",
+      "n": 5,
+      "k": 4,
+      "p": 0.8,
+      "ci": [
+       0.3755,
+       0.9638
+      ],
+      "small": true
+     },
+     {
+      "cell": "BL",
+      "n": 5,
+      "k": 3,
+      "p": 0.6,
+      "ci": [
+       0.2307,
+       0.8824
+      ],
+      "small": true
+     },
+     {
+      "cell": "LU",
+      "n": 5,
+      "k": 5,
+      "p": 1.0,
+      "ci": [
+       0.5655,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "FR",
+      "n": 4,
+      "k": 3,
+      "p": 0.75,
+      "ci": [
+       0.3006,
+       0.9544
+      ],
+      "small": true
+     },
+     {
+      "cell": "NE",
+      "n": 4,
+      "k": 4,
+      "p": 1.0,
+      "ci": [
+       0.5101,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "BS",
+      "n": 2,
+      "k": 1,
+      "p": 0.5,
+      "ci": [
+       0.0945,
+       0.9055
+      ],
+      "small": true
+     },
+     {
+      "cell": "GR",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true
+     },
+     {
+      "cell": "SZ",
+      "n": 1,
+      "k": 1,
+      "p": 1.0,
+      "ci": [
+       0.2065,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "ZG",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 17.15,
+     "df": 18,
+     "p_perm": 0.5283,
+     "p_chi2": 0.5128,
+     "cells_tested": [
+      "TI",
+      "JU",
+      "ZH",
+      "AG",
+      "SG",
+      "VD",
+      "VS",
+      "SO",
+      "GE",
+      "TG",
+      "BE",
+      "BL",
+      "LU",
+      "FR",
+      "NE",
+      "BS",
+      "GR",
+      "SZ",
+      "ZG"
+     ]
+    },
+    "gap": {
+     "hi": "LU",
+     "lo": "AG",
+     "diff": 0.4167,
+     "ci": [
+      0.1667,
+      0.6667
+     ],
+     "basis": "no 2 cells with n>=20: cells n>=5 (small)"
+    }
+   }
+  },
+  "party": {
+   "strict": {
+    "overall": {
+     "n": 153,
+     "k": 105,
+     "p": 0.6863,
+     "ci": [
+      0.6089,
+      0.7545
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 20,
+      "k": 11,
+      "p": 0.55,
+      "ci": [
+       0.3421,
+       0.7418
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 28,
+      "k": 23,
+      "p": 0.8214,
+      "ci": [
+       0.6441,
+       0.9212
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 16,
+      "k": 12,
+      "p": 0.75,
+      "ci": [
+       0.505,
+       0.8982
+      ],
+      "small": true
+     },
+     {
+      "cell": "Mitte",
+      "n": 6,
+      "k": 3,
+      "p": 0.5,
+      "ci": [
+       0.1876,
+       0.8124
+      ],
+      "small": true
+     },
+     {
+      "cell": "Grüne",
+      "n": 7,
+      "k": 4,
+      "p": 0.5714,
+      "ci": [
+       0.2505,
+       0.8418
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "n": 4,
+      "k": 4,
+      "p": 1.0,
+      "ci": [
+       0.5101,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "n": 24,
+      "k": 18,
+      "p": 0.75,
+      "ci": [
+       0.551,
+       0.88
+      ],
+      "small": false
+     },
+     {
+      "cell": "party unknown",
+      "n": 17,
+      "k": 11,
+      "p": 0.6471,
+      "ci": [
+       0.413,
+       0.8269
+      ],
+      "small": true
+     },
+     {
+      "cell": "government",
+      "n": 6,
+      "k": 5,
+      "p": 0.8333,
+      "ci": [
+       0.4365,
+       0.9699
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "n": 24,
+      "k": 14,
+      "p": 0.5833,
+      "ci": [
+       0.3883,
+       0.7553
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 7.757,
+     "df": 5,
+     "p_perm": 0.1718,
+     "p_chi2": 0.1701,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SP",
+     "lo": "SVP",
+     "diff": 0.2714,
+     "ci": [
+      -0.0071,
+      0.5286
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "lenient": {
+    "overall": {
+     "n": 160,
+     "k": 120,
+     "p": 0.75,
+     "ci": [
+      0.6776,
+      0.8107
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 22,
+      "k": 16,
+      "p": 0.7273,
+      "ci": [
+       0.5185,
+       0.8685
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 29,
+      "k": 25,
+      "p": 0.8621,
+      "ci": [
+       0.6944,
+       0.945
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 17,
+      "k": 14,
+      "p": 0.8235,
+      "ci": [
+       0.5897,
+       0.9381
+      ],
+      "small": true
+     },
+     {
+      "cell": "Mitte",
+      "n": 6,
+      "k": 3,
+      "p": 0.5,
+      "ci": [
+       0.1876,
+       0.8124
+      ],
+      "small": true
+     },
+     {
+      "cell": "Grüne",
+      "n": 7,
+      "k": 4,
+      "p": 0.5714,
+      "ci": [
+       0.2505,
+       0.8418
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "n": 4,
+      "k": 4,
+      "p": 1.0,
+      "ci": [
+       0.5101,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "n": 26,
+      "k": 19,
+      "p": 0.7308,
+      "ci": [
+       0.5392,
+       0.863
+      ],
+      "small": false
+     },
+     {
+      "cell": "party unknown",
+      "n": 17,
+      "k": 15,
+      "p": 0.8824,
+      "ci": [
+       0.6566,
+       0.9671
+      ],
+      "small": true
+     },
+     {
+      "cell": "government",
+      "n": 6,
+      "k": 5,
+      "p": 0.8333,
+      "ci": [
+       0.4365,
+       0.9699
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "n": 1,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.7935
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "n": 25,
+      "k": 15,
+      "p": 0.6,
+      "ci": [
+       0.4074,
+       0.766
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 7.237,
+     "df": 5,
+     "p_perm": 0.1974,
+     "p_chi2": 0.2036,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SP",
+     "lo": "SVP",
+     "diff": 0.1348,
+     "ci": [
+      -0.0925,
+      0.3511
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  }
+ },
+ "S10_check": {
+  "n": 210,
+  "pooled_k": 116,
+  "de_k": 114,
+  "fr_k": 111
+ },
+ "S10": {
+  "canton": {
+   "pooled": {
+    "overall": {
+     "n": 210,
+     "k": 116,
+     "p": 0.5524,
+     "ci": [
+      0.4848,
+      0.6181
+     ]
+    },
+    "cells": [
+     {
+      "cell": "BE",
+      "n": 70,
+      "k": 37,
+      "p": 0.5286,
+      "ci": [
+       0.4132,
+       0.641
+      ],
+      "small": false
+     },
+     {
+      "cell": "FR",
+      "n": 70,
+      "k": 40,
+      "p": 0.5714,
+      "ci": [
+       0.4548,
+       0.6806
+      ],
+      "small": false
+     },
+     {
+      "cell": "VS",
+      "n": 70,
+      "k": 39,
+      "p": 0.5571,
+      "ci": [
+       0.4408,
+       0.6675
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 0.27,
+     "df": 2,
+     "p_perm": 0.9116,
+     "p_chi2": 0.8739,
+     "cells_tested": [
+      "BE",
+      "FR",
+      "VS"
+     ]
+    },
+    "gap": {
+     "hi": "FR",
+     "lo": "BE",
+     "diff": 0.0428,
+     "ci": [
+      -0.1286,
+      0.2
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "de": {
+    "overall": {
+     "n": 210,
+     "k": 114,
+     "p": 0.5429,
+     "ci": [
+      0.4753,
+      0.6089
+     ]
+    },
+    "cells": [
+     {
+      "cell": "BE",
+      "n": 70,
+      "k": 40,
+      "p": 0.5714,
+      "ci": [
+       0.4548,
+       0.6806
+      ],
+      "small": false
+     },
+     {
+      "cell": "FR",
+      "n": 70,
+      "k": 37,
+      "p": 0.5286,
+      "ci": [
+       0.4132,
+       0.641
+      ],
+      "small": false
+     },
+     {
+      "cell": "VS",
+      "n": 70,
+      "k": 37,
+      "p": 0.5286,
+      "ci": [
+       0.4132,
+       0.641
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 0.345,
+     "df": 2,
+     "p_perm": 0.9054,
+     "p_chi2": 0.8414,
+     "cells_tested": [
+      "BE",
+      "FR",
+      "VS"
+     ]
+    },
+    "gap": {
+     "hi": "BE",
+     "lo": "FR",
+     "diff": 0.0428,
+     "ci": [
+      -0.1286,
+      0.2
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "fr": {
+    "overall": {
+     "n": 210,
+     "k": 111,
+     "p": 0.5286,
+     "ci": [
+      0.4611,
+      0.595
+     ]
+    },
+    "cells": [
+     {
+      "cell": "BE",
+      "n": 70,
+      "k": 38,
+      "p": 0.5429,
+      "ci": [
+       0.427,
+       0.6543
+      ],
+      "small": false
+     },
+     {
+      "cell": "FR",
+      "n": 70,
+      "k": 38,
+      "p": 0.5429,
+      "ci": [
+       0.427,
+       0.6543
+      ],
+      "small": false
+     },
+     {
+      "cell": "VS",
+      "n": 70,
+      "k": 35,
+      "p": 0.5,
+      "ci": [
+       0.386,
+       0.614
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 0.344,
+     "df": 2,
+     "p_perm": 0.8962,
+     "p_chi2": 0.842,
+     "cells_tested": [
+      "BE",
+      "FR",
+      "VS"
+     ]
+    },
+    "gap": {
+     "hi": "BE",
+     "lo": "VS",
+     "diff": 0.0429,
+     "ci": [
+      -0.1286,
+      0.2
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "shown language": {
+   "pooled": {
+    "overall": {
+     "n": 210,
+     "k": 116,
+     "p": 0.5524,
+     "ci": [
+      0.4848,
+      0.6181
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 105,
+      "k": 65,
+      "p": 0.619,
+      "ci": [
+       0.5235,
+       0.7062
+      ],
+      "small": false
+     },
+     {
+      "cell": "fr",
+      "n": 105,
+      "k": 51,
+      "p": 0.4857,
+      "ci": [
+       0.3923,
+       0.5801
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 3.775,
+     "df": 1,
+     "p_perm": 0.0722,
+     "p_chi2": 0.052,
+     "cells_tested": [
+      "de",
+      "fr"
+     ]
+    },
+    "gap": {
+     "hi": "de",
+     "lo": "fr",
+     "diff": 0.1333,
+     "ci": [
+      -0.0095,
+      0.2667
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "de": {
+    "overall": {
+     "n": 210,
+     "k": 114,
+     "p": 0.5429,
+     "ci": [
+      0.4753,
+      0.6089
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 105,
+      "k": 61,
+      "p": 0.581,
+      "ci": [
+       0.4854,
+       0.6708
+      ],
+      "small": false
+     },
+     {
+      "cell": "fr",
+      "n": 105,
+      "k": 53,
+      "p": 0.5048,
+      "ci": [
+       0.4107,
+       0.5985
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 1.228,
+     "df": 1,
+     "p_perm": 0.3305,
+     "p_chi2": 0.2678,
+     "cells_tested": [
+      "de",
+      "fr"
+     ]
+    },
+    "gap": {
+     "hi": "de",
+     "lo": "fr",
+     "diff": 0.0762,
+     "ci": [
+      -0.0667,
+      0.2095
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "fr": {
+    "overall": {
+     "n": 210,
+     "k": 111,
+     "p": 0.5286,
+     "ci": [
+      0.4611,
+      0.595
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "n": 105,
+      "k": 62,
+      "p": 0.5905,
+      "ci": [
+       0.4948,
+       0.6797
+      ],
+      "small": false
+     },
+     {
+      "cell": "fr",
+      "n": 105,
+      "k": 49,
+      "p": 0.4667,
+      "ci": [
+       0.3741,
+       0.5616
+      ],
+      "small": false
+     }
+    ],
+    "test": {
+     "stat": 3.23,
+     "df": 1,
+     "p_perm": 0.0976,
+     "p_chi2": 0.0723,
+     "cells_tested": [
+      "de",
+      "fr"
+     ]
+    },
+    "gap": {
+     "hi": "de",
+     "lo": "fr",
+     "diff": 0.1238,
+     "ci": [
+      -0.019,
+      0.2476
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "party": {
+   "pooled": {
+    "overall": {
+     "n": 210,
+     "k": 116,
+     "p": 0.5524,
+     "ci": [
+      0.4848,
+      0.6181
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 35,
+      "k": 20,
+      "p": 0.5714,
+      "ci": [
+       0.4086,
+       0.7202
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 33,
+      "k": 20,
+      "p": 0.6061,
+      "ci": [
+       0.4368,
+       0.7532
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 19,
+      "k": 12,
+      "p": 0.6316,
+      "ci": [
+       0.4104,
+       0.8085
+      ],
+      "small": true
+     },
+     {
+      "cell": "Mitte",
+      "n": 30,
+      "k": 17,
+      "p": 0.5667,
+      "ci": [
+       0.392,
+       0.7262
+      ],
+      "small": false
+     },
+     {
+      "cell": "Grüne",
+      "n": 17,
+      "k": 6,
+      "p": 0.3529,
+      "ci": [
+       0.1731,
+       0.587
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "n": 13,
+      "k": 7,
+      "p": 0.5385,
+      "ci": [
+       0.2914,
+       0.7679
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "n": 11,
+      "k": 6,
+      "p": 0.5455,
+      "ci": [
+       0.2801,
+       0.7873
+      ],
+      "small": true
+     },
+     {
+      "cell": "party unknown",
+      "n": 2,
+      "k": 1,
+      "p": 0.5,
+      "ci": [
+       0.0945,
+       0.9055
+      ],
+      "small": true
+     },
+     {
+      "cell": "government",
+      "n": 41,
+      "k": 22,
+      "p": 0.5366,
+      "ci": [
+       0.3875,
+       0.6794
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 9,
+      "k": 5,
+      "p": 0.5556,
+      "ci": [
+       0.2666,
+       0.8112
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 3.679,
+     "df": 5,
+     "p_perm": 0.6135,
+     "p_chi2": 0.5965,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SP",
+     "lo": "Mitte",
+     "diff": 0.0394,
+     "ci": [
+      -0.2152,
+      0.2727
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "de": {
+    "overall": {
+     "n": 210,
+     "k": 114,
+     "p": 0.5429,
+     "ci": [
+      0.4753,
+      0.6089
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 35,
+      "k": 18,
+      "p": 0.5143,
+      "ci": [
+       0.3557,
+       0.6701
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 33,
+      "k": 16,
+      "p": 0.4848,
+      "ci": [
+       0.325,
+       0.6478
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 19,
+      "k": 11,
+      "p": 0.5789,
+      "ci": [
+       0.3628,
+       0.7686
+      ],
+      "small": true
+     },
+     {
+      "cell": "Mitte",
+      "n": 30,
+      "k": 19,
+      "p": 0.6333,
+      "ci": [
+       0.4551,
+       0.7813
+      ],
+      "small": false
+     },
+     {
+      "cell": "Grüne",
+      "n": 17,
+      "k": 8,
+      "p": 0.4706,
+      "ci": [
+       0.2616,
+       0.6904
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "n": 13,
+      "k": 8,
+      "p": 0.6154,
+      "ci": [
+       0.3552,
+       0.8229
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "n": 11,
+      "k": 5,
+      "p": 0.4545,
+      "ci": [
+       0.2127,
+       0.7199
+      ],
+      "small": true
+     },
+     {
+      "cell": "party unknown",
+      "n": 2,
+      "k": 0,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.6576
+      ],
+      "small": true
+     },
+     {
+      "cell": "government",
+      "n": 41,
+      "k": 23,
+      "p": 0.561,
+      "ci": [
+       0.4104,
+       0.7011
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 9,
+      "k": 6,
+      "p": 0.6667,
+      "ci": [
+       0.3542,
+       0.8794
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 2.285,
+     "df": 5,
+     "p_perm": 0.815,
+     "p_chi2": 0.8084,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.1485,
+     "ci": [
+      -0.1061,
+      0.3758
+     ],
+     "basis": "cells n>=20"
+    }
+   },
+   "fr": {
+    "overall": {
+     "n": 210,
+     "k": 111,
+     "p": 0.5286,
+     "ci": [
+      0.4611,
+      0.595
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "n": 35,
+      "k": 20,
+      "p": 0.5714,
+      "ci": [
+       0.4086,
+       0.7202
+      ],
+      "small": false
+     },
+     {
+      "cell": "SP",
+      "n": 33,
+      "k": 19,
+      "p": 0.5758,
+      "ci": [
+       0.4081,
+       0.7276
+      ],
+      "small": false
+     },
+     {
+      "cell": "FDP",
+      "n": 19,
+      "k": 11,
+      "p": 0.5789,
+      "ci": [
+       0.3628,
+       0.7686
+      ],
+      "small": true
+     },
+     {
+      "cell": "Mitte",
+      "n": 30,
+      "k": 14,
+      "p": 0.4667,
+      "ci": [
+       0.3023,
+       0.6386
+      ],
+      "small": false
+     },
+     {
+      "cell": "Grüne",
+      "n": 17,
+      "k": 6,
+      "p": 0.3529,
+      "ci": [
+       0.1731,
+       0.587
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "n": 13,
+      "k": 7,
+      "p": 0.5385,
+      "ci": [
+       0.2914,
+       0.7679
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "n": 11,
+      "k": 6,
+      "p": 0.5455,
+      "ci": [
+       0.2801,
+       0.7873
+      ],
+      "small": true
+     },
+     {
+      "cell": "party unknown",
+      "n": 2,
+      "k": 1,
+      "p": 0.5,
+      "ci": [
+       0.0945,
+       0.9055
+      ],
+      "small": true
+     },
+     {
+      "cell": "government",
+      "n": 41,
+      "k": 21,
+      "p": 0.5122,
+      "ci": [
+       0.3648,
+       0.6575
+      ],
+      "small": false
+     },
+     {
+      "cell": "unknown",
+      "n": 9,
+      "k": 6,
+      "p": 0.6667,
+      "ci": [
+       0.3542,
+       0.8794
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 3.301,
+     "df": 5,
+     "p_perm": 0.6627,
+     "p_chi2": 0.6538,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SP",
+     "lo": "Mitte",
+     "diff": 0.1091,
+     "ci": [
+      -0.1515,
+      0.3364
+     ],
+     "basis": "cells n>=20"
+    }
+   }
+  },
+  "prompt in original language vs the other (paired)": {
+   "n": 210,
+   "matched": {
+    "k": 110,
+    "p": 0.5238,
+    "ci": [
+     0.4564,
+     0.5903
+    ]
+   },
+   "other": {
+    "k": 115,
+    "p": 0.5476,
+    "ci": [
+     0.48,
+     0.6135
+    ]
+   },
+   "diff": -0.0238,
+   "diff_ci": [
+    -0.0857,
+    0.0381
+   ],
+   "only_matched_right": 18,
+   "only_other_right": 23,
+   "p_mcnemar": 0.5322
+  }
+ }
+}

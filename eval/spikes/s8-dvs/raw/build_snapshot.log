@@ -1,0 +1,15 @@
+## Results (snapshot, data as of 2026-10-13 20:30:36 UTC; source snapshot/)
+- Window affairs (begin_date 2026-01-01..2026-10-06): 14790; titled: 14789; scored complete (A, plus B where 0.1<p_A<0.9) in window: 5932
+- Order-A rows: 5938; order B needed among them: 37, B rows: 37
+- Design sample: census C (2026-09-30..2026-10-06) N=n=577 (missing 0); SRS stratum R (2026-01-01..2026-09-30 excl.) N_R=14212, n_R=5338 (sampling fraction 0.3756, weight 2.662); scored affairs outside the design (DVS out-of-order, prefix gaps): 17
+- Coverage: PARTIAL: estimates below are design-weighted
+- Apertus flags (p>=0.5), estimated window total: 660.4 [587.5, 742.6] (census 48 + SRS 230/5338)
+- Keyword flags, estimated window total: 742.2 [664.7, 829.0] (census 50 + SRS 260/5338)
+- Please-check (orders disagree or 0.3<=p<0.7), estimated total: 28.6 [16.5, 51.0] (census 2 + SRS 10/5338)
+- Both flags (A∩K): 501.3 [438.2, 573.9] (census 38 + SRS 174/5338); A only: 159.1 [124.9, 203.3] (census 10 + SRS 56/5338); K only: 241.0 [197.7, 294.2] (census 12 + SRS 86/5338)
+- Distinct parliaments among Apertus flags in the design sample: 50 (of 86 parliaments present in the sample; of 86 in the window) — a lower bound for the window; among keyword flags: 50
+
+### By level (estimated window totals; census + N_R x SRS share, Wilson 95%)
+| level | N window | sample n | Apertus flags (sample) | est. flags [95%] | kw flags (sample) | est. kw [95%] |
+|---|---|---|---|---|---|---|
+| federal | 3162 | 1457 | 91 | 756.1 [589.9, 968.8] | 104 | 932.2 [745.2, 1164.5] |

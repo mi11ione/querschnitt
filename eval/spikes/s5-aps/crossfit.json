@@ -1,0 +1,12 @@
+{
+ "0.75": {
+  "heldout_precision": 0.737,
+  "mean_coverage": 0.516,
+  "n_rows": 262
+ },
+ "0.8": {
+  "heldout_precision": 0.759,
+  "mean_coverage": 0.377,
+  "n_rows": 262
+ }
+}

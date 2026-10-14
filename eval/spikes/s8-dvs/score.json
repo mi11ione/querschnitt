@@ -1,0 +1,191 @@
+{
+ "annotators": {
+  "nA": 464,
+  "nB": 464,
+  "nC": 15,
+  "nQ": 464,
+  "AB": [
+   460,
+   0.976,
+   0.951
+  ],
+  "AQ": [
+   460,
+   0.909,
+   0.812
+  ],
+  "BQ": [
+   461,
+   0.915,
+   0.824
+  ],
+  "disagreements": 15,
+  "gold_missing": 0
+ },
+ "gold_AB_C": {
+  "point": {
+   "pos": 1019.153,
+   "a_P": 0.917,
+   "a_R": 0.606,
+   "k_P": 0.76,
+   "k_R": 0.563,
+   "a_flags": 673.601,
+   "k_flags": 755.473
+  },
+  "ci": {
+   "pos": [
+    749.421,
+    1362.546
+   ],
+   "a_P": [
+    0.882,
+    0.951
+   ],
+   "a_R": [
+    0.447,
+    0.815
+   ],
+   "k_P": [
+    0.725,
+    0.797
+   ],
+   "k_R": [
+    0.416,
+    0.757
+   ],
+   "a_flags": [
+    648.443,
+    697.096
+   ],
+   "k_flags": [
+    728.653,
+    778.858
+   ],
+   "dP": [
+    0.116,
+    0.197
+   ],
+   "dR": [
+    0.012,
+    0.079
+   ]
+  },
+  "d_precision": 0.157,
+  "d_recall": 0.042
+ },
+ "gold_majority_ABQ": {
+  "point": {
+   "pos": 998.096,
+   "a_P": 0.902,
+   "a_R": 0.603,
+   "k_P": 0.741,
+   "k_R": 0.561,
+   "a_flags": 667.276,
+   "k_flags": 755.473
+  },
+  "ci": {
+   "pos": [
+    730.648,
+    1344.369
+   ],
+   "a_P": [
+    0.861,
+    0.94
+   ],
+   "a_R": [
+    0.444,
+    0.818
+   ],
+   "k_P": [
+    0.702,
+    0.781
+   ],
+   "k_R": [
+    0.41,
+    0.758
+   ],
+   "a_flags": [
+    641.118,
+    692.159
+   ],
+   "k_flags": [
+    728.653,
+    778.858
+   ],
+   "dP": [
+    0.121,
+    0.201
+   ],
+   "dR": [
+    0.012,
+    0.08
+   ]
+  },
+  "d_precision": 0.161,
+  "d_recall": 0.042
+ },
+ "positives": {
+  "n_packet": 199,
+  "parliaments": 46,
+  "parliaments_outside_dvs9": 38,
+  "est_total": 1019.2,
+  "est_outside_dvs9": 537.5,
+  "est_by_level": {
+   "federal": 339.5,
+   "cantonal": 422.3,
+   "communal": 151.5,
+   "other": 105.9
+  },
+  "est_by_lang": {
+   "de": 763.6,
+   "fr": 204.8,
+   "it": 50.7
+  },
+  "packet_by_level": {
+   "cantonal": 87,
+   "federal": 62,
+   "communal": 41,
+   "other": 9
+  },
+  "packet_by_lang": {
+   "de": 150,
+   "it": 14,
+   "fr": 35
+  },
+  "on_dvs_list": 4,
+  "apertus_found_kw_missed": 49,
+  "est_apertus_found_kw_missed": 117.2,
+  "kw_found_apertus_missed": 29,
+  "est_kw_found_apertus_missed": 73.9,
+  "est_total_ci": [
+   739.9,
+   1371.1
+  ],
+  "est_outside_dvs9_ci": [
+   346.5,
+   804.9
+  ]
+ },
+ "by_stratum": {
+  "A∩K": {
+   "n": 120,
+   "gold_Y": 117,
+   "gold_N": 3
+  },
+  "A only": {
+   "n": 66,
+   "gold_Y": 49,
+   "gold_N": 17
+  },
+  "neither": {
+   "n": 180,
+   "gold_Y": 4,
+   "gold_N": 176
+  },
+  "K only": {
+   "n": 98,
+   "gold_Y": 29,
+   "gold_N": 69
+  }
+ }
+}

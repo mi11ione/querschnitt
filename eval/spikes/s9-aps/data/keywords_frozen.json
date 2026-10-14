@@ -1,0 +1,393 @@
+{
+ "frozen_utc": "2026-10-13T18:12:02Z",
+ "rule": "Keyword baseline, frozen BEFORE any scoring: for each APS chapter, the set of content words (>= 5 chars, lowercased, DE)\nof its APS subtopic names (s1lib.SUBS, 190 names). Decision rule (also frozen here): for an affair, count per chapter the\nnumber of distinct keywords occurring as a substring of lowercase(title + ' ' + title_long + ' ' + text) [DE, the same\nfields the model sees]; predict the chapter with most matches; ties (incl. all-zero) -> the tied chapter most frequent in the\nS9 gold (majority order).",
+ "stopwords": [
+  "allgemeiner",
+  "andere",
+  "anderer",
+  "sowie",
+  "zwischen"
+ ],
+ "chapters": {
+  "0": {
+   "name": "Politische Grundfragen",
+   "keywords": [
+    "ausland",
+    "bevölkerung",
+    "identität",
+    "image",
+    "landes",
+    "nationale",
+    "schweiz",
+    "staatsjubiläen",
+    "stimmung",
+    "verfassungsfragen",
+    "weltausstellungen"
+   ]
+  },
+  "1": {
+   "name": "Rechtsordnung",
+   "keywords": [
+    "bürgerrecht",
+    "datenschutz",
+    "grundrechte",
+    "innere",
+    "kriminalität",
+    "niederlassungsrecht",
+    "ordnung",
+    "polizei",
+    "privatrecht",
+    "rechtshilfe",
+    "sicherheit",
+    "statistik",
+    "stimm",
+    "strafrecht",
+    "wahlrecht",
+    "äussere",
+    "öffentliche"
+   ]
+  },
+  "2": {
+   "name": "Institutionen und Volksrechte",
+   "keywords": [
+    "abstimmungsverfahren",
+    "bundesrat",
+    "bundesrechtspflege",
+    "bundesverwaltung",
+    "organisation",
+    "parlamentsmandat",
+    "parlamentsorganisation",
+    "personal",
+    "regierungspolitik",
+    "volksrechte"
+   ]
+  },
+  "3": {
+   "name": "Föderativer Aufbau",
+   "keywords": [
+    "beziehungen",
+    "gemeinden",
+    "interkantonale",
+    "jurafrage",
+    "kantonen",
+    "regionen",
+    "städte",
+    "territorialfragen",
+    "zusammenarbeit"
+   ]
+  },
+  "4": {
+   "name": "Wahlen",
+   "keywords": [
+    "eidgenössische",
+    "ersatzwahlen",
+    "kantonale",
+    "kommunale",
+    "parlamente",
+    "regierungen",
+    "ständeratsersatzwahlen",
+    "wahlen"
+   ]
+  },
+  "5": {
+   "name": "Aussenpolitik",
+   "keywords": [
+    "auslandschweizer",
+    "aussenwirtschaftspolitik",
+    "beziehungen",
+    "dienste",
+    "entwicklungspolitik",
+    "internationalen",
+    "organisationen",
+    "zwischenstaatliche"
+   ]
+  },
+  "6": {
+   "name": "Landesverteidigung",
+   "keywords": [
+    "ausrüstung",
+    "beschaffung",
+    "bevölkerungsschutz",
+    "dienstverweigerung",
+    "gesellschaft",
+    "landesverteidigung",
+    "militäreinsätze",
+    "militärorganisation",
+    "zivildienst"
+   ]
+  },
+  "7": {
+   "name": "Wirtschaftspolitik",
+   "keywords": [
+    "gesellschaftsrecht",
+    "konjunkturlage",
+    "politik",
+    "strukturpolitik",
+    "wettbewerb",
+    "wirtschaftsordnung"
+   ]
+  },
+  "8": {
+   "name": "Geld, Währung und Kredit",
+   "keywords": [
+    "banken",
+    "börsen",
+    "finanzinstitutionen",
+    "finanzmarkt",
+    "geldpolitik",
+    "internationale",
+    "kapitalmarkt",
+    "makroprudenzielle",
+    "nationalbank",
+    "regulierung",
+    "versicherungen",
+    "wettbewerbsfähigkeit"
+   ]
+  },
+  "9": {
+   "name": "Landwirtschaft",
+   "keywords": [
+    "agrarpolitik",
+    "agrarprodukte",
+    "beruf",
+    "fischerei",
+    "forstwirtschaft",
+    "internationale",
+    "landwirt",
+    "landwirtschaft",
+    "landwirtschaftspolitik",
+    "lebensmittel",
+    "pflanzliche",
+    "produktion",
+    "schutz",
+    "tierhaltung",
+    "tierische",
+    "umweltschutz",
+    "versuche"
+   ]
+  },
+  "10": {
+   "name": "Öffentliche Finanzen",
+   "keywords": [
+    "ausgabenordnung",
+    "direkte",
+    "finanz",
+    "finanzausgleich",
+    "finanzhaushalt",
+    "finanzplan",
+    "gemeinden",
+    "indirekte",
+    "kantone",
+    "sanierungsmassnahmen",
+    "staatsrechnung",
+    "steuern",
+    "voranschlag"
+   ]
+  },
+  "11": {
+   "name": "Energie",
+   "keywords": [
+    "alternativenergien",
+    "energiepolitik",
+    "erdgas",
+    "erdöl",
+    "kernenergie",
+    "vertrieb",
+    "wasserkraft"
+   ]
+  },
+  "12": {
+   "name": "Verkehr und Kommunikation",
+   "keywords": [
+    "agglomerationsverkehr",
+    "eisenbahn",
+    "luftfahrt",
+    "schiffahrt",
+    "strassenverkehr",
+    "telekommunikation",
+    "verkehr",
+    "verkehrspolitik",
+    "öffentlicher"
+   ]
+  },
+  "13": {
+   "name": "Raumplanung und Wohnungswesen",
+   "keywords": [
+    "bodenrecht",
+    "eigentum",
+    "mietwesen",
+    "raumplanung",
+    "wohnqualität",
+    "wohnungsbau"
+   ]
+  },
+  "14": {
+   "name": "Umweltschutz",
+   "keywords": [
+    "abfälle",
+    "bodenschutz",
+    "gewässerschutz",
+    "klimapolitik",
+    "luftreinhaltung",
+    "lärmschutz",
+    "naturgefahren",
+    "naturschutz",
+    "umweltschutz"
+   ]
+  },
+  "15": {
+   "name": "Bevölkerung und Arbeit",
+   "keywords": [
+    "arbeitnehmerschutz",
+    "arbeitsbeziehungen",
+    "arbeitsmarkt",
+    "arbeitsrecht",
+    "arbeitszeit",
+    "bevölkerungsentwicklung",
+    "kollektive",
+    "löhne"
+   ]
+  },
+  "16": {
+   "name": "Gesundheit, Sozialhilfe, Sport",
+   "keywords": [
+    "epidemien",
+    "forschung",
+    "gesundheitspolitik",
+    "medikamente",
+    "medizinische",
+    "pflegepersonal",
+    "sozialhilfe",
+    "sport",
+    "suchtmittel",
+    "ärzte"
+   ]
+  },
+  "17": {
+   "name": "Sozialversicherungen",
+   "keywords": [
+    "alters",
+    "arbeitslosenversicherung",
+    "berufliche",
+    "ergänzungsleistungen",
+    "erwerbsersatzordnung",
+    "hinterlassenenversicherung",
+    "invalidenversicherung",
+    "krankenversicherung",
+    "private",
+    "unfallversicherung",
+    "vorsorge"
+   ]
+  },
+  "18": {
+   "name": "Soziale Gruppen",
+   "keywords": [
+    "alterspolitik",
+    "asylpolitik",
+    "behinderungen",
+    "familienpolitik",
+    "frauen",
+    "gleichstellungspolitik",
+    "jugendpolitik",
+    "kinder",
+    "lgbtqia",
+    "menschen",
+    "migrationspolitik"
+   ]
+  },
+  "19": {
+   "name": "Bildung und Forschung",
+   "keywords": [
+    "berufsbildung",
+    "forschung",
+    "grundschulen",
+    "hochschulen",
+    "mittelschulen"
+   ]
+  },
+  "20": {
+   "name": "Kultur, Sprache, Kirchen",
+   "keywords": [
+    "archive",
+    "bibliotheken",
+    "buchmarkt",
+    "denkmalpflege",
+    "fahrende",
+    "fragen",
+    "heimatschutz",
+    "kirchen",
+    "kulturpolitik",
+    "museen",
+    "musik",
+    "religionspolitische",
+    "sprachen",
+    "urheberrecht"
+   ]
+  },
+  "21": {
+   "name": "Medien",
+   "keywords": [
+    "fernsehen",
+    "grundfragen",
+    "medien",
+    "medienpolitische",
+    "meinungsforschung",
+    "presse",
+    "radio",
+    "telekommunikation"
+   ]
+  },
+  "22": {
+   "name": "Parteien",
+   "keywords": [
+    "grosse",
+    "konservative",
+    "liberale",
+    "linke",
+    "parteien",
+    "parteiensystem",
+    "rechte",
+    "ökologische"
+   ]
+  },
+  "23": {
+   "name": "Verbände",
+   "keywords": [
+    "arbeitgeber",
+    "arbeitnehmer",
+    "bildung",
+    "dienstleistungen",
+    "energie",
+    "freizeit",
+    "gastgewerbe",
+    "gesundheit",
+    "gewerbe",
+    "gewerkschaften",
+    "gruppen",
+    "handel",
+    "industrie",
+    "interessen",
+    "kirche",
+    "konsum",
+    "kultur",
+    "landwirtschaft",
+    "medien",
+    "natur",
+    "politische",
+    "raumplanung",
+    "religion",
+    "soziale",
+    "sozialwesen",
+    "sprachen",
+    "tanks",
+    "think",
+    "tourismus",
+    "umwelt",
+    "unternehmer",
+    "verkehr",
+    "wohnungswesen",
+    "überparteiliche"
+   ]
+  }
+ }
+}

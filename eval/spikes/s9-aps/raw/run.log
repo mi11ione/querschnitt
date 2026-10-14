@@ -1,0 +1,96 @@
+items 129 with curia 129 de text 129 fr title 129 sub_gold 120 mem_old 297
+20:19:17 round 0 items 129 final False todo 387
+0 d0a-202727 ok
+100 d0a-69818 ok
+200 d0a-155574 ok
+300 d2fr-155659 ok
+items 275 with curia 275 de text 275 fr title 275 sub_gold 251 mem_old 297
+20:29:09 round 1 items 275 final False todo 567
+0 d0a-61818 ok
+100 d0a-152705 ok
+200 d0a-214225 ok
+300 d1-153082 ok
+400 d1-234745 ok
+500 d2fr-71772 ok
+items 457 with curia 457 de text 457 fr title 457 sub_gold 409 mem_old 297
+20:40:55 round 2 items 457 final False todo 692
+0 d0a-67322 ok
+100 d0a-214067 ok
+200 d0a-67352 ok
+300 d0a-235923 ok
+400 d1-67213 ok
+500 d1-235286 ok
+items 679 with curia 679 de text 679 fr title 679 sub_gold 606 mem_old 297
+20:54:39 round 3 items 679 final False todo 940
+0 d0a-68538 ok
+100 d0a-213741 ok
+200 d0a-214194 ok
+300 d0a-152112 ok
+400 d0a-159810 ok
+500 d1-214622 ok
+items 936 with curia 936 de text 935 fr title 936 sub_gold 838 mem_old 297
+21:11:23 round 4 items 936 final False todo 1333
+0 d0a-65021 ok
+100 d0a-202517 ok
+200 d0a-64122 ok
+300 d0a-234739 ok
+400 d0a-69814 ok
+500 d0a-70662 ok
+items 1170 with curia 1170 de text 1168 fr title 1170 sub_gold 1050 mem_old 297
+21:27:15 round 5 items 1170 final False todo 1692
+0 d0a-201448 ok
+100 d0a-202467 ok
+200 d0a-215010 ok
+300 d0a-151994 ok
+400 d0a-214405 ok
+500 d1-201444 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+21:45:22 round 6 items 1357 final True todo 3244
+0 d0a-66555 ok
+100 d0a-157332 ok
+200 d0a-66693 ok
+300 d0a-61852 ok
+400 d1-148963 ok
+500 d1-146712 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+22:01:03 round 7 items 1357 final True todo 2831
+0 d1-152590 ok
+100 d1-158607 ok
+200 d1-68064 ok
+300 d1-156300 ok
+400 d1-202047 ok
+500 d2fr-69443 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+22:16:39 round 8 items 1357 final True todo 2231
+0 d2fr-64352 ok
+100 d2fr-214894 ok
+200 d2fr-69270 ok
+300 d2fr-157780 ok
+400 d2fr-69177 ok
+500 d2fr-202532 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+22:30:21 round 9 items 1357 final True todo 1631
+0 d2fr-210097 ok
+100 d2fr-144773 ok
+200 d2fr-59779 ok
+300 d3m-157791 ok
+400 d3m-234805 ok
+500 d3m-213981 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+22:48:50 round 10 items 1357 final True todo 1031
+0 d3m-69470 ok
+100 d3m-146346 ok
+200 d3m-160998 ok
+300 d3m-213956 ok
+400 d3m-64273 ok
+500 d3m-66944 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+23:02:32 round 11 items 1357 final True todo 431
+0 d3m-201610 ok
+100 d3m-66982 ok
+200 d3m-159817 ok
+300 d3m-162277 ok
+400 d3m-214490 ok
+items 1357 with curia 1357 de text 1355 fr title 1357 sub_gold 1221 mem_old 297
+23:13:28 round 12 items 1357 final True todo 0
+END stop= False spent bern2-s9-*: 0.9916

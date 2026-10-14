@@ -1,0 +1,212 @@
+{
+ "n": 20,
+ "bytes_equal": 20,
+ "within_1e3": 16,
+ "max_diff": 0.20586849347620295,
+ "fps": [
+  "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ ],
+ "rows": [
+  {
+   "oid": 233478,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 6.860313572776278e-06,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 213564,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.059195183104769455,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": false
+  },
+  {
+   "oid": 68537,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 213130,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 161100,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 215121,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 65144,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 60216,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.20586849347620295,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 157295,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.02077780873126378,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 201824,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 2.8770702251759853e-06,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 149541,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 9.021392686214824e-07,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 213627,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 61199,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 6.485980263981617e-07,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 158873,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 154641,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 7.344733787828517e-08,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 68111,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 2.2406730185649055e-06,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 234705,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 214769,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.002845067396182732,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 202538,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 0.0,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  },
+  {
+   "oid": 202498,
+   "bytes_equal": true,
+   "sent": true,
+   "max_abs_diff_p": 1.1236462360564303e-07,
+   "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "cached": false,
+   "top1_equal": true
+  }
+ ],
+ "top1_equal": 19
+}

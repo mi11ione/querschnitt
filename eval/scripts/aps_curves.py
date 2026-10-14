@@ -5,8 +5,7 @@ confidence, descending, stable over ascending oid; coverage c keeps the first ma
 chapter equals the APS editors' chapter; Wilson 95%. p_cal_insample = isotonic fit on all 1,357 items (in-sample, for the
 dial only; the cross-fitted ECE is S9c). Output: eval/aps_curves.json."""
 import json, math, os
-HB = "/Users/mi11ion/Desktop/hackapertus/bern"
-S9 = f"{HB}/ideation2/spikes/s9-aps"
+S9 = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "spikes", "s9-aps")  # vendored S9
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "aps_curves.json")
 
 def load(path):

@@ -1,0 +1,153 @@
+e1m {"first1": {"micro": 0.327, "macro": 0.178, "P": 0.55, "R": 0.233, "ci_micro": [0.289, 0.368], "ci_macro": [0.149, 0.213]}, "first2": {"micro": 0.491, "macro": 0.387, "P": 0.541, "R": 0.449, "ci_micro": [0.454, 0.528], "ci_macro": [0.318, 0.434]}, "first3": {"micro": 0.516, "macro": 0.438, "P": 0.515, "R": 0.517, "ci_micro": [0.482, 0.55], "ci_macro": [0.368, 0.487]}, "first4": {"micro": 0.509, "macro": 0.428, "P": 0.5, "R": 0.519, "ci_micro": [0.475, 0.544], "ci_macro": [0.36, 0.478]}, "k_dev": 4, "top1_precision": [0.55, [0.481, 0.617]], "mean_len": 2.46, "len_dist": {"2": 110, "3": 66, "1": 8, "4": 15, "5": 1}, "n": 200, "unparsed": 0, "d_micro_vs_BFH025": [-0.221, -0.133], "d_macro_vs_BFH025": [-0.24, -0.085]}
+e3m {"first1": {"micro": 0.399, "macro": 0.237, "P": 0.67, "R": 0.284, "ci_micro": [0.359, 0.437], "ci_macro": [0.198, 0.276]}, "first2": {"micro": 0.562, "macro": 0.428, "P": 0.62, "R": 0.515, "ci_micro": [0.526, 0.598], "ci_macro": [0.376, 0.481]}, "first3": {"micro": 0.591, "macro": 0.512, "P": 0.584, "R": 0.6, "ci_micro": [0.558, 0.627], "ci_macro": [0.461, 0.567]}, "first4": {"micro": 0.591, "macro": 0.511, "P": 0.567, "R": 0.617, "ci_micro": [0.56, 0.625], "ci_macro": [0.461, 0.568]}, "k_dev": 3, "top1_precision": [0.67, [0.602, 0.731]], "mean_len": 2.62, "len_dist": {"2": 99, "1": 8, "3": 65, "5": 8, "4": 18, "6": 2}, "n": 200, "unparsed": 0, "d_micro_vs_BFH025": [-0.144, -0.05], "d_macro_vs_BFH025": [-0.131, 0.002]}
+E1 names (id)                      thr@0.03       microF1 0.486 (0.452, 0.518) macro 0.414 P 0.493 R 0.479 k̄ 2.29 top1P 0.755 top3R 0.544 thr (0.486, 'thr@0.03')
+E1 names+desc (id)                 thr@0.03       microF1 0.554 (0.525, 0.583) macro 0.464 P 0.641 R 0.487 k̄ 1.79 top1P 0.825 top3R 0.547 thr (0.554, 'thr@0.03')
+E2 names+desc (perm B)             thr@0.01       microF1 0.511 (0.474, 0.549) macro 0.421 P 0.540 R 0.485 k̄ 2.12 top1P 0.82 top3R 0.517 thr (0.511, 'thr@0.01')
+E2 desc avg-geo                    thr@0.01       microF1 0.534 (0.501, 0.571) macro 0.440 P 0.576 R 0.498 k̄ 2.04 top1P 0.865 top3R 0.57 thr (0.534, 'thr@0.01')
+E2 desc avg-arith                  top1+thr@0.2   microF1 0.563 (0.527, 0.599) macro 0.464 P 0.766 R 0.445 k̄ 1.37 top1P 0.865 top3R 0.581 thr (0.555, 'thr@0.25')
+E3 memory (id)                     thr@0.01       microF1 0.569 (0.536, 0.603) macro 0.484 P 0.654 R 0.504 k̄ 1.82 top1P 0.86 top3R 0.604 thr (0.569, 'thr@0.01')
+E3 memory (perm B)                 thr@0.005      microF1 0.569 (0.536, 0.603) macro 0.489 P 0.626 R 0.521 k̄ 1.97 top1P 0.845 top3R 0.583 thr (0.569, 'thr@0.005')
+E3 memory avg-geo                  rel@0.02       microF1 0.575 (0.544, 0.607) macro 0.487 P 0.710 R 0.483 k̄ 1.6 top1P 0.87 top3R 0.642 thr (0.566, 'thr@0.05')
+E3 memory avg-arith                thr@0.005      microF1 0.585 (0.551, 0.62) macro 0.511 P 0.585 R 0.585 k̄ 2.36 top1P 0.88 top3R 0.642 thr (0.585, 'thr@0.005')
+BFH Omikuji (own scores)           top1+thr@0.3   microF1 0.697 (0.661, 0.732) macro 0.590 P 0.763 R 0.642 k̄ 1.99 top1P 0.855 top3R 0.727 thr (0.687, 'thr@0.25')
+kNN-5 memory only (de, no LLM)     thr@0.25       microF1 0.449 (0.41, 0.488) macro 0.375 P 0.458 R 0.441 k̄ 2.27 top1P 0.58 top3R 0.483 thr (0.449, 'thr@0.25')
+E1 names+desc (id) + kNN fusion (a=0.6) thr@0.2        microF1 0.570 (0.534, 0.607) macro 0.486 P 0.713 R 0.475 k̄ 1.57 top1P 0.86 top3R 0.6 thr (0.57, 'thr@0.2')
+E2 desc avg-geo + kNN fusion (a=0.9) thr@0.05       microF1 0.573 (0.535, 0.609) macro 0.482 P 0.640 R 0.519 k̄ 1.92 top1P 0.865 top3R 0.606 thr (0.573, 'thr@0.05')
+E3 memory avg-geo + kNN fusion (a=0.9) thr@0.05       microF1 0.593 (0.56, 0.625) macro 0.517 P 0.700 R 0.515 k̄ 1.74 top1P 0.87 top3R 0.614 thr (0.593, 'thr@0.05')
+BFH thr0.25 test {'micro': 0.687, 'macro': 0.577, 'P': 0.733, 'R': 0.646, 'ci_micro': (0.652, 0.722), 'ci_macro': (0.525, 0.642)}
+E2_agree_desc {'n': 300, 'agree': 189, 'rate': 0.63, 'ci': (0.574, 0.683), 'n_hi': 192, 'agree_hi': 151, 'rate_hi': 0.786, 'ci_hi': (0.723, 0.839)}
+E3_agree {'n': 300, 'agree': 235, 'rate': 0.783, 'ci': (0.733, 0.826), 'n_hi': 215, 'agree_hi': 192, 'rate_hi': 0.893, 'ci_hi': (0.845, 0.928)}
+{
+"E1 names (id)": {
+"d_micro_vs_thr025": [
+-0.247,
+-0.149
+],
+"d_macro_vs_thr025": [
+-0.239,
+-0.096
+]
+},
+"E1 names+desc (id)": {
+"d_micro_vs_thr025": [
+-0.172,
+-0.09
+],
+"d_macro_vs_thr025": [
+-0.185,
+-0.054
+]
+},
+"E2 names+desc (perm B)": {
+"d_micro_vs_thr025": [
+-0.221,
+-0.127
+],
+"d_macro_vs_thr025": [
+-0.229,
+-0.085
+]
+},
+"E2 desc avg-geo": {
+"d_micro_vs_thr025": [
+-0.202,
+-0.104
+],
+"d_macro_vs_thr025": [
+-0.215,
+-0.068
+]
+},
+"E2 desc avg-arith": {
+"d_micro_vs_thr025": [
+-0.169,
+-0.076
+],
+"d_macro_vs_thr025": [
+-0.2,
+-0.041
+]
+},
+"E3 memory (id)": {
+"d_micro_vs_thr025": [
+-0.163,
+-0.068
+],
+"d_macro_vs_thr025": [
+-0.163,
+-0.029
+]
+},
+"E3 memory (perm B)": {
+"d_micro_vs_thr025": [
+-0.163,
+-0.069
+],
+"d_macro_vs_thr025": [
+-0.154,
+-0.03
+]
+},
+"E3 memory avg-geo": {
+"d_micro_vs_thr025": [
+-0.159,
+-0.066
+],
+"d_macro_vs_thr025": [
+-0.159,
+-0.028
+]
+},
+"E3 memory avg-arith": {
+"d_micro_vs_thr025": [
+-0.146,
+-0.055
+],
+"d_macro_vs_thr025": [
+-0.132,
+-0.006
+]
+},
+"kNN-5 memory only (de, no LLM)": {
+"d_micro_vs_thr025": [
+-0.291,
+-0.186
+],
+"d_macro_vs_thr025": [
+-0.282,
+-0.131
+]
+},
+"E1 names+desc (id) + kNN fusion (a=0.6)": {
+"d_micro_vs_thr025": [
+-0.162,
+-0.074
+],
+"d_macro_vs_thr025": [
+-0.174,
+-0.026
+]
+},
+"E2 desc avg-geo + kNN fusion (a=0.9)": {
+"d_micro_vs_thr025": [
+-0.157,
+-0.067
+],
+"d_macro_vs_thr025": [
+-0.17,
+-0.029
+]
+},
+"E3 memory avg-geo + kNN fusion (a=0.9)": {
+"d_micro_vs_thr025": [
+-0.139,
+-0.05
+],
+"d_macro_vs_thr025": [
+-0.136,
+0.008
+]
+}
+}
+{"e1n": {"calls": 300, "mean_pt_per_call": 581.3, "pt_per_affair": 581.3, "usd_per_1000": 0.0583}, "e1d": {"calls": 300, "mean_pt_per_call": 1290.3, "pt_per_affair": 1290.3, "usd_per_1000": 0.1292}, "e2d": {"calls": 300, "mean_pt_per_call": 1290.3, "pt_per_affair": 1290.3, "usd_per_1000": 0.1292}, "e3a": {"calls": 300, "mean_pt_per_call": 1492.5, "pt_per_affair": 1492.5, "usd_per_1000": 0.1494}, "e3b": {"calls": 300, "mean_pt_per_call": 1492.5, "pt_per_affair": 1492.5, "usd_per_1000": 0.1494}}
+builds {'swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840': 1500}

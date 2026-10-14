@@ -9,7 +9,7 @@ from querschnitt.client import Client, Endpoint  # noqa: E402
 from querschnitt.engine import Engine, mean_p  # noqa: E402
 from querschnitt.data import clean  # noqa: E402
 BUILD = "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
-S9 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s9-aps")
+S9 = HERE.parent / "spikes/s9-aps"  # vendored S9 (eval/spikes/)
 items = {x["oid"]: x for x in json.load(open(S9 / "data/items.json"))}
 A, T = {}, {}
 for l in gzip.open(ROOT.parent / "data/opd-new/affairs.ndjson.gz", "rt"):

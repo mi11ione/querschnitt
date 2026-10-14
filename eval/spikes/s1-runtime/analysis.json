@@ -1,0 +1,460 @@
+{
+ "input": {
+  "pt_min": 292,
+  "pt_p50": 689,
+  "pt_mean": 591.6,
+  "pt_p95": 810,
+  "pt_max": 841,
+  "by_text": {
+   "with_text": {
+    "n": 75,
+    "pt_p50": 730
+   },
+   "title_only": {
+    "n": 35,
+    "pt_p50": 329
+   }
+  }
+ },
+ "m1": {
+  "pt_mean": 591.6,
+  "ct_mean": 1,
+  "usd_sum": 0.00653,
+  "n": 110,
+  "n_live": 109,
+  "http_p50": 0.878,
+  "http_p95": 1.319,
+  "client_overhead_p50": 1.0230000000000001,
+  "code_mass_min": 0.99778,
+  "gen_equals_top": 110,
+  "top_dist": [
+   [
+    14,
+    16
+   ],
+   [
+    12,
+    12
+   ],
+   [
+    16,
+    10
+   ],
+   [
+    10,
+    8
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    9,
+    6
+   ],
+   [
+    19,
+    6
+   ],
+   [
+    13,
+    6
+   ],
+   [
+    7,
+    5
+   ],
+   [
+    15,
+    5
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    17,
+    4
+   ],
+   [
+    24,
+    4
+   ],
+   [
+    5,
+    4
+   ],
+   [
+    18,
+    3
+   ],
+   [
+    6,
+    3
+   ],
+   [
+    11,
+    2
+   ],
+   [
+    4,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    23,
+    1
+   ]
+  ],
+  "top1_prob_median": 0.993,
+  "top1_prob_lt_0_5": 10,
+  "none_option": 4,
+  "pt_mean_with_text": 710.2,
+  "pt_mean_title_only": 337.4
+ },
+ "m4": {
+  "pt_mean": 606.1,
+  "ct_mean": 1,
+  "usd_sum": 0.00365,
+  "n": 60,
+  "n_live": 60,
+  "http_p50": 0.891,
+  "http_p95": 1.552,
+  "client_overhead_p50": 1.129,
+  "agree_raw": {
+   "k": 44,
+   "n": 60,
+   "rate": 0.733,
+   "ci": [
+    0.61,
+    0.829
+   ]
+  },
+  "agree_calibrated": {
+   "k": 43,
+   "n": 60,
+   "rate": 0.717,
+   "ci": [
+    0.592,
+    0.815
+   ]
+  },
+  "calibration_changes_top1_identity": 9,
+  "calibration_changes_top1_perm": 12,
+  "prior": {
+   "de-id": {
+    "top_chapter": "Kein Sachthema (Wahl oder Erne",
+    "top_p": 0.973,
+    "entropy_bits": 0.2,
+    "top_substantive": "Verbände"
+   },
+   "de-perm": {
+    "top_chapter": "Kein Sachthema (Wahl oder Erne",
+    "top_p": 1.0,
+    "entropy_bits": 0.0,
+    "top_substantive": "Geld, Währung und Kredit"
+   },
+   "fr-id": {
+    "top_chapter": "Kein Sachthema (Wahl oder Erne",
+    "top_p": 0.958,
+    "entropy_bits": 0.28,
+    "top_substantive": "Verbände"
+   },
+   "fr-perm": {
+    "top_chapter": "Kein Sachthema (Wahl oder Erne",
+    "top_p": 1.0,
+    "entropy_bits": 0.0,
+    "top_substantive": "Geld, Währung und Kredit"
+   },
+   "it-id": {
+    "top_chapter": "Kein Sachthema (Wahl oder Erne",
+    "top_p": 0.894,
+    "entropy_bits": 0.55,
+    "top_substantive": "Verbände"
+   },
+   "it-perm": {
+    "top_chapter": "Kein Sachthema (Wahl oder Erne",
+    "top_p": 0.986,
+    "entropy_bits": 0.16,
+    "top_substantive": "Geld, Währung und Kredit"
+   }
+  },
+  "prior_requests": 150,
+  "slotA_identity": "0/110",
+  "slotA_perm": "4/60",
+  "top1_agree_by_conf": {
+   "m1_p_ge_0_9": {
+    "k": 40,
+    "n": 46,
+    "rate": 0.87,
+    "ci": [
+     0.743,
+     0.939
+    ]
+   },
+   "m1_p_lt_0_9": {
+    "k": 4,
+    "n": 14,
+    "rate": 0.286,
+    "ci": [
+     0.117,
+     0.546
+    ]
+   }
+  },
+  "agree_calibrated_by_conf": null
+ },
+ "m2": {
+  "pt_mean": 570.1,
+  "ct_mean": 1,
+  "usd_sum": 0.02145,
+  "n": 375,
+  "n_live": 375,
+  "http_p50": 1.297,
+  "http_p95": 2.032,
+  "client_overhead_p50": 1.1680000000000001,
+  "affairs": 15,
+  "requests_per_affair": 25,
+  "label_tokens_mean": 6.25,
+  "straddles": 0,
+  "agree_sum_vs_m1": {
+   "k": 13,
+   "n": 15,
+   "rate": 0.867,
+   "ci": [
+    0.621,
+    0.963
+   ]
+  },
+  "agree_meanpertoken_vs_m1": {
+   "k": 12,
+   "n": 15,
+   "rate": 0.8,
+   "ci": [
+    0.548,
+    0.93
+   ]
+  },
+  "m2top_in_m1top3": "14/15",
+  "disagreements": [
+   {
+    "sid": 3,
+    "m1": "Verbände",
+    "m2": "Umweltschutz",
+    "title": "Benehmen der Asylsuchenden in Chiasso"
+   },
+   {
+    "sid": 98,
+    "m1": "Soziale Gruppen",
+    "m2": "Bevölkerung und Arbeit",
+    "title": "Affrontare anziché spostare i problemi"
+   }
+  ]
+ },
+ "m3": {
+  "pt_mean": 2784.7,
+  "ct_mean": 41.38,
+  "usd_sum": 0.00373,
+  "n": 13,
+  "n_live": 13,
+  "http_p50": 5.551,
+  "http_p95": 6.694,
+  "client_overhead_p50": 1.3089999999999993,
+  "requests": 13,
+  "items": 110,
+  "parsed": 110,
+  "pt_per_affair": 329.1,
+  "ct_per_affair": 4.89,
+  "http_per_affair": 0.643,
+  "usd_per_affair": 3.388818181818181e-05,
+  "agree_vs_m1": {
+   "k": 67,
+   "n": 110,
+   "rate": 0.609,
+   "ci": [
+    0.516,
+    0.695
+   ]
+  },
+  "agree_vs_m1_when_m1_p_ge_0_9": {
+   "k": 55,
+   "n": 83,
+   "rate": 0.663,
+   "ci": [
+    0.556,
+    0.755
+   ]
+  },
+  "agree_by_batch_position": {
+   "first_half": {
+    "k": 31,
+    "n": 52,
+    "rate": 0.596,
+    "ci": [
+     0.461,
+     0.718
+    ]
+   },
+   "second_half": {
+    "k": 36,
+    "n": 58,
+    "rate": 0.621,
+    "ci": [
+     0.492,
+     0.734
+    ]
+   }
+  },
+  "agree_vs_m4perm": {
+   "k": 32,
+   "n": 60,
+   "rate": 0.533,
+   "ci": [
+    0.409,
+    0.654
+   ]
+  }
+ },
+ "l2_pt_mean_with_text": 586.7,
+ "l2_pt_mean_title_only": 214.8,
+ "n429_by_phase": {
+  "m2": 4
+ },
+ "l2": {
+  "pt_mean": 470.9,
+  "ct_mean": 1,
+  "usd_sum": 0.00501,
+  "n": 106,
+  "n_live": 106,
+  "http_p50": 1.171,
+  "http_p95": 1.987,
+  "client_overhead_p50": 1.054,
+  "nsub_mean": 7.9,
+  "code_mass_min": 0.9817,
+  "top1_prob_median": 0.998
+ },
+ "throughput": [
+  {
+   "run": "c1-n16-o0-1791896627",
+   "c": 1,
+   "n": 16,
+   "errors": 0,
+   "wall_s": 38.8,
+   "rps_end_to_end": 0.41,
+   "http_p50": 1.454,
+   "http_p95": 2.141,
+   "http_mean": 1.516,
+   "mean_in_flight": 0.64,
+   "client_overhead_p50": 0.937,
+   "statuses": {
+    "200": 16
+   },
+   "n429": 0,
+   "pt_mean": 577.8,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ]
+  },
+  {
+   "run": "c4-n40-o16-1791896667",
+   "c": 4,
+   "n": 40,
+   "errors": 0,
+   "wall_s": 26.1,
+   "rps_end_to_end": 1.53,
+   "http_p50": 1.541,
+   "http_p95": 2.182,
+   "http_mean": 1.523,
+   "mean_in_flight": 2.42,
+   "client_overhead_p50": 0.9749999999999999,
+   "statuses": {
+    "200": 40
+   },
+   "n429": 0,
+   "pt_mean": 567.7,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ]
+  },
+  {
+   "run": "c4-n40-o184-1791896861",
+   "c": 4,
+   "n": 40,
+   "errors": 0,
+   "wall_s": 43.4,
+   "rps_end_to_end": 0.92,
+   "http_p50": 1.421,
+   "http_p95": 4.056,
+   "http_mean": 1.813,
+   "mean_in_flight": 1.71,
+   "client_overhead_p50": 0.9949999999999999,
+   "statuses": {
+    "200": 40,
+    "429": 8
+   },
+   "n429": 8,
+   "pt_mean": 633.4,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ]
+  },
+  {
+   "run": "c8-n64-o120-1791896836",
+   "c": 8,
+   "n": 64,
+   "errors": 0,
+   "wall_s": 23.8,
+   "rps_end_to_end": 2.69,
+   "http_p50": 1.481,
+   "http_p95": 2.027,
+   "http_mean": 1.483,
+   "mean_in_flight": 4.34,
+   "client_overhead_p50": 1.247,
+   "statuses": {
+    "200": 64
+   },
+   "n429": 0,
+   "pt_mean": 584.6,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ]
+  },
+  {
+   "run": "c8-n64-o56-1791896695",
+   "c": 8,
+   "n": 64,
+   "errors": 0,
+   "wall_s": 22.8,
+   "rps_end_to_end": 2.8,
+   "http_p50": 1.452,
+   "http_p95": 2.232,
+   "http_mean": 1.505,
+   "mean_in_flight": 4.57,
+   "client_overhead_p50": 1.1389999999999998,
+   "statuses": {
+    "200": 64
+   },
+   "n429": 0,
+   "pt_mean": 588.5,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ]
+  }
+ ],
+ "builds": {
+  "fingerprints": {
+   "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 1038
+  },
+  "models": {
+   "swiss-ai/apertus-v1.5-8b": 1038
+  },
+  "http_statuses": {
+   "200": 1037,
+   "429": 12
+  },
+  "cached_rows": 1
+ }
+}

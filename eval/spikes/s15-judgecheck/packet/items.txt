@@ -1,0 +1,101 @@
+J001	Kantonsrat Solothurn	cantonal	Vereidigung	2026-08-12	Vereidigung von Nico Zila (FDP.Die Liberalen, Olten) als Mitglied des Kantonsrats (anstelle von Daniel Cartier)	
+J002	Consiglio comunale Lugano	communal	Interrogazione	2026-01-22	"Vendita della chiesa e del cimitero di Bogno – profili etici, istituzionali e di rispetto della memoria collettiva?"	
+J003	Schweizerische Bundesversammlung	federal	Geschäft des Bundesrates	2026-09-02	Bundesgesetz über die berufliche Alters-, Hinterlassenen- und Invalidenvorsorge (BVG) (Anlage von Freizügigkeitsgeldern der Auffangeinrichtung). Änderung	
+J004	Kantonsrat Schaffhausen	cantonal	Kleine Anfrage	2026-06-01	Ausreichender Brandschutz und sichere Fluchtwege im Kanton Schaffhausen?	
+J005	Kantonsrat Solothurn	cantonal	Interpellation	2026-09-03	Wie schaffen wir umweltschonende Rahmenbedingungen für Bau und Betrieb von Rechenzentren?	Interpellation fraktionsübergreifend: Wie schaffen wir umweltschonende Rahmenbedingungen für Bau und Betrieb von Rechenzentren?
+J006	306	communal	Postulat	2026-09-14	Ein Apfelbaum im Walde	Postulat Grüne/SP; "Ein Apfelbaum im Walde"; 2026/23
+J007	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-08-31	Wer trägt die Verantwortung für die «Sicherheitslücke»?	
+J008	Schweizerische Bundesversammlung	federal	Interpellation	2026-06-17	TK A - Beschaffungsschritt 5. Wie werden Kontinuität, Wirtschaftlichkeit und Risikominimierung sichergestellt?	
+J009	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-05-31	Wie werden die Bürgerinnen und Bürger mit einem gesünderen, frei zugänglichen, öffentlichen WLAN-Netz unterstützt?	
+J010	Kantonsrat Zug	cantonal	Interpellation	2026-03-18	Wolfspräsenz im Kanton Zug und Hürden bei der Überwachung zum Schutz von Nutztieren	Interpellation von Esther Monney, Karl Nussbaumer und Emil Schweizer betreffend Wolfspräsenz im Kanton Zug und Hürden bei der Überwachung zum Schutz von Nutztieren
+J011	Grand Conseil du canton de Neuchâtel	cantonal	Motion	2026-08-27	Mettons fin à la publicité climaticide !	
+J012	Kantonsrat Zug	cantonal	Vernehmlassung	2026-07-15	Informationssicherheitsgesetz (ISG) und dazugehörige Vollziehungsverordnung (ISV)	
+J013	Schweizerische Bundesversammlung	federal	Motion	2024-09-26	Cybersicherheit. Hotline für Opfer von Cyberangriffen	
+J014	Kantonsrat Zug	cantonal	Interpellation	2026-08-11	IT-Sicherheit und Schutz sensibler Registerdaten beim Amt für Informatik und Organisation (AIO) – Lehren aus dem Vorfall in Liechtenstein	Interpellation von Philip C. Brunner, Gregor Bruhin, Alex Haslimann und Hans Jörg Villiger betreffend IT-Sicherheit und Schutz sensibler Registerdaten beim Amt für Informatik und Organisation (AIO) – Lehren aus dem Vorfall in Liechtenstein
+J015	Grosser Rat des Kantons Basel-Stadt	cantonal	Anzug	2020-02-20	Digitalisierung vorantreiben - Einbürgerungsverfahren digitalisieren	
+J016	Grand Conseil du canton de Vaud	cantonal	Recours de compétence	2026-05-05	Rapport/préavis du Bureau du Grand Conseil et prestation de serment de M. Stéphane Jayet	Rapport/préavis du Bureau du Grand Conseil et prestation de serment de M. Stéphane Jayet.
+J017	Grosser Rat des Kantons Bern	cantonal	Motion	2026-03-11	Eine sichere GPT-Lösung für die Kantonsverwaltung und den Grossen Rat	
+J018	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-08-31	Wie weiter mit NFFS?	
+J019	Landrat des Kantons Basel-Landschaft	cantonal	Vernehmlassung	2025-12-09	Wärmeverbunde und Stromspeicher in Zonen für öffentliche Werke und Anlagen - Änderung des Raumplanungs- und Baugesetzes; Freigabe zur Vernehmlassung	
+J020	Kantonsrat St. Gallen 	cantonal	Interpellation	2026-06-09	Auswirkungen des Entscheids des DI zu Ratsreferenden in der Stadt Wil	
+J021	Grosse Gemeinderat Zug	communal	Interpellation	2026-04-23	Einführung eines 24-Stunden-Ökihofs in der Stadt Zug	Interpellation der FDP-Fraktion vom 22. April 2026 betreffend Einführung eines 24-Stunden-Ökihofs in der Stadt Zug
+J022	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-03-12	«Deepfakes im Klassenzimmer?» – Umgang mit digitaler und KI-generierter sexualisierter Gewalt an Berner Schulen	
+J023	Grosser Rat des Kantons Wallis	cantonal		2026-06-01	Fortschritt der Massnahmen zur Erschliessung der Gemeinde Savièse	2026.06.260 Fortschritt der Massnahmen zur Erschliessung der Gemeinde Savièse
+J024	Schweizerische Bundesversammlung	federal	Interpellation	2026-06-03	Umsetzung der Motion 19.4562 zum Low Flight Network. Verzögerungen und fehlende Finanzierung	
+J025	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-03-11	Jagdruhe auf Privatwald: Befriedung von Privatgrundstücken aus ethischen Gründen	
+J026	Grosser Rat des Kantons Bern	cantonal	Kreditgeschäft GR	2026-08-23	Rahmenkredit BVD 2027-2029 für Fachapplikationen und Digitalisierung	
+J027	Schweizerische Bundesversammlung	federal	Motion	2026-03-16	Strassenverkehrsgesetz. Anpassung des Sanktionensystems an das Verhältnismässigkeitsprinzip	
+J028	Grosser Rat des Kantons Bern	cantonal	Kreditgeschäft GR	2026-08-23	Ämter der Finanzdirektion (Steuerverwaltung, Finanzverwaltung, Personalamt): Ausgabenbewilligung für die Fach- und Konzernapplikationen sowie Digitalisierung der Kantonsverwaltung. Rahmenkredit 2027-2029	
+J029	404	communal	Interpellation	2026-05-18	Schulraum Gyripark	Interpellation SP-Fraktion betreffend Schulraum Gyripark
+J030	Kantonsrat Zug	cantonal	Interpellation	2026-06-10	Zugänglichkeit von e.Tax Zug und AGOV	Interpellation der ALG-Fraktion betreffend Zugänglichkeit von e.Tax Zug und AGOV
+J031	Kantonsrat Obwalden	cantonal	Verwaltungsgeschäft	2026-06-05	Aufforderung zur gesetzlichen Verankerung der vollständigen Freiwilligkeit, Gleichbehandlung und Kostenfreiheit der E-ID	Petitionen betreffend Aufforderung zur gesetzlichen Verankerung der vollständigen Freiwilligkeit, Gleichbehandlung und Kostenfreiheit der E-ID
+J032	Consiglio comunale Locarno	communal	Interrogazioni	2026-08-17	Valutazione della possibilità di istituire una fermata del trasporto pubblico nelle immediate vicinanze della Casa per Anziani San Carlo e del Cimitero comunale	"Valutazione della possibilità di istituire una fermata del trasporto pubblico nelle immediate vicinanze della Casa per Anziani San Carlo e del Cimitero comunale"
+J033	Schweizerische Bundesversammlung	federal	Fragestunde. Frage	2026-09-23	Ist der Bericht der EFK zu Verkehr 45 eine politische Einmischung?	
+J034	Schweizerische Bundesversammlung	federal	Fragestunde. Frage	2026-09-23	Verfügen die Kantone über die rechtlichen Grundlagen, um Täter in Online-Netzwerken strafrechtlich verfolgen zu können?	
+J035	Landtag des Fürstentums Liechtenstein	other	Kleine Anfragen	2026-03-04	Aktueller Stand Projekt Liechtensteinische Landesbibliothek – Umnutzung des Postgebäudes in Vaduz	
+J036	Schweizerische Bundesversammlung	federal	Motion	2026-01-12	Revitalisierung der Verlagerung im transalpinen kombinierten Verkehr. Rückverlagerung auf die Strasse vermeiden	
+J037	Schweizerische Bundesversammlung	federal	Geschäft des Bundesrates	2026-09-09	Breitbandfördergesetz (BBFG)	
+J038	Schweizerische Bundesversammlung	federal	Mozione	2026-09-22	Riduzione temporanea della tassa sul CO₂ sui combustibili	
+J039	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-03-05	eBau – elektronisches Baubewilligungsverfahren im Kanton Bern	
+J040	Schweizerische Bundesversammlung	federal	Interpellation	2026-03-19	Ambulante Pauschalen und Brustkrebsdiagnose. Eine Reform zulasten der Frauen?	
+J041	Grand Conseil du canton de Neuchâtel	cantonal	Question	2026-09-25	Bristol-Myers Squibb, Johnson & Johnson, même combat ?	
+J042	Schweizerische Bundesversammlung	federal	Interpellation	2026-10-02	Stärkung der Eidgenössischen Militärakademie an der ETH Zürich (MILAK)	
+J043	Schweizerische Bundesversammlung	federal	Motion	2026-03-19	Keine Auskunft der Halterdaten an private Parkkontrollfirmen	
+J044	Grand Conseil du canton de Vaud	cantonal	Rapport	2026-01-27	Rapport du Conseil d'Etat au Grand Conseil sur le postulat Sabine Glauser Krug et consorts - Wi-Fi free - We feel free	Rapport du Conseil d'Etat au Grand Conseil sur le postulat Sabine Glauser Krug et consorts - Wi-Fi free - We feel free (19_POS_177).
+J045	Grosser Rat des Kantons Basel-Stadt	cantonal	Ratschlag	2026-01-29	Zuwahl gemäss § 29 GOG im Sinne einer temporären Erhöhung der Pensen von lic. iur. Anita Heer, Dr. Eva Bachofner, lic. iur. Johannes Vontobel und lic. iur. Sara Lehner aufgrund der gesundheitlichen Beeinträchtigung der Arbeitsfähigkeit eines Präsidiumsmitglieds am Zivilgericht Basel-Stadt	
+J046	Schweizerische Bundesversammlung	federal	Motion	2025-09-26	Krankenversicherung. Digitale Kommunikationskanäle konsequent nutzen und Ressourcen schonen	
+J047	Grosser Rat des Kantons Bern	cantonal	Interpellation	2026-08-31	Zahlungs- und Digitalisierungsverzögerungen bei KAE sowie Quellensteuerverwaltung	
+J048	Stadtparlament Wil	communal	Anfrage	2026-07-05	Bahnhofprojekt: Welche Auswirkungen hat der Baukredit auf den Steuerfuss?	Anfrage Pascal Stieger (SVP) – Bahnhofprojekt: Welche Auswirkungen hat der Baukredit auf den Steuerfuss?
+J049	Schweizerische Bundesversammlung	federal	Motion	2024-12-19	Eine Strategie zur Bekämpfung von Desinformation	
+J050	Grosser Rat des Kantons Basel-Stadt	cantonal	Wahl	2026-02-04	Wahl eines Mitglieds der Disziplinarkommission (Nachfolge Franziska Roth, SP)	
+J051	Kantonsrat Zürich	cantonal	Vernehmlassung	2026-09-25	Gesetz über egovpartner	
+J052	Grosser Rat des Kantons Thurgau	cantonal	Einfache Anfrage	2026-04-29	Behindertengleichstellung im öffentlichen Verkehr: Wo steht der Kanton Thurgau?	Einfache Anfrage von Marc Rüdisüli vom 29. April 2026 "Behindertengleichstellung im öffentlichen Verkehr: Wo steht der Kanton Thurgau?"
+J053	Grosser Stadtrat Luzern	communal	Postulat	2026-01-25	Jährliche Informationskampagne zu Games, Apps und digitaler Mediennutzung für Kinder und Jugendliche	Postulat 164 Jährliche Informationskampagne zu Games, Apps und digitaler Mediennutzung für Kinder und Jugendliche
+J054	Schweizerische Bundesversammlung	federal	Fragestunde. Frage	2026-06-10	Braucht es neue, teure Bundesasylzentren?	
+J055	Grosser Rat des Kantons Bern	cantonal	Kreditgeschäft GR	2026-08-23	Wirtschafts-, Energie- und Umweltdirektion (WEU): Ausgabenbewilligung für die Fachapplikationen sowie Digitalisierung der Ämter/das GS der WEU. Rahmenkredit 2027-2029	
+J056	Gran Consiglio del Canton Ticino	cantonal	Risoluzioni generali / messaggio al paese	2026-01-26	Per garantire la libertà di espressione e la tutela consolare dei cittadini svizzeri sanzionati dall’Unione Europea senza un equo processo	
+J057	6421	communal	Rapport	2026-10-01	Plan général d'évacuation des eaux (PGEE) ( DUSTEB)	Rapport du Conseil communal relatif au Plan général d'évacuation des eaux (PGEE) ( DUSTEB)
+J058	Grand Conseil du canton de Vaud	cantonal	Simple question	2026-02-10	Conflits d'intérêts dans le cadre de la LADE : après le cas Leysin, comment s'assurer de la bonne gouvernance ?	Simple question Mathilde Marendaz - Conflits d'intérêts dans le cadre de la LADE : après le cas Leysin, comment s'assurer de la bonne gouvernance ?.
+J059	Grosser Rat des Kantons Basel-Stadt	cantonal	Regierungsratsbeschluss	2026-09-01	Eidgenössisches Departement des Innern EDI; Änderung der Verordnung über die Unfallversicherung (UVV); Umsetzung der Motion 11.3811 Darbellay "Rechtslücke in der Unfallversicherung schliessen"; Vernehmlassung	
+J060	Schweizerische Bundesversammlung	federal	Fragestunde. Frage	2026-03-11	Wie viele Steuerfranken kosten Asylgesuche aus sicheren Herkunftsländern?	
+J061	Grosser Rat des Kantons Basel-Stadt	cantonal	Anzug	2026-06-15	Prüfung einer KI- und Robotersteuer	
+J062	Grosser Rat des Kantons Thurgau	cantonal	Einfache Anfrage	2026-03-18	E-Voting im Kanton Thurgau - pannenfrei und sicher?	Einfache Anfrage von Dean Kradolfer, Andreas Opprecht vom 18. März 2026 "E-Voting im Kanton Thurgau - pannenfrei und sicher?"
+J063	Grosser Rat des Kantons Basel-Stadt	cantonal	Schriftliche Anfrage	2026-03-11	Sichere und komfortable Veloroute Solothurnerstrasse	
+J064	306	communal	Postulat	2026-05-11	VERD: attraktives Zahlungsmittel für unser Gewerbe und die Lysser Bevölkerung - Aktivierung des Gemeindetopfs	Postulat SP/GLP; "VERD: attraktives Zahlungsmittel für unser Gewerbe und die Lysser Bevölkerung - Aktivierung des Gemeindetopfs"; 2026/10
+J065	Schweizerische Bundesversammlung	federal	Interpellation	2026-03-19	Homeoffice in der Bundesverwaltung. Effizienz, Kosten und Steuerung	
+J066	Schweizerische Bundesversammlung	federal	Geschäft des Parlaments	2026-10-05	Ständerat. Wahl des Büros (Präsidium, Vizepräsidium, Stimmenzähler, Ersatzstimmenzähler)	
+J067	Stadtparlament St. Gallen	communal	Einfache Anfrage	2026-05-11	Demutstrasse – doch noch Einsicht?	Einfache Anfrage Beat Rütsche: Demutstrasse – doch noch Einsicht?
+J068	Kantonsrat Zug	cantonal	Interpellation	2026-08-27	Umsetzung der gewaltfreien Erziehung im Kanton Zug	Interpellation der SP-Fraktion betreffend Umsetzung der gewaltfreien Erziehung im Kanton Zug
+J069	Grosser Rat des Kantons Bern	cantonal	Ernennung / Wahl	2026-06-01	Wahl eines Mitglieds für das Verwaltungsgericht, sozialversicherungsrechtliche Abteilung mit Beschäftigungsgrad 100%, für die Amtsdauer bis 31.12.2028	
+J070	Kantonsrat Schaffhausen	cantonal	Vorlage Parlament	2026-03-20	Bericht und Antrag der Justizkommission vom 2. März 2026 betreffend Wahl eines Mitglieds des Kantonsgerichts	
+J071	Schweizerische Bundesversammlung	federal	Interpellation	2026-09-30	Super-El-Niño und IZA-Kürzungen – wie bleibt die Schweiz handlungsfähig?	
+J072	Kantonsrat Obwalden	cantonal	Verwaltungsgeschäft	2026-09-02	Nachtrag zur Vereinbarung über das Informatikleistungszentrum der Kantone Obwalden und Nidwalden	
+J073	Grand Conseil du canton de Vaud	cantonal	Motion	2026-09-29	Pour éviter la tronçonneuse : compenser la perte de revenus par des recettes nouvelles	Motion Pierre Conscience et consorts au nom groupe Ensemble à Gauche et POP - Pour éviter la tronçonneuse : compenser la perte de revenus par des recettes nouvelles.
+J074	Conseil municipal de la Ville de Genève	communal	Question écrite	2026-09-28	Fermeture anticipée de la buvette A la pointe à la Jonction: quelles conséquences	Question écrite du 28 septembre 2026 de M. Bernard Wyssa: «Fermeture anticipée de la buvette A la pointe à la Jonction: quelles conséquences?»
+J075	Kantonsrat Obwalden	cantonal	Verwaltungsgeschäft	2026-09-23	Verpflichtungskredit für die Weiterentwicklung der Steuerdeklarationslösung eTAX Natürliche Personen	
+J076	Grosser Rat des Kantons Basel-Stadt	cantonal	Regierungsratsbeschluss	2026-09-22	Eidgenössisches Justiz- und Polizeidepartement EJPD; Bundesgesetz zur Reform der Bundesanwaltschaft und ihrer Aufsicht und zu 
+Änderungen der Bundesgerichtsbarkeit; Vernehmlassung	
+J077	Grand Conseil du canton de Genève	cantonal		2026-01-14	Invalidation de l'initiative UDC « pour une traversée de la Rade » : un manque de signatures valides extravagant	Réponse du Conseil d'Etat à la question écrite urgente de Pierre Eckert : Invalidation de l'initiative UDC « pour une traversée de la Rade » : un manque de signatures valides extravagant
+J078	Stadtrat Bern	communal	Kredit	2026-06-09	IN245-001034 (alt: I2450019) Schutz und Rettung Bern; Ersatz der Brandschutzbekleidung für die Feuerwehr Bern (Berufs- und Milizfeuerwehr); Kreditabrechnung	
+J079	Stadtparlament Winterthur	communal	Schriftliche Anfrage	2026-08-24	Verschiebung Bahnhofgebäude	
+J080	Consiglio comunale Lugano	communal	Messaggio	2026-04-16	Il rinnovo del mandato di prestazione per la gestione dell'Ente autonomo Lugano Istituti Sociali per il periodo 2027-2030 e la modifica dello statuto	Messaggio Municipale concernente il rinnovo del mandato di prestazione per la gestione dell'Ente autonomo Lugano Istituti Sociali per il periodo 2027-2030 e la modifica dello statuto
+J081	Stadtparlament Winterthur	communal	Verordnung / Rechtserlass	2026-07-03	Änderung des Personalstatuts der Stadt Winterthur (PST) vom 12. April 1999 betreffend Anpassung an die neue HR-Organisation (18. Nachtrag)	
+J082	Kantonsrat Luzern	cantonal		2026-03-23	Einführung der nationalen Opferhilfe-Nummer 142	Anfrage Rey Caroline und Mit. über die Einführung der nationalen Opferhilfe-Nummer 142
+J083	Schweizerische Bundesversammlung	federal	Fragestunde. Frage	2026-06-03	Vereinbarkeit des Skyguide-Personalabbaus mit EU-Flugsicherheitsrecht	
+J084	Grosser Rat des Kantons Thurgau	cantonal	Vernehmlassung	2026-09-04	Baugesuche sollen digital abgewickelt werden können	
+J085	Grosser Rat des Kantons Thurgau	cantonal	Vernehmlassung	2026-03-27	Gebäudeversicherungsgesetz geht in die Vernehmlassung	
+J086	Grosser Rat des Kantons Bern	cantonal	Kreditgeschäft GR	2026-08-23	Staatskanzlei. Ausgabenbewilligung für die Fach- und Konzernapplikationen sowie Digitalisierung der Kantonsverwaltung. Rahmenkredit 2027–2029	
+J087	Grand Conseil du canton de Fribourg	cantonal	Motion	2026-03-27	Ermöglichung der Einführung von Sport-Kunst-Klassen	
+J088	Grosser Rat des Kantons Thurgau	cantonal	Motion	2026-06-10	Digitale Souveränität des Kantons Thurgau - Abhängigkeiten, Risiken und Strategie	
+J089	Schweizerische Bundesversammlung	federal	Motion	2026-02-09	Finma. Konsultationsmechanismus des Parlamentes	
+J090	Grosse Gemeinderat Zug	communal	10 - GGR Bericht und Antrag Stadtrat	2026-08-26	Volksinitiative "Villa Unterer Frauenstein, Artherstrasse 6, Zug: mit Parkanlage und freiem Seezugang für die Zuger Bevölkerung sichern"; Gültigerklärung und Abstimmungsempfehlung	
+J091	Schweizerische Bundesversammlung	federal	Interpellation	2026-10-02	Alkoholkonsum an Bahnhöfen. Wäre das deutsche Modell auch in der Schweiz möglich?	
+J092	Grosser Rat des Kantons Basel-Stadt	cantonal	Anzug	2026-01-15	Einführung von Doppelstockzügen im S Bahnverkehr der Region Basel	
+J093	Grosser Rat des Kantons Bern	cantonal	Motion	2026-02-09	Rechtssicherheit und Effizienz im Baubewilligungsverfahren stärken – Baubewilligungsverfahren vollständig digital abwickeln!	
+J094	Grosser Rat des Kantons Basel-Stadt	cantonal	Rücktritt	2026-06-01	Rücktritt von Fina Girard als Mitglied des Grossen Rates per 8. September 2026	
+J095	Schweizerische Bundesversammlung	federal	Fragestunde. Frage	2026-09-23	Schwerpunktthema Bildung in der internationalen Zusammenarbeit	
+J096	Grosser Rat des Kantons Aargau	cantonal	Vernehmlassung	2026-09-14	Gesetz über die digitale Aufgabenerfüllung (Digitalgesetz, DiG)	
+J097	Schweizerische Bundesversammlung	federal	Parlamentarische Initiative	2026-08-14	Den Bundesrat verpflichten, das zuständige Parlamentsorgan zum Entwurf des Abstimmungsbüchleins zu konsultieren	
+J098	Schweizerische Bundesversammlung	federal	Geschäft des Bundesrates	2025-06-06	Einführung des automatischen Informationsaustauschs über Kryptowerte mit den relevanten Partnerstaaten ab 2026. Genehmigung der Bundesbeschlüsse	
+J099	Kantonsrat Schaffhausen	cantonal	Vorlage Parlament	2026-04-30	Bericht und Antrag der Gesundheitskommission vom 30. April 2026 zum Geschäftsbericht 2025 der Spitäler Schaffhausen	
+J100	Consiglio comunale Mendrisio	communal	Messaggio	2026-03-25	Richiesta di un credito di CHF 5'200'000.-- per il concorso di progetto e per la progettazione della nuova Casa anziani Torriani 3 a Mendrisio	MM 55/2026 - Richiesta di un credito di CHF 5'200'000.-- per il concorso di progetto e per la progettazione della nuova Casa anziani Torriani 3 a Mendrisio

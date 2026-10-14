@@ -3,20 +3,22 @@ OPD affair is not excluded, read the archived redirect's Location (no redirect f
 that process id is not already a candidate, record a capture row for it in extra_cands.json (fetch.py picks these up).
 Network: web.archive.org only (polite.py gate: robots, UA, >=1.2 s, fail closed on 429/5xx)."""
 import collections, gzip, json, os, re, sys, urllib.error, urllib.parse, urllib.request
-sys.path.insert(0, "/Users/mi11ion/Desktop/hackapertus/bern/ideation/spikes/s2-oracles/scripts")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "spikes", "s2-oracles", "scripts"))  # vendored polite.py
 import polite  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 polite.LOG = f"{HERE}/robots_log.jsonl"
-B = "/Users/mi11ion/Desktop/hackapertus/bern"; S9D = f"{B}/ideation2/spikes/s9-aps/data"
+ROOT = os.path.dirname(os.path.dirname(HERE))  # repository root
+WS = os.path.dirname(os.path.dirname(ROOT))  # workspace above the repo: OPD export copies used at fetch time (not in the repo)
+S9D = f"{ROOT}/eval/spikes/s9-aps/data"  # vendored
 links = collections.defaultdict(set)
-for l in gzip.open("/Users/mi11ion/Desktop/hackapertus/gegenprobe/track_2a/.work/opd/external_links.ndjson.gz", "rt"):
+for l in gzip.open(f"{WS}/gegenprobe/track_2a/.work/opd/external_links.ndjson.gz", "rt"):
     d = json.loads(l)
     if d.get("type_harmonized_en") == "aps_affair":
         links[d["external_id"]].add(d["affair_id"])
 EX = ({json.loads(l)["opd_affair_id"] for l in open(f"{S9D}/aps_ext.jsonl")}
-      | {json.loads(l)["opd_affair_id"] for l in open(f"{B}/ideation/spikes/s2-oracles/data/aps_gold_sample.jsonl")}
+      | {json.loads(l)["opd_affair_id"] for l in open(f"{ROOT}/eval/spikes/s2-oracles/data/aps_gold_sample.jsonl")}
       | {x["oid"] for x in json.load(open(f"{S9D}/items.json"))} | {x["oid"] for x in json.load(open(f"{S9D}/mem_ideation1.json"))}
-      | {json.loads(l)["oid"] for l in open(f"{B}/querschnitt/data/eval/aps_pool.jsonl")})
+      | {json.loads(l)["oid"] for l in open(f"{ROOT}/data/eval/aps_pool.jsonl")})
 art = collections.defaultdict(list)
 for f in ("articles", "fr_articles"):
     for r in json.load(open(f"{HERE}/cdx/{f}.json"))[1:]:

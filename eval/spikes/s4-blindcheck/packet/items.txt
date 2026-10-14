@@ -1,0 +1,306 @@
+T001 | ZG | Motion | Gemeinnützige Arbeitseinsätze für Asylsuchende und vorläufig Aufgenommene im Kanton Zug | Motion der SVP-Fraktion betreffend gemeinnützige Arbeitseinsätze für Asylsuchende und vorläufig Aufgenommene im Kanton Zug
+T002 | BE | Ernennung / Wahl | Wahl einer deutschsprachigen kaufmännischen Fachrichterin oder eines deutschsprachigen kaufmännischen Fachrichters für das Handelsgericht (Nebenamt), für die Amtsdauer bis 31.12.2028
+T003 | CHE | Fragestunde. Frage | Schweizer Stiftung, die israelische Siedlungen finanziert: Die Stiftungsaufsicht verweigert ein Eingreifen
+T004 | BE | Interpellation | «Das Bundesgericht hat entschieden» – oder doch nicht?
+T005 | BE | Bericht RR | Zusammenarbeit Ärztinnen und Ärzte mit Apothekerinnen und Apothekern. Bericht des Regierungsrates zur Umsetzung der Motion 260-2024 Herren-Brauen (Rosshäusern, die Mitte)
+T006 | BE | Kreditgeschäft GR | Finanzverwaltung (FV): Ausgabenbewilligung für die SAP-Lizenzen 2026. Objektkredit 2026
+T007 | CHE | Postulat | Psychische Gesundheit von Jugendlichen und Exposition gegenüber sozialen Netzwerken. Was wird unternommen? 
+T008 | TG | Einfache Anfrage | Schäden an Flurstrasse, oder wer ist bereit dafür aufzukommen? | Einfache Anfrage von Priska Peter vom 1. April 2026 "Schäden an Flurstrasse, oder wer ist bereit dafür aufzukommen?"
+T009 | BE | Ernennung / Wahl | Wahl der 17 Mitglieder der Justizkommission (JuKo)
+T010 | ZG | Postulat | Die Einführung der Sicherheitswochen an den Schulen des Kantons Zug | Postulat der Fraktion Die Mitte betreffend die Einführung der Sicherheitswochen an den Schulen des Kantons Zug
+T011 | BE | Motion | Keine Unterdrückung von Frauen und Mädchen an Berner Schulen und Kindergärten
+T012 | CHE | Fragestunde. Frage | Schweizer Finanzierung von FIFA-Fussballplätzen im Westjordanland
+T013 | BS | Regierungsratsbeschluss | Abstimmungstermin vom 17. Mai 2020
+T014 | BE | Interpellation | Militärische Katastrophenhilfe ermöglichen – gesetzliche Lücke schliessen
+T015 | BS | Motion | Überbrückungsregelung bei der Besteuerung von Motorfahrzeugen
+T016 | TG | Einfache Anfrage | Wegfall von Schengen/Dublin: Folgen für Asylkosten, die Bekämpfung grenzüberschreitender Kriminalität sowie die innere Sicherheit im Kanton Thurgau | Einfache Anfrage von Nicole Zeitner, Thomas Leu, Marc Rüdisüli, Alessandra Biondi, Alexander Sigg, Sandra Reinhart vom 18. März 2026 "Wegfall von Schengen/Dublin: Folgen für Asylkosten, die Bekämpfung grenzüberschreitender Kriminalität sowie die innere Sicherheit im Kanton Thurgau"
+T017 | BE | Interpellation | Bilanz nach 2 ½ Jahren Aufkündigung der Kollektiv-Krankentaggeldversicherung für das Kantonspersonal
+T018 | BL | Vorlage | 11 Einbürgerungsgesuche von ausländischen Staatsangehörigen
+T019 | BE | Kreditgeschäft GR | Aufbau Kompetenzzentrum BeLEARN für die digitale Transformation in der Bildung; Objektkredit 2027–2028
+T020 | AG | Postulat | Überprüfung der Unterstützung von Motorsportveranstaltungen aus dem Swisslos-Sportfonds | Postulat betreffend Überprüfung der Unterstützung von Motorsportveranstaltungen aus dem Swisslos-Sportfonds vom 25. August 2026 von Markus Gabriel, SVP, Uerkheim (Sprecher), Rolf Haller, EDU, Gontenschwil, Daniel Urech, SVP, Niederlenz
+T021 | BS | Petition | "Superblock Tests - Weiterführung statt Rückbau"
+T022 | CHE | Interpellation | Automatisierte Analyse der Produktion von RTS Première. Wie beurteilt der Bundesrat die Ergebnisse im Lichte des Service-public-Auftrags?
+T023 | ZH | Wahl | Wahl Mitglied Sekretariat Kantonsrat für Sylvie Matter
+T024 | OW | Verwaltungsgeschäft | Objektkredit für die Durchführung eines Wettbewerbs zum Ausbau des Areals Foribach Sarnen
+T025 | BS | Regierungsratsbeschluss | Vernehmlassungsverordnung; Teilrevision
+T026 | ZH | Anfrage | Massnahmen auf Gemeindeebene zur Bekämpfung von häuslicher Gewalt
+T027 | CHE | Vernehmlassung | Änderung der Zivilschutzverordnung (Schutzbauten)
+T028 | ZH | Anfrage | Strassenbau koordinieren, Leistungsfähigkeit sichern – Verkehr am rechten Zürichseeufer II
+T029 | ZG | Verschiedenes | Tätigkeitsbericht 2025 der Datenschutzbeauftragten des Kantons Zug
+T030 | AG | Interpellation | Anpassung des kantonalen Richtplans – Gebiet "Tägerhardächer", Wettingen | Interpellation betreffend Anpassung des kantonalen Richtplans – Gebiet "Tägerhardächer", Wettingen vom 2. Juni 2026 von Thomas Zollinger, SVP, Würenlos
+T031 | ZH | Anfrage | Sicherstellung der biomedizinischen Forschung zur Bekämpfung schwerer Krankheiten und die Gewährleistung effizienter Bewilligungsverfahren im Kanton Zürich
+T032 | ZG | Interpellation | Interpellation der ALG-Fraktion bezüglich Massnahmen gegen Hitze in öffentlichen Gebäuden
+T033 | BE | Ernennung / Wahl | Wahl eines Mitglieds für das Verwaltungsgericht, sozialversicherungsrechtliche Abteilung mit Beschäftigungsgrad 100%, für die Amtsdauer bis 31.12.2028
+T034 | ZG | Kleine Anfrage | Stand der Erarbeitung der kantonalen Wasserstrategie | Kleine Anfrage der ALG-Fraktion betreffend Stand der Erarbeitung der kantonalen Wasserstrategie
+T035 | BE | Kreditgeschäft GR | Bern, Universität Salvisbergbau Muesmattareal, Instandsetzung und Umbau. Verpflichtungskredit für die Projektierung
+T036 | CHE | Interpellation | Auskunft des Schweizerischen Bundesgerichtes
+T037 | BE | Bericht Dritte | Tätigkeitsbericht 2025 der Finanzkontrolle
+T038 | BL | Vorlage | EU-Paket: Dynamische Rechtsübernahme schwächt Kanton und Landrat
+T039 | CHE | Interpellation | Gaza. Die Schweiz kann mehr tun
+T040 | BE | Übrige Geschäfte | Kulturförderungsfonds; Jahresrechnung 2025
+T041 | BE | Gesetz | Gesetz betreffend die Einführung des Schweizerischen Zivilgesetzbuches (EG ZGB) (Änderung)
+T042 | TG | Vernehmlassung | Plakatierung vor Wahlen und Abstimmungen soll einheitlich geregelt werden
+T043 | OW | Verwaltungsgeschäft | Wahl der Redaktionskommission und des Präsidiums auf vier Jahre
+T044 | BE | Interpellation | Raus aus der Altstadt – packen wirs an!
+T045 | BE | Interpellation | Medphone.ch schliesst per Ende Jahr seinen medizinischen Notruf. Wie weiter?
+T046 | ZG | Motion | Förderung der beruflichen Inklusion von Menschen mit Behinderungen durch finanziellen Ausgleich für Arbeitgebende | Motion von Karl Nussbaumer, Philip C. Brunner, Karl Bürgler, Andreas Lustenberger, Andreas Iten, Barbara Gysel, Martin Zimmermann, Jean Luc Mösch und Patrick Röösli betreffend Förderung der beruflichen Inklusion von Menschen mit Behinderungen durch finanziellen Ausgleich für Arbeitgebende
+T047 | TG | Einbürgerungsgesuch | Kantonsbürgerrechtsgesuche vom 29.04.2026
+T048 | OW | Interpellation | kantonale Gebäudeversicherung für den Kanton Obwalden? | Interpellation betreffend kantonale Gebäudeversicherung für den Kanton Obwalden?
+T049 | BL | Vorlage | Sichtbarkeit Radaranlagen
+T050 | BE | Interpellation | Rückbau Simmewehr: Handlungsspielräume des Kantons Bern
+T051 | CHE | Interpellation | Welchen Status sollen Migrierende haben, die Opfer geschlechtsspezifischer und häuslicher Gewalt geworden sind?
+T052 | BE | Ernennung / Wahl | Wahl einer deutschsprachigen Fachrichterin oder eines deutschsprachigen Fachrichters in mietrechtlichen Streitigkeiten für die regionalen Schlichtungsbehörden (Nebenamt), für die Amtsdauer bis 31.12.2028
+T053 | BE | Motion | Von der Fuchsjagd zum Fuchsmanagement
+T054 | BE | Kreditgeschäft GR | Staatsarchiv; Unterstützungsbeitrag an die Gosteli-Stiftung, Ausgabenbewilligung. Verpflichtungskredit. Objektkredit 2025–2028
+T055 | BE | Ernennung / Wahl | Wahl der zweiten Vizepräsidentin oder des zweiten Vizepräsidenten
+T056 | BE | Interpellation | Pilotprojekte zur integrierten Gesundheitsversorgung und zum Aufbau von Gesundheitsnetzwerken in den Spitalregionen: Wie weiter?
+T057 | CHE | Interpellation | Massnahmen für die Gesundheit und Sicherheit der Lernenden in der dualen Berufsbildung stärken
+T058 | BE | Ernennung / Wahl | Wahl der 17 Mitglieder der Kommission für Staatspolitik und Aussenbeziehungen (SAK)
+T059 | BE | Kreditgeschäft GR | Beitrag aus dem Sportfonds und dem Lotteriefonds an den Neubau Volksschule Weissenbühl mit Doppelturnhalle, Allwetterplatz und Rollsportanlage, Stadt Bern
+T060 | OW | Verwaltungsgeschäft | Geschäftsbericht und Jahresrechnung des Elektrizitätswerks Obwalden 2025
+T061 | BE | Interpellation | Bedeutung der Personenfreizügigkeit für Schlüsselbranchen im Kanton Bern
+T062 | BE | Ernennung / Wahl | Wahl der 5 Stimmenzählerinnen und Stimmenzähler
+T063 | BL | Vorlage | Nachrücken in den Landrat / Anlobung von Juliana Weber Killer
+T064 | BS | Schriftliche Anfrage | Quellensteuer im Prostitutionsgewerbe
+T065 | BS | Regierungsratsbeschluss | Coronavirus (COVID-19); Verordnung über Massnahmen zur Abfederung der wirtschaftlichen Folgen der Massnahmen zur Bekämpfung des Coronavirus (COVID-19) in der Tagesbetreuung (COVID-19-Verordnung Tagesbetreuung)
+T066 | TG | Einfache Anfrage | Schneckentempo für eine Zwergheideschnecke | Einfache Anfrage von Mathis Müller, Karin Bétrisey vom 29. April 2026 "Schneckentempo für eine Zwergheideschnecke"
+T067 | BL | Postulat | Bahnanbindung des St. Jakob-Areals bei Grossveranstaltungen
+T068 | OW | Verwaltungsgeschäft | Wahl der Jugendanwältin und der stellvertretenden Jugendwanwältin auf vier Jahre
+T069 | TG | Einfache Anfrage | Hitzeschutz auf Baustellen - Wann handelt der Kanton Thurgau?
+T070 | OW | Vernehmlassung | Revision zur kantonalen Arbeitslosenversicherungs- und Arbeitsvermittlungsgesetzgebung
+T071 | BE | Motion | Mehr bezahlbarer Wohnraum: Jetzt muss der Kanton Bern eingreifen
+T072 | TG | Gesetz | Gesetz über Kind, Jugend und Familie (KJFG), Änderung des Gesetzes über die Volksschule (VG) und Änderung des Gesundheitsgesetzes (GG)
+T073 | BS | Wahl | Wahl eines Mitglieds der Finanzkommission (Nachfolge Patricia von Falkenstein, LDP)
+T074 | ZG | Kantonsratsbeschluss (nicht referendumsfähig) | Anpassung des kantonalen Richtplans 25/2 (Speziallandwirtschaftszone und Erholungsschwerpunkt Gubel) | Kantonsratsbeschluss betreffend Anpassung des kantonalen Richtplans 25/2 (Speziallandwirtschaftszone und Erholungsschwerpunkt Gubel)
+T075 | BE | Interpellation | KI als Standortfaktor: Nutzt der Kanton Bern sein Potenzial?
+T076 | BE | Motion | Verhältnismässige Unterbringung von Geflüchteten in kleinen Gemeinden
+T077 | BE | Kreditgeschäft GR | Kantonsbeitrag an die Gesamtmelioration Bellmund - Ipsach in den Gemeinden Bellmund, Ipsach und Jens (K-Nr. 53379); Rahmenkredit 2026 - 2038
+T078 | ZG | Wahlen | Feststellung der Gültigkeit der stillen Wahl von Pascal Sterchi als Mitglied des Kantonsgerichts für den Rest der Amtsdauer 2025–2030
+T079 | BL | Petition | Petition für gute Arbeitsbedingungen im Heim
+T080 | BE | Begnadigung / Straferlass | Begnadigungsgesuch Nr. 2026/01
+T081 | TG | Motion | Kantonale Chip- und Registrierungspflicht für Hauskatzen und Regelung des Umgangs mit nicht gechipten Tieren | Motion von Isabelle Vonlanthen-Specker, Reto Ammann, Christina Fäsi, Manuela Fritschi, Jürgen Häberli, Linda Hess, Patrick Siegenthaler vom 18. Februar 2026 "Kantonale Chip- und Registrierungspflicht für Hauskatzen und Regelung des Umgangs mit nicht gechipten Tieren"
+T082 | BL | Vorlage | Teamteaching als Modell für die Zukunft?
+T083 | CHE | Interpellation | Bahnplanung. Darf der Bundesrat die Aufträge des Parlamentes ignorieren?
+T084 | BS | Regierungsratsbeschluss | Provisorische Taxpunktwerte für die Einführung des neuen Gesamt-Tarifsystems (TARDOC und Ambulante Pauschalen) für die Vergütung spitalambulanter ärztlicher Leistungen der baselstädtischen Spitäler ab 1. Januar 2026; vorsorgliche Massnahme
+T085 | BE | Ernennung / Wahl | Wahl der Präsidentin oder des Präsidenten der Finanzkommission (FiKo)
+T086 | BS | Regierungsratsbeschluss | Vertrag mit Einwohnergemeinde Bettingen betreffend den Vollzug der Ergänzungsleistungen und Beihilfen bei Personen mit Wohnsitz in  Bettingen
+T087 | ZG | Motion | Schaffung der gesetzlichen Grundlagen für digitale Abstimmungssysteme an Gemeindeversammlungen | Motion von Michael Riboni und Karl Bürgler betreffend Schaffung der gesetzlichen Grundlagen für digitale Abstimmungssysteme an Gemeindeversammlungen
+T088 | TG | Gesetz | Änderung des Planungs- und Baugesetzes (PBG) und des Gesetzes über Strassen und Wege (StrWG)
+T089 | OW | Motion | Standortvorteil durch Flugplatzinfrastruktur im Kanton Obwalden erhalten | Motion betreffend Standortvorteil durch Flugplatzinfrastruktur im Kanton Obwalden erhalten
+T090 | ZG | Motion | Die Schaffung einer gesetzlichen Grundlage für die Gewährung kantonaler Darlehen | Motion von Kurt Balmer und Michael Felber betreffend die Schaffung einer gesetzlichen Grundlage für die Gewährung kantonaler Darlehen
+T091 | CHE | Fragestunde. Frage | Verwendung von Löschschaum bei Waldbrand 
+T092 | OW | Verwaltungsgeschäft | Geschäftsbericht und Jahresrechnung der Obwaldner Kantonalbank (OKB) 2025
+T093 | AG | Interpellation | Hitzeschutz und Unterrichtsanpassungen bei Hitze an Aargauer Volks- und Kantonsschulen | Interpellation betreffend Hitzeschutz und Unterrichtsanpassungen bei Hitze an Aargauer Volks- und Kantonsschulen vom 2. Juni 2026 von Stefan Dietrich, SP, Bremgarten (Sprecher), Matthias Betsche, GLP, Möriken-Wildegg, Jürg Baur, Mitte, Brugg, Dr. Titus Meier, FDP, Brugg, Béa Bieber, GLP, Rheinfelden
+T094 | BE | Ernennung / Wahl | Wahl einer Fachrichterin oder eines Fachrichters für das Schiedsgericht in Sozialversicherungsstreitigkeiten (Nebenamt), für die Amtsdauer bis 31.12.2028
+T095 | BE | Motion | Menschen in bernischen Kollektivunterkünften vor Hitze schützen
+T096 | ZG | Motion | Mobilität für unsere Jugend im Kanton Zug | Motion der Fraktion Die Mitte betreffend Mobilität für unsere Jugend im Kanton Zug
+T097 | BE | Motion | Wiedereinführung des Forstschutzprogrammes ausserhalb des Käferbekämpfungsgebiets
+T098 | BE | Übrige Geschäfte | Ernennung der 5 provisorischen Stimmenzählerinnen und Stimmenzähler
+T099 | ZG | Interpellation | Zunehmende Möwenpopulation im Siedlungsraum des Kantons Zug | Interpellation von Hans Jörg Villiger, Manuela Käch, Jean Luc Mösch und Drin Alaj betreffend zunehmende Möwenpopulation im Siedlungsraum des Kantons Zug
+T100 | BE | Ernennung / Wahl | Wahl einer französisch- bzw. zweisprachigen kaufmännischen Fachrichterin oder eines französisch- bzw. zweisprachigen kaufmännischen Fachrichters für das Handelsgericht (Nebenamt), für die Amtsdauer bis 31.12.2028
+T101 | BE | Interpellation | Verzögerung der Arbeitslosenentschädigung
+T102 | CHE | Interpellation | Einsatz Quantum Safe/quantensichere Kryptografie beim Bund
+T103 | BE | Interpellation | Entlastungspaket des Bundes und Sprachförderung im Kanton Bern: Auswirkungen und Massnahmen auf Ebene Kanton?
+T104 | ZG | Interpellation | Anpassung des Unterrichtsbeginns für Jugendliche | Interpellation der ALG-Fraktion betreffend Anpassung des Unterrichtsbeginns für Jugendliche
+T105 | TG | Parlamentarische Initiative | Aufbewahrungsfrist für Steuerveranlagungen der 2. Säule bei der Verwaltung / den Behörden verlängern | Parlamentarische Initiative von Peter Bühler, Dean Kradolfer, Roland Wyss, Barbara Dätwyler Weber, Bernhard Braun, Marcel Wittwer, Reto Ammann, Stephan Tobler vom 29. April 2026 "Aufbewahrungsfrist für Steuerveranlagungen der 2. Säule bei der Verwaltung / den Behörden verlängern"
+T106 | BE | Kreditgeschäft GR | Gemeinde Brienz, Hochwasserschutz, Milibach; Kantonsbeitrag, SAP Nr. 510.1193, Verpflichtungskredit
+T107 | BL | Vorlage | Wiederwahl des Datenschutzbeauftragten 1. April 2026 bis 31. März 2030
+T108 | CHE | Fragestunde. Frage | Wie stellt der Bundesrat sicher, dass Antworten in der Fragestunde korrekt sind?
+T109 | ZG | Interpellation | Umsetzung der gewaltfreien Erziehung im Kanton Zug | Interpellation der SP-Fraktion betreffend Umsetzung der gewaltfreien Erziehung im Kanton Zug
+T110 | BE | Motion | Lücken nach Ausbildungsabbrüchen erkennen und schliessen
+T111 | BE | Ernennung / Wahl | Wiederwahl des Staatsschreibers
+T112 | BE | Motion | Einheitliche Tatpersonenansprache nach häuslicher Gewalt gewährleisten
+T113 | ZH | Anfrage | PFAS in Abbruch-Beton
+T114 | BE | Motion | Einführung eines expliziten Instruktionsverbots für kommunale Legislativen (Gemeindeparlamente, Kommissionen mit Entscheidbefugnis)
+T115 | CHE | Fragestunde. Frage | SP-Bundesrat Jans setzt parlamentarische Aufträge nicht um und nimmt damit weitere durch illegale Asyl-Migranten in der Schweiz begangenen Verbrechen in Kauf!
+T116 | AG | Interpellationen | Interpellation betreffend Social-Media-Regelung für unter 16-Jährige; eingereicht am 22. September 2026; von Colette Basler, SP, Zeihen (Sprecherin), Ruth Müri, Grüne, Baden, Jürg Baur, Mitte, Brugg, Stephan Müller, SVP, Möhlin, Lukas Huber, GLP, Berikon, Dr. Titus Meier, FDP, Brugg, Lutz Fischer, EVP, Wettingen
+T117 | BE | Interpellation | Anpassung an den Klimawandel: Welche Hemmnisse bestehen für die Neupflanzung von Bäumen, Hecken und Wald?
+T118 | BE | Kreditgeschäft GR | Zu erneuernde Ausgabenbewilligungen für die Weiterführung bestehender kantonaler Anmieten in der Ausgabenkompetenz des Grossen Rates; Sammelbeschluss 2025 für Verpflichtungskredite
+T119 | BE | Motion | Lehrplan 21 korrigieren und den Bildungsauftrag wieder ins Zentrum stellen
+T120 | BE | Interpellation | Anreize für Gemeinden zum Ausbau von Trennsystemen und zur dezentralen Regenwasserbewirtschaftung – Einführung einer mengengerechten Kostenverteilung an der Gemeindegrenze
+T121 | CHE | Motion | Jagdbanngebiete erhalten und vor übermässigem Schaden schützen
+T122 | TG | Wahlgeschäft | Wahl eines zusätzlichen befristeten Ersatzmitglieds des Obergerichts
+T123 | BE | Motion | Hitzeschutz für alle – Buddy-System konsequent umsetzen und vulnerable Gruppen einbeziehen
+T124 | CHE | Motion | Stärkeres Engagement für die Einhaltung und die Anerkennung unserer AOP und IGP
+T125 | CHE | Interpellation | Problematische Konzessionserteilung an Radio Lora
+T126 | BE | Bericht RR | Neue Modelle zur Ausrichtung des Teuerungsausgleichs: Bericht in Umsetzung der Motion 085-2024 EVP (Gerber, Reconvilier) «Teuerungsauszahlung überdenken - Lohnschere schliessen: Ausgaben werden in Franken getätigt und nicht in Prozent»
+T127 | BE | Interpellation | Einfluss des Regierungsrates auf die Geldpolitik der Schweizerischen Nationalbank
+T128 | BE | Interpellation | NA-BE – wie weiter ab 2029?
+T129 | BE | Motion | Massnahme zum Schutz nachtaktiver Wildtiere vor Verletzung und Tötung durch technische Geräte
+T130 | AG | Vernehmlassung | Berufsfachschule Gesundheit und Soziales (BFGS) Brugg; Anmietung von zusätzlichem Schulraum Etappe 2
+T131 | BE | Motion | Bevölkerungsrückgang im Kanton Bern: Jetzt rechtzeitig vorsorgen!
+T132 | BE | Interpellation | Strenges Gesetz, milder Vollzug? Tierschutzkontrollen im Kanton Bern
+T133 | TG | Einfache Anfrage | Mehr Verhältnismässigkeit und Rechtssicherheit in der Landwirtschaft | Einfache Anfrage von Andreas Sigrist, Peter Haldemann, Marcel Preiss, Hans Eschenmoser, Beat Stump, Ulrich Marti vom 29. April 2026 "Mehr Verhältnismässigkeit und Rechtssicherheit in der Landwirtschaft"
+T134 | BE | Kreditgeschäft GR | Strassenverkehrs- und Schifffahrtsamt (SVSA), Ausstellen von Führerausweisen im Kreditkartenformat; Ausgabenbewilligung, Verpflichtungskredit 2027- 2031Objektkredit
+T135 | BE | Kreditgeschäft GR | Beitrag aus dem Sportfonds und Lotteriefonds an die Gesamtsanierung der Sportanlage Ka-We-De in Bern
+T136 | BE | Gesetz | Spitalversorgungsgesetz (SpVG) (Änderung)
+T137 | OW | Verwaltungsgeschäft | Nachtrag Denkmalschutzverordnung
+T138 | BE | Motion | Einfachere Einreichung der Wahlvorschläge bei Grossratswahlen
+T139 | BE | Kreditgeschäft GR | Bern, Gymnasium Neufeld, Sanierung und Ersatzneubau, Verpflichtungskredit für die Ausführung
+T140 | BE | Interpellation | Massive Verzögerungen bei der Auszahlung der Arbeitslosenentschädigungen und soziale Folgen im Kanton Bern
+T141 | BE | Bericht Dritte | Jahresbericht 2025 der interparlamentarischen Aufsichtskommission über die HES-SO
+T142 | BS | Regierungsratsbeschluss | Planung der kantonalen Abstimmungen vom 24. November 2019
+- Validierung
+T143 | BS | Regierungsratsbeschluss | Kooperationsvereinbarung über die Notfallversorgung von Patientinnen und Patienten aus dem Südelsass (Dépt. Haut-Rhin) im Universitäts-Kinderspital beider Basel; Vertragsgenehmigung; PARTNERSCHAFTLICHES GESCHÄFT
+T144 | OW | Verwaltungsgeschäft | Nachtrag zum Staatsverwaltungsgesetz (Aufhebung Überbrückungsrente)
+T145 | BS | Anzug | Beschilderung des Schulstandortes Gartenstrasse Sek I
+T146 | OW | Verwaltungsgeschäft | Totalrevision Polizeigesetz
+T147 | CHE | Anfrage | Die Bevölkerung ist besorgt über den Biodiversitätsverlust. Was konkret unternimmt der Bundesrat dagegen und bis wann?
+T148 | AG | Interpellation | Entwicklung der Wohnkosten und Bezahlbarkeit des Wohnens im Kanton Aargau | Interpellation betreffend Entwicklung der Wohnkosten und Bezahlbarkeit des Wohnens im Kanton Aargau vom 25. August 2026 von Matthias Betsche, GLP, Möriken-Wildegg (Sprecher), Béa Bieber, GLP, Rheinfelden, Stefan Dietrich, SP, Bremgarten, Dr. Mirjam Kosch, Grüne, Aarau, Christian Minder, EVP, Niederl
+T149 | BE | Motion | Stationäre Versorgung mit integrativer Medizin/Komplementärmedizin fördern: z. B. mit einem integrativen Listenspital/Kompetenzzentrum auch im Kanton Bern
+T150 | BE | Ernennung / Wahl | Eintritt eines neuen Mitglieds in den Grossen Rat: Herr Pascal Bord (FDP)
+T151 | AG | Interpellation | Mögliche systematische Fehlentscheide beim Amt für Migration und Integration des Kantons Aargau | Interpellation betreffend mögliche systematische Fehlentscheide beim Amt für Migration und Integration des Kantons Aargau vom 25. August 2026 von Lelia Hunziker, SP, Aarau (Sprecherin), Mia Jenni, SP, Obersiggenthal
+T152 | CHE | Interpellation | Gegen die administrative Belastung im Gesundheitswesen
+T153 | CHE | Vernehmlassung | Revision des Bundesgesetzes über die Alters- und Hinterlassenenversicherung (AHV 2030)
+T154 | BS | Regierungsratsbeschluss | Immobilienstrategie für das Finanzvermögen des Kantons Basel-Stadt; Totalrevision 2020
+T155 | BE | Finanzhaushalt | Geschäftsbericht 2025 mit Jahresrechnung
+T156 | OW | Vernehmlassung | Teilrevision der Vereinbarung über das Informatikleistungszentrum der Kantone Obwalden und Nidwalden
+T157 | CHE | Interpellation | Positionierung des Post-Konzerns
+T158 | BE | Ernennung / Wahl | Wahl einer französisch- bzw. zweisprachigen kaufmännischen Fachrichterin oder eines französisch- bzw. zweisprachigen kaufmännischen Fachrichters für das Handelsgericht (Nebenamt), für die Amtsdauer bis 31.12.2028
+T159 | OW | Verwaltungsgeschäft | Wahl der übrigen Mitglieder der Ratsleitung auf ein Jahr:
+Wahl des/der ersten Stimmenzählers/Stimmenzählerin
+Wahl des/der zweiten Stimmenzählers/Stimmenzählerin
+Wahl des/der dritten Stimmenzählers/Stimmenzählerin (geheim)
+T160 | CHE | Interpellation | Bundesfinanzen. Entwicklung der letzten 20 Jahre und Ausblick
+T161 | BE | Motion | Rahmenbedingungen für humanitäre Sonderaufnahmen klären
+T162 | BE | Interpellation | Zukunft der Nationalstrassenprojekte in der Region Bern und Schutz der betroffenen Bevölkerung
+T163 | CHE | Motion | Begrenzung der Lärmbelästigung in Wohngebieten, die durch Materialtransporte auf Baustellen mit Helikoptern entsteht 
+T164 | BE | Motion | Missbräuchliche Einsprachen und Beschwerden in Bauverfahren sanktionieren
+T165 | BE | Motion | Die Kosten der Neuinstallation von Klimageräten steuerlich als abzugsfähig zulassen -dies zum Schutz der (vor allem vulnerablen) Menschen vor Sommerhitze
+T166 | BL | Vernehmlassung | Zusammenführung der Jugendanwaltschaft mit der Staatsanwaltschaft: Revision des Einführungsgesetzes zur Schweizerischen Jugendstrafprozessordnung und Aufhebung des Dekrets EG StPO
+T167 | BS | Wahl | Wahl eines Mitglieds der Umwelt-, Verkehrs- und Energiekommission (Nachfolge Danielle Kaufmann, SP)
+T168 | ZG | Interpellation | Sicherheit und öffentliche Ordnung im öffentlichen Raum der Stadt Zug (Umgang mit Bettlerei und Randständigkeit) | Interpellation von Philip C. Brunner, Gregor R. Bruhin und Adrian Risi betreffend Sicherheit und öffentliche Ordnung im öffentlichen Raum der Stadt Zug (Umgang mit Bettlerei und Randständigkeit)
+T169 | BE | Anfrage | Anfragen Frühlingssession 2026
+T170 | BE | Übrige Geschäfte | Sportfonds - Genehmigung der Jahresrechnung 2025
+T171 | BE | Kreditgeschäft GR | Stiftung Ballenberg - Neugestaltung Eingang West. Kantonsbeitrag an die Realisierung, Verpflichtungskredit 2027-2030
+T172 | ZG | Motion | Verbot einer Impfpflicht und von Diskriminierungen aufgrund medizinischer Präventionsentscheide im Kanton Zug | Motion von Thomas Werner betreffend Verbot einer Impfpflicht und von Diskriminierungen aufgrund medizinischer Präventionsentscheide im Kanton Zug
+T173 | CHE | Fragestunde. Frage | Versprechen halten und Covid-Schulden bis am 31. Dezember 2035 zurückzahlen
+T174 | OW | Verwaltungsgeschäft | bezahlbaren Wohnraum | Bericht des Regierungsrats zum Postulat betreffend bezahlbaren Wohnraum
+T175 | CHE | Fragestunde. Frage | Berufskrankheiten in Zusammenhang mit Pestiziden: Sind uns unsere Nachbarn einen Schritt voraus?
+T176 | OW | Verwaltungsgeschäft | Kenntnisnahme des Geschäftsberichts der Interparlamentarischen Geschäftsprüfungskommission zum Jahresbericht des Laboratoriums der Urkantone (LdU) 2025.
+T177 | CHE | Fragestunde. Frage | Ethische Grundsätze der Schweizerischen Nationalbank
+T178 | ZH | Anfrage | Wirkung der versprochenen Massnahmen bei den Notariaten
+T179 | BE | Kreditgeschäft GR | Zu erneuernde Ausgabenbewilligungen für die Weiterführung bestehender kantonaler Anmieten in der Ausgabenkompetenz des Grossen Rates. Sammelbeschluss 2026 für Verpflichtungskredite
+T180 | BE | Motion | Perspektiven für das Berner Pflegepersonal verbessern
+T181 | BE | Ernennung / Wahl | Wahl der Ersatzmitglieder der Bildungskommission (BiK)
+T182 | BE | Motion | Geldwäscherei, Menschenhandel, Arbeitsausbeutung und andere Aktionsfelder der organisierten, strukturierten Kriminalität unterbinden: Die Kooperation auf allen staatlichen Ebenen und die Verbundkontrollen intensivieren
+T183 | BE | Kreditgeschäft GR | Programm „ärztliche Weiterbildung in Hausarztpraxen (Praxisassistenz)“, BIHAM, Verpflichtungskredit 2027 - 2031
+T184 | BE | None | Einführungsgesetz zum Bundesgesetz über die Alters- und Hinterlassenenversicherung (EG AHVG) (Totalrevision)
+T185 | CHE | Motion | Kostenloser Versand von Papierrechnungen
+T186 | BE | Postulat | Lernen aus Femiziden: standardisiertes, indikatorengestütztes Monitoring und interdisziplinäre Reviews
+T187 | BE | Interpellation | Förderung der Fischvielfalt und der aquatischen Naturlandschaften für die Zukunft – aktueller Stand der Revitalisierungsplanung des Kantons Bern
+T188 | ZG | Kleine Anfrage | Missbrauch von Zuger Fahrzeughalterdaten – ist der öffentliche Autoindex noch zeitgemäss? | Kleine Anfrage von Jean Luc Mösch, Manuela Käch und Erich Grob betreffend Missbrauch von Zuger Fahrzeughalterdaten – ist der öffentliche Autoindex noch zeitgemäss?
+T189 | BE | Interpellation | Einsatz von Gummischrot im Kanton Bern
+T190 | CHE | Vernehmlassung | Änderung von vier Verordnungen des Strassenverkehrsrechts bezüglich Anpassungen für Elektro-Nutzfahrzeuge bis 4,25 Tonnen
+T191 | TG | Einfache Anfrage | Interventionszeiten Kantonspolizei
+T192 | BE | Ernennung / Wahl | Wahl eines französischsprachigen Ersatzmitglieds für das Obergericht (Nebenamt), für die Amtsdauer bis 31.12.2028
+T193 | BE | Interpellation | Wie reagiert der Kanton auf die dramatische Lage unserer Wälder? Ist die heutige Waldbewirtschaftung noch zeitgemäss?
+T194 | CHE | Interpellation | Russische Vermögen für den Wiederaufbau der Ukraine verwenden
+T195 | BE | Begnadigung / Straferlass | Begnadigungsgesuch Nr. 2026/02
+T196 | ZH | Anfrage | Verstaatlichung von zivilgesellschaftlichem Engagement im Bereich LGBTI?
+T197 | ZG | Kleine Anfrage | Auswirkungen der kantonalen Übernahme von 99 % der stationären Spitalkosten auf Notfallbehandlungen im Ausland | Kleine Anfrage der ALG-Fraktion betreffend Auswirkungen der kantonalen Übernahme von 99 % der stationären Spitalkosten auf Notfallbehandlungen im Ausland
+T198 | OW | Verwaltungsgeschäft | Wahl eines ausserordentlichen Kantonsgerichtspräsidiums für den Rest der Amtsdauer bis 2028
+T199 | BE | Interpellation | Künstliche Intelligenz in der Kantonsverwaltung: Von Pilotprojekten zu messbaren Einsparungen
+T200 | BS | Schriftliche Anfrage | Stand, Wirksamkeit und Weiterentwicklung der kantonalen Massnahmen gegen Radikalisierung und Terrorismus: Wie viele Taten, Wie viele Worte?
+T201 | CHE | Fragestunde. Frage | Sexuelle Belästigung, Mobbing und Diskriminierung bei der SBB
+T202 | CHE | Fragestunde. Frage | Das Massensterben der Schafe
+T203 | TG | Motion | Steuerabzug für Ausbildungskosten fördert Innovation und beseitigt Ungerechtigkeiten | Motion von Robin Spiri vom 29. April 2026 "Steuerabzug für Ausbildungskosten fördert Innovation und beseitigt Ungerechtigkeiten"
+T204 | BE | Motion | Spezialisierte Palliativpflege: Erhöhung der OKP-Beiträge vollständig wirksam werden lassen
+T205 | OW | Verwaltungsgeschäft | Wahl der Staatsanwaltschaft auf vier Jahre
+T206 | BE | Bericht RR | Gesamterneuerungswahlen des Grossen Rates und des Regierungsrates vom 29. März 2026. Bericht des Regierungsrates an den Grossen Rat vom 29. April 2026 und vom 1. Juli 2026
+T207 | OW | Verwaltungsgeschäft | Kantonsbeitrag für das Wasserversorgungsprojekt Heumattli, Kerns
+T208 | BE | Kreditgeschäft GR | Bern, Wankdorfcity 3, Zusätzlicher Sportraum und eine Aula für die Sekundarstufe II, Verpflichtungskredit für die Anmiete
+T209 | BE | Motion | Kitas sind ein Service public
+T210 | BE | Ernennung / Wahl | Wahl eines deutschsprachigen Mitglieds für das Obergericht, mit Beschäftigungsgrad 100%, für die Amtsdauer bis 31.12.2028
+T211 | AG | Botschaften | Gesetz über Raumentwicklung und Bauwesen (Baugesetz, BauG); Änderung; Bericht und Entwurf zur 2. Beratung
+T212 | BE | Motion | Schluss mit ausufernden Forstverfahren und abschreckenden Gebühren!
+T213 | OW | Verwaltungsgeschäft | Kenntnisnahme des Berichts der Interparlamentarischen Geschäftsprüfungskommission zum Geschäftsbericht des Verkehrssicherheitszentrum Obwalden/Nidwalden (VSZ) 2017
+T214 | ZG | Interpellation | Prognostizierte Zahlenwerte im Richtplan (Bevölkerungs- und Beschäftigtenentwicklung im Kanton Zug) | Interpellation von Michael Felber und Thomas Meierhans betreffend prognostizierte Zahlenwerte im Richtplan (Bevölkerungs- und Beschäftigtenentwicklung im Kanton Zug)
+T215 | OW | Verwaltungsgeschäft | Wahl der kantonalen Steuerrekurskommission und des Präsidiums auf vier Jahre
+T216 | CHE | Interpellation | Welchen spezifischen Schutz vor Gewalt an Frauen und Mädchen mit Behinderungen?
+T217 | BE | Motion | Bezahlbare ÖV-Preise jetzt!
+T218 | CHE | Fragestunde. Frage | Gefahr eines Völkermords im Gazastreifen - was tut der Bundesrat?
+T219 | BE | Kreditgeschäft GR | Kantonspolizei Bern: Ausgabenbewilligung für die ICT-Grundversorgung und ICT-Fachapplikationen sowie Digitalisierung der Kantonsverwaltung. Rahmenkredit 2027–2029
+T220 | CHE | Interpellation | Die Schweiz und das CPTPP. Neue strategische Überlegungen im Lichte internationaler Entwicklungen
+T221 | BS | Interpellation | Versorgungssicherheit der elektrischen Energieversorgung trotz Reduktion der netzstabilisierenden Stromerzeuger
+T222 | CHE | Motion | Digitalisierung der Führerausweise
+T223 | BE | Verfassung | Grossratsbeschluss betreffend die Verfassungsinitiative «Berner Bildungsinitiative»
+T224 | CHE | Fragestunde. Frage | Wie viele in der Schweiz zugelassene Pflanzenschutzmittel enthalten PFAS?
+T225 | BE | Kreditgeschäft GR | Strassenverkehrs- und Schifffahrtsamt (SVSA); Reinigung Schermenweg 5 und 9, Bern; Ausgabenbewilligung, Objektkredit, Verpflichtungskredit 2027 - 2031
+T226 | TG | Einfache Anfrage | Leitung der Peregrina Stiftung sowie deren Rechenschaftspflicht | Einfache Anfrage von Oliver Martin, Hermann Lei, Beat Stump vom 29. April 2026 "Leitung der Peregrina Stiftung sowie deren Rechenschaftspflicht"
+T227 | ZG | Motion | Einführung eines kantonalen Reparaturbonus im Kanton Zug | Motion der ALG-Fraktion betreffend Einführung eines kantonalen Reparaturbonus im Kanton Zug
+T228 | CHE | Motion | Die Auswirkungen der generativen künstlichen Intelligenz in die Gleichstellungsstrategie 2030 einbeziehen
+T229 | ZH | Vorlage | Spitalrat der Integrierten Psychiatrie Winterthur – Zürcher Unterland, Ersatzwahl Amtsdauer 2023–2027, Erneuerungswahl Amtsdauer 2027–2031
+T230 | CHE | Motion | Eine Wehranleihe für die Modernisierung unserer Armee
+T231 | CHE | Motion | Massnahmenpaket zur Übergangsfinanzierung von AHV und Armee mittels befristetem "Sicherheitsprozent"
+T232 | ZH | Anfrage | Cyberbedrohung – wie schützt sich der Kanton Zürich
+T233 | BE | Interpellation | Dank Bilateralen III und Schengen/Dublin ein attraktiver Tourismusstandort
+T234 | CHE | Motion |  Lernenden für die gesamte Lehrzeit die Grenzgängerbewillligung erteilen
+T235 | BS | Regierungsratsbeschluss | Bericht Entwicklung der Motorfahrzeugsteuereinnahmen seit 1. Januar 2018
+T236 | CHE | Motion | Erziehungsgutschriften der AHV für Einzahlungen in die Säule 3a anerkennen
+T237 | ZG | Kleine Anfrage | Attraktiver Wegunterhalt statt Kahlschlag: Wie wird des kantonale Freizeit-Velowegnetz zukunftsfähig gepflegt? | Kleine Anfrage von Tabea Estermann betreffend attraktiver Wegunterhalt statt Kahlschlag: Wie wird des kantonale Freizeit-Velowegnetz zukunftsfähig gepflegt?
+T238 | ZG | Motion | Einführung einer Rechnungs- und Geschäftsprüfungskommission im Gemeindegesetz | Motion von Alois Gössi und Thomas Gwerder betreffend Einführung einer Rechnungs- und Geschäftsprüfungskommission im Gemeindegesetz
+T239 | OW | Verwaltungsgeschäft | Integrierte Aufgaben- und Finanzplanung 2027 bis 2032 sowie Budget 2027
+T240 | CHE | Postulat | Steuerehrlichkeit fördern. Bericht über die finanziellen Auswirkungen des automatischen Informationsaustauschs mit dem Ausland und eine mögliche Einführung des automatischen Informationsaustauschs im Inland
+T241 | CHE | Fragestunde. Frage | Hochansteckende Tierseuchen: Entschädigung für wirtschaftliche Verluste im Zusammenhang mit Präventionsmassnahmen
+T242 | BE | Kreditgeschäft GR | Gemeinde Saanen, Hochwasserschutz, Chalberhönibach, Rüebeldorf, 2. Etappe; Kantonsbeitrag. Verpflichtungskredit (SAP-Nr. 510.0070)
+T243 | OW | Verwaltungsgeschäft | Amtsbericht über die Rechtspflege 2025
+T244 | BE | Interpellation | Auswirkungen der WEKO-Untersuchung über mutmassliche Absprachen in der Baubranche auf den Kanton Bern
+T245 | OW | Verwaltungsgeschäft | Vereidigung:
+Eid/Gelübde des neuen Ratspräsidenten (Abnahme durch das ratsälteste anwesende Mitglied)
+Eid/Gelübde der Mitglieder des Kantonsrats und des Regierungsrats (Abnahme durch den neuen Ratspräsidenten)
+T246 | CHE | Interpellation | Abnehmspritzen in der Grundversicherung – Nachhaltig oder kostentreibend?
+T247 | ZG | Interpellation | Anpassung der Zuger Wälder an den Klimawandel | Interpellation von Thomas Meierhans und Erich Grob betreffend Anpassung der Zuger Wälder an den Klimawandel
+T248 | OW | Interpellation | Regelung des Hochwasserstollens Sarnersee | Interpellation betreffend Regelung des Hochwasserstollens Sarnersee
+T249 | BE | Ernennung / Wahl | Wahl der Präsidentin oder des Präsidenten der Geschäftsprüfungskommission (GPK)
+T250 | TG | Vernehmlassung | Tourismusförderungsgesetz geht in die Vernehmlassung
+T251 | BE | Interpellation | Jagdruhe auf Privatwald: Befriedung von Privatgrundstücken aus ethischen Gründen
+T252 | TG | Einfache Anfrage | Externe Beratungen und Stellenentwicklung beim RAV Thurgau? | Einfache Anfrage von Oliver Martin, Jürgen Häberli vom 1. April 2026 "Externe Beratungen und Stellenentwicklung beim RAV Thurgau?"
+T253 | BE | Motion | Tourismuskanton Bern stärken und Nachtzüge nach Barcelona, Rom oder Malmö finanzieren
+T254 | BE | Ernennung / Wahl | Wahl einer deutschsprachigen Richterin oder eines deutschsprachigen Richters für die Regionalgerichte, mit Beschäftigungsgrad 60%, für die Amtsdauer bis 31.12.2028
+T255 | OW | Verwaltungsgeschäft | Wahl der Rechtspflegekommission (RPK) und des Präsidiums auf vier Jahre
+T256 | ZG | Interpellation | Zusammensetzung der aktuellen PUK, Prüfung und Veröffentlichung allfälliger Interessenkonflikte sowie bei Bedarf Austausch der PUK-Mitglieder | Interpellation von Thomas Werner betreffend Zusammensetzung der aktuellen PUK, Prüfung und Veröffentlichung allfälliger Interessenkonflikte sowie bei Bedarf Austausch der PUK-Mitglieder
+T257 | TG | Fragestunde | Fragestunde vom 29.04.2026
+T258 | OW | Anfrage | Der Gerichtsschreiber in der Obwaldner Justiz | Anfrage betreffend Der Gerichtsschreiber in der Obwaldner Justiz
+T259 | CHE | Fragestunde. Frage | Schützt der Schutzstatus S auch ukrainische Wehrpflichtige?
+T260 | CHE | Fragestunde. Frage | Verbindliche Massnahmen zur gleichberechtigten Teilhabe von Frauen und genderqueeren Personen in Friedensprozessen
+T261 | BE | Übrige Geschäfte | Vereidigung der Ratsmitglieder
+T262 | ZG | Kleine Anfrage | Steuerbefreiung der Stiftung für bürgerliche Politik | Kleine Anfrage der SP-Fraktion betreffend Steuerbefreiung der Stiftung für bürgerliche Politik
+T263 | BE | Kreditgeschäft GR | Münchenbuchsee, Buechlimatt, Neubau Strassenverkehrs- und Schifffahrtsamt inkl. Revitalisierung des Buechlimattbachs, Verpflichtungskredit für die Ausführung
+T264 | TG | Beschluss | Kreditbegehren von Fr. 8'431'500 zur Umsetzung des Massnahmenplans Klima Kanton Thurgau 2027-2031
+T265 | BE | Bericht Dritte | Bericht 2025 der Datenschutzaufsichtsstelle des Kantons Bern
+T266 | BE | Ernennung / Wahl | Wiederwahl des Generalsekretärs des Grossen Rates
+T267 | CHE | Interpellation | Für mehr Gesundheitsschutz. Wann passt der Bundesrat die Grenzwerte an? 
+T268 | BS | Schriftliche Anfrage | Verhältnismässigkeit und Praxis der Bewilligungsverfahren für die Nutzung des öffentlichen Raums in Basel-Stadt
+T269 | OW | Verwaltungsgeschäft | Wahl des Oberstaatsanwalts und des stellvertretenden Oberstaatsanwalts
+T270 | CHE | Motion | Auch in der Schweiz sollen personalisierbare Autokennzeichen ("vanity plates") zugelassen werden
+T271 | ZG | Postulat | Schneller, näher, digital: Online-Polizeiposten der Zuger Kantonspolizei mit Videokonferenz | Postulat von Jill Nussbaumer und Tabea Estermann betreffend schneller, näher, digital: Online-Polizeiposten der Zuger Kantonspolizei mit Videokonferenz
+T272 | ZG | Kantonsratsbeschluss (referendumsfähig) | Freigabe eines Objektkredits für das Projekt «KS P, Hinterburgmühle–Edlibach, Gemeinden Neuheim/Menzingen» | Kantonsratsbeschluss betreffend Freigabe eines Objektkredits für das Projekt «KS P, Hinterburgmühle–Edlibach, Gemeinden Neuheim/Menzingen»
+T273 | BE | Interpellation | Was hat uns der Hitzesommer 2026 gekostet?
+T274 | ZG | Interpellation | Verkehrssicherheit und Verkehrsfluss auf der Sinserstrasse in Cham | Interpellation von Drin Alaj, Manuela Käch und Jean Luc Mösch betreffend Verkehrssicherheit und Verkehrsfluss auf der Sinserstrasse in Cham
+T275 | CHE | Fragestunde. Frage | Kürzungen der internationalen Biodiversitätsfinanzierung des Bundes - welche Projekte trifft es ?
+T276 | BE | Übrige Geschäfte | Rede der Alterspräsidentin
+T277 | BE | Kreditgeschäft GR | Beitrag aus dem Sportfonds und dem Lotteriefonds an den Neubau des Sport-, Freizeit- und Betreuungszentrums Rain, Ittigen
+T278 | BE | Ernennung / Wahl | Wahl der 17 Mitglieder der Finanzkommission (FiKo)
+T279 | BE | Motion | Standesinitiative zur Anpassung der Zulagen für Eltern, die ein Kind betreuen, das wegen Krankheit oder Unfall gesundheitlich schwer beeinträchtigt ist
+T280 | AG | Interpellation | Ungenügende Arbeitsmarktintegration ukrainischer Schutzsuchender trotz Fachkräftemangel | Interpellation betreffend ungenügende Arbeitsmarktintegration ukrainischer Schutzsuchender trotz Fachkräftemangel vom 10. März 2026 von Rahel Gassner-Ruf, SVP, Zofingen (Sprecherin), Andy Steinacher, SVP, Schupfart
+T281 | BE | Übrige Geschäfte | Eröffnung der Sitzung durch das älteste der anwesenden amtsältesten Ratsmitglieder (Alterspräsidentin)
+T282 | OW | Interpellation | Transparenz und Kostenwahrheit der digitalen Kantonsratsunterlagen | Interpellation betreffend Transparenz und Kostenwahrheit der digitalen Kantonsratsunterlagen
+T283 | OW | Verwaltungsgeschäft | Kenntnisnahme des Geschäftsberichts der Interparlamentarischen Geschäftsprüfungskommission der Interkantonalen Polizeischule Hitzkirch (IPH) 2025.
+T284 | BE | Kreditgeschäft GR | Ausgabenbewilligung für die ICT-Ausgaben der Direktion für Inneres und Justiz (DIJ). Rahmenkredit 2027-2029
+T285 | BE | Bericht RR | Interregionales Fortbildungszentrum Tramelan: Geschäftsbericht und Jahresrechnung 2025.Kenntnisnahme durch den Regierungsrat und Antrag an den Grossen Rat
+T286 | BE | Ernennung / Wahl | Grossratswahlen vom 29. März 2026. Nachrücken von Frau Simone Schnegg (EDU), La Ferrière, in den Grossen Rat
+T287 | CHE | Fragestunde. Frage | Gefährdet Entlassungswelle System der Flugsicherung?
+T288 | BS | Anzug | Vertrauen durch Transparenz über Einwohnerdaten - Einführung eines "Reversed Big Brother Principle"
+T289 | BE | Motion | Update für das Zuteilungssystem der Garantiesitze im Wahlkreis Biel-Seeland – keine Rechte ohne Pflichten
+T290 | ZH | Wahl | Wahl Mitglied KJS für Beatrix Stüssi
+T291 | TG | Wahlgeschäft | Ersatzwahl eines Mitgliedes der Raumplanungskommission für den Rest der Amtsdauer
+T292 | BE | Motion | Wiedereinführung vorgedruckter Wahlzettel bei den Regierungsratswahlen
+T293 | AG | Postulat | Wasserabfluss von öffentlichen Brunnen | Postulat betreffend Wasserabfluss von öffentlichen Brunnen vom 25. August 2026 von Martin Brügger, SP, Brugg (Sprecher), Dr. Philipp Laube, Mitte, Lengnau, Thomas Zollinger, SVP, Würenlos, Beat Käser, FDP, Stein, Dr. Leandra Kern Knecht, GLP, Windisch, Christian Minder, EVP, Niederlenz, Julia Rahel 
+T294 | ZG | Interpellation | Den drohenden Millionen-Kostenschub im Asylwesen: Was ist die Strategie des Kantons beim Wechsel von Status S zu Status B? | Interpellation der SVP-Fraktion betreffend den drohenden Millionen-Kostenschub im Asylwesen: Was ist die Strategie des Kantons beim Wechsel von Status S zu Status B?
+T295 | BL | Vorlage | Verlängerung der befristeten Aufstockung der Präsidialpensen des Straf-, Jugend- und Zwangsmassnahmengerichts
+T296 | ZG | Kleine Anfrage | Umsetzung Autoarmes Zentrum Cham (AAZ) | Kleine Anfrage von Anne Hänel, Erich Grob, Fabienne Michel, Jill Nussbaumer, Michèle Schmid und Hans Jörg Villiger betreffend Umsetzung Autoarmes Zentrum Cham (AAZ)
+T297 | BE | Kreditgeschäft GR | Avenir Berne romande, Biel/Bienne, Salzhausstrasse 18, Centre de formation professionelle Berne francophone (ceff), Zweiter Zusatzkredit für die Anmiete in Moutier bis Ende Schuljahr 2026/2027
+T298 | BS | Anzug | Velogerechte Planung der Kreisel Wettsteinplatz und Kannenfeldplatz
+T299 | BE | Motion | Beratungsreife Vorstösse schneller in den Grossen Rat bringen, damit die Sessionen ausgeglichener sind
+T300 | OW | Verwaltungsgeschäft | Anpassung des kantonalen Richtplans, Richtplananpassung 2026

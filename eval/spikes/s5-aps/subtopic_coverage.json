@@ -1,0 +1,88 @@
+{
+ "n": 262,
+ "cov1.0": {
+  "k": 262,
+  "p_min": 0.359,
+  "subtopic_prec": 0.534,
+  "ci": [
+   0.474,
+   0.594
+  ],
+  "chapter_prec": 0.744
+ },
+ "cov0.9": {
+  "k": 236,
+  "p_min": 0.586,
+  "subtopic_prec": 0.576,
+  "ci": [
+   0.512,
+   0.638
+  ],
+  "chapter_prec": 0.775
+ },
+ "cov0.8": {
+  "k": 210,
+  "p_min": 0.785,
+  "subtopic_prec": 0.614,
+  "ci": [
+   0.547,
+   0.678
+  ],
+  "chapter_prec": 0.795
+ },
+ "cov0.7": {
+  "k": 183,
+  "p_min": 0.932,
+  "subtopic_prec": 0.639,
+  "ci": [
+   0.568,
+   0.705
+  ],
+  "chapter_prec": 0.792
+ },
+ "cov0.6": {
+  "k": 157,
+  "p_min": 0.977,
+  "subtopic_prec": 0.707,
+  "ci": [
+   0.632,
+   0.773
+  ],
+  "chapter_prec": 0.803
+ },
+ "cov0.5": {
+  "k": 131,
+  "p_min": 0.996,
+  "subtopic_prec": 0.756,
+  "ci": [
+   0.676,
+   0.821
+  ],
+  "chapter_prec": 0.824
+ },
+ "cov0.4": {
+  "k": 105,
+  "p_min": 1.0,
+  "subtopic_prec": 0.79,
+  "ci": [
+   0.703,
+   0.857
+  ],
+  "chapter_prec": 0.829
+ },
+ "cov0.3": {
+  "k": 79,
+  "p_min": 1.0,
+  "subtopic_prec": 0.797,
+  "ci": [
+   0.696,
+   0.871
+  ],
+  "chapter_prec": 0.848
+ },
+ "aps_majority": {
+  "chapter": "1.7.2.",
+  "acc": 0.094,
+  "n": 297
+ }
+}

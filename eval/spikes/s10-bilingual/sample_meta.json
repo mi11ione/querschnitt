@@ -1,0 +1,20 @@
+{
+ "seed": 20261014,
+ "n_per": 70,
+ "excl_regex": "\\b(ersatz|wieder|bestätigungs|gesamterneuerungs|richterliche\\s+)?wahl(en)?\\b|wahlen\\b|\\bgewählt|\\bernennung|\\brücktritt|\\bdemission|\\beinbürgerung|\\bvereidigung|\\bamtsgelübde|\\binpflichtnahme|\\bbeisitzer|\\bersatzmitglied|\\bersatzrichter|\\bnachfolger|\\bnachrücken|eintritt eines neuen mitglieds|\\bbegnadigung|\\bfriedensrichter|\\bstaatsanwält|\\bstaatsanwalt\\b|\\bpräsident/-?in|\\b(r[ée])?[ée]lections?\\b|\\b[ée]lue?s?\\b|\\bnomination|\\bd[ée]mission|\\bnaturalisation|\\bassermentation|\\bprestation de serment|\\bassesseu|\\bsuppl[ée]ant|en remplacement de|entr[ée]e d.un nouveau membre|\\brecours en gr[âa]ce|\\bjuge de paix|\\bprocureur|\\bpr[ée]sident-e|\\bvice-pr[ée]sident-e",
+ "excl_sha256": "ed209116be30aa61e5b9160ee467a32bb1f8b336630a86e2062abc868d393e7c",
+ "counts": {
+  "BE:eligible": 953,
+  "BE:excl_regex": 189,
+  "BE:identical_titles": 5,
+  "FR:eligible": 435,
+  "FR:excl_regex": 132,
+  "FR:identical_titles": 2,
+  "VS:eligible": 961,
+  "VS:excl_regex": 20,
+  "VS:identical_titles": 34,
+  "VS:missing_title": 53
+ },
+ "with_long_de": 102,
+ "with_long_fr": 101
+}

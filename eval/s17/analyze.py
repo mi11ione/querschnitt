@@ -49,7 +49,7 @@ for flag, name in ((True, "title_only"), (False, "with_text")):
     s = [i for i in ids if K[i]["title_only"] == flag]; k = sum(K[i]["shipped"] == gold(i) for i in s)
     R[name] = dict(n=len(s), acc=round(k / len(s), 4) if s else None, ci=wilson(k, len(s)))
 # frozen S9 keyword baseline (APS subtopic words → chapter)
-kwf = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s9-aps/data/keywords_frozen.json")
+kwf = HERE.parent / "spikes/s9-aps/data/keywords_frozen.json"
 KW = json.load(open(kwf)); kw = {int(c): v["keywords"] for c, v in KW["chapters"].items()}
 sys.path.insert(0, str(ROOT / "src"))
 import gzip  # noqa: E402
@@ -70,5 +70,5 @@ def kw_pred(i):   # S9 frozen rule: distinct subtopic keywords in title + long t
     m = max(sc.values()); tied = [c for c in sc if sc[c] == m]
     return min(tied, key=lambda c: majorder.index(c) if c in majorder else 99)
 kk = sum(kw_pred(i) == gold(i) for i in ids)
-R["keyword"] = dict(acc=round(kk / N, 4), ci=wilson(kk, N), file=str(kwf))
+R["keyword"] = dict(acc=round(kk / N, 4), ci=wilson(kk, N), file=str(kwf.relative_to(ROOT)))
 (HERE / "results.json").write_text(json.dumps(R, indent=1, ensure_ascii=False)); print(json.dumps(R, indent=1, ensure_ascii=False))

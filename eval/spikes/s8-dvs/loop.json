@@ -1,0 +1,20 @@
+{
+ "n": 404,
+ "before": {
+  "F1": 0.866,
+  "P": 0.91,
+  "R": 0.826
+ },
+ "after": {
+  "F1": 0.906,
+  "P": 0.917,
+  "R": 0.895
+ },
+ "dF1": 0.04,
+ "dF1_ci": [
+  0.007,
+  0.075
+ ],
+ "gain": true,
+ "note": "unweighted, packet items outside the first 60; before = order-a p without examples"
+}

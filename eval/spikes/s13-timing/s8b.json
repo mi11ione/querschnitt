@@ -1,0 +1,81 @@
+{
+ "stats": {
+  "n_federal": 141,
+  "n_mapped": 138,
+  "n_textrec": 138,
+  "n_text": 120
+ },
+ "fps": [
+  "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ ],
+ "usd": 0.0054534000000000015,
+ "all": {
+  "label": "federal, all with text",
+  "n": 120,
+  "n_gold_Y": 56,
+  "title_only": {
+   "F1": 0.8269230769230769,
+   "P": 0.8958333333333334,
+   "R": 0.7678571428571429,
+   "tp": 43,
+   "fp": 5,
+   "fn": 13
+  },
+  "title_text": {
+   "F1": 0.8085106382978724,
+   "P": 1.0,
+   "R": 0.6785714285714286,
+   "tp": 38,
+   "fp": 0,
+   "fn": 18
+  },
+  "dF1": -0.018412438625204475,
+  "dF1_ci95": [
+   -0.08349026993094799,
+   0.039570491151322384
+  ],
+  "dRecall": -0.0892857142857143,
+  "dRecall_ci95": [
+   -0.16981132075471705,
+   -0.019607843137254943
+  ],
+  "flips_N_to_Y": 0,
+  "flips_Y_to_N": 10,
+  "bootstrap": "paired, 2000, seed 13, percentile"
+ },
+ "de_only": {
+  "label": "federal, prompt de",
+  "n": 120,
+  "n_gold_Y": 56,
+  "title_only": {
+   "F1": 0.8269230769230769,
+   "P": 0.8958333333333334,
+   "R": 0.7678571428571429,
+   "tp": 43,
+   "fp": 5,
+   "fn": 13
+  },
+  "title_text": {
+   "F1": 0.8085106382978724,
+   "P": 1.0,
+   "R": 0.6785714285714286,
+   "tp": 38,
+   "fp": 0,
+   "fn": 18
+  },
+  "dF1": -0.018412438625204475,
+  "dF1_ci95": [
+   -0.08349026993094799,
+   0.039570491151322384
+  ],
+  "dRecall": -0.0892857142857143,
+  "dRecall_ci95": [
+   -0.16981132075471705,
+   -0.019607843137254943
+  ],
+  "flips_N_to_Y": 0,
+  "flips_Y_to_N": 10,
+  "bootstrap": "paired, 2000, seed 13, percentile"
+ },
+ "note": "unweighted (packet design weights not applied); text is Curia DE for every item, prompt language = item language"
+}

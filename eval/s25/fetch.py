@@ -4,12 +4,13 @@ OPD CHE affairs via (a) APS article anchors on the page that OPD links as aps_af
 Curia number at the end of the slug. Resumable: every fetched pid goes to fetched.jsonl; raw pages to raw_pages.jsonl.gz.
 Network: web.archive.org only, via ideation-1 polite.py. Stops at MAX qualifying new affairs or when candidates run out."""
 import collections, gzip, html as H, json, os, re, sys, time
-sys.path.insert(0, "/Users/mi11ion/Desktop/hackapertus/bern/ideation/spikes/s2-oracles/scripts")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "spikes", "s2-oracles", "scripts"))  # vendored polite.py
 import polite  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 polite.LOG = f"{HERE}/robots_log.jsonl"
-B = "/Users/mi11ion/Desktop/hackapertus/bern"
-S2D, S9D = f"{B}/ideation/spikes/s2-oracles/data", f"{B}/ideation2/spikes/s9-aps/data"
+ROOT = os.path.dirname(os.path.dirname(HERE))  # repository root
+WS = os.path.dirname(os.path.dirname(ROOT))  # workspace above the repo: OPD export copies used at fetch time (not in the repo)
+S2D, S9D = f"{ROOT}/eval/spikes/s2-oracles/data", f"{ROOT}/eval/spikes/s9-aps/data"  # vendored
 MAX = int(sys.argv[1]) if len(sys.argv) > 1 else 1000
 RAW_CAP = 95 * 2**20
 APS_CODES = ['1.1.1.', '1.1.2.', '1.1.3.', '1.1.4.', '1.1.5.', '1.2.', '1.3.', '1.4.1.', '1.4.2.', '1.4.3.', '1.5.', '1.6.1.',
@@ -17,12 +18,12 @@ APS_CODES = ['1.1.1.', '1.1.2.', '1.1.3.', '1.1.4.', '1.1.5.', '1.2.', '1.3.', '
 
 # OPD: aps_affair links (article id -> affair ids, affair id -> article ids), CHE number -> affair id
 art2aff, links = collections.defaultdict(set), collections.defaultdict(set)
-for l in gzip.open("/Users/mi11ion/Desktop/hackapertus/gegenprobe/track_2a/.work/opd/external_links.ndjson.gz", "rt"):
+for l in gzip.open(f"{WS}/gegenprobe/track_2a/.work/opd/external_links.ndjson.gz", "rt"):
     d = json.loads(l)
     if d.get("type_harmonized_en") == "aps_affair":
         art2aff[d["external_id"]].add(d["affair_id"]); links[d["affair_id"]].add(d["external_id"])
 che = {}
-for l in gzip.open("/Users/mi11ion/Desktop/hackapertus/spikes/data/raw/opd/affairs.ndjson.gz", "rt"):
+for l in gzip.open(f"{WS}/spikes/data/raw/opd/affairs.ndjson.gz", "rt"):
     if '"body_key":"CHE"' not in l:
         continue
     a = json.loads(l)
@@ -35,7 +36,7 @@ EX_P = {x["aps_process_id"] for x in ext} | {x["aps_process_id"] for x in old}
 EX_A = ({x["opd_affair_id"] for x in ext} | {x["opd_affair_id"] for x in old}
         | {x["oid"] for x in json.load(open(f"{S9D}/items.json"))}
         | {x["oid"] for x in json.load(open(f"{S9D}/mem_ideation1.json"))}
-        | {json.loads(l)["oid"] for l in open(f"{B}/querschnitt/data/eval/aps_pool.jsonl")})
+        | {json.loads(l)["oid"] for l in open(f"{ROOT}/data/eval/aps_pool.jsonl")})
 
 # candidates: latest 200 text/html capture per process id, DE path preferred over /fr/
 proc = collections.defaultdict(list)

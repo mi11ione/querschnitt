@@ -1,19 +1,19 @@
 """Build eval/pruefstand.json from the spike result files (read-only; no model calls, no network).
 Every value is read from its source file by key (JSON) or located by an exact needle (Markdown line), so the record of where a
-number sits is produced by the same code that copies it. Paths are relative to the hackapertus root.
-Run: python3 -I querschnitt/eval/scripts/build_pruefstand.py   (from anywhere)"""
+number sits is produced by the same code that copies it. Paths are relative to the repository root (the S1–S15 spikes are
+vendored under eval/spikes/). Run: python3 -I eval/scripts/build_pruefstand.py   (from anywhere)"""
 import json, math, os, re, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "tools"))
 import numfmt as F  # noqa: E402
 import claims_check as cc  # noqa: E402
 
-ROOT = "/Users/mi11ion/Desktop/hackapertus"
 EVAL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(EVAL)  # repository root
 BUILD = "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
 MODEL = "swiss-ai/apertus-v1.5-8b"
-I2 = "bern/ideation2/spikes"
-I1 = "bern/ideation/spikes"
+I2 = "eval/spikes"  # S8–S15 (second round)
+I1 = "eval/spikes"  # S1–S7 (first round)
 _cache = {}
 
 
@@ -122,9 +122,9 @@ S5M = f"{I1}/s5-aps/results.md"
 S6S = f"{I1}/s6-cantonal/score.json"
 S6M = f"{I1}/s6-cantonal/results.md"
 S7S = f"{I1}/s7-crossfamily/score.json"
-PRE = "bern/ideation2/PREREG.md"
-ADD = "bern/ideation2/PREREG-ADDENDA.md"
-QE = "bern/querschnitt/eval"
+PRE = "eval/spikes/PREREG.md"
+ADD = "eval/spikes/PREREG-ADDENDA.md"
+QE = "eval"
 PB = f"{QE}/PREREG-BUILD.md"
 S16R, S16M = f"{QE}/s16/results.json", f"{QE}/s16/results.md"
 S17R, S18R, S20R, S21R, S8F = (f"{QE}/s17/results.json", f"{QE}/s18/results.json", f"{QE}/s20/results.json",
@@ -291,7 +291,7 @@ tests.append(dict(
                   {"metric": "paired Δ micro-F1 V3 − BFH", "ci95": [-0.079, 0.010], "at": md(S5M, "vs BFH micro **−0.079 to +0.010**")}],
     baselines=[{"name": "BFH Omikuji (trained on 15,007 tagged affairs), thr 0.25", "value": 0.687, "ci95": [0.652, 0.722],
                 "top1": 0.855, "top1_ci95": [0.800, 0.897], "at": md(S3M, "| **BFH Omikuji, thr 0.25 (tuned on BFH's dev)** |"),
-                "training_size_at": md("bern/research/R1-parts/prior-art.md", "15,007 German training docs")}],
+                "training_size_at": md("eval/research/R1-parts/prior-art.md", "15,007 German training docs")}],
     split="test n = 200; rules, τ and λ tuned on 100 dev items (tuning split)", prereg=None,
     sources=[S3M, S5M, f"{I1}/s2-oracles/results.md"], build=BUILD, model=MODEL, date="2026-10-13"))
 
@@ -621,7 +621,7 @@ tests.append(dict(
                   "rule": "the two code orders (with examples / without) agree on the top chapter → lane 'readings agree'; else 'please check' "
                           "(the lane rule until 14 Oct; replaced by recalibrated p < 0.7 → 'please check', see aps_lane_rule)",
                   "at": loc(S16R, "lanes_D4")},
-        "calibration": dict(cal16["aps-fed"], at=loc(S16R, "calibration", "aps-fed"), file="bern/querschnitt/eval/calibration.json"),
+        "calibration": dict(cal16["aps-fed"], at=loc(S16R, "calibration", "aps-fed"), file="eval/calibration.json"),
         "coverage_precision": {"points": s16curve("aps-fed"), "at": loc(S16R, "coverage_precision", "aps-fed")},
         "new_subtopic_calls": {"value": g(S16R, "new_calls"), "at": loc(S16R, "new_calls")}},
     split=SPLIT_D4 + " (S16 decision rule fixed before any call: ship D4 if its top-1 ≥ D3's)",
@@ -1005,7 +1005,7 @@ pt19 = {}
 for s_ in TOPICS19:
     x_ = s19[s_]; pf_ = x_["precision_flags"]
     pt19[s_] = {
-        "topic": s_, "name_de": TNAME[s_][0], "name_fr": TNAME[s_][1], "name_en": TNAME[s_][2], "scheme": f"bern/querschnitt/src/querschnitt/schemes/adhoc/{s_}.yaml",
+        "topic": s_, "name_de": TNAME[s_][0], "name_fr": TNAME[s_][1], "name_en": TNAME[s_][2], "scheme": f"src/querschnitt/schemes/adhoc/{s_}.yaml",
         "precision": kprop(S19R, (s_, "precision_flags", "value"), pf_["n"], f"precision of Apertus flags, {AJ}", (s_, "precision_flags", "ci"), k=pf_["k"]),
         "recall": boot(S19R, (s_, "weighted", "point", "a_R"), (s_, "weighted", "ci", "a_R"), f"recall of Apertus flags, {AJ} (weighted to the population)"),
         "precision_weighted": boot(S19R, (s_, "weighted", "point", "a_P"), (s_, "weighted", "ci", "a_P"), f"precision of Apertus flags, {AJ} (bootstrap)"),
@@ -1149,7 +1149,7 @@ tests.append(dict(
                                "with the second question"},
     split="S19 packets held out; one pre-registered wording, no tuning, applied once (amendment before any S27 call: no dev step)",
     prereg=pre(PB, "— S27 a second, stricter check"), prereg_more=pre(PB, "Amendment 2026-10-14 23:10 CEST (before any S27 call)"),
-    sources=[S27R, f"{QE}/s27/analyze.py", f"{QE}/s27/run.py", f"{QE}/s27/raw.jsonl", f"{QE}/s27/ledger.jsonl", "bern/querschnitt/src/querschnitt/prompts.py", S19R],
+    sources=[S27R, f"{QE}/s27/analyze.py", f"{QE}/s27/run.py", f"{QE}/s27/raw.jsonl", f"{QE}/s27/ledger.jsonl", "src/querschnitt/prompts.py", S19R],
     build=BUILD, model=MODEL, judge_build="Claude (blind agent runs, S19 gold)", date="2026-10-14"))
 NEW_ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
 for t_ in tests:
@@ -1335,7 +1335,7 @@ def shown_pass(o):
 out = {
     "schema": "querschnitt/pruefstand@1",
     "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-    "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
+    "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
     "build": {"endpoint": "Public AI", "model": MODEL, "system_fingerprint": BUILD},
     "conventions": {"ci95": "Wilson for proportions; paired bootstrap 2,000 (percentile) for differences; stratified bootstrap for S8 population estimates",
                     "value": "as stored in the source file (JSON keeps 4 decimals where the source does)",

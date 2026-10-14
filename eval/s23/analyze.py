@@ -13,7 +13,7 @@ from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-S12 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s12-evidence/results.json")
+S12 = HERE.parent / "spikes/s12-evidence/results.json"  # vendored S12 (eval/spikes/)
 KINDS = ("chapter", "digitalisierung")
 
 
@@ -104,7 +104,7 @@ def main():
     if s12:
         R["s12_descriptive"] = dict(rate=s12["support"]["overall"]["rate"], n=s12["support"]["overall"]["n"],
                                     note="S12 spike (120 federal affairs, D1 chapter, German); descriptive comparison only, no test",
-                                    file=str(S12))
+                                    file=str(S12.relative_to(HERE.parents[1])))
     (HERE / "results.json").write_text(json.dumps(R, ensure_ascii=False, indent=1), encoding="utf-8")
     s = R["support"]
     print("\n".join([f"S23 n {len(ids)}; A/B agree {R['ab_agreement']['k']}/{len(ids)}, κ {R['ab_kappa']}; tie-broken {R['n_tiebroken']}",

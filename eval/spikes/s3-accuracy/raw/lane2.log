@@ -1,0 +1,36 @@
+e3m todo 300
+0 e3m-20251036 ok
+50 e3m-20253663 ok
+100 e3m-20257389 ok
+150 e3m-20263278 ok
+200 e3m-20263976 ok
+250 e3m-20257413 ok
+spent bern-s3-*: 0.2257
+e3b todo 300
+0 e3b-20244676 ok
+50 e3b-20253663 ok
+100 e3b-20247893 ok
+150 e3b-20267521 ok
+200 e3b-20263976 ok
+209 e3b-20257344 <HTTPError 429: 'Too Many Requests'>
+250 e3b-20257413 ok
+spent bern-s3-*: 0.2941
+e6a todo 330
+0 e6a-334122 ok
+50 e6a-292680 ok
+100 e6a-285749 ok
+150 e6a-313011 ok
+200 e6a-338735 ok
+250 e6a-334449 ok
+300 e6a-161158 ok
+spent bern-s3-*: 0.3213
+e6b todo 330
+0 e6b-334122 ok
+50 e6b-337414 ok
+100 e6b-303772 ok
+150 e6b-313025 ok
+200 e6b-338778 ok
+250 e6b-312950 ok
+300 e6b-161158 ok
+spent bern-s3-*: 0.3521
+LANE2_DONE

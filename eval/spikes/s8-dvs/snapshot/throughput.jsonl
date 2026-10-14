@@ -1,0 +1,11 @@
+{"ts": 1791915789, "order": "a", "calls": 500, "wall_s": 730.2, "req_per_s": 0.685, "http_p50": 0.79, "http_p95": 32.08, "n429": 76, "errors": 0, "done_total": 500, "workers": 3}
+{"ts": 1791916563, "order": "a494+b6", "calls": 500, "wall_s": 685.6, "req_per_s": 0.729, "http_p50": 0.81, "http_p95": 31.85, "n429": 78, "errors": 0, "workers": 3}
+{"ts": 1791917330, "order": "a497+b3", "calls": 500, "wall_s": 767.3, "req_per_s": 0.652, "http_p50": 0.83, "http_p95": 31.84, "n429": 80, "errors": 0, "workers": 3}
+{"ts": 1791918080, "order": "a496+b4", "calls": 500, "wall_s": 749.9, "req_per_s": 0.667, "http_p50": 0.86, "http_p95": 32.15, "n429": 80, "errors": 0, "workers": 3}
+{"ts": 1791918680, "order": "a494+b6", "calls": 500, "wall_s": 599.9, "req_per_s": 0.833, "http_p50": 1.05, "http_p95": 3.03, "n429": 34, "errors": 0, "workers": 3}
+{"ts": 1791919504, "order": "a495+b5", "calls": 500, "wall_s": 824.1, "req_per_s": 0.607, "http_p50": 1.0, "http_p95": 63.23, "n429": 81, "errors": 0, "workers": 3}
+{"ts": 1791920063, "order": "a497+b3", "calls": 500, "wall_s": 559.0, "req_per_s": 0.894, "http_p50": 0.86, "http_p95": 3.0, "n429": 55, "errors": 0, "workers": 3}
+{"ts": 1791920811, "order": "a499+b1", "calls": 500, "wall_s": 747.8, "req_per_s": 0.669, "http_p50": 0.88, "http_p95": 32.98, "n429": 85, "errors": 0, "workers": 3}
+{"ts": 1791921580, "order": "a498+b2", "calls": 500, "wall_s": 768.5, "req_per_s": 0.651, "http_p50": 0.92, "http_p95": 33.53, "n429": 82, "errors": 0, "workers": 3}
+{"ts": 1791922240, "order": "a499+b1", "calls": 500, "wall_s": 660.3, "req_per_s": 0.757, "http_p50": 0.915, "http_p95": 32.36, "n429": 80, "errors": 0, "workers": 3}
+{"ts": 1791922864, "order": "a499+b1", "calls": 500, "wall_s": 624.5, "req_per_s": 0.801, "http_p50": 1.03, "http_p95": 31.57, "n429": 97, "errors": 0, "workers": 3}

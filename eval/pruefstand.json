@@ -1,7 +1,7 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T22:17:39Z",
- "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
+ "generated_utc": "2026-10-14T22:33:40Z",
+ "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
   "model": "swiss-ai/apertus-v1.5-8b",
@@ -32,7 +32,7 @@
     "k": 1005,
     "n": 1357,
     "at": {
-     "file": "bern/querschnitt/eval/s16/results.json",
+     "file": "eval/s16/results.json",
      "key": "designs > D4 > top1"
     },
     "display": "0.740 [0.717, 0.763]",
@@ -66,7 +66,7 @@
      "value": 0.8836,
      "n": 1357,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "designs > D4 > top3"
      },
      "shown": {
@@ -86,7 +86,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "D4-D3"
      },
      "shown": {
@@ -111,7 +111,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "D4-D1"
      },
      "shown": {
@@ -141,7 +141,7 @@
      "k": 980,
      "n": 1357,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "designs > D3 > top1"
      },
      "name": "D3 five APS-labelled examples (same items, recomputed in S16)",
@@ -179,7 +179,7 @@
      "k": 955,
      "n": 1357,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "designs > D1 > top1"
      },
      "name": "D1 read back from the subtopic, no examples (same items, recomputed in S16)",
@@ -219,7 +219,7 @@
      "n": 1357,
      "display": "0.655 [0.629, 0.680]",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D0 > top1"
      },
      "name": "D0 plain list prompting (v14: chapter step, two code orders)",
@@ -245,7 +245,7 @@
      ],
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "baselines > keyword_top1"
      },
      "ci95_source": [
@@ -282,7 +282,7 @@
      ],
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "baselines > majority_top1"
      },
      "ci95_source": [
@@ -383,7 +383,7 @@
      },
      "rule": "the two code orders (with examples / without) agree on the top chapter → lane 'readings agree'; else 'please check' (the lane rule until 14 Oct; replaced by recalibrated p < 0.7 → 'please check', see aps_lane_rule)",
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "lanes_D4"
      }
     },
@@ -394,10 +394,10 @@
      "ece_raw": 0.2463,
      "ece_crossfit": 0.0211,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "calibration > aps-fed"
      },
-     "file": "bern/querschnitt/eval/calibration.json",
+     "file": "eval/calibration.json",
      "shown": {
       "acc": [
        "0.7",
@@ -916,41 +916,41 @@
       }
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "coverage_precision > aps-fed"
      }
     },
     "new_subtopic_calls": {
      "value": 1935,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "new_calls"
      }
     }
    },
    "split": "pre-registered (S16), measured on the S9 items; the D4 design was chosen after S9 on the same items (D4 combines D1 and D3), so this is not a held-out result; fresh held-out set: S25 (pre-registered, running) (S16 decision rule fixed before any call: ship D4 if its top-1 ≥ D3's)",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S16 read-back combined with examples",
     "line": 6
    },
    "prereg_more": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
    },
    "heldout_test": "fresh held-out set: S25 (pre-registered, running; no result yet)",
    "decision": "D4 shipped for federal affairs (pre-registered rule: D4 if its top-1 ≥ D3's). The corpus run uses D4 as registered: both code orders always, examples on the first. D4s (secondary) is reported, not shipped.",
    "decision_at": {
-    "file": "bern/querschnitt/eval/s16/results.json",
+    "file": "eval/s16/results.json",
     "key": "decision"
    },
    "sources": [
-    "bern/querschnitt/eval/s16/results.json",
-    "bern/querschnitt/eval/s16/results.md",
-    "bern/querschnitt/eval/s16/analyze.py",
-    "bern/querschnitt/eval/s16/raw.jsonl",
-    "bern/querschnitt/eval/calibration.json"
+    "eval/s16/results.json",
+    "eval/s16/results.md",
+    "eval/s16/analyze.py",
+    "eval/s16/raw.jsonl",
+    "eval/calibration.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -992,7 +992,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s16/results.json",
+   "file": "eval/s16/results.json",
    "key": "designs > D4 > top1",
    "shown": {
     "interval": [
@@ -1020,7 +1020,7 @@
     "k": 1016,
     "n": 1357,
     "at": {
-     "file": "bern/querschnitt/eval/s16/results.json",
+     "file": "eval/s16/results.json",
      "key": "designs > D4S > top1"
     },
     "display": "0.748 [0.725, 0.771]",
@@ -1054,7 +1054,7 @@
      "value": 0.8563,
      "n": 1357,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "designs > D4S > top3"
      },
      "shown": {
@@ -1073,7 +1073,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "D4S-D3"
      },
      "shown": {
@@ -1100,7 +1100,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "D4S-D1"
      },
      "shown": {
@@ -1128,7 +1128,7 @@
      "k": 980,
      "n": 1357,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "designs > D3 > top1"
      },
      "name": "D3 (same items)",
@@ -1166,7 +1166,7 @@
      "k": 955,
      "n": 1357,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "designs > D1 > top1"
      },
      "name": "D1 (same items)",
@@ -1198,16 +1198,16 @@
    ],
    "split": "pre-registered secondary (S16), measured on the S9 items; designed after S9 on the same items (a variant of D4, which combines D1 and D3), so not a held-out result",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S16 read-back combined with examples",
     "line": 6
    },
    "sources": [
-    "bern/querschnitt/eval/s16/results.json",
-    "bern/querschnitt/eval/s16/results.md",
-    "bern/querschnitt/eval/s16/analyze.py",
-    "bern/querschnitt/eval/s16/raw.jsonl",
-    "bern/querschnitt/eval/calibration.json"
+    "eval/s16/results.json",
+    "eval/s16/results.md",
+    "eval/s16/analyze.py",
+    "eval/s16/raw.jsonl",
+    "eval/calibration.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -1249,7 +1249,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s16/results.json",
+   "file": "eval/s16/results.json",
    "key": "designs > D4S > top1",
    "shown": {
     "interval": [
@@ -1278,7 +1278,7 @@
     "n": 1357,
     "display": "0.722 [0.698, 0.745]",
     "at": {
-     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "file": "eval/spikes/s9-aps/results.json",
      "key": "chapter > D3 > top1"
     },
     "ci95_source": [
@@ -1316,7 +1316,7 @@
      "k": 1187,
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D3 > top3"
      },
      "ci95_source": [
@@ -1356,7 +1356,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D3 > diff_top1"
      },
      "shown": {
@@ -1385,7 +1385,7 @@
      "n": 1357,
      "display": "0.655 [0.629, 0.680]",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D0 > top1"
      },
      "name": "D0 plain list prompting (v14: chapter step, two code orders)",
@@ -1411,7 +1411,7 @@
      ],
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "baselines > keyword_top1"
      },
      "ci95_source": [
@@ -1448,7 +1448,7 @@
      ],
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "baselines > majority_top1"
      },
      "ci95_source": [
@@ -1478,16 +1478,16 @@
    ],
    "split": "held-out, pre-registered (nothing tuned on these items)",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S9 — APS extended held-out",
     "line": 32
    },
    "hypothesis": "H9.3 D3 > D0: wins (paired interval excludes 0)",
    "sources": [
-    "bern/ideation2/spikes/s9-aps/results.json",
-    "bern/ideation2/spikes/s9-aps/results.md",
-    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
-    "bern/ideation2/spikes/s9-aps/raw/"
+    "eval/spikes/s9-aps/results.json",
+    "eval/spikes/s9-aps/results.md",
+    "eval/spikes/s9-aps/scripts/analyze.py",
+    "eval/spikes/s9-aps/raw/"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -1650,7 +1650,7 @@
       }
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "strata > D3"
      }
     },
@@ -1756,7 +1756,7 @@
       }
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "lanes > D3"
      }
     },
@@ -1890,7 +1890,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s9c-calibration/perlevel.json",
+      "file": "eval/spikes/s9c-calibration/perlevel.json",
       "key": "D3"
      },
      "shown": {
@@ -1926,7 +1926,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s9-aps/results.json",
+   "file": "eval/spikes/s9-aps/results.json",
    "key": "chapter > D3 > top1",
    "shown": {
     "interval": [
@@ -1956,7 +1956,7 @@
     "n": 1357,
     "display": "0.704 [0.679, 0.727]",
     "at": {
-     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "file": "eval/spikes/s9-aps/results.json",
      "key": "chapter > D1 > top1"
     },
     "ci95_source": [
@@ -1995,7 +1995,7 @@
      "k": 1144,
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D1 > top3"
      },
      "ci95_source": [
@@ -2034,7 +2034,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D1 > diff_top1"
      },
      "shown": {
@@ -2064,7 +2064,7 @@
      "n": 1357,
      "display": "0.655 [0.629, 0.680]",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D0 > top1"
      },
      "name": "D0 plain list prompting (v14: chapter step, two code orders)",
@@ -2090,7 +2090,7 @@
      ],
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "baselines > keyword_top1"
      },
      "ci95_source": [
@@ -2127,7 +2127,7 @@
      ],
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "baselines > majority_top1"
      },
      "ci95_source": [
@@ -2157,16 +2157,16 @@
    ],
    "split": "held-out, pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S9 — APS extended held-out",
     "line": 32
    },
    "hypothesis": "H9.1 D1 > D0: wins",
    "sources": [
-    "bern/ideation2/spikes/s9-aps/results.json",
-    "bern/ideation2/spikes/s9-aps/results.md",
-    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
-    "bern/ideation2/spikes/s9-aps/raw/"
+    "eval/spikes/s9-aps/results.json",
+    "eval/spikes/s9-aps/results.md",
+    "eval/spikes/s9-aps/scripts/analyze.py",
+    "eval/spikes/s9-aps/raw/"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -2303,7 +2303,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s9c-calibration/perlevel.json",
+      "file": "eval/spikes/s9c-calibration/perlevel.json",
       "key": "D1"
      },
      "shown": {
@@ -2340,7 +2340,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s9-aps/results.json",
+   "file": "eval/spikes/s9-aps/results.json",
    "key": "chapter > D1 > top1",
    "shown": {
     "interval": [
@@ -2370,7 +2370,7 @@
     "n": 1357,
     "display": "0.634 [0.609, 0.660]",
     "at": {
-     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "file": "eval/spikes/s9-aps/results.json",
      "key": "chapter > D2 > top1"
     },
     "ci95_source": [
@@ -2405,7 +2405,7 @@
      "k": 1158,
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D2 > top3"
      },
      "ci95_source": [
@@ -2444,7 +2444,7 @@
      ],
      "method": "paired bootstrap 2,000, percentile",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D2 > diff_top1"
      },
      "shown": {
@@ -2474,7 +2474,7 @@
      "n": 1357,
      "display": "0.655 [0.629, 0.680]",
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "chapter > D0 > top1"
      },
      "name": "D0 plain list prompting (v14: chapter step, two code orders)",
@@ -2494,16 +2494,16 @@
    ],
    "split": "held-out, pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S9 — APS extended held-out",
     "line": 32
    },
    "hypothesis": "H9.2 D2 > D0: not supported (Δ −0.021, interval below 0); the second language is used for the lane instead",
    "sources": [
-    "bern/ideation2/spikes/s9-aps/results.json",
-    "bern/ideation2/spikes/s9-aps/results.md",
-    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
-    "bern/ideation2/spikes/s9-aps/raw/"
+    "eval/spikes/s9-aps/results.json",
+    "eval/spikes/s9-aps/results.md",
+    "eval/spikes/s9-aps/scripts/analyze.py",
+    "eval/spikes/s9-aps/raw/"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -2534,7 +2534,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s9-aps/results.json",
+   "file": "eval/spikes/s9-aps/results.json",
    "key": "chapter > D2 > top1",
    "shown": {
     "interval": [
@@ -2561,7 +2561,7 @@
     "k": 636,
     "n": 1221,
     "at": {
-     "file": "bern/ideation2/spikes/s9-aps/results.json",
+     "file": "eval/spikes/s9-aps/results.json",
      "key": "subtopic > D1 (joint L2 x D0-arith prior, beta=1) [pre-registered pipeline] > top1"
     },
     "ci95_source": [
@@ -2600,7 +2600,7 @@
      "k": 827,
      "n": 1221,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "subtopic > D1 (joint L2 x D0-arith prior, beta=1) [pre-registered pipeline] > top3"
      },
      "ci95_source": [
@@ -2635,7 +2635,7 @@
      "k": 1127,
      "n": 1357,
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "subtopic_gold_chapter_in_shortlist"
      },
      "metric": "gold chapter inside the D1 shortlist",
@@ -2670,7 +2670,7 @@
       0.498
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s9-aps/results.json",
+      "file": "eval/spikes/s9-aps/results.json",
       "key": "subtopic > D0 chapter top-1 -> best joint-L2 subtopic within it [derived] > top1"
      },
      "ci95_source": [
@@ -2699,15 +2699,15 @@
    ],
    "split": "held-out, pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S9 — APS extended held-out",
     "line": 32
    },
    "sources": [
-    "bern/ideation2/spikes/s9-aps/results.json",
-    "bern/ideation2/spikes/s9-aps/results.md",
-    "bern/ideation2/spikes/s9-aps/scripts/analyze.py",
-    "bern/ideation2/spikes/s9-aps/raw/"
+    "eval/spikes/s9-aps/results.json",
+    "eval/spikes/s9-aps/results.md",
+    "eval/spikes/s9-aps/scripts/analyze.py",
+    "eval/spikes/s9-aps/raw/"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -2748,7 +2748,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s9-aps/results.json",
+   "file": "eval/spikes/s9-aps/results.json",
    "key": "subtopic > D1 (joint L2 x D0-arith prior, beta=1) [pre-registered pipeline] > top1",
    "shown": {
     "interval": [
@@ -2776,7 +2776,7 @@
     ],
     "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
     "at": {
-     "file": "bern/querschnitt/eval/s16/hierarchical.json",
+     "file": "eval/s16/hierarchical.json",
      "key": "designs > D4 > hierarchical > sub_gold_items > hF"
     },
     "shown": {
@@ -2803,7 +2803,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > subtopic > top1"
      },
      "k": 658,
@@ -2831,7 +2831,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > subtopic > top3"
      },
      "k": 854,
@@ -2859,7 +2859,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > subtopic > top1_given_chapter_right"
      },
      "k": 658,
@@ -2887,7 +2887,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > hierarchical > sub_gold_items > hP"
      },
      "shown": {
@@ -2913,7 +2913,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > hierarchical > sub_gold_items > hR"
      },
      "shown": {
@@ -2939,7 +2939,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > per_chapter > macro_F1"
      },
      "n": 1357,
@@ -2969,7 +2969,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > hierarchical > sub_gold_items > hF"
      },
      "name": "D1 read back from the subtopic, no examples (same items)",
@@ -2996,7 +2996,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > hierarchical > sub_gold_items > hF"
      },
      "name": "D0 plain list prompting, best subtopic within its chapter (same items)",
@@ -3024,7 +3024,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > keyword > hierarchical > sub_gold_items > hF"
      },
      "name": "keyword (APS subtopic words, frozen; chapter only)",
@@ -3052,7 +3052,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > subtopic > top1"
      },
      "k": 636,
@@ -3082,7 +3082,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > subtopic > top3"
      },
      "k": 827,
@@ -3110,7 +3110,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > subtopic > top1_given_chapter_right"
      },
      "k": 636,
@@ -3138,7 +3138,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > subtopic > top1"
      },
      "k": 567,
@@ -3167,7 +3167,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > subtopic > top3"
      },
      "k": 728,
@@ -3196,7 +3196,7 @@
      ],
      "ci_method": "Wilson 95%, bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > subtopic > top1_given_chapter_right"
      },
      "k": 567,
@@ -3226,7 +3226,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > hierarchical > sub_gold_items > hP"
      },
      "name": "D1 hP",
@@ -3253,7 +3253,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > hierarchical > sub_gold_items > hR"
      },
      "name": "D1 hR",
@@ -3280,7 +3280,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > hierarchical > sub_gold_items > hP"
      },
      "name": "D0 hP",
@@ -3308,7 +3308,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > hierarchical > sub_gold_items > hR"
      },
      "name": "D0 hR",
@@ -3336,7 +3336,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > keyword > hierarchical > sub_gold_items > hP"
      },
      "name": "keyword hP",
@@ -3364,7 +3364,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > keyword > hierarchical > sub_gold_items > hR"
      },
      "name": "keyword hR",
@@ -3391,7 +3391,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D1 > per_chapter > macro_F1"
      },
      "name": "D1 per-chapter macro-F1",
@@ -3419,7 +3419,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D0 > per_chapter > macro_F1"
      },
      "name": "D0 per-chapter macro-F1",
@@ -3447,7 +3447,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000, stratified by gold chapter (every chapter keeps its gold count in every resample), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > keyword > per_chapter > macro_F1"
      },
      "name": "keyword per-chapter macro-F1",
@@ -3945,7 +3945,7 @@
      ],
      "metric": "F1 per chapter (one vs rest), stratified bootstrap 2,000",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > per_chapter > by_chapter"
      }
     },
@@ -3958,7 +3958,7 @@
      ],
      "ci_method": "percentile bootstrap 2,000 (items), bounds rounded outward at 3 decimals",
      "at": {
-      "file": "bern/querschnitt/eval/s16/hierarchical.json",
+      "file": "eval/s16/hierarchical.json",
       "key": "designs > D4 > hierarchical > all_items > hF"
      },
      "shown": {
@@ -3979,16 +3979,16 @@
    "split": "S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items (it combines D1 and D3), so not a held-out result; fresh held-out set: S25 (pre-registered, running)",
    "prereg": null,
    "prereg_more": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
    },
    "sources": [
-    "bern/querschnitt/eval/s16/hierarchical.json",
-    "bern/querschnitt/eval/s16/hierarchical.py",
-    "bern/querschnitt/eval/s16/raw.jsonl",
-    "bern/ideation2/spikes/s9-aps/raw/",
-    "bern/ideation2/spikes/s9-aps/data/items.json"
+    "eval/s16/hierarchical.json",
+    "eval/s16/hierarchical.py",
+    "eval/s16/raw.jsonl",
+    "eval/spikes/s9-aps/raw/",
+    "eval/spikes/s9-aps/data/items.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -4020,7 +4020,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s16/hierarchical.json",
+   "file": "eval/s16/hierarchical.json",
    "key": "designs > D4 > hierarchical > sub_gold_items > hF",
    "shown": {
     "interval": [
@@ -4045,7 +4045,7 @@
     "ci95": null,
     "acc": 0.7406,
     "at": {
-     "file": "bern/querschnitt/eval/s16/results.json",
+     "file": "eval/s16/results.json",
      "key": "calibration > aps-fed"
     },
     "shown": {
@@ -4067,7 +4067,7 @@
      "value": 0.0319,
      "acc": 0.7038,
      "at": {
-      "file": "bern/querschnitt/eval/s16/results.json",
+      "file": "eval/s16/results.json",
       "key": "calibration > aps"
      },
      "shown": {
@@ -4103,14 +4103,14 @@
    ],
    "split": "cross-fitted (2 folds), no new calls",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S16 read-back combined with examples",
     "line": 6
    },
    "sources": [
-    "bern/querschnitt/eval/s16/results.json",
-    "bern/querschnitt/eval/calibration.json",
-    "bern/querschnitt/eval/s16/analyze.py"
+    "eval/s16/results.json",
+    "eval/calibration.json",
+    "eval/s16/analyze.py"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -4123,7 +4123,7 @@
     "value": null,
     "ci95": null
    },
-   "file": "bern/querschnitt/eval/s16/results.json",
+   "file": "eval/s16/results.json",
    "key": "calibration > aps-fed"
   },
   {
@@ -4146,7 +4146,7 @@
     "coverage": 0.6684,
     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
     "at": {
-     "file": "bern/querschnitt/eval/lanes/results.json",
+     "file": "eval/lanes/results.json",
      "key": "D4 > calibrated_tau_0_7"
     },
     "shown": {
@@ -4178,7 +4178,7 @@
      "coverage": 0.3316,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D4 > calibrated_tau_0_7_check"
      },
      "shown": {
@@ -4211,7 +4211,7 @@
      "coverage": 0.6419,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D4 > calibrated_same_coverage"
      },
      "shown": {
@@ -4245,7 +4245,7 @@
      "coverage": 0.5969,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D1 > calibrated_tau_0_7"
      },
      "shown": {
@@ -4278,7 +4278,7 @@
      "coverage": 0.4031,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D1 > calibrated_tau_0_7_check"
      },
      "shown": {
@@ -4309,7 +4309,7 @@
      "coverage": 0.6102,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D1 > calibrated_same_coverage"
      },
      "shown": {
@@ -4343,7 +4343,7 @@
      "coverage": 0.6419,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D4 > readings_agree"
      },
      "name": "D4 readings agree (lane rule until 14 Oct)",
@@ -4376,7 +4376,7 @@
      "coverage": 0.6102,
      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/analyze.py)",
      "at": {
-      "file": "bern/querschnitt/eval/lanes/results.json",
+      "file": "eval/lanes/results.json",
       "key": "D1 > readings_agree"
      },
      "name": "D1 readings agree",
@@ -4401,17 +4401,17 @@
    "split": "S9 items (S16 rows); rule chosen after S16 on these items, calibration 2-fold cross-fitted (not pre-registered; no new calls); tested held out in S25 (pre-registered, running)",
    "prereg": null,
    "prereg_more": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
    },
    "heldout_test": "S25 (pre-registered, running; no result yet)",
    "sources": [
-    "bern/querschnitt/eval/lanes/results.json",
-    "bern/querschnitt/eval/lanes/analyze.py",
-    "bern/querschnitt/eval/s16/results.json",
-    "bern/querschnitt/eval/s16/analyze.py",
-    "bern/querschnitt/eval/s16/raw.jsonl"
+    "eval/lanes/results.json",
+    "eval/lanes/analyze.py",
+    "eval/s16/results.json",
+    "eval/s16/analyze.py",
+    "eval/s16/raw.jsonl"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -4441,7 +4441,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/lanes/results.json",
+   "file": "eval/lanes/results.json",
    "key": "D4 > calibrated_tau_0_7",
    "shown": {
     "interval": [
@@ -4464,7 +4464,7 @@
     "raw": 0.279,
     "ci95": null,
     "at": {
-     "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+     "file": "eval/spikes/s9c-calibration/results.json",
      "key": "D1"
     },
     "shown": {
@@ -4483,7 +4483,7 @@
      "mean_p_cal": 0.656,
      "acc": 0.655,
      "at": {
-      "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+      "file": "eval/spikes/s9c-calibration/results.json",
       "key": "D0"
      },
      "shown": {
@@ -4513,7 +4513,7 @@
      "mean_p_cal": 0.702,
      "acc": 0.704,
      "at": {
-      "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+      "file": "eval/spikes/s9c-calibration/results.json",
       "key": "D1"
      },
      "shown": {
@@ -4543,7 +4543,7 @@
      "mean_p_cal": 0.721,
      "acc": 0.722,
      "at": {
-      "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+      "file": "eval/spikes/s9c-calibration/results.json",
       "key": "D3"
      },
      "shown": {
@@ -4590,13 +4590,13 @@
    ],
    "split": "cross-fitted (2 folds, seed 3), no new calls",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S9c calibration (no calls)",
     "line": 25
    },
    "sources": [
-    "bern/ideation2/spikes/s9c-calibration/results.json",
-    "bern/ideation2/spikes/s9c-calibration/calib.py"
+    "eval/spikes/s9c-calibration/results.json",
+    "eval/spikes/s9c-calibration/calib.py"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -4609,7 +4609,7 @@
     "value": null,
     "ci95": null
    },
-   "file": "bern/ideation2/spikes/s9c-calibration/results.json",
+   "file": "eval/spikes/s9c-calibration/results.json",
    "key": "D1"
   },
   {
@@ -4631,7 +4631,7 @@
     ],
     "display": "27/30 [0.744, 0.965]",
     "at": {
-     "file": "bern/ideation2/spikes/s8-dvs/results.md",
+     "file": "eval/spikes/s8-dvs/results.md",
      "line": 212,
      "text": "DVS recall (P8.2, all 30): Apertus 27/30 [0.744, 0.965]"
     },
@@ -4666,7 +4666,7 @@
       0.993
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "file": "eval/spikes/s8-dvs/results.md",
       "line": 214,
       "text": "Apertus 23/24 [0.798, 0.993]"
      },
@@ -4705,7 +4705,7 @@
       0.966
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+      "file": "eval/spikes/s15-judgecheck/results.json",
       "key": "both_Y"
      },
      "ci95_source": [
@@ -4738,7 +4738,7 @@
       0.834
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "file": "eval/spikes/s8-dvs/results.md",
       "line": 212,
       "text": "keyword 21/30 [0.521, 0.833]"
      },
@@ -4771,7 +4771,7 @@
       0.821
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "file": "eval/spikes/s8-dvs/results.md",
       "line": 214,
       "text": "keyword 16/24 [0.467, 0.820]"
      },
@@ -4797,14 +4797,14 @@
    ],
    "split": "pre-registered re-run (P8.2); the yes/no prompt and the 0.5 cut-off were set on these 30 items in S3 E6",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S8 — \"Digitalisierung\" over every affair of 2026",
     "line": 10
    },
    "sources": [
-    "bern/ideation2/spikes/s8-dvs/results.md",
-    "bern/ideation/spikes/s3-accuracy/results.md",
-    "bern/ideation/spikes/s2-oracles/results.md"
+    "eval/spikes/s8-dvs/results.md",
+    "eval/spikes/s3-accuracy/results.md",
+    "eval/spikes/s2-oracles/results.md"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -4841,7 +4841,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s8-dvs/results.md",
+   "file": "eval/spikes/s8-dvs/results.md",
    "key": "line 212: DVS recall (P8.2, all 30): Apertus 27/30 [0.744, 0.965]",
    "shown": {
     "interval": [
@@ -4869,7 +4869,7 @@
     ],
     "n": 200,
     "at": {
-     "file": "bern/ideation/spikes/s5-aps/results.md",
+     "file": "eval/spikes/s5-aps/results.md",
      "line": 84,
      "text": "**V3 fused: 0.9·p(yes) + 0.1·p_E3 ≥ 0.9, 2 orders** | **0.654 [0.623, 0.686]**"
     },
@@ -4895,7 +4895,7 @@
       0.622
      ],
      "at": {
-      "file": "bern/ideation/spikes/s5-aps/results.md",
+      "file": "eval/spikes/s5-aps/results.md",
       "line": 84,
       "text": "**0.570 [0.520, 0.622]**"
      },
@@ -4918,7 +4918,7 @@
       0.906
      ],
      "at": {
-      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "file": "eval/spikes/s3-accuracy/results.md",
       "line": 27,
       "text": "| E2 desc, average of 2 orders (arith.) |"
      },
@@ -4952,7 +4952,7 @@
       0.01
      ],
      "at": {
-      "file": "bern/ideation/spikes/s5-aps/results.md",
+      "file": "eval/spikes/s5-aps/results.md",
       "line": 89,
       "text": "vs BFH micro **−0.079 to +0.010**"
      },
@@ -4979,12 +4979,12 @@
       0.898
      ],
      "at": {
-      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "file": "eval/spikes/s3-accuracy/results.md",
       "line": 35,
       "text": "| **BFH Omikuji, thr 0.25 (tuned on BFH's dev)** |"
      },
      "training_size_at": {
-      "file": "bern/research/R1-parts/prior-art.md",
+      "file": "eval/research/R1-parts/prior-art.md",
       "line": 10,
       "text": "15,007 German training docs"
      },
@@ -5024,9 +5024,9 @@
    "split": "test n = 200; rules, τ and λ tuned on 100 dev items (tuning split)",
    "prereg": null,
    "sources": [
-    "bern/ideation/spikes/s3-accuracy/results.md",
-    "bern/ideation/spikes/s5-aps/results.md",
-    "bern/ideation/spikes/s2-oracles/results.md"
+    "eval/spikes/s3-accuracy/results.md",
+    "eval/spikes/s5-aps/results.md",
+    "eval/spikes/s2-oracles/results.md"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -5056,7 +5056,7 @@
      ]
     }
    },
-   "file": "bern/ideation/spikes/s5-aps/results.md",
+   "file": "eval/spikes/s5-aps/results.md",
    "key": "line 84: **V3 fused: 0.9·p(yes) + 0.1·p_E3 ≥ 0.9, 2 orders** | **0.654 [0.623, 0.686]**",
    "shown": {
     "interval": [
@@ -5083,7 +5083,7 @@
     ],
     "n": 531,
     "at": {
-     "file": "bern/querschnitt/eval/s18/results.json",
+     "file": "eval/s18/results.json",
      "key": "lang_de > acc"
     },
     "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -5110,7 +5110,7 @@
      ],
      "n": 529,
      "at": {
-      "file": "bern/querschnitt/eval/s18/results.json",
+      "file": "eval/s18/results.json",
       "key": "lang_fr > acc"
      },
      "ci95_source": [
@@ -5145,7 +5145,7 @@
      "de": 0.6522,
      "fr": 0.6503,
      "at": {
-      "file": "bern/querschnitt/eval/s18/results.json",
+      "file": "eval/s18/results.json",
       "key": "paired_de_minus_fr"
      },
      "shown": {
@@ -5180,7 +5180,7 @@
      ],
      "n": 531,
      "at": {
-      "file": "bern/querschnitt/eval/s18/results.json",
+      "file": "eval/s18/results.json",
       "key": "overall > acc"
      },
      "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -5207,7 +5207,7 @@
       0.568
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s18/results.json",
+      "file": "eval/s18/results.json",
       "key": "keyword > acc"
      },
      "ci95_source": [
@@ -5238,7 +5238,7 @@
      "name": "keyword stems, French",
      "value": 0.5123,
      "at": {
-      "file": "bern/querschnitt/eval/s18/results.json",
+      "file": "eval/s18/results.json",
       "key": "lang_fr > keyword"
      },
      "shown": {
@@ -5252,7 +5252,7 @@
      "name": "majority directorate (SID)",
      "value": 0.2147,
      "at": {
-      "file": "bern/querschnitt/eval/s18/results.json",
+      "file": "eval/s18/results.json",
       "key": "majority > acc"
      },
      "shown": {
@@ -5266,13 +5266,13 @@
    ],
    "split": "every eligible affair 2025–26, pre-registered; nothing tuned",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S18 Bern directorates on the production run",
     "line": 28
    },
    "sources": [
-    "bern/querschnitt/eval/s18/results.json",
-    "bern/querschnitt/eval/s18/analyze.py"
+    "eval/s18/results.json",
+    "eval/s18/analyze.py"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -5313,7 +5313,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s18/results.json",
+   "file": "eval/s18/results.json",
    "key": "lang_de > acc",
    "shown": {
     "interval": [
@@ -5339,7 +5339,7 @@
     ],
     "n": 200,
     "at": {
-     "file": "bern/ideation/spikes/s6-cantonal/results.md",
+     "file": "eval/spikes/s6-cantonal/results.md",
      "line": 63,
      "text": "| **Apertus, DE title** |"
     },
@@ -5374,7 +5374,7 @@
       0.709
      ],
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "file": "eval/spikes/s6-cantonal/results.md",
       "line": 64,
       "text": "| **Apertus, FR title (FR prompt)** |"
      },
@@ -5410,7 +5410,7 @@
       0.709
      ],
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "file": "eval/spikes/s6-cantonal/results.md",
       "line": 65,
       "text": "| Apertus, DE + FR pooled"
      },
@@ -5446,7 +5446,7 @@
       0.025
      ],
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "file": "eval/spikes/s6-cantonal/results.md",
       "line": 69,
       "text": "DE/FR parity gap (DE − FR): −0.030"
      },
@@ -5481,7 +5481,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "file": "eval/spikes/s6-cantonal/results.md",
       "line": 66,
       "text": "| Keyword stems, DE / FR |"
      },
@@ -5527,7 +5527,7 @@
       0.234
      ],
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/results.md",
+      "file": "eval/spikes/s6-cantonal/results.md",
       "line": 67,
       "text": "| Majority class (BVD) |"
      },
@@ -5559,7 +5559,7 @@
    "split": "one run, nothing tuned on the 200",
    "prereg": null,
    "sources": [
-    "bern/ideation/spikes/s6-cantonal/results.md"
+    "eval/spikes/s6-cantonal/results.md"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -5619,7 +5619,7 @@
      ]
     }
    },
-   "file": "bern/ideation/spikes/s6-cantonal/results.md",
+   "file": "eval/spikes/s6-cantonal/results.md",
    "key": "line 63: | **Apertus, DE title** |",
    "shown": {
     "interval": [
@@ -5645,7 +5645,7 @@
      0.518
     ],
     "at": {
-     "file": "bern/querschnitt/eval/s20/results.json",
+     "file": "eval/s20/results.json",
      "key": "top1 > acc"
     },
     "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -5671,7 +5671,7 @@
       0.625
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "top1_t1_or_t2 > acc"
      },
      "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -5697,7 +5697,7 @@
       0.685
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "top3 > acc"
      },
      "ci95_source": [
@@ -5732,7 +5732,7 @@
       0.3398
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "minus_keyword"
      },
      "shown": {
@@ -5760,7 +5760,7 @@
       0.198
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "keyword > acc"
      },
      "name": "frozen keyword stems (eval/s20/keywords_frozen.json)",
@@ -5791,7 +5791,7 @@
      "name": "majority theme (Verwaltung)",
      "value": 0.0533,
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "majority > acc"
      },
      "shown": {
@@ -5813,7 +5813,7 @@
      "n": 1754,
      "share": 0.7197,
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "lane_readings_agree > acc"
      },
      "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -5846,7 +5846,7 @@
      "n": 683,
      "share": 0.2803,
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "lane_please_check > acc"
      },
      "ci95_source": [
@@ -6186,21 +6186,21 @@
       }
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s20/results.json",
+      "file": "eval/s20/results.json",
       "key": "by_type"
      }
     }
    },
    "split": "all 2,437 affairs of OGD dataset 100086, pre-registered; nothing tuned",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S20 Basel-Stadt topics",
     "line": 48
    },
    "sources": [
-    "bern/querschnitt/eval/s20/results.json",
-    "bern/querschnitt/eval/s20/analyze.py",
-    "bern/querschnitt/eval/s20/keywords_frozen.json"
+    "eval/s20/results.json",
+    "eval/s20/analyze.py",
+    "eval/s20/keywords_frozen.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -6240,7 +6240,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s20/results.json",
+   "file": "eval/s20/results.json",
    "key": "top1 > acc",
    "shown": {
     "interval": [
@@ -6267,7 +6267,7 @@
      0.547
     ],
     "at": {
-     "file": "bern/querschnitt/eval/s21/results.json",
+     "file": "eval/s21/results.json",
      "key": "s21_top1 > acc"
     },
     "ci95_source": [
@@ -6303,7 +6303,7 @@
      ],
      "method": "paired bootstrap 2,000",
      "at": {
-      "file": "bern/querschnitt/eval/s21/results.json",
+      "file": "eval/s21/results.json",
       "key": "diff_vs_s20"
      },
      "shown": {
@@ -6324,7 +6324,7 @@
      "metric": "top-1 ∈ {Thema 1, Thema 2}",
      "value": 0.6315,
      "at": {
-      "file": "bern/querschnitt/eval/s21/results.json",
+      "file": "eval/s21/results.json",
       "key": "s21_t1_or_t2"
      },
      "shown": {
@@ -6338,7 +6338,7 @@
      "metric": "top-3 contains Thema 1",
      "value": 0.7115,
      "at": {
-      "file": "bern/querschnitt/eval/s21/results.json",
+      "file": "eval/s21/results.json",
       "key": "s21_top3"
      },
      "shown": {
@@ -6355,7 +6355,7 @@
      "name": "S20 names only, same items",
      "value": 0.4982,
      "at": {
-      "file": "bern/querschnitt/eval/s21/results.json",
+      "file": "eval/s21/results.json",
       "key": "s20_top1_same_items"
      },
      "shown": {
@@ -6377,7 +6377,7 @@
      "n": 1340,
      "share": 0.5499,
      "at": {
-      "file": "bern/querschnitt/eval/s21/results.json",
+      "file": "eval/s21/results.json",
       "key": "lane_agree > acc"
      },
      "ci95_source": [
@@ -6418,7 +6418,7 @@
      "n": 1097,
      "share": 0.4501,
      "at": {
-      "file": "bern/querschnitt/eval/s21/results.json",
+      "file": "eval/s21/results.json",
       "key": "lane_disagree > acc"
      },
      "ci95_source": [
@@ -6453,14 +6453,14 @@
    },
    "split": "2 folds by affair-id parity (examples always from the other fold), pre-registered",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S21 Basel-Stadt with the canton's own labels",
     "line": 59
    },
    "sources": [
-    "bern/querschnitt/eval/s21/results.json",
-    "bern/querschnitt/eval/s21/analyze.py",
-    "bern/querschnitt/eval/s21/raw.jsonl"
+    "eval/s21/results.json",
+    "eval/s21/analyze.py",
+    "eval/s21/raw.jsonl"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -6481,7 +6481,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s21/results.json",
+   "file": "eval/s21/results.json",
    "key": "s21_top1 > acc",
    "shown": {
     "interval": [
@@ -6508,7 +6508,7 @@
     "k": 158,
     "n": 200,
     "at": {
-     "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+     "file": "eval/spikes/s11-anchor/anchor.json",
      "key": "A"
     },
     "metric": "judge run A first chapter = editors' chapter",
@@ -6535,7 +6535,7 @@
      "k": 158,
      "n": 200,
      "at": {
-      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "file": "eval/spikes/s11-anchor/anchor.json",
       "key": "B"
      },
      "metric": "judge run B",
@@ -6561,7 +6561,7 @@
      "k": 198,
      "n": 200,
      "at": {
-      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "file": "eval/spikes/s11-anchor/anchor.json",
       "key": "AB_agree"
      },
      "metric": "run A = run B",
@@ -6596,7 +6596,7 @@
      "k": 180,
      "n": 200,
      "at": {
-      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "file": "eval/spikes/s11-anchor/anchor.json",
       "key": "A_lenient"
      },
      "metric": "editors' chapter among the judge's first or second code",
@@ -6630,7 +6630,7 @@
      "k": 127,
      "n": 200,
      "at": {
-      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "file": "eval/spikes/s11-anchor/anchor.json",
       "key": "apertus_same_items > D0 > apertus_vs_editors"
      },
      "name": "Apertus D0 on the same 200",
@@ -6657,7 +6657,7 @@
      "k": 139,
      "n": 200,
      "at": {
-      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "file": "eval/spikes/s11-anchor/anchor.json",
       "key": "apertus_same_items > D1 > apertus_vs_editors"
      },
      "name": "Apertus D1 on the same 200",
@@ -6684,7 +6684,7 @@
      "k": 144,
      "n": 200,
      "at": {
-      "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+      "file": "eval/spikes/s11-anchor/anchor.json",
       "key": "apertus_same_items > D3 > apertus_vs_editors"
      },
      "name": "Apertus D3 on the same 200",
@@ -6704,13 +6704,13 @@
    ],
    "split": "random S9 sample, pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S11 annotator anchor",
     "line": 3
    },
    "sources": [
-    "bern/ideation2/spikes/s11-anchor/anchor.json",
-    "bern/ideation2/spikes/s11-anchor/RESULTS.md"
+    "eval/spikes/s11-anchor/anchor.json",
+    "eval/spikes/s11-anchor/RESULTS.md"
    ],
    "build": "judge: Claude (blind agent runs); Apertus rows vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "date": "2026-10-13",
@@ -6740,7 +6740,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s11-anchor/anchor.json",
+   "file": "eval/spikes/s11-anchor/anchor.json",
    "key": "A",
    "shown": {
     "interval": [
@@ -6769,11 +6769,11 @@
      0.966
     ],
     "at": {
-     "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+     "file": "eval/spikes/s15-judgecheck/results.json",
      "key": "both_Y"
     },
     "ci_at": {
-     "file": "bern/ideation2/spikes/s15-judgecheck/RESULTS.md",
+     "file": "eval/spikes/s15-judgecheck/RESULTS.md",
      "line": 6,
      "text": "0.90 [0.74, 0.97]"
     },
@@ -6801,7 +6801,7 @@
      "k": 27,
      "n": 30,
      "at": {
-      "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+      "file": "eval/spikes/s15-judgecheck/results.json",
       "key": "A_recall"
      }
     },
@@ -6810,7 +6810,7 @@
      "k": 28,
      "n": 30,
      "at": {
-      "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+      "file": "eval/spikes/s15-judgecheck/results.json",
       "key": "B_recall"
      }
     }
@@ -6829,13 +6829,13 @@
    ],
    "split": "pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S15 judge check on the binary task",
     "line": 27
    },
    "sources": [
-    "bern/ideation2/spikes/s15-judgecheck/results.json",
-    "bern/ideation2/spikes/s15-judgecheck/RESULTS.md"
+    "eval/spikes/s15-judgecheck/results.json",
+    "eval/spikes/s15-judgecheck/RESULTS.md"
    ],
    "build": "judge: Claude (blind agent runs)",
    "date": "2026-10-13",
@@ -6850,7 +6850,7 @@
     "value": null,
     "ci95": null
    },
-   "file": "bern/ideation2/spikes/s15-judgecheck/results.json",
+   "file": "eval/spikes/s15-judgecheck/results.json",
    "key": "both_Y",
    "shown": {
     "interval": [
@@ -6878,7 +6878,7 @@
     ],
     "p_mcnemar": 0.1133,
     "at": {
-     "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+     "file": "eval/spikes/s14-neutrality/results.json",
      "key": "S9 > language (paired, same affairs; single identity-order call) > diff_DE_minus_FR"
     },
     "shown": {
@@ -7390,7 +7390,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > party > D1_top1"
      }
     },
@@ -7806,7 +7806,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > party > keyword_top1"
      }
     },
@@ -8021,7 +8021,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > submitter kind > D1_top1"
      }
     },
@@ -8242,7 +8242,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > submitter kind > keyword_top1"
      }
     },
@@ -8488,7 +8488,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > instrument > D1_top1"
      }
     },
@@ -8737,7 +8737,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > instrument > keyword_top1"
      }
     },
@@ -8760,7 +8760,7 @@
       "unknown"
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S9 > party > D1_top1_all_categories_test"
      },
      "shown": {
@@ -8783,13 +8783,13 @@
    },
    "split": "no new calls; reported whatever it showed",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S14 neutrality (no calls)",
     "line": 23
    },
    "sources": [
-    "bern/ideation2/spikes/s14-neutrality/results.json",
-    "bern/ideation2/spikes/s14-neutrality/results.md"
+    "eval/spikes/s14-neutrality/results.json",
+    "eval/spikes/s14-neutrality/results.md"
    ],
    "build": "no calls (S9 rows: vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840)",
    "date": "2026-10-13T21:31:29Z",
@@ -8803,7 +8803,7 @@
     "value": null,
     "ci95": null
    },
-   "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+   "file": "eval/spikes/s14-neutrality/results.json",
    "key": "S9 > language (paired, same affairs; single identity-order call) > diff_DE_minus_FR",
    "shown": {
     "interval": [
@@ -8834,7 +8834,7 @@
      0.727
     ],
     "at": {
-     "file": "bern/querschnitt/eval/s22/results.json",
+     "file": "eval/s22/results.json",
      "key": "it_top1 > acc"
     },
     "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -8874,7 +8874,7 @@
      "display_decimals": 4,
      "derived": "difference and percentiles are multiples of 1/n; recovered exactly from the stored 4-decimal values",
      "at": {
-      "file": "bern/querschnitt/eval/s22/results.json",
+      "file": "eval/s22/results.json",
       "key": "de_minus_it"
      },
      "shown": {
@@ -8910,7 +8910,7 @@
      "n": 1350,
      "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
      "at": {
-      "file": "bern/querschnitt/eval/s22/results.json",
+      "file": "eval/s22/results.json",
       "key": "it_top3"
      },
      "shown": {
@@ -8935,7 +8935,7 @@
      "n": 1350,
      "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
      "at": {
-      "file": "bern/querschnitt/eval/s22/results.json",
+      "file": "eval/s22/results.json",
       "key": "de_top3"
      },
      "shown": {
@@ -8959,7 +8959,7 @@
      "n": 1074,
      "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
      "at": {
-      "file": "bern/querschnitt/eval/s22/results.json",
+      "file": "eval/s22/results.json",
       "key": "it_with_text > acc"
      },
      "german_same_items": {
@@ -8970,7 +8970,7 @@
       "n": 1074,
       "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
       "at": {
-       "file": "bern/querschnitt/eval/s22/results.json",
+       "file": "eval/s22/results.json",
        "key": "it_with_text > de_same_items"
       },
       "shown": {
@@ -9005,7 +9005,7 @@
      "n": 276,
      "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
      "at": {
-      "file": "bern/querschnitt/eval/s22/results.json",
+      "file": "eval/s22/results.json",
       "key": "it_title_only > acc"
      },
      "german_same_items": {
@@ -9016,7 +9016,7 @@
       "n": 276,
       "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
       "at": {
-       "file": "bern/querschnitt/eval/s22/results.json",
+       "file": "eval/s22/results.json",
        "key": "it_title_only > de_same_items"
       },
       "shown": {
@@ -9061,7 +9061,7 @@
       0.728
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s22/results.json",
+      "file": "eval/s22/results.json",
       "key": "de_top1 > acc"
      },
      "name": "German input, S9 D1 on the same items",
@@ -9088,15 +9088,15 @@
    ],
    "split": "held-out S9 items, pre-registered; nothing tuned",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S22 Italian on human labels",
     "line": 69
    },
    "sources": [
-    "bern/querschnitt/eval/s22/results.json",
-    "bern/querschnitt/eval/s22/analyze.py",
-    "bern/querschnitt/eval/s22/raw.jsonl",
-    "bern/ideation2/spikes/s9-aps/results.json"
+    "eval/s22/results.json",
+    "eval/s22/analyze.py",
+    "eval/s22/raw.jsonl",
+    "eval/spikes/s9-aps/results.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -9128,7 +9128,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s22/results.json",
+   "file": "eval/s22/results.json",
    "key": "it_top1 > acc",
    "shown": {
     "interval": [
@@ -9158,7 +9158,7 @@
      0.961
     ],
     "at": {
-     "file": "bern/ideation/spikes/s3-accuracy/results.md",
+     "file": "eval/spikes/s3-accuracy/results.md",
      "line": 116,
      "text": "36/40 = 90 % [77, 96]"
     },
@@ -9186,7 +9186,7 @@
      "k": 0,
      "n": 40,
      "at": {
-      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "file": "eval/spikes/s3-accuracy/results.md",
       "line": 116,
       "text": "**0/40 say \"kein Thema\"**"
      }
@@ -9196,7 +9196,7 @@
      "k": 0,
      "n": 40,
      "at": {
-      "file": "bern/ideation/spikes/s3-accuracy/results.md",
+      "file": "eval/spikes/s3-accuracy/results.md",
       "line": 117,
       "text": "With the Curia list shown, 0/40 fall outside it"
      }
@@ -9206,7 +9206,7 @@
    "split": "test items",
    "prereg": null,
    "sources": [
-    "bern/ideation/spikes/s3-accuracy/results.md"
+    "eval/spikes/s3-accuracy/results.md"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -9217,7 +9217,7 @@
     0.961
    ],
    "baseline": null,
-   "file": "bern/ideation/spikes/s3-accuracy/results.md",
+   "file": "eval/spikes/s3-accuracy/results.md",
    "key": "line 116: 36/40 = 90 % [77, 96]",
    "shown": {
     "interval": [
@@ -9245,11 +9245,11 @@
      0.945
     ],
     "at": {
-     "file": "bern/querschnitt/eval/s8full/results.json",
+     "file": "eval/s8full/results.json",
      "key": "gold_AB_C > point > a_P"
     },
     "ci_at": {
-     "file": "bern/querschnitt/eval/s8full/results.json",
+     "file": "eval/s8full/results.json",
      "key": "gold_AB_C > ci > a_P"
     },
     "shown": {
@@ -9274,7 +9274,7 @@
       0.9
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "gold_AB_C > point > a_R"
      },
      "shown": {
@@ -9297,7 +9297,7 @@
       0.192
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "gold_AB_C > ci > dP"
      },
      "shown": {
@@ -9322,7 +9322,7 @@
       0.123
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "gold_AB_C > ci > dR"
      },
      "shown": {
@@ -9342,7 +9342,7 @@
      "metric": "affairs flagged (counted, Swiss)",
      "value": 651,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "flags_swiss > apertus"
      }
     },
@@ -9354,7 +9354,7 @@
       1190.368
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "gold_AB_C > point > pos"
      },
      "shown": {
@@ -9387,7 +9387,7 @@
       ]
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "gold_majority_ABQ"
      },
      "shown": {
@@ -9411,7 +9411,7 @@
      "metric": "parliaments with at least one flag (Swiss)",
      "value": 57,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "flags_swiss > parliaments_flagged"
      }
     },
@@ -9419,7 +9419,7 @@
      "metric": "flags in the please-check lane (Swiss)",
      "value": 41,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "flags_swiss > please_check"
      }
     }
@@ -9454,7 +9454,7 @@
       ]
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "gold_AB_C > point > k_P"
      },
      "shown": {
@@ -9504,7 +9504,7 @@
      "parliaments_flagged": 58,
      "n": 14789,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "flags_all"
      }
     },
@@ -9515,7 +9515,7 @@
      "from_s8_rows": 9519,
      "from_production_run": 5270,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "sources"
      }
     },
@@ -9525,7 +9525,7 @@
      "neither": 177,
      "K only": 96,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "packet"
      }
     },
@@ -9535,7 +9535,7 @@
      "A only": 181,
      "K only": 220,
      "at": {
-      "file": "bern/querschnitt/eval/s8full/results.json",
+      "file": "eval/s8full/results.json",
       "key": "census_strata_swiss"
      }
     },
@@ -9547,15 +9547,15 @@
    },
    "split": "pre-registered S8 design and gold, recomputed on the full census (no new prereg entry; cut-off p ≥ 0.5 unchanged)",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S8 — \"Digitalisierung\" over every affair of 2026",
     "line": 10
    },
    "sources": [
-    "bern/querschnitt/eval/s8full/results.json",
-    "bern/querschnitt/eval/s8full/analyze.py",
-    "bern/ideation2/spikes/s8-dvs/results.md",
-    "bern/ideation2/spikes/s8-dvs/key.jsonl"
+    "eval/s8full/results.json",
+    "eval/s8full/analyze.py",
+    "eval/spikes/s8-dvs/results.md",
+    "eval/spikes/s8-dvs/key.jsonl"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -9586,7 +9586,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s8full/results.json",
+   "file": "eval/s8full/results.json",
    "key": "gold_AB_C > point > a_P",
    "shown": {
     "interval": [
@@ -9614,11 +9614,11 @@
      0.952
     ],
     "at": {
-     "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+     "file": "eval/spikes/s8-dvs/score_ch.json",
      "key": "point > aP"
     },
     "ci_at": {
-     "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+     "file": "eval/spikes/s8-dvs/score_ch.json",
      "key": "ci > aP"
     },
     "shown": {
@@ -9643,7 +9643,7 @@
       0.894
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "point > aR"
      },
      "shown": {
@@ -9667,7 +9667,7 @@
       0.202
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "ci > dP"
      },
      "shown": {
@@ -9691,7 +9691,7 @@
       0.09
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "ci > dR"
      },
      "shown": {
@@ -9714,7 +9714,7 @@
       675.127
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "point > aflags"
      },
      "shown": {
@@ -9738,7 +9738,7 @@
       1217.298
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "point > pos"
      },
      "shown": {
@@ -9762,7 +9762,7 @@
       0.811
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "qwen_only"
      },
      "shown": {
@@ -9790,7 +9790,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score.json",
+      "file": "eval/spikes/s8-dvs/score.json",
       "key": "gold_AB_C"
      },
      "shown": {
@@ -9829,7 +9829,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score.json",
+      "file": "eval/spikes/s8-dvs/score.json",
       "key": "gold_majority_ABQ"
      },
      "shown": {
@@ -9997,7 +9997,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/operating_points_ch.json",
+      "file": "eval/spikes/s8-dvs/operating_points_ch.json",
       "key": ""
      }
     }
@@ -10025,7 +10025,7 @@
       0.729
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "point > kP"
      },
      "shown": {
@@ -10087,7 +10087,7 @@
     ],
     "format": "[n, agreement, kappa]",
     "at": {
-     "file": "bern/ideation2/spikes/s8-dvs/score.json",
+     "file": "eval/spikes/s8-dvs/score.json",
      "key": "annotators"
     },
     "shown": {
@@ -10125,7 +10125,7 @@
       "fr": 35
      },
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+      "file": "eval/spikes/s8-dvs/score_ch.json",
       "key": "positives"
      }
     },
@@ -10151,7 +10151,7 @@
       "gold_N": 69
      },
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/score.json",
+      "file": "eval/spikes/s8-dvs/score.json",
       "key": "by_stratum"
      }
     },
@@ -10278,7 +10278,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > language > aP"
      }
     },
@@ -10401,7 +10401,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > language > aR"
      }
     },
@@ -10539,7 +10539,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > level > aP"
      }
     },
@@ -10696,7 +10696,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > level > aR"
      }
     },
@@ -10887,7 +10887,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > region > aP"
      }
     },
@@ -11197,7 +11197,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > party > aP"
      }
     },
@@ -11552,7 +11552,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > party > kP"
      }
     },
@@ -11976,7 +11976,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S8 > canton (cantonal+communal bodies; federal separate) > aP"
      }
     },
@@ -12759,7 +12759,7 @@
       }
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "file": "eval/spikes/s8-dvs/results.md",
       "line": 75,
       "text": "### By body (counts in the design sample"
      }
@@ -12804,7 +12804,7 @@
       }
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "file": "eval/spikes/s8-dvs/results.md",
       "line": 60,
       "text": "### By level (estimated window totals"
      }
@@ -12840,7 +12840,7 @@
       }
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/results.md",
+      "file": "eval/spikes/s8-dvs/results.md",
       "line": 68,
       "text": "### By prompt language (estimated window totals"
      }
@@ -12849,22 +12849,22 @@
    },
    "split": "pre-registered; cut-off p ≥ 0.5 fixed before the run (S3), not re-fitted",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S8 — \"Digitalisierung\" over every affair of 2026",
     "line": 10
    },
    "prereg_more": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S8 reporting addition",
     "line": 10
    },
    "sources": [
-    "bern/ideation2/spikes/s8-dvs/score_ch.json",
-    "bern/ideation2/spikes/s8-dvs/score.json",
-    "bern/ideation2/spikes/s8-dvs/results.md",
-    "bern/ideation2/spikes/s8-dvs/operating_points_ch.json",
-    "bern/ideation2/spikes/s8-dvs/score.py",
-    "bern/ideation2/spikes/s8q-crossfamily/ann_Q.tsv"
+    "eval/spikes/s8-dvs/score_ch.json",
+    "eval/spikes/s8-dvs/score.json",
+    "eval/spikes/s8-dvs/results.md",
+    "eval/spikes/s8-dvs/operating_points_ch.json",
+    "eval/spikes/s8-dvs/score.py",
+    "eval/spikes/s8q-crossfamily/ann_Q.tsv"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -12898,7 +12898,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s8-dvs/score_ch.json",
+   "file": "eval/spikes/s8-dvs/score_ch.json",
    "key": "point > aP",
    "shown": {
     "interval": [
@@ -12925,7 +12925,7 @@
      0.704
     ],
     "at": {
-     "file": "bern/querschnitt/eval/s17/results.json",
+     "file": "eval/s17/results.json",
      "key": "top1 > acc"
     },
     "ci95_source": [
@@ -12960,7 +12960,7 @@
       0.823
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "top3 > acc"
      },
      "ci95_source": [
@@ -12996,7 +12996,7 @@
       0.207
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "keyword > acc"
      },
      "name": "frozen S9 keyword baseline (APS subtopic words)",
@@ -13027,7 +13027,7 @@
      "name": "majority chapter of the sample's gold (1.6.4., computed after)",
      "value": 0.135,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "majority > acc"
      },
      "shown": {
@@ -13044,7 +13044,7 @@
     "disagreements": 11,
     "tie_break_C": 11,
     "at": {
-     "file": "bern/querschnitt/eval/s17/results.json",
+     "file": "eval/s17/results.json",
      "key": "kappa_AB"
     },
     "shown": {
@@ -13067,7 +13067,7 @@
      ],
      "n": 144,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "lang_de > acc"
      },
      "ci95_source": [
@@ -13103,7 +13103,7 @@
      ],
      "n": 32,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "lang_fr > acc"
      },
      "ci95_source": [
@@ -13139,7 +13139,7 @@
      ],
      "n": 24,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "lang_it > acc"
      },
      "ci95_source": [
@@ -13175,7 +13175,7 @@
      ],
      "n": 155,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "lane_readings_agree > acc"
      },
      "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -13199,7 +13199,7 @@
      ],
      "n": 45,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "lane_please_check > acc"
      },
      "ci95_source": [
@@ -13232,7 +13232,7 @@
      ],
      "n": 176,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "with_text > acc"
      },
      "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -13258,7 +13258,7 @@
      ],
      "n": 24,
      "at": {
-      "file": "bern/querschnitt/eval/s17/results.json",
+      "file": "eval/s17/results.json",
       "key": "title_only > acc"
      },
      "ci95_source": [
@@ -13288,17 +13288,17 @@
    },
    "split": "random sample of the production run, pre-registered",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S17 communal slice on the production run",
     "line": 17
    },
    "sources": [
-    "bern/querschnitt/eval/s17/results.json",
-    "bern/querschnitt/eval/s17/analyze.py",
-    "bern/querschnitt/eval/s17/key.jsonl",
-    "bern/querschnitt/eval/s17/ann_A.tsv",
-    "bern/querschnitt/eval/s17/ann_B.tsv",
-    "bern/querschnitt/eval/s17/ann_C.tsv"
+    "eval/s17/results.json",
+    "eval/s17/analyze.py",
+    "eval/s17/key.jsonl",
+    "eval/s17/ann_A.tsv",
+    "eval/s17/ann_B.tsv",
+    "eval/s17/ann_C.tsv"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (production run runs/main)",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -13339,7 +13339,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s17/results.json",
+   "file": "eval/s17/results.json",
    "key": "top1 > acc",
    "shown": {
     "interval": [
@@ -13363,7 +13363,7 @@
     "value": 0.906,
     "ci95": null,
     "at": {
-     "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+     "file": "eval/spikes/s8-dvs/loop.json",
      "key": "after > F1"
     },
     "shown": {
@@ -13382,7 +13382,7 @@
       0.075
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+      "file": "eval/spikes/s8-dvs/loop.json",
       "key": "dF1"
      },
      "shown": {
@@ -13404,7 +13404,7 @@
       0.895
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+      "file": "eval/spikes/s8-dvs/loop.json",
       "key": "after"
      },
      "shown": {
@@ -13424,7 +13424,7 @@
      "precision": 0.91,
      "recall": 0.826,
      "at": {
-      "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+      "file": "eval/spikes/s8-dvs/loop.json",
       "key": "before"
      },
      "shown": {
@@ -13444,13 +13444,13 @@
    ],
    "split": "pre-registered (P8.5); unweighted, sample over-represents flagged affairs",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "Secondary: P8.5 correction loop",
     "line": 25
    },
    "sources": [
-    "bern/ideation2/spikes/s8-dvs/loop.json",
-    "bern/ideation2/spikes/s8-dvs/loop.py"
+    "eval/spikes/s8-dvs/loop.json",
+    "eval/spikes/s8-dvs/loop.py"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -13467,7 +13467,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s8-dvs/loop.json",
+   "file": "eval/spikes/s8-dvs/loop.json",
    "key": "after > F1"
   },
   {
@@ -13495,11 +13495,11 @@
      ]
     ],
     "at": {
-     "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+     "file": "eval/spikes/s13-timing/s8b.json",
      "key": "all > title_text"
     },
     "ci_at": {
-     "file": "bern/ideation2/spikes/s13-timing/results.md",
+     "file": "eval/spikes/s13-timing/results.md",
      "line": 33,
      "text": "| title + text | 1.000 [0.908, 1.000]"
     },
@@ -13513,7 +13513,7 @@
       56
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+      "file": "eval/spikes/s13-timing/s8b.json",
       "key": "all > title_text"
      }
     },
@@ -13544,7 +13544,7 @@
       -0.019607843137254943
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+      "file": "eval/spikes/s13-timing/s8b.json",
       "key": "all > dRecall"
      },
      "shown": {
@@ -13572,7 +13572,7 @@
       0.039570491151322384
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+      "file": "eval/spikes/s13-timing/s8b.json",
       "key": "all > dF1"
      },
      "shown": {
@@ -13611,7 +13611,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s13-timing/results.md",
+      "file": "eval/spikes/s13-timing/results.md",
       "line": 32,
       "text": "| title only (key p_a>=0.5) | 0.896 [0.778, 0.955]"
      },
@@ -13635,7 +13635,7 @@
        56
       ],
       "at": {
-       "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+       "file": "eval/spikes/s13-timing/s8b.json",
        "key": "all > title_only"
       }
      },
@@ -13675,13 +13675,13 @@
    ],
    "split": "pre-registered (S8b)",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S8b text lever",
     "line": 21
    },
    "sources": [
-    "bern/ideation2/spikes/s13-timing/s8b.json",
-    "bern/ideation2/spikes/s13-timing/results.md"
+    "eval/spikes/s13-timing/s8b.json",
+    "eval/spikes/s13-timing/results.md"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -13736,7 +13736,7 @@
      ]
     }
    },
-   "file": "bern/ideation2/spikes/s13-timing/s8b.json",
+   "file": "eval/spikes/s13-timing/s8b.json",
    "key": "all > title_text",
    "shown": {
     "interval": [
@@ -13766,7 +13766,7 @@
     "k": 102,
     "n": 120,
     "at": {
-     "file": "bern/ideation2/spikes/s12-evidence/results.json",
+     "file": "eval/spikes/s12-evidence/results.json",
      "key": "support > overall"
     },
     "metric": "sentence supports the D1 chapter",
@@ -13803,7 +13803,7 @@
      "k": 74,
      "n": 82,
      "at": {
-      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "file": "eval/spikes/s12-evidence/results.json",
       "key": "support > d1_right"
      },
      "metric": "when the chapter is right (APS editors)",
@@ -13840,7 +13840,7 @@
      "k": 28,
      "n": 38,
      "at": {
-      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "file": "eval/spikes/s12-evidence/results.json",
       "key": "support > d1_wrong"
      },
      "metric": "when the chapter is wrong",
@@ -13879,7 +13879,7 @@
      "k": 120,
      "n": 120,
      "at": {
-      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "file": "eval/spikes/s12-evidence/results.json",
       "key": "substring_pass"
      },
      "metric": "quote is an exact substring",
@@ -13908,7 +13908,7 @@
      "k": 119,
      "n": 120,
      "at": {
-      "file": "bern/ideation2/spikes/s12-evidence/results.json",
+      "file": "eval/spikes/s12-evidence/results.json",
       "key": "ab_agreement"
      },
      "metric": "judge run A = run B",
@@ -13946,14 +13946,14 @@
    "baselines": [],
    "split": "random S9 sample, pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S12 evidence support",
     "line": 14
    },
    "sources": [
-    "bern/ideation2/spikes/s12-evidence/results.json",
-    "bern/ideation2/spikes/s12-evidence/results.md",
-    "bern/ideation2/spikes/s12-evidence/score.py"
+    "eval/spikes/s12-evidence/results.json",
+    "eval/spikes/s12-evidence/results.md",
+    "eval/spikes/s12-evidence/score.py"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -13968,7 +13968,7 @@
     0.903
    ],
    "baseline": null,
-   "file": "bern/ideation2/spikes/s12-evidence/results.json",
+   "file": "eval/spikes/s12-evidence/results.json",
    "key": "support > overall",
    "shown": {
     "interval": [
@@ -13997,7 +13997,7 @@
     "k": 163,
     "n": 200,
     "at": {
-     "file": "bern/querschnitt/eval/s23/results.json",
+     "file": "eval/s23/results.json",
      "key": "support > overall"
     },
     "metric": "stored sentence supports the topic (both kinds)",
@@ -14025,7 +14025,7 @@
      "k": 83,
      "n": 100,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "support > chapter"
      },
      "metric": "chapter quotes (shipped APS chapter)",
@@ -14050,7 +14050,7 @@
      "k": 80,
      "n": 100,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "support > digitalisierung"
      },
      "metric": "«Digitalisierung» quotes",
@@ -14073,7 +14073,7 @@
      "k": 198,
      "n": 198,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "substring > input_unchanged"
      },
      "metric": "quote is the exact substring at its stored offsets (inputs unchanged since the row)",
@@ -14093,7 +14093,7 @@
      "k": 198,
      "n": 200,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "substring > all_rows"
      },
      "metric": "quote is the exact substring at its stored offsets (all rows)",
@@ -14118,7 +14118,7 @@
      "k": 195,
      "n": 200,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "ab_agreement"
      },
      "metric": "judge run A = run B",
@@ -14147,7 +14147,7 @@
      "value": 0.85,
      "n": 120,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "s12_descriptive > rate"
      },
      "shown": {
@@ -14164,7 +14164,7 @@
     "unresolved": 0,
     "rule": "label = A if A == B, else C (blind third run on the disagreeing ids only)",
     "at": {
-     "file": "bern/querschnitt/eval/s23/results.json",
+     "file": "eval/s23/results.json",
      "key": "ab_kappa"
     },
     "shown": {
@@ -14187,7 +14187,7 @@
        "k": 55,
        "n": 65,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_field > title"
        },
        "cell": "title",
@@ -14214,7 +14214,7 @@
        "k": 8,
        "n": 9,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_field > title_long"
        },
        "cell": "title_long",
@@ -14242,7 +14242,7 @@
        "k": 100,
        "n": 126,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_field > text"
        },
        "cell": "text",
@@ -14263,7 +14263,7 @@
       }
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "by_field"
      }
     },
@@ -14278,7 +14278,7 @@
        "k": 86,
        "n": 102,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_level > cantonal"
        },
        "cell": "cantonal",
@@ -14304,7 +14304,7 @@
        "k": 22,
        "n": 33,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_level > communal"
        },
        "cell": "communal",
@@ -14332,7 +14332,7 @@
        "k": 51,
        "n": 61,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_level > federal"
        },
        "cell": "federal",
@@ -14359,7 +14359,7 @@
        "k": 4,
        "n": 4,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "by_level > other"
        },
        "cell": "other",
@@ -14373,7 +14373,7 @@
       }
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "by_level"
      }
     },
@@ -14388,7 +14388,7 @@
        "k": 161,
        "n": 200,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "per_annotator > A > overall"
        },
        "cell": "overall",
@@ -14414,7 +14414,7 @@
        "k": 81,
        "n": 100,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "per_annotator > A > chapter"
        },
        "cell": "chapter",
@@ -14440,7 +14440,7 @@
        "k": 80,
        "n": 100,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "per_annotator > A > digitalisierung"
        },
        "cell": "digitalisierung",
@@ -14465,7 +14465,7 @@
        "k": 160,
        "n": 200,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "per_annotator > B > overall"
        },
        "cell": "overall",
@@ -14487,7 +14487,7 @@
        "k": 81,
        "n": 100,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "per_annotator > B > chapter"
        },
        "cell": "chapter",
@@ -14513,7 +14513,7 @@
        "k": 79,
        "n": 100,
        "at": {
-        "file": "bern/querschnitt/eval/s23/results.json",
+        "file": "eval/s23/results.json",
         "key": "per_annotator > B > digitalisierung"
        },
        "cell": "digitalisierung",
@@ -14532,25 +14532,25 @@
     "input_changed_since_row": {
      "value": 2,
      "at": {
-      "file": "bern/querschnitt/eval/s23/results.json",
+      "file": "eval/s23/results.json",
       "key": "substring > input_changed_since_row"
      }
     }
    },
    "split": "random sample of the production rows, pre-registered (drawn after the prereg entry)",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S23 evidence on production rows",
     "line": 77
    },
    "sources": [
-    "bern/querschnitt/eval/s23/results.json",
-    "bern/querschnitt/eval/s23/analyze.py",
-    "bern/querschnitt/eval/s23/build_packet.py",
-    "bern/querschnitt/eval/s23/key.jsonl",
-    "bern/querschnitt/eval/s23/ann_A.tsv",
-    "bern/querschnitt/eval/s23/ann_B.tsv",
-    "bern/querschnitt/eval/s23/ann_C.tsv"
+    "eval/s23/results.json",
+    "eval/s23/analyze.py",
+    "eval/s23/build_packet.py",
+    "eval/s23/key.jsonl",
+    "eval/s23/ann_A.tsv",
+    "eval/s23/ann_B.tsv",
+    "eval/s23/ann_C.tsv"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (production run runs/ev, runs/main)",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -14571,7 +14571,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s23/results.json",
+   "file": "eval/s23/results.json",
    "key": "support > overall",
    "shown": {
     "interval": [
@@ -14599,7 +14599,7 @@
     "k": 105,
     "n": 153,
     "at": {
-     "file": "bern/ideation/spikes/s6-cantonal/score.json",
+     "file": "eval/spikes/s6-cantonal/score.json",
      "key": "accuracy > all > final_top1 > strict"
     },
     "metric": "final chapter = consensus gold",
@@ -14637,7 +14637,7 @@
      "k": 108,
      "n": 158,
      "at": {
-      "file": "bern/ideation/spikes/s7-crossfamily/score.json",
+      "file": "eval/spikes/s7-crossfamily/score.json",
       "key": "aps > apertus > (c) majority of 3 first choices > all"
      },
      "metric": "gold = majority of Claude A, B, Qwen",
@@ -14664,7 +14664,7 @@
      "k": 100,
      "n": 160,
      "at": {
-      "file": "bern/ideation/spikes/s7-crossfamily/score.json",
+      "file": "eval/spikes/s7-crossfamily/score.json",
       "key": "aps > apertus > (b) Qwen first choice > all"
      },
      "metric": "gold = Qwen alone",
@@ -14701,7 +14701,7 @@
      "k": 128,
      "n": 153,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > all > l1_top3 > strict"
      },
      "metric": "chapter top-3 (chapter step)",
@@ -14734,7 +14734,7 @@
     "AB_agreement": 0.956,
     "kappa": 0.952,
     "at": {
-     "file": "bern/ideation/spikes/s6-cantonal/score.json",
+     "file": "eval/spikes/s6-cantonal/score.json",
      "key": "agreement > A_vs_B"
     },
     "shown": {
@@ -14758,7 +14758,7 @@
      "k": 69,
      "n": 95,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > level=cantonal > final_top1 > strict"
      },
      "cell": "level=cantonal",
@@ -14785,7 +14785,7 @@
      "k": 36,
      "n": 58,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > level=communal > final_top1 > strict"
      },
      "cell": "level=communal",
@@ -14822,7 +14822,7 @@
      "k": 45,
      "n": 67,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > lang=de > final_top1 > strict"
      },
      "cell": "lang=de",
@@ -14859,7 +14859,7 @@
      "k": 34,
      "n": 48,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > lang=fr > final_top1 > strict"
      },
      "cell": "lang=fr",
@@ -14886,7 +14886,7 @@
      "k": 26,
      "n": 38,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > lang=it > final_top1 > strict"
      },
      "cell": "lang=it",
@@ -14922,7 +14922,7 @@
      "k": 85,
      "n": 120,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > text > final_top1 > strict"
      },
      "cell": "text",
@@ -14959,7 +14959,7 @@
      "k": 20,
      "n": 33,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > title-only > final_top1 > strict"
      },
      "cell": "title-only",
@@ -14996,7 +14996,7 @@
      "k": 66,
      "n": 89,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > L1 first order p>=0.9 > final_top1 > strict"
      },
      "cell": "L1 first order p>=0.9",
@@ -15033,7 +15033,7 @@
      "k": 39,
      "n": 64,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > L1 second order run > final_top1 > strict"
      },
      "cell": "L1 second order run",
@@ -15069,7 +15069,7 @@
      "k": 19,
      "n": 35,
      "at": {
-      "file": "bern/ideation/spikes/s6-cantonal/score.json",
+      "file": "eval/spikes/s6-cantonal/score.json",
       "key": "accuracy > orders disagree > final_top1 > strict"
      },
      "cell": "orders disagree",
@@ -15708,7 +15708,7 @@
       "basis": "no 2 cells with n>=20: cells n>=5 (small)"
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S6 > canton > strict"
      }
     },
@@ -15892,7 +15892,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S6 > region > strict"
      }
     },
@@ -16288,7 +16288,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S6 > party > strict"
      }
     }
@@ -16296,10 +16296,10 @@
    "split": "one run, nothing tuned on these items",
    "prereg": null,
    "sources": [
-    "bern/ideation/spikes/s6-cantonal/score.json",
-    "bern/ideation/spikes/s6-cantonal/results.md",
-    "bern/ideation/spikes/s7-crossfamily/score.json",
-    "bern/ideation/spikes/s7-crossfamily/results.md"
+    "eval/spikes/s6-cantonal/score.json",
+    "eval/spikes/s6-cantonal/results.md",
+    "eval/spikes/s7-crossfamily/score.json",
+    "eval/spikes/s7-crossfamily/results.md"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -16311,7 +16311,7 @@
     0.755
    ],
    "baseline": null,
-   "file": "bern/ideation/spikes/s6-cantonal/score.json",
+   "file": "eval/spikes/s6-cantonal/score.json",
    "key": "accuracy > all > final_top1 > strict",
    "shown": {
     "interval": [
@@ -16339,7 +16339,7 @@
     "k": 114,
     "n": 210,
     "at": {
-     "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+     "file": "eval/spikes/s10-bilingual/score.json",
      "key": "accuracy > de"
     },
     "metric": "chapter top-1, German title",
@@ -16367,7 +16367,7 @@
      "k": 111,
      "n": 210,
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "accuracy > fr"
      },
      "metric": "chapter top-1, French title",
@@ -16394,7 +16394,7 @@
      "k": 116,
      "n": 210,
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "accuracy > pooled"
      },
      "metric": "chapter top-1, averaged",
@@ -16430,7 +16430,7 @@
       0.076
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "paired_diff > de-fr"
      },
      "shown": {
@@ -16468,7 +16468,7 @@
       ]
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/secondary.txt",
+      "file": "eval/spikes/s10-bilingual/secondary.txt",
       "lines": [
        1,
        2,
@@ -16554,7 +16554,7 @@
     },
     "kappa": 0.954,
     "at": {
-     "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+     "file": "eval/spikes/s10-bilingual/score.json",
      "key": "annotators"
     },
     "shown": {
@@ -16574,7 +16574,7 @@
      "k": 92,
      "n": 148,
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "strata > languages agree > de"
      },
      "share": {
@@ -16631,7 +16631,7 @@
      "k": 22,
      "n": 62,
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "strata > languages disagree (please check) > de"
      },
      "ci95_source": [
@@ -16666,7 +16666,7 @@
      "k": 19,
      "n": 62,
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "strata > languages disagree (please check) > fr"
      },
      "ci95_source": [
@@ -16700,7 +16700,7 @@
      "k": 24,
      "n": 62,
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "strata > languages disagree (please check) > pooled"
      },
      "ci95_source": [
@@ -16734,7 +16734,7 @@
       0.362
      ],
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+      "file": "eval/spikes/s10-bilingual/score.json",
       "key": "no_gold > please_check_weighted"
      },
      "shown": {
@@ -16761,7 +16761,7 @@
        "k": 40,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=BE > de"
        },
        "ci95_source": [
@@ -16797,7 +16797,7 @@
        "k": 38,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=BE > fr"
        },
        "ci95_source": [
@@ -16833,7 +16833,7 @@
        "k": 37,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=BE > pooled"
        },
        "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -16861,7 +16861,7 @@
        "k": 37,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=FR > de"
        },
        "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -16887,7 +16887,7 @@
        "k": 38,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=FR > fr"
        },
        "ci95_source": [
@@ -16923,7 +16923,7 @@
        "k": 40,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=FR > pooled"
        },
        "ci95_source": [
@@ -16961,7 +16961,7 @@
        "k": 37,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=VS > de"
        },
        "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
@@ -16987,7 +16987,7 @@
        "k": 35,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=VS > fr"
        },
        "ci95_source": [
@@ -17019,7 +17019,7 @@
        "k": 39,
        "n": 70,
        "at": {
-        "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+        "file": "eval/spikes/s10-bilingual/score.json",
         "key": "strata > canton=VS > pooled"
        },
        "ci95_source": [
@@ -17191,7 +17191,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S10 > canton > pooled"
      }
     },
@@ -17304,7 +17304,7 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S10 > shown language > pooled"
      }
     },
@@ -17692,14 +17692,14 @@
       }
      },
      "at": {
-      "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+      "file": "eval/spikes/s14-neutrality/results.json",
       "key": "S10 > party > pooled"
      }
     },
     "clerk_load": {
      "value": "0.2975 × weekly volume (median 10.0, mean 25.5, p90 76.7) = 3.0 / 7.6 / 22.8 a week",
      "at": {
-      "file": "bern/ideation2/spikes/s10-bilingual/results.md",
+      "file": "eval/spikes/s10-bilingual/results.md",
       "line": 79,
       "text": "Clerk load: please-check 0.2975"
      }
@@ -17707,15 +17707,15 @@
    },
    "split": "pre-registered",
    "prereg": {
-    "file": "bern/ideation2/PREREG.md",
+    "file": "eval/spikes/PREREG.md",
     "anchor": "## S10 — bilingual cantonal parliaments",
     "line": 49
    },
    "sources": [
-    "bern/ideation2/spikes/s10-bilingual/score.json",
-    "bern/ideation2/spikes/s10-bilingual/results.md",
-    "bern/ideation2/spikes/s10-bilingual/secondary.txt",
-    "bern/ideation2/spikes/s10-bilingual/scripts/score.py"
+    "eval/spikes/s10-bilingual/score.json",
+    "eval/spikes/s10-bilingual/results.md",
+    "eval/spikes/s10-bilingual/secondary.txt",
+    "eval/spikes/s10-bilingual/scripts/score.py"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -17726,7 +17726,7 @@
     0.609
    ],
    "baseline": null,
-   "file": "bern/ideation2/spikes/s10-bilingual/score.json",
+   "file": "eval/spikes/s10-bilingual/score.json",
    "key": "accuracy > de",
    "shown": {
     "interval": [
@@ -17784,7 +17784,7 @@
     ],
     "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward",
     "at": {
-     "file": "bern/querschnitt/eval/s19/results.json",
+     "file": "eval/s19/results.json",
      "key": "wolf > precision_flags | hitze > precision_flags | ki-schule > precision_flags"
     },
     "shown": {
@@ -17835,7 +17835,7 @@
      ],
      "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
      "at": {
-      "file": "bern/querschnitt/eval/s19/results.json",
+      "file": "eval/s19/results.json",
       "key": "wolf > weighted | hitze > weighted | ki-schule > weighted"
      }
     },
@@ -17847,7 +17847,7 @@
       22
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s19/results.json",
+      "file": "eval/s19/results.json",
       "key": "wolf > flags | hitze > flags | ki-schule > flags"
      }
     }
@@ -17869,7 +17869,7 @@
      "hits": 10,
      "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
      "at": {
-      "file": "bern/querschnitt/eval/s19/results.json",
+      "file": "eval/s19/results.json",
       "key": "wolf > weighted"
      },
      "shown": {
@@ -17902,7 +17902,7 @@
      "hits": 191,
      "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
      "at": {
-      "file": "bern/querschnitt/eval/s19/results.json",
+      "file": "eval/s19/results.json",
       "key": "hitze > weighted"
      },
      "shown": {
@@ -17944,7 +17944,7 @@
      "hits": 4,
      "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
      "at": {
-      "file": "bern/querschnitt/eval/s19/results.json",
+      "file": "eval/s19/results.json",
       "key": "ki-schule > weighted"
      },
      "shown": {
@@ -17962,11 +17962,11 @@
     "agree_AB": 0.9638,
     "tie_break_C": 28,
     "at": {
-     "file": "bern/querschnitt/eval/s19/results.json",
+     "file": "eval/s19/results.json",
      "key": "agree_AB"
     },
     "tie_break_at": {
-     "file": "bern/querschnitt/eval/s19/ann_C.tsv",
+     "file": "eval/s19/ann_C.tsv",
      "rows": 28
     },
     "cross_check": "the Qwen-SEA-LION cross-check named in the pre-registration is not in eval/s19 (not reported)",
@@ -17985,7 +17985,7 @@
       "name_de": "Wolf und Grossraubtiere",
       "name_fr": "loup et grands prédateurs",
       "name_en": "wolf and large predators",
-      "scheme": "bern/querschnitt/src/querschnitt/schemes/adhoc/wolf.yaml",
+      "scheme": "src/querschnitt/schemes/adhoc/wolf.yaml",
       "precision": {
        "metric": "precision of Apertus flags, agreement with the AI judge",
        "value": 0.225,
@@ -17998,7 +17998,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > precision_flags > value"
        },
        "shown": {
@@ -18023,11 +18023,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > point > a_R"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > ci > a_R"
        }
       },
@@ -18040,11 +18040,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > point > a_P"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > ci > a_P"
        },
        "shown": {
@@ -18069,11 +18069,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > point > k_P"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > ci > k_P"
        }
       },
@@ -18086,11 +18086,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > point > k_R"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > ci > k_R"
        },
        "shown": {
@@ -18116,11 +18116,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > point > pos"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > weighted > ci > pos"
        }
       },
@@ -18128,7 +18128,7 @@
        "metric": "affairs flagged by Apertus (counted)",
        "value": 40,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > flags"
        }
       },
@@ -18136,14 +18136,14 @@
        "metric": "affairs hit by the frozen keyword list (counted)",
        "value": 10,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > kw_hits"
        }
       },
       "n_checked": {
        "value": 164,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > n_packet"
        }
       },
@@ -18180,7 +18180,7 @@
        ],
        "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "wolf > strata"
        }
       }
@@ -18190,7 +18190,7 @@
       "name_de": "Hitzeschutz / Hitzewellen",
       "name_fr": "protection contre la chaleur / canicules",
       "name_en": "heat protection / heatwaves",
-      "scheme": "bern/querschnitt/src/querschnitt/schemes/adhoc/hitze.yaml",
+      "scheme": "src/querschnitt/schemes/adhoc/hitze.yaml",
       "precision": {
        "metric": "precision of Apertus flags, agreement with the AI judge",
        "value": 0.6705,
@@ -18203,7 +18203,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > precision_flags > value"
        },
        "shown": {
@@ -18228,11 +18228,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > point > a_R"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > ci > a_R"
        }
       },
@@ -18245,11 +18245,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > point > a_P"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > ci > a_P"
        },
        "shown": {
@@ -18273,11 +18273,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > point > k_P"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > ci > k_P"
        },
        "shown": {
@@ -18302,11 +18302,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > point > k_R"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > ci > k_R"
        },
        "shown": {
@@ -18331,11 +18331,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > point > pos"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > weighted > ci > pos"
        }
       },
@@ -18343,7 +18343,7 @@
        "metric": "affairs flagged by Apertus (counted)",
        "value": 346,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > flags"
        }
       },
@@ -18351,14 +18351,14 @@
        "metric": "affairs hit by the frozen keyword list (counted)",
        "value": 191,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > kw_hits"
        }
       },
       "n_checked": {
        "value": 468,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > n_packet"
        }
       },
@@ -18395,7 +18395,7 @@
        ],
        "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "hitze > strata"
        }
       }
@@ -18405,7 +18405,7 @@
       "name_de": "Künstliche Intelligenz an Schulen",
       "name_fr": "intelligence artificielle à l'école",
       "name_en": "AI in schools",
-      "scheme": "bern/querschnitt/src/querschnitt/schemes/adhoc/ki-schule.yaml",
+      "scheme": "src/querschnitt/schemes/adhoc/ki-schule.yaml",
       "precision": {
        "metric": "precision of Apertus flags, agreement with the AI judge",
        "value": 0.1364,
@@ -18418,7 +18418,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > precision_flags > value"
        },
        "shown": {
@@ -18443,11 +18443,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > point > a_R"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > ci > a_R"
        }
       },
@@ -18460,11 +18460,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > point > a_P"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > ci > a_P"
        },
        "shown": {
@@ -18489,11 +18489,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > point > k_P"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > ci > k_P"
        },
        "shown": {
@@ -18514,11 +18514,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > point > k_R"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > ci > k_R"
        }
       },
@@ -18531,11 +18531,11 @@
        ],
        "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > point > pos"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > weighted > ci > pos"
        }
       },
@@ -18543,7 +18543,7 @@
        "metric": "affairs flagged by Apertus (counted)",
        "value": 22,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > flags"
        }
       },
@@ -18551,14 +18551,14 @@
        "metric": "affairs hit by the frozen keyword list (counted)",
        "value": 4,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > kw_hits"
        }
       },
       "n_checked": {
        "value": 142,
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > n_packet"
        }
       },
@@ -18588,7 +18588,7 @@
        ],
        "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
        "at": {
-        "file": "bern/querschnitt/eval/s19/results.json",
+        "file": "eval/s19/results.json",
         "key": "ki-schule > strata"
        }
       }
@@ -18598,19 +18598,19 @@
    },
    "split": "pre-registered (S19); topics never used in tuning; cut-off p ≥ 0.5 fixed; keyword lists frozen before any decision",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S19 three new ad-hoc topics",
     "line": 37
    },
    "sources": [
-    "bern/querschnitt/eval/s19/results.json",
-    "bern/querschnitt/eval/s19/analyze.py",
-    "bern/querschnitt/eval/s19/build_packet.py",
-    "bern/querschnitt/eval/s19/key.jsonl",
-    "bern/querschnitt/eval/s19/keywords_frozen.json",
-    "bern/querschnitt/eval/s19/ann_A.tsv",
-    "bern/querschnitt/eval/s19/ann_B.tsv",
-    "bern/querschnitt/eval/s19/ann_C.tsv"
+    "eval/s19/results.json",
+    "eval/s19/analyze.py",
+    "eval/s19/build_packet.py",
+    "eval/s19/key.jsonl",
+    "eval/s19/keywords_frozen.json",
+    "eval/s19/ann_A.tsv",
+    "eval/s19/ann_B.tsv",
+    "eval/s19/ann_C.tsv"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s19)",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -18639,7 +18639,7 @@
      0.6
     ]
    },
-   "file": "bern/querschnitt/eval/s19/results.json",
+   "file": "eval/s19/results.json",
    "key": "wolf > precision_flags | hitze > precision_flags | ki-schule > precision_flags",
    "shown": {
     "interval": [
@@ -18698,7 +18698,7 @@
     },
     "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
     "at": {
-     "file": "bern/querschnitt/eval/s26/results.json",
+     "file": "eval/s26/results.json",
      "key": "wolf > precision_diff | hitze > precision_diff | ki-schule > precision_diff"
     },
     "shown": {
@@ -18747,7 +18747,7 @@
      ],
      "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward",
      "at": {
-      "file": "bern/querschnitt/eval/s26/results.json",
+      "file": "eval/s26/results.json",
       "key": "wolf > s26 > precision | hitze > s26 > precision | ki-schule > s26 > precision"
      },
      "shown": {
@@ -18779,7 +18779,7 @@
       null
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s26/results.json",
+      "file": "eval/s26/results.json",
       "key": "wolf > s26 > recall | hitze > s26 > recall | ki-schule > s26 > recall"
      },
      "shown": {
@@ -18804,7 +18804,7 @@
      ],
      "ci_method": "Wilson 95% from k and n, bounds rounded outward",
      "at": {
-      "file": "bern/querschnitt/eval/s26/results.json",
+      "file": "eval/s26/results.json",
       "key": "wolf > s19 > precision"
      },
      "name": "S19 flags without examples, same test items: wolf",
@@ -18835,7 +18835,7 @@
      ],
      "ci_method": "Wilson 95% from k and n, bounds rounded outward",
      "at": {
-      "file": "bern/querschnitt/eval/s26/results.json",
+      "file": "eval/s26/results.json",
       "key": "hitze > s19 > precision"
      },
      "name": "S19 flags without examples, same test items: hitze",
@@ -18869,7 +18869,7 @@
       0.204
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s26/results.json",
+      "file": "eval/s26/results.json",
       "key": "ki-schule > s19 > precision"
      },
      "name": "S19 flags without examples, same test items: ki-schule",
@@ -18896,21 +18896,21 @@
       "test_items": {
        "value": 134,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "wolf > n_test"
        }
       },
       "editor_examples": {
        "value": 30,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "wolf > editor_examples"
        }
       },
       "judge_positives": {
        "value": 7,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "wolf > positives"
        }
       },
@@ -18918,7 +18918,7 @@
        "flags": {
         "value": 34,
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "wolf > s19 > flags"
         }
        },
@@ -18934,7 +18934,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "wolf > s19 > precision"
         },
         "shown": {
@@ -18963,7 +18963,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "wolf > s19 > recall"
         },
         "shown": {
@@ -18978,7 +18978,7 @@
        "flags": {
         "value": 32,
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "wolf > s26 > flags"
         }
        },
@@ -18994,7 +18994,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "wolf > s26 > precision"
         },
         "shown": {
@@ -19022,7 +19022,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "wolf > s26 > recall"
         },
         "shown": {
@@ -19042,11 +19042,11 @@
        ],
        "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "wolf > precision_diff > value"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "wolf > precision_diff > ci"
        },
        "shown": {
@@ -19070,21 +19070,21 @@
       "test_items": {
        "value": 438,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "hitze > n_test"
        }
       },
       "editor_examples": {
        "value": 30,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "hitze > editor_examples"
        }
       },
       "judge_positives": {
        "value": 216,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "hitze > positives"
        }
       },
@@ -19092,7 +19092,7 @@
        "flags": {
         "value": 322,
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "hitze > s19 > flags"
         }
        },
@@ -19108,7 +19108,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "hitze > s19 > precision"
         },
         "shown": {
@@ -19136,7 +19136,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "hitze > s19 > recall"
         },
         "shown": {
@@ -19151,7 +19151,7 @@
        "flags": {
         "value": 299,
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "hitze > s26 > flags"
         }
        },
@@ -19167,7 +19167,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "hitze > s26 > precision"
         },
         "shown": {
@@ -19195,7 +19195,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "hitze > s26 > recall"
         },
         "shown": {
@@ -19222,11 +19222,11 @@
        ],
        "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "hitze > precision_diff > value"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "hitze > precision_diff > ci"
        },
        "shown": {
@@ -19248,21 +19248,21 @@
       "test_items": {
        "value": 112,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "ki-schule > n_test"
        }
       },
       "editor_examples": {
        "value": 30,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "ki-schule > editor_examples"
        }
       },
       "judge_positives": {
        "value": 0,
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "ki-schule > positives"
        }
       },
@@ -19270,7 +19270,7 @@
        "flags": {
         "value": 15,
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "ki-schule > s19 > flags"
         }
        },
@@ -19290,7 +19290,7 @@
          0.204
         ],
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "ki-schule > s19 > precision"
         },
         "shown": {
@@ -19311,7 +19311,7 @@
         "value": null,
         "not_measurable": "not measurable (n 0 judge positives)",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "ki-schule > s19 > recall"
         }
        }
@@ -19320,7 +19320,7 @@
        "flags": {
         "value": 18,
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "ki-schule > s26 > flags"
         }
        },
@@ -19336,7 +19336,7 @@
         ],
         "ci_method": "Wilson 95% from k and n, bounds rounded outward",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "ki-schule > s26 > precision"
         },
         "shown": {
@@ -19351,7 +19351,7 @@
         "value": null,
         "not_measurable": "not measurable (n 0 judge positives)",
         "at": {
-         "file": "bern/querschnitt/eval/s26/results.json",
+         "file": "eval/s26/results.json",
          "key": "ki-schule > s26 > recall"
         }
        }
@@ -19367,7 +19367,7 @@
         0.0
        ],
        "at": {
-        "file": "bern/querschnitt/eval/s26/results.json",
+        "file": "eval/s26/results.json",
         "key": "ki-schule > precision_diff"
        }
       }
@@ -19377,18 +19377,18 @@
    },
    "split": "S19 packets: 30 judged items per topic as editor examples (random.Random(26) over the pid-sorted packet), the rest re-scored once; pre-registered (S26) after S19's annotations, before any S26 call; nothing tuned",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S26 editor decisions as examples",
     "line": 96
    },
    "sources": [
-    "bern/querschnitt/eval/s26/results.json",
-    "bern/querschnitt/eval/s26/analyze.py",
-    "bern/querschnitt/eval/s26/run.py",
-    "bern/querschnitt/eval/s26/split.json",
-    "bern/querschnitt/eval/s26/raw.jsonl",
-    "bern/querschnitt/eval/s26/ledger.jsonl",
-    "bern/querschnitt/eval/s19/results.json"
+    "eval/s26/results.json",
+    "eval/s26/analyze.py",
+    "eval/s26/run.py",
+    "eval/s26/split.json",
+    "eval/s26/raw.jsonl",
+    "eval/s26/ledger.jsonl",
+    "eval/s19/results.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -19427,7 +19427,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s26/results.json",
+   "file": "eval/s26/results.json",
    "key": "wolf > precision_diff | hitze > precision_diff | ki-schule > precision_diff",
    "shown": {
     "interval": [
@@ -19484,7 +19484,7 @@
     ],
     "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward",
     "at": {
-     "file": "bern/querschnitt/eval/s27/results.json",
+     "file": "eval/s27/results.json",
      "key": "wolf > precision_verified | hitze > precision_verified | ki-schule > precision_verified"
     },
     "shown": {
@@ -19535,7 +19535,7 @@
      ],
      "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
      "at": {
-      "file": "bern/querschnitt/eval/s27/results.json",
+      "file": "eval/s27/results.json",
       "key": "wolf > diff | hitze > diff | ki-schule > diff"
      },
      "shown": {
@@ -19571,7 +19571,7 @@
       "3/3"
      ],
      "at": {
-      "file": "bern/querschnitt/eval/s27/results.json",
+      "file": "eval/s27/results.json",
       "key": "wolf > recall_verified | hitze > recall_verified | ki-schule > recall_verified"
      },
      "shown": {
@@ -19598,7 +19598,7 @@
      ],
      "ci_method": "Wilson 95% from k and n, bounds rounded outward",
      "at": {
-      "file": "bern/querschnitt/eval/s27/results.json",
+      "file": "eval/s27/results.json",
       "key": "wolf > precision_s19 > value"
      },
      "name": "S19 flags without the second question: wolf",
@@ -19628,7 +19628,7 @@
      ],
      "ci_method": "Wilson 95% from k and n, bounds rounded outward",
      "at": {
-      "file": "bern/querschnitt/eval/s27/results.json",
+      "file": "eval/s27/results.json",
       "key": "hitze > precision_s19 > value"
      },
      "name": "S19 flags without the second question: hitze",
@@ -19658,7 +19658,7 @@
      ],
      "ci_method": "Wilson 95% from k and n, bounds rounded outward",
      "at": {
-      "file": "bern/querschnitt/eval/s27/results.json",
+      "file": "eval/s27/results.json",
       "key": "ki-schule > precision_s19 > value"
      },
      "name": "S19 flags without the second question: ki-schule",
@@ -19685,21 +19685,21 @@
       "flags": {
        "value": 40,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > flags"
        }
       },
       "kept": {
        "value": 9,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > kept"
        }
       },
       "judge_positives": {
        "value": 9,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > positives"
        }
       },
@@ -19715,7 +19715,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > precision_s19 > value"
        },
        "shown": {
@@ -19743,7 +19743,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > precision_verified > value"
        },
        "shown": {
@@ -19771,7 +19771,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > recall_verified"
        },
        "shown": {
@@ -19796,11 +19796,11 @@
        ],
        "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > diff > value"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "wolf > diff > ci"
        },
        "shown": {
@@ -19821,21 +19821,21 @@
       "flags": {
        "value": 346,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > flags"
        }
       },
       "kept": {
        "value": 292,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > kept"
        }
       },
       "judge_positives": {
        "value": 232,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > positives"
        }
       },
@@ -19851,7 +19851,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > precision_s19 > value"
        },
        "shown": {
@@ -19879,7 +19879,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > precision_verified > value"
        },
        "shown": {
@@ -19907,7 +19907,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > recall_verified"
        },
        "shown": {
@@ -19933,11 +19933,11 @@
        ],
        "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > diff > value"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "hitze > diff > ci"
        },
        "shown": {
@@ -19956,21 +19956,21 @@
       "flags": {
        "value": 22,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > flags"
        }
       },
       "kept": {
        "value": 12,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > kept"
        }
       },
       "judge_positives": {
        "value": 3,
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > positives"
        }
       },
@@ -19986,7 +19986,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > precision_s19 > value"
        },
        "shown": {
@@ -20014,7 +20014,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > precision_verified > value"
        },
        "shown": {
@@ -20041,7 +20041,7 @@
        ],
        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > recall_verified"
        },
        "shown": {
@@ -20060,11 +20060,11 @@
        ],
        "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
        "at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > diff > value"
        },
        "ci_at": {
-        "file": "bern/querschnitt/eval/s27/results.json",
+        "file": "eval/s27/results.json",
         "key": "ki-schule > diff > ci"
        },
        "shown": {
@@ -20085,23 +20085,23 @@
    },
    "split": "S19 packets held out; one pre-registered wording, no tuning, applied once (amendment before any S27 call: no dev step)",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S27 a second, stricter check",
     "line": 105
    },
    "prereg_more": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "Amendment 2026-10-14 23:10 CEST (before any S27 call)",
     "line": 115
    },
    "sources": [
-    "bern/querschnitt/eval/s27/results.json",
-    "bern/querschnitt/eval/s27/analyze.py",
-    "bern/querschnitt/eval/s27/run.py",
-    "bern/querschnitt/eval/s27/raw.jsonl",
-    "bern/querschnitt/eval/s27/ledger.jsonl",
-    "bern/querschnitt/src/querschnitt/prompts.py",
-    "bern/querschnitt/eval/s19/results.json"
+    "eval/s27/results.json",
+    "eval/s27/analyze.py",
+    "eval/s27/run.py",
+    "eval/s27/raw.jsonl",
+    "eval/s27/ledger.jsonl",
+    "src/querschnitt/prompts.py",
+    "eval/s19/results.json"
    ],
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
@@ -20142,7 +20142,7 @@
      ]
     }
    },
-   "file": "bern/querschnitt/eval/s27/results.json",
+   "file": "eval/s27/results.json",
    "key": "wolf > precision_verified | hitze > precision_verified | ki-schule > precision_verified",
    "shown": {
     "interval": [
@@ -20172,7 +20172,7 @@
     "metric": "S8 precision by language, permutation p",
     "value": 0.8566,
     "at": {
-     "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+     "file": "eval/spikes/s14-neutrality/results.json",
      "key": "S8 > language > aP > test > p_perm"
     },
     "shown": {
@@ -20307,13 +20307,13 @@
    },
    "split": "no new calls; reported whatever it showed",
    "prereg": {
-    "file": "bern/ideation2/PREREG-ADDENDA.md",
+    "file": "eval/spikes/PREREG-ADDENDA.md",
     "anchor": "S14 neutrality (no calls)",
     "line": 23
    },
    "sources": [
-    "bern/ideation2/spikes/s14-neutrality/results.json",
-    "bern/ideation2/spikes/s14-neutrality/results.md"
+    "eval/spikes/s14-neutrality/results.json",
+    "eval/spikes/s14-neutrality/results.md"
    ],
    "build": "no calls",
    "date": "2026-10-13T21:31:29Z",
@@ -20324,7 +20324,7 @@
     "value": null,
     "ci95": null
    },
-   "file": "bern/ideation2/spikes/s14-neutrality/results.json",
+   "file": "eval/spikes/s14-neutrality/results.json",
    "key": "S8 > language > aP > test > p_perm"
   }
  ],
@@ -20843,7 +20843,7 @@
     ],
     "note": "shipped operating point (14 Oct): pass when the recalibrated p ≥ 0.7 (2-fold cross-fitted on the S16 items); the rest go to 'please check'. Computed after S16 from its rows; tested held out in S25",
     "at": {
-     "file": "bern/querschnitt/eval/lanes/results.json",
+     "file": "eval/lanes/results.json",
      "key": "D4 > calibrated_tau_0_7"
     },
     "shown": {
@@ -20872,7 +20872,7 @@
     ],
     "note": "lane rule until 14 Oct: both readings agree",
     "at": {
-     "file": "bern/querschnitt/eval/s16/results.json",
+     "file": "eval/s16/results.json",
      "key": "lanes_D4"
     },
     "shown": {
@@ -20894,7 +20894,7 @@
    },
    "source": "S16 results.json coverage_precision > aps-fed (one point per k = 1..1,357); grid points picked at k = round(c × n), correct = precision × k, Wilson 95% computed by build_pruefstand.py (bounds rounded outward at 3 decimals)",
    "at": {
-    "file": "bern/querschnitt/eval/s16/results.json",
+    "file": "eval/s16/results.json",
     "key": "coverage_precision > aps-fed"
    }
   },
@@ -22580,7 +22580,7 @@
   {
    "item": "S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — running, no result yet",
    "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
    }

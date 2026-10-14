@@ -11,7 +11,7 @@ from querschnitt.engine import Engine  # noqa: E402
 from querschnitt.examples import ExamplePool  # noqa: E402
 from querschnitt.scheme import APS  # noqa: E402
 
-S9 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s9-aps/data")
+S9 = HERE.parent / "spikes/s9-aps/data"  # vendored S9 (eval/spikes/)
 items = {json.loads(l)["oid"]: json.loads(l) for l in open(HERE / "items.jsonl")}
 lock, rows = read_run(ROOT / "runs/s25")
 eng = Engine(None, ExamplePool.load(ROOT / "data/eval/aps_pool.jsonl"))

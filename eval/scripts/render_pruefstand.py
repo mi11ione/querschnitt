@@ -1,6 +1,6 @@
 """Render docs/PRUEFSTAND.md from eval/pruefstand.json (no calls). Every number links to the file it comes from.
 Display: points truncated toward zero, interval bounds rounded outward (eval/scripts/numfmt.py).
-Run: python3 -I querschnitt/eval/scripts/render_pruefstand.py"""
+Run: python3 -I eval/scripts/render_pruefstand.py"""
 import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numfmt as F  # noqa: E402
@@ -10,7 +10,7 @@ QS = os.path.dirname(EVAL)
 DOC = os.path.join(QS, "docs", "PRUEFSTAND.md")
 P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
 T = {t["id"]: t for t in P["tests"]}
-UP = "../../../"  # docs/ -> querschnitt/ -> bern/ -> hackapertus root
+UP = "../"  # docs/ -> repository root (every path in pruefstand.json is repository-relative)
 
 
 def href(at):
@@ -68,8 +68,8 @@ w(f"Every measured test behind Querschnitt, as one ruled table each. Human label
   "(the result files store them rounded to the nearest 0.001; pruefstand.json keeps that as `ci95_source`); bootstrap percentiles are "
   "floored / ceiled as stored. Machine-readable: "
   "[`eval/pruefstand.json`](../eval/pruefstand.json) (file and key for every value); claims register: [`eval/claims.tsv`](../eval/claims.tsv); "
-  "check any text with `python3 -I tools/claims_check.py FILE`. Links point into the evaluation workspace (`bern/ideation*/spikes/`) "
-  "and into `querschnitt/eval/` for the build-week tests (pre-registered in [`eval/PREREG-BUILD.md`](../eval/PREREG-BUILD.md)).")
+  "check any text with `python3 -I tools/claims_check.py FILE`. Links point into [`eval/spikes/`](../eval/spikes/) for the "
+  "pre-registered spikes S1–S15 (vendored evidence: results, scripts, annotations, raw model outputs) and into `eval/` for the build-week tests (pre-registered in [`eval/PREREG-BUILD.md`](../eval/PREREG-BUILD.md)).")
 w("")
 
 # ------------------------------------------------------------------ human
@@ -171,7 +171,7 @@ w("")
 op, oo = cur["aps_d4"]["operating_point"], cur["aps_d4"]["operating_point_old"]
 w(f"D4 points are read from {L('S16 coverage_precision', cur['aps_d4']['at'])} (one point per affair). "
   f"S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at "
-  f"50, 70, 90 and 100% equal {L('S9 results.json', {'file': 'bern/ideation2/spikes/s9-aps/results.json'})}. The app's chart is the D4 curve with "
+  f"50, 70, 90 and 100% equal {L('S9 results.json', {'file': 'eval/spikes/s9-aps/results.json'})}. The app's chart is the D4 curve with "
   f"the shipped operating point marked: recalibrated p ≥ 0.7, coverage {L(F.pct(op['coverage']), op['at'])}, precision "
   f"{L(num(op['precision']) + ci(op['ci']), op['at'])} (chosen after S16 on these items; tested held out in S25); the earlier point, readings "
   f"agree, is shown for comparison: coverage {L(F.pct(oo['coverage']), oo['at'])}, precision {L(num(oo['precision']) + ci(oo['ci']), oo['at'])}.")
@@ -411,7 +411,7 @@ w(f"Estimated digitalisation affairs (judge positives): {L(num(pos['value'], 0) 
 w("")
 m = {x["metric"]: x for x in s8["results_more"]}
 kb = s8["baselines"][0]
-ch = {"file": "bern/ideation2/spikes/s8-dvs/score_ch.json"}
+ch = {"file": "eval/spikes/s8-dvs/score_ch.json"}
 af = m['estimated flags (Swiss)']; ps = m["estimated digitalisation affairs (judge positives, Swiss)"]
 q = m["judge = Qwen alone: precision / recall"]
 w(f"**History: the S8 snapshot** ({num(s8['n'])} Swiss affairs in the 6 Oct window, of which the census run had scored 8,139 when it was paused; "

@@ -1,0 +1,12 @@
+{
+ "source": "spikes/data/raw/opd/affairs.ndjson.gz (6 Oct 2026 export)",
+ "total": 325691,
+ "begin_2025": 18404,
+ "begin_2026": 14791,
+ "begin_2025_2026": 33195,
+ "of_which_LIE": 556,
+ "begin_since_2015": 185499,
+ "biel_body_keys": [
+  "371"
+ ]
+}

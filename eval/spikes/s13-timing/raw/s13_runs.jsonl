@@ -1,0 +1,6 @@
+{"topic": "wolf", "event": "start", "t": 1791926545.211176, "n": 577, "workers": 3}
+{"topic": "wolf", "event": "end", "t": 1791927002.033344, "wall": 456.822}
+{"topic": "hitze", "event": "start", "t": 1791927002.1969862, "n": 577, "workers": 3}
+{"topic": "hitze", "event": "end", "t": 1791927508.887414, "wall": 506.69}
+{"topic": "ki_schule", "event": "start", "t": 1791927508.980242, "n": 577, "workers": 3}
+{"topic": "ki_schule", "event": "end", "t": 1791928014.6532822, "wall": 505.673}

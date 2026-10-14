@@ -17,7 +17,7 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 - **Schemes are files.** APS, Bern's directorates, Basel-Stadt's own themes and ad-hoc topics run on the same engine from
   YAML files; nothing is trained.
 - **Pre-registration.** Designs and analyses were written down and hashed before each result
-  ([`eval/PREREG-BUILD.md`](../eval/PREREG-BUILD.md), earlier spikes in `ideation2/PREREG*.md`).
+  ([`eval/PREREG-BUILD.md`](../eval/PREREG-BUILD.md), earlier spikes in [`eval/spikes/PREREG.md`](../eval/spikes/PREREG.md) and [`PREREG-ADDENDA.md`](../eval/spikes/PREREG-ADDENDA.md)).
 
 ## 2. Results on human labels
 | Test | n | Querschnitt | Baseline, same items |

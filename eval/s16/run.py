@@ -9,7 +9,7 @@ from querschnitt import prompts as P
 from querschnitt.client import Client, Endpoint
 from querschnitt.engine import Engine
 
-S9 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s9-aps")
+S9 = HERE.parent / "spikes/s9-aps"  # vendored S9 (eval/spikes/)
 BUILD = "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
 load = lambda p: {json.loads(l)["oid"]: json.loads(l) for l in open(p)}
 items = {it["oid"]: it for it in json.load(open(S9 / "data/items.json"))}

@@ -1,7 +1,7 @@
 """S25 step 1: fresh Wayback CDX listings of APS process pages (all URL forms). Network: web.archive.org CDX only, via
 ideation-1 polite.py (RFC 9309 robots, one UA, >=1.2 s/host, fail closed on 429/5xx). Resumable (skips existing files)."""
 import json, os, sys, urllib.parse
-sys.path.insert(0, "/Users/mi11ion/Desktop/hackapertus/bern/ideation/spikes/s2-oracles/scripts")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "spikes", "s2-oracles", "scripts"))  # vendored polite.py
 import polite  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 polite.LOG = f"{HERE}/robots_log.jsonl"

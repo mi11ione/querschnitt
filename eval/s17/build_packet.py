@@ -12,7 +12,7 @@ from querschnitt.engine import Engine  # noqa: E402
 from querschnitt.examples import ExamplePool  # noqa: E402
 from querschnitt.scheme import APS  # noqa: E402
 
-S6 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation/spikes/s6-cantonal")
+S6 = HERE.parent / "spikes/s6-cantonal"  # vendored S6 (eval/spikes/)
 s6_ids = {json.loads(l)["affair_id"] for l in open(S6 / "key.jsonl")}
 lock, rows = read_run(ROOT / "runs/main")
 eng = Engine(None, ExamplePool.load(ROOT / "data/eval/aps_pool.jsonl"))

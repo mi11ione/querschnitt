@@ -1,0 +1,1815 @@
+{
+"n_eligible": 4530,
+"prior": [
+"BVD",
+"GSI",
+"WEU",
+"SID",
+"BKD",
+"STA",
+"FIN",
+"DIJ"
+],
+"items": [
+{
+"uid": "59930fa0753b4cb8997d2f5bd6602872",
+"nr": "2017.FINSV.455",
+"year": "2017",
+"lead": "FIN",
+"type": "Bericht RR",
+"title_de": "Steuerliche Effekte bei Energiesparmassnahmen",
+"title_fr": "Impact fiscal des mesures d’économie d’énergie"
+},
+{
+"uid": "8b1b8cbfc5c04ae1b47cf92305237793",
+"nr": "2016.RRGR.840",
+"year": "2016",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Förderkurse an Berufsfachschulen des Kantons Bern",
+"title_fr": "Cours de soutien dans les écoles professionnelles"
+},
+{
+"uid": "f82e18de21084e5684293edefe169544",
+"nr": "2024.GRPARL.99",
+"year": "2024",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Innerfamiliäre oder häusliche Gewalt: Verbrechensprävention",
+"title_fr": "Violences intrafamiliales ou violences domestiques. Prévention des crimes"
+},
+{
+"uid": "00af1a56b31a4c3896983bc53affc50d",
+"nr": "2025.GRPARL.1530",
+"year": "2025",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Steuerabzüge für Umweltschutz- und Energiesparmassnahmen im heutigen Umfang beibehalten",
+"title_fr": "Maintenir l’ampleur actuelle des déductions fiscales pour les mesures destinées à économiser l’énergie et à ménager l’environnement"
+},
+{
+"uid": "5eaaca8f6fb64fff9732c31188d019aa",
+"nr": "2020.WEU.40",
+"year": "2020",
+"lead": "WEU",
+"type": "Bericht RR",
+"title_de": "Energiestrategie 2006. Bericht zum Stand der Umsetzung und zur Wirkung der Massnahmen 2015 - 2019 sowie neue Massnahmen 2020 - 2023",
+"title_fr": "Stratégie énergétique 2006. Rapport sur la mise en œuvre de la stratégie et sur les effets des mesures 2015-2019 ainsi que sur les nouvelles mesures 2020-2023"
+},
+{
+"uid": "dd3a13e84211471e802110cefb406c03",
+"nr": "2016.RRGR.57",
+"year": "2016",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Delegieren ärztlicher Tätigkeiten an medizinische Praxisassistentinnen (MPA)",
+"title_fr": "Délégation d`actes médicaux aux assistants et assistantes médicales"
+},
+{
+"uid": "4b884fe3f43246afbfbfcfbec77e367d",
+"nr": "2018.RRGR.203",
+"year": "2018",
+"lead": "DIJ",
+"type": "Interpellation",
+"title_de": "IV-Gutachten ohne Ansehen der Person?",
+"title_fr": "Expertises AI en l`absence des personnes concernées ?"
+},
+{
+"uid": "0b367ab3019b4d61b2e31f165f63fb89",
+"nr": "2016.RRGR.281",
+"year": "2016",
+"lead": "WEU",
+"type": "Gesetz",
+"title_de": "Tourismusentwicklungsgesetz (TEG) (Änderung)",
+"title_fr": "Loi sur le développement du tourisme (LDT) (Modification)"
+},
+{
+"uid": "536d4e4382b24672b4f9c14433040bd2",
+"nr": "2021.RRGR.365",
+"year": "2021",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Wie steht es mit der Umsetzung der Motion Guggisberg, RRB-Nr. 1199/2016, «Die Zuteilung der Gemeinden innerhalb der drei Krankenkassenprämienregionen muss angepasst werden»?",
+"title_fr": "Où en est la mise en œuvre de la motion Guggisberg, ACE n° 1199/2016, « Nouvelle répartition des communes dans les régions de primes » ?"
+},
+{
+"uid": "727171e1923d458a956a441fbffd4d36",
+"nr": "2017.RRGR.554",
+"year": "2017",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Spielt die GEF mit falschen Karten?",
+"title_fr": "Quel jeu de dupes la Direction de la santé publique mène-t-elle ?"
+},
+{
+"uid": "2fda50487fe64a8f91d818ea5edbc03d",
+"nr": "2020.RRGR.219",
+"year": "2020",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Saubere Demokratie - kein Transitplatz ohne Wegweisungsartikel",
+"title_fr": "Démocratie impeccable – pas d`aire de transit sans article sur le renvoi"
+},
+{
+"uid": "d3b99844e584486bb598e7d47793f401",
+"nr": "2025.GRPARL.191",
+"year": "2025",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Keine unnötige Bürokratie beim Einzug in ein auswärtiges Alters- und Pflegeheim",
+"title_fr": "Éviter la bureaucratie inutile lors de l’emménagement dans un EMS appartenant à une autre commune"
+},
+{
+"uid": "e3e5efd2af8849a2a25019ba0cc76906",
+"nr": "2018.RRGR.482",
+"year": "2018",
+"lead": "FIN",
+"type": "Übrige Geschäfte",
+"title_de": "Vorläufige Äufnung von CHF 55 Millionen des geplanten Investitionsfonds zulasten der Rechnung 2018",
+"title_fr": "Versement provisoire de 55 millions de francs au Fonds d’investissement prévu, au débit des comptes de 2018"
+},
+{
+"uid": "191d628d708347da84e05bc5c3f5967b",
+"nr": "2024.GRPARL.137",
+"year": "2024",
+"lead": "STA",
+"type": "Anfrage",
+"title_de": "Anfragen der Frühlingssession 2024",
+"title_fr": "Questions de la session de printemps 2024"
+},
+{
+"uid": "37acfe7c56cf4b6a9b497402a202621e",
+"nr": "2026.GRPARL.112",
+"year": "2026",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Gesamtstrategie für den digitalen Datenaustausch im Gesundheitswesen des Kantons Bern und seine Einbettung ins Schweizer Gesundheitswesen",
+"title_fr": "Stratégie globale pour l`échange numérique de données relevant de la santé dans le canton de Berne et son insertion dans le système de santé suisse"
+},
+{
+"uid": "81b757a6b7994b2596abb4c66a49665f",
+"nr": "2024.RRGR.181",
+"year": "2024",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Kostenloser ÖV für Kinder und Jugendliche",
+"title_fr": "Gratuité des transports en commun pour les enfants et les jeunes"
+},
+{
+"uid": "a868bc2db51b4972a68f681590652822",
+"nr": "2015.RRGR.759",
+"year": "2015",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Rahmenkredit 2016 für dringende kantonale Zumieten",
+"title_fr": "Crédit-cadre 2016 pour les locations cantonales urgentes"
+},
+{
+"uid": "c49dc4a30d274825bb2bed1395744d8c",
+"nr": "2025.GRPARL.487",
+"year": "2025",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Bauen statt blockieren: ISOS sachgerecht anwenden",
+"title_fr": "Éviter le blocage de constructions en utilisant l’ISOS à bon escient"
+},
+{
+"uid": "623c17e6614847efb168769913c7f240",
+"nr": "2019.RRGR.117",
+"year": "2019",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Standesinitiative für eine bessere Nutzung von bestehendem Gebäudevolumen ausserhalb der Bauzone",
+"title_fr": "Initiative cantonale pour une meilleure utilisation du volume bâti existant hors de la zone à bâtir"
+},
+{
+"uid": "ac2f03faa67a487392f5fd07189f7616",
+"nr": "2018.JGK.410",
+"year": "2018",
+"lead": "DIJ",
+"type": "Gesetz",
+"title_de": "Baugesetz (BauG) (Änderung)",
+"title_fr": "Loi sur les constructions (LC) (Modification)"
+},
+{
+"uid": "1ffb92d8ba664ccdbc226123a2ef3954",
+"nr": "2025.GSI.226",
+"year": "2025",
+"lead": "GSI",
+"type": "Finanzhaushalt",
+"title_de": "Gesundheitsamt, Produktgruppe \"Gesundheitsversorgung\" (PG 4442009105). Nachkredit 2024",
+"title_fr": "Office de la santé, groupe de produits \"Santé publique\" (GP 4442009105). Crédit supplémentaire 2024"
+},
+{
+"uid": "7254b09788284c6ea6a496f99770c0d2",
+"nr": "2017.RRGR.694",
+"year": "2017",
+"lead": "STA",
+"type": "Postulat",
+"title_de": "Wie sieht die Zukunft der regierungsrätlichen Juradelegation aus?",
+"title_fr": "Quel avenir pour la DAJ ?"
+},
+{
+"uid": "c412cba0b61847a7b16a1bf0c7802cda",
+"nr": "2021.RRGR.100",
+"year": "2021",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Kollateralschäden als Folge der Covid-Massnahmen im ersten Trimester 2021",
+"title_fr": "Dégâts collatéraux causés par les mesures COVID au premier trimestre 2021"
+},
+{
+"uid": "021f564eda6749749f94e760902674f7",
+"nr": "2025.GRPARL.21",
+"year": "2025",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Verschärfung der Hundegesetzgebung zwecks Erhöhung des Schutzes vor Angriffen von Hunden mit einem erhöhten Gefährdungspotential",
+"title_fr": "Durcissement de la législation sur les chiens afin de renforcer la prévention des attaques de chiens potentiellement dangereux"
+},
+{
+"uid": "bbb953c4b20042e6abc05d778f822f04",
+"nr": "2018.RRGR.371",
+"year": "2018",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Finanzielle Hebelwirkung der Finanzhilfen des Bundes für die familienergänzende Kinderbetreuung im Kanton Bern nutzen, um den Standortvorteil des Kantons Bern auszubauen",
+"title_fr": "Effet de levier des aides financières de la Confédération à l`accueil extrafamilial : le canton de Berne doit en profiter pour consolider son avantage de site"
+},
+{
+"uid": "c30cda18afbf48fa9a52a9a585cadced",
+"nr": "2021.RRGR.400",
+"year": "2021",
+"lead": "BVD",
+"type": "Interpellation",
+"title_de": "Baugrube Campus Biel: Belebung statt Leerstand!",
+"title_fr": "Dynamiser l`excavation du campus Biel/Bienne au lieu de la laisser en friche !"
+},
+{
+"uid": "548c7aa952eb4e75b2e88e7f99fa85c9",
+"nr": "2025.GRPARL.347",
+"year": "2025",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Förderung der Winterstromproduktion mit PV",
+"title_fr": "Promotion de la production d`électricité photovoltaïque en hiver"
+},
+{
+"uid": "da61c02ed68e480399b4701ff306ee40",
+"nr": "2015.RRGR.319",
+"year": "2015",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Ausserordentliche Neubewertung von Grundstücken: Die Praxis des Verwaltungsgerichts ist zu beachten",
+"title_fr": "Evaluation des immeubles: respecter la jurisprudence du Tribunal administratif"
+},
+{
+"uid": "fd7808e13407495bbe64af3cae9d548d",
+"nr": "2021.FINGS.267",
+"year": "2021",
+"lead": "FIN",
+"type": "Voranschlag / Aufgaben-/Finanzplan",
+"title_de": "Budget 2023 und Aufgaben-/Finanzplan 2024–2026 des Kantons Bern",
+"title_fr": "Budget 2023 et plan intégré mission-financement 2024 à 2026 du canton de Berne"
+},
+{
+"uid": "61ea132d60764424a943f84b3f9921c9",
+"nr": "2021.WEU.1334",
+"year": "2021",
+"lead": "WEU",
+"type": "Kreditgeschäft GR",
+"title_de": "Amt für Landwirtschaft und Natur; Finanzierung der Berner Bio-Offensive 2025",
+"title_fr": "Office de l’agriculture et de la nature ; financement de l’offensive bernoise bio 2025"
+},
+{
+"uid": "a6292cdcf9f9430ea8f1cd2c67c487bf",
+"nr": "2018.RRGR.179",
+"year": "2018",
+"lead": "STA",
+"type": "Motion",
+"title_de": "Mehr sprachübergreifende Sendungen im öffentlich-rechtlichen Rundfunk",
+"title_fr": "Plus de programmes bilingues à la télévision publique"
+},
+{
+"uid": "7f22acd2ca7444778484764dc2bd1dd3",
+"nr": "2018.RRGR.580",
+"year": "2018",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Heute für die Zukunft bauen: Parkplatzpflicht um reservierte Car-Sharing-Plätze erweitern",
+"title_fr": "Construire aujourd`hui en pensant à demain : places réservées au partage de véhicules"
+},
+{
+"uid": "55aef543b3c544008d0f259662536aa4",
+"nr": "2025.GRPARL.123",
+"year": "2025",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Zeitplan und Vorgehen zur Evaluation, Aktualisierung und Weiterentwicklung der Kantonalen Altersstrategie aufgrund diverser Entwicklungen und Trends (Demografie, Altersarmut usw.) jetzt festlegen",
+"title_fr": "Définir sans tarder le calendrier et la marche à suivre de l’évaluation, de la mise à jour et du développement de la stratégie cantonale du 3e âge sur la base des évolutions et tendances (démographie, pauvreté, etc.)"
+},
+{
+"uid": "e73a17701869454aa18c02dfabb066eb",
+"nr": "2017.RRGR.187",
+"year": "2017",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Berücksichtigung öffentlicher Interessen beim Verkauf kantonaler Immobilien",
+"title_fr": "Prise en compte des intérêts publics lors de la vente d`immeubles cantonaux"
+},
+{
+"uid": "03a01fa5954f4ec48c3cb8dc7bf3fb48",
+"nr": "2023.SIDKAPO.2530",
+"year": "2023",
+"lead": "SID",
+"type": "Kreditgeschäft GR",
+"title_de": "Kantonspolizei Bern: Ausgabenbewilligung für die Transformation der Fachapplikation Rialto auf SAP Standard S/4 HANA",
+"title_fr": "Police cantonale bernoise (POCA) : autorisation de dépenses pour l’adaptation de l’application spécialisée Rialto au standard SAP S/4 HANA"
+},
+{
+"uid": "85a5ead874a2428da7e54a7feffe8ca6",
+"nr": "2016.RRGR.410",
+"year": "2016",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Erstellen von praxistauglichen Lehrmitteln",
+"title_fr": "Edition des manuels scolaires"
+},
+{
+"uid": "1d027f90944742d8b7738238c6552d17",
+"nr": "2021.RRGR.355",
+"year": "2021",
+"lead": "STA",
+"type": "Interpellation",
+"title_de": "Der Kanton Bern braucht eine saubere Interessensabwägung im Hinblick auf die Weiterentwicklung des Verhältnisses zwischen der Schweiz und der EU",
+"title_fr": "Le canton de Berne nécessite une vraie pesée des intérêts au vu du développement des relations entre la Suisse et l’UE"
+},
+{
+"uid": "bacd1afcb0df4ab6bbb6028dceaf0a86",
+"nr": "2022.RRGR.40",
+"year": "2022",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Bereitstellung einer angemessenen Finanzierung für staatlich unabhängige Gewaltberatungsstellen",
+"title_fr": "Mise à disposition d’un financement approprié pour les services d’aide aux victimes de violence indépendants de l’État"
+},
+{
+"uid": "cb24b4aec7104e5c95d7bcc339ef2277",
+"nr": "2018.RRGR.201",
+"year": "2018",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Medikamententests in der Psychiatrie: Eine Aufarbeitung ist nötig!",
+"title_fr": "Faire la lumière sur les essais cliniques en psychiatrie"
+},
+{
+"uid": "0059842d9e9f4f17a892ae893d9c0194",
+"nr": "2016.RRGR.366",
+"year": "2016",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Zum Schutz von Leib und Leben von Einsatzkräften und zur Wiederherstellung der Rechtsordnung",
+"title_fr": "Protégeons les forces d`intervention et rétablissons l`ordre juridique"
+},
+{
+"uid": "347d8a9c814d48cd8b890b3ec84ed001",
+"nr": "2025.GRPARL.365",
+"year": "2025",
+"lead": "FIN",
+"type": "Interpellation",
+"title_de": "Einschätzung Entwicklungen Steuerpolitik",
+"title_fr": "Évaluation des développements de la politique fiscale"
+},
+{
+"uid": "a644f78a57de419a95cfc95fd017a7c2",
+"nr": "2022.RRGR.188",
+"year": "2022",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "IT-Infrastruktur und Internet/Informationsangebot zum Grossen Rat und seinen Organen",
+"title_fr": "Infrastructure informatique et Internet : offre d’information au Grand Conseil et à ses organes"
+},
+{
+"uid": "316a4abcad144735a32faa94874ec6d5",
+"nr": "2025.GRPARL.1157",
+"year": "2025",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Rechtliche Grundlagen für die Einführung einer Objektsteuer auf Zweitliegenschaften schaffen",
+"title_fr": "Créer les bases légales pour l’introduction d’un impôt réel sur les résidences secondaires"
+},
+{
+"uid": "b851621b7cb14031b916fd5884f6fcf0",
+"nr": "2024.RRGR.140",
+"year": "2024",
+"lead": "STA",
+"type": "Motion",
+"title_de": "Protokollierung im Regierungsrat",
+"title_fr": "Rédaction des procès-verbaux du Conseil-exécutif"
+},
+{
+"uid": "f732e78631064196948330487b54d0b5",
+"nr": "2024.RRGR.232",
+"year": "2024",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Verfahren für Bestellung und Nachtragsmanagement im gesamten Hoch- und Tiefbaubereich optimieren",
+"title_fr": "Optimiser la procédure de commande et la gestion des avenants dans tout le domaine de la construction et du génie civil"
+},
+{
+"uid": "9e55ab9a9c524ac29096fd22a474a822",
+"nr": "2016.RRGR.623",
+"year": "2016",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "ÖV-Kapazitätsproblem im Raum Bern-Süd-Köniz mittelfristig lösen",
+"title_fr": "Région Berne - Köniz-sud: résoudre les problèmes de capacité des transports publics"
+},
+{
+"uid": "0be2ba301b994568bb8cfc0788fa7088",
+"nr": "2023.RRGR.323",
+"year": "2023",
+"lead": "BVD",
+"type": "Interpellation",
+"title_de": "Stillgelegte Skilifte und Seilbahnen – Wer plant deren Rückbau, wer führt den Rückbau durch und wer bezahlt am Schluss die Rechnung?",
+"title_fr": "Téléskis et téléphériques à l’arrêt : qui planifie leur démantèlement, qui le réalise et qui paie la facture ?"
+},
+{
+"uid": "74c054d33dee408785485cc3a2453a28",
+"nr": "2015.RRGR.565",
+"year": "2015",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Längerfristig nur noch Schweizer Holz in kantonalen Bauten verwenden",
+"title_fr": "Rien que du bois suisse dans les bâtiments cantonaux"
+},
+{
+"uid": "5df6280e6d8f47c799994b88e1772693",
+"nr": "2024.RRGR.69",
+"year": "2024",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Eine stabile finanzielle Basis für das Haus der Religionen – Dialog der Kulturen in Bern",
+"title_fr": "Une base financière stable pour la Maison des religions – dialogue entre les cultures à Berne"
+},
+{
+"uid": "e92d98f7337a4489801b90e1bcbd9e00",
+"nr": "2017.RRGR.360",
+"year": "2017",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Stellung der Pflege und der medizinisch-technischen und medizinisch-therapeutischen Bereiche (MTT) in der Insel-Gruppe angesichts der aktuellen Herausforderungen",
+"title_fr": "Position des soins et des domaines médico-techniques et médico-thérapeutiques à l`Hôpital de l`Ile au regard des défis actuels"
+},
+{
+"uid": "ac19207922834f2db796aa9c5045670d",
+"nr": "2025.GSI.1428",
+"year": "2025",
+"lead": "GSI",
+"type": "Bericht RR",
+"title_de": "Gemeinwirtschaftliche Leistungen des Kantons Bern im direkten Vergleich mit den Universitätskantonen Zürich und Basel-Stadt. Bericht zur Umsetzung der Motion 039-2024 Jordi",
+"title_fr": "Prestations d’intérêt général dans le canton de Berne : comparaison avec les cantons universitaires de Zurich et de Bâle-Ville. Rapport sur la mise en œuvre de la motion 039-2024 Jordi"
+},
+{
+"uid": "55bfb011b64e4122bc2b429ca2743ae4",
+"nr": "2023.RRGR.206",
+"year": "2023",
+"lead": "STA",
+"type": "Interpellation",
+"title_de": "Verzicht auf staatlichen Versand von Wahlwerbung",
+"title_fr": "Abandon de l’envoi du matériel de propagande électorale par le canton"
+},
+{
+"uid": "accdc8f1971c45bd9dfaabb5b877860e",
+"nr": "2022.RRGR.52",
+"year": "2022",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Verbesserungen für die Pflege sind dringend – Teil 1",
+"title_fr": "Améliorations urgentes dans les soins – partie 1"
+},
+{
+"uid": "4abc9e2552374f899377a68ac7d35d82",
+"nr": "2023.STA.915",
+"year": "2023",
+"lead": "STA",
+"type": "Ernennung / Wahl",
+"title_de": "Grosser Rat. Rücktritt und Ersatz. Nachrücken von Frau Monika Stampfli als Ersatz von Frau Monika Schmidiger",
+"title_fr": "Grand Conseil. Démission et remplacement. Remplacement de Madame Monika Schmidiger par Madame Monika Stampfli"
+},
+{
+"uid": "e72c25398c3f49d39e47693f2d0835f4",
+"nr": "2020.DIJ.172",
+"year": "2020",
+"lead": "DIJ",
+"type": "Kreditgeschäft GR",
+"title_de": "Amt für Dienstleistungen und Ressourcen (ADR): Ausgabenbewilligung für die ICT-Ausgaben der Direktion für Inneres und Justiz (DIJ) 2021-2023. Rahmenkredit",
+"title_fr": "Office des services et des ressources (OSR) : autorisation de dépenses pour les services TIC de la Direction de l’intérieur et de la justice (DIJ) pour les années 2021 à 2023. Crédit-cadre"
+},
+{
+"uid": "92399c2f2c1646749acf8953a2fec030",
+"nr": "2021.RRGR.41",
+"year": "2021",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Aufklärung von unhaltbaren Zuständen in Asylunterbringungen",
+"title_fr": "Faire la lumière sur les conditions intolérables dans les centres d`hébergement pour requérants et requérantes d`asile"
+},
+{
+"uid": "de29a125f63d4ef7943639dfca7d2a85",
+"nr": "2019.RRGR.198",
+"year": "2019",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Fordern und fördern – Ein Reformplan für die Sozialhilfe im Rahmen von SKOS",
+"title_fr": "Exiger et encourager – Plan de réforme pour l`aide sociale dans le cadre de la CSIAS"
+},
+{
+"uid": "a0e559f4f6b64669b1209c279c64bcd7",
+"nr": "2020.RRGR.146",
+"year": "2020",
+"lead": "STA",
+"type": "Motion",
+"title_de": "Die Wiederholung der Gemeindeabstimmung von Moutier muss in den ersten 89 Tagen des entsprechenden Abstimmungsjahrs stattfinden",
+"title_fr": "La répétition du vote communaliste de Moutier doit avoir lieu dans les 89 premiers jours de l’année durant laquelle elle se tiendra"
+},
+{
+"uid": "57bb217d5e6445d18aab68c262c6ee31",
+"nr": "2016.RRGR.248",
+"year": "2016",
+"lead": "STA",
+"type": "Ernennung / Wahl",
+"title_de": "Grosser Rat. Rücktritt und Ersatz. Nachrücken von Herrn Daniel Schwaar als Ersatz von Frau Vreni Kipfer-Guggisberg",
+"title_fr": "Grand Conseil. Démission de Madame Vreni Kipfer-Guggisberg et remplacement par Monsieur Daniel Schwaar"
+},
+{
+"uid": "56266b8bd25f4ecf9aeef697cd8dc59f",
+"nr": "2020.RRGR.104",
+"year": "2020",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Aufhebung des Aufnahmestopps beim Campingplatz Fanel",
+"title_fr": "Abroger l`interdiction d`accueillir de nouveaux locataires au camping de Champion"
+},
+{
+"uid": "f238f1238b9f4343825f116a3de0cfe8",
+"nr": "2020.RRGR.71",
+"year": "2020",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Sicherheit in Berner Reitschule",
+"title_fr": "Sécurité à la Reitschule de Berne"
+},
+{
+"uid": "ecec2bd6d4474d66899eeac42494ccb0",
+"nr": "2023.RRGR.261",
+"year": "2023",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Grosse Solaranlagen ermöglichen!",
+"title_fr": "Rendre possibles les grandes installations solaires"
+},
+{
+"uid": "5c1033aef9634da791fda682456c82e5",
+"nr": "2024.GSI.2797",
+"year": "2024",
+"lead": "GSI",
+"type": "Kreditgeschäft GR",
+"title_de": "Programm „ärztliche Weiterbildung in Hausarztpraxen (Praxisassistenz)“, BIHAM, Verpflichtungskredit 2027 - 2031",
+"title_fr": "Programme « Formation postgrade au cabinet médical de premier recours (assistanat au cabinet médical) », BIHAM, crédit d’engagement pour les années 2027 à 2031"
+},
+{
+"uid": "bc478aebcf844680a09414f67773777f",
+"nr": "2021.DIJ.7611",
+"year": "2021",
+"lead": "DIJ",
+"type": "Kreditgeschäft GR",
+"title_de": "DIJ; Regierungsstatthalterämter; Produktgruppe Regierungsstatthalterämter (PG 05.13.9101); Überschreitung Saldo I (Globalbudget)",
+"title_fr": "DIJ ; préfectures ; groupe de produits « préfectures » (GP 05.13.9101) ; dépassement du solde I (budget global)"
+},
+{
+"uid": "4f265b32c6724161a2cf7cb94f282c2c",
+"nr": "2019.VOL.69",
+"year": "2019",
+"lead": "WEU",
+"type": "Kreditgeschäft GR",
+"title_de": "Amt für Landwirtschaft und Natur; Kantonsbeitrag an die Gesamtmelioration Bleienbach - Thörigen - Bettenhausen in den Gemeinden Bleienbach, Thörigen und Bettenhausen (Kantons-Nr. 42145). Ausgabenbewilligung; Rahmenkredit; Verpflichtungskredit 2020 bis 2035",
+"title_fr": "Office de l’agriculture et de la nature ; subvention cantonale en faveur de l’amélioration intégrale Bleienbach – Thörigen – Bettenhausen dans les communes de Bleienbach, Thörigen et Bettenhausen (n° de canton 42145). Autorisation de dépenses ; crédit-cadre ; crédit d’engagement 2020 à 2035"
+},
+{
+"uid": "9bd8cb39fbd943fa8c67dacf7a2e87a4",
+"nr": "2021.RRGR.234",
+"year": "2021",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Radweg Vechigen–Krauchthal: letzte Meile",
+"title_fr": "Dernier tronçon de la piste cyclable entre Vechigen et Krauchthal"
+},
+{
+"uid": "de898227fbea4a76bcd43c12ac0360c7",
+"nr": "2017.RRGR.531",
+"year": "2017",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Haushälterischer Umgang mit dem Flächenbedarf der kantonalen Verwaltung und schonender Umgang mit kantonalen Ressourcen",
+"title_fr": "Gestion économe des surfaces nécessaires à l`administration cantonale et préservation des ressources cantonales"
+},
+{
+"uid": "6218c880861b48f9a84c2620dc56349e",
+"nr": "2021.RRGR.99",
+"year": "2021",
+"lead": "STA",
+"type": "Motion",
+"title_de": "Förderung der Meinungsbildung zur kantonalen Politik in den Medien",
+"title_fr": "Encouragement de la formation de l`opinion sur la politique cantonale dans les médias"
+},
+{
+"uid": "684133ca2a67436abc1ecd6c0ad4f634",
+"nr": "2022.RRGR.112",
+"year": "2022",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Schreitet die Akademisierung an der BFH ungebremst fort?",
+"title_fr": "L’académisation de la BFH se poursuit-elle sans retenue ?"
+},
+{
+"uid": "156e399ad22e4a999b6e01a8aec8b1d4",
+"nr": "2024.RRGR.25",
+"year": "2024",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Verbesserung der Unterstützung für Gemeinden beim Gewässerunterhalt, einschliesslich der Entfernung von Seegras",
+"title_fr": "Améliorer le soutien aux communes en matière d`entretien des surfaces d`eau, y compris pour l`extraction des herbes aquatiques"
+},
+{
+"uid": "e0f9c552814d40f592c7dcd8cd5d1cb5",
+"nr": "2015.RRGR.613",
+"year": "2015",
+"lead": "DIJ",
+"type": "Kreditgeschäft GR",
+"title_de": "Pärke von nationaler Bedeutung und UNESCO Weltnaturerbe Schweizer Alpen Jungfrau-Aletsch; Rahmenkredit 2016-2019",
+"title_fr": "Parcs d’importance nationale et site «Alpes suisses Jungfrau-Aletsch» inscrit au patrimoine mondial naturel de l’UNESCO; crédit-cadre 2016 à 2019"
+},
+{
+"uid": "11bbddb24d5f4fc9a1a3b9466bd29b45",
+"nr": "2025.STA.440",
+"year": "2025",
+"lead": "STA",
+"type": "Bericht RR",
+"title_de": "Umsetzung der strategischen Ziele und der Vision 2030 (Richtlinien der Regierungspolitik 2023–2026). Berichterstattung 2024",
+"title_fr": "Mise en œuvre des objectifs stratégiques et de la vision 2030 (Programme gouvernemental de législature 2023 à 2026). Rapport 2024"
+},
+{
+"uid": "7fc00bb8f2824561b03381082ba7eef6",
+"nr": "2026.GRPARL.109",
+"year": "2026",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Studiengebühren an Berner Hochschulen: aktuelle Situation, Herausforderungen und Perspektiven",
+"title_fr": "Taxes d’études aux écoles hautes bernoises : situation actuelle, défis et perspectives"
+},
+{
+"uid": "a7aea66464104e568a3ffd81d9e26b35",
+"nr": "2025.GRPARL.298",
+"year": "2025",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Transparenz und Sorgfalt im Reformprozess des BIAS-Systems: Stand der Evaluation und weiterer Fahrplan",
+"title_fr": "Transparence et circonspection dans le processus de réforme du système des POIAS : avancement de l’évaluation et calendrier des prochaines étapes"
+},
+{
+"uid": "921a6cb9590242428cd8751b0e9a4d59",
+"nr": "2015.RRGR.82",
+"year": "2015",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Beziehung Kind-Lehrkraft stärken, zum Vorteil der Kinder und der Lehrkräfte",
+"title_fr": "Renforcer la relation entre l`élève et l`enseignant ou l`enseignante"
+},
+{
+"uid": "0b283f7fb2fc46508ac3c04e4f7f25af",
+"nr": "2021.RRGR.182",
+"year": "2021",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Verbesserung der ÖV-Erschliessung in Agglomerationsräumen und im ländlichen Raum",
+"title_fr": "Amélioration de la desserte en transports publics dans les agglomérations et les zones rurales"
+},
+{
+"uid": "6837606116f544099b9b77dcaece3241",
+"nr": "2023.RRGR.168",
+"year": "2023",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Inforama: effizient, nachhaltig und dezentral",
+"title_fr": "Inforama : efficience, durabilité et décentralisation"
+},
+{
+"uid": "b4516062b3a94246b1f27cbe4b5b261d",
+"nr": "2022.RRGR.300",
+"year": "2022",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Die Rolle des MBA während des Konflikts mit der Direktorin des BBZ-Biel",
+"title_fr": "Faire la lumière sur le rôle de l’OMP lors du conflit avec la directrice du CFP"
+},
+{
+"uid": "41693d3b2da54f73a14b259bd1b996d6",
+"nr": "2017.RRGR.493",
+"year": "2017",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Polizeizentrum Bern (PZB), Köniz Juch. Verpflichtungskredit für die Projektierungsarbeiten inkl. TU-Ausschreibung",
+"title_fr": "Centre de police de Berne, Köniz Juch. Crédit d’engagement pour l’étude de projet, appel d’offres aux entreprises totales compris"
+},
+{
+"uid": "c8797ee78851479eaac71a369fea8b4d",
+"nr": "2020.RRGR.191",
+"year": "2020",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Nachbesserung der Verordnung über Massnahmen zur Bewältigung der Coronavirus-Krise im Gesundheitswesen (CKGV) für Spitex-Organisationen",
+"title_fr": "Modification de l`ordonnance sur les mesures destinées à maîtriser la crise du coronavirus dans le secteur sanitaire (OCCVS) en faveur des services d`aide et de soins à domicile"
+},
+{
+"uid": "de0d3718f9b148c1bda3a22cfa08dde4",
+"nr": "2024.RRGR.221",
+"year": "2024",
+"lead": "WEU",
+"type": "Interpellation",
+"title_de": "Elektronische Einwegzigaretten: eine Katastrophe für Jugend und Umwelt",
+"title_fr": "Les puffs : un fléau pour la jeunesse et l’environnement"
+},
+{
+"uid": "651dde1175a84c80af57a86a52efa2e9",
+"nr": "2024.BKD.5759",
+"year": "2024",
+"lead": "BKD",
+"type": "Finanzhaushalt",
+"title_de": "Amt für Kindergarten, Volksschule und Beratung (AKVB), Volksschule und schulergänzende Angebote (PG 4481000001). Nachkredit 2024",
+"title_fr": "Office de l’école obligatoire et du conseil (OECO), École obligatoire (GP 4481010001). Crédit supplémentaire 2024"
+},
+{
+"uid": "da4ca80b1b5242a986c4332c4fff0ba2",
+"nr": "2022.RRGR.67",
+"year": "2022",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Leitfaden für die Einhaltung der Menschenrechte und der UNO-Kinderrechtskonvention für Menschen in der Nothilfe",
+"title_fr": "Guide pour le respect des droits humains et de la Convention des Nations Unies relative aux droits de l`enfant dans les centres d`aide d`urgence"
+},
+{
+"uid": "49cf3fd271374c9bb2783860355b60b4",
+"nr": "2016.RRGR.599",
+"year": "2016",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Kantonsstrasse Nr. 244 Niederbipp – Aarwangen – Langenthal – Huttwil. Gemeinden: Aarwangen, Bannwil, Langenthal, Schwarzhäusern, Thunstetten. 01007 / Verkehrssanierung Aarwangen – Langenthal Nord. Verpflichtungskredit für die Projektierung",
+"title_fr": "Route cantonale n° 244 Niederbipp – Aarwangen – Langenthal – Huttwil. Communes de Aarwangen, Bannwil, Langenthal, Schwarzhäusern, Thunstetten. 01007 / réaménagement du réseau routier d’Aarwangen – Langenthal Nord. Crédit d’engagement pour l’étude de projet"
+},
+{
+"uid": "4e2c123897664cc685c5ac0de8f1bac2",
+"nr": "2023.RRGR.362",
+"year": "2023",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Für eine nachhaltige Finanzpolitik: Gewinnausschüttungen der Nationalbank immer für Schuldenabbau verwenden!",
+"title_fr": "Affecter systématiquement les bénéfices de la Banque nationale à la réduction de la dette"
+},
+{
+"uid": "41541e48d07d49218abfa6c490cb0e09",
+"nr": "2020.RRGR.233",
+"year": "2020",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Abschaffung der Gebühren für Abschlussprüfungen an Mittelschulen",
+"title_fr": "Suppression des émoluments pour les examens finaux des écoles moyennes"
+},
+{
+"uid": "7f85cb0f62104af9af5f39b21a24f8d3",
+"nr": "2024.GRPARL.16",
+"year": "2024",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Leistung soll sich lohnen – «GRATIS-KITA» für Menschen mit hohen Arbeitspensen",
+"title_fr": "Récompenser l’assiduité : des places de crèche gratuites pour les personnes travaillant à un taux élevé"
+},
+{
+"uid": "af1ff045f11c45c1a396cdbf6389ef9c",
+"nr": "2019.RRGR.348",
+"year": "2019",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Kantonale Bauten – Wunschkonzert der Nutzer?",
+"title_fr": "Bâtiments cantonaux à la carte ?"
+},
+{
+"uid": "7a1e952db42c425192f786dfe17f091b",
+"nr": "2022.WEU.4642",
+"year": "2022",
+"lead": "WEU",
+"type": "Bericht RR",
+"title_de": "Biodiversität und Versiegelung im Siedlungsraum",
+"title_fr": "Biodiversité et imperméabilisation des sols en milieu bâti"
+},
+{
+"uid": "226fe733ba0f4aa5ad03ec2840e9fcb4",
+"nr": "2015.RRGR.248",
+"year": "2015",
+"lead": "BVD",
+"type": "Interpellation",
+"title_de": "Stilllegung Mühleberg: Kantonsrelevante Fragen",
+"title_fr": "Déconstruction de la centrale de Mühleberg: coût pour le canton"
+},
+{
+"uid": "75eaf5a068bd4634845510d234b26efe",
+"nr": "2025.GRPARL.310",
+"year": "2025",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Für eine gute Koordination bei der Platzierung von Menschen mit Behinderungen",
+"title_fr": "Pour une bonne coordination des placements pour les personnes en situation de handicap"
+},
+{
+"uid": "91db9d9963804406ae8bdcdec74382ee",
+"nr": "2023.FINGS.255",
+"year": "2023",
+"lead": "FIN",
+"type": "Bericht RR",
+"title_de": "Gesamtstaatliche Priorisierung des Investitionsbedarfs",
+"title_fr": "Priorisation des besoins d’investissement cantonaux"
+},
+{
+"uid": "2bcf538a97994f55abb7d07bf67414f5",
+"nr": "2020.RRGR.288",
+"year": "2020",
+"lead": "BVD",
+"type": "Interpellation",
+"title_de": "Kosten für die Beendigung des Campings Fanel erläutern",
+"title_fr": "Combien coûtera la fermeture du camping de Champion ?"
+},
+{
+"uid": "be5e0cf650ea44d9a04ca88285d192f6",
+"nr": "2019.RRGR.247",
+"year": "2019",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Sanierung und Erweiterung des Bildungszentrums Langenthal jetzt realisieren!",
+"title_fr": "Rénovation et agrandissement du centre de formation de Langenthal : maintenant !"
+},
+{
+"uid": "3423408bd483456792abf8269166fef1",
+"nr": "2025.GRPARL.515",
+"year": "2025",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Gleichbehandlung von Kulturinstitutionen",
+"title_fr": "Égalité de traitement des institutions culturelles"
+},
+{
+"uid": "5a03ccaabd114142b9063e11b0414f9a",
+"nr": "2021.RRGR.110",
+"year": "2021",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Kanton soll Wohn- und Pflegeheime unterstützen, die wegen COVID-19-bedingten Bettenunterbelegungen und Mehrkosten gefährdet sind",
+"title_fr": "La sous-occupation des lits et les coûts supplémentaires liés à la COVID-19 mettent en péril les établissements médico-sociaux. Le canton doit les soutenir !"
+},
+{
+"uid": "10546aad749249b394f00c3ea4c61b9b",
+"nr": "2022.STA.530",
+"year": "2022",
+"lead": "STA",
+"type": "Gesetz",
+"title_de": "Gesetz über die politischen Rechte (PRG) (Änderung) (Transparenz bei der Finanzierung von Wahl- und Abstimmungskampagnen)",
+"title_fr": "Loi sur les droits politiques (LDP) (Modification) (Transparence du financement des campagnes de votation et des campagnes électorales)"
+},
+{
+"uid": "19931f93a97e475ba97169ed8f74bc0f",
+"nr": "2015.RRGR.309",
+"year": "2015",
+"lead": "SID",
+"type": "Postulat",
+"title_de": "Unterstützung kleiner Skiliftanlagen",
+"title_fr": "Soutien aux petites installations de remontées mécaniques"
+},
+{
+"uid": "803cc19c0dd1408186cfd5ba3ecf5ffc",
+"nr": "2015.RRGR.84",
+"year": "2015",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Lehrerweiterbildung in unterrichtsfreie Zeit legen – unnötige Betreuungsprobleme berufstätiger Eltern vermeiden",
+"title_fr": "Formation continue des enseignants et enseignantes: pas pendant les heures de classe"
+},
+{
+"uid": "cc92b98f9ed14520bd5a9aafc88f7217",
+"nr": "2017.RRGR.680",
+"year": "2017",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Nennung der ehemaligen Nationalität in den Meldungen von Polizei- und Justizbehörden, sofern die Täterin oder der Täter weniger als 5 Jahre eingebürgert ist",
+"title_fr": "Indication de l`ancienne nationalité dans les avis de la police et des autorités judiciaires si l`auteur-e d`un délit a été naturalisé-e il y a moins de 5 ans"
+},
+{
+"uid": "92aa49157473464597ded8d6f8dfea21",
+"nr": "2025.GRPARL.345",
+"year": "2025",
+"lead": "WEU",
+"type": "Postulat",
+"title_de": "Prüfung einer CO₂-Schuldenbremse im Kanton Bern",
+"title_fr": "Mise à l`examen d`un frein à l`endettement carbone dans le canton de Berne"
+},
+{
+"uid": "9c8c14bfcb0b40e0a0d46c8a160b4e46",
+"nr": "2022.SIDGS.244",
+"year": "2022",
+"lead": "SID",
+"type": "Kreditgeschäft GR",
+"title_de": "Lotteriefondsbeitrag an das Papiliorama, Kerzers",
+"title_fr": "Subvention du Fonds de loterie en faveur du Papiliorama, à Chiètres"
+},
+{
+"uid": "aa80bfbaa87248248f78792afe8647a4",
+"nr": "2018.RRGR.503",
+"year": "2018",
+"lead": "BKD",
+"type": "Bericht Dritte",
+"title_de": "HE-Arc; Jahresbericht 2017; Jahresrechnung 2017; Budget 2019 und Jahresbericht 2017 der Interparlamentarischen Aufsichtskommission über die HE-Arc",
+"title_fr": "HE-Arc ; Rapport d’activité 2017 ; comptes 2017 ; budget 2019 et rapport d’activités 2017 de la Commission interparlementaire de contrôle HE-Arc"
+},
+{
+"uid": "969abdfd0bb1456c956ad3d981473789",
+"nr": "2021.RRGR.80",
+"year": "2021",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Kindgerechte Betreuung und Abgeltung für Babys und Kleinkinder in Kitas und bei Tageseltern",
+"title_fr": "Prise en charge extrafamiliale des tout-petits avec un coefficient d’encadrement et une rémunération adaptés"
+},
+{
+"uid": "01fe0f863e5a4c4eb9af06badee2c478",
+"nr": "2025.GRPARL.472",
+"year": "2025",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Übergangslösung des zweisprachigen Schulangebots im Raum Bern sicherstellen",
+"title_fr": "Garantir une solution transitoire pour l`offre scolaire bilingue dans la région de Berne"
+},
+{
+"uid": "ea255b5c84f748e8bb59d36343b03f88",
+"nr": "2024.RRGR.111",
+"year": "2024",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Kantonale Bitcoin-Strategie II: Löhne und Sitzungsgelder freiwillig in Bitcoin beziehen",
+"title_fr": "Stratégie bitcoin du canton II : toucher volontairement les salaires et jetons de présence en bitcoins"
+},
+{
+"uid": "6e133574d24e4b868adafccad6c24674",
+"nr": "2022.RRGR.35",
+"year": "2022",
+"lead": "BVD",
+"type": "Postulat",
+"title_de": "Ausbau der BLS-Werkstätte in Oberburg",
+"title_fr": "Agrandissement des ateliers BLS à Oberburg"
+},
+{
+"uid": "a3ca81d85ba1463d89cbf9746fa16b87",
+"nr": "2026.GRPARL.497",
+"year": "2026",
+"lead": "WEU",
+"type": "Interpellation",
+"title_de": "Waldökosystem als Rückzugsraum für die Artenvielfalt bewahren und Zukunft vorbereiten",
+"title_fr": "Préserver l’écosystème forestier, refuge de biodiversité, et préparer l’avenir"
+},
+{
+"uid": "1996614561b747b6852d8a5308f15684",
+"nr": "2018.POM.759",
+"year": "2018",
+"lead": "SID",
+"type": "Bericht RR",
+"title_de": "Verselbständigung des Strassenverkehrs- und Schifffahrtsamts (SVSA)",
+"title_fr": "Autonomisation de l`Office de la circulation routière et de la navigation (OCRN)"
+},
+{
+"uid": "8f48742be1b84e53bcb50017f32f4ee8",
+"nr": "2025.GRPARL.108",
+"year": "2025",
+"lead": "BVD",
+"type": "Postulat",
+"title_de": "Höhere Kosten von Bauprojekten durch nachträgliche Priorisierung",
+"title_fr": "Hausse des coûts due à la priorisation des projets de construction a posteriori"
+},
+{
+"uid": "f74eb94354b84f0e9c748b7c3c78b967",
+"nr": "2022.BVD.7269",
+"year": "2022",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Park-and-Ride-Anlage bei Haltestelle Matten bei Interlaken; Kantonsbeitrag an die Berner Oberland Bahnen",
+"title_fr": "Installation park-and-ride près de la gare de Matten bei Interlaken ; subvention cantonale aux chemins de fer de l’Oberland bernois"
+},
+{
+"uid": "d558be8a5be7423e8b0f54d17de589a3",
+"nr": "2018.RRGR.363",
+"year": "2018",
+"lead": "DIJ",
+"type": "Interpellation",
+"title_de": "Tiefere Krankenkassenprämien für Kinder, junge Erwachsene und Familien ab 2019: Auswirkungen der KVG-Revision im Kanton Bern?",
+"title_fr": "Quelles seront les répercussions de la révision de la LAMal dans le canton de Berne?"
+},
+{
+"uid": "8452eaf3381542919ff01eaa9683d4f2",
+"nr": "2024.RRGR.191",
+"year": "2024",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Gemeindeautonomie für Fussgängerstreifen in Tempo 30 ermöglichen",
+"title_fr": "Permettre aux communes d’aménager des passages cloutés dans les zones 30"
+},
+{
+"uid": "d532791d98874646987d85b857f1db99",
+"nr": "2026.GRPARL.85",
+"year": "2026",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Wie steht es mit der Aufsichtskompetenz des MBA?",
+"title_fr": "Qu’en est-il de la compétence de surveillance de l’OMP ?"
+},
+{
+"uid": "31c7b1f2b13e4453bfcd1b8b08f0891d",
+"nr": "2024.RRGR.15",
+"year": "2024",
+"lead": "STA",
+"type": "Interpellation",
+"title_de": "Ist der Regierungsrat bereit, das vom BJR aufgegebene Kulturerbe zu schützen?",
+"title_fr": "Le Conseil-exécutif est-il prêt à défendre son patrimoine abandonné par le CJB ?"
+},
+{
+"uid": "6f4b9344a349400c81087294f6448176",
+"nr": "2022.RRGR.380",
+"year": "2022",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Es braucht eine Task Force zur Sicherstellung der pflegerischen Versorgung im Kanton Bern!",
+"title_fr": "Il faut un groupe d’intervention pour assurer la couverture en soins dans le canton de Berne !"
+},
+{
+"uid": "1ea9a6c64fec4c0db2c0ee4db91a05d9",
+"nr": "2016.RRGR.1010",
+"year": "2016",
+"lead": "DIJ",
+"type": "Interpellation",
+"title_de": "ESP Bahnhof Ostermundigen",
+"title_fr": "PDE gare d`Ostermundigen"
+},
+{
+"uid": "937e19bb5e294037b2567630eeb75415",
+"nr": "2015.RRGR.379",
+"year": "2015",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Neue Technologien und Privatsphäre",
+"title_fr": "Champ d’intervention de l’Etat, nouvelles technologies et respect de la sphère privée"
+},
+{
+"uid": "13ea83e1c4d24e609eb907fdddffb3c1",
+"nr": "2017.RRGR.605",
+"year": "2017",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Grossraubtierproblematik im Kanton Bern muss endlich gelöst werden",
+"title_fr": "Le canton de Berne doit résoudre le problème des grands prédateurs une bonne fois pour toute"
+},
+{
+"uid": "1eb0e1dd18874ba2a6f8dc63c6e25f41",
+"nr": "2025.GRPARL.368",
+"year": "2025",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Abbau der Sozialberatung – wohin steuert der Kanton die integrierte Versorgung bzw. steuert er überhaupt?",
+"title_fr": "Démantèlement de la consultation sociale : dans quelle direction le canton conduit-il les soins intégrés?"
+},
+{
+"uid": "4945cb8d1a3f483c8eb23b0911e92674",
+"nr": "2016.RRGR.187",
+"year": "2016",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Bielersee-Schifffahrts-Gesellschaft AG (BSG). Kantonsbeitrag für die Beschaffung des neuen Passagierschiffs MS 60. Verpflichtungskredit",
+"title_fr": "Société de navigation du lac de Bienne (SNLB). Subvention cantonale pour l’acquisition d’un nouveau bateau destiné au transport de passagers (unité 60). Crédit d’engagement"
+},
+{
+"uid": "1f47d2beb067445c891b7951554bcc10",
+"nr": "2023.RRGR.40",
+"year": "2023",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Sofortmassnahmen zur Krisenbewältigung des Lehrpersonenmangels per Schulbeginn 2023/2024",
+"title_fr": "Des mesures d’urgence pour gérer la crise de la pénurie de personnel enseignant avant la rentrée 2023/2024"
+},
+{
+"uid": "bc106d94808742e88f9987b18ab0bc7a",
+"nr": "2015.RRGR.1119",
+"year": "2015",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Lektionentafel Lehrplan 21 – Giesskannenprinzip von oben oder mehr Handlungsspielraum für die einzelnen Schulen und Gemeinden?",
+"title_fr": "Lehrplan 21: quelle latitude pour les écoles et les communes?"
+},
+{
+"uid": "962769fac25546bc89cea65088c0456f",
+"nr": "2025.GRPARL.300",
+"year": "2025",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "4+-Regionen-Modell – Stand der Umsetzung in den einzelnen Regionen",
+"title_fr": "Modèle 4+ : avancement de la mise en œuvre dans les différentes régions"
+},
+{
+"uid": "b1b40634711d45bfa029a9fd0e6fd5ad",
+"nr": "2024.SIDGS.1",
+"year": "2024",
+"lead": "SID",
+"type": "Übrige Geschäfte",
+"title_de": "Lotteriefonds - Genehmigung der Jahresrechnung 2023",
+"title_fr": "Fonds de loterie : approbation des comptes annuels 2023"
+},
+{
+"uid": "5a5b09f5f256446c87de3984cbb0f54d",
+"nr": "2018.RRGR.204",
+"year": "2018",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "«Rendez-vous Bundesplatz» ist auch «Rendez-vous Kanton Bern»",
+"title_fr": "« Rendez-vous Bundesplatz », c`est aussi le rendez-vous du canton de Berne"
+},
+{
+"uid": "26e5aa26b15a4d8e80b7ef72bdafefc3",
+"nr": "2016.RRGR.848",
+"year": "2016",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Unternehmenssteuerreform III: Weitergabe des erhöhten Anteils an den direkten Bundessteuern an die Berner Gemeinden",
+"title_fr": "RIE III: reversement aux communes de la part supplémentaire du canton à l`impôt fédéral direct"
+},
+{
+"uid": "676adad0142d47c9a45fa8a22bce30aa",
+"nr": "2023.RRGR.34",
+"year": "2023",
+"lead": "DIJ",
+"type": "Interpellation",
+"title_de": "Datenschutz",
+"title_fr": "Protection des données"
+},
+{
+"uid": "a4788bb063c24bf5ba813be56b7d6d98",
+"nr": "2017.RRGR.46",
+"year": "2017",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Alle Jugendlichen verfügen am Ende der Volksschule über eine ausreichende Lesekompetenz in der Erstsprache!",
+"title_fr": "Compétences en lecture à la fin de la scolarité obligatoire"
+},
+{
+"uid": "173008ef430d441db58ebfd35638eee7",
+"nr": "2017.RRGR.378",
+"year": "2017",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Vertrauensarbeitszeit für Kaderangestellte",
+"title_fr": "Horaire de travail fondé sur la confiance pour les cadres"
+},
+{
+"uid": "d375eae3e9a84f5498cae7407f55da98",
+"nr": "2023.RRGR.331",
+"year": "2023",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Bekämpfung der Asiatischen Hornisse (Vespa velutina nigrithorax)",
+"title_fr": "Lutte contre le frelon asiatique (vespa velutina nigrithorax)"
+},
+{
+"uid": "5646327a56cc40659453ff9535ab00f9",
+"nr": "2021.RRGR.61",
+"year": "2021",
+"lead": "WEU",
+"type": "Postulat",
+"title_de": "Marktgerechte Stromtarife",
+"title_fr": "Aligner les tarifs de l`électricité sur les prix du marché"
+},
+{
+"uid": "d76b39ed07894c7ab2d256f153189129",
+"nr": "2016.RRGR.303",
+"year": "2016",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Psychiatrische Dienste: Verselbstständigung gleich Abbau?",
+"title_fr": "Services psychiatriques : autonomisation synonyme de démantèlement ?"
+},
+{
+"uid": "3bdd95ef97f7404291dfefa98e2e52ba",
+"nr": "2015.RRGR.1151",
+"year": "2015",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Abgasschummelei und Steuerhinterziehung",
+"title_fr": "Fraude aux gaz d`échappement et soustraction d`impôt"
+},
+{
+"uid": "c585a4ae769040e0a793cbeebac15e9a",
+"nr": "2023.RRGR.193",
+"year": "2023",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Geschlechtsänderungen: Wie bekämpft der Regierungsrat das Missbrauchspotenzial?",
+"title_fr": "Changements de sexe : comment le Conseil-exécutif lutte-t-il contre les possibles formes d’abus ?"
+},
+{
+"uid": "a593f9f0c6344b09b61c36f92ac51678",
+"nr": "2019.BVE.113",
+"year": "2019",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Münchenbuchsee, Hofwilstrasse 51, Gymnasium Hofwil. Erweiterung, Umbau und Unterhalt. Verpflichtungskredit für die Projektierungsarbeiten inkl. Ausschreibung",
+"title_fr": "Münchenbuchsee, Hofwilstrasse 51, Gymnase Hofwil. Agrandissement, transformation et entretien. Crédit d’engagement pour l’étude de projet, appel d’offres compris"
+},
+{
+"uid": "9ba95c0dbf62493f89c914504bfb4797",
+"nr": "2015.RRGR.1190",
+"year": "2015",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Gesetzliche Grundlagen für einen Verwaltungskreiswechsel",
+"title_fr": "Introduire la possibilité pour les communes de changer d`arrondissement administratif"
+},
+{
+"uid": "cb0e059eba81440582d05eac09417f8b",
+"nr": "2025.GRPARL.521",
+"year": "2025",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Grosse Unterschiede bei der Täterinnen- und Täteransprache bei häuslicher Gewalt",
+"title_fr": "Grandes disparités dans les entretiens avec les personnes ayant commis des actes de violence domestique"
+},
+{
+"uid": "a50c2eac574a4bb298aa58a7f8b422d9",
+"nr": "2024.GRPARL.72",
+"year": "2024",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Busseninkasso auch bei ausländischen Fahrzeugführern von Mietautos konsequent durchsetzen",
+"title_fr": "Les amendes doivent aussi être encaissées systématiquement auprès des conductrices et conducteurs étrangers de voitures de location !"
+},
+{
+"uid": "0f6337b4792841acb96e02203c35286f",
+"nr": "2018.RRGR.40",
+"year": "2018",
+"lead": "STA",
+"type": "Postulat",
+"title_de": "Regierungsreform für einen dynamischen Kanton Bern",
+"title_fr": "Réforme gouvernementale : pour un canton de Berne dynamique"
+},
+{
+"uid": "f28bace4ecb2479f81c6793d0a866594",
+"nr": "2020.STA.457",
+"year": "2020",
+"lead": "STA",
+"type": "Verfassung",
+"title_de": "Verfassung des Kantons Bern (KV)",
+"title_fr": "Constitution du canton de Berne (ConstC)"
+},
+{
+"uid": "1949ae9afbdc4f1a81fa4fe7fe8e0dd2",
+"nr": "2019.RRGR.298",
+"year": "2019",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Attraktive Mountainbike-Routen auch im Kanton Bern",
+"title_fr": "Des itinéraires pour VTT attrayants dans le canton de Berne aussi"
+},
+{
+"uid": "f9a68fe100fd479eb8c8b010309c55e5",
+"nr": "2023.RRGR.328",
+"year": "2023",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Sofortmassnahmen bei Instandstellung von Wegen nach Elementarereignissen",
+"title_fr": "Mesures immédiates pour la remise en état de voies d’accès endommagées par les éléments naturels"
+},
+{
+"uid": "501af910890b40d3925c80086723c091",
+"nr": "2017.RRGR.679",
+"year": "2017",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Zukunft Gesundheit: Fehlanreize im Gesundheitswesen beseitigen",
+"title_fr": "Avenir de la santé: éliminer les incitations négatives dans le domaine de la santé"
+},
+{
+"uid": "60efb82f03be49a5b21b005d4d6d9c8e",
+"nr": "2016.RRGR.896",
+"year": "2016",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Aufgaben überprüfen für einen Aufgaben- und Finanzplan 2019-2021 ohne negativen Finanzierungssaldo",
+"title_fr": "PIMF 2019-2021: réexamen des tâches publiques"
+},
+{
+"uid": "1533d36e82f24d119b86f9fea06a75d9",
+"nr": "2025.GRPARL.291",
+"year": "2025",
+"lead": "STA",
+"type": "Motion",
+"title_de": "Subsidiäre Finanzierung des Archivs für Agrargeschichte: zugesicherte Bundesbeiträge nicht gefährden",
+"title_fr": "Financement subsidiaire des Archives de l’histoire rurale : ne pas mettre en danger les contributions assurées par la Confédération"
+},
+{
+"uid": "223b120bbae84edc9583bd9e4d1cabc5",
+"nr": "2025.GRPARL.325",
+"year": "2025",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Zweisprachige Klassen im ganzen Kanton Bern / Des classes bilingues dans tout le canton de Berne",
+"title_fr": "Des classes bilingues dans tout le canton de Berne / Zweisprachige Klassen im ganzen Kanton Bern"
+},
+{
+"uid": "110af2a94efd4cd0a9dcd0198f5001ca",
+"nr": "2022.RRGR.432",
+"year": "2022",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Mehr Kohärenz bei der Energiebeschaffung durch ÖV-Unternehmen",
+"title_fr": "Pour davantage de cohérence dans l’approvisionnement en énergie par les entreprises de transports publics"
+},
+{
+"uid": "ca17a996393648749ecac1f4e8cc9784",
+"nr": "2015.RRGR.341",
+"year": "2015",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Mehr Rücksichtnahme auf die Gemeinden bei der Verteilung von Asylsuchenden",
+"title_fr": "Répartition des requérants d`asile: plus d`égards pour les communes"
+},
+{
+"uid": "9a0eae17e83b4e44a9838aea2958ca8f",
+"nr": "2022.RRGR.362",
+"year": "2022",
+"lead": "WEU",
+"type": "Interpellation",
+"title_de": "Welche Organisationen haben den Ausbau der erneuerbaren Energien verzögert oder verhindert?",
+"title_fr": "Quelles organisations ont retardé ou empêché le développement des énergies renouvelables ?"
+},
+{
+"uid": "4e49f31b92d94a6bb0ae3909c1e820eb",
+"nr": "2022.FINFV.93",
+"year": "2022",
+"lead": "FIN",
+"type": "Bericht RR",
+"title_de": "Geschäftsbericht mit Jahresrechnung 2022 des Kantons Bern",
+"title_fr": "Rapport de gestion et comptes annuels de l`exercice 2022 du canton de Berne"
+},
+{
+"uid": "4e2be4fe24b74faab93747b640fcf465",
+"nr": "2016.RRGR.960",
+"year": "2016",
+"lead": "BVD",
+"type": "Gesetz",
+"title_de": "Gesetz über die Beteiligung des Kantons an der BKW AG (BKW-Gesetz, BKWG)",
+"title_fr": "Loi sur la participation du canton à la BKW SA (Loi BKW, LBKW)"
+},
+{
+"uid": "786d858268c647938fdfb0f2639738f0",
+"nr": "2020.RRGR.351",
+"year": "2020",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Gebührensenkung beim SVSA",
+"title_fr": "Pour une baisse des émoluments de l’OCRN"
+},
+{
+"uid": "526ab47c286b4a979b5219fbbd76ab86",
+"nr": "2015.RRGR.981",
+"year": "2015",
+"lead": "STA",
+"type": "Anfrage",
+"title_de": "Anfragen der Novembersession 2015 der Mitglieder des Grossen Rates und Antworten des Regierungsrates",
+"title_fr": "Questions des membres du Grand Conseil et réponses du Conseil-exécutif"
+},
+{
+"uid": "86c79171fb434b9bb6499fe663cdc451",
+"nr": "2016.POM.102",
+"year": "2016",
+"lead": "SID",
+"type": "Gesetz",
+"title_de": "Kantonales Geldspielgesetz (KGSG)",
+"title_fr": "Loi cantonale sur les jeux d`argent (LCJAr)"
+},
+{
+"uid": "eb222b6b1e604f9f8077ecee5017b11d",
+"nr": "2020.RRGR.18",
+"year": "2020",
+"lead": "BKD",
+"type": "Interpellation",
+"title_de": "Folgen des Projekts «Berufsfachschulen 2020»",
+"title_fr": "Suites du projet \" Ecoles professionnelles 2020 \""
+},
+{
+"uid": "39347da333004bc097d33a3777875b8e",
+"nr": "2022.RRGR.85",
+"year": "2022",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Keine toten Wildtiere mehr durch Bleivergiftung",
+"title_fr": "Animaux sauvages morts de saturnisme, cela doit cesser !"
+},
+{
+"uid": "62089aae1739419ba35b47eccd18186e",
+"nr": "2025.BVD.3800",
+"year": "2025",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Abwasserverband Tavannes und Umgebung, Aufhebung ARA Tramelan und Anschluss an ARA Loveresse, Kantonsbeitrag aus dem Abwasserfonds, Verpflichtungskredit und Beitragszusicherung",
+"title_fr": "Syndicat d’épuration des eaux de Tavannes et environs, raccordement de la STEP Tramelan à la STEP Loveresse, subvention cantonale du Fonds pour l’assainissement, crédit d’engagement et promesse de subvention"
+},
+{
+"uid": "8c386cc9bae8477ca752f4d5f1ef4ccc",
+"nr": "2019.RRGR.161",
+"year": "2019",
+"lead": "SID",
+"type": "Motion",
+"title_de": "LGBTI-feindliche Gewalt statistisch erfassen",
+"title_fr": "Etablir une statistique de la violence contre la communauté LGBTI"
+},
+{
+"uid": "7d7cd887926448cfadfac415dbf210e2",
+"nr": "2017.RRGR.36",
+"year": "2017",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Free-Tibet: Verletzung des Verhältnismässigkeitsprinzips in Bern",
+"title_fr": "Free-Tibet: violation du principe de proportionnalité à Berne"
+},
+{
+"uid": "04616948e3c3460a8b0a8712d0ea7ab1",
+"nr": "2018.RRGR.320",
+"year": "2018",
+"lead": "WEU",
+"type": "Interpellation",
+"title_de": "Hat der Service public der Post noch eine Zukunft?",
+"title_fr": "La Poste dans le canton de Berne: ce service public est-il condamné à terme?"
+},
+{
+"uid": "10bef4b418244da69d37b6e03ac84099",
+"nr": "2023.RRGR.247",
+"year": "2023",
+"lead": "DIJ",
+"type": "Interpellation",
+"title_de": "Wie stehts um den Fussgängersteg in der Pichoux-Schlucht?",
+"title_fr": "Passerelle piétonne aux Gorges du Pichoux : quo vadis ?"
+},
+{
+"uid": "fb256c08f6804c83b3f1acbe52e809a4",
+"nr": "2017.RRGR.328",
+"year": "2017",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Einige Eltern brauchen dringendst Hilfe!",
+"title_fr": "Certains parents ont besoin d’aide au plus vite !"
+},
+{
+"uid": "b0abc6499684447bb3d7cd687f825891",
+"nr": "2022.RRGR.328",
+"year": "2022",
+"lead": "WEU",
+"type": "Interpellation",
+"title_de": "Umgang Kontingente Drittstaaten",
+"title_fr": "Gestion des contingents pour les États tiers"
+},
+{
+"uid": "fb623fa25dea4fc985a233774f6b1019",
+"nr": "2026.GRPARL.170",
+"year": "2026",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Was unternimmt der Regierungsrat, damit gestützt auf die Kantonale Sportförderung rasch auch Beiträge an den Bau von Sportanlagen gesprochen werden können, die in einem regionalen Richtplan enthalten sind?",
+"title_fr": "Que fait le Conseil-exécutif pour garantir l’allocation rapide de subventions à la construction d’installations sportives des plans directeurs régionaux, en application des dispositions sur l’encouragement du sport dans le canton ?"
+},
+{
+"uid": "73008ea2984447ddae29d21167da93c3",
+"nr": "2016.RRGR.914",
+"year": "2016",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Hilfspolizei darf nicht mit Waffen ausgerüstet werden",
+"title_fr": "Pas d`arme pour les assistants de sécurité publique"
+},
+{
+"uid": "59f448b8106142f3bfe27e26e3389a84",
+"nr": "2020.RRGR.220",
+"year": "2020",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Zugang zu geeigneter Unterkunft, Beratung und Übersetzung für Betroffene von Menschenhandel mit Tatort Ausland (inkl. Personen aus dem Asylbereich) im Kanton Bern",
+"title_fr": "Accès à un hébergement convenable et à des services de conseil et de traduction pour les personnes qui ont été victimes de traite des êtres humains à l`étranger (y compris celles relevant de l`asile)"
+},
+{
+"uid": "fd4298adee2c481d860f3f5eaea00955",
+"nr": "2021.RRGR.68",
+"year": "2021",
+"lead": "BVD",
+"type": "Postulat",
+"title_de": "Förderung der Zukunftsmobilität: Kinder und Jugendliche aufs Velo bringen!",
+"title_fr": "Promotion de la mobilité du futur : les enfants et les jeunes à vélo !"
+},
+{
+"uid": "563b8c2b549d4ea4849bd0d9bd5711f3",
+"nr": "2016.RRGR.553",
+"year": "2016",
+"lead": "BKD",
+"type": "Bericht DIR/Amt",
+"title_de": "Rechenschaftsbericht 2014 der interkantonalen Erziehungsdirektorenkonferenz der Westschweiz und des Tessins an die Mitglieder der interparlamentarischen Kommission der Westschweizer Schulvereinbarung; Rechnung 2014, Budget 2016",
+"title_fr": "Rapport d’information 2014 de la Conférence intercantonale de l’instruction publique de la Suisse romande et du Tessin aux membres de la Commission interparlementaire de la Convention scolaire romande ; comptes 2014, budget 2016"
+},
+{
+"uid": "26ecea99e43c472da6a2fe52a226ade1",
+"nr": "2017.GEF.690",
+"year": "2017",
+"lead": "GSI",
+"type": "Gesetz",
+"title_de": "Einführungsgesetz zur eidgenössischen Krebsregistrierungsgesetzgebung (EG KRG)",
+"title_fr": "Loi portant introduction de la législation fédérale sur l’enregistrement des maladies oncologiques (LiLEMO)"
+},
+{
+"uid": "7541427f28d14bfbb1f6f29cc935f5a6",
+"nr": "2019.RRGR.309",
+"year": "2019",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Flexiblere Lösungen beim Generationenwechsel",
+"title_fr": "Des solutions plus souples lors du changement de génération"
+},
+{
+"uid": "6daeca73bbbd448da06df3bd6fc69a7c",
+"nr": "2020.RRGR.368",
+"year": "2020",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Unabhängigkeit und Rechtsstaatlichkeit von Untersuchungen im Zusammenhang mit der Polizei stärken",
+"title_fr": "Renforcer l`indépendance et les principes de l`Etat de droit dans les enquêtes portant sur le travail de la police"
+},
+{
+"uid": "f8ac18f58b734b3ba2a75f53a16ec862",
+"nr": "2019.RRGR.199",
+"year": "2019",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Lohnobergrenze für Staatsbetriebe",
+"title_fr": "Plafonner les salaires dans les entreprises publiques"
+},
+{
+"uid": "cafa4526f5ec4bf093c7ad5b4f175cbd",
+"nr": "2017.STA.1474",
+"year": "2017",
+"lead": "STA",
+"type": "Kreditgeschäft GR",
+"title_de": "Staatskanzlei. Ausgabenbewilligung für die Fach- und Konzernapplikationen. Rahmenkredit 2019 - 2020",
+"title_fr": "Chancellerie d’Etat : autorisation de dépenses pour les applications de groupe et applications spécialisées. Crédit-cadre 2019-2020"
+},
+{
+"uid": "a63f5960730a41a48195cb5ff9905118",
+"nr": "2021.RRGR.352",
+"year": "2021",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Umsetzung Ausbildungsoffensive Pflege im Kanton Bern",
+"title_fr": "Mise en œuvre d’une offensive de formation dans le domaine des soins dans le canton de Berne"
+},
+{
+"uid": "a5dc56076ccf40289eafe4d4995b940e",
+"nr": "2015.RRGR.347",
+"year": "2015",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Schwere Körperverletzung an Beamten muss unbedingte Freiheitsstrafe zur Folge haben",
+"title_fr": "Lésions corporelles graves contre les fonctionnaires: fixation d`une peine plancher"
+},
+{
+"uid": "fc7748ca753b46558ade787fc33d63d0",
+"nr": "2019.ERZ.70876",
+"year": "2019",
+"lead": "BKD",
+"type": "Bericht Dritte",
+"title_de": "Geschäftsbericht 2019 der Berner Fachhochschule (BFH)",
+"title_fr": "Rapport de gestion 2019 de la Haute école spécialisée bernoise (BHF)"
+},
+{
+"uid": "ed8b46b21afb4dc5a70412278c4989a1",
+"nr": "2019.JGK.647",
+"year": "2019",
+"lead": "DIJ",
+"type": "Gesetz",
+"title_de": "Kantonales Datenschutzgesetz (KDSG) (Änderung)",
+"title_fr": "Loi cantonale sur la protection des données (LCPD) (Modification)"
+},
+{
+"uid": "c62fb23e9e85424ea40e7560c749ae8c",
+"nr": "2017.RRGR.79",
+"year": "2017",
+"lead": "BKD",
+"type": "Gesetz",
+"title_de": "Volksschulgesetz (VSG) (Änderung)",
+"title_fr": "Loi sur l`école obligatoire (LEO) (Modification)"
+},
+{
+"uid": "4ce7014a6a724feea8e175e738aa7453",
+"nr": "2020.RRGR.381",
+"year": "2020",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Abschaffung der Baujagd im Kanton Bern",
+"title_fr": "Abolition de la chasse au terrier dans le canton de Berne"
+},
+{
+"uid": "9df973ab9b004bd78f758b838cf47087",
+"nr": "2017.RRGR.296",
+"year": "2017",
+"lead": "BVD",
+"type": "Kreditgeschäft GR",
+"title_de": "Gemeinden Huttwil, Rohrbach und Madiswil. Hochwasserschutz, Langete und Zuflüsse. Kantonsbeitrag, Verpflichtungskredit",
+"title_fr": "Communes de Huttwil, Rohrbach et Madiswil. Protection contre les crues, Langete et affluents. Subvention cantonale, crédit d’engagement"
+},
+{
+"uid": "6c2b5ab7b7b145038e21322e2c2189fe",
+"nr": "2025.GRPARL.456",
+"year": "2025",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Planungssicherheit für die bestehenden Ausbildungszentren im Bevölkerungsschutz",
+"title_fr": "Quelle sécurité en matière de planification pour les actuels centres d`instruction de la protection de la population ?"
+},
+{
+"uid": "3e20d908dff44ce3a7f6598879a727ac",
+"nr": "2015.RRGR.301",
+"year": "2015",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Standortvorteil für den Kanton Bern: Dauer für sämtliche Verfahren verkürzen",
+"title_fr": "Raccourcir la durée des procédures"
+},
+{
+"uid": "56cd872eccce47c1ab59863871570510",
+"nr": "2022.WEU.5404",
+"year": "2022",
+"lead": "WEU",
+"type": "Bericht RR",
+"title_de": "Strategische Baulandreserven für den Kanton Bern",
+"title_fr": "Des réserves stratégiques de terrains à bâtir pour le canton de Berne"
+},
+{
+"uid": "5abd49a4565c42119529e0e8f024283c",
+"nr": "2018.RRGR.574",
+"year": "2018",
+"lead": "SID",
+"type": "Interpellation",
+"title_de": "Neue Gummigeschosse und Werfer: Gutachten, Verletzungsgefahr und Praxisauswertung?",
+"title_fr": "Nouvelles balles en caoutchouc et nouveau lanceur: rapport d`expertise, risques de blessure et évaluation sur le terrain"
+},
+{
+"uid": "5fdce5d84f9846ad939d4f0d153d32eb",
+"nr": "2020.RRGR.97",
+"year": "2020",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Notvorrat",
+"title_fr": "Réserves d`urgence"
+},
+{
+"uid": "2b5fb893ae4e4a7d9fa658dd279dae5e",
+"nr": "2024.GRPARL.112",
+"year": "2024",
+"lead": "DIJ",
+"type": "Interpellation",
+"title_de": "Optimierungspotential bei der Bereinigung des Grundbuchs?",
+"title_fr": "Potentiel d’amélioration pour l’épuration du registre foncier ?"
+},
+{
+"uid": "07ea75cb0004447db26330bf61617c4f",
+"nr": "2015.RRGR.1156",
+"year": "2015",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Planungskosten in Grenzen halten",
+"title_fr": "Grands projets: limiter les frais d`étude"
+},
+{
+"uid": "6035b97eb2804c908717d9b7177a36de",
+"nr": "2017.STA.539",
+"year": "2017",
+"lead": "STA",
+"type": "Ernennung / Wahl",
+"title_de": "Grosser Rat. Rücktritt und Ersatz. Nachrücken von Frau Moussia von Wattenwyl als Ersatz von Herrn Pierre Amstutz",
+"title_fr": "Grand Conseil. Démission et remplacement. Madame Moussia von Wattenwyl remplace Monsieur Pierre Amstutz"
+},
+{
+"uid": "a4fa902692fe4a22bb2a22d42197f6c0",
+"nr": "2017.RRGR.367",
+"year": "2017",
+"lead": "GSI",
+"type": "Interpellation",
+"title_de": "Einsatz von Praktikantinnen/Praktikanten in Kindertagesstätten",
+"title_fr": "Emploi de stagiaires dans les garderies"
+},
+{
+"uid": "ab4342088a0b4a2a9af7c736fd4f31b5",
+"nr": "2016.JGK.3599",
+"year": "2016",
+"lead": "DIJ",
+"type": "Gesetz",
+"title_de": "Baugesetz (BauG) (Änderung)",
+"title_fr": "Loi sur les constructions (LC) (Modification)"
+},
+{
+"uid": "be6cbb0ed5f04a5a80557a44e09b381e",
+"nr": "2015.RRGR.76",
+"year": "2015",
+"lead": "BKD",
+"type": "Motion",
+"title_de": "Zum Erhalt der medizinischen Grundversorgung braucht es neue Modelle in der Ärzteausbildung und eine Neuevaluation des Numerus clausus",
+"title_fr": "Garantie des soins médicaux de base: revoir la formation des médecins et le numerus clausus"
+},
+{
+"uid": "df37eed0cf6d42bbb2ecfe17d7057631",
+"nr": "2015.RRGR.567",
+"year": "2015",
+"lead": "SID",
+"type": "Motion",
+"title_de": "Die schnell ansteigende Zahl der UMA verlangt schnelle und unorthodoxe Entscheide!",
+"title_fr": "Augmentation rapide du nombre de RMNA: des décisions rapides et non conventionnelles!"
+},
+{
+"uid": "f9a5d340b7e347e0886fe610b421e86e",
+"nr": "2018.RRGR.365",
+"year": "2018",
+"lead": "FIN",
+"type": "Motion",
+"title_de": "Ergänzung Gesetz über die Pensionskassen",
+"title_fr": "Compléter la loi sur les caisses de pension cantonales"
+},
+{
+"uid": "2d7c4005c7b340319c16639dc6196faf",
+"nr": "2020.RRGR.187",
+"year": "2020",
+"lead": "BVD",
+"type": "Interpellation",
+"title_de": "Schadstoffe in Wasser und Körper",
+"title_fr": "Polluants dans l`eau et dans le corps"
+},
+{
+"uid": "2fb3c7629e274843b84e7994aa9872e5",
+"nr": "2023.RRGR.39",
+"year": "2023",
+"lead": "DIJ",
+"type": "Motion",
+"title_de": "Touristische Entwicklung in den Intensiverholungsgebieten nicht unnötig einschränken",
+"title_fr": "Ne pas restreindre inutilement le développement touristique dans les zones destinées à la pratique intensive d’activités de détente"
+},
+{
+"uid": "fc0d3e59390f4f4d8c8e944a2fb9f508",
+"nr": "2016.RRGR.295",
+"year": "2016",
+"lead": "BVD",
+"type": "Motion",
+"title_de": "Braucht der Kanton Bern eine kantonale Staatsbahn?",
+"title_fr": "Le canton a-t-il besoin de sa propre compagnie de chemin de fer?"
+},
+{
+"uid": "50e04fcb8d4e40279b32c8fb220878d3",
+"nr": "2024.RRGR.178",
+"year": "2024",
+"lead": "GSI",
+"type": "Motion",
+"title_de": "Liquiditätshilfen für versorgungsrelevante Gesundheitseinrichtungen auf eine ordentliche Rechtsgrundlage stellen!",
+"title_fr": "Instaurer une base légale en bonne et due forme pour les aides accordées sous forme de liquidités aux établissements de santé indispensables à la couverture des soins !"
+},
+{
+"uid": "ea2ae63b02c640c18b581c9eb6c935f8",
+"nr": "2017.STA.1010",
+"year": "2017",
+"lead": "STA",
+"type": "Ernennung / Wahl",
+"title_de": "Grosser Rat. Rücktritt und Ersatz. Nachrücken von Herrn Hervé Gullotti als Ersatz von Herrn Francis Daetwyler",
+"title_fr": "Grand Conseil. Démission et remplacement. Monsieur Hervé Gullotti remplace Monsieur Francis Daetwyler"
+},
+{
+"uid": "26036a41c3974275b5c66b7a948e77b1",
+"nr": "2023.RRGR.260",
+"year": "2023",
+"lead": "WEU",
+"type": "Motion",
+"title_de": "Rehkitzrettung digital und konventionell",
+"title_fr": "Sauvetage classique et numérique des faons"
+}
+]
+}

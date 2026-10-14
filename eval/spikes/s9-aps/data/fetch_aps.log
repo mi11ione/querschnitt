@@ -1,0 +1,62 @@
+todo 1440 of 1440
+25 tried, 24 with chapter, 0 err, 3.78s/item
+50 tried, 47 with chapter, 0 err, 3.78s/item
+75 tried, 72 with chapter, 0 err, 3.83s/item
+100 tried, 97 with chapter, 0 err, 3.85s/item
+125 tried, 121 with chapter, 0 err, 3.80s/item
+150 tried, 144 with chapter, 0 err, 3.81s/item
+175 tried, 169 with chapter, 0 err, 3.78s/item
+200 tried, 192 with chapter, 0 err, 3.78s/item
+225 tried, 216 with chapter, 0 err, 3.86s/item
+250 tried, 241 with chapter, 0 err, 3.81s/item
+275 tried, 264 with chapter, 0 err, 3.77s/item
+300 tried, 287 with chapter, 0 err, 3.76s/item
+325 tried, 309 with chapter, 0 err, 3.79s/item
+350 tried, 332 with chapter, 0 err, 3.77s/item
+375 tried, 357 with chapter, 0 err, 3.75s/item
+400 tried, 380 with chapter, 0 err, 3.77s/item
+425 tried, 405 with chapter, 0 err, 3.74s/item
+450 tried, 427 with chapter, 0 err, 3.74s/item
+475 tried, 451 with chapter, 0 err, 3.75s/item
+500 tried, 472 with chapter, 0 err, 3.74s/item
+525 tried, 495 with chapter, 0 err, 3.73s/item
+550 tried, 520 with chapter, 0 err, 3.71s/item
+575 tried, 544 with chapter, 0 err, 3.69s/item
+600 tried, 567 with chapter, 0 err, 3.70s/item
+625 tried, 592 with chapter, 0 err, 3.68s/item
+650 tried, 616 with chapter, 0 err, 3.66s/item
+675 tried, 640 with chapter, 0 err, 3.66s/item
+700 tried, 661 with chapter, 0 err, 3.67s/item
+725 tried, 684 with chapter, 0 err, 3.65s/item
+750 tried, 709 with chapter, 0 err, 3.67s/item
+775 tried, 732 with chapter, 0 err, 3.66s/item
+ERR 59847 URLError(ConnectionRefusedError(61, 'Connection refused'))
+800 tried, 754 with chapter, 1 err, 3.66s/item
+825 tried, 779 with chapter, 1 err, 3.66s/item
+850 tried, 804 with chapter, 1 err, 3.66s/item
+875 tried, 828 with chapter, 1 err, 3.65s/item
+900 tried, 851 with chapter, 1 err, 3.63s/item
+925 tried, 875 with chapter, 1 err, 3.65s/item
+950 tried, 896 with chapter, 1 err, 3.66s/item
+975 tried, 918 with chapter, 1 err, 3.66s/item
+1000 tried, 941 with chapter, 1 err, 3.65s/item
+1025 tried, 965 with chapter, 1 err, 3.66s/item
+1050 tried, 990 with chapter, 1 err, 3.67s/item
+1075 tried, 1015 with chapter, 1 err, 3.68s/item
+1100 tried, 1039 with chapter, 1 err, 3.68s/item
+1125 tried, 1062 with chapter, 1 err, 3.67s/item
+1150 tried, 1084 with chapter, 1 err, 3.69s/item
+1175 tried, 1107 with chapter, 1 err, 3.69s/item
+1200 tried, 1132 with chapter, 1 err, 3.69s/item
+1225 tried, 1156 with chapter, 1 err, 3.68s/item
+1250 tried, 1180 with chapter, 1 err, 3.69s/item
+1275 tried, 1205 with chapter, 1 err, 3.69s/item
+1300 tried, 1229 with chapter, 1 err, 3.68s/item
+1325 tried, 1252 with chapter, 1 err, 3.69s/item
+1350 tried, 1276 with chapter, 1 err, 3.68s/item
+1375 tried, 1300 with chapter, 1 err, 3.68s/item
+1400 tried, 1325 with chapter, 1 err, 3.68s/item
+1425 tried, 1349 with chapter, 1 err, 3.69s/item
+DONE tried 1440 ok 1361 err 1 in 5299s
+todo 1 of 1440
+DONE tried 1 ok 0 err 0 in 6s

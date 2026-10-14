@@ -1,0 +1,3 @@
+de strict (0.543, (0.475, 0.609)) lenient(any annotator code) (0.652, (0.586, 0.714)) top3 contains gold (0.771, (0.71, 0.823))
+fr strict (0.529, (0.461, 0.595)) lenient(any annotator code) (0.652, (0.586, 0.714)) top3 contains gold (0.738, (0.675, 0.793))
+pooled strict (0.552, (0.485, 0.618)) lenient(any annotator code) (0.681, (0.615, 0.74)) top3 contains gold (0.81, (0.751, 0.857))

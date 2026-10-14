@@ -1,0 +1,26 @@
+{
+ "D0": {
+  "n": 1357,
+  "acc": 0.655,
+  "ece_raw": 0.262,
+  "ece_isotonic_crossfit": 0.035,
+  "mean_p_raw": 0.917,
+  "mean_p_cal": 0.656
+ },
+ "D1": {
+  "n": 1357,
+  "acc": 0.704,
+  "ece_raw": 0.279,
+  "ece_isotonic_crossfit": 0.037,
+  "mean_p_raw": 0.983,
+  "mean_p_cal": 0.702
+ },
+ "D3": {
+  "n": 1357,
+  "acc": 0.722,
+  "ece_raw": 0.221,
+  "ece_isotonic_crossfit": 0.017,
+  "mean_p_raw": 0.943,
+  "mean_p_cal": 0.721
+ }
+}

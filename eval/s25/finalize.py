@@ -4,15 +4,16 @@ OPD snapshot bern/data/opd-new (CHE only): (i) curia_number for joined affairs m
 (S5/ideation-1, S9 fetched + items, example pool), 24 APS chapters only, one row per OPD affair (newest process id first)."""
 import gzip, json, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
-B = "/Users/mi11ion/Desktop/hackapertus/bern"; S9D = f"{B}/ideation2/spikes/s9-aps/data"
+ROOT = os.path.dirname(os.path.dirname(HERE))  # repository root
+S9D = f"{ROOT}/eval/spikes/s9-aps/data"  # vendored
 APS_CODES = ['1.1.1.', '1.1.2.', '1.1.3.', '1.1.4.', '1.1.5.', '1.2.', '1.3.', '1.4.1.', '1.4.2.', '1.4.3.', '1.5.', '1.6.1.',
              '1.6.2.', '1.6.3.', '1.6.4.', '1.7.1.', '1.7.2.', '1.7.3.', '1.7.4.', '1.8.1.', '1.8.2.', '1.8.3.', '2.0.1.', '2.0.2.']
 EX = ({json.loads(l)["opd_affair_id"] for l in open(f"{S9D}/aps_ext.jsonl")}
-      | {json.loads(l)["opd_affair_id"] for l in open(f"{B}/ideation/spikes/s2-oracles/data/aps_gold_sample.jsonl")}
+      | {json.loads(l)["opd_affair_id"] for l in open(f"{ROOT}/eval/spikes/s2-oracles/data/aps_gold_sample.jsonl")}
       | {x["oid"] for x in json.load(open(f"{S9D}/items.json"))} | {x["oid"] for x in json.load(open(f"{S9D}/mem_ideation1.json"))}
-      | {json.loads(l)["oid"] for l in open(f"{B}/querschnitt/data/eval/aps_pool.jsonl")})
+      | {json.loads(l)["oid"] for l in open(f"{ROOT}/data/eval/aps_pool.jsonl")})
 num2id, id2num = {}, {}
-for l in gzip.open(f"{B}/data/opd-new/affairs.ndjson.gz", "rt"):
+for l in gzip.open(f"{ROOT}/../data/opd-new/affairs.ndjson.gz", "rt"):
     if '"body_key":"CHE"' not in l:
         continue
     a = json.loads(l)

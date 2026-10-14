@@ -7,7 +7,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from querschnitt import prompts as P  # noqa: E402
 from querschnitt.compose import read_run  # noqa: E402
 from querschnitt.scheme import flat  # noqa: E402
-sys.path.insert(0, "/Users/mi11ion/Desktop/hackapertus/bern/ideation/spikes/s6-cantonal/scripts")
+sys.path.insert(0, str(HERE.parent / "spikes/s6-cantonal/scripts"))  # vendored S6
 import be_scheme as B  # noqa: E402  (frozen S6 keyword stems)
 
 DIRS = ["BKD", "BVD", "DIJ", "FIN", "GSI", "SID", "STA", "WEU"]

@@ -1,0 +1,690 @@
+{
+ "E4": {
+  "fr": {
+   "builds": {
+    "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 274
+   },
+   "eval": {
+    "rule": "thr@0.005",
+    "micro": 0.59,
+    "ci": [
+     0.552,
+     0.628
+    ],
+    "macro": 0.475,
+    "ci_macro": [
+     0.425,
+     0.532
+    ],
+    "P": 0.644,
+    "R": 0.545,
+    "avg_pred": 1.98,
+    "top1_prec": [
+     0.833,
+     [
+      0.773,
+      0.88
+     ]
+    ],
+    "top3_recall": [
+     0.637,
+     [
+      0.591,
+      0.681
+     ]
+    ],
+    "n": 186,
+    "thr": [
+     0.59,
+     "thr@0.005"
+    ]
+   },
+   "de_same_items": {
+    "rule": "thr@0.01",
+    "micro": 0.57,
+    "ci": [
+     0.533,
+     0.605
+    ],
+    "macro": 0.473,
+    "ci_macro": [
+     0.423,
+     0.532
+    ],
+    "P": 0.645,
+    "R": 0.51,
+    "avg_pred": 1.85,
+    "top1_prec": [
+     0.86,
+     [
+      0.803,
+      0.903
+     ]
+    ],
+    "top3_recall": [
+     0.602,
+     [
+      0.556,
+      0.647
+     ]
+    ],
+    "n": 186,
+    "thr": [
+     0.57,
+     "thr@0.01"
+    ]
+   },
+   "agree_vs_de": {
+    "n": 186,
+    "top1_same": 130,
+    "rate": 0.699,
+    "ci": [
+     0.63,
+     0.76
+    ],
+    "mean_jaccard": 0.663,
+    "rule": "thr@0.01"
+   },
+   "cost": {
+    "pt_per_affair": 1400.4
+   }
+  },
+  "it": {
+   "builds": {
+    "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 183
+   },
+   "eval": {
+    "rule": "thr@0.01",
+    "micro": 0.604,
+    "ci": [
+     0.563,
+     0.643
+    ],
+    "macro": 0.52,
+    "ci_macro": [
+     0.46,
+     0.576
+    ],
+    "P": 0.721,
+    "R": 0.519,
+    "avg_pred": 1.83,
+    "top1_prec": [
+     0.893,
+     [
+      0.825,
+      0.936
+     ]
+    ],
+    "top3_recall": [
+     0.601,
+     [
+      0.545,
+      0.654
+     ]
+    ],
+    "n": 121,
+    "thr": [
+     0.604,
+     "thr@0.01"
+    ]
+   },
+   "de_same_items": {
+    "rule": "thr@0.01",
+    "micro": 0.56,
+    "ci": [
+     0.52,
+     0.604
+    ],
+    "macro": 0.506,
+    "ci_macro": [
+     0.431,
+     0.563
+    ],
+    "P": 0.677,
+    "R": 0.477,
+    "avg_pred": 1.79,
+    "top1_prec": [
+     0.868,
+     [
+      0.796,
+      0.917
+     ]
+    ],
+    "top3_recall": [
+     0.584,
+     [
+      0.529,
+      0.638
+     ]
+    ],
+    "n": 121,
+    "thr": [
+     0.56,
+     "thr@0.01"
+    ]
+   },
+   "agree_vs_de": {
+    "n": 121,
+    "top1_same": 85,
+    "rate": 0.702,
+    "ci": [
+     0.616,
+     0.777
+    ],
+    "mean_jaccard": 0.652,
+    "rule": "thr@0.01"
+   },
+   "cost": {
+    "pt_per_affair": 1685.5
+   }
+  }
+ },
+ "E5": {
+  "builds": {
+   "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 594
+  },
+  "identity": {
+   "all": {
+    "n": 297,
+    "top1": 0.566,
+    "ci1": [
+     0.509,
+     0.621
+    ],
+    "top3": 0.744,
+    "ci3": [
+     0.692,
+     0.79
+    ],
+    "top1_in_any_keyword_chapter": 0.714
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.577,
+    "ci1": [
+     0.518,
+     0.633
+    ],
+    "top3": 0.747,
+    "ci3": [
+     0.693,
+     0.795
+    ],
+    "top1_in_any_keyword_chapter": 0.722
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.375,
+    "ci1": [
+     0.185,
+     0.614
+    ],
+    "top3": 0.688,
+    "ci3": [
+     0.444,
+     0.858
+    ],
+    "top1_in_any_keyword_chapter": 0.562
+   },
+   "with_text": {
+    "n": 294,
+    "top1": 0.565,
+    "ci1": [
+     0.507,
+     0.62
+    ],
+    "top3": 0.741,
+    "ci3": [
+     0.689,
+     0.788
+    ],
+    "top1_in_any_keyword_chapter": 0.714
+   }
+  },
+  "avg2": {
+   "all": {
+    "n": 297,
+    "top1": 0.606,
+    "ci1": [
+     0.549,
+     0.66
+    ],
+    "top3": 0.805,
+    "ci3": [
+     0.756,
+     0.846
+    ],
+    "top1_in_any_keyword_chapter": 0.758
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.619,
+    "ci1": [
+     0.561,
+     0.674
+    ],
+    "top3": 0.797,
+    "ci3": [
+     0.746,
+     0.84
+    ],
+    "top1_in_any_keyword_chapter": 0.769
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.375,
+    "ci1": [
+     0.185,
+     0.614
+    ],
+    "top3": 0.938,
+    "ci3": [
+     0.717,
+     0.989
+    ],
+    "top1_in_any_keyword_chapter": 0.562
+   },
+   "with_text": {
+    "n": 294,
+    "top1": 0.605,
+    "ci1": [
+     0.549,
+     0.66
+    ],
+    "top3": 0.803,
+    "ci3": [
+     0.753,
+     0.844
+    ],
+    "top1_in_any_keyword_chapter": 0.759
+   }
+  },
+  "permuted": {
+   "all": {
+    "n": 297,
+    "top1": 0.542,
+    "ci1": [
+     0.485,
+     0.598
+    ],
+    "top3": 0.724,
+    "ci3": [
+     0.67,
+     0.772
+    ],
+    "top1_in_any_keyword_chapter": 0.69
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.555,
+    "ci1": [
+     0.497,
+     0.612
+    ],
+    "top3": 0.73,
+    "ci3": [
+     0.675,
+     0.778
+    ],
+    "top1_in_any_keyword_chapter": 0.705
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.312,
+    "ci1": [
+     0.142,
+     0.556
+    ],
+    "top3": 0.625,
+    "ci3": [
+     0.386,
+     0.815
+    ],
+    "top1_in_any_keyword_chapter": 0.438
+   },
+   "with_text": {
+    "n": 294,
+    "top1": 0.544,
+    "ci1": [
+     0.487,
+     0.6
+    ],
+    "top3": 0.724,
+    "ci3": [
+     0.671,
+     0.772
+    ],
+    "top1_in_any_keyword_chapter": 0.694
+   }
+  },
+  "agree_id_vs_perm": 196,
+  "L2_given_true": {
+   "n": 262,
+   "acc": 0.733,
+   "ci": [
+    0.676,
+    0.783
+   ],
+   "mean_nsub": 8.4
+  },
+  "L2_given_pred": {
+   "variant": "avg2",
+   "n": 262,
+   "chapter_right": 160,
+   "l2_right_given_chapter_right": 114,
+   "acc_conditional": 0.713,
+   "acc_end_to_end": 0.435,
+   "ci_e2e": [
+    0.376,
+    0.496
+   ]
+  },
+  "L2_by_join": {
+   "strong": {
+    "n": 249,
+    "acc": 0.743
+   },
+   "weak": {
+    "n": 13,
+    "acc": 0.538
+   }
+  },
+  "top_confusions": [
+   "Sozialversicherungen → Gesundheit, Sozialhilfe, Sport: 12",
+   "Soziale Gruppen → Gesundheit, Sozialhilfe, Sport: 7",
+   "Wirtschaftspolitik → Rechtsordnung: 6",
+   "Soziale Gruppen → Rechtsordnung: 5",
+   "Energie → Umweltschutz: 5",
+   "Institutionen und Volksrechte → Kein Sachthema (Wahl oder Erne: 5",
+   "Soziale Gruppen → Bevölkerung und Arbeit: 4",
+   "Soziale Gruppen → Kein Sachthema (Wahl oder Erne: 3"
+  ]
+ },
+ "E6": {
+  "builds": {
+   "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 660
+  },
+  "table": [
+   {
+    "thr": 0.3,
+    "recall": 0.9,
+    "ci_r": [
+     0.744,
+     0.965
+    ],
+    "flag_rate_random": 0.063,
+    "ci_f": [
+     0.041,
+     0.097
+    ],
+    "n_flagged": 19
+   },
+   {
+    "thr": 0.5,
+    "recall": 0.9,
+    "ci_r": [
+     0.744,
+     0.965
+    ],
+    "flag_rate_random": 0.06,
+    "ci_f": [
+     0.038,
+     0.093
+    ],
+    "n_flagged": 18
+   },
+   {
+    "thr": 0.7,
+    "recall": 0.833,
+    "ci_r": [
+     0.664,
+     0.927
+    ],
+    "flag_rate_random": 0.057,
+    "ci_f": [
+     0.036,
+     0.089
+    ],
+    "n_flagged": 17
+   },
+   {
+    "thr": 0.9,
+    "recall": 0.833,
+    "ci_r": [
+     0.664,
+     0.927
+    ],
+    "flag_rate_random": 0.057,
+    "ci_f": [
+     0.036,
+     0.089
+    ],
+    "n_flagged": 17
+   }
+  ],
+  "n_pos": 30,
+  "n_neg": 300,
+  "order_agree@0.5": 0.9818181818181818,
+  "single_order_recall_flag": {
+   "yes=A": {
+    "recall": 0.833,
+    "flag": 0.057
+   },
+   "yes=B": {
+    "recall": 0.9,
+    "flag": 0.07
+   }
+  },
+  "missed_pos": [
+   [
+    "BE",
+    "Wie weiter mit NFFS?",
+    0.011
+   ],
+   [
+    "BL",
+    "Wärmeverbunde und Stromspeicher in Zonen für öffentliche Werke und Anlagen - Änderung des ",
+    0.0
+   ],
+   [
+    "CHE",
+    "Eine Strategie zur Bekämpfung von Desinformation",
+    0.048
+   ]
+  ],
+  "top10_random": [
+   [
+    "BE",
+    "2026",
+    "Government affairs",
+    "Kantonspolizei Bern: Ausgabenbewilligung für die ICT-Grundversorgung und ICT-Fachapplikationen sowie Digitalisierung der Kantonsverwaltung. ",
+    1.0,
+    337409
+   ],
+   [
+    "ZG",
+    "2026",
+    "Postulate",
+    "Schneller, näher, digital: Online-Polizeiposten der Zuger Kantonspolizei mit Videokonferenz",
+    1.0,
+    291435
+   ],
+   [
+    "ZG",
+    "2026",
+    "Motion",
+    "Schaffung der gesetzlichen Grundlagen für digitale Abstimmungssysteme an Gemeindeversammlungen",
+    1.0,
+    335267
+   ],
+   [
+    "CHE",
+    "2025",
+    "Motion",
+    "Digitalisierung der Führerausweise",
+    1.0,
+    280520
+   ],
+   [
+    "BE",
+    "2026",
+    "Government affairs",
+    "Aufbau Kompetenzzentrum BeLEARN für die digitale Transformation in der Bildung; Objektkredit 2027–2028",
+    1.0,
+    335414
+   ],
+   [
+    "ZH",
+    "2026",
+    "Question",
+    "Cyberbedrohung – wie schützt sich der Kanton Zürich",
+    1.0,
+    335666
+   ],
+   [
+    "CHE",
+    "2024",
+    "Interpellation",
+    "Einsatz Quantum Safe/quantensichere Kryptografie beim Bund",
+    1.0,
+    235277
+   ],
+   [
+    "BE",
+    "2026",
+    "Government affairs",
+    "Ausgabenbewilligung für die ICT-Ausgaben der Direktion für Inneres und Justiz (DIJ). Rahmenkredit 2027-2029",
+    1.0,
+    337093
+   ],
+   [
+    "BE",
+    "2026",
+    "Interpellation",
+    "Künstliche Intelligenz in der Kantonsverwaltung: Von Pilotprojekten zu messbaren Einsparungen",
+    1.0,
+    338773
+   ],
+   [
+    "BS",
+    "2020",
+    "Postulate",
+    "Vertrauen durch Transparenz über Einwohnerdaten - Einführung eines \"Reversed Big Brother Principle\"",
+    1.0,
+    45382
+   ]
+  ]
+ },
+ "E6f": {
+  "free": {
+   "n": 40,
+   "no_topic": 0,
+   "in_curia": 2,
+   "in_aps": 2,
+   "outside_both": 36,
+   "outside_rate": 0.9,
+   "ci": [
+    0.769,
+    0.96
+   ],
+   "exact_gold_hit": 1,
+   "examples": [
+    "Menschenrechte",
+    "Verteidigung",
+    "Energie-Contracting",
+    "Lebensmittelsicherheit",
+    "Science Task Force",
+    "Kinder- und Jugendschutz",
+    "Migration",
+    "Umwelt- und Raumplanung",
+    "Atomenergie",
+    "Schutzmachtmandat",
+    "Landwirtschaftseinkommen",
+    "Flüchtlingspolitik",
+    "Gesundheitswesen",
+    "Armeehaushalt",
+    "Tiefseebergbau",
+    "Verwaltungseffizienz",
+    "Arbeitsrecht",
+    "Artenschutz",
+    "Produkthaftung",
+    "Grenzgängerabkommen",
+    "Wolfsschutz",
+    "humanitäres Völkerrecht",
+    "Umwelt und Handel",
+    "Flüchtlingshilfe",
+    "Arbeitsbedingungen",
+    "Steuerpolitik",
+    "Doppelbesteuerung",
+    "Rüstungsexporte",
+    "HIV-Prävention",
+    "Ausstellungen",
+    "Krankentaggeldversicherung",
+    "Wohnungsmarkt",
+    "Zugverkehr",
+    "Neutralitätspolitik",
+    "KI-Sicherheit",
+    "Energieversorgung",
+    "Familienpolitik",
+    "Epidemiengesetz",
+    "Umweltchemikalien",
+    "Patentrecht"
+   ]
+  },
+  "list": {
+   "n": 40,
+   "no_topic": 0,
+   "in_curia": 40,
+   "in_aps": 11,
+   "outside_both": 0,
+   "outside_rate": 0.0,
+   "ci": [
+    -0.0,
+    0.088
+   ],
+   "exact_gold_hit": 35,
+   "examples": [
+    "Menschenrechte",
+    "Sicherheitspolitik",
+    "Energie",
+    "Landwirtschaft",
+    "Medien und Kommunikation",
+    "Gesundheit",
+    "Umwelt",
+    "Migration",
+    "Energie",
+    "Internationale Politik",
+    "Landwirtschaft",
+    "Migration",
+    "Sicherheitspolitik",
+    "Gesundheit",
+    "Internationales Recht",
+    "Finanzwesen",
+    "Wirtschaft",
+    "Umwelt",
+    "Recht Allgemein",
+    "Steuer",
+    "Umwelt",
+    "Internationale Politik",
+    "Umwelt",
+    "Menschenrechte",
+    "Beschäftigung und Arbeit",
+    "Steuer",
+    "Steuer",
+    "Sicherheitspolitik",
+    "Gesundheit",
+    "Kultur",
+    "Soziale Fragen",
+    "Raumplanung und Wohnungswesen",
+    "Verkehr",
+    "Sicherheitspolitik",
+    "Internationale Politik",
+    "Energie",
+    "Gesundheit",
+    "Soziale Fragen",
+    "Umwelt",
+    "Wissenschaft und Forschung"
+   ]
+  }
+ }
+}

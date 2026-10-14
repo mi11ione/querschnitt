@@ -12,19 +12,21 @@ Status rules (strict; written down so anyone can re-apply them):
   NOT FOUND no results file holds the number.
 Kinds: pt+ (higher favours us), pt- (lower favours us: baselines, times), pt0 (neutral), lo / hi (interval bounds),
 cnt (estimated count), eq (must match exactly).
-Run: python3 -I querschnitt/eval/scripts/build_claims.py"""
+Paths in the file column are relative to the repository root (the S1–S15 spikes are vendored under eval/spikes/); "../" marks a file
+of the wider workspace that is not in the repository (the VISION draft, the build brief, the OPD export from `make data`).
+Run: python3 -I eval/scripts/build_claims.py"""
 import csv, json, os, re, sys
 from decimal import Decimal, ROUND_HALF_UP
 
-HB = "/Users/mi11ion/Desktop/hackapertus"
 EVAL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(EVAL)  # repository root
 sys.path.insert(0, os.path.join(os.path.dirname(EVAL), "tools"))
 import claims_check as cc  # noqa: E402
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numfmt as NF  # noqa: E402
 
-VISION = "bern/VISION-topics-v2.md"
-I1, I2 = "bern/ideation/spikes", "bern/ideation2/spikes"
+VISION = "../VISION-topics-v2.md"  # the draft these rows check (workspace, not in the repository)
+I1, I2 = "eval/spikes", "eval/spikes"
 S8M, S8CH, S8S, S8OP, S8L = (f"{I2}/s8-dvs/results.md", f"{I2}/s8-dvs/score_ch.json", f"{I2}/s8-dvs/score.json",
                              f"{I2}/s8-dvs/operating_points_ch.json", f"{I2}/s8-dvs/loop.json")
 S9M, S9R, S9C, S9P = (f"{I2}/s9-aps/results.md", f"{I2}/s9-aps/results.json", f"{I2}/s9c-calibration/results.json",
@@ -35,12 +37,12 @@ S14M, S15 = f"{I2}/s14-neutrality/results.md", f"{I2}/s15-judgecheck/results.jso
 S1M, S2M, S3M, S5M = (f"{I1}/s1-runtime/results.md", f"{I1}/s2-oracles/results.md", f"{I1}/s3-accuracy/results.md",
                       f"{I1}/s5-aps/results.md")
 S6M, S6S, S7M, S7S = f"{I1}/s6-cantonal/results.md", f"{I1}/s6-cantonal/score.json", f"{I1}/s7-crossfamily/results.md", f"{I1}/s7-crossfamily/score.json"
-CEN = "bern/ideation2/census_counts.json"
-PRE = "bern/ideation2/PREREG.md"
-BRIEF = "bern/BUILD-BRIEF.md"
-DECK = "bern/research/R1-parts/deck-topic-classification.md"
-R1 = "bern/research/R1-opd-topics.md"
-PRIOR = "bern/research/R1-parts/prior-art.md"
+CEN = "eval/spikes/census_counts.json"
+PRE = "eval/spikes/PREREG.md"
+BRIEF = "../BUILD-BRIEF.md"
+DECK = "eval/research/R1-parts/deck-topic-classification.md"
+R1 = "eval/research/R1-opd-topics.md"
+PRIOR = "eval/research/R1-parts/prior-art.md"
 
 F = {}
 
@@ -391,9 +393,9 @@ def adhoc_rows():
             if k != "strata": walk(tid, f"{path} > {k}" if path else k, v)
 
     t19 = T["adhoc_new_topics"]
-    r("adhoc_new_topics population (affairs with a title begun 1 Aug–6 Oct 2026)", NF.t(t19["n"]), t19["n"], "bern/querschnitt/eval/s19/results.json",
+    r("adhoc_new_topics population (affairs with a title begun 1 Aug–6 Oct 2026)", NF.t(t19["n"]), t19["n"], "eval/s19/results.json",
       "<topic> > strata > N, summed (equal for the three topics)", "count")
-    r("adhoc_new_topics affairs checked by the judge (three packets)", NF.t(t19["n_checked"]), t19["n_checked"], "bern/querschnitt/eval/s19/results.json",
+    r("adhoc_new_topics affairs checked by the judge (three packets)", NF.t(t19["n_checked"]), t19["n_checked"], "eval/s19/results.json",
       "<topic> > n_packet, summed", "count")
     j = t19["judge"]
     r("adhoc_new_topics judge run A = run B", NF.t(j["agree_AB"]), j["agree_AB"], j["at"]["file"], j["at"]["key"], "truncated, never rounded up")
@@ -404,8 +406,21 @@ def adhoc_rows():
     return rows
 
 
+# old workspace-relative paths (hackapertus root) -> repository-relative; applied to the file column of the kept rows (idempotent)
+WS_MAP = (("bern/querschnitt/", ""), ("bern/ideation2/spikes/", "eval/spikes/"), ("bern/ideation/spikes/", "eval/spikes/"),
+          ("bern/ideation2/PREREG", "eval/spikes/PREREG"), ("bern/ideation2/census_counts.json", "eval/spikes/census_counts.json"),
+          ("bern/research/", "eval/research/"), ("bern/", "../"), ("spikes/", "../../spikes/"), ("loop/", "../../loop/"))
+
+
+def repo_path(f):
+    for a, b in WS_MAP:
+        if f.startswith(a):
+            return b + f[len(a):]
+    return f
+
+
 def main():
-    L = open(os.path.join(HB, VISION), encoding="utf-8").read().splitlines()
+    L = open(os.path.join(ROOT, VISION), encoding="utf-8").read().splitlines()
     rows = []
     for ln, fids in LINES.items():
         line = L[ln - 1]
@@ -448,6 +463,7 @@ def main():
     if os.path.exists(out):
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
+        kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
     gen = adhoc_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")

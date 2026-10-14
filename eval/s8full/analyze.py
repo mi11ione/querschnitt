@@ -13,7 +13,7 @@ from querschnitt import prompts as P  # noqa: E402
 from querschnitt.compose import read_run, yn_decision  # noqa: E402
 from querschnitt.scheme import adhoc  # noqa: E402
 
-S8 = Path("/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s8-dvs")
+S8 = HERE.parent / "spikes/s8-dvs"  # vendored S8 (eval/spikes/)
 
 
 # ---- S8 score.py gold rules, copied verbatim (importing score.py would re-run it)
@@ -45,7 +45,7 @@ class S8S:
         return None if len(v) < 2 else ("Y" if v.count("Y") * 2 > len(v) else "N" if v.count("N") * 2 > len(v) else None)
 
 T = adhoc("digitalisierung")
-IT = {x["id"]: x for x in json.load(open(S8 / "items_cache.json"))}
+IT = {x["id"]: x for x in json.load(gzip.open(S8 / "items_cache.json.gz", "rt", encoding="utf-8"))}  # S8 items_cache.json, stored gzipped
 W = [i for i, x in IT.items() if x["in_window"] and x["title"]]
 rd = lambda p: {json.loads(l)["id"]: json.loads(l) for l in open(p)}
 RA, RB = rd(S8 / "raw/a.jsonl"), rd(S8 / "raw/b.jsonl")

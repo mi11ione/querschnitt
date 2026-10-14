@@ -1,0 +1,208 @@
+{
+ "s13": {
+  "wolf": {
+   "topic": "wolf",
+   "n": 577,
+   "n_target": 577,
+   "complete": true,
+   "workers": 3,
+   "t_first50_s": 12.606877088546753,
+   "t_all_s": 456.82165598869324,
+   "wall_s": 456.82216811180115,
+   "decisions_per_s": 1.2630749712405958,
+   "http_attempts": 630,
+   "http_attempts_per_s": 1.3790939893961442,
+   "n_429": 53,
+   "calls_with_429": 26,
+   "other_non200": 0,
+   "latency_s": {
+    "median": 0.74,
+    "p90": 1.121,
+    "max": 62.802
+   },
+   "flags": 4,
+   "flags_by_level_lang": {
+    "cantonal/de": 1,
+    "federal/de": 2,
+    "federal/fr": 1
+   },
+   "flags_p_ge_0_9": 4,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ],
+   "served": [
+    "swiss-ai/apertus-v1.5-8b"
+   ],
+   "usd": 0.011682599999999994,
+   "cached_any": false
+  },
+  "hitze": {
+   "topic": "hitze",
+   "n": 577,
+   "n_target": 577,
+   "complete": true,
+   "workers": 3,
+   "t_first50_s": 75.10843586921692,
+   "t_all_s": 506.6900568008423,
+   "wall_s": 506.69042778015137,
+   "decisions_per_s": 1.1387632187674712,
+   "http_attempts": 631,
+   "http_attempts_per_s": 1.2453372461737857,
+   "n_429": 54,
+   "calls_with_429": 18,
+   "other_non200": 0,
+   "latency_s": {
+    "median": 0.72,
+    "p90": 0.949,
+    "max": 62.917
+   },
+   "flags": 24,
+   "flags_by_level_lang": {
+    "cantonal/de": 1,
+    "cantonal/it": 1,
+    "communal/de": 1,
+    "federal/de": 15,
+    "federal/fr": 5,
+    "other/de": 1
+   },
+   "flags_p_ge_0_9": 22,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ],
+   "served": [
+    "swiss-ai/apertus-v1.5-8b"
+   ],
+   "usd": 0.012259200000000001,
+   "cached_any": false
+  },
+  "ki_schule": {
+   "topic": "ki_schule",
+   "n": 577,
+   "n_target": 577,
+   "complete": true,
+   "workers": 3,
+   "t_first50_s": 74.900465965271,
+   "t_all_s": 505.6726818084717,
+   "wall_s": 505.67304015159607,
+   "decisions_per_s": 1.141054323789918,
+   "http_attempts": 631,
+   "http_attempts_per_s": 1.2478427700371546,
+   "n_429": 54,
+   "calls_with_429": 18,
+   "other_non200": 0,
+   "latency_s": {
+    "median": 0.711,
+    "p90": 0.95,
+    "max": 63.094
+   },
+   "flags": 5,
+   "flags_by_level_lang": {
+    "communal/de": 1,
+    "federal/de": 4
+   },
+   "flags_p_ge_0_9": 5,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ],
+   "served": [
+    "swiss-ai/apertus-v1.5-8b"
+   ],
+   "usd": 0.012766900000000008,
+   "cached_any": false
+  }
+ },
+ "s13_population": {
+  "n": 577,
+  "filter": "items_cache date 2026-09-30..2026-10-06, in_window"
+ },
+ "s8b": {
+  "stats": {
+   "n_federal": 141,
+   "n_mapped": 138,
+   "n_textrec": 138,
+   "n_text": 120
+  },
+  "fps": [
+   "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+  ],
+  "usd": 0.0054534000000000015,
+  "all": {
+   "label": "federal, all with text",
+   "n": 120,
+   "n_gold_Y": 56,
+   "title_only": {
+    "F1": 0.8269230769230769,
+    "P": 0.8958333333333334,
+    "R": 0.7678571428571429,
+    "tp": 43,
+    "fp": 5,
+    "fn": 13
+   },
+   "title_text": {
+    "F1": 0.8085106382978724,
+    "P": 1.0,
+    "R": 0.6785714285714286,
+    "tp": 38,
+    "fp": 0,
+    "fn": 18
+   },
+   "dF1": -0.018412438625204475,
+   "dF1_ci95": [
+    -0.08349026993094799,
+    0.039570491151322384
+   ],
+   "dRecall": -0.0892857142857143,
+   "dRecall_ci95": [
+    -0.16981132075471705,
+    -0.019607843137254943
+   ],
+   "flips_N_to_Y": 0,
+   "flips_Y_to_N": 10,
+   "bootstrap": "paired, 2000, seed 13, percentile"
+  },
+  "de_only": {
+   "label": "federal, prompt de",
+   "n": 120,
+   "n_gold_Y": 56,
+   "title_only": {
+    "F1": 0.8269230769230769,
+    "P": 0.8958333333333334,
+    "R": 0.7678571428571429,
+    "tp": 43,
+    "fp": 5,
+    "fn": 13
+   },
+   "title_text": {
+    "F1": 0.8085106382978724,
+    "P": 1.0,
+    "R": 0.6785714285714286,
+    "tp": 38,
+    "fp": 0,
+    "fn": 18
+   },
+   "dF1": -0.018412438625204475,
+   "dF1_ci95": [
+    -0.08349026993094799,
+    0.039570491151322384
+   ],
+   "dRecall": -0.0892857142857143,
+   "dRecall_ci95": [
+    -0.16981132075471705,
+    -0.019607843137254943
+   ],
+   "flips_N_to_Y": 0,
+   "flips_Y_to_N": 10,
+   "bootstrap": "paired, 2000, seed 13, percentile"
+  },
+  "note": "unweighted (packet design weights not applied); text is Curia DE for every item, prompt language = item language"
+ },
+ "s8b_local": {
+  "status": "attempted, not scored",
+  "local_packet_items": 323,
+  "with_any_census_doc_row": 262,
+  "reliably_mapped_to_track_2a_text_cache": 1,
+  "method": "affair -> census docs_meta doc ids -> any .work/*.jsonl(.gz) record carrying sha256 + affair/doc id whose sha256 file exists in .work/text; docs_meta 'h' is not a text-file prefix",
+  "reason": "n=1 mappable; no paired comparison possible",
+  "map_file": "raw/local_sha_map.json"
+ }
+}

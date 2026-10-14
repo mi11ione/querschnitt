@@ -1,0 +1,505 @@
+{
+ "Q1": {
+  "n_common": 297,
+  "S3 E5 names, identity": {
+   "all": {
+    "n": 297,
+    "top1": 0.566,
+    "ci1": [
+     0.509,
+     0.621
+    ],
+    "top3": 0.744,
+    "ci3": [
+     0.692,
+     0.79
+    ],
+    "kw": 0.714
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.577,
+    "ci1": [
+     0.518,
+     0.633
+    ],
+    "top3": 0.747,
+    "ci3": [
+     0.693,
+     0.795
+    ],
+    "kw": 0.722
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.375,
+    "ci1": [
+     0.185,
+     0.614
+    ],
+    "top3": 0.688,
+    "ci3": [
+     0.444,
+     0.858
+    ],
+    "kw": 0.562
+   },
+   "top2": 0.684
+  },
+  "S3 E5 names, permuted": {
+   "all": {
+    "n": 297,
+    "top1": 0.542,
+    "ci1": [
+     0.485,
+     0.598
+    ],
+    "top3": 0.724,
+    "ci3": [
+     0.67,
+     0.772
+    ],
+    "kw": 0.69
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.555,
+    "ci1": [
+     0.497,
+     0.612
+    ],
+    "top3": 0.73,
+    "ci3": [
+     0.675,
+     0.778
+    ],
+    "kw": 0.705
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.312,
+    "ci1": [
+     0.142,
+     0.556
+    ],
+    "top3": 0.625,
+    "ci3": [
+     0.386,
+     0.815
+    ],
+    "kw": 0.438
+   },
+   "top2": 0.69
+  },
+  "S3 E5 names, 2-order avg (geo, S3)": {
+   "all": {
+    "n": 297,
+    "top1": 0.606,
+    "ci1": [
+     0.549,
+     0.66
+    ],
+    "top3": 0.805,
+    "ci3": [
+     0.756,
+     0.846
+    ],
+    "kw": 0.758
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.619,
+    "ci1": [
+     0.561,
+     0.674
+    ],
+    "top3": 0.797,
+    "ci3": [
+     0.746,
+     0.84
+    ],
+    "kw": 0.769
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.375,
+    "ci1": [
+     0.185,
+     0.614
+    ],
+    "top3": 0.938,
+    "ci3": [
+     0.717,
+     0.989
+    ],
+    "kw": 0.562
+   },
+   "top2": 0.731
+  },
+  "(a) names+subtopics, identity": {
+   "all": {
+    "n": 297,
+    "top1": 0.65,
+    "ci1": [
+     0.594,
+     0.702
+    ],
+    "top3": 0.805,
+    "ci3": [
+     0.756,
+     0.846
+    ],
+    "kw": 0.798
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.658,
+    "ci1": [
+     0.601,
+     0.711
+    ],
+    "top3": 0.804,
+    "ci3": [
+     0.754,
+     0.846
+    ],
+    "kw": 0.808
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.5,
+    "ci1": [
+     0.28,
+     0.72
+    ],
+    "top3": 0.812,
+    "ci3": [
+     0.57,
+     0.934
+    ],
+    "kw": 0.625
+   },
+   "top2": 0.747
+  },
+  "(a) names+subtopics, permuted": {
+   "all": {
+    "n": 297,
+    "top1": 0.653,
+    "ci1": [
+     0.597,
+     0.705
+    ],
+    "top3": 0.808,
+    "ci3": [
+     0.759,
+     0.849
+    ],
+    "kw": 0.795
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.665,
+    "ci1": [
+     0.608,
+     0.718
+    ],
+    "top3": 0.808,
+    "ci3": [
+     0.758,
+     0.85
+    ],
+    "kw": 0.804
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.438,
+    "ci1": [
+     0.231,
+     0.668
+    ],
+    "top3": 0.812,
+    "ci3": [
+     0.57,
+     0.934
+    ],
+    "kw": 0.625
+   },
+   "top2": 0.764
+  },
+  "(c) names+subtopics, 2-order avg (arith)": {
+   "all": {
+    "n": 297,
+    "top1": 0.677,
+    "ci1": [
+     0.622,
+     0.727
+    ],
+    "top3": 0.875,
+    "ci3": [
+     0.833,
+     0.908
+    ],
+    "kw": 0.832
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.687,
+    "ci1": [
+     0.63,
+     0.738
+    ],
+    "top3": 0.879,
+    "ci3": [
+     0.836,
+     0.912
+    ],
+    "kw": 0.843
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.5,
+    "ci1": [
+     0.28,
+     0.72
+    ],
+    "top3": 0.812,
+    "ci3": [
+     0.57,
+     0.934
+    ],
+    "kw": 0.625
+   },
+   "top2": 0.818
+  },
+  "(c) names+subtopics, 2-order avg (geo)": {
+   "all": {
+    "n": 297,
+    "top1": 0.694,
+    "ci1": [
+     0.639,
+     0.743
+    ],
+    "top3": 0.852,
+    "ci3": [
+     0.807,
+     0.888
+    ],
+    "kw": 0.835
+   },
+   "strong": {
+    "n": 281,
+    "top1": 0.698,
+    "ci1": [
+     0.641,
+     0.748
+    ],
+    "top3": 0.854,
+    "ci3": [
+     0.808,
+     0.891
+    ],
+    "kw": 0.84
+   },
+   "weak": {
+    "n": 16,
+    "top1": 0.625,
+    "ci1": [
+     0.386,
+     0.815
+    ],
+    "top3": 0.812,
+    "ci3": [
+     0.57,
+     0.934
+    ],
+    "kw": 0.75
+   },
+   "top2": 0.811
+  },
+  "paired_top1_vs_E5avg": {
+   "S3 E5 names, identity": [
+    -0.074,
+    -0.007
+   ],
+   "S3 E5 names, permuted": [
+    -0.104,
+    -0.024
+   ],
+   "(a) names+subtopics, identity": [
+    -0.013,
+    0.104
+   ],
+   "(a) names+subtopics, permuted": [
+    -0.007,
+    0.098
+   ],
+   "(c) names+subtopics, 2-order avg (arith)": [
+    0.024,
+    0.118
+   ],
+   "(c) names+subtopics, 2-order avg (geo)": [
+    0.037,
+    0.138
+   ]
+  },
+  "agree_q1a_q1b": 195,
+  "agree_e5a_e5b": 196,
+  "top_confusions_c": [
+   "Wirtschaftspolitik -> Rechtsordnung: 6",
+   "Energie -> Umweltschutz: 6",
+   "Soziale Gruppen -> Rechtsordnung: 5",
+   "Sozialversicherungen -> Gesundheit, Sozialhilfe, Spo: 4",
+   "Landwirtschaft -> Umweltschutz: 3",
+   "Bevölkerung und Arbeit -> Rechtsordnung: 3"
+  ],
+  "builds": {
+   "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 594
+  },
+  "pt_per_call": 1604.7,
+  "min_mass": 0.9955
+ },
+ "Q2": {
+  "n": 262,
+  "within_top_chapter": {
+   "S3 E5 names, 2-order avg (geo, S3)": {
+    "chapter_top1": 0.611,
+    "e2e": 0.435,
+    "ci": [
+     0.376,
+     0.496
+    ],
+    "k": 114
+   },
+   "(c) names+subtopics, 2-order avg (arith)": {
+    "chapter_top1": 0.691,
+    "e2e": 0.511,
+    "ci": [
+     0.451,
+     0.571
+    ],
+    "k": 134
+   },
+   "(c) names+subtopics, 2-order avg (geo)": {
+    "chapter_top1": 0.706,
+    "e2e": 0.527,
+    "ci": [
+     0.466,
+     0.586
+    ],
+    "k": 138
+   }
+  },
+  "l1": "q1avg",
+  "gold_chapter_in_shown": [
+   227,
+   0.866,
+   [
+    0.82,
+    0.902
+   ]
+  ],
+  "n_chapters_shown": {
+   "3": 186,
+   "2": 76
+  },
+  "mean_options": 21.9,
+  "joint_order_a": {
+   "n": 262,
+   "e2e": 0.538,
+   "ci": [
+    0.478,
+    0.598
+   ],
+   "k": 141,
+   "chapter_top1": 0.76,
+   "ci_ch": [
+    0.704,
+    0.807
+   ],
+   "none_top": 6
+  },
+  "joint_order_b": {
+   "n": 262,
+   "e2e": 0.469,
+   "ci": [
+    0.41,
+    0.53
+   ],
+   "k": 123,
+   "chapter_top1": 0.714,
+   "ci_ch": [
+    0.656,
+    0.765
+   ],
+   "none_top": 23
+  },
+  "joint_2order_avg": {
+   "n": 262,
+   "e2e": 0.542,
+   "ci": [
+    0.481,
+    0.601
+   ],
+   "k": 142,
+   "chapter_top1": 0.737,
+   "ci_ch": [
+    0.68,
+    0.786
+   ],
+   "none_top": 14
+  },
+  "agree_a_b": 172,
+  "joint_x_L1prior_beta0.5": {
+   "n": 262,
+   "e2e": 0.534,
+   "ci": [
+    0.474,
+    0.594
+   ],
+   "k": 140,
+   "chapter_top1": 0.76,
+   "ci_ch": [
+    0.704,
+    0.807
+   ],
+   "none_top": 0
+  },
+  "joint_x_L1prior_beta1.0": {
+   "n": 262,
+   "e2e": 0.534,
+   "ci": [
+    0.474,
+    0.594
+   ],
+   "k": 140,
+   "chapter_top1": 0.775,
+   "ci_ch": [
+    0.72,
+    0.821
+   ],
+   "none_top": 0
+  },
+  "paired_joint_vs_withintop_sameL1": [
+   -0.023,
+   0.084
+  ],
+  "paired_joint_vs_S3_0435": [
+   0.042,
+   0.172
+  ],
+  "chapter_L1_top1_same_items": 0.691,
+  "paired_chapter_joint_vs_L1": [
+   0.0,
+   0.095
+  ],
+  "chapter_joint_vs_L1_flips": {
+   "gain": 26,
+   "loss": 14
+  },
+  "builds": {
+   "swiss-ai/apertus-v1.5-8b|vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840": 524
+  },
+  "pt_per_call": 679.2,
+  "min_mass": 0.99867
+ }
+}

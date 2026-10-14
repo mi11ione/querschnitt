@@ -204,12 +204,18 @@ def named_perm(n: int) -> list[int]:
     return p
 
 
-def named_prompt(scheme: dict, a: dict, perm: list[int] | None = None) -> tuple[str, str, list[str]]:
-    """perm[i] = the option (index into options + none) listed under code i; the input block as in the chapter step."""
+def named_prompt(scheme: dict, a: dict, perm: list[int] | None = None,
+                 examples: list[tuple[str, int]] | None = None) -> tuple[str, str, list[str]]:
+    """perm[i] = the option (index into options + none) listed under code i; the input block as in the chapter step.
+    `examples` = [(title, option index)] shown between list and item in the S9 D3 shape (S21)."""
     f = scheme["frame"]["de"]
     names = [o["name"]["de"] for o in scheme["options"]] + [scheme["none"]["name"]["de"]]
     perm = perm or list(range(len(names)))
     codes = CODES_NAMED[:len(names)]
     lines = "\n".join(f"{codes[i]} = {names[perm[i]]}" for i in range(len(names)))
-    user = f"{f['ask']}\n\n{f['head']}:\n{lines}\n\nGeschäft:\n{affair_block(a, 'de')}\n\n{f['fmt']}"
+    ex = ""
+    if examples:
+        inv = {perm[i]: i for i in range(len(names))}
+        ex = f"{EX_HEAD}\n" + "\n".join(f"- {ti}\n  → Thema: {codes[inv[c]]} ({names[c]})" for ti, c in examples) + "\n\n"
+    user = f"{f['ask']}\n\n{f['head']}:\n{lines}\n\n{ex}Geschäft:\n{affair_block(a, 'de')}\n\n{f['fmt']}"
     return user, '{"' + f["key"] + '": "', codes

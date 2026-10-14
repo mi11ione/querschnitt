@@ -20,3 +20,5 @@ app/data/detail/
 app/data/topics.jsonl.gz
 app/data/bodies.json
 dist/
+eval/s25/raw_pages.jsonl.gz
+eval/s25/cdx/

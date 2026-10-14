@@ -10,7 +10,7 @@ fake OpenAI-compatible endpoint only.
 ```sh
 make install                         # uv venv .venv (Python 3.12) + editable install with dev and Postgres extras
 make run                             # API + app on SQLite with the shipped data -> http://127.0.0.1:8000
-make test                            # 68 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~30 s
+make test                            # 71 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~30 s
 make eval GOLD=data/eval/gold_dvs30.csv          # recall + misses by level for a positives list
 make eval GOLD=data/eval/gold_aps_s9.csv         # APS editors' chapters (multi-class)
 make delta                           # nightly: fresh OPD export -> new/changed affairs -> batch -> rows (SINCE=yesterday)
@@ -116,6 +116,10 @@ Every row carries `label` {de, fr, it} from the scheme files.
   ends with `stop: cap` and `unread`, never as if complete. The term request failed with `FileNotFoundError` because
   the ledger's directory did not exist yet at the first call (both the name and the terms then fell back silently);
   the directory is created up front and a terms failure is reported in the `terms` event.
+- Verify (S27 rule, as batch/compose for `verify: true` files): every flag (p ≥ 0.5) gets the stricter second question
+  (`engine.verify`, order a; b when 0.1 < p < 0.9); an unverified flag stays a flag and goes to `please_check`. Decisions
+  stream `{id, p, flag, verified, p_verify, lane, …}`; the summary and the running line report flagged / verified /
+  please check; saved files carry `verify: true` (`"verify": false` in the request turns it off).
 - Save: `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, examples as `{title, match}`, terms,
   subtopics, sentence; no bare `yes:` key) and the run's decisions as `adhoc/<slug>` rows; `delta` picks up every file
   in `schemes/adhoc/` (`scheme.adhoc_topics()`).

@@ -99,7 +99,7 @@ def test_save_writes_topic_file_and_rows(api, tmp_path):
     text = (tmp_path / "adhoc_yaml" / f"{r['slug']}.yaml").read_text()
     assert "\nyes:" not in text and "\n  yes:" not in text
     doc = yaml.safe_load(text)
-    assert list(doc)[:6] == ["id", "names", "question", "answer_yes", "cutoff", "examples"]
+    assert list(doc)[:7] == ["id", "names", "question", "answer_yes", "cutoff", "verify", "examples"] and doc["verify"] is True
     assert doc["id"] == f"adhoc/{r['slug']}" and doc["cutoff"] == 0.5 and set(doc["question"]) == {"de", "fr", "it"}
     assert doc["examples"][0] == {"title": "Wolfsregulierung im Wallis", "match": True} and doc["examples"][1]["match"] is False
     assert out["rows"] == 6
@@ -202,3 +202,39 @@ def test_user_stop_is_reported(api, fake):
     st = wait(api, r["slug"])
     fake.latency = 0.0
     assert st["stop"] == "stopped" and st["summary"]["unread"] > 0
+
+
+def test_flags_are_verified(api, fake):
+    """S27 rule: each flag gets the stricter second question; an unverified flag stays a flag but goes to please_check."""
+    fake.central_words = ["digitalisierung"]          # the fake says «central» only for these; «digital…» alone is a flag
+    r = api.post("/adhoc", json={"sentence": "Digitalisierung der Verwaltung", "lang": "de", "period": "2026-09-01..2026-10-31"}).json()
+    assert r["topic"]["verify"] is True
+    st = wait(api, r["slug"])
+    flags = [d for d in st["decisions"] if d["flag"]]
+    assert flags and all(d["verified"] is None for d in st["decisions"] if not d["flag"])
+    for d in flags:
+        a = api.app.state.store.affair(d["id"])
+        central = "digitalisierung" in (a["title"] + " " + (a["title_long"] or "")).lower()
+        assert d["verified"] is central, (d, a["title"])
+        if not central:
+            assert d["lane"] == "please_check"
+    s = st["summary"]
+    assert s["flagged"] == len(flags) and s["verified"] == sum(d["verified"] is True for d in flags)
+    assert s["please_check"] == sum(d["lane"] == "please_check" for d in st["decisions"]) and s["verified"] < s["flagged"]
+    ev = sse(api.get(f"/adhoc/{r['slug']}/stream").text)
+    one = next(d for k, d in ev if k == "decision" and d["flag"])
+    assert {"id", "p", "flag", "verified", "lane"} <= set(one)
+    from querschnitt.fake_endpoint import VERIFY_Q
+    vq = [b for b in fake.requests if b["messages"][-1]["role"] == "assistant" and VERIFY_Q.search(b["messages"][0]["content"])]
+    assert len(vq) >= len(flags)                      # one verify per flag (order b where 0.1 < p < 0.9)
+    out = api.post(f"/adhoc/{r['slug']}/save", json={"by": "t"}).json()
+    assert "verify: true" in out["yaml"]
+    fake.central_words = None
+
+
+def test_verify_can_be_switched_off(api, fake):
+    r = api.post("/adhoc", json={"sentence": "Digitalisierung", "lang": "de", "period": "2026-09-01..2026-10-31", "verify": False}).json()
+    st = wait(api, r["slug"])
+    assert r["topic"]["verify"] is False and all(d["verified"] is None for d in st["decisions"])
+    from querschnitt.fake_endpoint import VERIFY_Q
+    assert not any(VERIFY_Q.search(b["messages"][0]["content"]) for b in fake.requests)

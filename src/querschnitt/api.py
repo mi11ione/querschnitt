@@ -279,7 +279,7 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         try:
             job = ah.start(payload.get("sentence", ""), payload.get("lang", "de"), payload.get("examples"),
                            payload.get("period"), payload.get("from"), payload.get("to"), payload.get("terms"),
-                           payload.get("limit"), payload.get("generate", True))
+                           payload.get("limit"), payload.get("generate", True), payload.get("verify", True))
         except ValueError as e:
             raise HTTPException(422, str(e))
         return {"slug": job.slug, "topic": job.topic, "terms": job.terms, "terms_pending": job.terms_thread.is_alive(),

@@ -120,7 +120,7 @@ def build_topic(sentence: str, lang: str, gen: dict | None, slug: str) -> dict:
         q[l] = FRAME[l][0].format(name=names[l], scope=sc)
         yes[l] = FRAME[l][1].format(name=names[l])
     return dict(id=f"adhoc/{slug}", names=names, scope=scopes, question=q, answer_yes=yes, cutoff=0.5,
-                sentence=sentence, lang=lang, generated=bool(gen))
+                sentence=sentence, lang=lang, generated=bool(gen), verify=True)
 
 
 class CapReached(RuntimeError):
@@ -151,7 +151,8 @@ class Job:
         out = [x for x in d if x["sample"] == "outside"]
         k = sum(x["flag"] for x in out)
         lo, hi = wilson(k, len(out))
-        s = dict(read=len(d), flagged=sum(x["flag"] for x in d), seconds=round(time.time() - self.t0, 1), **self.info)
+        s = dict(read=len(d), flagged=sum(x["flag"] for x in d), verified=sum(x.get("verified") is True for x in d),
+                 please_check=sum(x.get("lane") == "please_check" for x in d), seconds=round(time.time() - self.t0, 1), **self.info)
         s.update(period=list(self.period), period_name=self.info.get("period_name"), calls=self.calls, budget=self.budget,
                  unread=max(0, (self.info.get("total") or 0) - len(d)), stop=self.stop_reason)
         if self.info.get("mode") == "candidates":
@@ -356,7 +357,7 @@ class Adhoc:
     # ------------------------------------------------------------------ run
     def start(self, sentence: str, lang: str = "de", examples: list | None = None, period: str | None = None,
               date_from: str | None = None, date_to: str | None = None, terms: dict | None = None,
-              limit: int | None = None, generate: bool = True) -> Job:
+              limit: int | None = None, generate: bool = True, verify: bool = True) -> Job:
         if not sentence or not sentence.strip():
             raise ValueError("sentence is required")
         lang = lang if lang in LANGS else "de"
@@ -374,6 +375,7 @@ class Adhoc:
         base = slugify(gen["name"].get("de") or sentence) if (gen and isinstance(gen.get("name"), dict)) else slugify(sentence)
         slug = self._unique(base)
         topic = build_topic(sentence, lang, gen, slug)
+        topic["verify"] = bool(verify)
         ex = []
         for e in examples or []:
             if isinstance(e, dict):
@@ -454,6 +456,19 @@ class Adhoc:
                 if need_yn_b(ra["p_yes"]):
                     self._count(job)
                     rb = eng.yn(job.topic, a, "b", job.examples or None)
+                d = yn_decision(ra, rb, job.topic["cutoff"])
+                verified, pv, vids = None, None, []
+                if job.topic.get("verify") and d["flag"]:              # S27: the stricter question, on flags only
+                    self._count(job)
+                    va = eng.verify(job.topic, a, "a")
+                    vb = None
+                    if need_yn_b(va["p_yes"]):
+                        self._count(job)
+                        vb = eng.verify(job.topic, a, "b")
+                    pv = (va["p_yes"] + vb["p_yes"]) / 2 if vb else va["p_yes"]
+                    verified, vids = pv >= 0.5, [va["pid"]] + ([vb["pid"]] if vb else [])
+                    if not verified:
+                        d["lane"] = "please_check"                    # the flag stays; a person decides
             except CapReached:
                 job.stop_reason = job.stop_reason or "cap"; job.stop.set(); return
             except (BuildChanged, InterruptedError, RuntimeError) as e:
@@ -462,11 +477,11 @@ class Adhoc:
                 job.stop.set(); return
             if self.client.expect_build is None and ra["meta"].get("fp"):
                 self.client.expect_build = ra["meta"]["fp"]            # one build per process; a change stops the run
-            d = yn_decision(ra, rb, job.topic["cutoff"])
-            rec = dict(id=a["id"], p=round(d["p"], 4), flag=bool(d["flag"]), lane=d["lane"], t=round(time.time() - job.t0, 2),
+            rec = dict(id=a["id"], p=round(d["p"], 4), flag=bool(d["flag"]), verified=verified,
+                       p_verify=None if pv is None else round(pv, 4), lane=d["lane"], t=round(time.time() - job.t0, 2),
                        sample=a["sample"], title=a["title"], body=a["body_key"], parl=a.get("parl"), level=a.get("level"),
                        lang=a["lang"], date=a["date"], p_a=round(d["p_a"], 4), p_b=None if d["p_b"] is None else round(d["p_b"], 4),
-                       model=ra["meta"].get("model"), build=ra["meta"].get("fp"), prompt_id=",".join([ra["pid"]] + ([rb["pid"]] if rb else [])),
+                       model=ra["meta"].get("model"), build=ra["meta"].get("fp"), prompt_id=",".join([ra["pid"]] + ([rb["pid"]] if rb else []) + vids),
                        usd=round(ra["meta"].get("usd", 0) + (rb["meta"].get("usd", 0) if rb else 0), 7))
             with wlock:
                 job.decisions[a["id"]] = rec
@@ -492,7 +507,7 @@ class Adhoc:
 
     def _progress(self, job: Job) -> dict:
         s = job.summary()
-        s["line"] = f"read {s['read']} / flagged {s['flagged']} / {s['seconds']:.1f} s"
+        s["line"] = f"read {s['read']} / flagged {s['flagged']} / verified {s['verified']} / please check {s['please_check']} / {s['seconds']:.1f} s"
         return s
 
     # ------------------------------------------------------------------ save
@@ -507,7 +522,8 @@ class Adhoc:
             title = e.get("title") or ((self.store.affair(int(e["id"])) or {}).get("title") if e.get("id") else None)
             if title:
                 ex.append(dict(title=title, match=bool(e.get("match", e.get("yes", True)))))
-        doc = dict(id=t["id"], names=t["names"], question=t["question"], answer_yes=t["answer_yes"], cutoff=0.5, examples=ex,
+        doc = dict(id=t["id"], names=t["names"], question=t["question"], answer_yes=t["answer_yes"], cutoff=0.5,
+                   verify=bool(t.get("verify", True)), examples=ex,
                    terms={l: [x["term"] for x in job.terms.get(l, [])] for l in LANGS}, subtopics=t.get("subtopics") or [],
                    sentence=t["sentence"], created=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                    created_by=by or None)

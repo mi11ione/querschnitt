@@ -26,6 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 YES_WORDS = ["digital", "numérique", "digitale", "wolf", "loup", "lupo"]
 NO_ANSWERS = ("Nein, anderes Thema", "Non, autre thème", "No, altro tema")
+VERIFY_Q = re.compile(r"zentrales Thema|thème central|tema centrale")
 ITEM = re.compile(r"\n(?:Geschäft|Objet|Oggetto):\n(.*?)\n\n", re.S)
 
 
@@ -43,6 +44,7 @@ class FakeEndpoint:
                  n429: int = 0, topic_json: dict | None = None, gen_text: str | None = None):
         self.mode, self.yes_words, self.fp, self.model = mode, [w.lower() for w in (yes_words or YES_WORDS)], fingerprint, model
         self.latency, self.n429, self.topic_json, self.gen_text = latency, n429, topic_json, gen_text
+        self.central_words: list[str] | None = None      # verify question (S27): «central» only for these (default: yes words)
         self.requests: list[dict] = []
         self.lock = threading.Lock()
         fake = self
@@ -107,8 +109,13 @@ class FakeEndpoint:
         if prefill is not None:
             if any(k in prefill for k in ('"antwort"', '"reponse"', '"risposta"')):
                 m = ITEM.search(user + "\n\n")
-                py = self.p_yes(m.group(1) if m else user)
-                a_is_no = any(f"A = {n}" in user for n in NO_ANSWERS)
+                item = m.group(1) if m else user
+                if VERIFY_Q.search(user):                  # the stricter second question on flags
+                    words = [w.lower() for w in (self.central_words or self.yes_words)]
+                    py = 0.9 if any(w in item.lower() for w in words) else 0.15
+                else:
+                    py = self.p_yes(item)
+                a_is_no = any(f"A = {n}" in user for n in NO_ANSWERS) or bool(re.search(r"^A = (Nein|Non|No)$", user, re.M))
                 dist = {"A": 1 - py, "B": py} if a_is_no else {"A": py, "B": 1 - py}
             else:
                 codes = re.findall(r"^([A-Za-z]|\d+)(?: =|\.) ", user, re.M)

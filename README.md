@@ -6,6 +6,9 @@ should check, and a quoted sentence from the affair that supports it. A new topi
 parliament, no training. Every topic decision is made by [Apertus](https://www.swiss-ai.org/apertus), Switzerland's open model.
 
 Built for Hack Apertus Liebefeld (18–19 Oct 2026), challenge «Topic classification for OpenParlData».
+Live (static, read-only): https://querschnitt.mi11ion.io
+
+![Überblick: one small Switzerland per topic, every canton shaded by the topic's share of its affairs](docs/img/ueberblick.png)
 
 ## Measured
 Human labels first. Full table with intervals, baselines and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md).
@@ -53,6 +56,8 @@ prefill, served build, throughput) before a run.
 - USD 0.333 per 1,000 affairs for chapter, subtopic and one ad-hoc topic (USD 0.314 chapter step alone).
 - About 61.5 minutes per 1,000 affairs at this job's own 0.969 requests/s on a key shared with other jobs.
 - All 326,123 OPD affairs, chapter step: 843,173 requests, USD 102.24, about 241.8 h at that rate — a projection, not run; a dedicated endpoint shortens it in proportion to its rate.
+
+![Why this label: the chapter read twice, the two readings side by side, the quoted sentence](docs/img/entscheid.png)
 
 ## Output
 A `topics` row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); Postgres DDL in [sql/topics.sql](sql/topics.sql)):

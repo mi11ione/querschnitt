@@ -46,3 +46,7 @@ def adhoc_topics() -> list[str]:
 @functools.lru_cache(maxsize=None)
 def flat(name: str) -> dict:
     return yaml.safe_load((HERE / f"{name}.yaml").read_text())
+
+
+def named(name: str) -> dict:
+    return flat(name)

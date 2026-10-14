@@ -9,6 +9,8 @@ day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
 {
   echo "== $(date '+%F %T') nightly start (endpoint cut for first pass: $cut)"
   t0=$(date +%s)
+  # the store mirrors the corpus run first (latest export of its rows; reloading identical rows adds nothing)
+  $PY -m querschnitt export --out app/data --topics-file > /dev/null && $PY -m querschnitt load --auto
   if [ "$cut" = 1 ]; then
     caffeinate -i $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0
     echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics

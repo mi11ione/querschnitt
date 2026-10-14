@@ -24,7 +24,7 @@ from . import prompts as P
 from .client import BuildChanged, Client, Endpoint
 from .engine import Engine, mean_p, need_ch2, need_yn_b
 from .examples import ExamplePool
-from .scheme import APS, adhoc, flat
+from .scheme import APS, adhoc, flat, named
 
 BILINGUAL = {"BE", "FR", "VS"}
 
@@ -83,7 +83,8 @@ class Store:
             self.build_dir().mkdir(exist_ok=True)
 
     def write(self, row: dict):
-        fn = ("yn_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("yn:") else row["step"].replace(":", "_").replace("/", "_")
+        fn = ("yn_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("yn:") else \
+            ("named_" + row["step"].split(":")[1]) if row["step"].startswith("named:") else row["step"].replace(":", "_").replace("/", "_")
         with self.lock:
             f = self.files.get(fn)
             if f is None:
@@ -174,6 +175,14 @@ class Runner:
                     if t and l in ("de", "fr"):
                         u, p, codes = P.flat_prompt(sch, t, l)
                         self._step(P.pid(u, p), lambda t=t, l=l: dict(self.engine.flat(sch, t, l), aid=a["id"], ih=ih))
+            for sid in (self.args.named or []):
+                sch = named(sid)
+                n = len(sch["options"]) + 1
+                u, p, _ = P.named_prompt(sch, a)
+                ra = self._step(P.pid(u, p), lambda: dict(self.engine.named(sch, a), aid=a["id"], ih=ih))
+                if max(ra["p"]) < 0.9:
+                    u, p, _ = P.named_prompt(sch, a, P.named_perm(n))
+                    self._step(P.pid(u, p), lambda: dict(self.engine.named(sch, a, True), aid=a["id"], ih=ih))
             if "ev" in S:
                 self.evidence(a, r1, r2, ih)
             self.counts["affairs"] += 1
@@ -273,6 +282,7 @@ def main(argv=None):
     r.add_argument("--topics", nargs="*", default=["digitalisierung"])
     r.add_argument("--steps", nargs="*", default=["ch", "sub", "yn"], help="ch sub yn bi be ev")
     r.add_argument("--no-examples", dest="examples", action="store_false")
+    r.add_argument("--named", nargs="*", default=[], help="named scheme files to score (e.g. bs-themen)")
     r.add_argument("--read-from", nargs="*", default=[], help="other run dirs whose rows decide what evidence to fetch")
     r.add_argument("--conc", type=int, default=6)
     r.add_argument("--max-rate", type=float, default=1.6)

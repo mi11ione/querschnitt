@@ -193,3 +193,23 @@ def flat_prompt(scheme: dict, title: str, lang: str) -> tuple[str, str, list[str
     lines.append(f"{codes[len(opts)]} = {scheme['none']['name'][lang]}")
     user = f"{f['ask']}\n\n{f['head']}:\n" + "\n".join(lines) + f"\n\n{f['item']}:\n{f['title']}: {title}\n\n{f['fmt']}"
     return user, '{"' + f["key"] + '": "', codes
+
+
+# ---- named schemes from a file (a list of topic names, e.g. Basel-Stadt's own themes, S20): A–Z then a–z, last = none
+CODES_NAMED = [chr(ord("A") + i) for i in range(26)] + [chr(ord("a") + i) for i in range(26)]
+
+
+def named_perm(n: int) -> list[int]:
+    p = list(range(n)); random.Random(7).shuffle(p)
+    return p
+
+
+def named_prompt(scheme: dict, a: dict, perm: list[int] | None = None) -> tuple[str, str, list[str]]:
+    """perm[i] = the option (index into options + none) listed under code i; the input block as in the chapter step."""
+    f = scheme["frame"]["de"]
+    names = [o["name"]["de"] for o in scheme["options"]] + [scheme["none"]["name"]["de"]]
+    perm = perm or list(range(len(names)))
+    codes = CODES_NAMED[:len(names)]
+    lines = "\n".join(f"{codes[i]} = {names[perm[i]]}" for i in range(len(names)))
+    user = f"{f['ask']}\n\n{f['head']}:\n{lines}\n\nGeschäft:\n{affair_block(a, 'de')}\n\n{f['fmt']}"
+    return user, '{"' + f["key"] + '": "', codes

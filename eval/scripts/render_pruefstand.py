@@ -281,10 +281,27 @@ w("")
 
 ns = T["neutrality_s9"]
 bd = ns["breakdowns"]
-w("### 8 · Neutrality on human labels (S9, no new calls)")
+w("### 8 · Neutrality on human labels (S9, no new calls; S22 Italian)")
 w("")
 w(f"Language, same {num(ns['n'], 0)} affairs scored from the German vs the French text (paired): German − French "
   f"{r(ns['result'], signed=True)}, McNemar p {ns['result']['p_mcnemar']}.")
+w("")
+it = T["aps_italian_vs_german"]; im = it["results_more"]; idf = im[0]; ide = it["baselines"][0]
+iwt, ito = im[3], im[4]
+w(f"**Italian vs German (S22, {L('pre-registered', it['prereg'])}).** The S9 affairs whose Italian title differs from the French one "
+  f"({num(it['n'], 0)} of {num(ns['n'], 0)}), gold the APS editors' chapter; Italian title + long title + the Italian submitted text "
+  "where it differs from the French, D1 in the Italian frame (chapter names Italian, subtopic names German as published), both code orders; "
+  "paired against the S9 German D1 on the same affairs.")
+w("")
+w("| n = " + num(it["n"], 0) + " | Italian | German (S9 D1) | German − Italian, paired |")
+w("|---|---|---|---|")
+w(f"| chapter top-1 | **{r(it['result'])}** | {r(ide)} | {L(sgn(idf['value'], 4) + ci(idf['ci95'], 3, signed=True), idf['at'])} |")
+w(f"| chapter top-3 | {r(im[1])} | {r(im[2])} | |")
+w(f"| with Italian submitted text (n {num(iwt['n'])}) | {r(iwt)} | {r(iwt['german_same_items'])} | |")
+w(f"| title only (n {num(ito['n'])}) | {r(ito)} | {r(ito['german_same_items'])} | |")
+w("")
+w("Shares are k / n recovered from the stored 4-decimal values and truncated; the difference is a paired bootstrap (2,000), "
+  "shown at 4 decimals because it is near zero, bounds rounded outward.")
 w("")
 
 
@@ -441,8 +458,24 @@ w(f"| Submitted text added to title (S8b, federal) | {tx['n']} | precision {L(nu
 em = {x["metric"]: x for x in ev["results_more"]}
 w(f"| Evidence: the quoted sentence supports the chapter (S12) | {ev['n']} | {r(ev['result'])}; chapter right {r(em['when the chapter is right (APS editors)'])}, "
   f"wrong {r(em['when the chapter is wrong'])} | exact-substring check {L('120/120', em['quote is an exact substring']['at'])} |")
+ep = T["evidence_support_production"]; pm = {x["metric"]: x for x in ep["results_more"]}
+pu = pm["quote is the exact substring at its stored offsets (inputs unchanged since the row)"]
+pa = pm["quote is the exact substring at its stored offsets (all rows)"]
+w(f"| **Production check:** evidence on 200 stored quotes of the 2026 production run, the quoted sentence supports the topic (S23) | {ep['n']} | "
+  f"**{r(ep['result'])}**; chapter quotes {r(pm['chapter quotes (shipped APS chapter)'])}, «Digitalisierung» quotes "
+  f"{r(pm['«Digitalisierung» quotes'])} | exact substring at the stored offsets {L(str(pu['k']) + '/' + str(pu['n']), pu['at'])} "
+  f"(inputs unchanged since the row; {L(str(pa['k']) + '/' + str(pa['n']), pa['at'])} of all rows) |")
 w("")
 w("The loop row is unweighted and on a sample that over-represents flagged affairs; text makes the model stricter, not more complete.")
+w("")
+pj = ep["judge"]; pb_ = ep["breakdowns"]
+w(f"S23 ({L('PREREG-BUILD.md § S23', ep['prereg'])}) draws 100 chapter quotes (the shipped APS chapter) and 100 «Digitalisierung» quotes "
+  f"(flagged or please-check rows) at random among 2026 affairs with a stored quote; the packet shows the input as the model saw it. "
+  f"Judge: two blind Claude runs, run A = run B {r(pm['judge run A = run B'])}, κ {L(num(pj['kappa_AB'], 2), pj['at'])}; "
+  f"{L(str(pj['disagreements']), pj['at'])} disagreements went to a tie-break run. S12 ({num(ep['baselines'][0]['value'])} on "
+  f"{ep['baselines'][0]['n']} federal affairs) is a descriptive comparison only, not a test. By level: "
+  + " · ".join(f"{c['cell']} {L(num(c['value']) + ci(c['ci95']) + ', n ' + str(c['n']), pb_['by_level']['at'])}" + (" (small)" if c.get("small") else "")
+               for c in pb_["by_level"]["cells"]) + ".")
 w("")
 
 s6 = T["aps_cantonal_communal"]

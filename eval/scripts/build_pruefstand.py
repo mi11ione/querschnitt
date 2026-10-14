@@ -542,7 +542,7 @@ tests.append(dict(
     split="no new calls; reported whatever it showed", prereg=pre(ADD, "S14 neutrality (no calls)"),
     sources=[S14, S14M], build="no calls", date=g(S14, "generated_utc")))
 
-# ================================================================ build week (eval/PREREG-BUILD.md): S16–S21, S8 full census
+# ================================================================ build week (eval/PREREG-BUILD.md): S16–S23, S8 full census
 def wilson_exact(k, n, z=1.96):
     p = k / n; d = 1 + z * z / n; c = (p + z * z / (2 * n)) / d; h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
     return c - h, c + h
@@ -817,6 +817,105 @@ tests.append(dict(
     prereg=pre(PRE, "## S8 — \"Digitalisierung\" over every affair of 2026"),
     sources=[S8F, f"{QE}/s8full/analyze.py", S8M, f"{I2}/s8-dvs/key.jsonl"], build=s8f["build"], model=MODEL,
     judge_build="Claude (blind agent runs); Qwen-SEA-LION aisingapore/Qwen-SEA-LION-v4-32B-IT", date="2026-10-14"))
+
+
+# ---------------------------------------------------------------- S22 (Italian vs German, human gold) and S23 (evidence on production rows)
+def exact_share(stored, n):
+    """S22 stores shares rounded to 4 (or fewer) decimals. Recover the count k (the only integer with k/n within half a unit of the
+    stored digits) and return (k, k/n): the exact share is what gets displayed (truncated), so a 0.70296 stored as 0.703 never
+    shows as 0.703."""
+    tol = 0.5 * 10 ** -max(_dec(stored), 1) + 1e-12
+    ks = [k for k in range(n + 1) if abs(k / n - stored) <= tol]
+    assert len(ks) == 1, (stored, n, ks)
+    return ks[0], ks[0] / n
+
+
+def exact_diff(stored, n):
+    """paired differences / bootstrap percentiles of 0/1 outcomes are multiples of 1/n; recover them exactly."""
+    j = round(stored * n)
+    assert abs(j / n - stored) <= 0.5e-4 + 1e-12 and abs((j + 1) / n - stored) > 0.5e-4 and abs((j - 1) / n - stored) > 0.5e-4, (stored, n)
+    return j / n
+
+
+def _dec(x):
+    s_ = repr(float(x)); return len(s_.split(".")[1]) if "." in s_ else 0
+
+
+S22R, S23R = f"{QE}/s22/results.json", f"{QE}/s23/results.json"
+s22 = g(S22R); N22 = s22["n"]
+EXN = "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source"
+
+
+def s22share(*keys, metric, n=None, ci=None):
+    n = n or N22; stored = g(S22R, *keys)
+    k, v = exact_share(stored, n)
+    out = {"metric": metric, "value": v, "value_source": stored, "k": k, "n": n, "derived": EXN}
+    if ci is not None: out["ci95"] = list(ci)
+    out["at"] = loc(S22R, *keys)
+    return out
+
+
+dmi = s22["de_minus_it"]
+tests.append(dict(
+    id="aps_italian_vs_german", gold="human", subject="Apertus",
+    title_de="Sprache, Bund (APS-Redaktion): Italienisch gegen Deutsch auf denselben S9-Geschäften (S22)",
+    title_fr="Langue, Confédération (rédaction APS) : italien contre allemand sur les mêmes objets S9 (S22)",
+    n=N22, design="die S9-Bundesgeschäfte, deren italienischer OPD-Titel vom französischen abweicht (1'350 von 1'357); Gold = APS-Kapitel der Redaktion; "
+    "IT-Titel + IT-Langtitel + italienischer eingereichter Text (erste 1'500 Zeichen, wo er vom französischen abweicht, sonst nur Titel); "
+    "D1 im italienischen Rahmen (Kapitelnamen italienisch, Unterthemen deutsch wie publiziert), beide Code-Reihenfolgen; "
+    "gepaart gegen S9 D1 Deutsch auf denselben Geschäften",
+    result=s22share("it_top1", "acc", metric="chapter top-1, Italian input (D1, Italian frame)", ci=s22["it_top1"]["ci"]),
+    results_more=[{"metric": "paired Δ top-1 German − Italian (same items)", "value": exact_diff(dmi["diff"], N22), "value_source": dmi["diff"],
+                   "ci95": [exact_diff(dmi["ci"][0], N22), exact_diff(dmi["ci"][1], N22)], "ci95_source": list(dmi["ci"]),
+                   "method": "paired bootstrap 2,000, percentile (random.Random(2026))", "display_decimals": 4,
+                   "derived": "difference and percentiles are multiples of 1/n; recovered exactly from the stored 4-decimal values",
+                   "at": loc(S22R, "de_minus_it")},
+                  s22share("it_top3", metric="chapter top-3, Italian"),
+                  s22share("de_top3", metric="chapter top-3, German (S9 D1, same items)"),
+                  dict(s22share("it_with_text", "acc", metric="top-1, Italian with submitted text", n=g(S22R, "it_with_text", "n")),
+                       german_same_items=s22share("it_with_text", "de_same_items", metric="German, same items", n=g(S22R, "it_with_text", "n"))),
+                  dict(s22share("it_title_only", "acc", metric="top-1, Italian title only", n=g(S22R, "it_title_only", "n")),
+                       german_same_items=s22share("it_title_only", "de_same_items", metric="German, same items", n=g(S22R, "it_title_only", "n")))],
+    baselines=[dict(s22share("de_top1", "acc", metric="chapter top-1, German", ci=s22["de_top1"]["ci"]),
+                    name="German input, S9 D1 on the same items")],
+    split="held-out S9 items, pre-registered; nothing tuned", prereg=pre(PB, "— S22 Italian on human labels"),
+    sources=[S22R, f"{QE}/s22/analyze.py", f"{QE}/s22/raw.jsonl", S9R], build=s22["builds"][0], model=MODEL, date="2026-10-14"))
+
+s23 = g(S23R)
+P23 = lambda *keys, metric: dict(prop(S23R, *keys, value="rate", ci="ci95"), metric=metric)
+tests.append(dict(
+    id="evidence_support_production", gold="ai-judge", subject="Apertus",
+    title_de="Beleg auf Produktionszeilen 2026: der gespeicherte Satz stützt das Thema (Produktionsprüfung, blinder KI-Richter)",
+    title_fr="Preuve sur les lignes de production 2026 : la phrase enregistrée soutient le thème (contrôle de production, juge IA à l'aveugle)",
+    n=s23["n_packet"], production_check=True,
+    design="200 Belegzeilen des Korpuslaufs (runs/ev, runs/main), zufällig (random.Random(20261023)) unter Geschäften 2026 mit gespeichertem Zitat: "
+    "100 Kapitel-Zitate (ausgeliefertes APS-Kapitel), 100 «Digitalisierung»-Zitate (markiert oder bitte prüfen); Paket wie das Modell es sah; "
+    "Richter: zwei blinde Claude-Läufe (Y/N) + Stichentscheid; Code prüft die Teilzeichenkette an den gespeicherten Offsets",
+    result=P23("support", "overall", metric="stored sentence supports the topic (both kinds)"),
+    results_more=[P23("support", "chapter", metric="chapter quotes (shipped APS chapter)"),
+                  P23("support", "digitalisierung", metric="«Digitalisierung» quotes"),
+                  P23("substring", "input_unchanged", metric="quote is the exact substring at its stored offsets (inputs unchanged since the row)"),
+                  P23("substring", "all_rows", metric="quote is the exact substring at its stored offsets (all rows)"),
+                  dict(P23("ab_agreement", metric="judge run A = run B"), kappa=g(S23R, "ab_kappa"))],
+    baselines=[{"name": "S12 spike (120 federal affairs, D1 chapter, German), descriptive comparison only, no test",
+                "value": g(S23R, "s12_descriptive", "rate"), "n": g(S23R, "s12_descriptive", "n"), "at": loc(S23R, "s12_descriptive", "rate")}],
+    judge={"kappa_AB": s23["ab_kappa"], "disagreements": s23["n_disagree"], "tie_broken_C": s23["n_tiebroken"], "unresolved": len(s23["unresolved"]),
+           "rule": s23["tie_break_rule"], "at": loc(S23R, "ab_kappa")},
+    breakdowns={"by_field": {"cells": [dict(prop(S23R, "by_field", f_, value="rate", ci="ci95"), cell=f_) for f_ in s23["by_field"]],
+                             "at": loc(S23R, "by_field")},
+                "by_level": {"cells": [dict(prop(S23R, "by_level", l_, value="rate", ci="ci95"), cell=l_,
+                                            **({"small": True} if s23["by_level"][l_]["n"] < 20 else {})) for l_ in s23["by_level"]],
+                             "at": loc(S23R, "by_level")},
+                "per_annotator": {nm: [dict(prop(S23R, "per_annotator", nm, k_, value="rate", ci="ci95"), cell=k_)
+                                       for k_ in ("overall", "chapter", "digitalisierung")] for nm in ("A", "B")},
+                "input_changed_since_row": {"value": s23["substring"]["input_changed_since_row"], "at": loc(S23R, "substring", "input_changed_since_row")}},
+    split="random sample of the production rows, pre-registered (drawn after the prereg entry)", prereg=pre(PB, "— S23 evidence on production rows"),
+    sources=[S23R, f"{QE}/s23/analyze.py", f"{QE}/s23/build_packet.py", f"{QE}/s23/key.jsonl", f"{QE}/s23/ann_A.tsv", f"{QE}/s23/ann_B.tsv",
+             f"{QE}/s23/ann_C.tsv"], build=s23["fingerprints"][0] + " (production run runs/ev, runs/main)", model=MODEL,
+    judge_build="Claude (blind agent runs)", date="2026-10-14"))
+for t_ in tests:
+    if t_["id"] == "evidence_support":
+        t_["production_check"] = {"id": "evidence_support_production", "what": "the same check on 200 stored quotes of the 2026 production run (S23)"}
 for t_ in tests:
     if t_["id"] == "dvs_2026":
         t_["superseded_by"] = {"id": "dvs_2026_census", "what": "counts and judge precision/recall; kept as the snapshot's history "
@@ -827,9 +926,10 @@ for t_ in tests:
 ORDER = ["aps_chapter_shipped_d4", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
          "aps_hierarchical_d4",
          "aps_calibration_shipped", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
-         "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "free_generation",
+         "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
+         "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
-         "aps_cantonal_communal", "aps_bilingual", "neutrality_judge_sets"]
+         "evidence_support_production", "aps_cantonal_communal", "aps_bilingual", "neutrality_judge_sets"]
 assert sorted(ORDER) == sorted(t_["id"] for t_ in tests), set(ORDER) ^ {t_["id"] for t_ in tests}
 tests.sort(key=lambda t_: ORDER.index(t_["id"]))
 for t_ in tests:
@@ -880,10 +980,6 @@ cur["aps_d4"] = {"n": N16, "design": "D4 shipped federal design (S16)", "points"
 CI_POINT = {"ci95": ("value", "precision", "acc"), "ci": ("value", "precision", "acc", "p"), "top1_ci95": ("top1",),
             "share_ci95": ("share",), "precision_ci95": ("precision",)}
 WILSON_LOG = []
-
-
-def _dec(x):
-    s_ = repr(float(x)); return len(s_.split(".")[1]) if "." in s_ else 0
 
 
 def _wilson_out(v, ci_, n, k=None):
@@ -1130,6 +1226,13 @@ row("Bern, Leitdirektion (8), Titel, DE / FR", "Berne, direction responsable (8)
     f"Stichwort {p3(k6[0]['value'][0])} / {p3(k6[0]['value'][1])} · Mehrheit {p3(k6[1]['value'])}",
     fr(f"mots-clés {p3(k6[0]['value'][0])} / {p3(k6[0]['value'][1])} · majorité {p3(k6[1]['value'])}"),
     "Grossratsfeld, Geschäfte ab 2015", "champ du Grand Conseil, objets dès 2015", b6["file"])
+t22 = TD["aps_italian_vs_german"]; d22 = t22["results_more"][0]; g22 = t22["baselines"][0]
+dd22 = f"{F.signed(p3(d22['value'], 4))} {sciv(d22['ci95'])}"   # near-zero difference: 4 decimals (truncated), bounds outward at 3
+row("APS-Kapitel, Bundesgeschäfte: Italienisch vs. Deutsch (gleiche Geschäfte)", "Chapitre APS, objets fédéraux : italien vs allemand (mêmes objets)",
+    "human", "D1, italienischer Rahmen, IT-Titel + eingereichter Text", "D1, cadre italien, titre IT + texte déposé", t22["n"],
+    f"IT {p3(t22['result']['value'])} · DE − IT {dd22}", iv(t22["result"]["ci95"]),
+    f"Deutsch (S9 D1) {p3(g22['value'])} {civ(g22['ci95'])}", fr(f"allemand (S9 D1) {p3(g22['value'])} {civ(g22['ci95'])}"),
+    "held-out S9-Geschäfte, vorregistriert (S22)", "objets S9 hors échantillon, préenregistré (S22)", t22["file"])
 an = TD["judge_anchor_aps"]; ab = {x["name"]: x for x in an["baselines"]}
 an_bl = f"Apertus D1 {p3(ab['Apertus D1 on the same 200']['value'])} · D3 {p3(ab['Apertus D3 on the same 200']['value'])}"
 row("KI-Richter selbst vs. APS-Redaktion", "Le juge IA vs rédaction APS", "human", "Claude, blind, gleicher Input", "Claude, aveugle, même entrée",
@@ -1159,6 +1262,17 @@ ev = TD["evidence_support"]; evm = {x["metric"]: x for x in ev["results_more"]};
 row("Beleg stützt das Thema (blinder KI-Richter)", "L'extrait soutient le thème (juge IA aveugle)", "ai-judge", "zitierter Satz", "phrase citée",
     ev["n"], f"{p3(ev['result']['value'])} · Teilstring {sb['k']}/{sb['n']}", iv(ev["result"]["ci95"]), "—", "—", "Stichprobe aus S9", "échantillon tiré de S9",
     ev["file"], result_fr=fr(f"{p3(ev['result']['value'])} · sous-chaîne {sb['k']}/{sb['n']}"))
+e23 = TD["evidence_support_production"]; m23 = {x["metric"]: x for x in e23["results_more"]}
+c23, g23 = m23["chapter quotes (shipped APS chapter)"], m23["«Digitalisierung» quotes"]
+u23 = m23["quote is the exact substring at its stored offsets (inputs unchanged since the row)"]; k23 = e23["judge"]["kappa_AB"]
+row("Beleg stützt das Thema, Produktionszeilen 2026 (Produktionsprüfung)", "L'extrait soutient le thème, lignes de production 2026 (contrôle de production)",
+    "ai-judge", f"gespeicherter Satz, 2 blinde Läufe + Stichentscheid, κ {p3(k23, 2)}",
+    fr(f"phrase enregistrée, 2 passages aveugles + départage, κ {p3(k23, 2)}"), e23["n"],
+    f"{p3(e23['result']['value'])} · Kapitel {p3(c23['value'])} · Digitalisierung {p3(g23['value'])} · Teilstring {u23['k']}/{u23['n']}",
+    iv(e23["result"]["ci95"]), f"S12 (Stichprobe aus S9, beschreibend) {p3(e23['baselines'][0]['value'])}",
+    fr(f"S12 (échantillon tiré de S9, descriptif) {p3(e23['baselines'][0]['value'])}"),
+    "Zufallsstichprobe, vorregistriert (S23)", "échantillon aléatoire, préenregistré (S23)", e23["file"],
+    result_fr=fr(f"{p3(e23['result']['value'])} · chapitre {p3(c23['value'])} · numérique {p3(g23['value'])} · sous-chaîne {u23['k']}/{u23['n']}"))
 s6t = TD["aps_cantonal_communal"]; b6d = s6t["breakdowns"]
 row("APS-Kapitel, kantonal + kommunal vs. KI-Richter", "Chapitre APS, cantonal + communal vs juge IA", "ai-judge", "Kapitel", "chapitre", s6t["n"],
     f"{p3(s6t['result']['value'])} · kantonal {p3(b6d['level_cantonal']['value'])} · kommunal {p3(b6d['level_communal']['value'])}",

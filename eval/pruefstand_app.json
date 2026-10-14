@@ -321,6 +321,25 @@
    "file": "ideation/spikes/s6-cantonal/results.md"
   },
   {
+   "test": "APS-Kapitel, Bundesgeschäfte: Italienisch vs. Deutsch (gleiche Geschäfte)",
+   "test_fr": "Chapitre APS, objets fédéraux : italien vs allemand (mêmes objets)",
+   "gold": "human",
+   "design": "D1, italienischer Rahmen, IT-Titel + eingereichter Text",
+   "design_fr": "D1, cadre italien, titre IT + texte déposé",
+   "n": 1350,
+   "result": "IT 0.702 · DE − IT +0.0007 [−0.020, +0.021]",
+   "result_fr": "IT 0,702 · DE − IT +0,0007 [−0,020, +0,021]",
+   "interval": [
+    0.678,
+    0.727
+   ],
+   "baseline": "Deutsch (S9 D1) 0.703 [0.678, 0.728]",
+   "baseline_fr": "allemand (S9 D1) 0,703 [0,678, 0,728]",
+   "split": "held-out S9-Geschäfte, vorregistriert (S22)",
+   "split_fr": "objets S9 hors échantillon, préenregistré (S22)",
+   "file": "querschnitt/eval/s22/results.json"
+  },
+  {
    "test": "KI-Richter selbst vs. APS-Redaktion",
    "test_fr": "Le juge IA vs rédaction APS",
    "gold": "human",
@@ -430,6 +449,25 @@
    "split": "Stichprobe aus S9",
    "split_fr": "échantillon tiré de S9",
    "file": "ideation2/spikes/s12-evidence/results.json"
+  },
+  {
+   "test": "Beleg stützt das Thema, Produktionszeilen 2026 (Produktionsprüfung)",
+   "test_fr": "L'extrait soutient le thème, lignes de production 2026 (contrôle de production)",
+   "gold": "judge",
+   "design": "gespeicherter Satz, 2 blinde Läufe + Stichentscheid, κ 0.92",
+   "design_fr": "phrase enregistrée, 2 passages aveugles + départage, κ 0,92",
+   "n": 200,
+   "result": "0.815 · Kapitel 0.830 · Digitalisierung 0.800 · Teilstring 198/198",
+   "result_fr": "0,815 · chapitre 0,830 · numérique 0,800 · sous-chaîne 198/198",
+   "interval": [
+    0.755,
+    0.863
+   ],
+   "baseline": "S12 (Stichprobe aus S9, beschreibend) 0.850",
+   "baseline_fr": "S12 (échantillon tiré de S9, descriptif) 0,850",
+   "split": "Zufallsstichprobe, vorregistriert (S23)",
+   "split_fr": "échantillon aléatoire, préenregistré (S23)",
+   "file": "querschnitt/eval/s23/results.json"
   },
   {
    "test": "APS-Kapitel, kantonal + kommunal vs. KI-Richter",

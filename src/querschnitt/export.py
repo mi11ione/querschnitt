@@ -42,6 +42,7 @@ def jdump(p: Path, obj):
 
 def run(args):
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    extra = [tuple(e.split(":")) for e in args.extra]   # BODY:FROM:TO — a parliament's own scheme with its labelled years
     NAMED_IDS.update(s["id"] for s in named_schemes())
     lock, rows = read_run(*[Path(r) for r in args.run.split(",")])
     eng = Engine(None, ExamplePool.load(ROOT / "data/eval/aps_pool.jsonl"))
@@ -55,7 +56,8 @@ def run(args):
             x = json.loads(line)
             if x["date"] and x["date"][:4] >= "1800":   # a few OPD dates are typos (e.g. 0209)
                 first_year[x["body"]] = min(first_year[x["body"]], x["date"][:4])
-            if x["date"] and args.since <= x["date"] <= args.until:
+            if x["date"] and (args.since <= x["date"] <= args.until or
+                              any(x["body"] == b and lo <= x["date"] <= hi for b, lo, hi in extra)):
                 X.append(x)
     X.sort(key=lambda x: (x["date"], x["id"]), reverse=True)
     cols = collections.defaultdict(list)
@@ -153,12 +155,14 @@ def run(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev") if (ROOT / "runs" / r / "state.json").exists()))
+    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev", "s20") if (ROOT / "runs" / r / "state.json").exists()))
     ap.add_argument("--inputs", default=str(ROOT.parent / "data/inputs.jsonl.gz"))
     ap.add_argument("--opd", default=str(ROOT.parent / "data/opd-new"))
     ap.add_argument("--out", default=str(ROOT / "app/data"))
     ap.add_argument("--since", default="2025-01-01")
     ap.add_argument("--until", default="9999")
+    ap.add_argument("--extra", nargs="*", default=["BS:2019-01-01:2024-12-31"],
+                    help="BODY:FROM:TO ranges added to the slice (Basel-Stadt's labelled years for its own scheme, S20/S21)")
     ap.add_argument("--topics-file", dest="topics_file", action="store_true", default=True, help="write the open topics file (default)")
     ap.add_argument("--no-topics-file", dest="topics_file", action="store_false", help="skip the open topics file")
     run(ap.parse_args(argv))

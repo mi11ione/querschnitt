@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T15:13:18Z",
+ "generated_utc": "2026-10-14T15:21:16Z",
  "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
  "build": {
   "endpoint": "Public AI",
@@ -8480,6 +8480,331 @@
    }
   },
   {
+   "id": "aps_italian_vs_german",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Sprache, Bund (APS-Redaktion): Italienisch gegen Deutsch auf denselben S9-Geschäften (S22)",
+   "title_fr": "Langue, Confédération (rédaction APS) : italien contre allemand sur les mêmes objets S9 (S22)",
+   "n": 1350,
+   "design": "die S9-Bundesgeschäfte, deren italienischer OPD-Titel vom französischen abweicht (1'350 von 1'357); Gold = APS-Kapitel der Redaktion; IT-Titel + IT-Langtitel + italienischer eingereichter Text (erste 1'500 Zeichen, wo er vom französischen abweicht, sonst nur Titel); D1 im italienischen Rahmen (Kapitelnamen italienisch, Unterthemen deutsch wie publiziert), beide Code-Reihenfolgen; gepaart gegen S9 D1 Deutsch auf denselben Geschäften",
+   "result": {
+    "metric": "chapter top-1, Italian input (D1, Italian frame)",
+    "value": 0.702962962962963,
+    "value_source": 0.703,
+    "k": 949,
+    "n": 1350,
+    "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+    "ci95": [
+     0.678,
+     0.727
+    ],
+    "at": {
+     "file": "bern/querschnitt/eval/s22/results.json",
+     "key": "it_top1 > acc"
+    },
+    "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+    "shown": {
+     "value": [
+      "0.7",
+      "0.70",
+      "0.702",
+      "0.7029"
+     ],
+     "value_source": [
+      "0.7",
+      "0.70"
+     ],
+     "ci95": [
+      "0.6",
+      "0.67",
+      "0.73",
+      "0.8"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "paired Δ top-1 German − Italian (same items)",
+     "value": 0.0007407407407407407,
+     "value_source": 0.0007,
+     "ci95": [
+      -0.02,
+      0.02074074074074074
+     ],
+     "ci95_source": [
+      -0.02,
+      0.0207
+     ],
+     "method": "paired bootstrap 2,000, percentile (random.Random(2026))",
+     "display_decimals": 4,
+     "derived": "difference and percentiles are multiples of 1/n; recovered exactly from the stored 4-decimal values",
+     "at": {
+      "file": "bern/querschnitt/eval/s22/results.json",
+      "key": "de_minus_it"
+     },
+     "shown": {
+      "value": [
+       "0.0",
+       "0.00",
+       "0.000",
+       "0.0007"
+      ],
+      "value_source": [
+       "0.0",
+       "0.00",
+       "0.000"
+      ],
+      "ci95": [
+       "-0.1",
+       "0.0208",
+       "0.03",
+       "0.1"
+      ],
+      "ci95_source": [
+       "0.0",
+       "0.02",
+       "0.020"
+      ]
+     }
+    },
+    {
+     "metric": "chapter top-3, Italian",
+     "value": 0.8437037037037037,
+     "value_source": 0.8437,
+     "k": 1139,
+     "n": 1350,
+     "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+     "at": {
+      "file": "bern/querschnitt/eval/s22/results.json",
+      "key": "it_top3"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.84",
+       "0.843",
+       "0.8437"
+      ],
+      "value_source": [
+       "0.8",
+       "0.84",
+       "0.843"
+      ]
+     }
+    },
+    {
+     "metric": "chapter top-3, German (S9 D1, same items)",
+     "value": 0.8429629629629629,
+     "value_source": 0.843,
+     "k": 1138,
+     "n": 1350,
+     "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+     "at": {
+      "file": "bern/querschnitt/eval/s22/results.json",
+      "key": "de_top3"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.84",
+       "0.842",
+       "0.8429"
+      ],
+      "value_source": [
+       "0.8",
+       "0.84"
+      ]
+     }
+    },
+    {
+     "metric": "top-1, Italian with submitted text",
+     "value": 0.6973929236499069,
+     "value_source": 0.6974,
+     "k": 749,
+     "n": 1074,
+     "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+     "at": {
+      "file": "bern/querschnitt/eval/s22/results.json",
+      "key": "it_with_text > acc"
+     },
+     "german_same_items": {
+      "metric": "German, same items",
+      "value": 0.6834264432029795,
+      "value_source": 0.6834,
+      "k": 734,
+      "n": 1074,
+      "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+      "at": {
+       "file": "bern/querschnitt/eval/s22/results.json",
+       "key": "it_with_text > de_same_items"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.68",
+        "0.6834"
+       ],
+       "value_source": [
+        "0.6",
+        "0.68"
+       ]
+      }
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69",
+       "0.6973"
+      ],
+      "value_source": [
+       "0.6",
+       "0.69"
+      ]
+     }
+    },
+    {
+     "metric": "top-1, Italian title only",
+     "value": 0.7246376811594203,
+     "value_source": 0.7246,
+     "k": 200,
+     "n": 276,
+     "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+     "at": {
+      "file": "bern/querschnitt/eval/s22/results.json",
+      "key": "it_title_only > acc"
+     },
+     "german_same_items": {
+      "metric": "German, same items",
+      "value": 0.782608695652174,
+      "value_source": 0.7826,
+      "k": 216,
+      "n": 276,
+      "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+      "at": {
+       "file": "bern/querschnitt/eval/s22/results.json",
+       "key": "it_title_only > de_same_items"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.78",
+        "0.782",
+        "0.7826"
+       ],
+       "value_source": [
+        "0.7",
+        "0.78",
+        "0.782"
+       ]
+      }
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.72",
+       "0.724",
+       "0.7246"
+      ],
+      "value_source": [
+       "0.7",
+       "0.72",
+       "0.724"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1, German",
+     "value": 0.7037037037037037,
+     "value_source": 0.7037,
+     "k": 950,
+     "n": 1350,
+     "derived": "value = k / n, k recovered from the stored share × n (unique); the stored rounding is kept as value_source",
+     "ci95": [
+      0.678,
+      0.728
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s22/results.json",
+      "key": "de_top1 > acc"
+     },
+     "name": "German input, S9 D1 on the same items",
+     "shown": {
+      "value": [
+       "0.7",
+       "0.70",
+       "0.703",
+       "0.7037"
+      ],
+      "value_source": [
+       "0.7",
+       "0.70",
+       "0.703"
+      ],
+      "ci95": [
+       "0.6",
+       "0.67",
+       "0.73",
+       "0.8"
+      ]
+     }
+    }
+   ],
+   "split": "held-out S9 items, pre-registered; nothing tuned",
+   "prereg": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S22 Italian on human labels",
+    "line": 69
+   },
+   "sources": [
+    "bern/querschnitt/eval/s22/results.json",
+    "bern/querschnitt/eval/s22/analyze.py",
+    "bern/querschnitt/eval/s22/raw.jsonl",
+    "bern/ideation2/spikes/s9-aps/results.json"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-14",
+   "test": "Sprache, Bund (APS-Redaktion): Italienisch gegen Deutsch auf denselben S9-Geschäften (S22)",
+   "interval": [
+    0.678,
+    0.727
+   ],
+   "baseline": {
+    "name": "German input, S9 D1 on the same items",
+    "value": 0.7037037037037037,
+    "ci95": [
+     0.678,
+     0.728
+    ],
+    "shown": {
+     "value": [
+      "0.7",
+      "0.70",
+      "0.703",
+      "0.7037"
+     ],
+     "ci95": [
+      "0.6",
+      "0.67",
+      "0.73",
+      "0.8"
+     ]
+    }
+   },
+   "file": "bern/querschnitt/eval/s22/results.json",
+   "key": "it_top1 > acc",
+   "shown": {
+    "interval": [
+     "0.6",
+     "0.67",
+     "0.7",
+     "0.72"
+    ]
+   }
+  },
+  {
    "id": "free_generation",
    "gold": "none",
    "gold_note": "rule check: is the answer one of the listed labels",
@@ -13298,6 +13623,10 @@
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
    "model": "swiss-ai/apertus-v1.5-8b",
    "date": "2026-10-13",
+   "production_check": {
+    "id": "evidence_support_production",
+    "what": "the same check on 200 stored quotes of the 2026 production run (S23)"
+   },
    "test": "Beleg: der zitierte Satz stützt das Thema (blinder KI-Richter)",
    "interval": [
     0.775,
@@ -13312,6 +13641,609 @@
      "0.77",
      "0.9",
      "0.90"
+    ]
+   }
+  },
+  {
+   "id": "evidence_support_production",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Beleg auf Produktionszeilen 2026: der gespeicherte Satz stützt das Thema (Produktionsprüfung, blinder KI-Richter)",
+   "title_fr": "Preuve sur les lignes de production 2026 : la phrase enregistrée soutient le thème (contrôle de production, juge IA à l'aveugle)",
+   "n": 200,
+   "production_check": true,
+   "design": "200 Belegzeilen des Korpuslaufs (runs/ev, runs/main), zufällig (random.Random(20261023)) unter Geschäften 2026 mit gespeichertem Zitat: 100 Kapitel-Zitate (ausgeliefertes APS-Kapitel), 100 «Digitalisierung»-Zitate (markiert oder bitte prüfen); Paket wie das Modell es sah; Richter: zwei blinde Claude-Läufe (Y/N) + Stichentscheid; Code prüft die Teilzeichenkette an den gespeicherten Offsets",
+   "result": {
+    "value": 0.815,
+    "ci95": [
+     0.755,
+     0.863
+    ],
+    "k": 163,
+    "n": 200,
+    "at": {
+     "file": "bern/querschnitt/eval/s23/results.json",
+     "key": "support > overall"
+    },
+    "metric": "stored sentence supports the topic (both kinds)",
+    "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+    "shown": {
+     "value": [
+      "0.8",
+      "0.81"
+     ],
+     "ci95": [
+      "0.7",
+      "0.75",
+      "0.87",
+      "0.9"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "value": 0.83,
+     "ci95": [
+      0.744,
+      0.892
+     ],
+     "k": 83,
+     "n": 100,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "support > chapter"
+     },
+     "metric": "chapter quotes (shipped APS chapter)",
+     "shown": {
+      "value": [
+       "0.8"
+      ],
+      "ci95": [
+       "0.7",
+       "0.74",
+       "0.9",
+       "0.90"
+      ]
+     }
+    },
+    {
+     "value": 0.8,
+     "ci95": [
+      0.711,
+      0.867
+     ],
+     "k": 80,
+     "n": 100,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "support > digitalisierung"
+     },
+     "metric": "«Digitalisierung» quotes",
+     "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+     "shown": {
+      "ci95": [
+       "0.7",
+       "0.71",
+       "0.87",
+       "0.9"
+      ]
+     }
+    },
+    {
+     "value": 1.0,
+     "ci95": [
+      0.98,
+      1.0
+     ],
+     "k": 198,
+     "n": 198,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "substring > input_unchanged"
+     },
+     "metric": "quote is the exact substring at its stored offsets (inputs unchanged since the row)",
+     "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+     "shown": {
+      "ci95": [
+       "0.9"
+      ]
+     }
+    },
+    {
+     "value": 0.99,
+     "ci95": [
+      0.964,
+      0.998
+     ],
+     "k": 198,
+     "n": 200,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "substring > all_rows"
+     },
+     "metric": "quote is the exact substring at its stored offsets (all rows)",
+     "shown": {
+      "value": [
+       "0.9"
+      ],
+      "ci95": [
+       "0.9",
+       "0.96",
+       "1.0",
+       "1.00"
+      ]
+     }
+    },
+    {
+     "value": 0.975,
+     "ci95": [
+      0.942,
+      0.99
+     ],
+     "k": 195,
+     "n": 200,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "ab_agreement"
+     },
+     "metric": "judge run A = run B",
+     "kappa": 0.9211356466876971,
+     "shown": {
+      "value": [
+       "0.9",
+       "0.97"
+      ],
+      "ci95": [
+       "0.9",
+       "0.94",
+       "1.0"
+      ],
+      "kappa": [
+       "0.9",
+       "0.92",
+       "0.9211"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "S12 spike (120 federal affairs, D1 chapter, German), descriptive comparison only, no test",
+     "value": 0.85,
+     "n": 120,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "s12_descriptive > rate"
+     },
+     "shown": {
+      "value": [
+       "0.8"
+      ]
+     }
+    }
+   ],
+   "judge": {
+    "kappa_AB": 0.9211356466876971,
+    "disagreements": 5,
+    "tie_broken_C": 5,
+    "unresolved": 0,
+    "rule": "label = A if A == B, else C (blind third run on the disagreeing ids only)",
+    "at": {
+     "file": "bern/querschnitt/eval/s23/results.json",
+     "key": "ab_kappa"
+    },
+    "shown": {
+     "kappa_AB": [
+      "0.9",
+      "0.92",
+      "0.9211"
+     ]
+    }
+   },
+   "breakdowns": {
+    "by_field": {
+     "cells": [
+      {
+       "value": 0.8461538461538461,
+       "ci95": [
+        0.739,
+        0.915
+       ],
+       "k": 55,
+       "n": 65,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_field > title"
+       },
+       "cell": "title",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.84",
+         "0.8461"
+        ],
+        "ci95": [
+         "0.7",
+         "0.73",
+         "0.92",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "value": 0.8888888888888888,
+       "ci95": [
+        0.564,
+        0.981
+       ],
+       "k": 8,
+       "n": 9,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_field > title_long"
+       },
+       "cell": "title_long",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.88",
+         "0.888",
+         "0.8888"
+        ],
+        "ci95": [
+         "0.5",
+         "0.56",
+         "0.99",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "value": 0.7936507936507936,
+       "ci95": [
+        0.714,
+        0.856
+       ],
+       "k": 100,
+       "n": 126,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_field > text"
+       },
+       "cell": "text",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79",
+         "0.793",
+         "0.7936"
+        ],
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.86",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "by_field"
+     }
+    },
+    "by_level": {
+     "cells": [
+      {
+       "value": 0.8431372549019608,
+       "ci95": [
+        0.76,
+        0.902
+       ],
+       "k": 86,
+       "n": 102,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_level > cantonal"
+       },
+       "cell": "cantonal",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.84",
+         "0.8431"
+        ],
+        "ci95": [
+         "0.7",
+         "0.91",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "value": 0.6666666666666666,
+       "ci95": [
+        0.496,
+        0.803
+       ],
+       "k": 22,
+       "n": 33,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_level > communal"
+       },
+       "cell": "communal",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66",
+         "0.666",
+         "0.6666"
+        ],
+        "ci95": [
+         "0.4",
+         "0.49",
+         "0.81",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "value": 0.8360655737704918,
+       "ci95": [
+        0.723,
+        0.909
+       ],
+       "k": 51,
+       "n": 61,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_level > federal"
+       },
+       "cell": "federal",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.83",
+         "0.8360"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.91",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "value": 1.0,
+       "ci95": [
+        0.51,
+        1.0
+       ],
+       "k": 4,
+       "n": 4,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "by_level > other"
+       },
+       "cell": "other",
+       "small": true,
+       "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+       "shown": {
+        "ci95": [
+         "0.5"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "by_level"
+     }
+    },
+    "per_annotator": {
+     "A": [
+      {
+       "value": 0.805,
+       "ci95": [
+        0.744,
+        0.854
+       ],
+       "k": 161,
+       "n": 200,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "per_annotator > A > overall"
+       },
+       "cell": "overall",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.80"
+        ],
+        "ci95": [
+         "0.7",
+         "0.74",
+         "0.86",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "value": 0.81,
+       "ci95": [
+        0.722,
+        0.875
+       ],
+       "k": 81,
+       "n": 100,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "per_annotator > A > chapter"
+       },
+       "cell": "chapter",
+       "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+       "shown": {
+        "value": [
+         "0.8"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.88",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "value": 0.8,
+       "ci95": [
+        0.711,
+        0.867
+       ],
+       "k": 80,
+       "n": 100,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "per_annotator > A > digitalisierung"
+       },
+       "cell": "digitalisierung",
+       "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+       "shown": {
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.87",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "B": [
+      {
+       "value": 0.8,
+       "ci95": [
+        0.739,
+        0.85
+       ],
+       "k": 160,
+       "n": 200,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "per_annotator > B > overall"
+       },
+       "cell": "overall",
+       "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+       "shown": {
+        "ci95": [
+         "0.7",
+         "0.73",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "value": 0.81,
+       "ci95": [
+        0.722,
+        0.875
+       ],
+       "k": 81,
+       "n": 100,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "per_annotator > B > chapter"
+       },
+       "cell": "chapter",
+       "ci_method": "Wilson 95% recomputed from k and n, bounds rounded outward",
+       "shown": {
+        "value": [
+         "0.8"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.88",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "value": 0.79,
+       "ci95": [
+        0.7,
+        0.859
+       ],
+       "k": 79,
+       "n": 100,
+       "at": {
+        "file": "bern/querschnitt/eval/s23/results.json",
+        "key": "per_annotator > B > digitalisierung"
+       },
+       "cell": "digitalisierung",
+       "shown": {
+        "value": [
+         "0.7"
+        ],
+        "ci95": [
+         "0.86",
+         "0.9"
+        ]
+       }
+      }
+     ]
+    },
+    "input_changed_since_row": {
+     "value": 2,
+     "at": {
+      "file": "bern/querschnitt/eval/s23/results.json",
+      "key": "substring > input_changed_since_row"
+     }
+    }
+   },
+   "split": "random sample of the production rows, pre-registered (drawn after the prereg entry)",
+   "prereg": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S23 evidence on production rows",
+    "line": 77
+   },
+   "sources": [
+    "bern/querschnitt/eval/s23/results.json",
+    "bern/querschnitt/eval/s23/analyze.py",
+    "bern/querschnitt/eval/s23/build_packet.py",
+    "bern/querschnitt/eval/s23/key.jsonl",
+    "bern/querschnitt/eval/s23/ann_A.tsv",
+    "bern/querschnitt/eval/s23/ann_B.tsv",
+    "bern/querschnitt/eval/s23/ann_C.tsv"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (production run runs/ev, runs/main)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs)",
+   "date": "2026-10-14",
+   "test": "Beleg auf Produktionszeilen 2026: der gespeicherte Satz stützt das Thema (Produktionsprüfung, blinder KI-Richter)",
+   "interval": [
+    0.755,
+    0.863
+   ],
+   "baseline": {
+    "name": "S12 spike (120 federal affairs, D1 chapter, German), descriptive comparison only, no test",
+    "value": 0.85,
+    "ci95": null,
+    "shown": {
+     "value": [
+      "0.8"
+     ]
+    }
+   },
+   "file": "bern/querschnitt/eval/s23/results.json",
+   "key": "support > overall",
+   "shown": {
+    "interval": [
+     "0.7",
+     "0.75",
+     "0.8",
+     "0.86"
     ]
    }
   },

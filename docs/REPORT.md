@@ -52,7 +52,7 @@ On the production run itself, 200 random communal affairs of 2026 were judged bl
 
 ## 4. Neutrality
 No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the
-Italian text give 0.703, from the German text 0.703 (difference +0.0007 [−0.020, +0.021], S22). Between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
+Italian text give 0.702, from the German text 0.703 (difference +0.0007 [−0.020, +0.021], S22). Between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
 titles); federal APS chapters from German vs French text +0.016 [−0.003, +0.037]. No measurable difference in chapter
 accuracy among the six main parties. What does differ is the submitter type: Federal Council business is easier than
 members' motions (0.792 vs 0.653), and quality is reported per submitter type.

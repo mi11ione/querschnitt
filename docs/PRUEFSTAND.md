@@ -119,9 +119,20 @@ S20 by affair type: Interpellation [0.501 [0.467, 0.536], n 822](../../../bern/q
 
 The judge's precision on human negatives is not measured (no human negatives exist).
 
-### 8 · Neutrality on human labels (S9, no new calls)
+### 8 · Neutrality on human labels (S9, no new calls; S22 Italian)
 
 Language, same 1,357 affairs scored from the German vs the French text (paired): German − French [+0.016 [−0.003, +0.037]](../../../bern/ideation2/spikes/s14-neutrality/results.json), McNemar p 0.1133.
+
+**Italian vs German (S22, [pre-registered](../../../bern/querschnitt/eval/PREREG-BUILD.md#L69)).** The S9 affairs whose Italian title differs from the French one (1,350 of 1,357), gold the APS editors' chapter; Italian title + long title + the Italian submitted text where it differs from the French, D1 in the Italian frame (chapter names Italian, subtopic names German as published), both code orders; paired against the S9 German D1 on the same affairs.
+
+| n = 1,350 | Italian | German (S9 D1) | German − Italian, paired |
+|---|---|---|---|
+| chapter top-1 | **[0.702 [0.678, 0.727]](../../../bern/querschnitt/eval/s22/results.json)** | [0.703 [0.678, 0.728]](../../../bern/querschnitt/eval/s22/results.json) | [+0.0007 [−0.020, +0.021]](../../../bern/querschnitt/eval/s22/results.json) |
+| chapter top-3 | [0.843](../../../bern/querschnitt/eval/s22/results.json) | [0.842](../../../bern/querschnitt/eval/s22/results.json) | |
+| with Italian submitted text (n 1,074) | [0.697](../../../bern/querschnitt/eval/s22/results.json) | [0.683](../../../bern/querschnitt/eval/s22/results.json) | |
+| title only (n 276) | [0.724](../../../bern/querschnitt/eval/s22/results.json) | [0.782](../../../bern/querschnitt/eval/s22/results.json) | |
+
+Shares are k / n recovered from the stored 4-decimal values and truncated; the difference is a paired bootstrap (2,000), shown at 4 decimals because it is near zero, bounds rounded outward.
 
 | S9 by party | D1 top-1 | keyword top-1 |
 |---|---|---|
@@ -254,8 +265,11 @@ All bodies: [`eval/pruefstand.json`](../eval/pruefstand.json) → `dvs_2026.brea
 | Correction loop (simulated, P8.5): 60 judge labels shown as an editor's first decisions, 4 nearest per affair | 404 | F1 [0.906](../../../bern/ideation2/spikes/s8-dvs/loop.json); Δ [+0.040 [+0.007, +0.075]](../../../bern/ideation2/spikes/s8-dvs/loop.json) | F1 [0.866](../../../bern/ideation2/spikes/s8-dvs/loop.json) |
 | Submitted text added to title (S8b, federal) | 120 | precision [1.000 [0.908, 1.000]](../../../bern/ideation2/spikes/s13-timing/results.md#L33), recall [0.678 [0.548, 0.786]](../../../bern/ideation2/spikes/s13-timing/results.md#L33); Δ recall [−0.089 [−0.170, −0.019]](../../../bern/ideation2/spikes/s13-timing/s8b.json) | title only: [0.895 [0.778, 0.955], 0.767 [0.642, 0.860]](../../../bern/ideation2/spikes/s13-timing/results.md#L32) |
 | Evidence: the quoted sentence supports the chapter (S12) | 120 | [0.850 [0.775, 0.903]](../../../bern/ideation2/spikes/s12-evidence/results.json); chapter right [0.902 [0.819, 0.950]](../../../bern/ideation2/spikes/s12-evidence/results.json), wrong [0.736 [0.579, 0.851]](../../../bern/ideation2/spikes/s12-evidence/results.json) | exact-substring check [120/120](../../../bern/ideation2/spikes/s12-evidence/results.json) |
+| **Production check:** evidence on 200 stored quotes of the 2026 production run, the quoted sentence supports the topic (S23) | 200 | **[0.815 [0.755, 0.863]](../../../bern/querschnitt/eval/s23/results.json)**; chapter quotes [0.830 [0.744, 0.892]](../../../bern/querschnitt/eval/s23/results.json), «Digitalisierung» quotes [0.800 [0.711, 0.867]](../../../bern/querschnitt/eval/s23/results.json) | exact substring at the stored offsets [198/198](../../../bern/querschnitt/eval/s23/results.json) (inputs unchanged since the row; [198/200](../../../bern/querschnitt/eval/s23/results.json) of all rows) |
 
 The loop row is unweighted and on a sample that over-represents flagged affairs; text makes the model stricter, not more complete.
+
+S23 ([PREREG-BUILD.md § S23](../../../bern/querschnitt/eval/PREREG-BUILD.md#L77)) draws 100 chapter quotes (the shipped APS chapter) and 100 «Digitalisierung» quotes (flagged or please-check rows) at random among 2026 affairs with a stored quote; the packet shows the input as the model saw it. Judge: two blind Claude runs, run A = run B [0.975 [0.942, 0.990]](../../../bern/querschnitt/eval/s23/results.json), κ [0.92](../../../bern/querschnitt/eval/s23/results.json); [5](../../../bern/querschnitt/eval/s23/results.json) disagreements went to a tie-break run. S12 (0.850 on 120 federal affairs) is a descriptive comparison only, not a test. By level: cantonal [0.843 [0.760, 0.902], n 102](../../../bern/querschnitt/eval/s23/results.json) · communal [0.666 [0.496, 0.803], n 33](../../../bern/querschnitt/eval/s23/results.json) · federal [0.836 [0.723, 0.909], n 61](../../../bern/querschnitt/eval/s23/results.json) · other [1.000 [0.510, 1.000], n 4](../../../bern/querschnitt/eval/s23/results.json) (small).
 
 ### 13 · APS chapter, cantonal and communal (S6, cross-checked S7)
 

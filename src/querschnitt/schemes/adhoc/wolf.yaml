@@ -1,0 +1,15 @@
+id: adhoc/wolf
+names:
+  de: Wolf und Grossraubtiere
+  fr: loup et grands prédateurs
+  it: lupo e grandi predatori
+question:
+  de: Betrifft das folgende parlamentarische Geschäft das Thema «Wolf und Grossraubtiere» (Wolf, Bär, Luchs, Goldschakal, Regulierung und Abschuss, Herdenschutz, Schäden an Nutztieren, Jagd- und Schutzstatus)?
+  fr: L'objet parlementaire suivant concerne-t-il le thème « loup et grands prédateurs » (loup, ours, lynx, chacal doré, régulation et tirs, protection des troupeaux, dégâts aux animaux de rente, statut de chasse et de protection) ?
+  it: Il seguente oggetto parlamentare riguarda il tema «lupo e grandi predatori» (lupo, orso, lince, sciacallo dorato, regolazione e abbattimenti, protezione delle greggi, danni agli animali da reddito, statuto di caccia e di protezione)?
+answer_yes:
+  de: Ja, das Geschäft betrifft Wolf und Grossraubtiere
+  fr: Oui, l'objet concerne le loup et les grands prédateurs
+  it: Sì, l'oggetto riguarda il lupo e i grandi predatori
+cutoff: 0.5
+source: S13 (13 Oct 2026), never used in tuning

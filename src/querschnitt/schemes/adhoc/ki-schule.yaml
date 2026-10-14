@@ -1,0 +1,16 @@
+id: adhoc/ki-schule
+names:
+  de: Künstliche Intelligenz an Schulen
+  fr: intelligence artificielle à l'école
+  it: intelligenza artificiale nelle scuole
+question:
+  de: Betrifft das folgende parlamentarische Geschäft das Thema «Künstliche Intelligenz an Schulen» (KI im Unterricht, KI-Werkzeuge wie ChatGPT für Schülerinnen, Schüler und Lehrpersonen, Prüfungen und Plagiate mit KI, KI-Kompetenzen im Lehrplan, Datenschutz beim KI-Einsatz in der Bildung)?
+  fr: L'objet parlementaire suivant concerne-t-il le thème « intelligence artificielle à l'école » (IA dans l'enseignement, outils d'IA comme ChatGPT pour les élèves et les enseignants, examens et plagiat avec l'IA, compétences en IA dans le plan d'études, protection des données lors de l'usage de l'IA
+    dans la formation) ?
+  it: Il seguente oggetto parlamentare riguarda il tema «intelligenza artificiale nelle scuole» (IA nell'insegnamento, strumenti di IA come ChatGPT per allievi e docenti, esami e plagio con l'IA, competenze di IA nel piano di studio, protezione dei dati nell'uso dell'IA nella formazione)?
+answer_yes:
+  de: Ja, das Geschäft betrifft Künstliche Intelligenz an Schulen
+  fr: Oui, l'objet concerne l'intelligence artificielle à l'école
+  it: Sì, l'oggetto riguarda l'intelligenza artificiale nelle scuole
+cutoff: 0.5
+source: S13 (13 Oct 2026), never used in tuning

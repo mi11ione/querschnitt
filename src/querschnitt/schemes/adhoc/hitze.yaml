@@ -1,0 +1,15 @@
+id: adhoc/hitze
+names:
+  de: Hitzeschutz / Hitzewellen
+  fr: protection contre la chaleur / canicules
+  it: protezione dal caldo / ondate di calore
+question:
+  de: Betrifft das folgende parlamentarische Geschäft das Thema «Hitzeschutz / Hitzewellen» (Hitzewellen, Hitzeaktionspläne, Schutz der Bevölkerung und der Arbeitnehmenden vor Hitze, städtische Hitzeinseln, Kühlung, Beschattung und Begrünung gegen Hitze)?
+  fr: L'objet parlementaire suivant concerne-t-il le thème « protection contre la chaleur / canicules » (canicules, plans canicule, protection de la population et des travailleurs contre la chaleur, îlots de chaleur urbains, rafraîchissement, ombrage et végétalisation contre la chaleur) ?
+  it: Il seguente oggetto parlamentare riguarda il tema «protezione dal caldo / ondate di calore» (ondate di calore, piani canicola, protezione della popolazione e dei lavoratori dal caldo, isole di calore urbane, raffrescamento, ombreggiamento e inverdimento contro il caldo)?
+answer_yes:
+  de: Ja, das Geschäft betrifft Hitzeschutz / Hitzewellen
+  fr: Oui, l'objet concerne la protection contre la chaleur / les canicules
+  it: Sì, l'oggetto riguarda la protezione dal caldo / le ondate di calore
+cutoff: 0.5
+source: S13 (13 Oct 2026), never used in tuning

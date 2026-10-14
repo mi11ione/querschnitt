@@ -33,3 +33,14 @@ DIJ, FIN, GSI, SID, STA, WEU); "GR"/"Grosser Rat" entries map to "none of these"
 French titles, and on the affairs whose title exists in both languages (each language scored; paired difference). Baselines on
 the same items: the S6 keyword stems (frozen 13 Oct, `ideation/spikes/s6-cantonal/scripts/be_scheme.py`) and the majority
 directorate. Reported as measured.
+
+## 2026-10-14 03:00 CEST — S19 three new ad-hoc topics, quality against a blind judge (before any S19 call)
+Topics: the three S13 topics never used in any tuning ("Wolf und Grossraubtiere", "Hitzeschutz / Hitzewellen", "Künstliche
+Intelligenz an Schulen"), question texts verbatim from `ideation2/spikes/s13-timing/s13.py`, as `schemes/adhoc/*.yaml`.
+Population: every affair begun 1 Aug–6 Oct 2026 with a title (11 Oct export; 4,305). Decision: the shipped yes/no rule
+(order a; order b when 0.1 < p < 0.9; flag at mean p ≥ 0.5). Keyword baselines frozen in `eval/s19/keywords_frozen.json`.
+Gold sample per topic: every affair flagged by Apertus or by keywords, plus 120 random affairs flagged by neither
+(random.Random(20261019) over the id-sorted list). Blind Claude annotators A (shuffled) and B (reverse), packet only (parliament,
+type, date, title, long title; the topic question), Y/N; tie-break C on disagreements; Qwen-SEA-LION as a cross-family check
+on the same packet. Outcomes per topic: Apertus precision (Wilson 95%), recall against the judge (weighted by the neither-stratum
+sampling fraction; stratified bootstrap 2,000), the same for keywords, flags per topic. Reported as measured.

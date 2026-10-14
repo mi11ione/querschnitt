@@ -1,0 +1,5 @@
+{"note": "S19 keyword baselines, written 2026-10-14 03:00 CEST before any S19 decision or annotation exists. Match: case-insensitive substring on title + long title (first 400 chars each). ki_schule needs a term from 'ai' AND one from 'school'.",
+ "wolf": ["wolf", "wölf", "luchs", "goldschakal", "grossraubtier", "herdenschutz", "bären", "loup", "lynx", "grands prédateurs", "grand prédateur", "chacal", "protection des troupeaux", "lupo", "lupi", "lince", "grandi predatori", "sciacallo"],
+ "hitze": ["hitze", "hitzewelle", "hitzeschutz", "hitzeinsel", "canicule", "îlot de chaleur", "îlots de chaleur", "vague de chaleur", "fortes chaleurs", "canicola", "ondata di calore", "ondate di calore", "isola di calore", "isole di calore"],
+ "ki_schule": {"ai": ["künstliche intelligenz", " ki ", "ki-", "chatgpt", "intelligence artificielle", " ia ", "intelligenza artificiale"],
+               "school": ["schul", "unterricht", "lehrperson", "lehrer", "lernend", "bildung", "école", "enseign", "élève", "scuol", "insegn", "allievi", "docent", "formation"]}}

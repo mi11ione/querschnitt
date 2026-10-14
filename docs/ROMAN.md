@@ -12,3 +12,7 @@ Short list of things only you can do. Everything else is running or decided.
    The whole back catalogue (325k affairs, chapter step, ≈ 420k requests) would need ≈ 3× the rate. If Public AI raises the
    limit for this key (or you want a dedicated key for the run), say so and put the key at
    `~/.config/hackapertus/publicai.key` (or tell me the path); the run reads a new ceiling from `runs/main/control.json` (`{"max_rate": 4}`) each minute.
+
+3. **Before publishing `upstream/APERTUS-NOTES.md`:** it includes the observation (from `loop/learnings.md`) that a `-70b`
+   route given a system message or prefill is answered by Qwen-SEA-LION. `learnings.md` marks disclosing that to Public AI
+   as your call; the note is ready either way — remove that line if you prefer to raise it privately first.

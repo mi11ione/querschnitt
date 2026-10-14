@@ -132,3 +132,17 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
   0.7406, lanes 720/871 and 285/486, identical to eval/s16/results.json).
 - `app/dev/serve.py`: dev static server with a larger accept queue (the stock http.server drops connections under the
   headless suite).
+
+## Atlas round (14 Oct)
+- New first view «Überblick» (`#ueber`, default route, key `a`): one line of large numbers (affairs scored, parliaments,
+  weeks, rows waiting in red), 26 small Switzerlands (Digitalisierung, the 24 APS chapters by volume, «Kein Sachthema»)
+  on one fixed doubling ramp (< 2.5 / 2.5 / 5 / 10 / ≥ 20 % of the canton's scored affairs), Federal Assembly as a band,
+  cantons without scored affairs hatched; click = Karte on that topic with the Überblick panel. «Diese Woche»: newest
+  week with ≥ 20 affairs, per-level bars and up to 5 notable affairs (one chapter on ≥ 2 levels, then highest p).
+  Canton paths are defined once and reused (`<use>`), so 26 maps cost one geometry. The fact line is hidden there.
+- Detail order: title (date · parliament · type) → decision graphic (the topic in view first) → quoted passage →
+  subtopics → identical affairs → metadata + provenance → similar affairs → decision bar.
+- Similar affairs: shown only for same first subtopic with ≥ 2 shared content words, or an idf overlap ≥ 15 with ≥ 3
+  shared content words (procedural words removed; cut set by eye on 20 cases, `simcal` scenario prints them).
+- Fact line kept to one line (items dropped from the end), build only in the footer; list titles on up to two lines
+  (rows 70 px); map column wider; the federal band says «Bund» instead of repeating the parliament name.

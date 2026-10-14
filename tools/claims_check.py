@@ -125,7 +125,7 @@ PATH_KEYS = {"file", "key", "anchor", "build", "system_fingerprint", "model", "j
 def load_pruefstand(path):
     vals = set()
     def walk(o, key=None):
-        if key in PATH_KEYS: return
+        if key in PATH_KEYS or (isinstance(key, str) and key.endswith("_source")): return   # superseded source roundings are not citable
         if isinstance(o, dict):
             for k, v in o.items(): walk(v, k)
         elif isinstance(o, list):

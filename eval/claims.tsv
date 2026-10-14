@@ -366,24 +366,24 @@ section	line	written	context	source_value	file	key	status	correct	note
 §8.2	193	0.495	Grand Council's own field; keywords 0.520 / 0.495). Then a communal affair	0.495	bern/ideation/spikes/s6-cantonal/results.md	Keyword stems FR	OK		
 §8.2	195	10	"ons; ""the nightly model time costs under USD 10 a year at list price, be"	8.9	derived	50 affairs × USD 0.49 / 1,000 × 365 (S5 USD 0.39 + S3 yes/no 0.037 + S12 evidence 0.051; FACTCHECK.md)	OK		'under USD 10 a year' holds: 8.9
 S16	-	0.748	S16 designs > D4S > top1	0.7487	bern/querschnitt/eval/s16/results.json	designs > D4S > top1	OK		truncated, never rounded up
-S16	-	0.725	S16 designs > D4S > top1_ci[0]	0.725	bern/querschnitt/eval/s16/results.json	designs > D4S > top1_ci[0]	OK		truncated, never rounded up
-S16	-	0.771	S16 designs > D4S > top1_ci[1]	0.771	bern/querschnitt/eval/s16/results.json	designs > D4S > top1_ci[1]	OK		truncated, never rounded up
+S16	-	0.724	S16 designs > D4S > top1_ci[0]	0.72495	bern/querschnitt/eval/s16/results.json	designs > D4S > k1 = 1016, n 1357 → Wilson 95% exact [0.72495, 0.77107], floored at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.725)
+S16	-	0.772	S16 designs > D4S > top1_ci[1]	0.77107	bern/querschnitt/eval/s16/results.json	designs > D4S > k1 = 1016, n 1357 → Wilson 95% exact [0.72495, 0.77107], ceiled at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.771)
 S16	-	0.856	S16 designs > D4S > top3	0.8563	bern/querschnitt/eval/s16/results.json	designs > D4S > top3	OK		truncated, never rounded up
 S16	-	0.740	S16 designs > D4 > top1	0.7406	bern/querschnitt/eval/s16/results.json	designs > D4 > top1	OK		truncated, never rounded up
 S16	-	0.883	S16 designs > D4 > top3	0.8836	bern/querschnitt/eval/s16/results.json	designs > D4 > top3	OK		truncated, never rounded up
-S16	-	0.717	S16 designs > D4 > top1_ci[0]	0.717	bern/querschnitt/eval/s16/results.json	designs > D4 > top1_ci[0]	OK		truncated, never rounded up
-S16	-	0.763	S16 designs > D4 > top1_ci[1]	0.763	bern/querschnitt/eval/s16/results.json	designs > D4 > top1_ci[1]	OK		truncated, never rounded up
+S16	-	0.716	S16 designs > D4 > top1_ci[0]	0.71663	bern/querschnitt/eval/s16/results.json	designs > D4 > k1 = 1005, n 1357 → Wilson 95% exact [0.71663, 0.76322], floored at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.717)
+S16	-	0.764	S16 designs > D4 > top1_ci[1]	0.76322	bern/querschnitt/eval/s16/results.json	designs > D4 > k1 = 1005, n 1357 → Wilson 95% exact [0.71663, 0.76322], ceiled at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.763)
 S16	-	0.018	S16 D4-D3 > diff	0.0184	bern/querschnitt/eval/s16/results.json	D4-D3 > diff	OK		truncated, never rounded up
 S16	-	0.002	S16 D4-D3 > ci[0]	0.0022	bern/querschnitt/eval/s16/results.json	D4-D3 > ci[0]	OK		truncated, never rounded up
 S16	-	0.034	S16 D4-D3 > ci[1] (rounded outward)	0.0339	bern/querschnitt/eval/s16/results.json	D4-D3 > ci[1] (rounded outward)	OK		truncated, never rounded up
 S16	-	0.0319	S16 calibration > aps > ece_crossfit	0.0319	bern/querschnitt/eval/s16/results.json	calibration > aps > ece_crossfit	OK		truncated, never rounded up
-S16	-	0.0574	S16 calibration > aps-fed > ece_crossfit	0.0574	bern/querschnitt/eval/s16/results.json	calibration > aps-fed > ece_crossfit	OK		truncated, never rounded up
+S16	-	0.0211	S16 calibration > aps-fed (D4) > ece_crossfit	0.0211	bern/querschnitt/eval/s16/results.json	calibration > aps-fed > ece_crossfit	OK		upstream/APERTUS-NOTES.md corrected 14 Oct (it said 0.0574, a value in no current file)
 APERTUS-NOTES	-	250	same 250 MMLU questions	250	loop/learnings.md	VERDICT (9 Oct, 19:45): 'Same 250 MMLU questions'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	211/250	the route's model scored 211/250	211/250	loop/learnings.md	VERDICT: 'shared model 84.4% (211/250)'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	177/250	against 177/250 for apertus-8b-instruct (v1 8B)	177/250	loop/learnings.md	VERDICT: '`apertus-8b-instruct` (v1 8B) 70.8% (177/250)'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	110	generated token equalled the top-1 code on 110 of 110 calls	110	bern/ideation/spikes/s1-runtime/results.md	line 52: 'Generated token = top-1 code on 110 of 110.'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	0.2791	ECE 0.2791 -> 0.0319 (chapter read back from the subtopic)	0.2791	bern/querschnitt/eval/s16/results.md	Calibration aps: ECE 0.2791	OK		upstream/APERTUS-NOTES.md
-APERTUS-NOTES	-	0.2416	ECE 0.2416 -> 0.0574 (with labelled examples)	0.2416	bern/querschnitt/eval/s16/results.md	Calibration aps-fed: ECE 0.2416	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	0.2463	ECE 0.2463 -> 0.0211 (D4, the shipped federal design)	0.2463	bern/querschnitt/eval/s16/results.md	Calibration aps-fed: ECE 0.2463 → 0.0211	OK		corrected 14 Oct (it said 0.2416 → 0.0574, values in no current file)
 APERTUS-NOTES	-	189/300	identity and permuted code order agreed on 189/300	189/300	bern/ideation/spikes/s3-accuracy/results.md	E2: 'names + desc: 189/300 = 63.0 % [57.4, 68.3]'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	63.0%	agreed on 189/300 (63.0%)	63.0%	bern/ideation/spikes/s3-accuracy/results.md	E2: '189/300 = 63.0 %'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	20/20	20/20 bitwise-identical log-probabilities in each of four series	20/20	spikes/live/results.md	(e) Determinism: '20/20 bitwise-identical logprobs in each of the 4 series'	OK		upstream/APERTUS-NOTES.md
@@ -395,8 +395,8 @@ APERTUS-NOTES	-	384	n = 384 + 32	384	spikes/subst/results.md	system-prompt arms 
 APERTUS-NOTES	-	0/32	against 0/32 without one	0/32	spikes/subst/results.md	no system prompt arm: 0/32	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	14/14	14/14 one answer on one backend	14/14	spikes/live/results.md	(e): 'fp1-nes "Nein." 14/14'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	6/6	6/6 the other answer on the other	6/6	spikes/live/results.md	(e): 'tp2 "Ja. ..." 6/6'	OK		upstream/APERTUS-NOTES.md
-S16	-	0.800	S16 lanes_D4 > agree_ci[0]	0.8	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_ci[0]	OK		truncated, never rounded up
-S16	-	0.850	S16 lanes_D4 > agree_ci[1]	0.85	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_ci[1]	OK		truncated, never rounded up
+S16	-	0.800	S16 lanes_D4 > agree_ci[0]	0.80007	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_n 871 × agree_precision 0.8266 = 720 → Wilson 95% exact [0.80007, 0.85033], floored at 3 decimals	OK		recomputed exactly; outward rounding equals the stored value
+S16	-	0.851	S16 lanes_D4 > agree_ci[1]	0.85033	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_n 871 × agree_precision 0.8266 = 720 → Wilson 95% exact [0.80007, 0.85033], ceiled at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.850)
 S16	-	0.826	S16 lanes_D4 > agree_precision	0.8266	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_precision	OK		truncated, never rounded up
 S16	-	0.586	S16 lanes_D4 > disagree_precision	0.5864	bern/querschnitt/eval/s16/results.json	lanes_D4 > disagree_precision	OK		truncated, never rounded up
 S16	-	64%	S16 lanes_D4 > agree_share	0.6419	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_share	OK		truncated, never rounded up
@@ -405,33 +405,33 @@ S16	-	0.246	S16 calibration > aps-fed (D4) > ece_raw	0.2463	bern/querschnitt/eva
 S18	-	531	S18 n_scored	531	bern/querschnitt/eval/s18/results.json	n_scored	OK		truncated, never rounded up
 S18	-	0.651	S18 lang_de > acc	0.6516	bern/querschnitt/eval/s18/results.json	lang_de > acc	OK		truncated, never rounded up
 S18	-	0.650	S18 lang_fr > acc	0.6503	bern/querschnitt/eval/s18/results.json	lang_fr > acc	OK		truncated, never rounded up
-S18	-	0.610	S18 lang_de > ci[0]	0.61	bern/querschnitt/eval/s18/results.json	lang_de > ci[0]	OK		truncated, never rounded up
-S18	-	0.691	S18 lang_de > ci[1]	0.691	bern/querschnitt/eval/s18/results.json	lang_de > ci[1]	OK		truncated, never rounded up
+S18	-	0.610	S18 lang_de > ci[0]	0.61012	bern/querschnitt/eval/s18/results.json	lang_de > acc 0.6516 × n 531 = 346 → Wilson 95% exact [0.61012, 0.69091], floored at 3 decimals	OK		recomputed exactly; outward rounding equals the stored value
+S18	-	0.691	S18 lang_de > ci[1]	0.69091	bern/querschnitt/eval/s18/results.json	lang_de > acc 0.6516 × n 531 = 346 → Wilson 95% exact [0.61012, 0.69091], ceiled at 3 decimals	OK		recomputed exactly; outward rounding equals the stored value
 S18	-	0.525	S18 keyword > acc	0.5254	bern/querschnitt/eval/s18/results.json	keyword > acc	OK		truncated, never rounded up
 S18	-	0.512	S18 lang_fr > keyword	0.5123	bern/querschnitt/eval/s18/results.json	lang_fr > keyword	OK		truncated, never rounded up
 S18	-	0.214	S18 majority > acc	0.2147	bern/querschnitt/eval/s18/results.json	majority > acc	OK		truncated, never rounded up
-S18	-	0.002	S18 paired diff	0.0019	bern/querschnitt/eval/s18/results.json	paired diff	OK		truncated, never rounded up
-S18	-	0.030	S18 paired ci[0] (abs)	0.0302	bern/querschnitt/eval/s18/results.json	paired ci[0] (abs)	OK		truncated, never rounded up
+S18	-	0.001	S18 paired diff	0.0019	bern/querschnitt/eval/s18/results.json	paired_de_minus_fr > diff	OK		truncated (0.0019); README/REPORT wrote +0.002 (rounded up) before the 14 Oct fix
+S18	-	0.031	S18 paired ci[0] (abs)	0.0302	bern/querschnitt/eval/s18/results.json	paired_de_minus_fr > ci[0] (−0.0302, rounded outward)	OK		lower bound −0.0302 → −0.031 (outward); README/REPORT wrote −0.030 (inward) before the 14 Oct fix
 S18	-	0.034	S18 paired ci[1]	0.034	bern/querschnitt/eval/s18/results.json	paired ci[1]	OK		truncated, never rounded up
 S20	-	2,437	S20 n	2437	bern/querschnitt/eval/s20/results.json	n	OK		truncated, never rounded up
 S20	-	46	S20 themes	46	bern/querschnitt/eval/s20/results.json	themes	OK		truncated, never rounded up
 S20	-	0.498	S20 top1	0.4982	bern/querschnitt/eval/s20/results.json	top1	OK		truncated, never rounded up
-S20	-	0.478	S20 top1 ci[0]	0.478	bern/querschnitt/eval/s20/results.json	top1 ci[0]	OK		truncated, never rounded up
-S20	-	0.518	S20 top1 ci[1]	0.518	bern/querschnitt/eval/s20/results.json	top1 ci[1]	OK		truncated, never rounded up
+S20	-	0.478	S20 top1 ci[0]	0.47832	bern/querschnitt/eval/s20/results.json	top1 > acc 0.4982 × n 2437 = 1214 → Wilson 95% exact [0.47832, 0.51799], floored at 3 decimals	OK		recomputed exactly; outward rounding equals the stored value
+S20	-	0.518	S20 top1 ci[1]	0.51799	bern/querschnitt/eval/s20/results.json	top1 > acc 0.4982 × n 2437 = 1214 → Wilson 95% exact [0.47832, 0.51799], ceiled at 3 decimals	OK		recomputed exactly; outward rounding equals the stored value
 S20	-	0.605	S20 top1_t1_or_t2	0.6057	bern/querschnitt/eval/s20/results.json	top1_t1_or_t2	OK		truncated, never rounded up
 S20	-	0.665	S20 top3	0.6656	bern/querschnitt/eval/s20/results.json	top3	OK		truncated, never rounded up
 S20	-	0.181	S20 keyword	0.1814	bern/querschnitt/eval/s20/results.json	keyword	OK		truncated, never rounded up
 S20	-	0.053	S20 majority	0.0533	bern/querschnitt/eval/s20/results.json	majority	OK		truncated, never rounded up
 S20	-	0.565	S20 lane agree acc	0.5656	bern/querschnitt/eval/s20/results.json	lane agree acc	OK		truncated, never rounded up
-S20	-	72%	S20 lane agree share (0.7197, rounded down)	0.7197	bern/querschnitt/eval/s20/results.json	lane agree share (0.7197, rounded down)	OK		truncated, never rounded up
+S20	-	72%	S20 lane agree share (0.7197, rounded down)	0.7197	bern/querschnitt/eval/s20/results.json	lane agree share (0.7197, rounded down)	MISMATCH	71.9%	0.7197 → 72% is rounded up, not down; truncated 71.9% (used in docs/PRUEFSTAND.md); 72% is not used in the checked docs
 S20	-	0.325	S20 lane please_check acc	0.325	bern/querschnitt/eval/s20/results.json	lane please_check acc	OK		truncated, never rounded up
 S20	-	0.316	S20 minus_keyword diff	0.3168	bern/querschnitt/eval/s20/results.json	minus_keyword diff	OK		truncated, never rounded up
 run	-	27,904	corpus run requests so far (14 Oct 09:40)	27904	bern/querschnitt/runs/main/ledger.jsonl	line count	OK		
 run	-	0.000107	list-price USD per request	0.0001074	bern/querschnitt/runs/main/ledger.jsonl	sum(usd)/n, truncated	OK		
 run	-	1,072	mean prompt tokens per request	1072.4	bern/querschnitt/runs/main/ledger.jsonl	mean(pt), truncated	OK		
 S21	-	0.526	S21 s21_top1	0.5265	bern/querschnitt/eval/s21/results.json	s21_top1	OK		truncated / outward
-S21	-	0.507	S21 ci0	0.507	bern/querschnitt/eval/s21/results.json	ci0	OK		truncated / outward
-S21	-	0.546	S21 ci1	0.546	bern/querschnitt/eval/s21/results.json	ci1	OK		truncated / outward
+S21	-	0.506	S21 ci0	0.50662	bern/querschnitt/eval/s21/results.json	s21_top1 > acc 0.5265 × n 2437 = 1283 → Wilson 95% exact [0.50662, 0.54623], floored at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.507)
+S21	-	0.547	S21 ci1	0.54623	bern/querschnitt/eval/s21/results.json	s21_top1 > acc 0.5265 × n 2437 = 1283 → Wilson 95% exact [0.50662, 0.54623], ceiled at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.546)
 S21	-	0.631	S21 t1_or_t2	0.6315	bern/querschnitt/eval/s21/results.json	t1_or_t2	OK		truncated / outward
 S21	-	0.711	S21 top3	0.7115	bern/querschnitt/eval/s21/results.json	top3	OK		truncated / outward
 S21	-	0.028	S21 diff	0.0283	bern/querschnitt/eval/s21/results.json	diff	OK		truncated / outward
@@ -452,15 +452,15 @@ S8full	-	0.659	S8 full census a_R	0.659	bern/querschnitt/eval/s8full/results.jso
 S8full	-	0.491	S8 full census a_R ci0	0.491	bern/querschnitt/eval/s8full/results.json	a_R ci0	OK		truncated / outward
 S8full	-	0.900	S8 full census a_R ci1	0.9	bern/querschnitt/eval/s8full/results.json	a_R ci1	OK		truncated / outward
 S8full	-	0.584	S8 full census k_R	0.584	bern/querschnitt/eval/s8full/results.json	k_R	OK		truncated / outward
-S8full	-	894	S8 full census est positives (893.89, rounded to nearest)	893.89	bern/querschnitt/eval/s8full/results.json	est positives (893.89, rounded to nearest)	OK		truncated / outward
-S8full	-	657	S8 full census pos ci0	656.76	bern/querschnitt/eval/s8full/results.json	pos ci0	OK		truncated / outward
-S8full	-	1,190	S8 full census pos ci1	1190.368	bern/querschnitt/eval/s8full/results.json	pos ci1	OK		truncated / outward
+S8full	-	893	S8 full census est positives (893.89, truncated)	893.89	bern/querschnitt/eval/s8full/results.json	gold_AB_C > point > pos	OK		truncated; REPORT wrote 894 (rounded up) before the 14 Oct fix
+S8full	-	656	S8 full census pos ci0	656.76	bern/querschnitt/eval/s8full/results.json	gold_AB_C > ci > pos[0]	OK		lower bound 656.76 rounded outward; REPORT wrote 657 (inward) before the 14 Oct fix
+S8full	-	1,191	S8 full census pos ci1	1190.368	bern/querschnitt/eval/s8full/results.json	gold_AB_C > ci > pos[1]	OK		upper bound 1190.368 rounded outward; REPORT wrote 1,190 (inward) before the 14 Oct fix
 S8full	-	nine in ten	S8 full census a_P 0.905	0.905	bern/querschnitt/eval/s8full/results.json	a_P 0.905	OK		truncated / outward
 S8full	-	three in four	S8 full census k_P 0.756	0.756	bern/querschnitt/eval/s8full/results.json	k_P 0.756	OK		truncated / outward
 S8full	-	nearly 900	S8 full census est positives 893.89	893.89	bern/querschnitt/eval/s8full/results.json	est positives 893.89	OK		truncated / outward
 S17	-	0.640	S17 top1	0.64	bern/querschnitt/eval/s17/results.json	top1	OK		truncated
-S17	-	0.571	S17 ci0	0.571	bern/querschnitt/eval/s17/results.json	ci0	OK		truncated
-S17	-	0.703	S17 ci1	0.703	bern/querschnitt/eval/s17/results.json	ci1	OK		truncated
+S17	-	0.571	S17 ci0	0.57141	bern/querschnitt/eval/s17/results.json	top1 > acc 0.64 × n 200 = 128 → Wilson 95% exact [0.57141, 0.70331], floored at 3 decimals	OK		recomputed exactly; outward rounding equals the stored value
+S17	-	0.704	S17 ci1	0.70331	bern/querschnitt/eval/s17/results.json	top1 > acc 0.64 × n 200 = 128 → Wilson 95% exact [0.57141, 0.70331], ceiled at 3 decimals	OK		recomputed outward (file stores nearest rounding 0.703)
 S17	-	0.770	S17 top3	0.77	bern/querschnitt/eval/s17/results.json	top3	OK		truncated
 S17	-	0.94	S17 kappa	0.94	bern/querschnitt/eval/s17/results.json	kappa	OK		truncated
 S17	-	0.150	S17 keyword	0.15	bern/querschnitt/eval/s17/results.json	keyword	OK		truncated
@@ -470,3 +470,91 @@ S17	-	0.511	S17 lane check	0.5111	bern/querschnitt/eval/s17/results.json	lane ch
 S17	-	0.631	S17 de	0.6319	bern/querschnitt/eval/s17/results.json	de	OK		truncated
 S17	-	0.687	S17 fr	0.6875	bern/querschnitt/eval/s17/results.json	fr	OK		truncated
 S17	-	0.625	S17 it	0.625	bern/querschnitt/eval/s17/results.json	it	OK		truncated
+README/REPORT/PITCH	-	0.191	keyword baseline (APS subtopic words, frozen), S9	0.1916	bern/ideation2/spikes/s9-aps/results.json	baselines > keyword_top1	OK		truncated
+REPORT	-	0.079	majority chapter baseline, S9	0.0796	bern/ideation2/spikes/s9-aps/results.json	baselines > majority_top1	OK		truncated
+REPORT/PITCH	-	0.520	APS subtopic top-1 end to end, S9	0.5209	bern/ideation2/spikes/s9-aps/results.json	subtopic > D1 (joint L2 x D0-arith prior, beta=1) [pre-registered pipeline] > top1	OK		truncated
+REPORT	-	0.016	federal APS chapters, German − French text, paired	0.0169	bern/ideation2/spikes/s14-neutrality/results.json	S9 > language (paired, same affairs; single identity-order call) > diff_DE_minus_FR	OK		truncated
+REPORT	-	−0.003	federal APS chapters, German − French, lower bound	-0.0029	bern/ideation2/spikes/s14-neutrality/results.json	S9 > language (paired, same affairs; single identity-order call) > diff_ci[0]	OK		rounded outward
+REPORT	-	0.037	federal APS chapters, German − French, upper bound	0.0361	bern/ideation2/spikes/s14-neutrality/results.json	S9 > language (paired, same affairs; single identity-order call) > diff_ci[1]	OK		rounded outward
+REPORT	-	0.653	D1 top-1 on members' motions (instrument Motion), S9	0.6536	bern/ideation2/spikes/s14-neutrality/results.json	S9 > instrument > D1_top1 > cells[Motion] > p	OK		truncated
+REPORT	-	0.792	D1 top-1 on government business, S9	0.792	bern/ideation2/spikes/s14-neutrality/results.json	S9 > submitter kind > D1_top1 > cells[government] > p	OK		exact
+PRUEFSTAND	72	0.577	BFH Omikuji macro-F1 (Curia test 200)	0.577	bern/ideation/spikes/s3-accuracy/results.md	line 35: "**BFH Omikuji, thr 0.25** … **0.577 [0.525, 0.642]**"	OK		
+APP	10	8765	dev server port	8765	bern/querschnitt/app/dev/serve.py	line 14: default port 8765	OK		design constant
+APP	25	52	virtualised list row height (px)	52	bern/querschnitt/app/js/vlist.js	line 4: export const ROW_H = 52	OK		design constant
+APP	32	2,113	commune centroids in geo.json	2113	bern/querschnitt/app/data/geo.json	len(communes)	OK		file size 164,665 B
+APP/SERVICE	36	0/1	value notation (flags accept 0/1)	0/1	bern/querschnitt/app/js/data.js	line 62: laneBit(v) accepts 1 / true / 'please_check' else 0	OK		notation, not a measurement
+APP	85	1800	covered_from cut-off year	1800	bern/querschnitt/app/js/data.js	line 77: +b.covered_from >= 1800	OK		design constant
+APP	85	0209	OPD begin_date year of affair 74668 (body 616, Münsingen)	0209-06-15	bern/data/opd-new/affairs.ndjson.gz	id 74668 > begin_date	OK		data error in the OPD export
+APP	119	1/2	reading labels «Lesart 1/2»	1/2	bern/querschnitt/app/js/util.js	line 68: read1 'Lesart 1', read2 'Lesart 2'	OK		notation, not a measurement
+APP	132	720/871	D4 lane readings agree: correct / n	720/871	bern/querschnitt/app/data/pruef_confusion.json	lanes > agree_k / agree_n	OK		= S16 lanes_D4 agree_n 871 × 0.8266
+APP	132	285/486	D4 lane readings disagree: correct / n	285/486	bern/querschnitt/app/data/pruef_confusion.json	lanes > disagree_k / disagree_n	OK		= S16 lanes_D4 disagree_n 486 × 0.5864
+ROMAN	12	325	325k affairs in OPD (6 Oct export)	325691	bern/VISION-topics-v2.md	§ line 19: 325,691 affairs (R1 §1.1)	OK		truncated to thousands
+ROMAN	12	498	chapter step requests for the back catalogue	498535	derived	bern/querschnitt/runs/main/dd237840-20261014/ch1.jsonl 15,489 rows, ch2.jsonl 8,220 rows: 325,691 × (1 + 8,220/15,489)	ROUNDED		approximation marked (≈); truncated
+ROMAN	12	53%	second-reading share in the production run	0.5307	bern/querschnitt/runs/main/dd237840-20261014/	ch2 rows 8,220 / ch1 rows 15,489	OK		truncated
+UPSTREAM	15	0001	migration ids 0001–0003	0001	bern/querschnitt/upstream/opd/migrations/	0001_topics.up.sql … 0003_topic_feed_bodies.up.sql	OK		file names
+UPSTREAM	15	0003	migration ids 0001–0003	0003	bern/querschnitt/upstream/opd/migrations/	0003_topic_feed_bodies.up.sql	OK		file names
+UPSTREAM	15	16.2	PostgreSQL version of the upstream test	16.2	~/.cache/uv/archive-v0/*/pgserver/pginstall/bin/pg_ctl	pg_ctl --version → "pg_ctl (PostgreSQL) 16.2"	OK		pgserver bundle used for the test
+SERVICE	11	3.12	uv venv (Python 3.12)	3.12	bern/querschnitt/Makefile	line 23: uv venv -p 3.12 .venv	OK		code constant
+SERVICE	26	504	test sample: 80 OPD affairs, 504 synthetic rows	504	bern/querschnitt/tests/fixtures/topics_sample.jsonl	line count (all model: fixture); load log runs/service-dev/make_run.log read 504	OK		
+SERVICE	52	9309	RFC 9309 robots check	9309	bern/querschnitt/src/querschnitt/net.py	docstring lines 2-4	OK		identifier
+SERVICE	66	409	undo: 409 when there is no decision to undo	409	bern/querschnitt/src/querschnitt/api.py	line 237: LookupError → HTTPException(409); store.py undo raises LookupError (line ~529)	OK		
+SERVICE	79	58,392	rows sharing one valid_from after one load	58392	bern/querschnitt/runs/dogfood.sqlite	topics GROUP BY valid_from max count (2026-10-14T05:41:41); qs_runs row 1 rows=58392	OK		
+SERVICE	85	0.502	chapter step mean P for 341104	0.5023	bern/querschnitt/app/data/detail/341.json	341104 > aps > p_step[0]	OK		truncated
+SERVICE	85	341104	affair id	341104	bern/querschnitt/app/data/detail/341.json	id 341104	OK		identifier; note: the calibrated p written 0.284 in the same line is 0.2838 (aps > p[0]) → truncated 0.283 (not flagged, backed by another value)
+SERVICE	107	0.5%	broad term threshold	0.005	bern/querschnitt/src/querschnitt/adhoc.py	line 233: QS_TERM_BROAD default 0.005	OK		code constant
+SERVICE	109	626	affairs 30 Sep – 6 Oct in the 11 Oct export	626	bern/querschnitt/runs/service-dev/adhoc_live/run2.json	[0] > summary > in_period (also run3)	OK		
+SERVICE	123	326,123	affairs in the store	326123	bern/querschnitt/runs/service-dev/build_inputs.log	rows	OK		
+SERVICE	123	0.0026	USD for the 110 live-check requests	0.0026916	bern/querschnitt/runs/service-dev/ledger.jsonl	sum(usd) over 110 lines	OK		rounded up; truncated 0.0026; SERVICE.md corrected 14 Oct, truncated
+SERVICE	128	8.2	wolf de limit 40: topic ready	8.23	bern/querschnitt/runs/service-dev/adhoc_live/run2.json	[0] > topic_s	OK		truncated
+SERVICE	128	9.8	wolf de limit 40: 1st decision	9.85	bern/querschnitt/runs/service-dev/adhoc_live/run2.json	[0] > first_s	OK		rounded up; SERVICE.md corrected 14 Oct, truncated
+SERVICE	128	28.0	wolf de limit 40: 10th decision	28.01	bern/querschnitt/runs/service-dev/adhoc_live/run2.json	[0] > first10_s	OK		truncated
+SERVICE	128	40 / 1	wolf de limit 40: read / flagged	40 / 1	bern/querschnitt/runs/service-dev/adhoc_live/run2.json	[0] > n, flagged	OK		all_s 111.01 → 111 OK
+SERVICE	129	6.1	heat fr limit 25: topic ready	6.13	bern/querschnitt/runs/service-dev/adhoc_live/run3.json	[0] > topic_s	OK		truncated
+SERVICE	129	7.7	heat fr limit 25: 1st decision	7.75	bern/querschnitt/runs/service-dev/adhoc_live/run3.json	[0] > first_s	OK		rounded up; SERVICE.md corrected 14 Oct, truncated
+SERVICE	129	35.0	heat fr limit 25: 10th decision	35.02	bern/querschnitt/runs/service-dev/adhoc_live/run3.json	[0] > first10_s	OK		truncated
+SERVICE	129	25 / 0	heat fr: read / flagged	25 / 0	bern/querschnitt/runs/service-dev/adhoc_live/run3.json	[0] > n, flagged	OK		
+SERVICE	129	77	heat fr: all decisions	77.64	bern/querschnitt/runs/service-dev/adhoc_live/run3.json	[0] > all_s	OK		rounded up; SERVICE.md corrected 14 Oct, truncated
+SERVICE	130	5.7	wolf 2019 limit 18: topic ready	5.75	bern/querschnitt/runs/service-dev/adhoc_live/run4.json	[0] > topic_s	OK		rounded up; SERVICE.md corrected 14 Oct, truncated
+SERVICE	130	14.6	wolf 2019: 1st decision	14.66	bern/querschnitt/runs/service-dev/adhoc_live/run4.json	[0] > first_s	OK		rounded up; SERVICE.md corrected 14 Oct, truncated
+SERVICE	130	47.3	wolf 2019: 10th decision	47.38	bern/querschnitt/runs/service-dev/adhoc_live/run4.json	[0] > first10_s	OK		"rounded up; also ""80 s"" (all_s 79.89) should be 79, not flagged; SERVICE.md corrected 14 Oct, truncated"
+SERVICE	130	18 / 4	wolf 2019: read / flagged	18 / 4	bern/querschnitt/runs/service-dev/adhoc_live/run4.json	[0] > n, flagged	OK		
+SERVICE	132	1.139	S13 decisions/s at 3 workers, low end	1.139	bern/ideation2/spikes/s13-timing/results.md	S13 table: hitze 1.139, ki_schule 1.141, wolf 1.263	OK		range min 1.139 rounded up (inward); write 1.13–1.26 or 1.139–1.263; SERVICE.md corrected 14 Oct, truncated
+SERVICE	132	1.26	S13 decisions/s, high end	1.263	bern/ideation2/spikes/s13-timing/results.md	S13 table: wolf decisions/s	OK		truncated
+SERVICE	133	15,541	affairs in 2019 period	15541	bern/querschnitt/runs/service-dev/adhoc_live/run4.json	[0] > summary > in_period	OK		also candidates 30, outside_n 6; outside interval [0, 0.3903] is written [0, 0.39] (upper bound inward; write 0.40 or 0.391), not flagged
+SERVICE	139	320	terms answer max_tokens	320	bern/querschnitt/src/querschnitt/adhoc.py	line 210: generate(sentence, TERMS_PROMPT, 320)	OK		code constant
+SERVICE	143	0/1	eval label formats	0/1	bern/querschnitt/src/querschnitt/evaluate.py	"lines 28-29: TRUE/FALSE sets include ""1""/""0"""	OK		code constant
+SERVICE	145	1,000	F1 bootstrap resamples	1000	bern/querschnitt/src/querschnitt/evaluate.py	line 96: f1_boot(n=1000)	OK		code constant
+SERVICE	146	12,417	topic rows in the store composed from runs/main	12417	bern/querschnitt/runs/service-dev/delta_dry.log	line 1: rows 12417 (also delta_dry2.log)	OK		
+SERVICE	147	23/25	DVS30 recall, cantonal	23/25	bern/querschnitt/runs/service-dev/eval-gold_dvs30.json	schemes > adhoc/digitalisierung > by > level > cantonal > recall	OK		overall CI [0.7438, 0.9654] → [0.743, 0.966] as written
+SERVICE	147	4/5	DVS30 recall, federal	4/5	bern/querschnitt/runs/service-dev/eval-gold_dvs30.json	by > level > federal > recall	OK		
+SERVICE	147	297879	miss BL	297879	bern/querschnitt/runs/service-dev/eval-gold_dvs30.json	misses[0].affair_id	OK		identifier
+SERVICE	147	337826	miss BE	337826	bern/querschnitt/runs/service-dev/eval-gold_dvs30.json	misses[1].affair_id	OK		identifier
+SERVICE	147	161610	miss CHE	161610	bern/querschnitt/runs/service-dev/eval-gold_dvs30.json	misses[2].affair_id	OK		identifier
+SERVICE	152	370	first fetch: 22 files, MB	370.967	bern/data/opd-new	sum of affairs+bodies+contributors+texts/* (22 files) = 370,967,074 B	OK		rounded up (370.97 MB; 353.8 MiB); same on lines 170, 176; SERVICE.md corrected 14 Oct, truncated
+SERVICE	163	1.55	peak RSS touched-only rebuild, GB	1.5577	bern/querschnitt/runs/service-dev/delta_dry2.log	maximum resident set size 1557741568	OK		rounded up (1.557 GB; 1.45 GiB); same on line 173; SERVICE.md corrected 14 Oct, truncated
+SERVICE	164	326,123	input hashes	326123	bern/querschnitt/runs/service-dev/build_inputs.log	rows	OK		
+SERVICE	164	86	full rebuild seconds	86.50	bern/querschnitt/runs/service-dev/delta_dry.log	86.50 real	OK		truncated
+SERVICE	164	4.7	full rebuild peak, GB	4.786	bern/querschnitt/runs/service-dev/delta_dry.log	maximum resident set size 4786438144	OK		rounded up (4.786 GB; 4.46 GiB); same on lines 173, 194; SERVICE.md corrected 14 Oct, truncated
+SERVICE	169	215	Python deps site-packages MB	215M (du -sh) / 217.46 MB apparent	bern/querschnitt/.venv/lib/python3.12/site-packages	du -sh = 215M; sum of file sizes 217,463,127 B (207.4 MiB)	OK		not reproducible now with the same method that gives pyarrow 123 (du -sh); venv may have changed since; SERVICE.md corrected 14 Oct, truncated
+SERVICE	169	123	pyarrow MB	123M	bern/querschnitt/.venv/lib/python3.12/site-packages/pyarrow	du -sh (disk usage, MiB) = 123M; apparent 126.5 MB / 120.7 MiB	OK		"method: du -sh; psycopg_binary 17M OK; ""app 40 MB"" now 71.9 MB (app minus dockerignored dev/data-fixture), not flagged"
+SERVICE	169	3.12	image base python:3.12-slim	3.12	bern/querschnitt/Dockerfile	line 5: FROM python:3.12-slim	OK		
+SERVICE	170	51	affairs export MB	51.891	bern/data/opd-new/affairs.ndjson.gz	size 51,891,499 B (index.json size_human 49.5M)	OK		"rounded up; contributors ""61"" is 60.7 MB → 60 (not flagged); SERVICE.md corrected 14 Oct, truncated"
+SERVICE	170	258	texts export MB	258.217	bern/data/opd-new/texts	sum of 19 texts_*.ndjson.gz = 258,217,216 B	OK		truncated
+SERVICE	170	335	docs_slim.jsonl.gz MB	335.311	bern/data/opd-new/docs_slim.jsonl.gz	size 335,311,309 B	OK		truncated; inputs 174 MB = 174,742,121 B OK
+SERVICE	172	12,417	topic rows	12417	bern/querschnitt/runs/service-dev/delta_dry.log	rows 12417	OK		
+SERVICE	174	326	326k affairs	326123	bern/querschnitt/runs/service-dev/build_inputs.log	rows	OK		truncated
+SERVICE	177	1.3	≈ KB per chapter-step call	1.360	bern/querschnitt/runs/main/dd237840-20261014/ch1.jsonl	21,118,151 B / 15,526 lines = 1,360 B (ch2: 1,363 B)	OK		1,360 B per call, truncated; SERVICE.md corrected from ≈ 1.4
+SERVICE	179	10001	container uid	10001	bern/querschnitt/Dockerfile	line 15: useradd --uid 10001; .github/workflows/ci.yml line 33	OK		
+SERVICE	154	82,999	affairs with updated_at on 10 or 11 Oct in the 11 Oct export	82999	bern/data/opd-new/affairs.ndjson.gz	count updated_at date 2026-10-10 (790) + 2026-10-11 (82,209)	OK		replaces the unverifiable 82,995
+SERVICE	85	0.283	calibrated p of affair 341104	0.2838	bern/querschnitt/app/data/detail/341.json	341104 > p[0]	OK		truncated
+SERVICE	132	1.263	S13 decisions/s, upper end	1.263	bern/ideation2/spikes/s13-timing/results.md	S13 table: wolf decisions/s	OK		
+SERVICE	130	79	2019 wolf run, all decisions (s)	79.89	bern/querschnitt/runs/service-dev/adhoc_live/run4.json	[0] > all_s	OK		truncated; was 80
+SERVICE	163	131	touched-only rebuild wall time (s)	131.99	bern/querschnitt/runs/service-dev/delta_dry2.log	line 2: 131.99 real	OK		truncated; was 132
+SERVICE	170	60	contributors export size (MB)	60.706	bern/data/opd-new/contributors.ndjson.gz	size 60,706,080 B	OK		truncated; was 61
+SERVICE	135	0.391	outside sample 0 of 6 flagged, Wilson upper bound	0.39034	derived	Wilson 95% (0, 6) = [0, 0.39034], ceiled	OK		was 0.39 (inward)
+CI	-	33.82	compose footprint	33.82	bern/querschnitt/eval/ci_footprint.txt	db	OK		
+CI	-	43.68	compose footprint	43.68	bern/querschnitt/eval/ci_footprint.txt	api	OK		
+CI	-	12.72	compose footprint	12.72	bern/querschnitt/eval/ci_footprint.txt	nightly	OK		
+CI	-	90.22	compose footprint	90.22	bern/querschnitt/eval/ci_footprint.txt	sum full	OK		
+CI	-	12.7	compose footprint	12.7	bern/querschnitt/eval/ci_footprint.txt	nightly-lite	OK		
+CI	-	173	compose footprint	173	bern/querschnitt/eval/ci_footprint.txt	image MB	OK		

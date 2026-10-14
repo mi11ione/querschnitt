@@ -4,9 +4,10 @@ import { $, h, t, UI, num, pct } from './util.js';
 import { Board } from './board.js';
 import { Neu, loadSaved } from './neu.js';
 import { renderPruef, testCount } from './pruef.js';
+import { Atlas } from './atlas.js';
 
-const VIEWS = ['karte', 'neu', 'pruef'];
-let view = 'karte', karte = null, neu = null;
+const VIEWS = ['ueber', 'karte', 'neu', 'pruef'];
+let view = 'ueber', karte = null, neu = null, atlas = null;
 
 function setLang(l) {
   UI.lang = l; document.documentElement.lang = l;
@@ -15,12 +16,13 @@ function setLang(l) {
   if (karte) karte.relang();
   if (neu) neu.relang();
   if (view === 'pruef') renderPruef($('#v-pruef'));
+  if (view === 'ueber') atlas.render();
 }
 
 function renderShell() {
   const L = t(), m = D.meta;
   // bar
-  const counts = { karte: num(D.n), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
+  const counts = { ueber: num(atlas ? atlas.topics().length : 0), karte: num(D.n), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
   for (const v of VIEWS) {
     const b = $(`#t-${v}`); b.replaceChildren(L[v], h('span', { class: 'c' }, counts[v]));
     b.setAttribute('aria-selected', String(v === view));
@@ -29,7 +31,7 @@ function renderShell() {
   $('#mode').textContent = API.live ? L.live : L.static;
   $('#fixture').hidden = SRC['meta.json'] !== 'data-fixture/';
   $('#fixture').textContent = L.fixture;
-  $('#build').replaceChildren(`${L.build} `, h('b', {}, m.build_short || String(m.build || '').slice(-8)));
+  $('#build').replaceChildren();
   // fact line: affairs, parliaments, scored share, build, last night's new rows, pending rows
   const ng = m.nightly || null, nRows = ng ? (ng.new_rows ?? ng.rows ?? ng.scored ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
   const night = ng ? [nRows != null ? num(nRows) : (ng.date || '').slice(5, 10).split('-').reverse().join('.'), ng.wall_min != null ? `${L.night} · ${num(ng.wall_min)} min` : L.night]
@@ -37,23 +39,35 @@ function renderShell() {
   const items = [
     [num(m.affairs ?? D.n), L.affairs],
     [num(m.parliaments ?? D.bodies.length), L.parls],
+    [num(m.please_check ?? 0), L.pendingAll],
     [pct(m.scored_share), `${L.scored} (APS)`],
     m.dig_scored != null ? [num(m.dig_scored), `${L.scored} (${(TOPIC_BY_ID.get('adhoc/digitalisierung') || { names: { de: 'Digitalisierung', fr: 'numérique' } }).names[UI.lang]})`] : null,
-    [m.build_short || String(m.build || '').slice(-8), L.build, true],
     night,
-    [num(m.please_check ?? 0), L.pendingAll],
   ].filter(Boolean);
   $('#facts').replaceChildren(...items.map(([v, k, pre]) => h('span', {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));
+  fitFacts();
   // footer: provenance + keys
   const gen = (m.generated_at || '').replace('T', ' ').slice(0, 16);
   $('#prov').textContent = [`${L.prov1}, Export ${gen} UTC`, `${L.engine} ${m.model || ''}, Build ${m.build_short || String(m.build || '').slice(-8)}`, `Querschnitt ${m.version || ''}`, L.geo].join(' · ');
   $('#keys').replaceChildren(...L.keys.map(([k, v]) => h('span', {}, h('kbd', {}, k), ` ${v}`)));
 }
 
+// the fact line stays one line: drop items from the end until it fits
+function fitFacts() {
+  const el = $('#facts'); if (!el) return;
+  for (const x of el.children) x.hidden = false;
+  const kids = [...el.children];
+  const wraps = () => el.scrollWidth > el.clientWidth + 1;
+  for (let k = kids.length - 1; k > 0 && wraps(); k--) kids[k].hidden = true;
+}
+addEventListener('resize', () => fitFacts());
+
 function show(v) {
   view = v;
+  document.body.classList.toggle('v-ueber', v === 'ueber');
   for (const x of VIEWS) { $(`#v-${x}`).hidden = x !== v; $(`#t-${x}`).setAttribute('aria-selected', String(x === v)); }
   if (v === 'pruef') renderPruef($('#v-pruef'));
+  if (v === 'ueber') atlas.render();
   if (v === 'neu' && !neu) neu = new Neu($('#v-neu'));
   if (v === 'neu' && neu) neu.board.refresh();
   writeHash();
@@ -79,7 +93,7 @@ function writeHash() {
 function readHash() {
   const [v, q] = location.hash.slice(1).split('?');
   const p = new URLSearchParams(q || '');
-  return { view: VIEWS.includes(v) ? v : 'karte', p };
+  return { view: VIEWS.includes(v) ? v : 'ueber', p };
 }
 
 // ---------------------------------------------------------------- keyboard
@@ -90,6 +104,7 @@ function keys(e) {
   const b = board(), k = e.key;
   if (k === 'd' || k === 'f') { setLang(k === 'd' ? 'de' : 'fr'); e.preventDefault(); return; }
   if (k === 'm') { show('karte'); return; }
+  if (k === 'a') { show('ueber'); return; }
   if (k === 'n') { show('neu'); return; }
   if (k === 'b') { show('pruef'); return; }
   if (!b) return;
@@ -128,6 +143,9 @@ async function boot() {
   const { view: v0, p } = readHash();
   const tp = (p.get('t') && TOPIC_BY_ID.get(p.get('t'))) || findTopic('Digitalisierung') || [...TOPIC_BY_ID.values()][0];
   karte = new Board($('#v-karte'), { topic: tp, onChange: () => writeHash() });
+  atlas = new Atlas($('#v-ueber'), {
+    openTopic: x => { karte.S.brush = null; karte.S.mode = 'list'; show('karte'); karte.setTopic(x); },
+    openAffair: i => { const c = D.c; const x = c.df[i] ? TOPIC_BY_ID.get('adhoc/digitalisierung') : (c.ch[i] >= 0 ? TOPIC_BY_ID.get(D.scheme.chapters[c.ch[i]].code) : karte.tp); karte.S.brush = null; show('karte'); karte.setTopic(x); karte.select(c.id[i]); } });
   if (p.get('p')) karte.S.body = p.get('p');
   if (p.get('w')) { const [a, b] = p.get('w').split('-').map(Number); if (b >= a) karte.S.brush = [a, b]; }
   if (p.get('m') === 'pult') { karte.S.mode = 'pult'; karte.S.tab = p.get('tab') || 'neu'; if (p.get('pw')) { karte.S.pw = +p.get('pw'); karte.S.pwFor = karte.tp.id; } }

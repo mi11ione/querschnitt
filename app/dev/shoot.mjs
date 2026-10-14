@@ -15,6 +15,9 @@ const PORT = 9333 + Math.floor(Math.random() * 500);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const SCEN = [
+  { name: 'ueber-1440', w: 1440, h: 900, url: '' },
+  { name: 'ueber-375', w: 375, h: 812, mobile: true, url: '', full: true },
+  { name: 'ueber-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#ueber' },
   { name: 'karte-1440', w: 1440, h: 900, url: '#karte' },
   { name: 'karte-detail-1440', w: 1440, h: 900, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'karte-search-1440', w: 1440, h: 900, url: '#karte', steps: [`(()=>{const q=document.querySelector('#v-karte .filters input');q.value='rechenzentr|data cent|centre de donn|centri dati|datacenter';q.dispatchEvent(new Event('input'))})()`, 400, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
@@ -59,6 +62,7 @@ const SCEN = [
   { name: 'matrix-1440', w: 1440, h: 900, url: '#karte?v=matrix' },
   { name: 'matrix-375', w: 375, h: 812, mobile: true, url: '#karte?v=matrix', full: true },
   { name: 'overview-375', w: 375, h: 812, mobile: true, url: '#karte', full: true },
+  { name: 'simcal', w: 800, h: 600, url: '#karte', steps: [], print: `import('./js/case.js').then(m=>{const D=__qs.D,c=D.c;const out=[];const ids=[];for(let i=0;i<D.n&&ids.length<20;i+=1601){if(c.df[i]||c.ch[i]>=0)ids.push(i)}for(const i of ids){out.push('## '+c.title[i].slice(0,80));for(const [j,v,n,ss] of m.similar(i,null,true))out.push('   '+v+' '+n+(ss?' S':'  ')+' '+c.body[j]+' '+c.title[j].slice(0,80))}return out.join(String.fromCharCode(10))})` },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 

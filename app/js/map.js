@@ -103,7 +103,7 @@ export class SwissMap {
       const lb = this.lbl.get(k); if (lb) { lb.classList.toggle('lbl-dark', !!st && st.cls >= 4); lb.classList.toggle('on', k === sel); }
     }
     const fe = stats.get('CHE'), b = D.B.get('CHE');
-    this.bandL.textContent = b ? (UI.lang === 'fr' ? b.name_fr : b.name_de) : 'CHE';
+    this.bandL.textContent = t().federal; // short: the full name sits in the filter line when selected
     this.bandR.textContent = fe && fe.n ? `${num(fe.hits)} · ${pct(fe.share)}` : '–';
     for (const tx of [this.bandL, this.bandR]) tx.classList.toggle('lbl-dark', !!fe && fe.cls >= 4);
     this.drawTicks();

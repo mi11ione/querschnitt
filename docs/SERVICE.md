@@ -82,7 +82,7 @@ Every row carries `label` {de, fr, it} from the scheme files.
   and a missing source is the field for titles, else the affair's `text_src`.
 - One `p`: `compose.topic_rows` picks the map (`aps-fed` when the chapter step showed examples, else `aps`) and the
   export copies `ch_p` and the detail's `p`/`p_raw` from those rows (the detail panel showed the chapter step's mean
-  P, 0.502 for 341104, where the row's calibrated `p` is 0.284). Tested end to end: run → export → load → API.
+  P, 0.502 for 341104, where the row's calibrated `p` is 0.283). Tested end to end: run → export → load → API.
 - A row is never changed except to close it (`valid_to`). Loading compares each (affair, scheme, level, rank) with the
   latest machine row for that key: identical content is skipped (reloads are idempotent), changed content (code, p,
   lane, evidence, build, prompt, input hash, …) closes the current row and adds a new one, and keys that vanish from a
@@ -120,19 +120,19 @@ Every row carries `label` {de, fr, it} from the scheme files.
   subtopics, sentence; no bare `yes:` key) and the run's decisions as `adhoc/<slug>` rows; `delta` picks up every file
   in `schemes/adhoc/` (`scheme.adhoc_topics()`).
 - Live check, 14 Oct, Public AI, build `…dd237840` (every call), `Endpoint(max_rate=0.5, conc=2)`, store with all
-  326,123 affairs: 110 requests in total (USD 0.0027 at list price; `runs/service-dev/ledger.jsonl`), results in
+  326,123 affairs: 110 requests in total (USD 0.0026 at list price; `runs/service-dev/ledger.jsonl`), results in
   `runs/service-dev/adhoc_live/run{1..4}.json`.
 
 | Sentence (lang) | Period | Topic ready | 1st decision | 10th | Read / flagged | All |
 |---|---|---|---|---|---|---|
-| "Wölfe, Grossraubtiere und Herdenschutz" (de), limit 40 | 30 Sep – 6 Oct | 8.2 s | 9.9 s | 28.0 s | 40 / 1 | 111 s |
-| "Protection de la population contre la chaleur et les canicules" (fr), limit 25 | 30 Sep – 6 Oct | 6.1 s | 7.8 s | 35.0 s | 25 / 0 | 78 s |
-| "Wölfe, Grossraubtiere und Herdenschutz" (de), limit 18 | 2019 (candidates) | 5.8 s | 14.7 s | 47.4 s | 18 / 4 | 80 s |
+| "Wölfe, Grossraubtiere und Herdenschutz" (de), limit 40 | 30 Sep – 6 Oct | 8.2 s | 9.8 s | 28.0 s | 40 / 1 | 111 s |
+| "Protection de la population contre la chaleur et les canicules" (fr), limit 25 | 30 Sep – 6 Oct | 6.1 s | 7.7 s | 35.0 s | 25 / 0 | 77 s |
+| "Wölfe, Grossraubtiere und Herdenschutz" (de), limit 18 | 2019 (candidates) | 5.7 s | 14.6 s | 47.3 s | 18 / 4 | 79 s |
 
-  At 0.5 requests/s the decision rate is the cap, not the model (S13 measured 1.14–1.26 decisions/s at 3 workers).
+  At 0.5 requests/s the decision rate is the cap, not the model (S13 measured 1.139–1.263 decisions/s at 3 workers).
   2019 run: 15,541 affairs in the period, 30 candidates from the terms, 4 flagged among the 12 candidates read (an
   association for a habitat without large predators in Solothurn, livestock guard dogs in the Federal Assembly, «Les Loups vont-ils s'installer
-  dans la bergerie ?» in Vaud, a Zurich nature-protection item at p 0.81); outside sample 0 of 6 flagged [0, 0.39].
+  dans la bergerie ?» in Vaud, a Zurich nature-protection item at p 0.81); outside sample 0 of 6 flagged [0, 0.391].
   Of the five subtopics Apertus named for wolves, two hold the topic (Jagd; Tierhaltung, -versuche und -schutz) and
   three do not (Grundrechte, Öffentliche Ordnung, Innere Sicherheit); the outside sample is what measures that step.
   Fixed during the check: the scope note first carried the prompt's framing in French and Italian (now a literal
@@ -144,14 +144,14 @@ Formats: `affair_id` (positives list), `affair_id,label` (0/1, ja/nein, … or a
 or tab. Prediction = the latest machine row at rank 1 (editor rows are never scored as predictions). Proportions with
 Wilson 95% intervals, F1 with a 1,000-resample bootstrap; per level, language and body; misses listed; unscored gold
 affairs counted and listed. On the store composed from `runs/main` (14 Oct, 12,417 rows): the 30 public DVS items →
-recall 0.900 [0.744, 0.965] (27/30), cantonal 23/25, federal 4/5; misses BL 297879, BE 337826, CHE 161610. The 1,357
+recall 0.900 [0.743, 0.966] (27/30), cantonal 23/25, federal 4/5; misses BL 297879, BE 337826, CHE 161610. The 1,357
 APS editors' chapters are not yet in a run (pipeline phase `p1b-aps-gold`); the multi-class path is covered by tests.
 
 ## Nightly delta (`querschnitt delta --since yesterday`)
 1. `fetch_exports`: robots.txt, then `index.json`; downloads `affairs`, `bodies`, `contributors` and the `texts` split
-   files whose size or `created` changed (first fetch: 22 files, 371 MB).
+   files whose size or `created` changed (first fetch: 22 files, 370 MB).
 2. Affairs new to the store or begun since `--since` → their `docs_<body>` files are streamed, and only those affairs'
-   slim rows appended to `docs_slim.jsonl.gz`. OPD refreshed `updated_at` on 82,995 affairs between 10 and 11 Oct, so
+   slim rows appended to `docs_slim.jsonl.gz`. the 11 Oct export carries an `updated_at` of 10 or 11 Oct on 82,999 affairs, so
    updated-only affairs are rebuilt from titles, texts and the documents already on disk, never re-downloaded.
 3. Inputs are rebuilt for touched affairs only (data.build over a filtered view of the export) and merged into the
    previous file; the first night (`--full-rebuild` or no inputs file) builds everything.
@@ -160,21 +160,21 @@ APS editors' chapters are not yet in a run (pipeline phase `p1b-aps-gold`); the 
 5. Rows: `compose.decide` + `compose.topic_rows` with `eval/calibration.json` (the export's rule) → `load_topics`.
 6. One `qs_runs` line and the printed `/metrics` line: `affairs N · wall S s · list-price USD X · pending P · rows R`.
 
-Measured on the 11 Oct export (no fetch, no model): touched-only rebuild of 83,000 affairs in 132 s, peak RSS 1.56 GB,
-all 326,123 input hashes identical to the full build (0 to re-score); the full rebuild takes 86 s at 4.8 GB peak.
+Measured on the 11 Oct export (no fetch, no model): touched-only rebuild in 131 s, peak RSS 1.55 GB,
+all 326,123 input hashes identical to the full build (0 to re-score); the full rebuild takes 86 s at 4.7 GB peak.
 
 ## Footprints
 | | measured |
 |---|---|
-| Python deps (site-packages) | 213 MB, of which pyarrow 123 MB and psycopg-binary 17 MB; image = python:3.12-slim + deps + repo (app 40 MB) |
-| Export files for the delta | 371 MB (affairs 52, contributors 61, texts 258 MB) + `docs_slim.jsonl.gz` 335 MB; inputs 174 MB |
-| Store, 326,123 affairs | SQLite 176 MB file, load 15 s, 35 MB RSS; Postgres `qs_affairs` 158 MB, load 13.5 s, 48 MB RSS |
-| Topic rows | Postgres ≈ 450 B per row (5.6 MB for 12,417); 2025–26 slice ≈ 33k affairs × ~7 rows ≈ 0.1 GB |
-| Nightly RAM | 1.56 GB peak (touched-only rebuild); first night 4.8 GB |
+| Python deps (site-packages) | 215 MB (`du`), of which pyarrow 123 MB and psycopg-binary 17 MB; image = python:3.12-slim + deps + repo |
+| Export files for the delta | 370 MB (affairs 51, contributors 60, texts 258 MB) + `docs_slim.jsonl.gz` 335 MB; inputs 174 MB |
+| Store, 326,123 affairs | SQLite 176 MB file, load 15 s, 35 MB RSS; Postgres: not logged on disk |
+| Topic rows | 12,417 rows in the store composed from `runs/main`; size per row in Postgres not logged on disk |
+| Nightly RAM | 1.55 GB peak (touched-only rebuild); first night 4.7 GB |
 | Queries (326k affairs) | `/topics/…/affairs` 5–12 ms; `pending` 30–50 ms; coverage 0.6 s Postgres / 3–4 s SQLite, then cached |
 
-`lite` on OPD's ~20 GB VPS: about 0.95 GB of files (exports 371 MB, docs 335 MB, inputs 174 MB, chapter step rows
-≈ 1.4 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (chapter rows only, ≈ 45 MB for 2025–26); `full` adds
+`lite` on OPD's ~20 GB VPS: about 0.95 GB of files (exports 370 MB, docs 335 MB, inputs 174 MB, chapter step rows
+≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (chapter rows only, ≈ 45 MB for 2025–26); `full` adds
 the API, the app and a Postgres volume.
 Docker is not available on the build Mac: CI builds the image, checks it runs as uid 10001, starts it, calls `/health`,
 `/metrics` and `/coverage`, and validates both compose profiles.
@@ -191,11 +191,14 @@ Docker is not available on the build Mac: CI builds the image, checks it runs as
 6. Runtime deps include pyarrow and duckdb (≈ 125 MB of the image); the service reads Parquet only when given a
    `.parquet` file. Moving them to an extra would shrink the image; your call.
 7. Ship (or let the nightly download) a seed `inputs.jsonl.gz` + `topics.jsonl.gz` so a fresh `full`/`lite` deploy does
-   not start with a 4.8 GB full rebuild and a 33k-affair batch.
+   not start with a 4.7 GB full rebuild and a 33k-affair batch.
 
-## Footprint (GitHub Actions `compose` job, 14 Oct; `docker stats`, idle after start)
+## Footprint (GitHub Actions `compose` job)
+`docker stats` after start for both profiles (`full`: db, api, nightly; `lite`: nightly-lite into an existing Postgres) is written to the job summary only, not to the repo; every push re-measures it.
+
+## Footprint (GitHub Actions `compose` job; `docker stats`, idle after start) — source: [`eval/ci_footprint.txt`](../eval/ci_footprint.txt)
 | profile | containers | memory | image |
 |---|---|---|---|
-| full | db (postgres:16-alpine) 64.4 MiB · api 43.6 MiB · nightly 13.2 MiB | ≈ 121 MiB | querschnitt 194 MB |
-| lite | nightly-lite 12.9 MiB, into an existing Postgres | ≈ 13 MiB | same image |
-Every push re-measures it; the numbers are in the job summary of the `compose` job.
+| full | db 33.82 MiB · api 43.68 MiB · nightly 12.72 MiB | 90.22 MiB | querschnitt 173 MB |
+| lite | nightly-lite 12.7 MiB, into an existing Postgres | 12.7 MiB | same image |
+Every push re-measures it in the job summary.

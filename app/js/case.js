@@ -40,28 +40,33 @@ const subName = code => {
 
 // ---------------------------------------------------------------- similar affairs (title words, other parliaments)
 let IDX = null;
-const words = s => [...new Set((norm(s).match(/[a-z]{5,}/g) || []).map(w => w.slice(0, 7)))];
+// procedural words carry no subject: never count them as shared content
+const STOP = new Set(('zwischen gegen sowie ueber kanton kantons kantonal gemeinde stadt schweiz schweizer bericht berichts rapport rapporto motion postulat interpellation '
+  + 'anfrage fragen frage antrag antrage wahl wahlen election elezione modification modifica projet progetto approbation comptes gestion revision aenderung '
+  + 'anderung gesetz gesetzes verordnung reglement millionen franken francs gewahrung kredit kredits credit credito dekret decret arrete beschluss beschlusses '
+  + 'jahresbericht rechnung budget voranschlag initiative iniziativa parlamentarische parlementaire parlamentare conseil consiglio grosser grossen rates rat '
+  + 'regierungsrat staatsrat municipal municipale commune comune communale cantonal cantonale federal federale bundes bundesrat liechtenstein landtag '
+  + 'betreffend concernant concernente relative relatif riguardante sulla della delle dans pour avec contre entre loi legge').split(' ').map(w => w.slice(0, 7)));
+const words = s => [...new Set((norm(s).match(/[a-z]{5,}/g) || []).map(w => w.slice(0, 7)).filter(w => !STOP.has(w)))];
 function index() {
   if (IDX) return IDX;
   const inv = new Map(), c = D.c;
   for (let i = 0; i < D.n; i++) for (const w of words(c.title[i])) { let a = inv.get(w); if (!a) inv.set(w, a = []); a.push(i); }
   IDX = inv; return inv;
 }
-function similar(i, tp) {
-  const inv = index(), c = D.c, sc = new Map();
+// kept only above a threshold: same first subtopic and ≥ 2 shared content words, or an idf-weighted overlap ≥ SIM_CUT
+export const SIM_CUT = 15;
+export function similar(i, tp, all = false) {
+  const inv = index(), c = D.c, sc = new Map(), sh = new Map();
   for (const w of words(c.title[i])) {
     const a = inv.get(w); if (!a || a.length > 400) continue;
     const idf = Math.log(D.n / a.length);
-    for (const j of a) if (c.body[j] !== c.body[i]) sc.set(j, (sc.get(j) || 0) + idf);
+    for (const j of a) if (c.body[j] !== c.body[i]) { sc.set(j, (sc.get(j) || 0) + idf); sh.set(j, (sh.get(j) || 0) + 1); }
   }
   const sub = c.subs[i] && c.subs[i][0];
-  for (const [j, v] of sc) {
-    let b = v;
-    if (sub != null && c.subs[j] && c.subs[j][0] === sub) b += 3;
-    if (tp && tp.hit(j)) b += 1.5;
-    sc.set(j, b);
-  }
-  return [...sc].filter(([, v]) => v >= 4).sort((a, b) => b[1] - a[1]).slice(0, 5).map(x => x[0]);
+  const keep = [...sc].filter(([j, v]) => all || (sub != null && c.subs[j] && c.subs[j][0] === sub && sh.get(j) >= 2) || (v >= SIM_CUT && sh.get(j) >= 3));
+  const out = keep.sort((a, b) => b[1] - a[1]).slice(0, 5);
+  return all ? out.map(([j, v]) => [j, Math.round(v * 10) / 10, sh.get(j), sub != null && c.subs[j] && c.subs[j][0] === sub]) : out.map(x => x[0]);
 }
 
 // ---------------------------------------------------------------- render
@@ -74,15 +79,15 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const h2 = h('h2', { lang }, c.title[i]);
   scroll.append(back, h2);
   const sub = c.submitter[i] ? `${c.submitter[i]}${c.party[i] ? ` (${c.party[i]})` : ''}` : '';
-  scroll.append(h('p', { class: 'ref' },
-    h('b', {}, fmtDate(c.date[i])), ' · ', bodyName(c.body[i]), ' · ', typeOf(i) || '–', c.state[i] ? ` · ${c.state[i]}` : '',
-    sub ? ` · ${sub}` : '', ` · ${lname(lang)}`));
+  scroll.append(h('p', { class: 'ref' }, h('b', {}, fmtDate(c.date[i])), ' · ', bodyName(c.body[i]), typeOf(i) ? ` · ${typeOf(i)}` : ''));
+  const refFull = h('p', { class: 'ref' }, c.state[i] ? `${c.state[i]}` : '', sub ? `${c.state[i] ? ' · ' : ''}${sub}` : '', ` · ${lname(lang)}`);
   const altP = h('p', { class: 'alt', hidden: true }); scroll.append(altP);
   const holder = h('div'); scroll.append(holder);
+  let groupSec = null;
   if (group && group.length > 1) {
     const tb = h('table', {}, h('tbody', {}, group.map(j => h('tr', {}, h('td', { class: 'n', style: 'text-align:left' }, `#${c.id[j]}`),
       h('td', {}, c.submitter[j] ? `${c.submitter[j]}${c.party[j] ? ` (${c.party[j]})` : ''}` : '–')))));
-    holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.same(group.length), h('span', { class: 'sp' }, L.sameNote)), h('div', { class: 'tw' }, tb)));
+    groupSec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.same(group.length), h('span', { class: 'sp' }, L.sameNote)), h('div', { class: 'tw' }, tb));
   }
   if (decideBar) root.append(decideBar);
   const d = await detail(id);
@@ -90,7 +95,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const evOf = x => x && x.evidence && (x.evidence.quote || x.evidence.start != null) ? x.evidence : null;
   const ev = d ? (tp && (tp.kind === 'adhoc' || tp.kind === 'live') ? evOf(d.dig) || evOf(d.aps)
     : tp && tp.kind === 'be' ? evOf(d.be) || evOf(d.aps) : evOf(d.aps) || evOf(d.dig)) || evOf(d) : null;
-  if (d && d.number) scroll.querySelector('.ref').append(` · ${d.number}`);
+  if (d && d.number) refFull.append(` · ${d.number}`);
   // text
   const tsec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.evidence, h('span', { class: 'sp' }, ev ? `${ev.field || ''} ${ev.start ?? ev.char_start ?? ''}–${ev.end ?? ev.char_end ?? ''}` : L.noEvidence)));
   // the affair in the interface language where it has that version; the original stays visible beside it
@@ -121,7 +126,6 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
       tsec.append(more);
     }
   }
-  holder.append(tsec);
   // topic
   const facts = h('dl', { class: 'facts' });
   const add = (k, ...v) => facts.append(h('dt', {}, k), h('dd', {}, ...v));
@@ -151,14 +155,18 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   } else if (c.bi[i] === 1) {
     add(L.bilingual, h('span', { class: 'mono sig', style: 'font-size:12px' }, L.lanes.please_check));
   }
-  let chartEl = null;
-  if (c.ch[i] >= 0 || aps) chartEl = chapterGraphic(aps, c.ch[i], c.chp[i], c.lane[i] === 1);
+  let chart = null;
+  if (c.ch[i] >= 0 || aps) chart = chapterGraphic(aps, c.ch[i], c.chp[i], c.lane[i] === 1);
   else add(L.chapter, h('span', { class: 'dim' }, L.notScored));
-  const tsec2 = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.topicSec), facts);
-  if (chartEl) tsec2.append(chartEl);
-  holder.append(tsec2);
+  // order: the decision graphic first (the topic in view leads), then the quoted passage, subtopics, metadata
+  const tsec2 = h('div', { class: 'sec first' });
+  if (chart && tp && (tp.kind === 'chapter' || tp.kind === 'sub')) tsec2.append(chart.el, facts); else { tsec2.append(facts); if (chart) tsec2.append(chart.el); }
+  holder.append(tsec2, tsec);
+  if (chart && chart.subs) holder.append(h('div', { class: 'sec' }, chart.subs));
+  if (groupSec) holder.append(groupSec);
   // provenance
   const pv = h('dl', { class: 'facts' });
+  pv.append(h('dt', {}, L.meta), h('dd', {}, refFull));
   const addp = (k, ...v) => pv.append(h('dt', {}, k), h('dd', {}, ...v));
   if (d && d.url) addp(L.page, h('a', { href: d.url, target: '_blank', rel: 'noopener' }, d.url.replace(/^https?:\/\//, '').slice(0, 64) + ' ↗'));
   addp('OPD', h('span', { class: 'mono' }, `#${id} · ${c.body[i]}`));
@@ -227,12 +235,13 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   el.append(h('p', { class: 'dgn' }, h('span', { class: lane === 'please_check' ? 'sig' : '' }, L.lanes[lane] || lane),
     disagree ? ` · ${rnames[0]} → ${chapterName(top[0])}, ${rnames[1]} → ${chapterName(top[1])}` : nR > 1 ? ` · ${rnames.join(' = ')}` : ''));
   const subs = aps && aps.subs ? aps.subs : [];
+  let se = null;
   if (subs.length) {
-    el.append(h('div', { class: 'dgh' }, h('span', {}, L.subtopics)));
-    subs.slice(0, 3).forEach(([code, p], k) => el.append(h('div', { class: 'dgr', 'data-tip': `${subName(code)} · p ${p3(p)}`, tabindex: '0' },
+    se = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.subtopics)));
+    subs.slice(0, 3).forEach(([code, p], k) => se.append(h('div', { class: 'dgr', 'data-tip': `${subName(code)} · p ${p3(p)}`, tabindex: '0' },
       h('span', { class: `rk ${k === 0 ? 'on' : ''}` }, `${k + 1}. ${subName(code)}`), h('span', { class: 'rbar' }, bar(p, k === 0 ? 'ink' : 'grey')), h('span', { class: 'rv' }, p3(p)))));
   }
-  return el;
+  return { el, subs: se };
 }
 
 // similar affairs on the main timeline's weeks, one strip per level; the open affair as a black mark with a hairline

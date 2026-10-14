@@ -22,11 +22,11 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 ## 2. Results on human labels
 | Test | n | Querschnitt | Baseline, same items |
 |---|---|---|---|
-| APS chapter vs APS editors, held-out federal affairs (S9/S16) | 1,357 | 0.740 [0.717, 0.763] as shipped; where the two readings agree (64% of affairs) 0.826 [0.800, 0.850] | plain list prompting 0.655 · keywords 0.192 · majority 0.080 |
-| APS subtopic vs APS editors, end to end (S9) | 1,221 | top-1 0.521 · top-3 0.677 | chapter step → best subtopic 0.469 |
+| APS chapter vs APS editors, held-out federal affairs (S9/S16) | 1,357 | 0.740 [0.716, 0.764] as shipped; where the two readings agree (64% of affairs) 0.826 [0.800, 0.851] | plain list prompting 0.655 · keywords 0.191 · majority 0.079 |
+| APS subtopic vs APS editors, end to end (S9) | 1,221 | top-1 0.520 · top-3 0.677 | chapter step → best subtopic 0.469 |
 | Bern: lead directorate vs the Grand Council's own field, 2025–26 (S18) | 531 | 0.651 [0.610, 0.691] German titles · 0.650 French titles | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt: the canton's own 46 themes vs its hand-assigned «Thema 1», 2019–24 (S20) | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
-| — with five of Basel's own labelled affairs as examples, other half of the data (S21) | 2,437 | 0.526 [0.507, 0.546]; paired +0.028 [+0.014, +0.043]; top 3: 0.711 | names only: 0.498 |
+| — with five of Basel's own labelled affairs as examples, other half of the data (S21) | 2,437 | 0.526 [0.506, 0.547]; paired +0.028 [+0.014, +0.043]; top 3: 0.711 | names only: 0.498 |
 | "Digitalisierung": the 30 affairs DVS curates by hand (question written with them in view) | 30 | 27 recognised | keywords 21 |
 | Federal Sachbereiche vs Parliament's own Curia tags (S3/S5) | 200 | micro-F1 0.654 | BFH model, trained on 15,007 tagged affairs: 0.687 |
 
@@ -40,17 +40,17 @@ blind AI judge (two runs of a Claude model + a tie-break run, cross-checked by t
 human labels the judge matches APS editors on 0.790 of chapters and says yes to 27 of the 30 DVS items. Against that judge,
 Querschnitt's "Digitalisierung" flags agree in 0.905 [0.865, 0.945] of cases (keyword hits: 0.756), over the full 2026
 census of Swiss parliaments (14,512 affairs, 1 Jan–6 Oct): Querschnitt flags 651 affairs in 57 parliaments; the judge
-estimates 894 [657, 1,190] digitalisation affairs in total.
+estimates 893 [656, 1,191] digitalisation affairs in total.
 
 On the production run itself, 200 random communal affairs of 2026 were judged blind (two runs, κ 0.94, tie-break on the
-11 disagreements): the shipped chapter matches the judge's consensus in 0.640 [0.571, 0.703] (keywords 0.150, majority
+11 disagreements): the shipped chapter matches the judge's consensus in 0.640 [0.571, 0.704] (keywords 0.150, majority
 0.135); where the readings agree 0.677, in the please-check lane 0.511; German 0.631, French 0.687, Italian 0.625.
 
 ## 4. Neutrality
-No measurable difference between German and French: Bern directorates +0.002 [−0.030, +0.034] (same affairs, both
-titles); federal APS chapters from German vs French text +0.017 [−0.003, +0.036]. No measurable difference in chapter
+No measurable difference between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
+titles); federal APS chapters from German vs French text +0.016 [−0.003, +0.037]. No measurable difference in chapter
 accuracy among the six main parties. What does differ is the submitter type: Federal Council business is easier than
-members' motions (0.792 vs 0.654), and quality is reported per submitter type.
+members' motions (0.792 vs 0.653), and quality is reported per submitter type.
 
 ## 5. Runtime and cost
 Over the first 27,904 requests of the corpus run, a request cost USD 0.000107 at Public AI list price (mean 1,072 prompt
@@ -58,7 +58,7 @@ tokens). Wall time, not money, sets the schedule: the shared key serves about 10
 wall time of the full 2025–26 slice are reported when the run completes.
 
 ## 6. Limits
-- Subtopics are suggestions (0.521 top-1), never a lane of their own.
+- Subtopics are suggestions (0.520 top-1), never a lane of their own.
 - Fine-grained cantonal schemes without descriptions are harder (Basel-Stadt 46 themes: 0.498); the lane separates the
   confident half from the rest.
 - Title-only cantonal affairs are the hardest input; coverage and title-only share are reported per parliament.

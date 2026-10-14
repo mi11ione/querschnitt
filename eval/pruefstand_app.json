@@ -8,15 +8,51 @@
    "design_fr": "exemples + relecture, deux lectures (D4, livré)",
    "n": 1357,
    "result": "top-1 0.740 · top-3 0.883",
+   "result_fr": "top-1 0,740 · top-3 0,883",
    "interval": [
-    0.717,
-    0.763
+    0.716,
+    0.764
    ],
-   "baseline": "Listen-Prompt 0.655 · Stichwort 0.192 · Mehrheit 0.080",
-   "baseline_fr": "liste 0,655 · mots-clés 0,192 · majorité 0,080",
+   "baseline": "Listen-Prompt 0.655 · Stichwort 0.191 · Mehrheit 0.079",
+   "baseline_fr": "liste 0,655 · mots-clés 0,191 · majorité 0,079",
    "split": "held-out, vorregistriert (S16)",
    "split_fr": "hors échantillon, préenregistré (S16)",
-   "file": "querschnitt/eval/s16/results.md"
+   "file": "querschnitt/eval/s16/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "D4, Lesarten einig (64.1% der Geschäfte)",
+   "design_fr": "D4, lectures concordantes (64,1% des objets)",
+   "n": 871,
+   "result": "0.826",
+   "result_fr": "0,826",
+   "interval": [
+    0.8,
+    0.851
+   ],
+   "baseline": "uneinig → bitte prüfen: 0.586 [0.542, 0.630] (n 486)",
+   "baseline_fr": "discordantes → à vérifier : 0,586 [0,542, 0,630] (n 486)",
+   "split": "held-out, vorregistriert (S16)",
+   "split_fr": "hors échantillon, préenregistré (S16)",
+   "file": "querschnitt/eval/s16/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
+   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "gold": "human",
+   "design": "D4, Konfidenz nach isotoner Rekalibrierung (ECE)",
+   "design_fr": "D4, confiance après recalibration isotone (ECE)",
+   "n": 1357,
+   "result": "ECE 0.0211",
+   "result_fr": "ECE 0,0211",
+   "interval": null,
+   "baseline": "roh 0.2463",
+   "baseline_fr": "brute 0,2463",
+   "split": "2-fach kreuzangepasst (S16)",
+   "split_fr": "validation croisée à 2 plis (S16)",
+   "file": "querschnitt/eval/calibration.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -26,15 +62,16 @@
    "design_fr": "comme D4, seconde lecture seulement sous p 0,9 (D4s, secondaire)",
    "n": 1357,
    "result": "top-1 0.748 · top-3 0.856",
+   "result_fr": "top-1 0,748 · top-3 0,856",
    "interval": [
-    0.725,
-    0.771
+    0.724,
+    0.772
    ],
    "baseline": "D3 0.722",
+   "baseline_fr": "D3 0,722",
    "split": "held-out, vorregistriert (S16)",
    "split_fr": "hors échantillon, préenregistré (S16)",
-   "file": "querschnitt/eval/s16/results.md",
-   "baseline_fr": "D3 0,722"
+   "file": "querschnitt/eval/s16/results.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -43,16 +80,17 @@
    "design": "fünf APS-Beispiele (D3)",
    "design_fr": "cinq exemples APS (D3)",
    "n": 1357,
-   "result": "top-1 0.722 · top-3 0.875",
+   "result": "top-1 0.722 · top-3 0.874",
+   "result_fr": "top-1 0,722 · top-3 0,874",
    "interval": [
-    0.698,
-    0.745
+    0.697,
+    0.746
    ],
-   "baseline": "Listen-Prompt 0.655 · Stichwort 0.192 · Mehrheit 0.080",
+   "baseline": "Listen-Prompt 0.655 · Stichwort 0.191 · Mehrheit 0.079",
+   "baseline_fr": "liste 0,655 · mots-clés 0,191 · majorité 0,079",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md",
-   "baseline_fr": "liste 0,655 · mots-clés 0,192 · majorité 0,080",
-   "split_fr": "hors échantillon, préenregistré"
+   "split_fr": "hors échantillon, préenregistré",
+   "file": "ideation2/spikes/s9-aps/results.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -61,16 +99,17 @@
    "design": "Kapitel aus Unterthema, ohne Beispiele (D1; ausgeliefert, wo keine APS-Beispiele)",
    "design_fr": "chapitre déduit du sous-thème, sans exemples (D1 ; livré sans exemples APS)",
    "n": 1357,
-   "result": "top-1 0.704 · top-3 0.843",
+   "result": "top-1 0.703 · top-3 0.843",
+   "result_fr": "top-1 0,703 · top-3 0,843",
    "interval": [
-    0.679,
-    0.727
+    0.678,
+    0.728
    ],
    "baseline": "Listen-Prompt 0.655",
-   "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md",
    "baseline_fr": "liste 0,655",
-   "split_fr": "hors échantillon, préenregistré"
+   "split": "held-out, vorregistriert",
+   "split_fr": "hors échantillon, préenregistré",
+   "file": "ideation2/spikes/s9-aps/results.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -80,15 +119,16 @@
    "design_fr": "liste, deux ordres (D0)",
    "n": 1357,
    "result": "top-1 0.655",
+   "result_fr": "top-1 0,655",
    "interval": [
     0.629,
     0.68
    ],
    "baseline": "—",
-   "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md",
    "baseline_fr": "—",
-   "split_fr": "hors échantillon, préenregistré"
+   "split": "held-out, vorregistriert",
+   "split_fr": "hors échantillon, préenregistré",
+   "file": "ideation2/spikes/s9-aps/results.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -98,12 +138,16 @@
    "design_fr": "DE + FR moyennés (D2)",
    "n": 1357,
    "result": "top-1 0.634",
-   "interval": null,
-   "baseline": "Δ vs D0 −0.021 [−0.037, −0.004]",
+   "result_fr": "top-1 0,634",
+   "interval": [
+    0.608,
+    0.66
+   ],
+   "baseline": "Δ vs D0 −0.020 [−0.037, −0.004]",
+   "baseline_fr": "Δ vs D0 −0,020 [−0,037, −0,004]",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md",
-   "baseline_fr": "Δ vs D0 −0,021 [−0,037, −0,004]",
-   "split_fr": "hors échantillon, préenregistré"
+   "split_fr": "hors échantillon, préenregistré",
+   "file": "ideation2/spikes/s9-aps/results.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -112,13 +156,17 @@
    "design": "Unterthema, durchgehend",
    "design_fr": "sous-thème, de bout en bout",
    "n": 1221,
-   "result": "top-1 0.521 · top-3 0.677",
-   "interval": null,
+   "result": "top-1 0.520 · top-3 0.677",
+   "result_fr": "top-1 0,520 · top-3 0,677",
+   "interval": [
+    0.492,
+    0.549
+   ],
    "baseline": "—",
-   "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md",
    "baseline_fr": "—",
-   "split_fr": "hors échantillon, préenregistré"
+   "split": "held-out, vorregistriert",
+   "split_fr": "hors échantillon, préenregistré",
+   "file": "ideation2/spikes/s9-aps/results.json"
   },
   {
    "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",
@@ -128,12 +176,16 @@
    "design_fr": "oui/non avec note de portée",
    "n": 30,
    "result": "27/30",
-   "interval": null,
+   "result_fr": "27/30",
+   "interval": [
+    0.743,
+    0.966
+   ],
    "baseline": "Stichwort 21/30 · KI-Richter 27/30",
-   "split": "alle öffentlichen Einträge",
-   "file": "ideation2/spikes/s8-dvs/results.md",
    "baseline_fr": "mots-clés 21/30 · juge IA 27/30",
-   "split_fr": "toutes les entrées publiques"
+   "split": "alle öffentlichen Einträge",
+   "split_fr": "toutes les entrées publiques",
+   "file": "ideation2/spikes/s8-dvs/results.md"
   },
   {
    "test": "Sachbereiche Bund vs. Curia-Tags",
@@ -143,15 +195,16 @@
    "design_fr": "cinq exemples + oui/non top 6",
    "n": 200,
    "result": "micro-F1 0.654",
+   "result_fr": "micro-F1 0,654",
    "interval": [
     0.623,
     0.686
    ],
    "baseline": "BFH (trainiert, 15'007) 0.687 [0.652, 0.722]",
-   "split": "nach BFH-Publikation eingereicht",
-   "file": "ideation/spikes/s5",
    "baseline_fr": "BFH (entraîné, 15 007) 0,687 [0,652, 0,722]",
-   "split_fr": "déposés après la publication du modèle BFH"
+   "split": "nach BFH-Publikation eingereicht",
+   "split_fr": "déposés après la publication du modèle BFH",
+   "file": "ideation/spikes/s5-aps/results.md"
   },
   {
    "test": "Basel-Stadt: Themen der Kantons- und Stadtentwicklung (46), Grossratsgeschäfte 2019–24",
@@ -182,8 +235,8 @@
    "result": "top-1 0.526 · Thema 1 oder 2 0.631 · top-3 0.711",
    "result_fr": "top-1 0,526 · thème 1 ou 2 0,631 · top-3 0,711",
    "interval": [
-    0.507,
-    0.546
+    0.506,
+    0.547
    ],
    "baseline": "nur Themennamen 0.498: Δ +0.028 [+0.014, +0.043]",
    "baseline_fr": "noms seulement 0,498 : Δ +0,028 [+0,014, +0,043]",
@@ -198,7 +251,8 @@
    "design": "Schema-Datei, Titel DE / FR",
    "design_fr": "fichier de schéma, titre DE / FR",
    "n": 531,
-   "result": "DE 0.651 · FR 0.650",
+   "result": "DE 0.651 · FR 0.650 · DE − FR +0.001 [−0.031, +0.034]",
+   "result_fr": "DE 0,651 · FR 0,650 · DE − FR +0,001 [−0,031, +0,034]",
    "interval": [
     0.61,
     0.691
@@ -216,13 +270,90 @@
    "design": "Schema-Tausch",
    "design_fr": "changement de schéma",
    "n": 200,
-   "result": "0.615 / 0.645",
-   "interval": null,
+   "result": "DE 0.615 · FR 0.645",
+   "result_fr": "DE 0,615 · FR 0,645",
+   "interval": [
+    0.545,
+    0.68
+   ],
    "baseline": "Stichwort 0.520 / 0.495 · Mehrheit 0.175",
-   "split": "Grossratsfeld",
-   "file": "ideation/spikes/s6",
    "baseline_fr": "mots-clés 0,520 / 0,495 · majorité 0,175",
-   "split_fr": "champ du Grand Conseil"
+   "split": "Grossratsfeld, Geschäfte ab 2015",
+   "split_fr": "champ du Grand Conseil, objets dès 2015",
+   "file": "ideation/spikes/s6-cantonal/results.md"
+  },
+  {
+   "test": "KI-Richter selbst vs. APS-Redaktion",
+   "test_fr": "Le juge IA vs rédaction APS",
+   "gold": "human",
+   "design": "Claude, blind, gleicher Input",
+   "design_fr": "Claude, aveugle, même entrée",
+   "n": 200,
+   "result": "0.790",
+   "result_fr": "0,790",
+   "interval": [
+    0.728,
+    0.841
+   ],
+   "baseline": "Apertus D1 0.695 · D3 0.720",
+   "baseline_fr": "Apertus D1 0,695 · D3 0,720",
+   "split": "Stichprobe aus S9",
+   "split_fr": "échantillon tiré de S9",
+   "file": "ideation2/spikes/s11-anchor/anchor.json"
+  },
+  {
+   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
+   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
+   "gold": "judge",
+   "design": "Präzision",
+   "design_fr": "précision",
+   "n": 14512,
+   "result": "0.905",
+   "result_fr": "0,905",
+   "interval": [
+    0.865,
+    0.945
+   ],
+   "baseline": "Stichwort 0.756 [0.717, 0.793]",
+   "baseline_fr": "mots-clés 0,756 [0,717, 0,793]",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés",
+   "file": "querschnitt/eval/s8full/results.json"
+  },
+  {
+   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
+   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
+   "gold": "judge",
+   "design": "Recall",
+   "design_fr": "rappel",
+   "n": 14512,
+   "result": "0.659",
+   "result_fr": "0,659",
+   "interval": [
+    0.491,
+    0.9
+   ],
+   "baseline": "Stichwort 0.584 [0.435, 0.795]",
+   "baseline_fr": "mots-clés 0,584 [0,435, 0,795]",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés",
+   "file": "querschnitt/eval/s8full/results.json"
+  },
+  {
+   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
+   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
+   "gold": "judge",
+   "design": "markierte Geschäfte (gezählt)",
+   "design_fr": "objets signalés (comptés)",
+   "n": 14512,
+   "result": "651 in 57 Parlamenten",
+   "result_fr": "651 dans 57 parlements",
+   "interval": null,
+   "baseline": "Stichwort 690",
+   "baseline_fr": "mots-clés 690",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés",
+   "file": "querschnitt/eval/s8full/results.json"
   },
   {
    "test": "APS-Kapitel, Gemeindeparlamente 2026, Produktionslauf vs. KI-Richter",
@@ -235,47 +366,13 @@
    "result_fr": "top-1 0,640 · top-3 0,770",
    "interval": [
     0.571,
-    0.703
+    0.704
    ],
    "baseline": "Stichwort 0.150 · Mehrheit 0.135",
    "baseline_fr": "mots-clés 0,150 · majorité 0,135",
    "split": "Zufallsstichprobe, vorregistriert (S17)",
    "split_fr": "échantillon aléatoire, préenregistré (S17)",
    "file": "querschnitt/eval/s17/results.json"
-  },
-  {
-   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
-   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
-   "gold": "judge",
-   "design": "Präzision",
-   "design_fr": "précision",
-   "n": 14512,
-   "result": "0.905",
-   "interval": [
-    0.865,
-    0.945
-   ],
-   "baseline": "Stichwort 0.756 [0.717, 0.793]",
-   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
-   "file": "querschnitt/eval/s8full/results.json",
-   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés"
-  },
-  {
-   "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
-   "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
-   "gold": "judge",
-   "design": "Recall",
-   "design_fr": "rappel",
-   "n": 14512,
-   "result": "0.659",
-   "interval": [
-    0.491,
-    0.9
-   ],
-   "baseline": "Stichwort 0.584 [0.435, 0.795]",
-   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
-   "file": "querschnitt/eval/s8full/results.json",
-   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés"
   },
   {
    "test": "Beleg stützt das Thema (blinder KI-Richter)",
@@ -285,15 +382,16 @@
    "design_fr": "phrase citée",
    "n": 120,
    "result": "0.850 · Teilstring 120/120",
+   "result_fr": "0,850 · sous-chaîne 120/120",
    "interval": [
     0.775,
     0.903
    ],
    "baseline": "—",
-   "split": "Stichprobe",
-   "file": "ideation2/spikes/s12-evidence",
    "baseline_fr": "—",
-   "split_fr": "échantillon"
+   "split": "Stichprobe aus S9",
+   "split_fr": "échantillon tiré de S9",
+   "file": "ideation2/spikes/s12-evidence/results.json"
   },
   {
    "test": "APS-Kapitel, kantonal + kommunal vs. KI-Richter",
@@ -303,12 +401,16 @@
    "design_fr": "chapitre",
    "n": 153,
    "result": "0.686 · kantonal 0.726 · kommunal 0.621",
-   "interval": null,
+   "result_fr": "0,686 · cantonal 0,726 · communal 0,621",
+   "interval": [
+    0.608,
+    0.755
+   ],
    "baseline": "—",
-   "split": "zwei Läufe, κ 0.95",
-   "file": "ideation/spikes/s7",
    "baseline_fr": "—",
-   "split_fr": "deux passages, κ 0,95"
+   "split": "zwei Läufe, κ 0.95",
+   "split_fr": "deux passages, κ 0,95",
+   "file": "ideation/spikes/s6-cantonal/score.json"
   },
   {
    "test": "Zweisprachige Kantone, Titel, DE vs. FR",
@@ -318,15 +420,16 @@
    "design_fr": "allemand",
    "n": 210,
    "result": "0.543",
+   "result_fr": "0,543",
    "interval": [
     0.475,
     0.609
    ],
    "baseline": "—",
-   "split": "vorregistriert",
-   "file": "ideation2/spikes/s10-bilingual",
    "baseline_fr": "—",
-   "split_fr": "préenregistré"
+   "split": "vorregistriert",
+   "split_fr": "préenregistré",
+   "file": "ideation2/spikes/s10-bilingual/score.json"
   },
   {
    "test": "Zweisprachige Kantone, Titel, DE vs. FR",
@@ -336,33 +439,16 @@
    "design_fr": "français",
    "n": 210,
    "result": "0.529",
+   "result_fr": "0,529",
    "interval": [
     0.461,
     0.595
    ],
    "baseline": "Differenz +0.014 [−0.043, +0.076]",
-   "split": "vorregistriert",
-   "file": "ideation2/spikes/s10-bilingual",
    "baseline_fr": "différence +0,014 [−0,043, +0,076]",
-   "split_fr": "préenregistré"
-  },
-  {
-   "test": "KI-Richter selbst vs. APS-Redaktion",
-   "test_fr": "Le juge IA vs rédaction APS",
-   "gold": "judge",
-   "design": "Claude, blind, gleicher Input",
-   "design_fr": "Claude, aveugle, même entrée",
-   "n": 200,
-   "result": "0.790",
-   "interval": [
-    0.728,
-    0.841
-   ],
-   "baseline": "Apertus 0.695 / 0.720",
-   "split": "Stichprobe",
-   "file": "ideation2/spikes/s11-anchor",
-   "baseline_fr": "Apertus 0,695 / 0,720",
-   "split_fr": "échantillon"
+   "split": "vorregistriert",
+   "split_fr": "préenregistré",
+   "file": "ideation2/spikes/s10-bilingual/score.json"
   }
  ],
  "curve": {
@@ -5811,5 +5897,5 @@
   "file": "querschnitt/eval/s16/results.json"
  },
  "build": "dd237840",
- "source": "VISION-topics-v2 §6.1 (measured rows as published); curve recomputed from S9 raw"
+ "source": "derived from eval/pruefstand.json by eval/scripts/build_pruefstand.py (values truncated, interval bounds outward); curve: S16 coverage_precision aps-fed, operating point = the lane where both readings agree (lanes_D4)"
 }

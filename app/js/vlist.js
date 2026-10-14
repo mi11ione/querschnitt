@@ -1,7 +1,7 @@
 // Virtualised ruled list: fixed row height, only visible rows in the DOM.
 import { h } from './util.js';
 
-export const ROW_H = 52;
+export const ROW_H = 70;
 
 export class VList {
   constructor(root, { render, onOpen }) {

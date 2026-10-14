@@ -1,0 +1,6 @@
+| querschnitt-api-1 | 43.68MiB / 15.61GiB |
+| querschnitt-db-1 | 33.82MiB / 15.61GiB |
+| querschnitt-nightly-1 | 12.72MiB / 15.61GiB |
+| querschnitt-nightly-lite-1 | 12.7MiB / 15.61GiB |
+image 173MB
+run 38556965404 https://github.com/mi11ione/querschnitt/actions/runs/38556965404

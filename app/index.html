@@ -15,6 +15,7 @@
 <header class="bar">
  <span class="wm">Querschnitt</span>
  <nav class="views" role="tablist" aria-label="Ansichten">
+  <button class="view" role="tab" type="button" id="t-ueber" aria-controls="v-ueber">Überblick</button>
   <button class="view" role="tab" type="button" id="t-karte" aria-controls="v-karte">Karte</button>
   <button class="view" role="tab" type="button" id="t-neu" aria-controls="v-neu">Neues Thema</button>
   <button class="view" role="tab" type="button" id="t-pruef" aria-controls="v-pruef">Prüfstand</button>
@@ -28,7 +29,8 @@
 </header>
 <div class="ctxw"><p class="ctx" id="facts">…</p></div>
 <main>
- <section class="viewp" id="v-karte" role="tabpanel" aria-labelledby="t-karte"></section>
+ <section class="viewp" id="v-ueber" role="tabpanel" aria-labelledby="t-ueber"></section>
+ <section class="viewp" id="v-karte" role="tabpanel" aria-labelledby="t-karte" hidden></section>
  <section class="viewp" id="v-neu" role="tabpanel" aria-labelledby="t-neu" hidden></section>
  <section class="viewp" id="v-pruef" role="tabpanel" aria-labelledby="t-pruef" hidden></section>
 </main>

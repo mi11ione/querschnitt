@@ -15,6 +15,7 @@ Human labels first. Full table with intervals, baselines and source files: [docs
 | APS chapter vs APS editors, held-out federal affairs, pre-registered | 1,357 | **0.740** [0.717, 0.763] as shipped (five APS-labelled examples, two code orders, chapter read back from the subtopic); where the two readings agree (64% of affairs) 0.826 [0.800, 0.850] | plain list prompting 0.655 · keywords 0.192 |
 | "Digitalisierung": the 30 affairs DVS curated by hand on its public page (the question and its 0.5 cut-off were written with these items in view) | 30 | 27 recognised | keywords 21 |
 | Bern's lead directorate (scheme swap, 8 directorates) vs the Grand Council's own field, 2025–26, DE / FR titles, pre-registered | 531 | 0.651 [0.610, 0.691] / 0.650; no measurable DE–FR gap (+0.002 [−0.030, +0.034]) | keywords 0.525 / 0.512 · majority 0.214 |
+| Basel-Stadt's own 46 topics vs the canton's hand-assigned «Thema 1», all Grand Council affairs 2019–24, scheme handed over as a file (names only), pre-registered | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
 | Evidence: the quoted sentence supports the topic (blind AI judge) | 120 | 0.850 | — |
 
 ## Quick start

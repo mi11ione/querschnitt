@@ -55,3 +55,13 @@ first 1,500 characters of the affair's text as chosen by `data.py`). Readings: i
 Gold: «Thema 1». Outcomes: top-1 = Thema 1 (primary, Wilson 95%); top-1 ∈ {Thema 1, Thema 2} (secondary); top-3 contains
 Thema 1; lanes (orders agree / disagree) with precision each; by affair type. Baselines on the same items: majority theme;
 frozen keyword stems (`eval/s20/keywords_frozen.json`). Reported as measured.
+
+## 2026-10-14 09:30 CEST — S21 Basel-Stadt with the canton's own labels as examples (written after S20, before any S21 call)
+Question: do the partner's labels, used as examples (no training), raise accuracy on the same human cantonal gold?
+Items and gold: as S20 (2,437 affairs, «Thema 1»). Two folds by OPD affair id parity; each item sees the five most similar
+affairs of the OTHER fold (BM25 over OPD titles, query = title ×2 + first 400 characters of text — the S9 D3 retrieval) with
+their «Thema 1», in the S9 D3 example shape ("Frühere Geschäfte mit ihren Themen (zur Orientierung): - title → Thema: code
+(name)"), between the list and the item. Readings (D4 shape): identity order with examples, plus the S20 permuted order without
+examples for every item (run where S20 did not); decision = top of the mean of the two.
+Primary: top-1 = Thema 1, paired against S20 on the same items (paired bootstrap 2,000). Secondary: Thema 1 or 2, top-3,
+lanes. Reported as measured.

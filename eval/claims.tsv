@@ -413,3 +413,16 @@ S18	-	0.214	S18 majority > acc	0.2147	bern/querschnitt/eval/s18/results.json	maj
 S18	-	0.002	S18 paired diff	0.0019	bern/querschnitt/eval/s18/results.json	paired diff	OK		truncated, never rounded up
 S18	-	0.030	S18 paired ci[0] (abs)	0.0302	bern/querschnitt/eval/s18/results.json	paired ci[0] (abs)	OK		truncated, never rounded up
 S18	-	0.034	S18 paired ci[1]	0.034	bern/querschnitt/eval/s18/results.json	paired ci[1]	OK		truncated, never rounded up
+S20	-	2,437	S20 n	2437	bern/querschnitt/eval/s20/results.json	n	OK		truncated, never rounded up
+S20	-	46	S20 themes	46	bern/querschnitt/eval/s20/results.json	themes	OK		truncated, never rounded up
+S20	-	0.498	S20 top1	0.4982	bern/querschnitt/eval/s20/results.json	top1	OK		truncated, never rounded up
+S20	-	0.478	S20 top1 ci[0]	0.478	bern/querschnitt/eval/s20/results.json	top1 ci[0]	OK		truncated, never rounded up
+S20	-	0.518	S20 top1 ci[1]	0.518	bern/querschnitt/eval/s20/results.json	top1 ci[1]	OK		truncated, never rounded up
+S20	-	0.605	S20 top1_t1_or_t2	0.6057	bern/querschnitt/eval/s20/results.json	top1_t1_or_t2	OK		truncated, never rounded up
+S20	-	0.665	S20 top3	0.6656	bern/querschnitt/eval/s20/results.json	top3	OK		truncated, never rounded up
+S20	-	0.181	S20 keyword	0.1814	bern/querschnitt/eval/s20/results.json	keyword	OK		truncated, never rounded up
+S20	-	0.053	S20 majority	0.0533	bern/querschnitt/eval/s20/results.json	majority	OK		truncated, never rounded up
+S20	-	0.565	S20 lane agree acc	0.5656	bern/querschnitt/eval/s20/results.json	lane agree acc	OK		truncated, never rounded up
+S20	-	72%	S20 lane agree share (0.7197, rounded down)	0.7197	bern/querschnitt/eval/s20/results.json	lane agree share (0.7197, rounded down)	OK		truncated, never rounded up
+S20	-	0.325	S20 lane please_check acc	0.325	bern/querschnitt/eval/s20/results.json	lane please_check acc	OK		truncated, never rounded up
+S20	-	0.316	S20 minus_keyword diff	0.3168	bern/querschnitt/eval/s20/results.json	minus_keyword diff	OK		truncated, never rounded up

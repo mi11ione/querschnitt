@@ -41,7 +41,7 @@ function renderShell() {
     m.dig_scored != null ? [num(m.dig_scored), `${L.scored} (${(TOPIC_BY_ID.get('adhoc/digitalisierung') || { names: { de: 'Digitalisierung', fr: 'numérique' } }).names[UI.lang]})`] : null,
     [m.build_short || String(m.build || '').slice(-8), L.build, true],
     night,
-    [num(m.please_check ?? 0), L.pending],
+    [num(m.please_check ?? 0), L.pendingAll],
   ].filter(Boolean);
   $('#facts').replaceChildren(...items.map(([v, k, pre]) => h('span', {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));
   // footer: provenance + keys

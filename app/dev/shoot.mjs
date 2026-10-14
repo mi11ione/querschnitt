@@ -40,6 +40,9 @@ const SCEN = [
   { name: 'pult-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?m=pult&tab=todo', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'pruef-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#pruef' },
   { name: 'neu-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#neu' },
+  { name: 'group-1440', w: 1440, h: 900, url: '#karte', steps: [`(()=>{const k=__qs.karte; const p=k.rows.findIndex(g=>g.length>1); k.select(__qs.D.c.id[k.rows[p][0]]);})()`] },
+  { name: 'evidence-text-1440', w: 1440, h: 900, url: '#karte?a=340930' },
+  { name: 'evidence-title-1440', w: 1440, h: 900, url: '#karte?a=340883' },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 

@@ -83,3 +83,11 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 - CSV headers, level names, topic and method line follow the UI language. Prüfstand uses `*_fr` fields when present
   (some rows still carry German baseline/split only); the first row of the first human table is set in bold.
 - Coverage now uses `n_by_month`; `covered_from` years before 1800 (OPD body 616: "0209") are dropped.
+
+## Juror round 1 (14 Oct)
+- Identical affairs (same parliament, date, title) collapse into one list line with `×n`; the detail lists ids and
+  submitters; `[1]`/`[2]` decide every affair of the group (state line says "gilt für n Geschäfte"); rejected mark is `[–]`.
+- Period ends at `meta.until`; future-dated affairs stay in the list but not on the timeline.
+- «zu prüfen» = undecided rows in the topic's please_check lane (Bern scheme: `bi`), the same number in subtitle, Pult tab,
+  week line and map ticks; the fact line shows the export's global count, labelled «alle Themen (Export)».
+- Prüfstand bolds row 1 of the first human table (now D4, shipped); op label from `curve.op`; no fixed coverage in the app.

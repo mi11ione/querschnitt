@@ -268,3 +268,4 @@ details>summary:hover{color:var(--ink)}
 @media (max-width:599px){.cov{display:none}}
 .fl.wide{grid-column:1/-1}
 .pr tr.ship td{font-weight:600;color:var(--ink)}.pr tr.ship td.res{font-weight:400}
+.row .m .grpn{font-weight:400;color:var(--ink)}

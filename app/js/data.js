@@ -100,6 +100,8 @@ export async function load() {
     dl[i] = c.dig_lane ? laneBit(c.dig_lane[i]) : -1;
     kw[i] = c.kw && c.kw[i] ? 1 : 0;
   }
+  if (meta.until) dmax = Math.min(dmax, dayNum(meta.until)); // future-dated affairs stay listed, the period ends today
+  if (meta.until) dmax = Math.min(dmax, dayNum(meta.until)); // future-dated affairs stay listed, the period ends today
   const w0 = mondayOf(dmin);
   const week = new Int16Array(n);
   for (let i = 0; i < n; i++) week[i] = Math.floor((day[i] - w0) / 7);

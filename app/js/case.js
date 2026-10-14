@@ -59,7 +59,7 @@ function similar(i, tp) {
 }
 
 // ---------------------------------------------------------------- render
-export async function renderCase(root, i, tp, { onOpen, decideBar }) {
+export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const c = D.c, L = t(), id = c.id[i];
   const scroll = h('div', { class: 'scroll' });
   root.replaceChildren(scroll);
@@ -72,6 +72,11 @@ export async function renderCase(root, i, tp, { onOpen, decideBar }) {
     h('b', {}, fmtDate(c.date[i])), ' · ', bodyName(c.body[i]), ' · ', typeOf(i) || '–', c.state[i] ? ` · ${c.state[i]}` : '',
     sub ? ` · ${sub}` : '', ` · ${lname(lang)}`));
   const holder = h('div'); scroll.append(holder);
+  if (group && group.length > 1) {
+    const tb = h('table', {}, h('tbody', {}, group.map(j => h('tr', {}, h('td', { class: 'n', style: 'text-align:left' }, `#${c.id[j]}`),
+      h('td', {}, c.submitter[j] ? `${c.submitter[j]}${c.party[j] ? ` (${c.party[j]})` : ''}` : '–')))));
+    holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.same(group.length), h('span', { class: 'sp' }, L.sameNote)), h('div', { class: 'tw' }, tb)));
+  }
   if (decideBar) root.append(decideBar);
   const d = await detail(id);
   if (root.dataset.id !== String(id)) return; // a newer selection won
@@ -169,5 +174,5 @@ export function decisionState(tp, id) {
   const L = t(), r = getDec(tp, id);
   if (!r) return '';
   const when = (r.at || '').replace('T', ' ').slice(0, 16);
-  return `<b>${L.decided[r.d] || r.d}</b> · ${esc(r.by || '')} · ${when} · ${r.err ? `<span class="sig">${L.apiErr}</span>` : r.api ? L.apiSaved : L.localSaved}`;
+  return `<b>${L.decided[r.d] || r.d}</b>${r.n > 1 ? ` · ${L.sameDec(r.n)}` : ''} · ${esc(r.by || '')} · ${when} · ${r.err ? `<span class="sig">${L.apiErr}</span>` : r.api ? L.apiSaved : L.localSaved}`;
 }

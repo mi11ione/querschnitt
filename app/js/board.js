@@ -130,7 +130,7 @@ export class Board {
       if (S.body && k !== S.body) continue;
       scoredSel++; if (hit) hitsSel++;
       if (hit && c.week[i] === lastW) newW++;
-      const todo = (hit || chk) && !dec;
+      const todo = chk && !dec; // one definition everywhere: undecided rows in the please_check lane
       if (todo) tabsN.todo++;
       if (dec && dec.d === 'confirmed') tabsN.ok++;
       const changed = dec && dec.d === 'confirmed' && dec.state != null && dec.state !== c.state[i];
@@ -171,12 +171,22 @@ export class Board {
     }
     this.stats = all; this.breaks = breaks; this.lv = lv; this.tabsN = tabsN; this.newW = newW; this.lastW = lastW;
     this.items = items;
+    // identical title + parliament + date in a row → one line with a count; decisions apply to the whole group
+    const rows = [], posOf = new Map();
+    const byKey = new Map();
+    for (const i of items) {
+      const key = this.order === 'arrival' ? null : `${c.body[i]}|${c.day[i]}|${c.title[i]}`;
+      const at = key != null ? byKey.get(key) : undefined;
+      if (at != null) { rows[at].push(i); posOf.set(i, at); continue; }
+      rows.push([i]); posOf.set(i, rows.length - 1); if (key != null) byKey.set(key, rows.length - 1);
+    }
+    this.rows = rows; this.posOf = posOf;
     this.map.update(all, S.body);
     const selRow = S.sel != null ? D.rowOf.get(S.sel) : null;
     this.tl.set(counts, S.brush, selRow != null ? { w: c.week[selRow], l: Math.min(2, c.lvl[selRow]) } : null);
     // list
-    const pos = selRow != null ? items.indexOf(selRow) : -1;
-    this.list.set(items, pos);
+    const pos = selRow != null && posOf.has(selRow) ? posOf.get(selRow) : -1;
+    this.list.set(rows, pos);
     this.renderHead(scoredSel, hitsSel);
     this.onChange && this.onChange(this);
   }
@@ -192,6 +202,7 @@ export class Board {
       const o = S.f.dir ? tp.opt.get(S.f.dir) : null;
       this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${L.dir}: ${o ? `${o.abbr[UI.lang] || o.abbr.de} ${o.name[UI.lang] || o.name.de}` : L.all} · ${per}`);
     } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scored} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
+      ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`),
       bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
       S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     // legend
@@ -220,7 +231,7 @@ export class Board {
           h('span', { class: N.todo ? 'sig' : '' }, `${L.pending} ${num(N.todo)}`), ` · ${L.budget} `, bi, L.perWeek);
       }
     } else { this.lhead.hidden = true; this.tabs.hidden = true; this.pline.hidden = true; }
-    this.count.replaceChildren(h('span', {}, `${num(this.items.length)} ${L.shown}`),
+    this.count.replaceChildren(h('span', {}, `${num(this.items.length)} ${L.affairs}${this.rows.length !== this.items.length ? ` · ${num(this.rows.length)} ${L.lines}` : ''}`),
       h('span', { class: 'sp' }, h('button', { class: 'tb', type: 'button', onclick: () => this.exportCsv() }, `[e] ${L.export}`)));
   }
 
@@ -228,25 +239,25 @@ export class Board {
 
   setMode(m) { this.S.mode = m; this.S.sel = null; this.refresh(); this.renderCase(); }
 
-  row(i) {
-    const c = D.c, tp = this.tp, L = t();
+  row(g) {
+    const i = g[0], c = D.c, tp = this.tp, L = t();
     const dec = tp ? getDec(tp, c.id[i]) : null, chk = tp && tp.check(i);
     const sub = c.submitter[i] ? `${c.submitter[i]}${c.party[i] ? ` (${c.party[i]})` : ''}` : '';
     const meta = [fmtDate(c.date[i]), bodyName(c.body[i], false), typeOf(i), sub, c.state[i]].filter(Boolean).join(' · ');
     const p = tp ? tp.p(i) : NaN;
-    const mark = dec ? (dec.d === 'confirmed' ? '✓' : '×') : chk ? '!' : '';
+    const mark = dec ? (dec.d === 'confirmed' ? '✓' : '–') : chk ? '!' : '';
     return h('div', { class: dec ? 'dec' : '' },
-      h('div', { class: 'tc' }, h('div', { class: 't', lang: c.lang[i] }, c.title[i]), h('div', { class: 'm' }, meta)),
+      h('div', { class: 'tc' }, h('div', { class: 't', lang: c.lang[i] }, c.title[i]), h('div', { class: 'm' }, g.length > 1 ? h('b', { class: 'grpn' }, `×${g.length} `) : '', meta)),
       h('div', { class: 'p' }, tp && tp.kind === 'be' ? beAbbr(tp, c.be[i]) : p3(p)),
       h('div', { class: `x ${dec ? 'd' : ''}`, title: chk ? L.lanes.please_check : '' }, mark ? `[${mark}]` : ''));
   }
 
   // ------------------------------------------------------------ selection + case
-  openPos(p) { const i = this.items[p]; if (i == null) return; this.select(D.c.id[i]); if (matchMedia('(max-width:899px)').matches) this.case.scrollIntoView({ block: 'start' }); }
+  openPos(p) { const g = this.rows[p]; if (!g) return; const i = g[0]; this.select(D.c.id[i]); if (matchMedia('(max-width:899px)').matches) this.case.scrollIntoView({ block: 'start' }); }
   select(id, { focus = false } = {}) {
     this.S.sel = id;
     const row = id != null ? D.rowOf.get(id) : null;
-    const pos = row != null ? this.items.indexOf(row) : -1;
+    const pos = row != null && this.posOf.has(row) ? this.posOf.get(row) : -1;
     this.list.select(pos);
     this.work.classList.toggle('case-open', id != null);
     const c = D.c;
@@ -256,11 +267,11 @@ export class Board {
     if (focus) this.case.focus();
   }
   step(d) {
-    if (!this.items.length) return;
+    if (!this.rows.length) return;
     const row = this.S.sel != null ? D.rowOf.get(this.S.sel) : null;
-    let pos = row != null ? this.items.indexOf(row) : -1;
-    pos = Math.max(0, Math.min(this.items.length - 1, pos + d));
-    this.select(D.c.id[this.items[pos]]);
+    let pos = row != null && this.posOf.has(row) ? this.posOf.get(row) : -1;
+    pos = Math.max(0, Math.min(this.rows.length - 1, pos + d));
+    this.select(D.c.id[this.rows[pos][0]]);
   }
   renderCase() {
     const id = this.S.sel, root = this.case;
@@ -268,7 +279,7 @@ export class Board {
     if (id == null) { this.summary(); return; }
     const i = D.rowOf.get(id);
     if (i == null) { root.replaceChildren(h('p', { class: 'empty' }, `#${id}`)); return; }
-    renderCase(root, i, this.tp, { onOpen: j => this.select(D.c.id[j]), decideBar: this.decideBar(i) });
+    renderCase(root, i, this.tp, { onOpen: j => this.select(D.c.id[j]), decideBar: this.decideBar(i), group: this.groupOf(i) });
   }
   decideBar(i) {
     const L = t(), id = D.c.id[i], tp = this.tp;
@@ -278,36 +289,41 @@ export class Board {
     who.addEventListener('keydown', e => { if (e.key === 'Enter') { ls(WHO, who.value.trim()); who.blur(); } });
     this.who = who;
     const st = h('div', { class: 'st', html: tp ? decisionState(tp, id) : '' });
+    const grp = this.groupOf(i);
+    if (grp.length > 1 && !getDec(tp, id)) st.textContent = `[1] [2] ${L.sameDec(grp.length)}`;
     const bar = h('div', { class: 'decide' }, h('div', { class: 'btns' }, b('confirmed', '1', L.accept), b('rejected', '2', L.reject), b('skip', '0', L.skip),
 ),
       h('div', { class: 'who' }, L.who, who), st);
     if (getDec(tp, id)) st.append(' · ', h('button', { class: 'tb', type: 'button', onclick: () => this.decide('undo') }, `[u] ${L.undo}`));
     return bar;
   }
+  groupOf(row) { return this.posOf && this.posOf.has(row) ? this.rows[this.posOf.get(row)] : [row]; }
   async decide(kind) {
-    const id = this.S.sel, tp = this.tp, L = t();
+    const id = this.S.sel, tp = this.tp, L = t(), c = D.c;
     if (id == null || !tp) return;
     if (kind === 'skip') { this.step(1); return; }
-    const i = D.rowOf.get(id);
-    if (kind === 'undo') { setDec(tp, id, null); this.refresh(); this.renderCase(); return; }
+    const row = D.rowOf.get(id), group = this.groupOf(row), pos = this.posOf.get(row);
+    if (kind === 'undo') { for (const j of group) setDec(tp, c.id[j], null); this.refresh(); this.renderCase(); return; }
     const by = (this.who && this.who.value.trim()) || ls(WHO) || '';
     if (!by) { const w = this.case.querySelector('.who'); if (w) { w.classList.add('ask'); w.querySelector('input').focus(); } toast(L.whoAsk); return; }
     ls(WHO, by);
-    const rec = { d: kind, by, at: new Date().toISOString(), state: D.c.state[i] };
-    if (API.live) {
-      try {
-        const r = await apiPost(`/affairs/${id}/topics/${encodeURIComponent(tp.codeOf ? tp.codeOf(i) : tp.code)}/${kind === 'confirmed' ? 'confirm' : 'reject'}`, { by, scheme: tp.scheme });
-        rec.api = true; rec.row = r && (r.valid_from || r.confirmed_at) ? { valid_from: r.valid_from, confirmed_at: r.confirmed_at } : null;
-      } catch (e) { rec.err = String(e.message || e); }
+    const at = new Date().toISOString();
+    for (const j of group) { // one key decides every affair of a group of identical affairs
+      const aid = c.id[j], rec = { d: kind, by, at, state: c.state[j], n: group.length };
+      if (API.live) {
+        try {
+          const r = await apiPost(`/affairs/${aid}/topics/${encodeURIComponent(tp.codeOf ? tp.codeOf(j) : tp.code)}/${kind === 'confirmed' ? 'confirm' : 'reject'}`, { by, scheme: tp.scheme });
+          rec.api = true; rec.row = r && (r.valid_from || r.confirmed_at) ? { valid_from: r.valid_from, confirmed_at: r.confirmed_at } : null;
+        } catch (e) { rec.err = String(e.message || e); }
+      }
+      setDec(tp, aid, rec);
     }
-    setDec(tp, id, rec);
-    // keep the position: the next row moves up in "zu prüfen", otherwise step down
-    const row = D.rowOf.get(id), pos = this.items.indexOf(row);
     this.refresh();
-    const stillThere = this.items.indexOf(row) >= 0;
-    const nextPos = stillThere ? pos + 1 : pos;
-    if (this.items[nextPos] != null) this.select(D.c.id[this.items[nextPos]]); else this.select(id);
+    const stillThere = this.posOf.has(row);
+    const next = this.rows[stillThere ? pos + 1 : pos];
+    this.select(next ? c.id[next[0]] : id);
   }
+
   summary() {
     const L = t(), tp = this.tp, root = this.case;
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';

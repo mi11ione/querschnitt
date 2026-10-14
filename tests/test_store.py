@@ -80,10 +80,10 @@ def test_changes_since(store):
     assert store.changes(since="2999-01-01") == (0, [])
 
 
-def test_pending_counts_changed_inputs(store):
-    assert store.pending() == 0
+def test_unscored_counts_changed_inputs(store):
+    assert store.unscored() == 0
     store.ex("UPDATE qs_affairs SET input_hash = 'changed' WHERE id = ?", (AID,)); store.commit()
-    assert store.pending() == 1
+    assert store.unscored() == 1
 
 
 def test_coverage_and_metrics(store):
@@ -129,5 +129,5 @@ def test_load_affairs_from_static_export(tmp_path):
     a = s.affair(5001)
     assert a["level"] == "federal" and a["parl"] == "Bundesversammlung" and a["title_long"] == "Langtitel A" and a["has_text"]
     assert s.affair(5002)["level"] == "communal" and s.affair(5002)["has_text"] is False
-    assert s.pending("2000-01-01") == 0                    # no input hash: never pending
+    assert s.unscored("2000-01-01") == 0                   # no input hash: never counted as unscored
     s.close()

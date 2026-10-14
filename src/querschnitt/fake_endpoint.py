@@ -79,6 +79,8 @@ class FakeEndpoint:
                     time.sleep(fake.latency)
                 if fake.mode == "error":
                     return self._send(500, {"error": "fake: mode error"})
+                if fake.mode == "bad":
+                    return self._send(400, {"error": "fake: mode bad (a request the endpoint refuses)"})
                 if k429 or fake.mode == "429":
                     return self._send(429, {"error": "rate"}, {"Retry-After": "0"})
                 msgs = body.get("messages") or []
@@ -146,7 +148,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog="python -m querschnitt.fake_endpoint")
     ap.add_argument("--port", type=int, default=8099)
     ap.add_argument("--host", default="127.0.0.1")
-    ap.add_argument("--mode", default="logprobs", choices=["logprobs", "nologprobs", "error", "429"])
+    ap.add_argument("--mode", default="logprobs", choices=["logprobs", "nologprobs", "error", "bad", "429"])
     ap.add_argument("--yes", nargs="*", help="yes words (lower case substrings of the item)")
     ap.add_argument("--latency", type=float, default=0.0)
     a = ap.parse_args(argv)

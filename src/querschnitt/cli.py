@@ -206,27 +206,42 @@ def delta(a) -> dict:
     else:
         log["build"] = data.build(export, tmp, docs_path=docs if docs.exists() else Path("/nonexistent"))
     scope = os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
-    scored = {r["affair_id"] for r in st.all("SELECT DISTINCT affair_id FROM topics WHERE provenance = 'inferred'")}
-    todo = []
+    rowhash = {r["affair_id"]: r["input_hash"] for r in st.all(
+        "SELECT affair_id, input_hash FROM topics WHERE provenance = 'inferred' AND valid_to IS NULL AND scheme = 'aps' AND level = 1 AND rank = 1")}
+    adds, n_new = [], 0
     with gzip.open(tmp, "rt") as fh:
         for line in fh:
             x = json.loads(line)
-            if known.get(x["id"]) != x["input_hash"] and (x["date"] >= scope or x["id"] in scored):
-                todo.append((x["date"], x["id"]))
-    todo = [i for _, i in sorted(todo, reverse=True)][: a.max_affairs or None]
+            i, h = x["id"], x["input_hash"]
+            if i not in known:                                   # new to the store
+                if x["date"] >= scope:
+                    adds.append((i, h, "new")); n_new += 1
+            elif known[i] is not None and known[i] != h:          # changed since it was loaded
+                if x["date"] >= scope or i in rowhash:
+                    adds.append((i, h, "changed"))
+            elif known[i] is None and i in rowhash and rowhash[i] not in (None, h):
+                adds.append((i, h, "changed"))                   # loaded from the static export, scored on an older input
     os.replace(tmp, inputs)
     st.load_affairs(inputs)
-    log["todo"] = len(todo)
+    st.queue_add(adds)
+    pend_before = st.pending()
+    log.update(new_affairs=n_new, queued=len(adds), pending_before=pend_before)
     topics = [] if lite else adhoc_topics()
     usd0 = ledger_usd(run / "ledger.jsonl")
-    rows_in, build = 0, None
-    if todo and a.model and (run / "PID").exists():
+    rows_in, build, n_scored, t_model = 0, None, 0, None
+    Q = st.queue()
+    todo = []
+    if Q and a.model:
+        dates = {r["id"]: r["date"] for r in st.affairs(list(Q)).values()}
+        todo = sorted(Q, key=lambda i: (dates.get(i) or "", i), reverse=True)[: a.max_affairs or None]
+    if todo and (run / "PID").exists():
         try:
             os.kill(int((run / "PID").read_text()), 0)
             raise SystemExit(f"{run}: a batch is running there (PID file); the delta never shares a live run dir")
         except (ProcessLookupError, ValueError):
             pass
-    if todo and a.model:
+    if todo:
+        t_model = time.time()
         run.mkdir(parents=True, exist_ok=True)
         idf = run / f"delta-{dt.date.today().isoformat()}.ids"
         idf.write_text("\n".join(map(str, todo)) + "\n")
@@ -243,15 +258,42 @@ def delta(a) -> dict:
             res = st.load_topics(rows)
             rows_in = res["inserted"]; log["load"] = res
             build = json.loads((run / "state.json").read_text())["lock"]["fp"]
+        n_scored = st.queue_drain()
+        t_model = time.time() - t_model
     usd = ledger_usd(run / "ledger.jsonl") - usd0
     pending = st.pending()
     wall = time.time() - t0
+    log.update(todo=len(todo), scored=n_scored, pending_after=pending, drain_s=round(t_model, 1) if t_model is not None else None)
     st.log_run("delta", affairs=len(todo), rows=rows_in, wall_s=round(wall, 1), usd=round(usd, 6), pending=pending, build=build,
                note=json.dumps(log, ensure_ascii=False)[:4000])
-    line = metrics_line(st.metrics())
+    m = st.metrics()
+    line = metrics_line(m) + f" · queue {pend_before} → {pending}" + (f" · drain {t_model / 60:.1f} min" if t_model is not None else "")
     log["line"] = line
     print(line, flush=True)
+    if a.last:
+        write_last(Path(a.last), export, log, a.model, rows_in, usd, m)
     return log
+
+
+def write_last(p: Path, export: Path, log: dict, model: bool, rows_in: int, usd: float, m: dict):
+    """runs/nightly/last.json, the app's «letzte Nacht»: a pass without the endpoint starts the night; the model pass
+    after it completes the same record (otherwise the model pass starts a fresh one)."""
+    today = time.strftime("%Y-%m-%d")
+    old = json.loads(p.read_text()) if p.exists() else {}
+    cont = model and old.get("date") == today and "pending_after_cut" in old and old.get("pending_after_drain") is None
+    L = old if cont else dict(date=today, new_affairs=0, new_rows=0, usd=0.0, scored=0, pending_after_cut=None,
+                              pending_after_drain=None, drain_minutes=None)
+    idx = export / "index.json"
+    L["opd_export_generated"] = json.loads(idx.read_text()).get("generated_at") if idx.exists() else L.get("opd_export_generated")
+    L["new_affairs"] += log["new_affairs"]; L["new_rows"] += rows_in; L["usd"] = round(L["usd"] + usd, 6)
+    if model:
+        L.update(scored=L["scored"] + log["scored"], pending_after_drain=log["pending_after"],
+                 drain_minutes=round(log["drain_s"] / 60, 1) if log["drain_s"] is not None else 0.0)
+    else:
+        L["pending_after_cut"] = log["pending_after"]
+    L.update(pending=m["pending"], unscored_in_scope=m["unscored_in_scope"])
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_suffix(".tmp"); tmp.write_text(json.dumps(L, indent=1)); os.replace(tmp, p)
 
 
 def nightly(a):
@@ -293,6 +335,9 @@ def main(argv=None):
     if argv and argv[0] == "run":                       # pass-through to the resumable batch runner
         from . import batch
         return batch.main(argv)
+    if argv and argv[0] == "export":                    # the lead's static export, its own options
+        from . import export
+        return export.main(argv[1:])
     if argv and argv[0] == "eval":
         from . import evaluate
         return evaluate.main(argv[1:])
@@ -326,6 +371,7 @@ def main(argv=None):
         d.add_argument("--no-model", dest="model", action="store_false", help="inputs and affairs only, no batch")
         d.add_argument("--max-affairs", type=int)
         d.add_argument("--full-rebuild", action="store_true", help="rebuild every input (first night; ~5 GB RAM peak)")
+        d.add_argument("--last", help="write/complete the night's summary JSON (runs/nightly/last.json)")
         d.add_argument("--conc", type=int, default=int(os.environ.get("QS_CONC", "3")))
         d.add_argument("--max-rate", type=float, default=float(os.environ.get("QS_MAX_RATE", "1.0")))
         if name == "nightly":

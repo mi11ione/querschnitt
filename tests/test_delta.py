@@ -32,7 +32,7 @@ def export(d, title3="Velowege im Kanton Bern"):
 
 def args(tmp_path, **kw):
     a = dict(since="2026-10-01", export=str(tmp_path / "opd"), inputs=str(tmp_path / "inputs.jsonl.gz"), run_dir=str(tmp_path / "run"),
-             profile="full", plan=False, fetch=False, model=True, max_affairs=None, conc=3, max_rate=50.0, full_rebuild=False)
+             profile="full", plan=False, fetch=False, model=True, max_affairs=None, conc=3, max_rate=50.0, full_rebuild=False, last=None)
     a.update(kw)
     return argparse.Namespace(**a)
 
@@ -82,3 +82,103 @@ def test_delta_lite_chapter_only(tmp_path, fake, monkeypatch):
     st = Store()
     assert {r["scheme"] for r in st.all("SELECT scheme FROM topics")} == {"aps"}
     assert st.all("SELECT COUNT(*) AS n FROM topics WHERE level = 2")[0]["n"] == 0
+
+
+def add_affairs(d, extra, title3=None):
+    """Re-write the mini export with extra affairs (and optionally a changed title for 1003)."""
+    export(d, **({"title3": title3} if title3 else {}))
+    with gzip.open(d / "affairs.ndjson.gz", "rt") as f:
+        A = [json.loads(l) for l in f]
+    gz(d / "affairs.ndjson.gz", A + extra)
+
+
+def new_affair(i, title, day="2026-10-13"):
+    return dict(id=i, body_key="BE", number=f"M {i}", title_de=title, begin_date=f"{day}T00:00:00", type_name_de="Motion",
+                type_harmonized_de="Motion", updated_at=f"{day}T10:00:00")
+
+
+def env(tmp_path, fake, monkeypatch):
+    monkeypatch.setattr(C.Guard.__init__, "__defaults__", (50.0, 0.15))
+    for k, v in dict(QS_DB=str(tmp_path / "s.sqlite"), QS_BASE_URL=fake.url, QS_API_KEY="test", QS_KEY_FILE=str(tmp_path / "nokey")).items():
+        monkeypatch.setenv(k, v)
+    for k in ("QS_EXPORT_DIR", "QS_INPUTS", "QS_RUN_DIR", "QS_PROFILE", "QS_STEPS"):
+        monkeypatch.delenv(k, raising=False)
+
+
+def test_cut_then_drain(tmp_path, fake, monkeypatch, capsys):
+    """Pass 1 without the endpoint queues new and changed affairs; pass 2 scores exactly the queue, whatever --since says."""
+    from querschnitt.cli import delta
+    from querschnitt.store import Store
+    env(tmp_path, fake, monkeypatch)
+    export(tmp_path / "opd")
+    (tmp_path / "opd" / "index.json").write_text(json.dumps({"generated_at": "2026-10-14T06:35:00Z", "files": []}))
+    delta(args(tmp_path))                                                   # night 0: 3 affairs scored
+    st = Store()
+    assert st.metrics()["pending"] == 0
+    add_affairs(tmp_path / "opd", [new_affair(1010, "Digitale Signatur im Grossen Rat"), new_affair(1011, "Schulweg Sicherheit")],
+                title3="Velowege und digitale Verkehrsdaten im Kanton Bern")
+    last = tmp_path / "last.json"
+    n0 = len(fake.requests)
+    cut = delta(args(tmp_path, model=False, since="2026-10-13", last=str(last)))
+    assert len(fake.requests) == n0                                          # the endpoint is cut: no call
+    m = st.metrics()
+    assert m["pending"] == 3 and cut["new_affairs"] == 2 and cut["queued"] == 3
+    assert {r["affair_id"] for r in st.all("SELECT affair_id FROM qs_queue")} == {1010, 1011, 1003}
+    assert "pending 3" in capsys.readouterr().out
+    drain = delta(args(tmp_path, since="2030-01-01", last=str(last)))       # a --since that matches nothing
+    assert drain["scored"] == 3 and len(fake.requests) > n0
+    m = st.metrics()
+    assert m["pending"] == 0 and st.all("SELECT COUNT(*) AS n FROM qs_queue")[0]["n"] == 0
+    cur = {r["affair_id"]: r["code"] for r in st.all("SELECT affair_id, code FROM topics WHERE scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")}
+    assert cur[1010].endswith(":yes") and cur[1011].endswith(":no") and cur[1003].endswith(":yes")
+    L = json.loads(last.read_text())
+    assert L["date"] and L["opd_export_generated"] == "2026-10-14T06:35:00Z" and L["new_affairs"] == 2
+    assert L["pending_after_cut"] == 3 and L["pending_after_drain"] == 0 and L["scored"] == 3
+    assert L["drain_minutes"] is not None and L["usd"] > 0
+    run = st.runs("delta", 1)[0]
+    note = json.loads(run["note"])
+    assert note["pending_before"] == 3 and note["pending_after"] == 0 and note["drain_s"] >= 0
+    # a failed drain keeps the queue: the next model pass picks it up
+    add_affairs(tmp_path / "opd", [new_affair(1012, "Digitale Archive")], title3="Velowege und digitale Verkehrsdaten im Kanton Bern")
+    fake.mode = "bad"                                     # the endpoint answers 400: every call of the drain fails
+    delta(args(tmp_path))
+    fake.mode = "logprobs"
+    assert Store().metrics()["pending"] == 1
+    delta(args(tmp_path, since="2030-01-01"))
+    assert Store().metrics()["pending"] == 0
+
+
+def test_pending_is_the_queue_not_the_backlog(tmp_path, fake, monkeypatch):
+    """Affairs in scope without rows that the nightly never queued (the corpus run's backlog) are `unscored_in_scope`."""
+    from querschnitt.cli import delta
+    from querschnitt.store import Store
+    env(tmp_path, fake, monkeypatch)
+    export(tmp_path / "opd")
+    delta(args(tmp_path, model=False))                    # first night without the endpoint: 3 new affairs queued
+    st = Store()
+    assert st.metrics()["pending"] == 3
+    st.ex("DELETE FROM qs_queue"); st.commit()            # the corpus run owns them (backlog), not the nightly
+    m = st.metrics()
+    assert m["pending"] == 0 and m["unscored_in_scope"] == 3
+    # affairs loaded from the static export (no input hash) that already carry rows are not re-queued
+    delta(args(tmp_path))                                 # nothing new or changed: nothing to score
+    assert Store().metrics()["pending"] == 0 and Store().runs("delta", 1)[0]["affairs"] == 0
+
+
+def test_static_export_load_keeps_input_hashes(tmp_path, fake, monkeypatch):
+    """ops/nightly.sh loads app/data before the delta; that must not erase the hashes the delta compares against."""
+    from querschnitt.cli import delta
+    from querschnitt.store import Store
+    env(tmp_path, fake, monkeypatch)
+    export(tmp_path / "opd")
+    delta(args(tmp_path))
+    st = Store()
+    before = {r["id"]: r["input_hash"] for r in st.all("SELECT id, input_hash FROM qs_affairs")}
+    d = tmp_path / "appdata"; d.mkdir()
+    (d / "affairs.json").write_text(json.dumps(dict(n=3, cols=dict(id=[1001, 1002, 1003], body=["CHE", "BE", "BE"],
+                                                                   date=["2026-10-12", "2026-10-11", "2026-10-10"], title=["a", "b", "c"]))))
+    st.load_affairs_export(d)
+    assert {r["id"]: r["input_hash"] for r in st.all("SELECT id, input_hash FROM qs_affairs")} == before
+    n = len(fake.requests)
+    delta(args(tmp_path))
+    assert len(fake.requests) == n and Store().metrics()["pending"] == 0

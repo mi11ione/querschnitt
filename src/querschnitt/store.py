@@ -387,8 +387,10 @@ class Store:
         det: dict = {}
         for p in sorted((d / "detail").glob("*.json")) if (d / "detail").exists() else []:
             det.update({int(k): v for k, v in json.loads(p.read_text()).items()})
+        keep = ("input_hash", "updated", "text_src")                 # the export has none of these: never erase them
         sql = (f"INSERT INTO qs_affairs ({', '.join(AFF_COLS)}) VALUES ({', '.join('?' * len(AFF_COLS))}) "
-               "ON CONFLICT (id) DO UPDATE SET " + ", ".join(f"{c} = excluded.{c}" for c in AFF_COLS[1:]))
+               "ON CONFLICT (id) DO UPDATE SET " + ", ".join(f"{c} = COALESCE(excluded.{c}, qs_affairs.{c})" if c in keep
+                                                            else f"{c} = excluded.{c}" for c in AFF_COLS[1:]))
         buf = []
         for i, aid in enumerate(cols["id"]):
             g = lambda k: (cols.get(k) or [None] * (i + 1))[i]
@@ -589,14 +591,43 @@ class Store:
                             covered_from=b["covered_from"], by_year=dict(sorted(b["by_year"].items()))))
         return sorted(out, key=lambda x: (-x["affairs"], x["body_key"] or ""))
 
-    def pending(self, since: str | None = None, scheme: str = "aps") -> int:
-        """Affairs in scope (begin date ≥ QS_SCOPE_SINCE, default 2025-01-01) whose current input has no current
-        machine row in `scheme`: new or changed affairs waiting for the batch."""
+    def unscored(self, since: str | None = None, scheme: str = "aps") -> int:
+        """Affairs in scope (begin date ≥ QS_SCOPE_SINCE) whose current input has no current machine row in `scheme`:
+        the whole backlog, including what the corpus run has not reached yet. Affairs without an input hash (loaded from
+        the static export) are not counted."""
         since = self.scope(since)
         r = self.one("SELECT COUNT(*) AS n FROM qs_affairs a WHERE a.date >= ? AND a.input_hash IS NOT NULL AND NOT EXISTS (SELECT 1 FROM topics t "
                      "WHERE t.affair_id = a.id AND t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'inferred' "
                      "AND (t.input_hash = a.input_hash OR t.input_hash IS NULL))", (since, scheme))
         return int(r["n"])
+
+    # ------------------------------------------------------------------ the nightly's queue
+    def pending(self) -> int:
+        """The nightly's queue: affairs new or changed since the previous nightly and not yet scored."""
+        return int(self.one("SELECT COUNT(*) AS n FROM qs_queue")["n"])
+
+    def queue_add(self, items: list[tuple[int, str, str]]) -> int:
+        """(affair id, input hash, reason) → queue (upsert: a changed affair keeps one entry with its newest hash)."""
+        t = self._ts(now())
+        sql = ("INSERT INTO qs_queue (affair_id, input_hash, reason, queued_at) VALUES (?, ?, ?, ?) "
+               "ON CONFLICT (affair_id) DO UPDATE SET input_hash = excluded.input_hash, reason = excluded.reason")
+        if items:
+            self.ex(sql, [(a, h, r, t) for a, h, r in items], many=True)
+        self.commit()
+        return len(items)
+
+    def queue(self) -> dict[int, str]:
+        return {r["affair_id"]: r["input_hash"] for r in self.all("SELECT affair_id, input_hash FROM qs_queue")}
+
+    def queue_drain(self, scheme: str = "aps") -> int:
+        """Remove the queued affairs that now carry a current machine row for their queued input; returns how many."""
+        done = [r["affair_id"] for r in self.all(
+            "SELECT q.affair_id FROM qs_queue q WHERE EXISTS (SELECT 1 FROM topics t WHERE t.affair_id = q.affair_id "
+            "AND t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'inferred' AND t.input_hash = q.input_hash)", (scheme,))]
+        if done:
+            self.ex("DELETE FROM qs_queue WHERE affair_id = ?", [(a,) for a in done], many=True)
+        self.commit()
+        return len(done)
 
     def log_run(self, kind: str, affairs: int | None = None, rows: int | None = None, wall_s: float | None = None,
                 usd: float | None = None, pending: int | None = None, build: str | None = None, note: str | None = None):
@@ -624,7 +655,8 @@ class Store:
         seq = self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM topics")["m"]
         return dict(affairs=n_aff, scope_since=self.scope(), affairs_aps_scored=n_sc, affairs_loaded=n_all,
                     affairs_with_rows=c["affairs_with_rows"] or 0, rows=c["rows"] or 0, rows_all_versions=tot, seq=seq,
-                    decisions=c["decisions"] or 0, pending=self.pending(), builds=builds, store=self.kind,
+                    decisions=c["decisions"] or 0, pending=self.pending(), unscored_in_scope=self.unscored(), builds=builds,
+                    store=self.kind,
                     last_run=dict(kind=lr.get("kind"), ts=lr.get("ts"), affairs=lr.get("affairs"), wall_s=lr.get("wall_s"),
                                   usd=lr.get("usd"), pending=lr.get("pending"), note=lr.get("note")) if lr else None)
 
@@ -635,7 +667,8 @@ def metrics_line(m: dict) -> str:
     usd = lr.get("usd")
     return (f"affairs {lr.get('affairs') if lr.get('affairs') is not None else '-'} · wall "
             f"{(str(round(lr['wall_s'])) + ' s') if lr.get('wall_s') is not None else '-'} · list-price USD "
-            f"{f'{usd:.4f}' if usd is not None else '-'} · pending {m['pending']} · rows {m['rows']} · store {m['store']}")
+            f"{f'{usd:.4f}' if usd is not None else '-'} · pending {m['pending']} · unscored in scope {m.get('unscored_in_scope', '-')} "
+            f"· rows {m['rows']} · store {m['store']}")
 
 
 _STORE: Store | None = None

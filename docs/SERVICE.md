@@ -10,7 +10,7 @@ fake OpenAI-compatible endpoint only.
 ```sh
 make install                         # uv venv .venv (Python 3.12) + editable install with dev and Postgres extras
 make run                             # API + app on SQLite with the shipped data -> http://127.0.0.1:8000
-make test                            # 65 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~30 s
+make test                            # 68 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~30 s
 make eval GOLD=data/eval/gold_dvs30.csv          # recall + misses by level for a positives list
 make eval GOLD=data/eval/gold_aps_s9.csv         # APS editors' chapters (multi-class)
 make delta                           # nightly: fresh OPD export -> new/changed affairs -> batch -> rows (SINCE=yesterday)
@@ -155,10 +155,19 @@ APS editors' chapters are not yet in a run (pipeline phase `p1b-aps-gold`); the 
    updated-only affairs are rebuilt from titles, texts and the documents already on disk, never re-downloaded.
 3. Inputs are rebuilt for touched affairs only (data.build over a filtered view of the export) and merged into the
    previous file; the first night (`--full-rebuild` or no inputs file) builds everything.
-4. New or changed input hash, begun ≥ `QS_SCOPE_SINCE` or already scored → `batch run --ids` on the shared run dir
-   (cached prompts are never re-sent; refused while a batch with a live PID runs there); `lite` = `--steps ch`.
+4. New affairs (begun ≥ `QS_SCOPE_SINCE`) and changed ones (input hash differs from the stored one, or from the input
+   their rows were scored on) enter `qs_queue`. A pass with `--no-model` stops there (endpoint cut); every model pass
+   scores the whole queue (`batch run --ids`, cached prompts never re-sent, refused while a batch with a live PID runs
+   in that dir), whatever its `--since`, and an affair leaves the queue only when it has a current row for its queued
+   input — a failed drain keeps it for the next pass. `lite` = `--steps ch`.
 5. Rows: `compose.decide` + `compose.topic_rows` with `eval/calibration.json` (the export's rule) → `load_topics`.
-6. One `qs_runs` line and the printed `/metrics` line: `affairs N · wall S s · list-price USD X · pending P · rows R`.
+6. One `qs_runs` line and the printed line: `affairs N · wall S s · list-price USD X · pending P · unscored in scope U ·
+   rows R · queue before → after · drain M min`. `pending` = the queue (new/changed since the previous nightly, not yet
+   scored); `unscored_in_scope` = every affair in scope without rows (the corpus run's backlog). `--last FILE` writes
+   the night's record (`runs/nightly/last.json`): date, opd_export_generated, new_affairs, new_rows, scored,
+   pending_after_cut, pending_after_drain, drain_minutes, usd, pending, unscored_in_scope (a cut pass starts it, the
+   model pass after it completes it). Real smoke, 14 Oct: 2 affairs scored, 1 new affair queued by a cut pass and
+   drained by the next pass with `--since 2030-01-01` (19 Public AI calls, build `…dd237840`).
 
 Measured on the 11 Oct export (no fetch, no model): touched-only rebuild in 131 s, peak RSS 1.55 GB,
 all 326,123 input hashes identical to the full build (0 to re-score); the full rebuild takes 86 s at 4.7 GB peak.

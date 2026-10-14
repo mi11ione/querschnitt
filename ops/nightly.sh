@@ -10,22 +10,25 @@ day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
   echo "== $(date '+%F %T') nightly start (endpoint cut for first pass: $cut)"
   t0=$(date +%s)
   # the store mirrors the corpus run first (latest export of its rows; reloading identical rows adds nothing)
-  $PY -m querschnitt.export --out app/data > /dev/null && $PY -m querschnitt load --auto
+  # (--topics-file: topics.jsonl.gz must come from the same export as affairs.json, or the store and the app disagree)
+  $PY -m querschnitt export --out app/data --topics-file > /dev/null && $PY -m querschnitt load --auto
   if [ "$cut" = 1 ]; then
-    caffeinate -i $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0
+    caffeinate -i $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0 --last runs/nightly/last.json
     echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics
     t1=$(date +%s)
   fi
-  caffeinate -i $PY -m querschnitt delta --since yesterday --no-fetch --max-rate 1.0
+  # the model pass scores the queue (everything pass 1 or an earlier night left unscored), whatever --since says
+  caffeinate -i $PY -m querschnitt delta --since yesterday --no-fetch --max-rate 1.0 --last runs/nightly/last.json
   t2=$(date +%s)
   echo "-- $(date '+%F %T') after model pass:"; $PY -m querschnitt metrics
-  [ "$cut" = 1 ] && echo "drain_minutes=$(( (t2 - t1) / 60 ))"
   echo "== $(date '+%F %T') nightly end, wall $(( (t2 - t0) / 60 )) min"
+  # last.json: the delta passes wrote date, opd_export_generated, new_affairs, new_rows, scored, pending_after_cut,
+  # pending_after_drain, drain_minutes, usd, pending, unscored_in_scope; the script adds its own two fields
   $PY - <<PYEOF
-import json, time
-from querschnitt.store import Store
-m = Store().metrics() if hasattr(Store, "metrics") else {}
-json.dump(dict(date=time.strftime('%F'), endpoint_cut_first_pass=bool($cut), wall_min=round(($t2-$t0)/60, 1),
-               new_rows=(m.get("last_run") or {}).get("affairs"), pending=m.get("pending")), open('runs/nightly/last.json', 'w'))
+import json
+p = 'runs/nightly/last.json'
+L = json.load(open(p))
+L.update(endpoint_cut_first_pass=bool($cut), wall_min=round(($t2 - $t0) / 60, 1))
+json.dump(L, open(p, 'w'), indent=1)
 PYEOF
 } >> "$L" 2>&1

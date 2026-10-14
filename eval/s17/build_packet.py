@@ -32,7 +32,7 @@ D = HERE / "packet"; D.mkdir(parents=True, exist_ok=True)
 items, keys = [], []
 for k, (x, a) in enumerate(pick, 1):
     oid = f"M{k:03d}"
-    items.append(f"=== {oid} ===\nParlament: {parl_name(x['body'], B, 'de')} (Gemeinde/Stadt)\nTyp: {x['type'] or '-'}\n\n{P.affair_block(x, x['lang'])}\n")
+    items.append(f"=== {oid} ===\nParlament: {parl_name(x['body'], B, 'de')} {(B.get(x['body']) or {}).get('name_de') or ''} (Gemeinde/Stadt)\nTyp: {x['type'] or '-'}\n\n{P.affair_block(x, x['lang'])}\n")
     keys.append(dict(oid=oid, affair_id=x["id"], body=x["body"], lang=x["lang"], title_only=not x["text"], text_kind=x["text_kind"],
                      shipped=code(a["ch"]), top3=[code(c) for c in a["rank"][:3]], lane=a["lane"], conf=round(a["conf"], 4),
                      readings=a["n_readings"]))

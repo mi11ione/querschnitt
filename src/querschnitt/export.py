@@ -67,14 +67,29 @@ def run(args):
     tfile = gzip.open(out / "topics.jsonl.gz.tmp", "wt") if args.topics_file else None
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     n_dec = collections.Counter()
+    n_extra = 0
+    gold_own = {}   # a parliament's own labels where published openly (Basel-Stadt OGD 100086, CC BY 4.0): number → code
+    bsf = ROOT.parent / "data/manual/bs_100086.csv"
+    if bsf.exists():
+        import csv
+        bs = next((s_ for s_ in named_schemes() if s_["id"] == "bs-themen"), None)
+        if bs:
+            by_name = {o["name"]["de"]: o["code"].split(":", 1)[1] for o in bs["options"]}
+            for r in csv.DictReader(open(bsf, encoding="utf-8-sig"), delimiter=";"):
+                gold_own[("BS", r["Signatur"])] = [by_name.get(r["Thema 1"]), by_name.get(r["Thema 2"]) if r["Thema 2"] else None]
     for x in X:
         d = decide(x, rows, eng.ch1_prompt, topics)
+        if not (args.since <= x["date"] <= args.until) and not any(k in NAMED_IDS for k in d):
+            continue   # extra ranges carry only the affairs scored with the parliament's own scheme
         a = d.get("aps"); g = d.get("adhoc/digitalisierung")
-        c = cov[x["body"]]
+        in_slice = args.since <= x["date"] <= args.until
+        n_extra += not in_slice
+        c = cov[x["body"]] if in_slice else collections.Counter()   # extra-range affairs stay out of slice totals
         c["n"] += 1; c["scored"] += bool(a); c["dig"] += bool(g); c["title_only"] += not x["text"]
         c["check"] += bool(a and a["lane"] == "please_check")
-        months[x["body"]][x["date"][:7]] += 1
-        n_dec["aps"] += bool(a); n_dec["dig"] += bool(g)
+        if in_slice:
+            months[x["body"]][x["date"][:7]] += 1
+            n_dec["aps"] += bool(a); n_dec["dig"] += bool(g)
         trows = topic_rows(x, d, lock, calib.apply if calib else None, now)
         ar = sorted((r for r in trows if r["scheme"] == "aps" and r["level"] == 1), key=lambda r: r["rank"])
         ch_p = (ar[0]["p"] if ar[0]["p"] is not None else ar[0]["p_raw"]) if ar else None   # the API row's p, nothing else
@@ -90,7 +105,8 @@ def run(args):
                      ("be_lane", (d["be-directorates"]["lane"] == "please_check") * 1 if d.get("be-directorates") else None),
                      ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None),
                      ("own", next(([k, v["code"].split(":", 1)[1], int(v["lane"] == "please_check")] for k, v in d.items()
-                                   if k in NAMED_IDS), None))):
+                                   if k in NAMED_IDS), None)),
+                     ("own_gold", gold_own.get((x["body"], x["number"])))):
             cols[k].append(v)
         detail[x["id"] // 1000][x["id"]] = dict(
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
@@ -142,7 +158,8 @@ def run(args):
                 since=args.since, until=min(X[0]["date"], time.strftime("%Y-%m-%d")) if X else None,
                 n_future_dated=sum(1 for x in X if x["date"] > time.strftime("%Y-%m-%d")), affairs=tot, parliaments=len(cov),
                 scored=n_dec["aps"], scored_share=round(n_dec["aps"] / tot, 4) if tot else 0, dig_scored=n_dec["dig"],
-                please_check=sum(c["check"] for c in cov.values()), calibration=bool(calib))
+                please_check=sum(c["check"] for c in cov.values()), calibration=bool(calib),
+                extra=dict(ranges=args.extra, affairs=n_extra))
     nl = ROOT / "runs/nightly/last.json"
     if nl.exists():
         meta["nightly"] = json.loads(nl.read_text())

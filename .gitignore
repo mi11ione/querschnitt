@@ -13,3 +13,5 @@ data/*.sqlite-wal
 data/*.sqlite-shm
 *.sqlite-wal
 *.sqlite-shm
+data/inputs.jsonl.gz
+data/opd/

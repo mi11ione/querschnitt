@@ -1,0 +1,23 @@
+#!/bin/sh
+# Unattended nightly delta (cron, 07:05 CEST, after OPD's ~06:35 export): fresh export → new/changed affairs → batch →
+# store → one metrics line. On even days of the month the endpoint is cut for the first pass (`--no-model`): new rows wait
+# as pending; the second pass with the endpoint drains them, and the log records pending count and minutes to drain.
+cd "$(dirname "$0")/.." || exit 1
+export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$PWD/data/inputs.jsonl.gz" QS_EXPORT_DIR="$PWD/data/opd"
+L="runs/nightly/$(date +%F).log"; PY=.venv/bin/python
+day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
+{
+  echo "== $(date '+%F %T') nightly start (endpoint cut for first pass: $cut)"
+  t0=$(date +%s)
+  if [ "$cut" = 1 ]; then
+    caffeinate -i $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0
+    echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics
+    t1=$(date +%s)
+  fi
+  caffeinate -i $PY -m querschnitt delta --since yesterday --no-fetch --max-rate 1.0
+  t2=$(date +%s)
+  echo "-- $(date '+%F %T') after model pass:"; $PY -m querschnitt metrics
+  [ "$cut" = 1 ] && echo "drain_minutes=$(( (t2 - t1) / 60 ))"
+  echo "== $(date '+%F %T') nightly end, wall $(( (t2 - t0) / 60 )) min"
+  $PY -c "import json,sys,time; json.dump(dict(date=time.strftime('%F'), cut=bool($cut), wall_min=round(($t2-$t0)/60,1)), open('runs/nightly/last.json','w'))"
+} >> "$L" 2>&1

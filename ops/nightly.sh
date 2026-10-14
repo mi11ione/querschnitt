@@ -1,5 +1,5 @@
 #!/bin/sh
-# Unattended nightly delta (cron, 07:05 CEST, after OPD's ~06:35 export): fresh export → new/changed affairs → batch →
+# Unattended nightly delta (ops/nightly-loop.sh, 07:05 CEST, after OPD's ~06:35 export): fresh export → new/changed affairs → batch →
 # store → one metrics line. On even days of the month the endpoint is cut for the first pass (`--no-model`): new rows wait
 # as pending; the second pass with the endpoint drains them, and the log records pending count and minutes to drain.
 cd "$(dirname "$0")/.." || exit 1

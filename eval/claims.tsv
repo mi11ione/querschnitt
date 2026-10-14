@@ -426,3 +426,6 @@ S20	-	0.565	S20 lane agree acc	0.5656	bern/querschnitt/eval/s20/results.json	lan
 S20	-	72%	S20 lane agree share (0.7197, rounded down)	0.7197	bern/querschnitt/eval/s20/results.json	lane agree share (0.7197, rounded down)	OK		truncated, never rounded up
 S20	-	0.325	S20 lane please_check acc	0.325	bern/querschnitt/eval/s20/results.json	lane please_check acc	OK		truncated, never rounded up
 S20	-	0.316	S20 minus_keyword diff	0.3168	bern/querschnitt/eval/s20/results.json	minus_keyword diff	OK		truncated, never rounded up
+run	-	27,904	corpus run requests so far (14 Oct 09:40)	27904	bern/querschnitt/runs/main/ledger.jsonl	line count	OK		
+run	-	0.000107	list-price USD per request	0.0001074	bern/querschnitt/runs/main/ledger.jsonl	sum(usd)/n, truncated	OK		
+run	-	1,072	mean prompt tokens per request	1072.4	bern/querschnitt/runs/main/ledger.jsonl	mean(pt), truncated	OK		

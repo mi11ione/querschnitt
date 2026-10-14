@@ -16,3 +16,8 @@ Short list of things only you can do. Everything else is running or decided.
 3. **Before publishing `upstream/APERTUS-NOTES.md`:** it includes the observation (from `loop/learnings.md`) that a `-70b`
    route given a system message or prefill is answered by Qwen-SEA-LION. `learnings.md` marks disclosing that to Public AI
    as your call; the note is ready either way — remove that line if you prefer to raise it privately first.
+
+4. **GitHub remote + CI (your call: outward-facing).** The repo has no remote yet, so CI (`.github/workflows/ci.yml`: tests, `make run`
+   smoke, Docker build, Postgres suite) has never run, and there is no Docker on this Mac. When you are fine with it: create
+   the repo (private until you submit is fine), push `main`, and CI runs. `gh` is the quickest:
+   `cd ~/Desktop/hackapertus/bern/querschnitt && gh repo create querschnitt --private --source . --push`.

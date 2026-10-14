@@ -696,3 +696,22 @@ prodgold	-	0.717	make eval on production rows, S9 gold	0.7176997759522031	bern/q
 prodgold	-	0.692	make eval on production rows, S9 gold	0.692	bern/querschnitt/eval/results/eval-gold_aps_s9.json	wilson outward from k/n	OK		
 prodgold	-	0.742	make eval on production rows, S9 gold	0.742	bern/querschnitt/eval/results/eval-gold_aps_s9.json	wilson outward from k/n	OK		
 prodgold	-	0.860	make eval on production rows, S9 gold	0.8603	bern/querschnitt/eval/results/eval-gold_aps_s9.json	overall.top3.value	OK		
+S19-27	-	0.225	ad-hoc topics	0.225	bern/querschnitt/eval/s19/results.json	wolf.precision_flags	OK		truncated
+S19-27	-	0.444	ad-hoc topics	0.4444	bern/querschnitt/eval/s27/results.json	wolf.precision_verified	OK		truncated
+S19-27	-	0.444	ad-hoc topics	0.4444	bern/querschnitt/eval/s27/results.json	wolf.recall_verified	OK		truncated
+S19-27	-	0.500	ad-hoc topics	0.5	bern/querschnitt/eval/s19/results.json	wolf.weighted.k_P	OK		truncated
+S19-27	-	0.670	ad-hoc topics	0.6705	bern/querschnitt/eval/s19/results.json	hitze.precision_flags	OK		truncated
+S19-27	-	0.770	ad-hoc topics	0.7705	bern/querschnitt/eval/s27/results.json	hitze.precision_verified	OK		truncated
+S19-27	-	0.969	ad-hoc topics	0.9698	bern/querschnitt/eval/s27/results.json	hitze.recall_verified	OK		truncated
+S19-27	-	0.900	ad-hoc topics	0.9005	bern/querschnitt/eval/s19/results.json	hitze.weighted.k_P	OK		truncated
+S19-27	-	0.136	ad-hoc topics	0.1364	bern/querschnitt/eval/s19/results.json	ki-schule.precision_flags	OK		truncated
+S19-27	-	0.250	ad-hoc topics	0.25	bern/querschnitt/eval/s27/results.json	ki-schule.precision_verified	OK		truncated
+S19-27	-	1.000	ad-hoc topics	1.0	bern/querschnitt/eval/s27/results.json	ki-schule.recall_verified	OK		truncated
+S19-27	-	0.750	ad-hoc topics	0.75	bern/querschnitt/eval/s19/results.json	ki-schule.weighted.k_P	OK		truncated
+S19-27	-	774	ad-hoc topics	774	bern/querschnitt/eval/s19/results.json	n packets	OK		truncated
+S19-27	-	0.100	ad-hoc topics	0.1	bern/querschnitt/eval/s27/results.json	hitze diff	OK		truncated
+S19-27	-	0.069	ad-hoc topics	0.069	bern/querschnitt/eval/s27/results.json	hitze diff ci0	OK		truncated
+S19-27	-	0.132	ad-hoc topics	0.132	bern/querschnitt/eval/s27/results.json	hitze diff ci1	OK		truncated
+S19-27	-	0.038	ad-hoc topics	0.0382	bern/querschnitt/eval/s26/results.json	hitze precision_diff	OK		truncated
+S19-27	-	0.018	ad-hoc topics	0.018	bern/querschnitt/eval/s26/results.json	ci0	OK		truncated
+S19-27	-	0.060	ad-hoc topics	0.06	bern/querschnitt/eval/s26/results.json	ci1	OK		truncated

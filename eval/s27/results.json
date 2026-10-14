@@ -1,0 +1,83 @@
+{
+ "wolf": {
+  "flags": 40,
+  "kept": 9,
+  "positives": 9,
+  "precision_s19": {
+   "value": 0.225,
+   "ci": [
+    0.123,
+    0.376
+   ]
+  },
+  "precision_verified": {
+   "value": 0.4444,
+   "ci": [
+    0.188,
+    0.734
+   ]
+  },
+  "recall_verified": 0.4444,
+  "diff": {
+   "value": 0.2194,
+   "ci": [
+    -0.05,
+    0.55
+   ]
+  }
+ },
+ "hitze": {
+  "flags": 346,
+  "kept": 292,
+  "positives": 232,
+  "precision_s19": {
+   "value": 0.6705,
+   "ci": [
+    0.619,
+    0.718
+   ]
+  },
+  "precision_verified": {
+   "value": 0.7705,
+   "ci": [
+    0.718,
+    0.816
+   ]
+  },
+  "recall_verified": 0.9698,
+  "diff": {
+   "value": 0.1,
+   "ci": [
+    0.069,
+    0.132
+   ]
+  }
+ },
+ "ki-schule": {
+  "flags": 22,
+  "kept": 12,
+  "positives": 3,
+  "precision_s19": {
+   "value": 0.1364,
+   "ci": [
+    0.047,
+    0.334
+   ]
+  },
+  "precision_verified": {
+   "value": 0.25,
+   "ci": [
+    0.088,
+    0.533
+   ]
+  },
+  "recall_verified": 1.0,
+  "diff": {
+   "value": 0.1136,
+   "ci": [
+    0.0,
+    0.273
+   ]
+  }
+ }
+}

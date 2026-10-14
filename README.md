@@ -24,6 +24,7 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 | Basel-Stadt's own 46 themes as a scheme file (names only) vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
 | — with five of Basel's own labelled affairs as examples (other half of the data; no training) | 2,437 | 0.526 [0.506, 0.547], +0.028 [+0.014, +0.043] paired; top 3: 0.711; where the two readings agree (54.9%): 0.651 | names only: 0.498 |
 | Evidence on production rows: the stored quote supports the topic (blind AI judge, κ 0.92) | 200 | 0.815 [0.755, 0.863]; exact substring at the stored offsets 198/198 | — |
+| Three new topics, each defined in one sentence (wolves · heat protection · AI in schools), Aug–Oct 2026, blind AI judge | 774 | every affair the judge marks relevant is flagged; precision of flags 0.225 · 0.670 · 0.136; with a verification question on the flags 0.444 · 0.770 · 0.250 (keeping 0.444 · 0.969 · 1.000 of the relevant ones) — unverified flags go to «please check» | keywords 0.500 · 0.900 · 0.750 |
 | "Digitalisierung": the 30 affairs DVS curated by hand (the question and its 0.5 cut-off were written with these items in view) | 30 | 27 recognised | keywords 21 |
 
 ## Quick start

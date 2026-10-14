@@ -1,0 +1,92 @@
+{
+ "wolf": {
+  "n_test": 134,
+  "editor_examples": 30,
+  "positives": 7,
+  "s19": {
+   "flags": 34,
+   "precision": 0.2059,
+   "ci": [
+    0.103,
+    0.368
+   ],
+   "recall": 1.0
+  },
+  "s26": {
+   "flags": 32,
+   "precision": 0.2188,
+   "ci": [
+    0.11,
+    0.388
+   ],
+   "recall": 1.0
+  },
+  "precision_diff": {
+   "value": 0.0129,
+   "ci": [
+    -0.013,
+    0.047
+   ]
+  }
+ },
+ "hitze": {
+  "n_test": 438,
+  "editor_examples": 30,
+  "positives": 216,
+  "s19": {
+   "flags": 322,
+   "precision": 0.6708,
+   "ci": [
+    0.617,
+    0.72
+   ],
+   "recall": 1.0
+  },
+  "s26": {
+   "flags": 299,
+   "precision": 0.709,
+   "ci": [
+    0.655,
+    0.758
+   ],
+   "recall": 0.9815
+  },
+  "precision_diff": {
+   "value": 0.0382,
+   "ci": [
+    0.018,
+    0.06
+   ]
+  }
+ },
+ "ki-schule": {
+  "n_test": 112,
+  "editor_examples": 30,
+  "positives": 0,
+  "s19": {
+   "flags": 15,
+   "precision": 0.0,
+   "ci": [
+    -0.001,
+    0.204
+   ],
+   "recall": null
+  },
+  "s26": {
+   "flags": 18,
+   "precision": 0.0,
+   "ci": [
+    0.0,
+    0.176
+   ],
+   "recall": null
+  },
+  "precision_diff": {
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ]
+  }
+ }
+}

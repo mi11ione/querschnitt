@@ -223,3 +223,19 @@ def named_prompt(scheme: dict, a: dict, perm: list[int] | None = None,
         ex = f"{EX_HEAD}\n" + "\n".join(f"- {ti}\n  → Thema: {codes[inv[c]]} ({names[c]})" for ti, c in examples) + "\n\n"
     user = f"{f['ask']}\n\n{f['head']}:\n{lines}\n\n{ex}Geschäft:\n{affair_block(a, 'de')}\n\n{f['fmt']}"
     return user, '{"' + f["key"] + '": "', codes
+
+
+# ---- verification for ad-hoc flags (S27): is the topic central, not just touched on or merely similar?
+VERIFY = {"de": ("Ist «{name}» ein zentrales Thema dieses Geschäfts – nicht nur am Rande erwähnt oder bloss ähnlich?", "Ja, zentral", "Nein"),
+          "fr": ("« {name} » est-il un thème central de cet objet – et non seulement mentionné en passant ou simplement voisin ?", "Oui, central", "Non"),
+          "it": ("«{name}» è un tema centrale di questo oggetto – non solo menzionato di passaggio o semplicemente affine?", "Sì, centrale", "No")}
+
+
+def verify_prompt(topic: dict, lang: str, title: str, title_long: str, order: str = "a") -> tuple[str, str]:
+    item, ti, tl, _no, fmt, key = YN[lang]
+    q, yes, no = VERIFY[lang]
+    q = q.format(name=topic["names"][lang])
+    opts = [("A", yes), ("B", no)] if order == "a" else [("A", no), ("B", yes)]
+    blk = f"{ti}: {title[:400]}" + (f"\n{tl}: {title_long[:400]}" if title_long and title_long != title else "")
+    u = f"{q}\n\n" + "\n".join(f"{c} = {s}" for c, s in opts) + f"\n\n{item}:\n{blk}\n\n{fmt}"
+    return u, '{"' + key + '": "'

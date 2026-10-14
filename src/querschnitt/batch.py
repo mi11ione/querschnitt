@@ -85,6 +85,7 @@ class Store:
 
     def write(self, row: dict):
         fn = ("yn_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("yn:") else \
+            ("vf_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("vf:") else \
             ("named_" + row["step"].split(":")[1]) if row["step"].startswith("named:") else row["step"].replace(":", "_").replace("/", "_")
         with self.lock:
             f = self.files.get(fn)
@@ -159,9 +160,17 @@ class Runner:
                     ex = topic_examples(t, a)   # editor decisions on this topic become examples (None = unchanged prompt)
                     u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a", ex)
                     ra = self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "a", ex), aid=a["id"], ih=ih))
+                    rb = None
                     if need_yn_b(ra["p_yes"]):
                         u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b", ex)
-                        self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b", ex), aid=a["id"], ih=ih))
+                        rb = self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b", ex), aid=a["id"], ih=ih))
+                    pm = (ra["p_yes"] + rb["p_yes"]) / 2 if rb else ra["p_yes"]
+                    if t.get("verify") and pm >= t.get("cutoff", 0.5):   # S27: a second, stricter question on flags only
+                        u, p = P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "a")
+                        va = self._step(P.pid(u, p), lambda: dict(self.engine.verify(t, a, "a"), aid=a["id"], ih=ih))
+                        if need_yn_b(va["p_yes"]):
+                            u, p = P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "b")
+                            self._step(P.pid(u, p), lambda: dict(self.engine.verify(t, a, "b"), aid=a["id"], ih=ih))
             if "bi" in S and a.get("bilingual", a["body"] in BILINGUAL) and a.get("alt_lang") in ("de", "fr"):
                 # bilingual parliaments: the other language version is the second reading (S10: titles only)
                 b = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])

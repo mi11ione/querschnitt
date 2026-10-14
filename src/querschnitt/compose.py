@@ -110,6 +110,14 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
                 if rb is None:
                     continue
             out[t["id"]] = yn_decision(ra, rb, t.get("cutoff", 0.5))
+            if t.get("verify") and out[t["id"]]["flag"]:   # S27: unverified flags go to a person (recall kept)
+                va = rows.get(P.pid(*P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "a")))
+                if va:
+                    vb = rows.get(P.pid(*P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "b"))) if need_yn_b(va["p_yes"]) else None
+                    pv = (va["p_yes"] + vb["p_yes"]) / 2 if vb else va["p_yes"]
+                    out[t["id"]]["verified"] = pv >= 0.5
+                    if pv < 0.5:
+                        out[t["id"]]["lane"] = "please_check"
             out[t["id"]]["meta"] = ra["meta"]
             out[t["id"]]["pids"] = [ra["pid"]] + ([rb["pid"]] if rb else [])
             out[t["id"]]["evidence"] = evidence_of(a, t["names"]["de"], rows)

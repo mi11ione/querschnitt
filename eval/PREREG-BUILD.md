@@ -92,3 +92,12 @@ two code orders, read-back), run in a separate run dir on the same build.
 Primary: shipped chapter top-1 vs APS editors (Wilson 95%, outward). Secondary: top-3; lanes (agree/disagree precision);
 coverage–precision when routing by calibrated p (calibration map fitted on S16 only); keyword baseline (S9 frozen rule).
 Reported as measured.
+
+## 2026-10-14 22:40 CEST — S26 editor decisions as examples on the S19 topics (written after S19's annotations exist, before any S26 call or S19 analysis)
+Question: does the shipped feedback loop (an editor's decisions become examples; `examples.topic_examples`, P8.5 shape: the 4
+BM25-nearest decided affairs, "Beispiele, von einer Redaktorin entschieden") raise precision on narrow new topics?
+Items: the S19 packets (wolf 164, hitze 468, ki-schule 142) with the S19 judge consensus as gold. Per topic, 30 items drawn at
+random (random.Random(26) over the pid-sorted packet) are the editor's first decisions (their gold Y/N); every other packet
+item is re-scored with the shipped yes/no rule (order a; order b when 0.1 < p < 0.9; flag at mean p ≥ 0.5) with examples.
+Primary: precision of flags on the re-scored items vs S19's flags on the same items (paired bootstrap 2,000). Secondary:
+weighted recall (S19 estimator), flags per topic. Reported as measured.

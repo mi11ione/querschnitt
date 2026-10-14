@@ -19,3 +19,4 @@ app/data/affairs.json
 app/data/detail/
 app/data/topics.jsonl.gz
 app/data/bodies.json
+dist/

@@ -21,7 +21,7 @@ from .compose import VERSION, decide, read_run, topic_rows
 from .data import load_bodies, level
 from .engine import Engine
 from .examples import ExamplePool
-from .scheme import APS, adhoc
+from .scheme import APS, adhoc, flat
 
 ROOT = Path(__file__).resolve().parents[2]
 KW = re.compile(json.loads((ROOT / "eval/kw_digitalisierung.json").read_text())["kw"], re.I)
@@ -81,7 +81,9 @@ def run(args):
                      ("lane", (a["lane"] == "please_check") * 1 if a else None),
                      ("subs", [1000 * APS.sub_index[s][0] + APS.sub_index[s][1] for s, _ in a["subs"]] if a else []),
                      ("dig_p", round(g["p"], 3) if g else None), ("dig_flag", int(g["flag"]) if g else None),
-                     ("dig_lane", int(g["lane"] == "please_check") if g else None), ("kw", int(bool(KW.search(kw_text(x)))))):
+                     ("dig_lane", int(g["lane"] == "please_check") if g else None), ("kw", int(bool(KW.search(kw_text(x))))),
+                     ("be", d["be-directorates"]["code"].split(":")[1] if d.get("be-directorates") else None),
+                     ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None)):
             cols[k].append(v)
         detail[x["id"] // 1000][x["id"]] = dict(
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
@@ -116,7 +118,10 @@ def run(args):
     jdump(out / "scheme_aps.json", dict(
         chapters=[dict(i=i, code=APS.codes[i], de=APS.short(i, "de"), fr=APS.short(i, "fr"), it=APS.short(i, "it")) for i in range(25)],
         subtopics={str(1000 * i + j): dict(code=APS.sub_codes[i][j], de=APS.subs_de[i][j], ch=i) for i in range(24) for j in range(len(APS.subs_de[i]))},
-        topics=[dict(id=t["id"], names=t["names"], aliases=t.get("aliases", [])) for t in topics]))
+        topics=[dict(id=t["id"], names=t["names"], aliases=t.get("aliases", [])) for t in topics],
+        schemes=[dict(id="be-directorates", body="BE", title=flat("be-directorates")["title"],
+                      options=[dict(code=o["code"].split(":")[1], abbr=o["abbr"], name=o["name"]) for o in flat("be-directorates")["options"]]
+                      + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]))
     tot = sum(c["n"] for c in cov.values())
     meta = dict(generated_at=now, version=VERSION, model=lock["model"], build=lock["fp"], build_short=lock["fp"][-8:],
                 since=args.since, until=X[0]["date"] if X else None, affairs=tot, parliaments=len(cov),

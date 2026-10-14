@@ -17,7 +17,8 @@ wherever a number comes from the AI judge, the sentence says so. Three numbers c
 Q&A cards: APS licence (chapters in the public feed; subtopics internal until APS agrees) · another scheme (`bs-themen.yaml`,
 `be-directorates.yaml`: a file) · where it runs (`lite` on the current VPS; lanes need no log-probabilities) · build changes
 (refit + quality gate + `GET /changes`) · recall of ad-hoc topics (judge-based 0.659 on titles; examples lift it) · who the
-judge is (Claude runs + Qwen; matches APS editors on 0.790 of chapters; says yes to 27 of the 30 DVS items) · the DVS 27/30
+judge is (Claude runs + Qwen; matches APS editors on 0.790 of chapters; says yes to 27 of the 30 DVS items) · new narrow topics (one sentence casts a wide net — wolves 0.225 precision of flags; a second "is it central?" question and the
+please-check lane narrow it: S19/S27) · the DVS 27/30
 is not held out (the question was written with those items in view) · Romansh (German prompt; not measured).
 
 ## Finals — 5 min, jurors who did not read the case (plain words)

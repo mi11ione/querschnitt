@@ -51,6 +51,13 @@ On the production run itself, 200 random communal affairs of 2026 were judged bl
 11 disagreements): the shipped chapter matches the judge's consensus in 0.640 [0.571, 0.704] (keywords 0.150, majority
 0.135); where the readings agree 0.677, in the please-check lane 0.511; German 0.631, French 0.687, Italian 0.625.
 
+**New topics defined in one sentence (S19, S26, S27):** for wolves, heat protection and AI in schools over Aug–Oct 2026,
+every affair the judge marks relevant is flagged, but narrow topics over-flag (precision of flags 0.225 / 0.670 / 0.136; keyword
+hits 0.500 / 0.900 / 0.750, which miss some relevant affairs). Thirty editor decisions shown as examples help a little on heat
+(+0.038 [+0.018, +0.060]) and not measurably on wolves. A second question on the flags only — is the topic central or merely
+touched on? — raises precision to 0.444 / 0.770 / 0.250 (heat +0.100 [+0.069, +0.132]) and keeps 0.444 / 0.969 / 1.000 of the
+relevant affairs; so unverified flags are not dropped but go to the please-check lane.
+
 ## 4. Neutrality
 No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the
 Italian text give 0.702, from the German text 0.703 (difference +0.0007 [−0.020, +0.021], S22). Between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both

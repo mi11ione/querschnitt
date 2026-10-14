@@ -73,5 +73,6 @@ R["by_lang"] = {l: share(sum(D[o]["ch"] == gold[o] for o in v), len(v)) for l, v
 R["by_design"] = {k: share(sum(D[o]["ch"] == gold[o] for o in v), len(v)) for k, v in
                   (("D4 (German text: five examples)", [o for o in ids if D[o].get("examples")]),
                    ("D1 (French/Italian text: no examples)", [o for o in ids if not D[o].get("examples")]))}
+R["curia_year"] = dict(sorted(collections.Counter("20" + items[o]["curia_number"][:2] for o in ids).items()))
 R["gold_chapters"] = {APS.names["de"][c]: n for c, n in collections.Counter(gold[o] for o in ids).most_common()}
 (HERE / "results.json").write_text(json.dumps(R, indent=1, ensure_ascii=False)); print(json.dumps(R, indent=1, ensure_ascii=False))

@@ -30,11 +30,13 @@ class BM25:
         self.idf = {w: math.log(1 + (self.N - len(p) + 0.5) / (len(p) + 0.5)) for w, p in self.inv.items()}
 
     def top(self, q: list[str], k: int) -> list[tuple[int, float]]:
+        # sorted terms and an index tie-break: the same query gives the same neighbours in every process (a `set` iterates
+        # in hash order, which Python randomises per process; float sums in another order flip near-ties)
         sc = collections.defaultdict(float)
-        for w in set(q):
+        for w in sorted(set(q)):
             for j, c in self.inv.get(w, ()):
                 sc[j] += self.idf[w] * c * (self.k1 + 1) / (c + self.k1 * (1 - self.b + self.b * self.len[j] / self.avg))
-        return sorted(sc.items(), key=lambda x: -x[1])[:k]
+        return sorted(sc.items(), key=lambda x: (-x[1], x[0]))[:k]
 
 
 class ExamplePool:

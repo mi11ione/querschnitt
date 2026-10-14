@@ -54,3 +54,16 @@ def test_topic_examples_nearest_and_stable():
     assert ex and ex[0][1] is True and all(isinstance(m, bool) for _, m in ex)
     assert topic_examples(t, a) == ex                       # same examples → same prompt id in batch and compose
     assert topic_examples(dict(id="adhoc/y", question={}, answer_yes={}), a) is None
+
+
+def test_example_neighbours_same_in_every_process():
+    """BM25 neighbours must not depend on the per-process hash seed (else a restarted run asks other prompts)."""
+    import os, subprocess, sys
+    code = ("import sys; sys.path.insert(0, 'src'); from querschnitt.examples import ExamplePool; "
+            "p = ExamplePool([dict(oid=i, title=t, chapter=0) for i, t in enumerate(['Asyl Gesetz Revision', 'Gesetz Asyl', "
+            "'Revision Asyl Gesetz', 'Asyl Revision', 'Gesetz Revision Asyl Verfahren', 'Asyl', 'Revision Gesetz'])], k=5); "
+            "print([e['oid'] for e in p.neighbours(dict(id=-1, title='Asyl Gesetz Revision Verfahren', text=''))])")
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    outs = {subprocess.run([sys.executable, "-c", code], cwd=root, capture_output=True, text=True,
+                           env={**os.environ, "PYTHONHASHSEED": str(s)}).stdout for s in range(12)}
+    assert len(outs) == 1, outs

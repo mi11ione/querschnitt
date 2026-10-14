@@ -123,3 +123,14 @@ first model call of its test (first ledger line) or, for S23, before its sample 
 S19 02:45:41 → first call 02:46:06 · S20 07:35:16 → 07:35:44 · S21 09:23:15 → 09:23:50 · S22 14:19:25 → 14:19:36 ·
 S23 17:05:40 → packet written 17:09:04 · S25 20:02:43 → 22:59:24 · S26 22:23:05 → 22:23:39 · S27 22:46:30 and its
 amendment 22:46:46 → 22:47:12 (all 14 Oct 2026). Header times from this entry on are taken from the clock when written.
+
+## 2026-10-15 01:29 CEST — S25 amendment: a determinism fix before the final score (after two pre-fix readings were seen)
+Found while scoring S25: the BM25 example retrieval (`examples.BM25.top`) summed over `set(q)`, whose order Python
+randomises per process, and broke ties by insertion order; a restarted run (the S25 run restarted during the Public AI
+outage of 15 Oct 00:00–00:39) could therefore ask a different five examples for the same affair, and composing in another
+process could miss the chain that was asked. Two compositions of the finished run were already seen, both with the old code:
+904 affairs scored, top-1 0.7035 (636/904), and 905 scored, 0.6994 (633/905). Fix (a bug fix, not a design change): sorted
+terms and an index tie-break, so every process picks the same neighbours (test: same neighbours under 12 hash seeds).
+Final S25 (primary, reported as measured): the fixed code; the chains it asks that the run does not hold are completed in
+`runs/s25` on the same build, then all 927 affairs are scored once with `eval/s25/analyze.py`. Both pre-fix readings are
+reported next to it. Nothing else changes (items, gold, metrics, calibration map fitted on S16 only).

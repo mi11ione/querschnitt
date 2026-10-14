@@ -33,5 +33,6 @@ is not held out (the question was written with those items in view) · Romansh (
 | 3:20–4:20 | Ops: last night's log — affairs scored, wall time, USD at list price, rows pending after the endpoint was cut, minutes to drain; `docker compose` footprint from CI. |
 | 4:20–5:00 | The open trail: repo, topics file, Prüfstand with raw logs and the blind annotations; QR code. |
 
-TO UPDATE when measured: S19 (three new ad-hoc topics vs the judge), the nightly numbers, Neues Thema timing on the event
-endpoint.
+TO UPDATE when measured: S25 (held-out APS affairs) into the 2:10 beat and the finals table beat, the first nightly
+numbers (Thu 09:15) into the ops beat, Neues Thema timing on the event endpoint (on the shared key: 98 affairs of last week in
+145 s, `runs/adhoc/lehrpersonenmangel/summary.json`; no number is spoken until the event endpoint is measured).

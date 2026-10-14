@@ -544,6 +544,180 @@
    "split": "vorregistriert",
    "split_fr": "préenregistré",
    "file": "ideation2/spikes/s10-bilingual/score.json"
+  },
+  {
+   "test": "Neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen) vs. KI-Richter, 1.8.–6.10.2026",
+   "test_fr": "Nouveaux thèmes en une phrase (loup, chaleur, IA à l'école) vs juge IA, 1.8–6.10.2026",
+   "gold": "judge",
+   "design": "Wolf und Grossraubtiere: Präzision der Markierungen / Recall, Übereinstimmung mit dem Richter",
+   "design_fr": "loup et grands prédateurs : précision des signalements / rappel, concordance avec le juge",
+   "n": 40,
+   "result": "0.225 (9/40) / 1.000",
+   "result_fr": "0,225 (9/40) / 1,000",
+   "interval": [
+    0.123,
+    0.376
+   ],
+   "baseline": "Stichwort 0.500 / 0.555 (10 Treffer)",
+   "baseline_fr": "mots-clés 0,500 / 0,555 (10 occurrences)",
+   "split": "alle 4'305 Geschäfte, 774 geprüft, Recall gewichtet; vorregistriert (S19)",
+   "split_fr": "les 4 305 objets, 774 vérifiés, rappel pondéré ; préenregistré (S19)",
+   "file": "querschnitt/eval/s19/results.json",
+   "topic": "adhoc/wolf"
+  },
+  {
+   "test": "Neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen) vs. KI-Richter, 1.8.–6.10.2026",
+   "test_fr": "Nouveaux thèmes en une phrase (loup, chaleur, IA à l'école) vs juge IA, 1.8–6.10.2026",
+   "gold": "judge",
+   "design": "Hitzeschutz / Hitzewellen: Präzision der Markierungen / Recall, Übereinstimmung mit dem Richter",
+   "design_fr": "protection contre la chaleur / canicules : précision des signalements / rappel, concordance avec le juge",
+   "n": 346,
+   "result": "0.670 (232/346) / 1.000",
+   "result_fr": "0,670 (232/346) / 1,000",
+   "interval": [
+    0.619,
+    0.718
+   ],
+   "baseline": "Stichwort 0.900 / 0.741 (191 Treffer)",
+   "baseline_fr": "mots-clés 0,900 / 0,741 (191 occurrences)",
+   "split": "alle 4'305 Geschäfte, 774 geprüft, Recall gewichtet; vorregistriert (S19)",
+   "split_fr": "les 4 305 objets, 774 vérifiés, rappel pondéré ; préenregistré (S19)",
+   "file": "querschnitt/eval/s19/results.json",
+   "topic": "adhoc/hitze"
+  },
+  {
+   "test": "Neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen) vs. KI-Richter, 1.8.–6.10.2026",
+   "test_fr": "Nouveaux thèmes en une phrase (loup, chaleur, IA à l'école) vs juge IA, 1.8–6.10.2026",
+   "gold": "judge",
+   "design": "Künstliche Intelligenz an Schulen: Präzision der Markierungen / Recall, Übereinstimmung mit dem Richter",
+   "design_fr": "intelligence artificielle à l'école : précision des signalements / rappel, concordance avec le juge",
+   "n": 22,
+   "result": "0.136 (3/22) / 1.000",
+   "result_fr": "0,136 (3/22) / 1,000",
+   "interval": [
+    0.047,
+    0.334
+   ],
+   "baseline": "Stichwort 0.750 / 1.000 (4 Treffer)",
+   "baseline_fr": "mots-clés 0,750 / 1,000 (4 occurrences)",
+   "split": "alle 4'305 Geschäfte, 774 geprüft, Recall gewichtet; vorregistriert (S19)",
+   "split_fr": "les 4 305 objets, 774 vérifiés, rappel pondéré ; préenregistré (S19)",
+   "file": "querschnitt/eval/s19/results.json",
+   "topic": "adhoc/ki-schule"
+  },
+  {
+   "test": "Neue Themen: 30 Entscheide einer Redaktion als Beispiele vs. KI-Richter (gleiche Geschäfte wie S19)",
+   "test_fr": "Nouveaux thèmes : 30 décisions d'une rédaction comme exemples vs juge IA (mêmes objets que S19)",
+   "gold": "judge",
+   "design": "Wolf und Grossraubtiere: Präzision mit Beispielen, Übereinstimmung mit dem Richter",
+   "design_fr": "loup et grands prédateurs : précision avec exemples, concordance avec le juge",
+   "n": 32,
+   "result": "0.218 (7/32) · Δ +0.012 [−0.013, +0.047]",
+   "result_fr": "0,218 (7/32) · Δ +0,012 [−0,013, +0,047]",
+   "interval": [
+    0.11,
+    0.388
+   ],
+   "baseline": "ohne Beispiele (S19) 0.205 (7/34)",
+   "baseline_fr": "sans exemples (S19) 0,205 (7/34)",
+   "split": "S19-Pakete ohne die 30 Beispiele, gepaart; vorregistriert (S26)",
+   "split_fr": "paquets S19 sans les 30 exemples, apparié ; préenregistré (S26)",
+   "file": "querschnitt/eval/s26/results.json"
+  },
+  {
+   "test": "Neue Themen: 30 Entscheide einer Redaktion als Beispiele vs. KI-Richter (gleiche Geschäfte wie S19)",
+   "test_fr": "Nouveaux thèmes : 30 décisions d'une rédaction comme exemples vs juge IA (mêmes objets que S19)",
+   "gold": "judge",
+   "design": "Hitzeschutz / Hitzewellen: Präzision mit Beispielen, Übereinstimmung mit dem Richter",
+   "design_fr": "protection contre la chaleur / canicules : précision avec exemples, concordance avec le juge",
+   "n": 299,
+   "result": "0.709 (212/299) · Δ +0.038 [+0.018, +0.060]",
+   "result_fr": "0,709 (212/299) · Δ +0,038 [+0,018, +0,060]",
+   "interval": [
+    0.655,
+    0.758
+   ],
+   "baseline": "ohne Beispiele (S19) 0.670 (216/322)",
+   "baseline_fr": "sans exemples (S19) 0,670 (216/322)",
+   "split": "S19-Pakete ohne die 30 Beispiele, gepaart; vorregistriert (S26)",
+   "split_fr": "paquets S19 sans les 30 exemples, apparié ; préenregistré (S26)",
+   "file": "querschnitt/eval/s26/results.json"
+  },
+  {
+   "test": "Neue Themen: 30 Entscheide einer Redaktion als Beispiele vs. KI-Richter (gleiche Geschäfte wie S19)",
+   "test_fr": "Nouveaux thèmes : 30 décisions d'une rédaction comme exemples vs juge IA (mêmes objets que S19)",
+   "gold": "judge",
+   "design": "Künstliche Intelligenz an Schulen: Präzision mit Beispielen, Übereinstimmung mit dem Richter",
+   "design_fr": "intelligence artificielle à l'école : précision avec exemples, concordance avec le juge",
+   "n": 18,
+   "result": "0.000 (0/18) · Δ nicht messbar (n 0 Richter-Positive)",
+   "result_fr": "0,000 (0/18) · Δ non mesurable (n 0 positifs du juge)",
+   "interval": [
+    0.0,
+    0.176
+   ],
+   "baseline": "ohne Beispiele (S19) 0.000 (0/15)",
+   "baseline_fr": "sans exemples (S19) 0,000 (0/15)",
+   "split": "S19-Pakete ohne die 30 Beispiele, gepaart; vorregistriert (S26)",
+   "split_fr": "paquets S19 sans les 30 exemples, apparié ; préenregistré (S26)",
+   "file": "querschnitt/eval/s26/results.json"
+  },
+  {
+   "test": "Neue Themen: zweite Frage «zentrales Thema?» auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes : seconde question « thème central ? » sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "Wolf und Grossraubtiere: Präzision / Recall mit zweiter Frage, Übereinstimmung mit dem Richter",
+   "design_fr": "loup et grands prédateurs : précision / rappel avec seconde question, concordance avec le juge",
+   "n": 9,
+   "result": "0.444 (4/9) / 0.444 (4/9) · Δ +0.219 [−0.050, +0.550]",
+   "result_fr": "0,444 (4/9) / 0,444 (4/9) · Δ +0,219 [−0,050, +0,550]",
+   "interval": [
+    0.188,
+    0.734
+   ],
+   "baseline": "ohne zweite Frage (S19) 0.225 (9/40)",
+   "baseline_fr": "sans seconde question (S19) 0,225 (9/40)",
+   "split": "S19-Pakete, eine Formulierung, nicht abgestimmt; vorregistriert (S27)",
+   "split_fr": "paquets S19, une formulation, rien d'ajusté ; préenregistré (S27)",
+   "file": "querschnitt/eval/s27/results.json"
+  },
+  {
+   "test": "Neue Themen: zweite Frage «zentrales Thema?» auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes : seconde question « thème central ? » sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "Hitzeschutz / Hitzewellen: Präzision / Recall mit zweiter Frage, Übereinstimmung mit dem Richter",
+   "design_fr": "protection contre la chaleur / canicules : précision / rappel avec seconde question, concordance avec le juge",
+   "n": 292,
+   "result": "0.770 (225/292) / 0.969 (225/232) · Δ +0.100 [+0.069, +0.132]",
+   "result_fr": "0,770 (225/292) / 0,969 (225/232) · Δ +0,100 [+0,069, +0,132]",
+   "interval": [
+    0.718,
+    0.816
+   ],
+   "baseline": "ohne zweite Frage (S19) 0.670 (232/346)",
+   "baseline_fr": "sans seconde question (S19) 0,670 (232/346)",
+   "split": "S19-Pakete, eine Formulierung, nicht abgestimmt; vorregistriert (S27)",
+   "split_fr": "paquets S19, une formulation, rien d'ajusté ; préenregistré (S27)",
+   "file": "querschnitt/eval/s27/results.json"
+  },
+  {
+   "test": "Neue Themen: zweite Frage «zentrales Thema?» auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes : seconde question « thème central ? » sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "Künstliche Intelligenz an Schulen: Präzision / Recall mit zweiter Frage, Übereinstimmung mit dem Richter",
+   "design_fr": "intelligence artificielle à l'école : précision / rappel avec seconde question, concordance avec le juge",
+   "n": 12,
+   "result": "0.250 (3/12) / 1.000 (3/3) · Δ +0.113 [0.000, +0.273]",
+   "result_fr": "0,250 (3/12) / 1,000 (3/3) · Δ +0,113 [0,000, +0,273]",
+   "interval": [
+    0.088,
+    0.533
+   ],
+   "baseline": "ohne zweite Frage (S19) 0.136 (3/22)",
+   "baseline_fr": "sans seconde question (S19) 0,136 (3/22)",
+   "split": "S19-Pakete, eine Formulierung, nicht abgestimmt; vorregistriert (S27)",
+   "split_fr": "paquets S19, une formulation, rien d'ajusté ; préenregistré (S27)",
+   "file": "querschnitt/eval/s27/results.json"
   }
  ],
  "curve": {

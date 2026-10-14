@@ -56,7 +56,7 @@ Tailor per variant; check-in with the partner on the live path; `make eval` on a
 both scripts against the real demo (timer on screen).
 
 ## Mon 10:00 freeze → 13:30 submit (sprintd closes 14:30, no extension)
-- [ ] `git status` clean; tag `v1.0-submission`; repo public (Roman flips visibility)
+- [ ] `git status` clean; tag `v1.0-submission` (repo public since 14 Oct: github.com/mi11ione/querschnitt)
 - [ ] README: setup, one-command run, samples, model roles (Apertus decides every topic; Claude/Qwen only as blind annotators in the evaluation), licences
 - [ ] LICENSE (Apache-2.0 code), docs CC BY 4.0, data CDLA-Permissive-2.0 (topics file), third-party licences listed
 - [ ] `make test` green; CI green on the tag

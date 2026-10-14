@@ -541,6 +541,94 @@ w(f"German − French {r(s10['results_more'][2], signed=True)} (paired; no measu
   f"{r(bd['languages_disagree_fr'])} — that third goes to a person. Clerk load: {L(bd['clerk_load']['value'], bd['clerk_load']['at'])}.")
 w("")
 
+# ------------------------------------------------------------------ S19 / S26 / S27: new topics defined in one sentence
+a19, a26, a27 = T["adhoc_new_topics"], T["adhoc_editor_examples"], T["adhoc_verification"]
+TOP = a19["topics"]
+p19, p26, p27 = a19["breakdowns"]["per_topic"], a26["breakdowns"]["per_topic"], a27["breakdowns"]["per_topic"]
+EN = {s_: p19[s_]["name_en"] for s_ in TOP}
+
+
+def rk(block, d=3):
+    """value [lo, hi] (k/n), linked."""
+    return L(num(block["value"], d) + ci(block.get("ci95"), d) + (f" ({block['kn']})" if block.get("kn") else ""), block["at"])
+
+
+def cnt(block):
+    return L(num(block["value"], 0), block["at"])
+
+
+def nm(block):
+    """a block that may be not measurable."""
+    return block["not_measurable"] if block.get("value") is None else None
+
+
+j19 = a19["judge"]; neither = {s_: next(c for c in p19[s_]["strata"]["cells"] if c["cell"] == "neither") for s_ in TOP}
+w("### 15 · Three new topics defined in one sentence: wolf, heat protection, AI in schools (S19, S26, S27, pre-registered)")
+w("")
+w(f"The three S13 topics never used in any tuning, each a one-sentence question "
+  f"([`src/querschnitt/schemes/adhoc/`](../src/querschnitt/schemes/adhoc/)): «{p19['wolf']['name_de']}», «{p19['hitze']['name_de']}», "
+  f"«{p19['ki-schule']['name_de']}». Population: every affair with a title begun 1 Aug–6 Oct 2026 "
+  f"({L(num(a19['n']), p19['wolf']['strata']['at'])}), decided with the shipped yes/no rule (flag at mean p ≥ 0.5). Checked: every affair flagged "
+  f"by Apertus or by the frozen keyword list ([`eval/s19/keywords_frozen.json`](../eval/s19/keywords_frozen.json)), plus "
+  f"{L(str(neither['wolf']['n']), p19['wolf']['strata']['at'])} random affairs flagged by neither, per topic ({num(a19['n_checked'])} in all). "
+  f"Judge: two blind Claude runs (A shuffled, B reversed; run A = run B {L(num(j19['agree_AB']), j19['at'])}), a tie-break run on the "
+  f"{L(str(j19['tie_break_C']), {'file': j19['tie_break_at']['file']})} disagreements. Recall is weighted back to the population (stratified "
+  f"bootstrap 2,000). The Qwen-SEA-LION cross-check named in the pre-registration is not in the S19 results. Every figure in this section "
+  f"is agreement with the AI judge, not with human labels ({L('PREREG-BUILD.md § S19', a19['prereg'])}, "
+  f"{L('§ S26', a26['prereg'])}, {L('§ S27', a27['prereg'])} and {L('its amendment', a27['prereg_more'])}).")
+w("")
+w("| S19, agreement with the AI judge | flagged (counted) | precision of flags | recall, weighted | keyword list: precision / recall (hits) | relevant affairs, estimated |")
+w("|---|---|---|---|---|---|")
+for s_ in TOP:
+    b_ = p19[s_]
+    w(f"| {EN[s_]} | {cnt(b_['flags'])} | **{rk(b_['precision'])}** | {r(b_['recall'])} | {r(b_['keyword_precision'])} / "
+      f"{r(b_['keyword_recall'])} ({cnt(b_['keyword_hits'])}) | {L(num(b_['judge_positives']['value'], 0) + ci(b_['judge_positives']['ci95'], 0), b_['judge_positives']['at'])} |")
+w("")
+w("Precision of flags: Wilson 95% from k and n; recall and keyword figures: stratified bootstrap. "
+  + " · ".join(f"{EN[s_]}: judge positives among the random unflagged affairs {L(neither[s_]['kn'], p19[s_]['strata']['at'])}" for s_ in TOP)
+  + ". So every affair the judge marks relevant is flagged, and the recall interval is [1.000, 1.000]; that interval does not cover "
+  "relevant affairs the random sample missed.")
+w("")
+w(f"**Editor decisions as examples (S26).** Per topic, {L(num(p26['wolf']['editor_examples']['value']), p26['wolf']['editor_examples']['at'])} "
+  "judged affairs drawn at random (`random.Random(26)`) act as an editor's first decisions (their judge label as Y/N); every other checked "
+  "affair is decided again with the 4 nearest decisions as examples and compared with its S19 flag (paired bootstrap 2,000).")
+w("")
+w("| S26, agreement with the AI judge, same items | items (judge positives) | precision without examples (S19) | precision with 30 editor decisions | Δ precision, paired | recall without / with |")
+w("|---|---|---|---|---|---|")
+for s_ in TOP:
+    b_ = p26[s_]; d_ = b_["precision_diff"]
+    dtxt = nm(d_) or r(d_, signed=True)
+    rec = (nm(b_["s19"]["recall"]) if b_["s19"]["recall"].get("value") is None
+           else f"{rk(b_['s19']['recall'])} / {rk(b_['s26']['recall'])}")
+    w(f"| {EN[s_]} | {cnt(b_['test_items'])} ({cnt(b_['judge_positives'])}) | {rk(b_['s19']['precision'])} | **{rk(b_['s26']['precision'])}** | "
+      f"{dtxt} | {rec} |")
+w("")
+w(" ".join(f"{EN[s_]}: no judge positive among its {num(p26[s_]['test_items']['value'])} test items, so precision is "
+           f"{num(p26[s_]['s19']['precision']['value'])} in both arms and neither the difference nor recall can be measured."
+           for s_ in TOP if p26[s_]["precision_diff"].get("value") is None) + " "
+  "The pre-registration names the weighted S19 recall as secondary; [`eval/s26/analyze.py`](../eval/s26/analyze.py) reports recall among the "
+  "judge's positives in the test items, which equals it here because the random unflagged sample holds no judge positive.")
+w("")
+w("**A second question on the flags (S27).** Every S19 flag gets one more closed question, same input and frame: «Ist «{name}» ein zentrales "
+  "Thema dieses Geschäfts – nicht nur am Rande erwähnt oder bloss ähnlich?»; the flag stays at mean p ≥ 0.5. One wording, no tuning, applied "
+  "once to the S19 packets (the dev step was dropped by an amendment before any S27 call). Recall = share of the judge's positives that keep "
+  "their flag (every positive was flagged in S19).")
+w("")
+w("| S27, agreement with the AI judge | flags | kept | precision without (S19) | precision with the second question | Δ precision, paired | recall with the second question |")
+w("|---|---|---|---|---|---|---|")
+for s_ in TOP:
+    b_ = p27[s_]
+    w(f"| {EN[s_]} | {cnt(b_['flags'])} | {cnt(b_['kept'])} | {rk(b_['precision_without'])} | **{rk(b_['precision_with'])}** | "
+      f"{r(b_['precision_diff'], signed=True)} | {rk(b_['recall_with'])} |")
+w("")
+h27, w27 = p27["hitze"], p27["wolf"]
+w(f"Reading: one sentence casts a wide net on narrow topics: every judge-relevant affair is flagged, and most flags for wolf and AI in schools are "
+  f"not relevant per the judge. Editor examples change precision by little (heat protection {r(p26['hitze']['precision_diff'], signed=True)}; "
+  f"wolf, interval includes 0). The second question raises precision on heat protection ({r(h27['precision_diff'], signed=True)}) and keeps "
+  f"{L(h27['recall_with']['kn'], h27['recall_with']['at'])} of its judge positives; on wolf it keeps {L(w27['recall_with']['kn'], w27['recall_with']['at'])}. "
+  "In the product, flags the second question does not confirm go to `please check`, not away.")
+w("")
+
 # ------------------------------------------------------------------ limits
 w("## Limits")
 w("")
@@ -559,6 +647,8 @@ w("- On the Federal Parliament's own multi-tag task the trained BFH model is ahe
   "the Curia design was tuned on 100 dev items.")
 w(f"- Where no official labels exist, the gold is the AI judge. It matches APS editors on {r(T['judge_anchor_aps']['result'])} of chapters and says yes to "
   "27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.")
+w(f"- New topics defined in one sentence are measured against the AI judge only. They flag every judge-relevant affair in S19 but over-flag "
+  f"narrow topics: precision of flags {rk(p19['wolf']['precision'])} for wolf, {rk(p19['ki-schule']['precision'])} for AI in schools (§15).")
 w("- All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.")
 w("")
 w("## To measure")

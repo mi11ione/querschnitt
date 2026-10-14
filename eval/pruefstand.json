@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T18:16:11Z",
+ "generated_utc": "2026-10-14T22:17:39Z",
  "paths_relative_to": "hackapertus root (~/Desktop/hackapertus)",
  "build": {
   "endpoint": "Public AI",
@@ -17738,6 +17738,2429 @@
    }
   },
   {
+   "id": "adhoc_new_topics",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Drei neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen), Geschäfte 1.8.–6.10.2026, gegen den KI-Richter (S19)",
+   "title_fr": "Trois nouveaux thèmes en une phrase (loup, chaleur, IA à l'école), objets du 1.8 au 6.10.2026, contre le juge IA (S19)",
+   "n": 4305,
+   "n_checked": 774,
+   "topics": [
+    "wolf",
+    "hitze",
+    "ki-schule"
+   ],
+   "design": "die drei S13-Themen, nie zum Abstimmen benutzt, je eine Frage in einem Satz (src/querschnitt/schemes/adhoc/*.yaml); jedes Geschäft mit Titel, begonnen 1.8.–6.10.2026; ausgelieferte Ja/Nein-Regel (Reihenfolge a; b bei 0.1 < p < 0.9; Flag bei mittlerem p ≥ 0.5); Stichwortlisten vor jedem Resultat eingefroren; geprüft: jedes von Apertus oder Stichwörtern markierte Geschäft + 120 zufällige unmarkierte je Thema; Richter: zwei blinde Claude-Läufe (A gemischt, B umgekehrt) + Stichentscheid C; Recall auf die Population zurückgewichtet (Schicht-Bootstrap 2'000)",
+   "result": {
+    "metric": "precision of Apertus flags per topic (wolf / hitze / ki-schule), agreement with the AI judge",
+    "value": [
+     0.225,
+     0.6705,
+     0.1364
+    ],
+    "ci95": [
+     [
+      0.123,
+      0.376
+     ],
+     [
+      0.619,
+      0.718
+     ],
+     [
+      0.047,
+      0.334
+     ]
+    ],
+    "kn": [
+     "9/40",
+     "232/346",
+     "3/22"
+    ],
+    "topics": [
+     "wolf",
+     "hitze",
+     "ki-schule"
+    ],
+    "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward",
+    "at": {
+     "file": "bern/querschnitt/eval/s19/results.json",
+     "key": "wolf > precision_flags | hitze > precision_flags | ki-schule > precision_flags"
+    },
+    "shown": {
+     "value": [
+      "0.1",
+      "0.13",
+      "0.2",
+      "0.22",
+      "0.6",
+      "0.67"
+     ],
+     "ci95": [
+      "0.0",
+      "0.04",
+      "0.1",
+      "0.12",
+      "0.34",
+      "0.38",
+      "0.4",
+      "0.6",
+      "0.61",
+      "0.72",
+      "0.8"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "recall of Apertus flags per topic, agreement with the AI judge (weighted to the population)",
+     "value": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "ci95": [
+      [
+       1.0,
+       1.0
+      ],
+      [
+       1.0,
+       1.0
+      ],
+      [
+       1.0,
+       1.0
+      ]
+     ],
+     "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+     "at": {
+      "file": "bern/querschnitt/eval/s19/results.json",
+      "key": "wolf > weighted | hitze > weighted | ki-schule > weighted"
+     }
+    },
+    {
+     "metric": "affairs flagged by Apertus per topic (counted)",
+     "value": [
+      40,
+      346,
+      22
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s19/results.json",
+      "key": "wolf > flags | hitze > flags | ki-schule > flags"
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "frozen keyword list (eval/s19/keywords_frozen.json), same input: wolf",
+     "topic": "wolf",
+     "precision": 0.5,
+     "precision_ci95": [
+      0.3,
+      0.6
+     ],
+     "recall": 0.5556,
+     "recall_ci95": [
+      0.363,
+      0.858
+     ],
+     "hits": 10,
+     "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+     "at": {
+      "file": "bern/querschnitt/eval/s19/results.json",
+      "key": "wolf > weighted"
+     },
+     "shown": {
+      "recall": [
+       "0.5",
+       "0.55",
+       "0.555"
+      ],
+      "recall_ci95": [
+       "0.3",
+       "0.36",
+       "0.86",
+       "0.9"
+      ]
+     }
+    },
+    {
+     "name": "frozen keyword list (eval/s19/keywords_frozen.json), same input: hitze",
+     "topic": "hitze",
+     "precision": 0.9005,
+     "precision_ci95": [
+      0.858,
+      0.938
+     ],
+     "recall": 0.7414,
+     "recall_ci95": [
+      0.703,
+      0.781
+     ],
+     "hits": 191,
+     "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+     "at": {
+      "file": "bern/querschnitt/eval/s19/results.json",
+      "key": "hitze > weighted"
+     },
+     "shown": {
+      "precision": [
+       "0.9",
+       "0.90"
+      ],
+      "precision_ci95": [
+       "0.8",
+       "0.85",
+       "0.94",
+       "1.0"
+      ],
+      "recall": [
+       "0.7",
+       "0.74"
+      ],
+      "recall_ci95": [
+       "0.7",
+       "0.70",
+       "0.79",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "name": "frozen keyword list (eval/s19/keywords_frozen.json), same input: ki-schule",
+     "topic": "ki-schule",
+     "precision": 0.75,
+     "precision_ci95": [
+      0.25,
+      1.0
+     ],
+     "recall": 1.0,
+     "recall_ci95": [
+      1.0,
+      1.0
+     ],
+     "hits": 4,
+     "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+     "at": {
+      "file": "bern/querschnitt/eval/s19/results.json",
+      "key": "ki-schule > weighted"
+     },
+     "shown": {
+      "precision": [
+       "0.7"
+      ],
+      "precision_ci95": [
+       "0.2"
+      ]
+     }
+    }
+   ],
+   "judge": {
+    "runs": "Claude A (shuffled) / B (reverse) + tie-break C on 28",
+    "agree_AB": 0.9638,
+    "tie_break_C": 28,
+    "at": {
+     "file": "bern/querschnitt/eval/s19/results.json",
+     "key": "agree_AB"
+    },
+    "tie_break_at": {
+     "file": "bern/querschnitt/eval/s19/ann_C.tsv",
+     "rows": 28
+    },
+    "cross_check": "the Qwen-SEA-LION cross-check named in the pre-registration is not in eval/s19 (not reported)",
+    "shown": {
+     "agree_AB": [
+      "0.9",
+      "0.96",
+      "0.963"
+     ]
+    }
+   },
+   "breakdowns": {
+    "per_topic": {
+     "wolf": {
+      "topic": "wolf",
+      "name_de": "Wolf und Grossraubtiere",
+      "name_fr": "loup et grands prédateurs",
+      "name_en": "wolf and large predators",
+      "scheme": "bern/querschnitt/src/querschnitt/schemes/adhoc/wolf.yaml",
+      "precision": {
+       "metric": "precision of Apertus flags, agreement with the AI judge",
+       "value": 0.225,
+       "k": 9,
+       "n": 40,
+       "kn": "9/40",
+       "ci95": [
+        0.123,
+        0.376
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > precision_flags > value"
+       },
+       "shown": {
+        "value": [
+         "0.2",
+         "0.22"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.38",
+         "0.4"
+        ]
+       }
+      },
+      "recall": {
+       "metric": "recall of Apertus flags, agreement with the AI judge (weighted to the population)",
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > point > a_R"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > ci > a_R"
+       }
+      },
+      "precision_weighted": {
+       "metric": "precision of Apertus flags, agreement with the AI judge (bootstrap)",
+       "value": 0.225,
+       "ci95": [
+        0.125,
+        0.325
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > point > a_P"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > ci > a_P"
+       },
+       "shown": {
+        "value": [
+         "0.2",
+         "0.22"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.33",
+         "0.4"
+        ]
+       }
+      },
+      "keyword_precision": {
+       "metric": "precision of keyword hits, agreement with the AI judge",
+       "value": 0.5,
+       "ci95": [
+        0.3,
+        0.6
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > point > k_P"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > ci > k_P"
+       }
+      },
+      "keyword_recall": {
+       "metric": "recall of keyword hits, agreement with the AI judge (weighted)",
+       "value": 0.5556,
+       "ci95": [
+        0.363,
+        0.858
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > point > k_R"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > ci > k_R"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.55",
+         "0.555"
+        ],
+        "ci95": [
+         "0.3",
+         "0.36",
+         "0.86",
+         "0.9"
+        ]
+       }
+      },
+      "judge_positives": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 9.0,
+       "ci95": [
+        5.0,
+        13.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > point > pos"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > weighted > ci > pos"
+       }
+      },
+      "flags": {
+       "metric": "affairs flagged by Apertus (counted)",
+       "value": 40,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > flags"
+       }
+      },
+      "keyword_hits": {
+       "metric": "affairs hit by the frozen keyword list (counted)",
+       "value": 10,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > kw_hits"
+       }
+      },
+      "n_checked": {
+       "value": 164,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > n_packet"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "neither",
+         "N": 4261,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "A only",
+         "N": 34,
+         "n": 34,
+         "judge_Y": 4,
+         "kn": "4/34"
+        },
+        {
+         "cell": "K only",
+         "N": 4,
+         "n": 4,
+         "judge_Y": 0,
+         "kn": "0/4"
+        },
+        {
+         "cell": "A∩K",
+         "N": 6,
+         "n": 6,
+         "judge_Y": 5,
+         "kn": "5/6"
+        }
+       ],
+       "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "wolf > strata"
+       }
+      }
+     },
+     "hitze": {
+      "topic": "hitze",
+      "name_de": "Hitzeschutz / Hitzewellen",
+      "name_fr": "protection contre la chaleur / canicules",
+      "name_en": "heat protection / heatwaves",
+      "scheme": "bern/querschnitt/src/querschnitt/schemes/adhoc/hitze.yaml",
+      "precision": {
+       "metric": "precision of Apertus flags, agreement with the AI judge",
+       "value": 0.6705,
+       "k": 232,
+       "n": 346,
+       "kn": "232/346",
+       "ci95": [
+        0.619,
+        0.718
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > precision_flags > value"
+       },
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.72",
+         "0.8"
+        ]
+       }
+      },
+      "recall": {
+       "metric": "recall of Apertus flags, agreement with the AI judge (weighted to the population)",
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > point > a_R"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > ci > a_R"
+       }
+      },
+      "precision_weighted": {
+       "metric": "precision of Apertus flags, agreement with the AI judge (bootstrap)",
+       "value": 0.6705,
+       "ci95": [
+        0.63,
+        0.709
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > point > a_P"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > ci > a_P"
+       },
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.71",
+         "0.8"
+        ]
+       }
+      },
+      "keyword_precision": {
+       "metric": "precision of keyword hits, agreement with the AI judge",
+       "value": 0.9005,
+       "ci95": [
+        0.858,
+        0.938
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > point > k_P"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > ci > k_P"
+       },
+       "shown": {
+        "value": [
+         "0.9",
+         "0.90"
+        ],
+        "ci95": [
+         "0.8",
+         "0.85",
+         "0.94",
+         "1.0"
+        ]
+       }
+      },
+      "keyword_recall": {
+       "metric": "recall of keyword hits, agreement with the AI judge (weighted)",
+       "value": 0.7414,
+       "ci95": [
+        0.703,
+        0.781
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > point > k_R"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > ci > k_R"
+       },
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.7",
+         "0.70",
+         "0.79",
+         "0.8"
+        ]
+       }
+      },
+      "judge_positives": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 232.0,
+       "ci95": [
+        218.0,
+        245.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > point > pos"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > weighted > ci > pos"
+       }
+      },
+      "flags": {
+       "metric": "affairs flagged by Apertus (counted)",
+       "value": 346,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > flags"
+       }
+      },
+      "keyword_hits": {
+       "metric": "affairs hit by the frozen keyword list (counted)",
+       "value": 191,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > kw_hits"
+       }
+      },
+      "n_checked": {
+       "value": 468,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > n_packet"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "A only",
+         "N": 157,
+         "n": 157,
+         "judge_Y": 60,
+         "kn": "60/157"
+        },
+        {
+         "cell": "neither",
+         "N": 3957,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "A∩K",
+         "N": 189,
+         "n": 189,
+         "judge_Y": 172,
+         "kn": "172/189"
+        },
+        {
+         "cell": "K only",
+         "N": 2,
+         "n": 2,
+         "judge_Y": 0,
+         "kn": "0/2"
+        }
+       ],
+       "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "hitze > strata"
+       }
+      }
+     },
+     "ki-schule": {
+      "topic": "ki-schule",
+      "name_de": "Künstliche Intelligenz an Schulen",
+      "name_fr": "intelligence artificielle à l'école",
+      "name_en": "AI in schools",
+      "scheme": "bern/querschnitt/src/querschnitt/schemes/adhoc/ki-schule.yaml",
+      "precision": {
+       "metric": "precision of Apertus flags, agreement with the AI judge",
+       "value": 0.1364,
+       "k": 3,
+       "n": 22,
+       "kn": "3/22",
+       "ci95": [
+        0.047,
+        0.334
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > precision_flags > value"
+       },
+       "shown": {
+        "value": [
+         "0.1",
+         "0.13"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.34",
+         "0.4"
+        ]
+       }
+      },
+      "recall": {
+       "metric": "recall of Apertus flags, agreement with the AI judge (weighted to the population)",
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > point > a_R"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > ci > a_R"
+       }
+      },
+      "precision_weighted": {
+       "metric": "precision of Apertus flags, agreement with the AI judge (bootstrap)",
+       "value": 0.1364,
+       "ci95": [
+        0.045,
+        0.182
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > point > a_P"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > ci > a_P"
+       },
+       "shown": {
+        "value": [
+         "0.1",
+         "0.13"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.19",
+         "0.2"
+        ]
+       }
+      },
+      "keyword_precision": {
+       "metric": "precision of keyword hits, agreement with the AI judge",
+       "value": 0.75,
+       "ci95": [
+        0.25,
+        1.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > point > k_P"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > ci > k_P"
+       },
+       "shown": {
+        "value": [
+         "0.7"
+        ],
+        "ci95": [
+         "0.2"
+        ]
+       }
+      },
+      "keyword_recall": {
+       "metric": "recall of keyword hits, agreement with the AI judge (weighted)",
+       "value": 1.0,
+       "ci95": [
+        1.0,
+        1.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > point > k_R"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > ci > k_R"
+       }
+      },
+      "judge_positives": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 3.0,
+       "ci95": [
+        1.0,
+        4.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > point > pos"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > weighted > ci > pos"
+       }
+      },
+      "flags": {
+       "metric": "affairs flagged by Apertus (counted)",
+       "value": 22,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > flags"
+       }
+      },
+      "keyword_hits": {
+       "metric": "affairs hit by the frozen keyword list (counted)",
+       "value": 4,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > kw_hits"
+       }
+      },
+      "n_checked": {
+       "value": 142,
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > n_packet"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "neither",
+         "N": 4283,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "A only",
+         "N": 18,
+         "n": 18,
+         "judge_Y": 0,
+         "kn": "0/18"
+        },
+        {
+         "cell": "A∩K",
+         "N": 4,
+         "n": 4,
+         "judge_Y": 3,
+         "kn": "3/4"
+        }
+       ],
+       "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
+       "at": {
+        "file": "bern/querschnitt/eval/s19/results.json",
+        "key": "ki-schule > strata"
+       }
+      }
+     }
+    },
+    "unflagged_sample_note": "the 120 random unflagged affairs per topic hold no judge positive (strata > neither > gold_Y = 0), so the weighted recall is 1.0 with a bootstrap interval of [1.0, 1.0]; that interval does not cover relevant affairs the random sample missed"
+   },
+   "split": "pre-registered (S19); topics never used in tuning; cut-off p ≥ 0.5 fixed; keyword lists frozen before any decision",
+   "prereg": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S19 three new ad-hoc topics",
+    "line": 37
+   },
+   "sources": [
+    "bern/querschnitt/eval/s19/results.json",
+    "bern/querschnitt/eval/s19/analyze.py",
+    "bern/querschnitt/eval/s19/build_packet.py",
+    "bern/querschnitt/eval/s19/key.jsonl",
+    "bern/querschnitt/eval/s19/keywords_frozen.json",
+    "bern/querschnitt/eval/s19/ann_A.tsv",
+    "bern/querschnitt/eval/s19/ann_B.tsv",
+    "bern/querschnitt/eval/s19/ann_C.tsv"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s19)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs)",
+   "date": "2026-10-14",
+   "test": "Drei neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen), Geschäfte 1.8.–6.10.2026, gegen den KI-Richter (S19)",
+   "interval": [
+    [
+     0.123,
+     0.376
+    ],
+    [
+     0.619,
+     0.718
+    ],
+    [
+     0.047,
+     0.334
+    ]
+   ],
+   "baseline": {
+    "name": "frozen keyword list (eval/s19/keywords_frozen.json), same input: wolf",
+    "value": 0.5,
+    "ci95": [
+     0.3,
+     0.6
+    ]
+   },
+   "file": "bern/querschnitt/eval/s19/results.json",
+   "key": "wolf > precision_flags | hitze > precision_flags | ki-schule > precision_flags",
+   "shown": {
+    "interval": [
+     "0.0",
+     "0.04",
+     "0.1",
+     "0.12",
+     "0.3",
+     "0.33",
+     "0.37",
+     "0.6",
+     "0.61",
+     "0.7",
+     "0.71"
+    ]
+   }
+  },
+  {
+   "id": "adhoc_editor_examples",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Neue Themen aus einem Satz: 30 Entscheide einer Redaktion als Beispiele, gepaart gegen S19, gegen den KI-Richter (S26)",
+   "title_fr": "Nouveaux thèmes en une phrase : 30 décisions d'une rédaction comme exemples, apparié à S19, contre le juge IA (S26)",
+   "n": 684,
+   "topics": [
+    "wolf",
+    "hitze",
+    "ki-schule"
+   ],
+   "design": "S19-Pakete und S19-Richtergold; je Thema 30 zufällig gezogene geprüfte Geschäfte (random.Random(26)) als erste Entscheide einer Redaktion (ihr Richterlabel Y/N); alle übrigen geprüften Geschäfte mit der ausgelieferten Ja/Nein-Regel neu bewertet, mit den 4 BM25-nächsten Entscheiden als Beispiele (examples.topic_examples); gepaart gegen die S19-Flags auf denselben Geschäften",
+   "result": {
+    "metric": "paired Δ precision of flags, with − without editor examples, per topic (wolf / hitze / ki-schule), agreement with the AI judge",
+    "value": [
+     0.0129,
+     0.0382,
+     null
+    ],
+    "ci95": [
+     [
+      -0.013,
+      0.047
+     ],
+     [
+      0.018,
+      0.06
+     ],
+     null
+    ],
+    "topics": [
+     "wolf",
+     "hitze",
+     "ki-schule"
+    ],
+    "not_measurable": {
+     "ki-schule": "not measurable (n 0 judge positives among 112 test items)"
+    },
+    "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+    "at": {
+     "file": "bern/querschnitt/eval/s26/results.json",
+     "key": "wolf > precision_diff | hitze > precision_diff | ki-schule > precision_diff"
+    },
+    "shown": {
+     "value": [
+      "0.0",
+      "0.01",
+      "0.012",
+      "0.03"
+     ],
+     "ci95": [
+      "-0.02",
+      "-0.1",
+      "0.0",
+      "0.01",
+      "0.05",
+      "0.1"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "precision of flags with editor examples per topic, agreement with the AI judge",
+     "value": [
+      0.2188,
+      0.709,
+      0.0
+     ],
+     "ci95": [
+      [
+       0.11,
+       0.388
+      ],
+      [
+       0.655,
+       0.758
+      ],
+      [
+       0.0,
+       0.176
+      ]
+     ],
+     "kn": [
+      "7/32",
+      "212/299",
+      "0/18"
+     ],
+     "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward",
+     "at": {
+      "file": "bern/querschnitt/eval/s26/results.json",
+      "key": "wolf > s26 > precision | hitze > s26 > precision | ki-schule > s26 > precision"
+     },
+     "shown": {
+      "value": [
+       "0.2",
+       "0.21",
+       "0.218",
+       "0.7",
+       "0.70"
+      ],
+      "ci95": [
+       "0.1",
+       "0.18",
+       "0.2",
+       "0.39",
+       "0.4",
+       "0.6",
+       "0.65",
+       "0.76",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "recall with editor examples per topic: share of the judge's positives among the test items flagged",
+     "value": [
+      1.0,
+      0.9815,
+      null
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s26/results.json",
+      "key": "wolf > s26 > recall | hitze > s26 > recall | ki-schule > s26 > recall"
+     },
+     "shown": {
+      "value": [
+       "0.9",
+       "0.98",
+       "0.981"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "precision of flags without examples (S19), agreement with the AI judge",
+     "value": 0.2059,
+     "k": 7,
+     "n": 34,
+     "kn": "7/34",
+     "ci95": [
+      0.103,
+      0.368
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+     "at": {
+      "file": "bern/querschnitt/eval/s26/results.json",
+      "key": "wolf > s19 > precision"
+     },
+     "name": "S19 flags without examples, same test items: wolf",
+     "topic": "wolf",
+     "shown": {
+      "value": [
+       "0.2",
+       "0.20",
+       "0.205"
+      ],
+      "ci95": [
+       "0.1",
+       "0.10",
+       "0.37",
+       "0.4"
+      ]
+     }
+    },
+    {
+     "metric": "precision of flags without examples (S19), agreement with the AI judge",
+     "value": 0.6708,
+     "k": 216,
+     "n": 322,
+     "kn": "216/322",
+     "ci95": [
+      0.617,
+      0.72
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+     "at": {
+      "file": "bern/querschnitt/eval/s26/results.json",
+      "key": "hitze > s19 > precision"
+     },
+     "name": "S19 flags without examples, same test items: hitze",
+     "topic": "hitze",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.67",
+       "0.670"
+      ],
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "precision of flags without examples (S19), agreement with the AI judge",
+     "value": 0.0,
+     "k": 0,
+     "n": 15,
+     "kn": "0/15",
+     "ci95": [
+      0.0,
+      0.204
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+     "ci95_source": [
+      -0.001,
+      0.204
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s26/results.json",
+      "key": "ki-schule > s19 > precision"
+     },
+     "name": "S19 flags without examples, same test items: ki-schule",
+     "topic": "ki-schule",
+     "shown": {
+      "ci95": [
+       "0.21",
+       "0.3"
+      ],
+      "ci95_source": [
+       "0.0",
+       "0.00",
+       "0.2",
+       "0.20"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "per_topic": {
+     "wolf": {
+      "topic": "wolf",
+      "name_en": "wolf and large predators",
+      "test_items": {
+       "value": 134,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "wolf > n_test"
+       }
+      },
+      "editor_examples": {
+       "value": 30,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "wolf > editor_examples"
+       }
+      },
+      "judge_positives": {
+       "value": 7,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "wolf > positives"
+       }
+      },
+      "s19": {
+       "flags": {
+        "value": 34,
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "wolf > s19 > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags without examples (S19), agreement with the AI judge",
+        "value": 0.2059,
+        "k": 7,
+        "n": 34,
+        "kn": "7/34",
+        "ci95": [
+         0.103,
+         0.368
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "wolf > s19 > precision"
+        },
+        "shown": {
+         "value": [
+          "0.2",
+          "0.20",
+          "0.205"
+         ],
+         "ci95": [
+          "0.1",
+          "0.10",
+          "0.37",
+          "0.4"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall without examples (S19): share of the judge's positives among the test items flagged",
+        "value": 1.0,
+        "k": 7,
+        "n": 7,
+        "kn": "7/7",
+        "ci95": [
+         0.645,
+         1.0
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "wolf > s19 > recall"
+        },
+        "shown": {
+         "ci95": [
+          "0.6",
+          "0.64"
+         ]
+        }
+       }
+      },
+      "s26": {
+       "flags": {
+        "value": 32,
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "wolf > s26 > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags with 30 editor decisions as examples, agreement with the AI judge",
+        "value": 0.2188,
+        "k": 7,
+        "n": 32,
+        "kn": "7/32",
+        "ci95": [
+         0.11,
+         0.388
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "wolf > s26 > precision"
+        },
+        "shown": {
+         "value": [
+          "0.2",
+          "0.21",
+          "0.218"
+         ],
+         "ci95": [
+          "0.1",
+          "0.39",
+          "0.4"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall with 30 editor decisions as examples: share of the judge's positives among the test items flagged",
+        "value": 1.0,
+        "k": 7,
+        "n": 7,
+        "kn": "7/7",
+        "ci95": [
+         0.645,
+         1.0
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "wolf > s26 > recall"
+        },
+        "shown": {
+         "ci95": [
+          "0.6",
+          "0.64"
+         ]
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of flags, with − without examples, agreement with the AI judge",
+       "value": 0.0129,
+       "ci95": [
+        -0.013,
+        0.047
+       ],
+       "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "wolf > precision_diff > value"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "wolf > precision_diff > ci"
+       },
+       "shown": {
+        "value": [
+         "0.0",
+         "0.01",
+         "0.012"
+        ],
+        "ci95": [
+         "-0.02",
+         "-0.1",
+         "0.05",
+         "0.1"
+        ]
+       }
+      }
+     },
+     "hitze": {
+      "topic": "hitze",
+      "name_en": "heat protection / heatwaves",
+      "test_items": {
+       "value": 438,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "hitze > n_test"
+       }
+      },
+      "editor_examples": {
+       "value": 30,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "hitze > editor_examples"
+       }
+      },
+      "judge_positives": {
+       "value": 216,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "hitze > positives"
+       }
+      },
+      "s19": {
+       "flags": {
+        "value": 322,
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "hitze > s19 > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags without examples (S19), agreement with the AI judge",
+        "value": 0.6708,
+        "k": 216,
+        "n": 322,
+        "kn": "216/322",
+        "ci95": [
+         0.617,
+         0.72
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "hitze > s19 > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.67",
+          "0.670"
+         ],
+         "ci95": [
+          "0.6",
+          "0.61",
+          "0.8"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall without examples (S19): share of the judge's positives among the test items flagged",
+        "value": 1.0,
+        "k": 216,
+        "n": 216,
+        "kn": "216/216",
+        "ci95": [
+         0.982,
+         1.0
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "hitze > s19 > recall"
+        },
+        "shown": {
+         "ci95": [
+          "0.9",
+          "0.98"
+         ]
+        }
+       }
+      },
+      "s26": {
+       "flags": {
+        "value": 299,
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "hitze > s26 > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags with 30 editor decisions as examples, agreement with the AI judge",
+        "value": 0.709,
+        "k": 212,
+        "n": 299,
+        "kn": "212/299",
+        "ci95": [
+         0.655,
+         0.758
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "hitze > s26 > precision"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.70"
+         ],
+         "ci95": [
+          "0.6",
+          "0.65",
+          "0.76",
+          "0.8"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall with 30 editor decisions as examples: share of the judge's positives among the test items flagged",
+        "value": 0.9815,
+        "k": 212,
+        "n": 216,
+        "kn": "212/216",
+        "ci95": [
+         0.953,
+         0.993
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "hitze > s26 > recall"
+        },
+        "shown": {
+         "value": [
+          "0.9",
+          "0.98",
+          "0.981"
+         ],
+         "ci95": [
+          "0.9",
+          "0.95",
+          "1.0",
+          "1.00"
+         ]
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of flags, with − without examples, agreement with the AI judge",
+       "value": 0.0382,
+       "ci95": [
+        0.018,
+        0.06
+       ],
+       "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "hitze > precision_diff > value"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "hitze > precision_diff > ci"
+       },
+       "shown": {
+        "value": [
+         "0.0",
+         "0.03"
+        ],
+        "ci95": [
+         "0.0",
+         "0.01",
+         "0.1"
+        ]
+       }
+      }
+     },
+     "ki-schule": {
+      "topic": "ki-schule",
+      "name_en": "AI in schools",
+      "test_items": {
+       "value": 112,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "ki-schule > n_test"
+       }
+      },
+      "editor_examples": {
+       "value": 30,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "ki-schule > editor_examples"
+       }
+      },
+      "judge_positives": {
+       "value": 0,
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "ki-schule > positives"
+       }
+      },
+      "s19": {
+       "flags": {
+        "value": 15,
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "ki-schule > s19 > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags without examples (S19), agreement with the AI judge",
+        "value": 0.0,
+        "k": 0,
+        "n": 15,
+        "kn": "0/15",
+        "ci95": [
+         0.0,
+         0.204
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "ci95_source": [
+         -0.001,
+         0.204
+        ],
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "ki-schule > s19 > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.21",
+          "0.3"
+         ],
+         "ci95_source": [
+          "0.0",
+          "0.00",
+          "0.2",
+          "0.20"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall without examples (S19)",
+        "value": null,
+        "not_measurable": "not measurable (n 0 judge positives)",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "ki-schule > s19 > recall"
+        }
+       }
+      },
+      "s26": {
+       "flags": {
+        "value": 18,
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "ki-schule > s26 > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags with 30 editor decisions as examples, agreement with the AI judge",
+        "value": 0.0,
+        "k": 0,
+        "n": 18,
+        "kn": "0/18",
+        "ci95": [
+         0.0,
+         0.176
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "ki-schule > s26 > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.18",
+          "0.2"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall with 30 editor decisions as examples",
+        "value": null,
+        "not_measurable": "not measurable (n 0 judge positives)",
+        "at": {
+         "file": "bern/querschnitt/eval/s26/results.json",
+         "key": "ki-schule > s26 > recall"
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of flags, with − without examples, agreement with the AI judge",
+       "value": null,
+       "not_measurable": "not measurable (n 0 judge positives among 112 test items)",
+       "note": "precision is 0 in both arms, so the stored difference 0.0 [0.0, 0.0] carries no information",
+       "value_source": 0.0,
+       "ci95_source": [
+        0.0,
+        0.0
+       ],
+       "at": {
+        "file": "bern/querschnitt/eval/s26/results.json",
+        "key": "ki-schule > precision_diff"
+       }
+      }
+     }
+    },
+    "recall_note": "the pre-registration names the weighted S19 recall as secondary; analyze.py reports recall among the judge's positives in the test items, which equals it here because the S19 random sample of unflagged affairs holds no judge positive (s19 results > strata > neither > gold_Y = 0)"
+   },
+   "split": "S19 packets: 30 judged items per topic as editor examples (random.Random(26) over the pid-sorted packet), the rest re-scored once; pre-registered (S26) after S19's annotations, before any S26 call; nothing tuned",
+   "prereg": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S26 editor decisions as examples",
+    "line": 96
+   },
+   "sources": [
+    "bern/querschnitt/eval/s26/results.json",
+    "bern/querschnitt/eval/s26/analyze.py",
+    "bern/querschnitt/eval/s26/run.py",
+    "bern/querschnitt/eval/s26/split.json",
+    "bern/querschnitt/eval/s26/raw.jsonl",
+    "bern/querschnitt/eval/s26/ledger.jsonl",
+    "bern/querschnitt/eval/s19/results.json"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs, S19 gold)",
+   "date": "2026-10-14",
+   "test": "Neue Themen aus einem Satz: 30 Entscheide einer Redaktion als Beispiele, gepaart gegen S19, gegen den KI-Richter (S26)",
+   "interval": [
+    [
+     -0.013,
+     0.047
+    ],
+    [
+     0.018,
+     0.06
+    ],
+    null
+   ],
+   "baseline": {
+    "name": "S19 flags without examples, same test items: wolf",
+    "value": 0.2059,
+    "ci95": [
+     0.103,
+     0.368
+    ],
+    "shown": {
+     "value": [
+      "0.2",
+      "0.20",
+      "0.205"
+     ],
+     "ci95": [
+      "0.1",
+      "0.10",
+      "0.37",
+      "0.4"
+     ]
+    }
+   },
+   "file": "bern/querschnitt/eval/s26/results.json",
+   "key": "wolf > precision_diff | hitze > precision_diff | ki-schule > precision_diff",
+   "shown": {
+    "interval": [
+     "-0.01",
+     "0.0",
+     "0.01",
+     "0.04"
+    ]
+   }
+  },
+  {
+   "id": "adhoc_verification",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Neue Themen aus einem Satz: zweite, strengere Frage auf den Markierungen («zentrales Thema?»), gegen den KI-Richter (S27)",
+   "title_fr": "Nouveaux thèmes en une phrase : seconde question plus stricte sur les signalements (« thème central ? »), contre le juge IA (S27)",
+   "n": 408,
+   "topics": [
+    "wolf",
+    "hitze",
+    "ki-schule"
+   ],
+   "design": "jedes S19-Flag erhält eine weitere geschlossene Frage, gleicher Rahmen und Input (Titel + Langtitel): «Ist «{name}» ein zentrales Thema dieses Geschäfts – nicht nur am Rande erwähnt oder bloss ähnlich?» A = Ja, zentral / B = Nein (Reihenfolge a; b bei 0.1 < p < 0.9; Flag bleibt bei mittlerem p ≥ 0.5); eine Formulierung, nicht abgestimmt, einmal auf die S19-Pakete angewandt; Gold = S19-Richter",
+   "result": {
+    "metric": "precision of the flags kept by the second question per topic (wolf / hitze / ki-schule), agreement with the AI judge",
+    "value": [
+     0.4444,
+     0.7705,
+     0.25
+    ],
+    "ci95": [
+     [
+      0.188,
+      0.734
+     ],
+     [
+      0.718,
+      0.816
+     ],
+     [
+      0.088,
+      0.533
+     ]
+    ],
+    "kn": [
+     "4/9",
+     "225/292",
+     "3/12"
+    ],
+    "topics": [
+     "wolf",
+     "hitze",
+     "ki-schule"
+    ],
+    "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward",
+    "at": {
+     "file": "bern/querschnitt/eval/s27/results.json",
+     "key": "wolf > precision_verified | hitze > precision_verified | ki-schule > precision_verified"
+    },
+    "shown": {
+     "value": [
+      "0.2",
+      "0.4",
+      "0.44",
+      "0.7",
+      "0.77"
+     ],
+     "ci95": [
+      "0.0",
+      "0.08",
+      "0.1",
+      "0.18",
+      "0.54",
+      "0.6",
+      "0.7",
+      "0.71",
+      "0.74",
+      "0.8",
+      "0.82",
+      "0.9"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "paired Δ precision, with − without the second question, per topic, agreement with the AI judge",
+     "value": [
+      0.2194,
+      0.1,
+      0.1136
+     ],
+     "ci95": [
+      [
+       -0.05,
+       0.55
+      ],
+      [
+       0.069,
+       0.132
+      ],
+      [
+       0.0,
+       0.273
+      ]
+     ],
+     "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+     "at": {
+      "file": "bern/querschnitt/eval/s27/results.json",
+      "key": "wolf > diff | hitze > diff | ki-schule > diff"
+     },
+     "shown": {
+      "value": [
+       "0.1",
+       "0.11",
+       "0.113",
+       "0.2",
+       "0.21"
+      ],
+      "ci95": [
+       "-0.1",
+       "0.0",
+       "0.06",
+       "0.14",
+       "0.2",
+       "0.28",
+       "0.3",
+       "0.6"
+      ]
+     }
+    },
+    {
+     "metric": "recall with the second question per topic: share of the judge's positives kept, agreement with the AI judge",
+     "value": [
+      0.4444,
+      0.9698,
+      1.0
+     ],
+     "kn": [
+      "4/9",
+      "225/232",
+      "3/3"
+     ],
+     "at": {
+      "file": "bern/querschnitt/eval/s27/results.json",
+      "key": "wolf > recall_verified | hitze > recall_verified | ki-schule > recall_verified"
+     },
+     "shown": {
+      "value": [
+       "0.4",
+       "0.44",
+       "0.9",
+       "0.96",
+       "0.969"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "precision of S19 flags without the second question, agreement with the AI judge",
+     "value": 0.225,
+     "k": 9,
+     "n": 40,
+     "kn": "9/40",
+     "ci95": [
+      0.123,
+      0.376
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+     "at": {
+      "file": "bern/querschnitt/eval/s27/results.json",
+      "key": "wolf > precision_s19 > value"
+     },
+     "name": "S19 flags without the second question: wolf",
+     "topic": "wolf",
+     "shown": {
+      "value": [
+       "0.2",
+       "0.22"
+      ],
+      "ci95": [
+       "0.1",
+       "0.12",
+       "0.38",
+       "0.4"
+      ]
+     }
+    },
+    {
+     "metric": "precision of S19 flags without the second question, agreement with the AI judge",
+     "value": 0.6705,
+     "k": 232,
+     "n": 346,
+     "kn": "232/346",
+     "ci95": [
+      0.619,
+      0.718
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+     "at": {
+      "file": "bern/querschnitt/eval/s27/results.json",
+      "key": "hitze > precision_s19 > value"
+     },
+     "name": "S19 flags without the second question: hitze",
+     "topic": "hitze",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.67"
+      ],
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.72",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "precision of S19 flags without the second question, agreement with the AI judge",
+     "value": 0.1364,
+     "k": 3,
+     "n": 22,
+     "kn": "3/22",
+     "ci95": [
+      0.047,
+      0.334
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+     "at": {
+      "file": "bern/querschnitt/eval/s27/results.json",
+      "key": "ki-schule > precision_s19 > value"
+     },
+     "name": "S19 flags without the second question: ki-schule",
+     "topic": "ki-schule",
+     "shown": {
+      "value": [
+       "0.1",
+       "0.13"
+      ],
+      "ci95": [
+       "0.0",
+       "0.04",
+       "0.34",
+       "0.4"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "per_topic": {
+     "wolf": {
+      "topic": "wolf",
+      "name_en": "wolf and large predators",
+      "flags": {
+       "value": 40,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > flags"
+       }
+      },
+      "kept": {
+       "value": 9,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > kept"
+       }
+      },
+      "judge_positives": {
+       "value": 9,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > positives"
+       }
+      },
+      "precision_without": {
+       "metric": "precision of S19 flags without the second question, agreement with the AI judge",
+       "value": 0.225,
+       "k": 9,
+       "n": 40,
+       "kn": "9/40",
+       "ci95": [
+        0.123,
+        0.376
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > precision_s19 > value"
+       },
+       "shown": {
+        "value": [
+         "0.2",
+         "0.22"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.38",
+         "0.4"
+        ]
+       }
+      },
+      "precision_with": {
+       "metric": "precision of the flags kept by the second question, agreement with the AI judge",
+       "value": 0.4444,
+       "k": 4,
+       "n": 9,
+       "kn": "4/9",
+       "ci95": [
+        0.188,
+        0.734
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > precision_verified > value"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.44"
+        ],
+        "ci95": [
+         "0.1",
+         "0.18",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      "recall_with": {
+       "metric": "recall with the second question: share of the judge's positives kept, agreement with the AI judge",
+       "value": 0.4444,
+       "k": 4,
+       "n": 9,
+       "kn": "4/9",
+       "ci95": [
+        0.188,
+        0.734
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > recall_verified"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.44"
+        ],
+        "ci95": [
+         "0.1",
+         "0.18",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision, with − without the second question, agreement with the AI judge",
+       "value": 0.2194,
+       "ci95": [
+        -0.05,
+        0.55
+       ],
+       "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > diff > value"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "wolf > diff > ci"
+       },
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "-0.1",
+         "0.6"
+        ]
+       }
+      }
+     },
+     "hitze": {
+      "topic": "hitze",
+      "name_en": "heat protection / heatwaves",
+      "flags": {
+       "value": 346,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > flags"
+       }
+      },
+      "kept": {
+       "value": 292,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > kept"
+       }
+      },
+      "judge_positives": {
+       "value": 232,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > positives"
+       }
+      },
+      "precision_without": {
+       "metric": "precision of S19 flags without the second question, agreement with the AI judge",
+       "value": 0.6705,
+       "k": 232,
+       "n": 346,
+       "kn": "232/346",
+       "ci95": [
+        0.619,
+        0.718
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > precision_s19 > value"
+       },
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.72",
+         "0.8"
+        ]
+       }
+      },
+      "precision_with": {
+       "metric": "precision of the flags kept by the second question, agreement with the AI judge",
+       "value": 0.7705,
+       "k": 225,
+       "n": 292,
+       "kn": "225/292",
+       "ci95": [
+        0.718,
+        0.816
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > precision_verified > value"
+       },
+       "shown": {
+        "value": [
+         "0.7",
+         "0.77"
+        ],
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.82",
+         "0.9"
+        ]
+       }
+      },
+      "recall_with": {
+       "metric": "recall with the second question: share of the judge's positives kept, agreement with the AI judge",
+       "value": 0.9698,
+       "k": 225,
+       "n": 232,
+       "kn": "225/232",
+       "ci95": [
+        0.939,
+        0.986
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > recall_verified"
+       },
+       "shown": {
+        "value": [
+         "0.9",
+         "0.96",
+         "0.969"
+        ],
+        "ci95": [
+         "0.9",
+         "0.93",
+         "0.99",
+         "1.0"
+        ]
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision, with − without the second question, agreement with the AI judge",
+       "value": 0.1,
+       "ci95": [
+        0.069,
+        0.132
+       ],
+       "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > diff > value"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "hitze > diff > ci"
+       },
+       "shown": {
+        "ci95": [
+         "0.0",
+         "0.06",
+         "0.14",
+         "0.2"
+        ]
+       }
+      }
+     },
+     "ki-schule": {
+      "topic": "ki-schule",
+      "name_en": "AI in schools",
+      "flags": {
+       "value": 22,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > flags"
+       }
+      },
+      "kept": {
+       "value": 12,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > kept"
+       }
+      },
+      "judge_positives": {
+       "value": 3,
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > positives"
+       }
+      },
+      "precision_without": {
+       "metric": "precision of S19 flags without the second question, agreement with the AI judge",
+       "value": 0.1364,
+       "k": 3,
+       "n": 22,
+       "kn": "3/22",
+       "ci95": [
+        0.047,
+        0.334
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > precision_s19 > value"
+       },
+       "shown": {
+        "value": [
+         "0.1",
+         "0.13"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.34",
+         "0.4"
+        ]
+       }
+      },
+      "precision_with": {
+       "metric": "precision of the flags kept by the second question, agreement with the AI judge",
+       "value": 0.25,
+       "k": 3,
+       "n": 12,
+       "kn": "3/12",
+       "ci95": [
+        0.088,
+        0.533
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > precision_verified > value"
+       },
+       "shown": {
+        "value": [
+         "0.2"
+        ],
+        "ci95": [
+         "0.0",
+         "0.08",
+         "0.54",
+         "0.6"
+        ]
+       }
+      },
+      "recall_with": {
+       "metric": "recall with the second question: share of the judge's positives kept, agreement with the AI judge",
+       "value": 1.0,
+       "k": 3,
+       "n": 3,
+       "kn": "3/3",
+       "ci95": [
+        0.438,
+        1.0
+       ],
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > recall_verified"
+       },
+       "shown": {
+        "ci95": [
+         "0.4",
+         "0.43"
+        ]
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision, with − without the second question, agreement with the AI judge",
+       "value": 0.1136,
+       "ci95": [
+        0.0,
+        0.273
+       ],
+       "ci_method": "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py",
+       "at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > diff > value"
+       },
+       "ci_at": {
+        "file": "bern/querschnitt/eval/s27/results.json",
+        "key": "ki-schule > diff > ci"
+       },
+       "shown": {
+        "value": [
+         "0.1",
+         "0.11",
+         "0.113"
+        ],
+        "ci95": [
+         "0.28",
+         "0.3"
+        ]
+       }
+      }
+     }
+    },
+    "recall_note": "every judge positive was flagged in S19 (S19 weighted recall 1.0), so the share of positives kept is the recall with the second question"
+   },
+   "split": "S19 packets held out; one pre-registered wording, no tuning, applied once (amendment before any S27 call: no dev step)",
+   "prereg": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "— S27 a second, stricter check",
+    "line": 105
+   },
+   "prereg_more": {
+    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
+    "anchor": "Amendment 2026-10-14 23:10 CEST (before any S27 call)",
+    "line": 115
+   },
+   "sources": [
+    "bern/querschnitt/eval/s27/results.json",
+    "bern/querschnitt/eval/s27/analyze.py",
+    "bern/querschnitt/eval/s27/run.py",
+    "bern/querschnitt/eval/s27/raw.jsonl",
+    "bern/querschnitt/eval/s27/ledger.jsonl",
+    "bern/querschnitt/src/querschnitt/prompts.py",
+    "bern/querschnitt/eval/s19/results.json"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs, S19 gold)",
+   "date": "2026-10-14",
+   "test": "Neue Themen aus einem Satz: zweite, strengere Frage auf den Markierungen («zentrales Thema?»), gegen den KI-Richter (S27)",
+   "interval": [
+    [
+     0.188,
+     0.734
+    ],
+    [
+     0.718,
+     0.816
+    ],
+    [
+     0.088,
+     0.533
+    ]
+   ],
+   "baseline": {
+    "name": "S19 flags without the second question: wolf",
+    "value": 0.225,
+    "ci95": [
+     0.123,
+     0.376
+    ],
+    "shown": {
+     "value": [
+      "0.2",
+      "0.22"
+     ],
+     "ci95": [
+      "0.1",
+      "0.12",
+      "0.38",
+      "0.4"
+     ]
+    }
+   },
+   "file": "bern/querschnitt/eval/s27/results.json",
+   "key": "wolf > precision_verified | hitze > precision_verified | ki-schule > precision_verified",
+   "shown": {
+    "interval": [
+     "0.0",
+     "0.08",
+     "0.1",
+     "0.18",
+     "0.5",
+     "0.53",
+     "0.7",
+     "0.71",
+     "0.73",
+     "0.8",
+     "0.81"
+    ]
+   }
+  },
+  {
    "id": "neutrality_judge_sets",
    "gold": "ai-judge",
    "subject": "Apertus",
@@ -20160,14 +22583,6 @@
     "file": "bern/querschnitt/eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
-   }
-  },
-  {
-   "item": "S19: three new ad-hoc topics (wolf, heat protection, AI in schools) against a blind judge — running, no result yet",
-   "prereg": {
-    "file": "bern/querschnitt/eval/PREREG-BUILD.md",
-    "anchor": "— S19 three new ad-hoc topics",
-    "line": 37
    }
   },
   "FR/IT rows with the headline Curia design + BFH on the same items",

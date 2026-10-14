@@ -115,3 +115,11 @@ recall among judged positives, per topic. Reported as measured.
 Amendment 2026-10-14 23:10 CEST (before any S27 call): the S13 dev week holds only 33 flags (wolf 4, hitze 24, ki-schule 5),
 too few to choose between wordings. S27 therefore uses the single wording above with no tuning and no dev step; it is applied
 once to the S19 packets (test). Everything else unchanged.
+
+## 2026-10-15 00:19 CEST — Erratum: header clock times (no change to any design)
+The clock times in the headers of S19–S27 were typed by hand and are later than the moment each entry was fixed. The
+authoritative time is the sha256 log (`eval/PREREG-BUILD.sha256`, UTC; CEST below), and every entry was hashed before the
+first model call of its test (first ledger line) or, for S23, before its sample was drawn:
+S19 02:45:41 → first call 02:46:06 · S20 07:35:16 → 07:35:44 · S21 09:23:15 → 09:23:50 · S22 14:19:25 → 14:19:36 ·
+S23 17:05:40 → packet written 17:09:04 · S25 20:02:43 → 22:59:24 · S26 22:23:05 → 22:23:39 · S27 22:46:30 and its
+amendment 22:46:46 → 22:47:12 (all 14 Oct 2026). Header times from this entry on are taken from the clock when written.

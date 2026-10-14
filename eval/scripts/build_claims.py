@@ -13,13 +13,15 @@ Status rules (strict; written down so anyone can re-apply them):
 Kinds: pt+ (higher favours us), pt- (lower favours us: baselines, times), pt0 (neutral), lo / hi (interval bounds),
 cnt (estimated count), eq (must match exactly).
 Run: python3 -I querschnitt/eval/scripts/build_claims.py"""
-import csv, os, re, sys
+import csv, json, os, re, sys
 from decimal import Decimal, ROUND_HALF_UP
 
 HB = "/Users/mi11ion/Desktop/hackapertus"
 EVAL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(EVAL), "tools"))
 import claims_check as cc  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import numfmt as NF  # noqa: E402
 
 VISION = "bern/VISION-topics-v2.md"
 I1, I2 = "bern/ideation/spikes", "bern/ideation2/spikes"
@@ -342,6 +344,66 @@ def classify(tok, written_norm, f, line, approx):
     return "ROUNDED"
 
 
+# ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
+# are; the S19 / S26 / S27 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
+ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
+GEN_SECTIONS = {"S19-27"}
+
+
+def adhoc_rows():
+    """S19 / S26 / S27, three one-sentence topics against the blind AI judge: every per-topic block of eval/pruefstand.json → the point
+    (truncated, never rounded up) and its interval bounds (outward), with the results file and key it was read from."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    T = {t["id"]: t for t in P["tests"]}
+    rows = []
+
+    def r(ctx, written, src, file, key, note):
+        rows.append(dict(section="S19-27", line="-", written=written, context=ctx, source_value=str(src), file=file, key=key, status="OK",
+                         correct="", note=note))
+
+    def block(tid, path, b):
+        at = b["at"]; v = b["value"]; ctx = (f"{tid} {path}" + (f" ({b['metric']})" if b.get("metric") else "")).replace("\t", " ")
+        whole = isinstance(v, int) or (isinstance(v, float) and v.is_integer() and abs(v) >= 2)
+        if whole:
+            r(ctx, NF.t(int(v)), v, at["file"], at["key"], "count" if isinstance(v, int) else "estimated count (whole affairs)")
+        else:
+            r(ctx, NF.t(v), v, at["file"], at["key"], "truncated, never rounded up")
+        ci = b.get("ci95")
+        if not ci: return
+        if "Wilson" in str(b.get("ci_method", "")):
+            src_ci = b.get("ci95_source")
+            how = f"k = {b['k']}, n {b['n']} → Wilson 95% exact, bounds rounded outward at 3 decimals"
+            for i, (fn, side) in enumerate(((NF.lo, "floored"), (NF.hi, "ceiled"))):
+                note = "recomputed outward" + (f" (file stores {src_ci[i]})" if src_ci and src_ci[i] != ci[i] else " (equals the file)")
+                r(f"{ctx} ci95[{i}]", fn(ci[i]), ci[i], at["file"], f"{at['key']}: {how} ({side})", note)
+        else:
+            cat = b.get("ci_at") or at
+            for i, fn in enumerate((NF.lo, NF.hi)):
+                d = 0 if whole else 3
+                r(f"{ctx} ci95[{i}]", fn(ci[i], d) if d else NF.t(int(ci[i])), ci[i], cat["file"], f"{cat['key']} [{i}] ({b.get('ci_method', '')})",
+                  "bootstrap percentile as stored, rounded outward")
+
+    def walk(tid, path, o):
+        if not isinstance(o, dict): return
+        if "at" in o and isinstance(o.get("value"), (int, float)) and not isinstance(o.get("value"), bool):
+            block(tid, path, o); return
+        for k, v in o.items():
+            if k != "strata": walk(tid, f"{path} > {k}" if path else k, v)
+
+    t19 = T["adhoc_new_topics"]
+    r("adhoc_new_topics population (affairs with a title begun 1 Aug–6 Oct 2026)", NF.t(t19["n"]), t19["n"], "bern/querschnitt/eval/s19/results.json",
+      "<topic> > strata > N, summed (equal for the three topics)", "count")
+    r("adhoc_new_topics affairs checked by the judge (three packets)", NF.t(t19["n_checked"]), t19["n_checked"], "bern/querschnitt/eval/s19/results.json",
+      "<topic> > n_packet, summed", "count")
+    j = t19["judge"]
+    r("adhoc_new_topics judge run A = run B", NF.t(j["agree_AB"]), j["agree_AB"], j["at"]["file"], j["at"]["key"], "truncated, never rounded up")
+    r("adhoc_new_topics tie-break run C", str(j["tie_break_C"]), j["tie_break_C"], j["tie_break_at"]["file"], "rows", "count")
+    for tid in ADHOC:
+        for topic, b in T[tid]["breakdowns"]["per_topic"].items():
+            walk(tid, topic, b)
+    return rows
+
+
 def main():
     L = open(os.path.join(HB, VISION), encoding="utf-8").read().splitlines()
     rows = []
@@ -380,12 +442,22 @@ def main():
     rows.sort(key=lambda r: (r["line"], r["written"] if not r["context"] else ""))
     out = os.path.join(EVAL, "claims.tsv")
     cols = ["section", "line", "written", "context", "source_value", "file", "key", "status", "correct", "note"]
+    # keep the hand-written build-week rows byte for byte (raw lines: their quotes are literal); regenerate VISION and GEN_SECTIONS
+    vision_secs = {s for _, _, s in SEC} | {"?"}
+    kept = []
+    if os.path.exists(out):
+        kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
+                if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
+    gen = adhoc_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
+        fh.write("".join(l + "\n" for l in kept))
+        w.writerows(gen)
     from collections import Counter
-    c = Counter(r["status"] for r in rows)
-    print(dict(c), "rows", len(rows))
+    c = Counter(r["status"] for r in rows + gen)
+    c.update(l.split("\t")[7] for l in kept)
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

@@ -955,6 +955,203 @@ tests.append(dict(
     sources=[S23R, f"{QE}/s23/analyze.py", f"{QE}/s23/build_packet.py", f"{QE}/s23/key.jsonl", f"{QE}/s23/ann_A.tsv", f"{QE}/s23/ann_B.tsv",
              f"{QE}/s23/ann_C.tsv"], build=s23["fingerprints"][0] + " (production run runs/ev, runs/main)", model=MODEL,
     judge_build="Claude (blind agent runs)", date="2026-10-14"))
+
+
+# ---------------------------------------------------------------- S19 / S26 / S27: three new topics defined in one sentence, against the blind AI judge
+S19R, S26R, S27R = f"{QE}/s19/results.json", f"{QE}/s26/results.json", f"{QE}/s27/results.json"
+TOPICS19 = ("wolf", "hitze", "ki-schule")
+TNAME = {"wolf": ("Wolf und Grossraubtiere", "loup et grands prédateurs", "wolf and large predators"),
+         "hitze": ("Hitzeschutz / Hitzewellen", "protection contre la chaleur / canicules", "heat protection / heatwaves"),
+         "ki-schule": ("Künstliche Intelligenz an Schulen", "intelligence artificielle à l'école", "AI in schools")}
+AJ = "agreement with the AI judge"
+BOOT_S = "stratified bootstrap 2,000 (percentile), bounds rounded outward in analyze.py"
+BOOT_P = "paired bootstrap 2,000 (percentile), bounds rounded outward in analyze.py"
+s19 = g(S19R); s26 = g(S26R); s27 = g(S27R)
+N19 = {s_: sum(v["N"] for v in s19[s_]["strata"].values()) for s_ in TOPICS19}
+assert len(set(N19.values())) == 1, N19
+N19 = N19["wolf"]
+C19 = f"{QE}/s19/ann_C.tsv"
+TIE19 = sum(1 for l_ in open(os.path.join(ROOT, C19), encoding="utf-8") if l_.strip())
+
+
+def kprop(rel, vkeys, n, metric, ci_keys=None, k=None):
+    """share stored at vkeys (rounded to 4 decimals by analyze.py) with denominator n. k is the unique integer with round(k / n, 4) =
+    stored (given or recovered); Wilson 95% recomputed exactly from k and n, bounds rounded outward and clamped to [0, 1]; a stored
+    interval that differs is kept as ci95_source. Asserts the 3-decimal truncation of the stored share equals that of k / n."""
+    stored = g(rel, *vkeys)
+    if k is None: k = round(stored * n)
+    assert round(k / n, 4) == stored, (rel, vkeys, stored, k, n)
+    assert F.t(stored) == F.t(k / n), (rel, vkeys, stored, k, n)
+    lo_, hi_ = wilson_exact(k, n)
+    ci_ = [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))]
+    out = {"metric": metric, "value": stored, "k": k, "n": n, "kn": f"{k}/{n}", "ci95": ci_,
+           "ci_method": "Wilson 95% from k and n, bounds rounded outward"}
+    if ci_keys is not None and list(g(rel, *ci_keys)) != ci_: out["ci95_source"] = list(g(rel, *ci_keys))
+    out["at"] = loc(rel, *vkeys)
+    return out
+
+
+def boot(rel, pkeys, ckeys, metric, method=BOOT_S, **extra):
+    return {"metric": metric, "value": g(rel, *pkeys), "ci95": list(g(rel, *ckeys)), "ci_method": method, **extra,
+            "at": loc(rel, *pkeys), "ci_at": loc(rel, *ckeys)}
+
+
+def multi_at(rel, *tail):
+    return {"file": rel, "key": " | ".join(" > ".join((s_,) + tail) for s_ in TOPICS19)}
+
+
+# S19: precision of flags (Wilson), recall weighted to the population, frozen keyword baseline
+pt19 = {}
+for s_ in TOPICS19:
+    x_ = s19[s_]; pf_ = x_["precision_flags"]
+    pt19[s_] = {
+        "topic": s_, "name_de": TNAME[s_][0], "name_fr": TNAME[s_][1], "name_en": TNAME[s_][2], "scheme": f"bern/querschnitt/src/querschnitt/schemes/adhoc/{s_}.yaml",
+        "precision": kprop(S19R, (s_, "precision_flags", "value"), pf_["n"], f"precision of Apertus flags, {AJ}", (s_, "precision_flags", "ci"), k=pf_["k"]),
+        "recall": boot(S19R, (s_, "weighted", "point", "a_R"), (s_, "weighted", "ci", "a_R"), f"recall of Apertus flags, {AJ} (weighted to the population)"),
+        "precision_weighted": boot(S19R, (s_, "weighted", "point", "a_P"), (s_, "weighted", "ci", "a_P"), f"precision of Apertus flags, {AJ} (bootstrap)"),
+        "keyword_precision": boot(S19R, (s_, "weighted", "point", "k_P"), (s_, "weighted", "ci", "k_P"), f"precision of keyword hits, {AJ}"),
+        "keyword_recall": boot(S19R, (s_, "weighted", "point", "k_R"), (s_, "weighted", "ci", "k_R"), f"recall of keyword hits, {AJ} (weighted)"),
+        "judge_positives": boot(S19R, (s_, "weighted", "point", "pos"), (s_, "weighted", "ci", "pos"), "estimated affairs relevant per the AI judge (population)"),
+        "flags": {"metric": "affairs flagged by Apertus (counted)", "value": x_["flags"], "at": loc(S19R, s_, "flags")},
+        "keyword_hits": {"metric": "affairs hit by the frozen keyword list (counted)", "value": x_["kw_hits"], "at": loc(S19R, s_, "kw_hits")},
+        "n_checked": {"value": x_["n_packet"], "at": loc(S19R, s_, "n_packet")},
+        "strata": {"cells": [{"cell": h_, "N": v_["N"], "n": v_["n"], "judge_Y": v_["gold_Y"], "kn": f"{v_['gold_Y']}/{v_['n']}"} for h_, v_ in x_["strata"].items()],
+                   "note": "A = Apertus flag, K = keyword hit; every flagged or hit affair is checked (n = N), 'neither' is a random sample",
+                   "at": loc(S19R, s_, "strata")}}
+NCHK19 = sum(s19[s_]["n_packet"] for s_ in TOPICS19)
+tests.append(dict(
+    id="adhoc_new_topics", gold="ai-judge", subject="Apertus",
+    title_de="Drei neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen), Geschäfte 1.8.–6.10.2026, gegen den KI-Richter (S19)",
+    title_fr="Trois nouveaux thèmes en une phrase (loup, chaleur, IA à l'école), objets du 1.8 au 6.10.2026, contre le juge IA (S19)",
+    n=N19, n_checked=NCHK19, topics=list(TOPICS19),
+    design="die drei S13-Themen, nie zum Abstimmen benutzt, je eine Frage in einem Satz (src/querschnitt/schemes/adhoc/*.yaml); jedes Geschäft "
+    "mit Titel, begonnen 1.8.–6.10.2026; ausgelieferte Ja/Nein-Regel (Reihenfolge a; b bei 0.1 < p < 0.9; Flag bei mittlerem p ≥ 0.5); "
+    "Stichwortlisten vor jedem Resultat eingefroren; geprüft: jedes von Apertus oder Stichwörtern markierte Geschäft + 120 zufällige "
+    "unmarkierte je Thema; Richter: zwei blinde Claude-Läufe (A gemischt, B umgekehrt) + Stichentscheid C; Recall auf die Population "
+    "zurückgewichtet (Schicht-Bootstrap 2'000)",
+    result={"metric": f"precision of Apertus flags per topic (wolf / hitze / ki-schule), {AJ}",
+            "value": [pt19[s_]["precision"]["value"] for s_ in TOPICS19], "ci95": [pt19[s_]["precision"]["ci95"] for s_ in TOPICS19],
+            "kn": [pt19[s_]["precision"]["kn"] for s_ in TOPICS19], "topics": list(TOPICS19),
+            "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward", "at": multi_at(S19R, "precision_flags")},
+    results_more=[{"metric": f"recall of Apertus flags per topic, {AJ} (weighted to the population)",
+                   "value": [pt19[s_]["recall"]["value"] for s_ in TOPICS19], "ci95": [pt19[s_]["recall"]["ci95"] for s_ in TOPICS19],
+                   "ci_method": BOOT_S, "at": multi_at(S19R, "weighted")},
+                  {"metric": "affairs flagged by Apertus per topic (counted)", "value": [pt19[s_]["flags"]["value"] for s_ in TOPICS19],
+                   "at": multi_at(S19R, "flags")}],
+    baselines=[{"name": f"frozen keyword list (eval/s19/keywords_frozen.json), same input: {s_}", "topic": s_,
+                "precision": pt19[s_]["keyword_precision"]["value"], "precision_ci95": pt19[s_]["keyword_precision"]["ci95"],
+                "recall": pt19[s_]["keyword_recall"]["value"], "recall_ci95": pt19[s_]["keyword_recall"]["ci95"],
+                "hits": pt19[s_]["keyword_hits"]["value"], "ci_method": BOOT_S, "at": loc(S19R, s_, "weighted")} for s_ in TOPICS19],
+    judge={"runs": f"Claude A (shuffled) / B (reverse) + tie-break C on {TIE19}", "agree_AB": g(S19R, "agree_AB"), "tie_break_C": TIE19,
+           "at": loc(S19R, "agree_AB"), "tie_break_at": {"file": C19, "rows": TIE19},
+           "cross_check": "the Qwen-SEA-LION cross-check named in the pre-registration is not in eval/s19 (not reported)"},
+    breakdowns={"per_topic": pt19,
+                "unflagged_sample_note": "the 120 random unflagged affairs per topic hold no judge positive (strata > neither > gold_Y = 0), so the "
+                                         "weighted recall is 1.0 with a bootstrap interval of [1.0, 1.0]; that interval does not cover relevant "
+                                         "affairs the random sample missed"},
+    split="pre-registered (S19); topics never used in tuning; cut-off p ≥ 0.5 fixed; keyword lists frozen before any decision",
+    prereg=pre(PB, "— S19 three new ad-hoc topics"),
+    sources=[S19R, f"{QE}/s19/analyze.py", f"{QE}/s19/build_packet.py", f"{QE}/s19/key.jsonl", f"{QE}/s19/keywords_frozen.json",
+             f"{QE}/s19/ann_A.tsv", f"{QE}/s19/ann_B.tsv", C19], build=BUILD + " (run runs/s19)", model=MODEL,
+    judge_build="Claude (blind agent runs)", date="2026-10-14"))
+
+# S26: 30 editor decisions per topic as examples; paired against S19 on the same test items
+pt26 = {}
+for s_ in TOPICS19:
+    x_ = s26[s_]; npos = x_["positives"]
+    blk = {"topic": s_, "name_en": TNAME[s_][2], "test_items": {"value": x_["n_test"], "at": loc(S26R, s_, "n_test")},
+           "editor_examples": {"value": x_["editor_examples"], "at": loc(S26R, s_, "editor_examples")},
+           "judge_positives": {"value": npos, "at": loc(S26R, s_, "positives")}}
+    for arm, nm in (("s19", "without examples (S19)"), ("s26", "with 30 editor decisions as examples")):
+        a_ = x_[arm]
+        blk[arm] = {"flags": {"value": a_["flags"], "at": loc(S26R, s_, arm, "flags")},
+                    "precision": kprop(S26R, (s_, arm, "precision"), a_["flags"], f"precision of flags {nm}, {AJ}", (s_, arm, "ci")),
+                    "recall": (kprop(S26R, (s_, arm, "recall"), npos, f"recall {nm}: share of the judge's positives among the test items flagged")
+                               if a_["recall"] is not None else
+                               {"metric": f"recall {nm}", "value": None, "not_measurable": f"not measurable (n {npos} judge positives)",
+                                "at": loc(S26R, s_, arm, "recall")})}
+    pd_ = x_["precision_diff"]
+    if npos:
+        blk["precision_diff"] = boot(S26R, (s_, "precision_diff", "value"), (s_, "precision_diff", "ci"),
+                                     f"paired Δ precision of flags, with − without examples, {AJ}", method=BOOT_P)
+    else:
+        blk["precision_diff"] = {"metric": f"paired Δ precision of flags, with − without examples, {AJ}", "value": None,
+                                 "not_measurable": f"not measurable (n {npos} judge positives among {x_['n_test']} test items)",
+                                 "note": "precision is 0 in both arms, so the stored difference 0.0 [0.0, 0.0] carries no information",
+                                 "value_source": pd_["value"], "ci95_source": pd_["ci"], "at": loc(S26R, s_, "precision_diff")}
+    pt26[s_] = blk
+tests.append(dict(
+    id="adhoc_editor_examples", gold="ai-judge", subject="Apertus",
+    title_de="Neue Themen aus einem Satz: 30 Entscheide einer Redaktion als Beispiele, gepaart gegen S19, gegen den KI-Richter (S26)",
+    title_fr="Nouveaux thèmes en une phrase : 30 décisions d'une rédaction comme exemples, apparié à S19, contre le juge IA (S26)",
+    n=sum(s26[s_]["n_test"] for s_ in TOPICS19), topics=list(TOPICS19),
+    design="S19-Pakete und S19-Richtergold; je Thema 30 zufällig gezogene geprüfte Geschäfte (random.Random(26)) als erste Entscheide einer "
+    "Redaktion (ihr Richterlabel Y/N); alle übrigen geprüften Geschäfte mit der ausgelieferten Ja/Nein-Regel neu bewertet, mit den 4 "
+    "BM25-nächsten Entscheiden als Beispiele (examples.topic_examples); gepaart gegen die S19-Flags auf denselben Geschäften",
+    result={"metric": f"paired Δ precision of flags, with − without editor examples, per topic (wolf / hitze / ki-schule), {AJ}",
+            "value": [pt26[s_]["precision_diff"]["value"] for s_ in TOPICS19],
+            "ci95": [pt26[s_]["precision_diff"].get("ci95") for s_ in TOPICS19], "topics": list(TOPICS19),
+            "not_measurable": {s_: pt26[s_]["precision_diff"]["not_measurable"] for s_ in TOPICS19 if pt26[s_]["precision_diff"].get("not_measurable")},
+            "ci_method": BOOT_P, "at": multi_at(S26R, "precision_diff")},
+    results_more=[{"metric": f"precision of flags with editor examples per topic, {AJ}",
+                   "value": [pt26[s_]["s26"]["precision"]["value"] for s_ in TOPICS19], "ci95": [pt26[s_]["s26"]["precision"]["ci95"] for s_ in TOPICS19],
+                   "kn": [pt26[s_]["s26"]["precision"]["kn"] for s_ in TOPICS19],
+                   "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward", "at": multi_at(S26R, "s26", "precision")},
+                  {"metric": "recall with editor examples per topic: share of the judge's positives among the test items flagged",
+                   "value": [pt26[s_]["s26"]["recall"]["value"] for s_ in TOPICS19], "at": multi_at(S26R, "s26", "recall")}],
+    baselines=[dict(pt26[s_]["s19"]["precision"], name=f"S19 flags without examples, same test items: {s_}", topic=s_) for s_ in TOPICS19],
+    breakdowns={"per_topic": pt26,
+                "recall_note": "the pre-registration names the weighted S19 recall as secondary; analyze.py reports recall among the judge's "
+                               "positives in the test items, which equals it here because the S19 random sample of unflagged affairs holds "
+                               "no judge positive (s19 results > strata > neither > gold_Y = 0)"},
+    split="S19 packets: 30 judged items per topic as editor examples (random.Random(26) over the pid-sorted packet), the rest re-scored once; "
+          "pre-registered (S26) after S19's annotations, before any S26 call; nothing tuned",
+    prereg=pre(PB, "— S26 editor decisions as examples"),
+    sources=[S26R, f"{QE}/s26/analyze.py", f"{QE}/s26/run.py", f"{QE}/s26/split.json", f"{QE}/s26/raw.jsonl", f"{QE}/s26/ledger.jsonl", S19R],
+    build=BUILD, model=MODEL, judge_build="Claude (blind agent runs, S19 gold)", date="2026-10-14"))
+
+# S27: a second, stricter question on every S19 flag; precision and recall with vs without
+pt27 = {}
+for s_ in TOPICS19:
+    x_ = s27[s_]
+    pt27[s_] = {"topic": s_, "name_en": TNAME[s_][2],
+                "flags": {"value": x_["flags"], "at": loc(S27R, s_, "flags")}, "kept": {"value": x_["kept"], "at": loc(S27R, s_, "kept")},
+                "judge_positives": {"value": x_["positives"], "at": loc(S27R, s_, "positives")},
+                "precision_without": kprop(S27R, (s_, "precision_s19", "value"), x_["flags"], f"precision of S19 flags without the second question, {AJ}",
+                                           (s_, "precision_s19", "ci")),
+                "precision_with": kprop(S27R, (s_, "precision_verified", "value"), x_["kept"], f"precision of the flags kept by the second question, {AJ}",
+                                        (s_, "precision_verified", "ci")),
+                "recall_with": kprop(S27R, (s_, "recall_verified"), x_["positives"], f"recall with the second question: share of the judge's positives kept, {AJ}"),
+                "precision_diff": boot(S27R, (s_, "diff", "value"), (s_, "diff", "ci"), f"paired Δ precision, with − without the second question, {AJ}",
+                                       method=BOOT_P)}
+    assert pt27[s_]["precision_with"]["k"] == pt27[s_]["recall_with"]["k"], s_   # kept positives: the same affairs in both shares
+tests.append(dict(
+    id="adhoc_verification", gold="ai-judge", subject="Apertus",
+    title_de="Neue Themen aus einem Satz: zweite, strengere Frage auf den Markierungen («zentrales Thema?»), gegen den KI-Richter (S27)",
+    title_fr="Nouveaux thèmes en une phrase : seconde question plus stricte sur les signalements (« thème central ? »), contre le juge IA (S27)",
+    n=sum(s27[s_]["flags"] for s_ in TOPICS19), topics=list(TOPICS19),
+    design="jedes S19-Flag erhält eine weitere geschlossene Frage, gleicher Rahmen und Input (Titel + Langtitel): «Ist «{name}» ein zentrales "
+    "Thema dieses Geschäfts – nicht nur am Rande erwähnt oder bloss ähnlich?» A = Ja, zentral / B = Nein (Reihenfolge a; b bei 0.1 < p < 0.9; "
+    "Flag bleibt bei mittlerem p ≥ 0.5); eine Formulierung, nicht abgestimmt, einmal auf die S19-Pakete angewandt; Gold = S19-Richter",
+    result={"metric": f"precision of the flags kept by the second question per topic (wolf / hitze / ki-schule), {AJ}",
+            "value": [pt27[s_]["precision_with"]["value"] for s_ in TOPICS19], "ci95": [pt27[s_]["precision_with"]["ci95"] for s_ in TOPICS19],
+            "kn": [pt27[s_]["precision_with"]["kn"] for s_ in TOPICS19], "topics": list(TOPICS19),
+            "ci_method": "Wilson 95% per topic from k and n, bounds rounded outward", "at": multi_at(S27R, "precision_verified")},
+    results_more=[{"metric": f"paired Δ precision, with − without the second question, per topic, {AJ}",
+                   "value": [pt27[s_]["precision_diff"]["value"] for s_ in TOPICS19], "ci95": [pt27[s_]["precision_diff"]["ci95"] for s_ in TOPICS19],
+                   "ci_method": BOOT_P, "at": multi_at(S27R, "diff")},
+                  {"metric": f"recall with the second question per topic: share of the judge's positives kept, {AJ}",
+                   "value": [pt27[s_]["recall_with"]["value"] for s_ in TOPICS19], "kn": [pt27[s_]["recall_with"]["kn"] for s_ in TOPICS19],
+                   "at": multi_at(S27R, "recall_verified")}],
+    baselines=[dict(pt27[s_]["precision_without"], name=f"S19 flags without the second question: {s_}", topic=s_) for s_ in TOPICS19],
+    breakdowns={"per_topic": pt27,
+                "recall_note": "every judge positive was flagged in S19 (S19 weighted recall 1.0), so the share of positives kept is the recall "
+                               "with the second question"},
+    split="S19 packets held out; one pre-registered wording, no tuning, applied once (amendment before any S27 call: no dev step)",
+    prereg=pre(PB, "— S27 a second, stricter check"), prereg_more=pre(PB, "Amendment 2026-10-14 23:10 CEST (before any S27 call)"),
+    sources=[S27R, f"{QE}/s27/analyze.py", f"{QE}/s27/run.py", f"{QE}/s27/raw.jsonl", f"{QE}/s27/ledger.jsonl", "bern/querschnitt/src/querschnitt/prompts.py", S19R],
+    build=BUILD, model=MODEL, judge_build="Claude (blind agent runs, S19 gold)", date="2026-10-14"))
+NEW_ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
 for t_ in tests:
     if t_["id"] == "evidence_support":
         t_["production_check"] = {"id": "evidence_support_production", "what": "the same check on 200 stored quotes of the 2026 production run (S23)"}
@@ -971,7 +1168,8 @@ ORDER = ["aps_chapter_shipped_d4", "aps_chapter_d4s", "aps_chapter_examples", "a
          "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
          "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
-         "evidence_support_production", "aps_cantonal_communal", "aps_bilingual", "neutrality_judge_sets"]
+         "evidence_support_production", "aps_cantonal_communal", "aps_bilingual", "adhoc_new_topics", "adhoc_editor_examples",
+         "adhoc_verification", "neutrality_judge_sets"]
 assert sorted(ORDER) == sorted(t_["id"] for t_ in tests), set(ORDER) ^ {t_["id"] for t_ in tests}
 tests.sort(key=lambda t_: ORDER.index(t_["id"]))
 for t_ in tests:
@@ -1045,7 +1243,8 @@ def _wilson_out(v, ci_, n, k=None):
 def wilson_pass(o, path="", n_ctx=None):
     if isinstance(o, dict):
         n_here = o.get("n") if isinstance(o.get("n"), int) else n_ctx
-        for ck, pks in CI_POINT.items():
+        boot_ = "bootstrap" in str(o.get("ci_method") or "") + str(o.get("method") or "")   # declared bootstrap intervals are never Wilson
+        for ck, pks in (() if boot_ else CI_POINT.items()):
             if ck not in o: continue
             ci_ = o[ck]
             if not any(pk in o for pk in pks) and isinstance(o.get("k"), int) and isinstance(o.get("n"), int) and o["n"]:
@@ -1098,6 +1297,7 @@ for blk, key in ((_tx["result"], "title_text"), (_tx["baselines"][0], "title_onl
     blk["ci_method"] = "Wilson 95% recomputed from tp, fp, fn, bounds rounded outward"
 for t_ in tests: t_["interval"] = t_["result"].get("ci95")
 print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
+assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
 BOUND = re.compile(r"(^|_)ci(95)?(_w)?$")
@@ -1148,8 +1348,6 @@ out = {
     "to_measure": [
         {"item": "S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — "
                  "running, no result yet", "prereg": pre25},
-        {"item": "S19: three new ad-hoc topics (wolf, heat protection, AI in schools) against a blind judge — running, no result yet",
-         "prereg": pre(PB, "— S19 three new ad-hoc topics")},
         "FR/IT rows with the headline Curia design + BFH on the same items",
         "recalibration refit on the build that serves at the event",
         "ECE intervals (bootstrap)",
@@ -1346,6 +1544,45 @@ row(*BI, "ai-judge", "Deutsch", "allemand", s10["n"], p3(s10["result"]["value"])
 row(*BI, "ai-judge", "Französisch", "français", s10["n"], p3(m10[0]["value"]), iv(m10[0]["ci95"]),
     f"Differenz {F.signed(p3(m10[2]['value']))} {sciv(m10[2]['ci95'])}", fr(f"différence {F.signed(p3(m10[2]['value']))} {sciv(m10[2]['ci95'])}"),
     "vorregistriert", "préenregistré", s10["file"])
+# S19 / S26 / S27: one row per topic; every figure is agreement with the AI judge. `topic` marks the saved ad-hoc topic as measured
+# in the app (app/js/data.js).
+T19, T26, T27 = (TD[k] for k in NEW_ADHOC)
+NT19 = ("Neue Themen aus einem Satz (Wolf, Hitzeschutz, KI an Schulen) vs. KI-Richter, 1.8.–6.10.2026",
+        "Nouveaux thèmes en une phrase (loup, chaleur, IA à l'école) vs juge IA, 1.8–6.10.2026")
+SP19 = (f"alle {p3(T19['n'])} Geschäfte, {p3(T19['n_checked'])} geprüft, Recall gewichtet; vorregistriert (S19)",
+        f"les {F.t(T19['n'], sep=' ')} objets, {T19['n_checked']} vérifiés, rappel pondéré ; préenregistré (S19)")
+for s_ in TOPICS19:
+    b_ = T19["breakdowns"]["per_topic"][s_]; P_, R_, kP_, kR_ = b_["precision"], b_["recall"], b_["keyword_precision"], b_["keyword_recall"]
+    row(*NT19, "ai-judge", f"{TNAME[s_][0]}: Präzision der Markierungen / Recall, Übereinstimmung mit dem Richter",
+        f"{TNAME[s_][1]} : précision des signalements / rappel, concordance avec le juge", P_["n"],
+        f"{p3(P_['value'])} ({P_['kn']}) / {p3(R_['value'])}", iv(P_["ci95"]),
+        f"Stichwort {p3(kP_['value'])} / {p3(kR_['value'])} ({b_['keyword_hits']['value']} Treffer)",
+        fr(f"mots-clés {p3(kP_['value'])} / {p3(kR_['value'])} ({b_['keyword_hits']['value']} occurrences)"), *SP19, T19["file"])
+    rows[-1]["topic"] = f"adhoc/{s_}"
+NT26 = ("Neue Themen: 30 Entscheide einer Redaktion als Beispiele vs. KI-Richter (gleiche Geschäfte wie S19)",
+        "Nouveaux thèmes : 30 décisions d'une rédaction comme exemples vs juge IA (mêmes objets que S19)")
+SP26 = ("S19-Pakete ohne die 30 Beispiele, gepaart; vorregistriert (S26)", "paquets S19 sans les 30 exemples, apparié ; préenregistré (S26)")
+for s_ in TOPICS19:
+    b_ = T26["breakdowns"]["per_topic"][s_]; P_, P0_, d_ = b_["s26"]["precision"], b_["s19"]["precision"], b_["precision_diff"]
+    if d_.get("value") is None:
+        npos = b_["judge_positives"]["value"]
+        dd_ = (f"Δ nicht messbar (n {npos} Richter-Positive)", f"Δ non mesurable (n {npos} positifs du juge)")
+    else:
+        dd_ = (f"Δ {F.signed(p3(d_['value']))} {sciv(d_['ci95'])}",) * 2
+    row(*NT26, "ai-judge", f"{TNAME[s_][0]}: Präzision mit Beispielen, Übereinstimmung mit dem Richter",
+        f"{TNAME[s_][1]} : précision avec exemples, concordance avec le juge", P_["n"], f"{p3(P_['value'])} ({P_['kn']}) · {dd_[0]}",
+        iv(P_["ci95"]), f"ohne Beispiele (S19) {p3(P0_['value'])} ({P0_['kn']})", fr(f"sans exemples (S19) {p3(P0_['value'])} ({P0_['kn']})"),
+        *SP26, T26["file"], result_fr=fr(f"{p3(P_['value'])} ({P_['kn']}) · {dd_[1]}"))
+NT27 = ("Neue Themen: zweite Frage «zentrales Thema?» auf den Markierungen vs. KI-Richter",
+        "Nouveaux thèmes : seconde question « thème central ? » sur les signalements vs juge IA")
+SP27 = ("S19-Pakete, eine Formulierung, nicht abgestimmt; vorregistriert (S27)", "paquets S19, une formulation, rien d'ajusté ; préenregistré (S27)")
+for s_ in TOPICS19:
+    b_ = T27["breakdowns"]["per_topic"][s_]; P_, P0_, R_, d_ = b_["precision_with"], b_["precision_without"], b_["recall_with"], b_["precision_diff"]
+    res_ = f"{p3(P_['value'])} ({P_['kn']}) / {p3(R_['value'])} ({R_['kn']}) · Δ {F.signed(p3(d_['value']))} {sciv(d_['ci95'])}"
+    row(*NT27, "ai-judge", f"{TNAME[s_][0]}: Präzision / Recall mit zweiter Frage, Übereinstimmung mit dem Richter",
+        f"{TNAME[s_][1]} : précision / rappel avec seconde question, concordance avec le juge", P_["n"], res_, iv(P_["ci95"]),
+        f"ohne zweite Frage (S19) {p3(P0_['value'])} ({P0_['kn']})", fr(f"sans seconde question (S19) {p3(P0_['value'])} ({P0_['kn']})"),
+        *SP27, T27["file"])
 
 app = {"rows": rows,
        "curve": {"test": "APS-Kapitel, 1'357 Bundesgeschäfte, ausgeliefertes Design (D4)", "test_fr": "Chapitre APS, 1 357 objets fédéraux, design livré (D4)",

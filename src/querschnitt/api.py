@@ -11,12 +11,14 @@ import json
 import os
 import re
 import time
+import urllib.parse
 from pathlib import Path
 
 from fastapi import Body, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, ConfigDict
 
 from . import scheme as S
 from .adhoc import Adhoc
@@ -25,6 +27,79 @@ from .scheme import APS
 from .store import ROOT, Store, metrics_line
 
 STATIC_SCHEMES = ("aps", "curia28", "be-directorates")
+
+
+class Evidence(BaseModel):
+    """The quoted passage: source (text:<id> | doc:<id> | title | title_long), field, character offsets, quote."""
+    model_config = ConfigDict(extra="allow")
+    source: str | None = None
+    field: str | None = None
+    char_start: int | None = None
+    char_end: int | None = None
+    quote: str | None = None
+
+
+class TopicRow(BaseModel):
+    """One topic row (docs/CONTRACT.md §1) plus row_id, seq (change sequence), closed_by and the code's label."""
+    model_config = ConfigDict(extra="allow")
+    affair_id: int
+    body_key: str | None = None
+    scheme: str
+    level: int
+    code: str
+    rank: int
+    p: float | None = None
+    p_raw: float | None = None
+    lane: str | None = None
+    status: str
+    provenance: str
+    evidence: Evidence | None = None
+    model: str | None = None
+    build: str | None = None
+    cutoffs_id: str | None = None
+    prompt_id: str | None = None
+    input_hash: str | None = None
+    valid_from: str
+    valid_to: str | None = None
+    confirmed_by: str | None = None
+    confirmed_at: str | None = None
+    version: str | None = None
+    row_id: int
+    seq: int | None = None
+    closed_by: str | None = None
+    label: dict | None = None
+
+
+class ChangesPage(BaseModel):
+    """A page of the sync feed: rows in seq order; continue with `next` (or after=cursor) until `next` is null."""
+    after: int
+    since: str | None = None
+    kind: str
+    total: int
+    n: int
+    cursor: int
+    next: str | None = None
+    rows: list[TopicRow]
+
+
+class AffairTopics(BaseModel):
+    affair: dict
+    topics: list[TopicRow]
+
+
+class TopicAffairs(BaseModel):
+    scheme: str
+    code: str
+    label: dict | None = None
+    total: int
+    limit: int
+    offset: int
+    rows: list[TopicRow]
+
+
+class UndoResult(BaseModel):
+    undone: TopicRow
+    restored: list[TopicRow]
 
 
 def label(scheme: str, code: str) -> dict | None:
@@ -112,10 +187,10 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
                   lifespan=lifespan)
     app.state.store, app.state.adhoc, app.state.t0 = st, ah, time.time()
     app.add_middleware(CORSMiddleware, allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?",
-                       allow_methods=["GET", "POST", "PUT", "OPTIONS"], allow_headers=["*"])
+                       allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"], allow_headers=["*"])
 
     # ---------------------------------------------------------------- affairs and topics
-    @app.get("/affairs/{aid}/topics")
+    @app.get("/affairs/{aid}/topics", response_model=AffairTopics)
     def affair_topics(aid: int, scheme: str | None = None, history: bool = False):
         rows = [with_label(r) for r in st.topics_for(aid, scheme, history)]
         aff = st.affair(aid)
@@ -123,7 +198,7 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
             raise HTTPException(404, f"affair {aid} not loaded")
         return {"affair": aff or {"id": aid}, "topics": rows}
 
-    @app.get("/topics/{rest:path}")
+    @app.get("/topics/{rest:path}", response_model=TopicAffairs)
     def topic_affairs(rest: str, date_from: str | None = Query(None, alias="from"), date_to: str | None = Query(None, alias="to"),
                       body: str | None = None, level: str | None = None, lang: str | None = None, lane: str | None = None,
                       status: str | None = None, rank: int | None = 1, limit: int = Query(100, ge=1, le=5000),
@@ -135,11 +210,13 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         return {"scheme": scheme, "code": code, "label": label(scheme, code), "total": total, "limit": limit, "offset": offset,
                 "rows": [with_label(r) for r in rows]}
 
-    @app.post("/affairs/{aid}/topics/{rest:path}")
+    @app.post("/affairs/{aid}/topics/{rest:path}", response_model=TopicRow | UndoResult)
     def decide(aid: int, rest: str, payload: dict = Body(default={})):
-        m = re.fullmatch(r"(.+)/(confirm|reject)", rest)
+        """confirm / reject (idempotent: the same current decision by the same person returns it with `unchanged: true`)
+        and undo (closes the current decision on that code and restores the rows it had closed)."""
+        m = re.fullmatch(r"(.+)/(confirm|reject|undo)", rest)
         if not m:
-            raise HTTPException(404, "use /affairs/{id}/topics/{code}/confirm|reject")
+            raise HTTPException(404, "use /affairs/{id}/topics/{code}/confirm|reject|undo")
         code, action = m.group(1), m.group(2)
         scheme = payload.get("scheme") or scheme_of(code)
         if not scheme:
@@ -150,22 +227,43 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         if scheme.startswith("adhoc/") and code not in (f"{scheme}:yes", f"{scheme}:no"):
             raise HTTPException(422, f"{code} is not a code of {scheme} (:yes / :no)")
         try:
+            if action == "undo":
+                u = st.undo(aid, scheme, code, payload.get("by", ""))
+                return {"undone": with_label(u["undone"]), "restored": [with_label(r) for r in u["restored"]]}
             row = st.decide(aid, scheme, code, action, payload.get("by", ""))
         except ValueError as e:
             raise HTTPException(422, str(e))
+        except LookupError as e:
+            raise HTTPException(409, str(e))
         return with_label(row)
 
-    @app.get("/changes")
-    def changes(since: str, scheme: str | None = None, limit: int = Query(1000, ge=1, le=20000), offset: int = Query(0, ge=0)):
+    def feed(request: Request, after: int, since: str | None, scheme: str | None, body: str | None, kind: str, limit: int):
         try:
-            rows = st.changes(since, scheme, limit, offset)
+            total, rows = st.changes(after, since, scheme, body, kind, limit)
         except ValueError as e:
-            raise HTTPException(422, f"since: {e}")
-        return {"since": since, "n": len(rows), "rows": rows}
+            raise HTTPException(422, str(e))
+        cur = rows[-1]["seq"] if rows else after
+        q = {k: v for k, v in dict(since=since, scheme=scheme, body=body, kind=kind if kind != "all" else None, limit=limit).items() if v}
+        nxt = f"{request.url.path}?" + urllib.parse.urlencode(dict(q, after=cur)) if total > len(rows) else None
+        return {"after": after, "since": since, "kind": kind, "total": total, "n": len(rows), "cursor": cur, "next": nxt,
+                "rows": rows}
+
+    @app.get("/changes", response_model=ChangesPage)
+    def changes(request: Request, after: int = Query(0, ge=0), since: str | None = None, scheme: str | None = None,
+                body: str | None = None, kind: str = "all", limit: int = Query(1000, ge=1, le=5000)):
+        """Sync feed: every insert and every close, in `seq` order. Upsert by row_id; continue with `next`."""
+        return feed(request, after, since, scheme, body, kind, limit)
+
+    @app.get("/decisions", response_model=ChangesPage)
+    def decisions(request: Request, after: int = Query(0, ge=0), since: str | None = None, scheme: str | None = None,
+                  body: str | None = None, limit: int = Query(1000, ge=1, le=5000)):
+        """The editors' decisions only (the feed with kind=decisions)."""
+        return feed(request, after, since, scheme, body, "decisions", limit)
 
     @app.get("/coverage")
-    def coverage(scheme: str = "aps"):
-        return {"scheme": scheme, "bodies": st.coverage(scheme)}
+    def coverage(scheme: str = "aps", since: str | None = None):
+        """Per body over the affairs begun since `since` (default QS_SCOPE_SINCE, the export's slice)."""
+        return {"scheme": scheme, "since": st.scope(since), "bodies": st.coverage(scheme, since)}
 
     @app.get("/schemes")
     def schemes():
@@ -185,7 +283,8 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         except ValueError as e:
             raise HTTPException(422, str(e))
         return {"slug": job.slug, "topic": job.topic, "terms": job.terms, "terms_pending": job.terms_thread.is_alive(),
-                "period": job.period, "stream": f"/adhoc/{job.slug}/stream"}
+                "period": job.period, "period_name": job.info.get("period_name"), "estimate": job.info.get("estimate"),
+                "stream": f"/adhoc/{job.slug}/stream"}
 
     def _job(slug: str):
         job = ah.jobs.get(slug)
@@ -196,8 +295,8 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
     @app.get("/adhoc/{slug}")
     def adhoc_state(slug: str):
         job = _job(slug)
-        return {"slug": slug, "topic": job.topic, "terms": job.terms, "period": job.period, "done": job.done,
-                "error": job.error, "summary": job.summary(),
+        return {"slug": slug, "topic": job.topic, "terms": job.terms, "period": job.period, "period_name": job.info.get("period_name"),
+                "done": job.done, "stop": job.stop_reason, "error": job.error, "summary": job.summary(),
                 "decisions": sorted(job.decisions.values(), key=lambda d: (d["date"], d["id"]), reverse=True)}
 
     @app.get("/adhoc/{slug}/stream")
@@ -235,6 +334,16 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         job = _job(slug)
         job.stop.set()
         return {"slug": slug, "stopping": True}
+
+    @app.post("/adhoc/{slug}/continue")
+    def adhoc_continue(slug: str):
+        """Read on after `cap` or `stopped`: the affairs not yet decided, with a fresh call budget; same stream."""
+        _job(slug)
+        try:
+            job = ah.resume(slug)
+        except RuntimeError as e:
+            raise HTTPException(409, str(e))
+        return {"slug": slug, "unread": job.summary()["unread"], "stream": f"/adhoc/{slug}/stream?from={len(job.events)}"}
 
     @app.put("/adhoc/{slug}/terms")
     def adhoc_terms(slug: str, payload: dict = Body(...)):

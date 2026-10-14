@@ -91,3 +91,24 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 - «zu prüfen» = undecided rows in the topic's please_check lane (Bern scheme: `bi`), the same number in subtitle, Pult tab,
   week line and map ticks; the fact line shows the export's global count, labelled «alle Themen (Export)».
 - Prüfstand bolds row 1 of the first human table (now D4, shipped); op label from `curve.op`; no fixed coverage in the app.
+
+## Dogfood round 1 (14 Oct)
+- Pult tabs: «neu diese Woche» (every undecided hit begun in the Pult week, please_check first; `[‹] [›]` or `[`/`]`
+  step the week; default = newest week up to `meta.until` with a hit; the brush does not apply) · «zu prüfen» · übernommen
+  · Status geändert · erledigt. A key that would change an existing decision asks first (same key again = overwrite).
+- Server decisions: `syncDecisions()` reads `GET /changes?kind=decisions&since=…` (follows `next`/`cursor`; on a server
+  without `kind` it skips past the machine load time and pages by offset), on start, after each decision and every 60 s;
+  the newest row per (topic, affair) wins, a closed newest row counts as undone. `u` undoes the selected row's decision,
+  else the last decision of this session: `POST /affairs/{id}/topics/{code}/undo {by, scheme}`; without that endpoint the
+  state line says the undo is local only.
+- APS chapter queues hold only that chapter's affairs (`check` = hit ∧ lane). After `2` on a chapter or Bern row, the
+  state line offers the alternatives on 1–9 (APS: ranked chapters from `detail.aps.rank`; Bern: the other directorates),
+  0 = no correction; the pick POSTs `confirm` of the corrected code. Bern queue = `be_lane`.
+- FR: `detail.title_alt`/`title_long_alt` shown when `alt_lang` = UI language, original beside it; parliament names
+  from bodies.json (no "Name Place" doubling; English placeholders fall back to German); CSV lane/decision values and
+  method line (parliament names, coverage in the period) in the UI language; decision times in local time.
+- Neues Thema: period choice (letzte Woche = server default, letzter Monat = from/to, 2025–26), «liest {from} – {to}» from
+  the API, the map/brush follow it; a run that ends early (error, cap, read < total) says «gestoppt bei r / n (why)» and
+  offers no [speichern].
+- Esc never resets the period; click on a week = that week, click again = all; «Auswahl» re-renders on every change.
+- Picker «alle Geschäfte»: every affair, search across all; share = matches / all affairs of the parliament; no Pult.

@@ -22,6 +22,8 @@
 | valid_from, valid_to | timestamptz | versioning; `valid_to` null = current |
 | confirmed_by, confirmed_at | text, timestamptz | set by `POST …/confirm|reject` |
 | version | text | engine version (`0.6.0`) |
+| seq | bigint | change sequence: set on insert and again when the row is closed (the `/changes` cursor) |
+| closed_by | text | who closed the row, when a person did (a decision or an undo) |
 
 Generated and confirmed content are always distinguishable (`provenance`). A rejection keeps the inferred row (with `valid_to`) and adds a `rejected` row.
 
@@ -29,7 +31,8 @@ Generated and confirmed content are always distinguishable (`provenance`). A rej
 - `GET /affairs/{id}/topics` → `{affair, topics: [row…]}`
 - `GET /topics/{scheme}/{code}/affairs?from=&to=&body=&level=&lang=&lane=&status=&limit=&offset=` → rows + affair summary
 - `POST /affairs/{id}/topics/{code}/confirm|reject` body `{"by": "name", "scheme": "aps"}` → new row
-- `GET /changes?since=ISO` → rows whose `valid_from` or `valid_to` is after `since`
+- `POST /affairs/{id}/topics/{code}/undo` body `{"by": "name", "scheme": "aps"}` → closes the current decision (closed_by) and restores the rows it had closed; repeating a current confirm/reject by the same person returns it (`unchanged: true`), no new row
+- `GET /changes?after=<seq>&since=&scheme=&body=&kind=all|decisions|machine&limit=≤5000` → `{total, n, cursor, next, rows}` in `seq` order; every insert and every close exactly once (upsert by `row_id`, follow `next`); `GET /decisions` = `kind=decisions`
 - `GET /coverage` → per body: affairs, scored, scored share, title-only share, covered from year
 - `POST /adhoc` body `{"sentence": "...", "lang": "de", "period": "last_week"}` → `{slug, topic}`; `GET /adhoc/{slug}/stream` (SSE: one event per decision `{id, p, flag, t}` + progress)
 - `GET /health`, `GET /metrics` (affairs, rows, pending, last run wall time, list-price USD)

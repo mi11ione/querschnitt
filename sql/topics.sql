@@ -2,6 +2,8 @@
 -- One row per affair × scheme × level × rank × version. Rows are never updated except to close them (`valid_to`):
 -- a re-score or an editor's decision adds a row; `valid_to IS NULL` = current. Machine rows have provenance 'inferred',
 -- editor decisions provenance 'confirmed' (status 'confirmed' or 'rejected') with who and when.
+-- `seq` orders every change (an insert, and a close, which re-stamps the row): a sync client reads `seq > cursor` and
+-- upserts by row_id, so no change is lost, whatever the page size and however many rows share one valid_from.
 CREATE TABLE IF NOT EXISTS topics (
   row_id        bigserial PRIMARY KEY,
   affair_id     bigint      NOT NULL,             -- OPD affairs.id
@@ -26,6 +28,8 @@ CREATE TABLE IF NOT EXISTS topics (
   confirmed_by  text,
   confirmed_at  timestamptz,
   version       text,                             -- engine version
+  seq           bigint,                           -- change sequence: set on insert and again on close
+  closed_by     text,                             -- who closed the row, when a person did (a decision or an undo)
   CHECK (provenance = 'inferred' OR (confirmed_by IS NOT NULL AND confirmed_at IS NOT NULL))
 );
 CREATE INDEX IF NOT EXISTS topics_current_affair ON topics (affair_id) WHERE valid_to IS NULL;
@@ -33,6 +37,7 @@ CREATE INDEX IF NOT EXISTS topics_current_code ON topics (scheme, code) WHERE va
 CREATE INDEX IF NOT EXISTS topics_key ON topics (affair_id, scheme, level, rank, provenance);
 CREATE INDEX IF NOT EXISTS topics_valid_from ON topics (valid_from);
 CREATE INDEX IF NOT EXISTS topics_valid_to ON topics (valid_to);
+-- (topics_seq on topics (seq) is created by the store after the column migration of older databases)
 CREATE OR REPLACE VIEW topics_current AS SELECT * FROM topics WHERE valid_to IS NULL;
 
 -- Service tables (Querschnitt's own; prefixed so they never collide with OPD's tables in a shared database).
@@ -44,6 +49,10 @@ CREATE TABLE IF NOT EXISTS qs_affairs (
 );
 CREATE INDEX IF NOT EXISTS qs_affairs_body_date ON qs_affairs (body_key, date);
 CREATE INDEX IF NOT EXISTS qs_affairs_date ON qs_affairs (date);
+-- qs_bodies: parliament names and the year OPD's data for it starts (the export's bodies.json, or the inputs).
+CREATE TABLE IF NOT EXISTS qs_bodies (
+  key text PRIMARY KEY, name_de text, name_fr text, level text, canton text, lang text, covered_from integer
+);
 -- qs_runs: one line per load / nightly delta (the /metrics source).
 CREATE TABLE IF NOT EXISTS qs_runs (
   id bigserial PRIMARY KEY, ts timestamptz NOT NULL DEFAULT now(), kind text NOT NULL, affairs integer, rows integer,

@@ -140,3 +140,65 @@ def test_terms_put_is_corpus_checked(api):
     t = api.put(f"/adhoc/{r['slug']}/terms", json={"terms": {"de": ["Wolf", "xyzzyqq"], "fr": ["loup"]}}).json()["terms"]
     assert [x["term"] for x in t["de"]] in (["Wolf"], [])
     assert all(x["term"] != "xyzzyqq" for x in t["de"])
+
+
+def test_first_calls_work_without_a_runs_dir(store, fake, tmp_path, monkeypatch):
+    """The client's ledger lives in the runs dir; it must exist before the first generation call (dogfood: FileNotFoundError)."""
+    from querschnitt import client as C
+    from querschnitt.adhoc import Adhoc
+    monkeypatch.setattr(C.Guard.__init__, "__defaults__", (50.0, 0.15))
+    for k, v in dict(QS_BASE_URL=fake.url, QS_API_KEY="t", QS_KEY_FILE=str(tmp_path / "nokey")).items():
+        monkeypatch.setenv(k, v)
+    monkeypatch.delenv("QS_ADHOC_LEDGER", raising=False)
+    ah = Adhoc(store, out=tmp_path / "does" / "not" / "exist")
+    job = ah.start("Wolf und Herdenschutz", "de", limit=2)
+    job.thread.join(20)
+    assert job.topic["generated"] is True and any(job.terms.values())
+    assert job.info["terms_generation"].get("error") is None and job.stop_reason == "done"
+    ah.shutdown()
+
+
+def test_cap_is_explicit_and_continue_reads_on(api):
+    api.ah.max_calls = 6
+    r = api.post("/adhoc", json={"sentence": "Digitale Verwaltung", "lang": "de", "period": "2026-09-01..2026-10-31"}).json()
+    st = wait(api, r["slug"])
+    assert st["stop"] == "cap" and st["summary"]["stop"] == "cap" and st["error"] is None
+    assert 0 < st["summary"]["read"] <= 6 and st["summary"]["unread"] > 0
+    ev = sse(api.get(f"/adhoc/{r['slug']}/stream").text)
+    done = ev[-1]
+    assert done[0] == "done" and done[1]["stop"] == "cap" and done[1]["period"] == ["2026-09-01", "2026-10-31"]
+    assert all(d["period"] == ["2026-09-01", "2026-10-31"] for k, d in ev if k == "progress")
+    read1 = st["summary"]["read"]
+    api.ah.max_calls = None
+    c = api.post(f"/adhoc/{r['slug']}/continue")
+    assert c.status_code == 200 and c.json()["unread"] == st["summary"]["unread"]
+    st2 = wait(api, r["slug"])
+    assert st2["stop"] == "done" and st2["summary"]["unread"] == 0 and st2["summary"]["read"] > read1
+    assert len({d["id"] for d in st2["decisions"]}) == st2["summary"]["read"]           # nothing read twice
+    assert api.post(f"/adhoc/{r['slug']}/continue").status_code == 409
+
+
+def test_named_periods_and_estimate(api):
+    r = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "period": "last_month", "limit": 1}).json()
+    f, t = r["period"]
+    import datetime as dt
+    assert (dt.date.fromisoformat(t) - dt.date.fromisoformat(f)).days == 29 and r["period_name"] == "last_month"
+    assert r["estimate"]["affairs"] >= 1 and r["estimate"]["mode"] == "all" and r["estimate"]["seconds"] >= 0
+    wait(api, r["slug"])
+    s = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "period": "scored", "limit": 1}).json()
+    assert s["period"][0] == "2025-01-01" and s["period_name"] == "scored"
+    wait(api, s["slug"])
+    d = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "from": "2026-10-01", "to": "2026-10-05", "limit": 1}).json()
+    assert d["period"] == ["2026-10-01", "2026-10-05"]
+    wait(api, d["slug"])
+    assert api.post("/adhoc", json={"sentence": "Wolf", "period": "last_century"}).status_code == 422
+
+
+def test_user_stop_is_reported(api, fake):
+    fake.latency = 0.05
+    r = api.post("/adhoc", json={"sentence": "Digitale Verwaltung", "lang": "de", "period": "scored"}).json()
+    time.sleep(0.3)
+    api.post(f"/adhoc/{r['slug']}/stop")
+    st = wait(api, r["slug"])
+    fake.latency = 0.0
+    assert st["stop"] == "stopped" and st["summary"]["unread"] > 0

@@ -74,10 +74,10 @@ def test_changes_since(store):
     t = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() - 1))
     time.sleep(0.01)
     store.decide(AID, "adhoc/digitalisierung", "adhoc/digitalisierung:yes", "confirm", "x")
-    ch = store.changes(t)
+    ch = store.changes(since=t)[1]
     assert any(r["provenance"] == "confirmed" for r in ch)          # the new decision
     assert any(r["valid_to"] for r in ch)                           # the machine row it closed
-    assert store.changes("2999-01-01") == []
+    assert store.changes(since="2999-01-01") == (0, [])
 
 
 def test_pending_counts_changed_inputs(store):
@@ -91,7 +91,8 @@ def test_coverage_and_metrics(store):
     assert cov["CHE"]["affairs"] >= cov["CHE"]["scored"] > 0
     assert 0 <= cov["CHE"]["scored_share"] <= 1
     m = store.metrics()
-    assert m["rows"] > 0 and m["affairs"] == 80 and m["store"] == store.kind
+    assert m["rows"] > 0 and m["affairs_loaded"] == 80 and m["store"] == store.kind
+    assert m["affairs"] == 60 == sum(c["affairs"] for c in store.coverage())     # the 2025- scope; 20 affairs are from 2019
 
 
 def test_postgres_if_available():

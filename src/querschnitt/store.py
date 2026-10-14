@@ -5,9 +5,16 @@ Versioning (docs/CONTRACT.md §1): a row is never changed except to close it (`v
 each (affair, scheme, level, rank) with the latest machine row for that key; identical content is skipped, changed
 content closes the current row and adds a new one, and keys that disappear from a re-scored affair are closed. An
 editor's confirm or reject adds a `provenance = confirmed` row with who and when and closes the machine row it decides;
-the machine row stays in the history, and a later identical reload does not bring it back."""
+the machine row stays in the history, and a later identical reload does not bring it back. Repeating the current
+decision adds nothing; `undo` closes the decision (closed_by, valid_to) and restores, as new current rows, the rows it
+had closed.
+
+Every change gets the next `seq` (an insert, and a close, which re-stamps the row): `/changes?after=<seq>` is a feed in
+which no change is lost. Writers are serialized (SQLite BEGIN IMMEDIATE, Postgres advisory lock), so `seq` order is
+commit order across processes."""
 from __future__ import annotations
 
+import contextlib
 import datetime as dt
 import gzip
 import json
@@ -21,13 +28,31 @@ ROOT = Path(__file__).resolve().parents[2]
 SQL = ROOT / "sql"
 COLS = ["affair_id", "body_key", "scheme", "level", "code", "rank", "p", "p_raw", "lane", "status", "provenance",
         "evidence", "model", "build", "cutoffs_id", "prompt_id", "input_hash", "valid_from", "valid_to", "confirmed_by",
-        "confirmed_at", "version"]
+        "confirmed_at", "version", "seq", "closed_by"]
 CONTENT = ["body_key", "code", "p", "p_raw", "lane", "evidence", "model", "build", "cutoffs_id", "prompt_id",
            "input_hash", "version"]                      # a change in any of these is a new version
 AFF_COLS = ["id", "body_key", "level", "canton", "parl", "parl_fr", "lang", "date", "number", "title", "title_long",
             "type", "type_h", "state", "url", "submitter", "party", "submitter_type", "has_text", "text_src",
             "input_hash", "updated"]
 TS_COLS = ("valid_from", "valid_to", "confirmed_at", "ts")
+EVIDENCE_KEYS = ("source", "field", "char_start", "char_end", "quote")
+KINDS = {"all": None, "decisions": "confirmed", "machine": "inferred"}
+
+
+def norm_evidence(ev, text_src: str | None = None):
+    """Evidence in the CONTRACT §1 shape {source, field, char_start, char_end, quote}; `start`/`end` are accepted, and a
+    missing source is the field for titles, else the affair's text source (text:<id> / doc:<id>)."""
+    if isinstance(ev, str):
+        try:
+            ev = json.loads(ev)
+        except ValueError:
+            return ev
+    if not isinstance(ev, dict):
+        return ev
+    f = ev.get("field")
+    src = ev.get("source") or (f if f in ("title", "title_long") else (text_src or f))
+    return dict(source=src, field=f, char_start=ev.get("char_start", ev.get("start")), char_end=ev.get("char_end", ev.get("end")),
+                quote=ev.get("quote"))
 
 
 def now() -> dt.datetime:
@@ -89,6 +114,7 @@ class Store:
         self.dsn = dsn if dsn is not None else os.environ.get("QS_PG_DSN") or None
         self.path = path or os.environ.get("QS_DB") or str(ROOT / "data" / "querschnitt.sqlite")
         self.lock = threading.RLock()
+        self._tx_depth = 0
         if self.dsn:
             import psycopg
             self.pg = True
@@ -125,7 +151,7 @@ class Store:
             cur = self.ex(sql, params)
             names = [d[0] for d in cur.description]
             out = [dict(zip(names, r)) for r in cur.fetchall()]
-            if self.pg:
+            if self.pg and not self._tx_depth:
                 self.conn.commit()          # end the read transaction (no idle-in-transaction connections)
             return out
 
@@ -135,15 +161,55 @@ class Store:
 
     def commit(self):
         with self.lock:
+            if not self._tx_depth:
+                self.conn.commit()
+
+    @contextlib.contextmanager
+    def tx(self):
+        """One serialized write transaction (SQLite BEGIN IMMEDIATE / Postgres advisory lock) with a seq allocator."""
+        with self.lock:
+            if self._tx_depth:
+                self._tx_depth += 1
+                try:
+                    yield
+                finally:
+                    self._tx_depth -= 1
+                return
             self.conn.commit()
+            if self.pg:
+                self.conn.execute("SELECT pg_advisory_xact_lock(714001)")
+            else:
+                self.conn.execute("BEGIN IMMEDIATE")
+            self._tx_depth = 1
+            try:
+                self._seq = int(self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM topics")["m"])
+                yield
+                self._tx_depth = 0
+                self.conn.commit()
+            except BaseException:
+                self._tx_depth = 0
+                self.conn.rollback()
+                raise
+
+    def next_seq(self) -> int:
+        self._seq += 1
+        return self._seq
 
     def init(self):
         ddl = (SQL / ("topics.sql" if self.pg else "topics.sqlite.sql")).read_text()
         with self.lock:
             if self.pg:
                 self.conn.execute(ddl)
+                for c, ty in (("seq", "bigint"), ("closed_by", "text")):
+                    self.conn.execute(f"ALTER TABLE topics ADD COLUMN IF NOT EXISTS {c} {ty}")
             else:
                 self.conn.executescript(ddl)
+                have = {r[1] for r in self.conn.execute("PRAGMA table_info(topics)")}
+                for c, ty in (("seq", "INTEGER"), ("closed_by", "TEXT")):
+                    if c not in have:
+                        self.conn.execute(f"ALTER TABLE topics ADD COLUMN {c} {ty}")
+            self.conn.execute("UPDATE topics SET seq = row_id WHERE seq IS NULL")       # databases from before seq
+            self.conn.execute("CREATE INDEX IF NOT EXISTS topics_seq ON topics (seq)")
             self.conn.commit()
 
     def close(self):
@@ -158,11 +224,8 @@ class Store:
         for c in TS_COLS:
             if c in r and isinstance(r[c], dt.datetime):
                 r[c] = iso(r[c])
-        if isinstance(r.get("evidence"), str):
-            try:
-                r["evidence"] = json.loads(r["evidence"])
-            except ValueError:
-                pass
+        if r.get("evidence") is not None:
+            r["evidence"] = norm_evidence(r["evidence"])
         if "has_text" in r and r["has_text"] is not None:
             r["has_text"] = bool(r["has_text"])
         return r
@@ -175,7 +238,15 @@ class Store:
         ev = r.get("evidence")
         r["evidence"] = json.dumps(ev, ensure_ascii=False) if isinstance(ev, (dict, list)) else (ev or None)
         r.setdefault("status", "suggested"); r.setdefault("provenance", "inferred"); r.setdefault("rank", 1)
+        r["seq"] = self.next_seq()
+        r["closed_by"] = None
         return tuple(r.get(c) for c in COLS)
+
+    def _close(self, row_ids: list[int], t: dt.datetime, by: str | None = None):
+        """Close current rows (valid_to, a new seq, and who when a person closes them)."""
+        if row_ids:
+            self.ex("UPDATE topics SET valid_to = ?, seq = ?, closed_by = ? WHERE row_id = ? AND valid_to IS NULL",
+                    [(self._ts(t), self.next_seq(), by, rid) for rid in row_ids], many=True)
 
     def _insert_sql(self) -> str:
         vals = ", ".join("CAST(? AS jsonb)" if (self.pg and c == "evidence") else "?" for c in COLS)
@@ -210,9 +281,14 @@ class Store:
         return st
 
     def _load_chunk(self, groups: dict[int, list[dict]], order: list[int], seen: set[int], t, st: dict):
+        with self.tx():
+            self._load_chunk_tx(groups, order, seen, t, st)
+
+    def _load_chunk_tx(self, groups: dict[int, list[dict]], order: list[int], seen: set[int], t, st: dict):
         ids = list(groups)
         latest: dict[tuple, dict] = {}
         current: dict[tuple, list[int]] = {}
+        tsrc: dict[int, str] = {}
         for i in range(0, len(ids), 900):
             part = ids[i:i + 900]
             q = ("SELECT row_id, affair_id, scheme, level, rank, valid_to, " + ", ".join(CONTENT) +
@@ -223,11 +299,19 @@ class Store:
                     latest[k] = r
                 if r["valid_to"] is None:
                     current.setdefault(k, []).append(r["row_id"])
+            if any(r.get("evidence") for a in part for r in groups[a]):
+                tsrc.update({r["id"]: r["text_src"] for r in self.all(
+                    f"SELECT id, text_src FROM qs_affairs WHERE id IN ({', '.join('?' * len(part))})", part)})
+        for k, r in latest.items():
+            if r.get("evidence") is not None:
+                r["evidence"] = norm_evidence(r["evidence"])
         close, ins = [], []
         for a in order:
             keys = set()
             for r in groups[a]:
                 r.setdefault("rank", 1)
+                if r.get("evidence"):
+                    r["evidence"] = norm_evidence(r["evidence"], tsrc.get(a))
                 k = (a, r["scheme"], int(r["level"]), int(r["rank"]))
                 keys.add(k)
                 old = latest.get(k)
@@ -235,8 +319,7 @@ class Store:
                     st["unchanged"] += 1
                     continue
                 close += current.get(k, [])
-                r = dict(r, provenance="inferred", valid_from=None, valid_to=None)
-                ins.append(self._ins_row(r, t))
+                ins.append(dict(r, provenance="inferred", valid_from=None, valid_to=None))
             if a not in seen:                                   # keys of re-scored schemes that vanished
                 schemes = {k[1] for k in keys}
                 for k, rids in current.items():
@@ -244,11 +327,10 @@ class Store:
                         close += rids
             st["affairs"] += 1
         if close:
-            self.ex("UPDATE topics SET valid_to = ? WHERE row_id = ? AND valid_to IS NULL",
-                    [(self._ts(t), rid) for rid in close], many=True)
+            self._close(close, t)
             st["closed"] += len(close)
         if ins:
-            self.ex(self._insert_sql(), ins, many=True)
+            self.ex(self._insert_sql(), [self._ins_row(r, t) for r in ins], many=True)
             st["inserted"] += len(ins)
 
     def load_affairs(self, inputs: str | Path) -> int:
@@ -271,7 +353,29 @@ class Store:
         if buf:
             self.ex(sql, buf, many=True)
         self.commit()
+        rows = self.all("SELECT body_key AS key, MIN(parl) AS name_de, MIN(parl_fr) AS name_fr, MIN(level) AS level, "
+                        "MIN(canton) AS canton, MIN(SUBSTR(date, 1, 4)) AS y FROM qs_affairs "
+                        "WHERE date >= '1800' GROUP BY body_key")
+        self.load_bodies([dict(r, covered_from=int(r["y"]) if (r["y"] or "").isdigit() else None) for r in rows], keep_names=True)
         return n
+
+    def load_bodies(self, bodies: list[dict], keep_names: bool = False) -> int:
+        """Parliaments (key, names, level, canton, lang, covered_from). covered_from keeps the earliest year seen, so a
+        slim inputs file (the slice only) never moves it later than the export's bodies.json says."""
+        old = {r["key"]: r for r in self.all("SELECT * FROM qs_bodies")}
+        cols = ["key", "name_de", "name_fr", "level", "canton", "lang", "covered_from"]
+        out = []
+        for b in bodies:
+            o = old.get(b["key"]) or {}
+            cf = [int(x) for x in (b.get("covered_from"), o.get("covered_from")) if x not in (None, "") and str(x)[:4].isdigit()]
+            r = {c: (o.get(c) if (keep_names and o.get(c)) else (b.get(c) or o.get(c))) for c in cols[1:6]}
+            out.append((b["key"], *[r[c] for c in cols[1:6]], min(cf) if cf else None))
+        sql = (f"INSERT INTO qs_bodies ({', '.join(cols)}) VALUES ({', '.join('?' * len(cols))}) "
+               "ON CONFLICT (key) DO UPDATE SET " + ", ".join(f"{c} = excluded.{c}" for c in cols[1:]))
+        if out:
+            self.ex(sql, out, many=True)
+        self.commit()
+        return len(out)
 
     def load_affairs_export(self, d: str | Path) -> int:
         """Affair summaries from the static export (app/data: affairs.json columns, bodies.json, detail/*.json), for a
@@ -299,7 +403,15 @@ class Store:
         for i in range(0, len(buf), 5000):
             self.ex(sql, buf[i:i + 5000], many=True)
         self.commit()
+        if B:
+            self.load_bodies_json(d / "bodies.json")
         return len(buf)
+
+    def load_bodies_json(self, path: str | Path) -> int:
+        """Parliament names and covered_from from the export's bodies.json."""
+        B = json.loads(Path(path).read_text())
+        return self.load_bodies([dict(key=b["key"], name_de=b.get("name_de"), name_fr=b.get("name_fr"), level=b.get("level"),
+                                      canton=b.get("canton"), lang=b.get("lang"), covered_from=b.get("covered_from")) for b in B])
 
     # ------------------------------------------------------------------ reads
     def affair(self, aid: int) -> dict | None:
@@ -345,13 +457,24 @@ class Store:
             out.append(r)
         return total, out
 
-    def changes(self, since: str, scheme: str | None = None, limit: int = 1000, offset: int = 0) -> list[dict]:
-        t = self._ts(parse_ts(since))
-        q, a = "SELECT * FROM topics WHERE (valid_from > ? OR valid_to > ?)", [t, t]
-        if scheme:
-            q += " AND scheme = ?"; a.append(scheme)
-        q += " ORDER BY row_id LIMIT ? OFFSET ?"
-        return [self._out(r) for r in self.all(q, a + [int(limit), int(offset)])]
+    def changes(self, after: int = 0, since: str | None = None, scheme: str | None = None, body: str | None = None,
+                kind: str = "all", limit: int = 1000) -> tuple[int, list[dict]]:
+        """The sync feed: rows whose last change (insert or close) has seq > `after`, in seq order, optionally only those
+        changed after `since` (valid_from or valid_to), of one scheme / body, decisions or machine rows. Returns (rows
+        matching after the cursor, page). A client upserts by row_id and continues from the page's last seq."""
+        if kind not in KINDS:
+            raise ValueError(f"kind must be one of {', '.join(KINDS)}")
+        w, a = ["seq > ?"], [int(after)]
+        if since:
+            t = self._ts(parse_ts(since))
+            w.append("(valid_from > ? OR valid_to > ?)"); a += [t, t]
+        for cond, v in (("scheme = ?", scheme), ("body_key = ?", body), ("provenance = ?", KINDS[kind])):
+            if v:
+                w.append(cond); a.append(v)
+        where = " AND ".join(w)
+        total = int(self.one(f"SELECT COUNT(*) AS n FROM topics WHERE {where}", a)["n"])
+        rows = self.all(f"SELECT * FROM topics WHERE {where} ORDER BY seq LIMIT ?", a + [int(limit)])
+        return total, [self._out(r) for r in rows]
 
     def schemes(self) -> list[str]:
         return [r["scheme"] for r in self.all("SELECT DISTINCT scheme FROM topics WHERE valid_to IS NULL ORDER BY scheme")]
@@ -361,87 +484,115 @@ class Store:
         """confirm | reject one code for one affair. Adds a `provenance = confirmed` row (status confirmed / rejected,
         confirmed_by, confirmed_at; p, evidence, build and prompt copied from the machine row it decides) and closes
         what it decides: a confirm closes every current row of that scheme at that level (the ranked machine suggestions
-        and any earlier decision); a reject closes the current rows with that code. Returns the new row."""
+        and any earlier decision); a reject closes the current rows with that code. The same decision by the same person
+        while it is current returns that row (`unchanged: true`) and adds nothing."""
         assert action in ("confirm", "reject")
-        by = (by or "").strip()
+        by = (by or "").strip()[:200]
         if not by:
             raise ValueError("`by` is required")
-        cur = self.topics_for(aid, scheme)
-        same = [r for r in cur if r["code"] == code]
-        if level is None:
-            level = same[0]["level"] if same else (2 if ":kw:" in code else 1)
-        src = min(same, key=lambda r: (r["provenance"] != "inferred", r["rank"]), default=None)
-        close = [r for r in cur if r["level"] == level] if action == "confirm" else same
-        t = now()
-        body = (src or {}).get("body_key") or (self.affair(aid) or {}).get("body_key")
-        row = dict(affair_id=aid, body_key=body, scheme=scheme, level=level, code=code, rank=1,
-                   p=(src or {}).get("p"), p_raw=(src or {}).get("p_raw"), lane=(src or {}).get("lane"),
-                   status="confirmed" if action == "confirm" else "rejected", provenance="confirmed",
-                   evidence=(src or {}).get("evidence"), model=(src or {}).get("model"), build=(src or {}).get("build"),
-                   cutoffs_id=(src or {}).get("cutoffs_id"), prompt_id=(src or {}).get("prompt_id"),
-                   input_hash=(src or {}).get("input_hash"), valid_from=t, valid_to=None, confirmed_by=by[:200],
-                   confirmed_at=t, version=(src or {}).get("version"))
-        with self.lock:
-            if close:
-                self.ex("UPDATE topics SET valid_to = ? WHERE row_id = ? AND valid_to IS NULL",
-                        [(self._ts(t), r["row_id"]) for r in close], many=True)
-            cur_ = self.ex(self._insert_sql() + (" RETURNING row_id" if self.pg else ""), self._ins_row(row, t))
-            rid = cur_.fetchone()[0] if self.pg else cur_.lastrowid
-            self.commit()
+        status = "confirmed" if action == "confirm" else "rejected"
+        with self.tx():
+            cur = self.topics_for(aid, scheme)
+            dup = [r for r in cur if r["provenance"] == "confirmed" and r["code"] == code and r["status"] == status
+                   and r["confirmed_by"] == by]
+            if dup:
+                return dict(dup[-1], unchanged=True)
+            same = [r for r in cur if r["code"] == code]
+            if level is None:
+                level = same[0]["level"] if same else (2 if ":kw:" in code else 1)
+            src = min(same, key=lambda r: (r["provenance"] != "inferred", r["rank"]), default=None) or {}
+            close = [r for r in cur if r["level"] == level] if action == "confirm" else same
+            t = now()
+            body = src.get("body_key") or (self.affair(aid) or {}).get("body_key")
+            row = dict(affair_id=aid, body_key=body, scheme=scheme, level=level, code=code, rank=1, p=src.get("p"),
+                       p_raw=src.get("p_raw"), lane=src.get("lane"), status=status, provenance="confirmed",
+                       evidence=src.get("evidence"), model=src.get("model"), build=src.get("build"),
+                       cutoffs_id=src.get("cutoffs_id"), prompt_id=src.get("prompt_id"), input_hash=src.get("input_hash"),
+                       valid_from=t, valid_to=None, confirmed_by=by, confirmed_at=t, version=src.get("version"))
+            self._close([r["row_id"] for r in close], t, by)
+            rid = self._insert(row, t)
         return self._out(self.one("SELECT * FROM topics WHERE row_id = ?", (rid,)))
+
+    def _insert(self, row: dict, t) -> int:
+        c = self.ex(self._insert_sql() + (" RETURNING row_id" if self.pg else ""), self._ins_row(row, t))
+        return c.fetchone()[0] if self.pg else c.lastrowid
+
+    def undo(self, aid: int, scheme: str, code: str, by: str) -> dict:
+        """Revert the current decision on (affair, scheme, code): close it (valid_to, closed_by = who undid it) and put back,
+        as new current rows, the rows that decision had closed. Raises LookupError when there is no current decision."""
+        by = (by or "").strip()[:200]
+        if not by:
+            raise ValueError("`by` is required")
+        with self.tx():
+            dec = [r for r in self.topics_for(aid, scheme) if r["provenance"] == "confirmed" and r["code"] == code]
+            if not dec:
+                raise LookupError(f"no current decision on {code} for affair {aid}")
+            d = max(dec, key=lambda r: r["row_id"])
+            prev = self.all("SELECT * FROM topics WHERE affair_id = ? AND scheme = ? AND valid_to = ? AND row_id < ? "
+                            "AND (closed_by = ? OR closed_by IS NULL)", (aid, scheme, self._ts(parse_ts(d["valid_from"])), d["row_id"], d["confirmed_by"]))
+            t = now()
+            self._close([d["row_id"]], t, by)
+            new = []
+            for r in sorted(prev, key=lambda r: r["row_id"]):
+                r = self._out(dict(r))
+                for k in ("row_id", "seq", "closed_by", "valid_to"):
+                    r.pop(k, None)
+                new.append(self._insert(dict(r, valid_from=t), t))
+        rows = {r["row_id"]: r for r in self.topics_for(aid, scheme, history=True)}
+        return dict(undone=rows[d["row_id"]], restored=[rows[i] for i in new])
 
     # ------------------------------------------------------------------ coverage, metrics, runs
     def state_key(self) -> tuple:
         """Changes whenever rows or affairs change (cache key for whole-table aggregates)."""
-        r = self.one("SELECT MAX(row_id) AS m, COUNT(*) AS n FROM topics")
-        u = self.one("SELECT MAX(valid_to) AS v FROM topics")
+        r = self.one("SELECT MAX(seq) AS m, COUNT(*) AS n FROM topics")
         a = self.one("SELECT COUNT(*) AS n FROM qs_affairs")
-        return r["m"], r["n"], str(u["v"]), a["n"]
+        b = self.one("SELECT COUNT(*) AS n, MIN(covered_from) AS c FROM qs_bodies")
+        return r["m"], r["n"], a["n"], b["n"], b["c"]
 
-    def coverage(self, scheme: str = "aps", full_share: float = 0.9) -> list[dict]:
-        key = (scheme, full_share, self.state_key())
+    def scope(self, since: str | None = None) -> str:
+        return since or os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
+
+    def coverage(self, scheme: str = "aps", since: str | None = None) -> list[dict]:
+        key = (scheme, self.scope(since), self.state_key())
         c = getattr(self, "_cov", {})
         if key not in c:
-            self._cov = {key: self._coverage(scheme, full_share)}
+            self._cov = {key: self._coverage(scheme, self.scope(since))}
         return self._cov[key]
 
-    def _coverage(self, scheme: str = "aps", full_share: float = 0.9) -> list[dict]:
-        """Per body: affairs, scored (a current row in `scheme`), scored share, title-only share (scored affairs without
-        text beyond the title), covered_from = the first year from which every later year has scored share ≥ 0.9."""
+    def _coverage(self, scheme: str, since: str) -> list[dict]:
+        """Per body, over the affairs begun since `since` (QS_SCOPE_SINCE, default 2025-01-01: the export's slice):
+        affairs, scored (a current row in `scheme`), scored share, title-only share (scored affairs without text beyond
+        the title), by year [affairs, scored], and covered_from = the first year of OPD's data for that parliament."""
         rows = self.all(
             "SELECT a.body_key, MIN(a.parl) AS parl, MIN(a.parl_fr) AS parl_fr, MIN(a.level) AS level, "
             "SUBSTR(a.date, 1, 4) AS year, COUNT(*) AS n, COUNT(s.affair_id) AS scored, "
             "SUM(CASE WHEN s.affair_id IS NOT NULL AND NOT " + ("a.has_text" if self.pg else "(a.has_text = 1)") +
             " THEN 1 ELSE 0 END) AS title_only "
             "FROM qs_affairs a LEFT JOIN (SELECT DISTINCT affair_id FROM topics WHERE valid_to IS NULL AND scheme = ?) s "
-            "ON s.affair_id = a.id GROUP BY a.body_key, SUBSTR(a.date, 1, 4)", (scheme,))
+            "ON s.affair_id = a.id WHERE a.date >= ? GROUP BY a.body_key, SUBSTR(a.date, 1, 4)", (scheme, since))
+        B = {b["key"]: b for b in self.all("SELECT * FROM qs_bodies")}
         by: dict[str, dict] = {}
         for r in rows:
-            b = by.setdefault(r["body_key"], dict(body_key=r["body_key"], parl=r["parl"], parl_fr=r["parl_fr"],
-                                                  level=r["level"], affairs=0, scored=0, title_only=0, years={}))
+            b0 = B.get(r["body_key"]) or {}
+            b = by.setdefault(r["body_key"], dict(body_key=r["body_key"], parl=b0.get("name_de") or r["parl"],
+                                                  parl_fr=b0.get("name_fr") or r["parl_fr"], level=b0.get("level") or r["level"],
+                                                  affairs=0, scored=0, title_only=0, by_year={}, covered_from=b0.get("covered_from")))
             b["affairs"] += r["n"]; b["scored"] += r["scored"]; b["title_only"] += r["title_only"] or 0
             if r["year"]:
-                b["years"][r["year"]] = (r["n"], r["scored"])
+                b["by_year"][r["year"]] = [r["n"], r["scored"]]
         out = []
         for b in by.values():
-            cf = None
-            for y in sorted(b["years"], reverse=True):
-                n, s = b["years"][y]
-                if n and s / n >= full_share:
-                    cf = int(y)
-                else:
-                    break
             out.append(dict(body_key=b["body_key"], parl=b["parl"], parl_fr=b["parl_fr"], level=b["level"],
                             affairs=b["affairs"], scored=b["scored"],
                             scored_share=round(b["scored"] / b["affairs"], 4) if b["affairs"] else None,
                             title_only_share=round(b["title_only"] / b["scored"], 4) if b["scored"] else None,
-                            covered_from=cf))
+                            covered_from=b["covered_from"], by_year=dict(sorted(b["by_year"].items()))))
         return sorted(out, key=lambda x: (-x["affairs"], x["body_key"] or ""))
 
     def pending(self, since: str | None = None, scheme: str = "aps") -> int:
         """Affairs in scope (begin date ≥ QS_SCOPE_SINCE, default 2025-01-01) whose current input has no current
         machine row in `scheme`: new or changed affairs waiting for the batch."""
-        since = since or os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
+        since = self.scope(since)
         r = self.one("SELECT COUNT(*) AS n FROM qs_affairs a WHERE a.date >= ? AND a.input_hash IS NOT NULL AND NOT EXISTS (SELECT 1 FROM topics t "
                      "WHERE t.affair_id = a.id AND t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'inferred' "
                      "AND (t.input_hash = a.input_hash OR t.input_hash IS NULL))", (since, scheme))
@@ -462,12 +613,17 @@ class Store:
     def metrics(self) -> dict:
         c = self.one("SELECT COUNT(*) AS rows, COUNT(DISTINCT affair_id) AS affairs_with_rows, "
                      "SUM(CASE WHEN provenance = 'confirmed' THEN 1 ELSE 0 END) AS decisions FROM topics WHERE valid_to IS NULL")
-        n_aff = self.one("SELECT COUNT(*) AS n FROM qs_affairs")["n"]
+        n_all = self.one("SELECT COUNT(*) AS n FROM qs_affairs")["n"]
+        n_aff = self.one("SELECT COUNT(*) AS n FROM qs_affairs WHERE date >= ?", (self.scope(),))["n"]
+        n_sc = self.one("SELECT COUNT(DISTINCT t.affair_id) AS n FROM topics t JOIN qs_affairs a ON a.id = t.affair_id "
+                        "WHERE t.valid_to IS NULL AND t.scheme = 'aps' AND a.date >= ?", (self.scope(),))["n"]
         tot = self.one("SELECT COUNT(*) AS n FROM topics")["n"]
         last = self.runs("delta", 1) or self.runs(None, 1)
         builds = [r["build"] for r in self.all("SELECT DISTINCT build FROM topics WHERE valid_to IS NULL AND build IS NOT NULL")]
         lr = last[0] if last else {}
-        return dict(affairs=n_aff, affairs_scored=c["affairs_with_rows"] or 0, rows=c["rows"] or 0, rows_all_versions=tot,
+        seq = self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM topics")["m"]
+        return dict(affairs=n_aff, scope_since=self.scope(), affairs_aps_scored=n_sc, affairs_loaded=n_all,
+                    affairs_with_rows=c["affairs_with_rows"] or 0, rows=c["rows"] or 0, rows_all_versions=tot, seq=seq,
                     decisions=c["decisions"] or 0, pending=self.pending(), builds=builds, store=self.kind,
                     last_run=dict(kind=lr.get("kind"), ts=lr.get("ts"), affairs=lr.get("affairs"), wall_s=lr.get("wall_s"),
                                   usd=lr.get("usd"), pending=lr.get("pending"), note=lr.get("note")) if lr else None)

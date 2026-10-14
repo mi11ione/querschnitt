@@ -162,14 +162,21 @@ def evidence_of(a: dict, name: str, rows: dict) -> dict | None:
     return dict(source=src, field=r["field"], char_start=r["start"], char_end=r["end"], start=r["start"], end=r["end"], quote=r["quote"])
 
 
+def calib_key(d: dict) -> str:
+    """The recalibration map of a chapter decision: `aps-fed` when the chapter step showed labelled examples, else `aps`."""
+    return "aps-fed" if d.get("examples") else "aps"
+
+
 def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "") -> list[dict]:
-    """Decisions → CONTRACT §1 rows (chapter rank 1–3, subtopic rank 1–3, one row per ad-hoc topic)."""
+    """Decisions → CONTRACT §1 rows (chapter rank 1–3, subtopic rank 1–3, one row per ad-hoc topic). `calib(key, p)` is
+    the recalibration (Calibration.apply); the rank-1 chapter row's `p` is the one shipped value of confidence, which the
+    export's `ch_p` and detail panel copy from these rows."""
     base = dict(affair_id=a["id"], body_key=a["body"], status="suggested", provenance="inferred", model=lock["model"],
                 build=lock["fp"], input_hash=a["input_hash"], valid_from=valid_from, valid_to=None, version=VERSION)
     out = []
     d = dec.get("aps")
     if d:
-        cal = calib("aps", d["conf"]) if calib else None
+        cal = calib(calib_key(d), d["conf"]) if calib else None
         for k, c in enumerate(d["rank"][:3], 1):
             pr = d["conf"] if k == 1 else d["P"][c]
             out.append(dict(base, scheme="aps", level=1, code=APS.codes[c], rank=k, p_raw=round(pr, 4),

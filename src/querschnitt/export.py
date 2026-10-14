@@ -71,11 +71,13 @@ def run(args):
         c["check"] += bool(a and a["lane"] == "please_check")
         months[x["body"]][x["date"][:7]] += 1
         n_dec["aps"] += bool(a); n_dec["dig"] += bool(g)
-        cal = calib.apply("aps-fed" if (a and a.get("examples")) else "aps", a["conf"]) if (a and calib) else None
+        trows = topic_rows(x, d, lock, calib.apply if calib else None, now)
+        ar = sorted((r for r in trows if r["scheme"] == "aps" and r["level"] == 1), key=lambda r: r["rank"])
+        ch_p = (ar[0]["p"] if ar[0]["p"] is not None else ar[0]["p_raw"]) if ar else None   # the API row's p, nothing else
         for k, v in (("id", x["id"]), ("body", x["body"]), ("date", x["date"]), ("type_h", x["type_h"] or x["type"]), ("type", x["type"]), ("type_h_fr", x.get("type_h_fr") or ""),
                      ("state", x["state"]), ("lang", x["text_lang"] or x["lang"]), ("title", x["title"]), ("party", x["party"]),
                      ("submitter", x["submitter"]), ("stype", x["submitter_type"]),
-                     ("ch", a["ch"] if a else None), ("ch_p", round(cal if cal is not None else a["conf"], 3) if a else None),
+                     ("ch", a["ch"] if a else None), ("ch_p", round(ch_p, 3) if ch_p is not None else None),
                      ("lane", (a["lane"] == "please_check") * 1 if a else None),
                      ("subs", [1000 * APS.sub_index[s][0] + APS.sub_index[s][1] for s, _ in a["subs"]] if a else []),
                      ("dig_p", round(g["p"], 3) if g else None), ("dig_flag", int(g["flag"]) if g else None),
@@ -88,7 +90,8 @@ def run(args):
             title_long=x["title_long"], text=x["text"][:1500], text_src=x["text_src"], url=x["url"], number=x["number"],
             alt_lang=x.get("alt_lang"), title_alt=x.get("title_alt") or None, title_long_alt=x.get("title_long_alt") or None,
             n_signers=x["n_signers"], dept=x["dept"],
-            aps=dict(rank=a["rank"], conf_raw=round(a["conf"], 4), p=[round(a["P"][i], 4) for i in a["rank"]], lane=a["lane"],
+            aps=dict(rank=a["rank"], conf_raw=round(a["conf"], 4), p=[r["p"] for r in ar], p_raw=[r["p_raw"] for r in ar],
+                     p_step=[round(a["P"][i], 4) for i in a["rank"]], lane=a["lane"],
                      subs=[[s, round(p, 4)] for s, p in a["subs"]], readings=a["n_readings"], examples=a.get("examples"),
                      pids=a["pids"], evidence=a.get("evidence"), bilingual=a.get("bilingual")) if a else None,
             be=d.get("be-directorates"),
@@ -96,7 +99,7 @@ def run(args):
                      lane=g["lane"], evidence=g.get("evidence")) if g else None,
             build=lock["fp"], model=lock["model"])
         if tfile:
-            for r in topic_rows(x, d, lock, (lambda s, v: calib.apply("aps-fed" if (a and a.get("examples")) else "aps", v)) if calib else None, now):
+            for r in trows:
                 tfile.write(json.dumps(r, ensure_ascii=False) + "\n")
     if tfile:
         tfile.close()
@@ -146,7 +149,7 @@ def main(argv=None):
     ap.add_argument("--out", default=str(ROOT / "app/data"))
     ap.add_argument("--since", default="2025-01-01")
     ap.add_argument("--until", default="9999")
-    ap.add_argument("--topics-file", action="store_true")
+    ap.add_argument("--no-topics-file", dest="topics_file", action="store_false", help="skip the open topics file")
     run(ap.parse_args(argv))
 
 

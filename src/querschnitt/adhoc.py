@@ -123,6 +123,10 @@ def build_topic(sentence: str, lang: str, gen: dict | None, slug: str) -> dict:
                 sentence=sentence, lang=lang, generated=bool(gen))
 
 
+class CapReached(RuntimeError):
+    """The run's call budget (QS_ADHOC_MAX_CALLS) is spent; `continue` reads on with a fresh budget."""
+
+
 class Job:
     """One Neues-Thema run: topic, terms, period, the affairs to read, and the event log the SSE stream replays."""
 
@@ -134,6 +138,8 @@ class Job:
         self.done, self.error, self.stop = False, None, threading.Event()
         self.t0 = time.time()
         self.info: dict = {}
+        self.items: list[dict] = []
+        self.calls, self.budget, self.stop_reason = 0, None, None
 
     def emit(self, kind: str, data: dict):
         with self.cv:
@@ -146,6 +152,8 @@ class Job:
         k = sum(x["flag"] for x in out)
         lo, hi = wilson(k, len(out))
         s = dict(read=len(d), flagged=sum(x["flag"] for x in d), seconds=round(time.time() - self.t0, 1), **self.info)
+        s.update(period=list(self.period), period_name=self.info.get("period_name"), calls=self.calls, budget=self.budget,
+                 unread=max(0, (self.info.get("total") or 0) - len(d)), stop=self.stop_reason)
         if self.info.get("mode") == "candidates":
             n_non = self.info.get("non_candidates", 0)
             s["outside"] = dict(n=len(out), flagged=k, rate=round(k / len(out), 4) if out else None,
@@ -159,27 +167,32 @@ class Adhoc:
         self.store, self.workers = store, workers
         self._client = client
         self.out = Path(out or os.environ.get("QS_ADHOC_RUNS") or ROOT / "runs" / "adhoc")
+        self.out.mkdir(parents=True, exist_ok=True)     # the ledger lives here: a missing dir failed the first calls
         self.jobs: dict[str, Job] = {}
         self.lock = threading.Lock()
         self.calls = 0
-        self.max_calls = int(os.environ.get("QS_ADHOC_MAX_CALLS", "0")) or None
+        self.max_calls = int(os.environ.get("QS_ADHOC_MAX_CALLS", "0")) or None       # per run (start / continue)
 
     @property
     def client(self) -> Client:
         if self._client is None:
             ep = Endpoint.from_env()
             ep.conc = int(os.environ.get("QS_ADHOC_CONC", "3"))
-            self._client = Client(ep, ledger=os.environ.get("QS_ADHOC_LEDGER") or str(self.out / "ledger.jsonl"),
+            led = Path(os.environ.get("QS_ADHOC_LEDGER") or self.out / "ledger.jsonl")
+            led.parent.mkdir(parents=True, exist_ok=True)
+            self._client = Client(ep, ledger=str(led),
                                   cap_usd=float(os.environ.get("QS_ADHOC_CAP", "2.0")), tag="adhoc")
         return self._client
 
-    def _count(self, n: int = 1):
+    def _count(self, job: "Job | None" = None, n: int = 1):
+        """Count a model call: per run against its budget (QS_ADHOC_MAX_CALLS, per start and per continue), and per process."""
         with self.lock:
-            if self.max_calls and self.calls + n > self.max_calls:
-                raise RuntimeError(f"QS_ADHOC_MAX_CALLS {self.max_calls} reached")
+            if job is not None and job.budget is not None and job.calls + n > job.budget:
+                raise CapReached(f"call budget {job.budget} of this run spent")
+            if job is not None:
+                job.calls += n
             self.calls += n
 
-    # ------------------------------------------------------------------ topic, terms, period
     def generate(self, sentence: str, prompt: str = TOPIC_PROMPT, max_tokens: int = 200) -> tuple[dict | None, dict]:
         """One plain generation request (user message only) → the first JSON object in the answer."""
         self._count()
@@ -202,7 +215,7 @@ class Adhoc:
         job = box["job"]
         job.terms = self.verify_terms(given or {})
         job.info["terms_generation"] = {k: meta.get(k) for k in ("usd", "lat", "ct", "error", "raw") if k in meta}
-        job.emit("terms", dict(terms=job.terms))
+        job.emit("terms", dict(terms=job.terms, error=meta.get("error")))
 
     def term_hits(self, term: str) -> int:
         t = term.strip()
@@ -244,20 +257,43 @@ class Adhoc:
         end = dt.date.fromisoformat(r["d"]) if r and r["d"] else dt.date.today()
         return (end - dt.timedelta(days=6)).isoformat(), end.isoformat()
 
-    def period(self, period: str | None, date_from: str | None, date_to: str | None) -> tuple[str, str]:
+    PERIODS = ("last_week", "last_month", "scored")
+
+    def period(self, period: str | None, date_from: str | None, date_to: str | None) -> tuple[str, str, str]:
+        """(from, to, name). last_week (default): 7 days ending at the newest dense day; last_month: 30 days to the same
+        day; scored: QS_SCORED_SINCE (2025-01-01) to that day; from/to dates; `a..b`; a year."""
         if date_from or date_to:
-            return date_from or "0000-00-00", date_to or "9999-12-31"
+            return date_from or "0000-00-00", date_to or "9999-12-31", "dates"
         if period and ".." in period:
             a, b = period.split("..", 1)
-            return a or "0000-00-00", b or "9999-12-31"
+            return a or "0000-00-00", b or "9999-12-31", "dates"
         if period and re.fullmatch(r"\d{4}", period):
-            return f"{period}-01-01", f"{period}-12-31"
-        return self.newest_week()
+            return f"{period}-01-01", f"{period}-12-31", "year"
+        if period not in (None, "", *self.PERIODS):
+            raise ValueError(f"period: one of {', '.join(self.PERIODS)}, a year, a..b, or from/to dates")
+        f, t = self.newest_week()
+        if period == "last_month":
+            f = (dt.date.fromisoformat(t) - dt.timedelta(days=29)).isoformat()
+        elif period == "scored":
+            f = os.environ.get("QS_SCORED_SINCE", "2025-01-01")
+        return f, t, period or "last_week"
 
-    def propose_subtopics(self, topic: dict) -> tuple[list[str], dict]:
+    def estimate(self, f: str, t: str) -> dict:
+        """Affairs in the period and the seconds to read them at this process's rate ceiling (1.15 calls per affair: the
+        second reading where 0.1 < p < 0.9)."""
+        n = int(self.store.one("SELECT COUNT(*) AS n FROM qs_affairs WHERE date >= ? AND date <= ?", (f, t))["n"])
+        cut = os.environ.get("QS_SCORED_SINCE", "2025-01-01")
+        rate = float(os.environ.get("QS_MAX_RATE", "1.6"))
+        out = dict(affairs=n, mode="all" if f >= cut else "candidates", rate=rate, calls_per_affair=1.15,
+                   budget=self.max_calls)
+        if out["mode"] == "all":
+            out["seconds"] = round(n * 1.15 / rate)
+        return out
+
+    def propose_subtopics(self, topic: dict, job: "Job | None" = None) -> tuple[list[str], dict]:
         lines = "\n".join(f"{i}. {name}" for i, (_, name) in enumerate(SUBS, 1))
         u = SUB_PROMPT.format(name=topic["names"]["de"], scope=topic["scope"]["de"], lines=lines)
-        self._count()
+        self._count(job)
         ch, meta = self.client.chat([{"role": "user", "content": u}], max_tokens=60, logprobs=None)
         v = parse_json((ch.get("message") or {}).get("content") or "") or {}
         nums = v.get("subtopics") if isinstance(v.get("subtopics"), list) else []
@@ -285,7 +321,7 @@ class Adhoc:
         if before:
             if getattr(job, "terms_thread", None):
                 job.terms_thread.join(timeout=120)                  # candidates need the corpus-checked terms
-            subs, meta = self.propose_subtopics(job.topic) if self.store.one(
+            subs, meta = self.propose_subtopics(job.topic, job) if self.store.one(
                 "SELECT 1 AS x FROM topics WHERE scheme = 'aps' AND level = 2 LIMIT 1") else ([], {})
             job.topic["subtopics"] = subs
             terms = [x["term"].lower() for l in LANGS for x in job.terms.get(l, []) if not x.get("broad")]
@@ -324,6 +360,7 @@ class Adhoc:
         if not sentence or not sentence.strip():
             raise ValueError("sentence is required")
         lang = lang if lang in LANGS else "de"
+        per = self.period(period, date_from, date_to)          # a bad period fails before any model call
         box = dict(ready=threading.Event())
         tt = threading.Thread(target=self._terms, args=(box, sentence, terms if (terms is not None or generate) else {}),
                               daemon=True, name="adhoc-terms")
@@ -343,7 +380,9 @@ class Adhoc:
                 title = e.get("title") or ((self.store.affair(int(e["id"])) or {}).get("title") if e.get("id") else None)
                 if title:
                     ex.append((title, bool(e.get("match", e.get("yes", True)))))
-        job = Job(slug, topic, {l: [] for l in LANGS}, self.period(period, date_from, date_to), ex)
+        job = Job(slug, topic, {l: [] for l in LANGS}, per[:2], ex)
+        job.budget = self.max_calls
+        job.info.update(period_name=per[2], estimate=self.estimate(*per[:2]))
         job.info["generation"] = {k: meta.get(k) for k in ("model", "fp", "usd", "lat", "error") if k in meta}
         job.terms_thread = tt
         job.emit("topic", dict(slug=job.slug, topic=job.topic, period=job.period))       # always the first event
@@ -376,10 +415,29 @@ class Adhoc:
 
     def _run(self, job: Job, limit: int | None):
         try:
-            items = self.select(job, limit)
+            job.items = self.select(job, limit)
         except Exception as e:  # noqa: BLE001
             job.error = repr(e)[:300]
-            job.emit("error", dict(error=job.error)); job.done = True; return
+            job.stop_reason = "cap" if isinstance(e, CapReached) else f"error: {job.error}"
+            s = job.summary()
+            job.emit("done", s); job.done = True; return
+        self._read(job, job.items)
+
+    def resume(self, slug: str) -> Job:
+        """Read on after a cap or a stop: the affairs not yet decided, with a fresh call budget."""
+        job = self.jobs[slug]
+        if not job.done:
+            raise RuntimeError("the run is still reading")
+        rest = [a for a in job.items if a["id"] not in job.decisions]
+        if not rest:
+            raise RuntimeError("nothing left to read")
+        job.stop.clear(); job.error = None; job.stop_reason = None; job.done = False
+        job.budget = job.calls + self.max_calls if self.max_calls else None
+        job.thread = threading.Thread(target=self._read, args=(job, rest), daemon=True, name=f"adhoc-{slug}-cont")
+        job.thread.start()
+        return job
+
+    def _read(self, job: Job, items: list[dict]):
         job.emit("progress", self._progress(job))
         eng = Engine(self.client, None, job.stop)
         out = (self.out / job.slug / "decisions.jsonl").open("a")
@@ -390,14 +448,18 @@ class Adhoc:
                 return
             a = dict(a, title_long=a.get("title_long") or "", lang=a["lang"] if a.get("lang") in LANGS else "de")
             try:
-                self._count()
+                self._count(job)
                 ra = eng.yn(job.topic, a, "a", job.examples or None)
                 rb = None
                 if need_yn_b(ra["p_yes"]):
-                    self._count()
+                    self._count(job)
                     rb = eng.yn(job.topic, a, "b", job.examples or None)
+            except CapReached:
+                job.stop_reason = job.stop_reason or "cap"; job.stop.set(); return
             except (BuildChanged, InterruptedError, RuntimeError) as e:
-                job.error = job.error or repr(e)[:300]; job.stop.set(); return
+                if not job.stop.is_set():
+                    job.error = job.error or repr(e)[:300]
+                job.stop.set(); return
             if self.client.expect_build is None and ra["meta"].get("fp"):
                 self.client.expect_build = ra["meta"]["fp"]            # one build per process; a change stops the run
             d = yn_decision(ra, rb, job.topic["cutoff"])
@@ -419,6 +481,8 @@ class Adhoc:
             out.close()
             if getattr(job, "terms_thread", None):
                 job.terms_thread.join(timeout=60)          # the terms event precedes `done`
+            if job.stop_reason is None:
+                job.stop_reason = (f"error: {job.error}" if job.error else "stopped" if job.stop.is_set() else "done")
             s = job.summary()
             if job.error:
                 s["error"] = job.error

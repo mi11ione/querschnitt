@@ -33,8 +33,8 @@ def env_path(key: str, default: str) -> Path:
 
 # ---------------------------------------------------------------- compose (lead's module; file writer if it has one)
 def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str]) -> list[dict]:
-    """Topic rows for `ids` from the run's step rows: compose.decide + compose.topic_rows with the recalibration map
-    eval/calibration.json where it exists (the same rule as querschnitt.export's open topics file)."""
+    """Topic rows for `ids` from the run's step rows: compose.decide + compose.topic_rows with eval/calibration.json
+    where it exists (topic_rows picks the map, so these rows equal the export's)."""
     from . import compose as C
     from .engine import Engine
     from .examples import ExamplePool
@@ -56,9 +56,7 @@ def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str
             dec = C.decide(a, rows, eng.ch1_prompt, T)
             if len(dec) <= 1:
                 continue
-            ap = dec.get("aps")
-            cf = (lambda s, v, ap=ap: calib.apply("aps-fed" if (ap and ap.get("examples")) else "aps", v)) if calib else None
-            out += C.topic_rows(a, dec, lock, cf)
+            out += C.topic_rows(a, dec, lock, calib.apply if calib else None)
     return out
 
 
@@ -350,6 +348,8 @@ def main(argv=None):
             n_aff = st.load_affairs(a.inputs); print(f"affairs {n_aff:,} ← {a.inputs}")
         for p in a.topics:
             res = st.load_topics(p); print(f"topics ← {p}: {res}")
+        if a.auto and (ROOT / "app/data/bodies.json").exists():
+            print(f"parliaments {st.load_bodies_json(ROOT / 'app/data/bodies.json')} ← app/data/bodies.json")
         st.log_run("load", affairs=n_aff, rows=res["inserted"], wall_s=round(time.time() - t0, 1), pending=st.pending(),
                    note=json.dumps(dict(inputs=a.inputs, topics=a.topics)))
         print(metrics_line(st.metrics()))

@@ -10,11 +10,12 @@ fake OpenAI-compatible endpoint only.
 ```sh
 make install                         # uv venv .venv (Python 3.12) + editable install with dev and Postgres extras
 make run                             # API + app on SQLite with the shipped data -> http://127.0.0.1:8000
-make test                            # 50 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~16 s
+make test                            # 65 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~30 s
 make eval GOLD=data/eval/gold_dvs30.csv          # recall + misses by level for a positives list
 make eval GOLD=data/eval/gold_aps_s9.csv         # APS editors' chapters (multi-class)
 make delta                           # nightly: fresh OPD export -> new/changed affairs -> batch -> rows (SINCE=yesterday)
 make delta-plan                      # robots.txt + export index only: what would be downloaded
+make data-release                    # dist/querschnitt-data.tar.gz from the current export (checks it; does not publish)
 make smoke                           # load, start, /health + /metrics, stop (CI)
 docker compose --profile full up -d  # Postgres + API + app + nightly
 QS_PG_DSN=postgresql://… docker compose --profile lite up -d   # nightly chapter-only delta into an existing Postgres
@@ -61,16 +62,27 @@ The API serves `app/` at `/` when `app/index.html` exists.
 |---|---|
 | `GET /affairs/{id}/topics[?scheme=&history=true]` | `{affair, topics}`; current rows, or every version with `history` |
 | `GET /topics/{scheme}/{code}/affairs?from=&to=&body=&level=&lang=&lane=&status=&rank=1&limit=&offset=` | `{scheme, code, label, total, rows}`, newest affair first, each row with its affair summary. Codes in short form work: `/topics/aps/1.7.2./affairs`, `/topics/adhoc/digitalisierung/yes/affairs`, `/topics/be-directorates/BKD/affairs`. `level` = parliament level (federal, cantonal, communal) |
-| `POST /affairs/{id}/topics/{code}/confirm` · `/reject` | body `{"by": "…", "scheme": "…"}` (scheme inferred from the code when absent; `by` required; codes checked against the scheme) → the new row |
-| `GET /changes?since=ISO\|yesterday[&scheme=]` | rows whose `valid_from` or `valid_to` is after `since` |
-| `GET /coverage[?scheme=aps]` | per body: affairs, scored, scored share, title-only share (scored affairs without text), covered_from (first year from which every later year has scored share ≥ 0.9); cached on the store state |
-| `POST /adhoc` | `{sentence, lang, period?, from?, to?, examples?, terms?, limit?}` → `{slug, topic, terms, terms_pending, period, stream}` |
-| `GET /adhoc/{slug}/stream` | SSE: `topic`, `terms`, then per affair `decision {id, p, flag, t, lane, sample, title, body, parl, level, lang, date, p_a, p_b, build, prompt_id}` and `progress {read, flagged, seconds, total, line: "read 50 / flagged 4 / 12.6 s"}`, last `done` (summary, outside-sample estimate). `Last-Event-ID` / `?from=` resume |
-| `GET /health`, `GET /metrics[?format=line]` | `/metrics`: affairs, scored, rows, pending, builds, last run (wall s, list-price USD, pending) and the one-line form |
+| `POST /affairs/{id}/topics/{code}/confirm` · `/reject` | body `{"by": "…", "scheme": "…"}` (scheme inferred from the code when absent; `by` required; codes checked against the scheme) → the new row; the same decision by the same person while it is current returns that row with `unchanged: true` and adds nothing |
+| `POST /affairs/{id}/topics/{code}/undo` | body `{"by", "scheme"}` → `{undone, restored}`: the current decision closed (`closed_by` = who undid it), the rows it had closed back as current rows; 409 when there is no decision to undo |
+| `GET /changes?after=<seq>&since=&scheme=&body=&kind=all\|decisions\|machine&limit=≤5000` | the sync feed: every insert and every close, in `seq` order, exactly once; `{total, n, cursor, next, rows}`; upsert by `row_id` and follow `next`. `GET /decisions` = `kind=decisions` |
+| `GET /coverage[?scheme=aps&since=]` | per body over the affairs begun since `since` (default `QS_SCOPE_SINCE` = the export's slice, so the totals equal `meta.json`): affairs, scored, scored share, title-only share, `by_year` [affairs, scored], covered_from (first year of OPD's data for that parliament, from bodies.json); cached on the store state |
+| `POST /adhoc` | `{sentence, lang, period?: last_week\|last_month\|scored\|YYYY\|a..b, from?, to?, examples?, terms?, limit?}` → `{slug, topic, terms, terms_pending, period, period_name, estimate {affairs, mode, seconds, budget}, stream}` |
+| `POST /adhoc/{slug}/continue` | after `cap` or `stopped`: reads the affairs not yet decided with a fresh call budget, on the same stream |
+| `GET /adhoc/{slug}/stream` | SSE: `topic`, `terms`, then per affair `decision {id, p, flag, t, lane, sample, title, body, parl, level, lang, date, p_a, p_b, build, prompt_id}` and `progress {read, flagged, unread, seconds, total, period, stop, line: "read 50 / flagged 4 / 12.6 s"}`, last `done` with `stop` = `done` \| `cap` \| `stopped` \| `error: …` and the period read (also in `GET /adhoc/{slug}`). `Last-Event-ID` / `?from=` resume |
+| `GET /health`, `GET /metrics[?format=line]` | `/metrics`: affairs in scope (= the export's `meta.affairs`), APS-scored in scope, affairs loaded, rows, seq, pending, builds, last run (wall s, list-price USD, pending) and the one-line form |
 
 Every row carries `label` {de, fr, it} from the scheme files.
 
 ## Store and versioning (decisions)
+- Sync (dogfood round 1): `seq` is stamped on every insert and again on every close, under one serialized writer
+  (SQLite `BEGIN IMMEDIATE`, Postgres `pg_advisory_xact_lock`), so `seq` order is commit order and `after=<cursor>`
+  never skips a change, however many rows share one `valid_from` (58,392 did after one load). Older databases get
+  the columns on open (`seq = row_id`). Every response has a schema in `/openapi.json` (`TopicRow`, `ChangesPage`, …).
+- Evidence is stored and served as `{source, field, char_start, char_end, quote}`; `start`/`end` are accepted on load,
+  and a missing source is the field for titles, else the affair's `text_src`.
+- One `p`: `compose.topic_rows` picks the map (`aps-fed` when the chapter step showed examples, else `aps`) and the
+  export copies `ch_p` and the detail's `p`/`p_raw` from those rows (the detail panel showed the chapter step's mean
+  P, 0.502 for 341104, where the row's calibrated `p` is 0.284). Tested end to end: run → export → load → API.
 - A row is never changed except to close it (`valid_to`). Loading compares each (affair, scheme, level, rank) with the
   latest machine row for that key: identical content is skipped (reloads are idempotent), changed content (code, p,
   lane, evidence, build, prompt, input hash, …) closes the current row and adds a new one, and keys that vanish from a
@@ -100,6 +112,10 @@ Every row carries `label` {de, fr, it} from the scheme files.
   Wilson interval estimate the misses.
 - Decisions: order a, order b when 0.1 < p < 0.9; p, flag and lane by `compose.yn_decision` (the nightly rows' rule);
   3 worker threads, newest first. The first served build is locked for the process; a different build stops the run.
+- Budget and stop (dogfood round 1): `QS_ADHOC_MAX_CALLS` is a per-run budget (per start and per `continue`); the run
+  ends with `stop: cap` and `unread`, never as if complete. The term request failed with `FileNotFoundError` because
+  the ledger's directory did not exist yet at the first call (both the name and the terms then fell back silently);
+  the directory is created up front and a terms failure is reported in the `terms` event.
 - Save: `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, examples as `{title, match}`, terms,
   subtopics, sentence; no bare `yes:` key) and the run's decisions as `adhoc/<slug>` rows; `delta` picks up every file
   in `schemes/adhoc/` (`scheme.adhoc_topics()`).

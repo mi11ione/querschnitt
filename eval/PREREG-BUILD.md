@@ -81,3 +81,14 @@ please-check rows). Packet per item: parliament, type, title, long title, text e
 and the quoted sentence. Gold: blind Claude annotators A and B (Y = the sentence supports that the affair concerns the
 topic, N = it does not), tie-break C. Outcomes: support rate per kind (Wilson 95%), overall; substring check rate (code);
 compared descriptively with S12 (0.850, spike). Reported as measured.
+
+## 2026-10-14 20:20 CEST — S25 fresh APS-labelled federal affairs, the shipped design held out (before any S25 item is scored)
+Why: D4 (shipped) was designed after S9's results and measured on the same 1,357 items; S25 tests it on items never seen.
+Items: federal affairs with an APS editors' chapter recovered from Wayback captures of anneepolitique.swiss process pages
+that are NOT in the S5 (297) or S9 (1,357) sets and NOT in the example pool; parsed with the S9 rules (chapter + main
+subtopic). Whatever the number recovered (target ≥ 300), all are used. Input: the production input from OPD (`data.py`),
+the production pipeline unchanged (D4 for federal affairs: five BM25-nearest APS-labelled examples from the S5+S9 pool,
+two code orders, read-back), run in a separate run dir on the same build.
+Primary: shipped chapter top-1 vs APS editors (Wilson 95%, outward). Secondary: top-3; lanes (agree/disagree precision);
+coverage–precision when routing by calibrated p (calibration map fitted on S16 only); keyword baseline (S9 frozen rule).
+Reported as measured.

@@ -43,6 +43,15 @@ const SCEN = [
   { name: 'group-1440', w: 1440, h: 900, url: '#karte', steps: [`(()=>{const k=__qs.karte; const p=k.rows.findIndex(g=>g.length>1); k.select(__qs.D.c.id[k.rows[p][0]]);})()`] },
   { name: 'evidence-text-1440', w: 1440, h: 900, url: '#karte?a=340930' },
   { name: 'evidence-title-1440', w: 1440, h: 900, url: '#karte?a=340883' },
+  { name: 'pult-week-1440', w: 1440, h: 900, url: '#karte?m=pult&tab=neu', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  { name: 'overwrite-1440', w: 1440, h: 900, url: '#karte', steps: [`localStorage.setItem('qs.who','R. Test')`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'2'}))`, 600, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'k'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'1'}))`] },
+  { name: 'chapter-corr-1440', w: 1440, h: 900, url: '#karte?t=aps%3A1.6.2.&m=pult&tab=neu', steps: [`localStorage.setItem('qs.who','R. Test')`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'2'}))`, 800] },
+  { name: 'bern-corr-1440', w: 1440, h: 900, url: '#karte?t=be-directorates&m=pult&tab=todo', steps: [`localStorage.setItem('qs.who','R. Test')`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'2'}))`, 800] },
+  { name: 'alt-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?a=340038' },
+  { name: 'all-1440', w: 1440, h: 900, url: '#karte?t=all&q=wolf%7Cw%C3%B6lf%7Cloup%7Clupo%7CHerdenschutz' },
+  { name: 'brush-esc-1440', w: 1440, h: 900, url: '#karte?w=80-90', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}))`] },
+  { name: 'sync-live-1440', live: true, w: 1440, h: 900, url: '#karte?m=pult&tab=ok', pre: async () => { for (const id of [340652, 340520]) await fetch(LIVE + 'affairs/' + id + '/topics/adhoc%2Fdigitalisierung%3Ayes/confirm', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ by: 'Kollegin (DVS)', scheme: 'adhoc/digitalisierung' }) }); }, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  { name: 'neu-cap-1440', live: true, w: 1440, h: 900, url: '#neu', steps: [`(()=>{const f=document.querySelector('.nt-field textarea');f.value='Schule, Unterricht, Lehrpersonen und Bildung';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 4000] },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 
@@ -76,6 +85,7 @@ async function main() {
   for (const sc of SCEN) {
     if (ONLY && !sc.name.includes(ONLY)) continue;
     errs.length = 0;
+    if (sc.pre) await sc.pre();
     await send('Emulation.setDeviceMetricsOverride', { width: sc.w, height: sc.h, deviceScaleFactor: sc.mobile ? 2 : 1, mobile: !!sc.mobile }, S);
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: sc.dark ? 'dark' : 'light' }] }, S);
     await send('Page.navigate', { url: 'about:blank' }, S); await sleep(100);

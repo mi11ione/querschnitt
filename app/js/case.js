@@ -3,12 +3,17 @@
 import { D, detail, getDec, API, TOPIC_BY_ID, norm } from './data.js';
 import { h, esc, t, UI, num, p3, pct, fmtDate } from './util.js';
 
+const EN = /^(parliament|grand council|council|municipal council)$/i;
 export const bodyName = (k, long = true) => {
   const b = D.B.get(k); if (!b) return k;
-  const nm = UI.lang === 'fr' ? b.name_fr : b.name_de, pl = UI.lang === 'fr' ? b.place_fr : b.place_de;
+  let nm = UI.lang === 'fr' ? b.name_fr : b.name_de;
+  if (!nm || EN.test(nm)) nm = b.name_de || nm;
+  const pl = UI.lang === 'fr' ? b.place_fr || b.place_de : b.place_de;
   if (b.level === 'federal') return nm;
   if (b.key === 'LIE') return `${nm} FL`;
-  return long ? `${nm} ${pl}` : (b.level === 'cantonal' ? `${b.key}` : pl);
+  if (!long) return b.level === 'cantonal' ? b.key : pl;
+  const a = (nm || '').toLowerCase(), z = (pl || '').toLowerCase();
+  return !pl || a.includes(z) ? nm : z.includes(a) ? pl : `${nm} ${pl}`;
 };
 export const typeOf = i => (UI.lang === 'fr' && D.c.type_h_fr[i]) || D.c.type_h[i] || D.c.type[i] || '';
 const lname = l => ({ de: 'de', fr: 'fr', it: 'it', rm: 'rm' }[l] || l || '');
@@ -71,6 +76,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   scroll.append(h('p', { class: 'ref' },
     h('b', {}, fmtDate(c.date[i])), ' · ', bodyName(c.body[i]), ' · ', typeOf(i) || '–', c.state[i] ? ` · ${c.state[i]}` : '',
     sub ? ` · ${sub}` : '', ` · ${lname(lang)}`));
+  const altP = h('p', { class: 'alt', hidden: true }); scroll.append(altP);
   const holder = h('div'); scroll.append(holder);
   if (group && group.length > 1) {
     const tb = h('table', {}, h('tbody', {}, group.map(j => h('tr', {}, h('td', { class: 'n', style: 'text-align:left' }, `#${c.id[j]}`),
@@ -86,10 +92,22 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   if (d && d.number) scroll.querySelector('.ref').append(` · ${d.number}`);
   // text
   const tsec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.evidence, h('span', { class: 'sp' }, ev ? `${ev.field || ''} ${ev.start ?? ev.char_start ?? ''}–${ev.end ?? ev.char_end ?? ''}` : L.noEvidence)));
-  if (ev && ev.field === 'title') { const hp = highlight(c.title[i], ev, 'title', lang); h2.replaceChildren(...hp.childNodes); }
-  if (d && d.title_long && (d.title_long !== c.title[i] || (ev && ev.field === 'title_long'))) {
-    tsec.append(h('div', { class: 'sl dim' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, L.titleLong)));
-    tsec.append(highlight(d.title_long, ev, 'title_long', lang));
+  // the affair in the interface language where it has that version; the original stays visible beside it
+  const useAlt = d && d.title_alt && d.alt_lang === UI.lang && d.alt_lang !== lang;
+  if (useAlt) {
+    h2.textContent = d.title_alt; h2.lang = d.alt_lang;
+    altP.hidden = false; altP.replaceChildren(h('span', { class: 'mono dim' }, `${lang} · `), h('span', { lang }, c.title[i]));
+  }
+  if (ev && ev.field === 'title') {
+    const hp = highlight(c.title[i], ev, 'title', lang);
+    if (useAlt) altP.replaceChildren(h('span', { class: 'mono dim' }, `${lang} · `), ...hp.childNodes); else h2.replaceChildren(...hp.childNodes);
+  }
+  const evLong = ev && ev.field === 'title_long';
+  const tl = useAlt && d.title_long_alt && !evLong ? d.title_long_alt : d && d.title_long;
+  const tlShown = useAlt && !evLong ? d.title_alt : c.title[i];
+  if (tl && (tl !== tlShown || evLong)) {
+    tsec.append(h('div', { class: 'sl dim' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, `${L.titleLong}${useAlt && !evLong ? ' · ' + d.alt_lang : ''}`)));
+    tsec.append(highlight(tl, ev, 'title_long', useAlt && !evLong ? d.alt_lang : lang));
   }
   const text = d && (d.text || d.text_excerpt);
   if (text) {
@@ -139,11 +157,13 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   }
   if (c.ch[i] >= 0 || aps) {
     const ranks = aps && aps.rank ? aps.rank : [c.ch[i]];
-    const ps = aps && aps.p ? aps.p : [c.chp[i]];
+    // the API row's values: rank 1 the calibrated p (= c.chp[i]); ranks 2–3 carry only the engine's p_raw
+    const ps = aps && aps.p ? aps.p : [c.chp[i]], pr = (aps && aps.p_raw) || [];
+    const pv = k => ps[k] != null ? `p ${p3(ps[k])}` : pr[k] != null ? `p_raw ${p3(pr[k])}` : '';
     const ln = (aps && aps.lane) || (c.lane[i] === 1 ? 'please_check' : 'readings_agree');
     add(L.chapter,
-      h('span', {}, chapterName(ranks[0]), ' ', h('span', { class: 'mono dim' }, `p ${p3(ps[0])}`)),
-      ranks.slice(1).map((r, k) => h('span', { class: 'sub2' }, `${k + 2}. ${chapterName(r)} · p ${p3(ps[k + 1])}`)),
+      h('span', {}, chapterName(ranks[0]), ' ', h('span', { class: 'mono dim' }, pv(0))),
+      ranks.slice(1).map((r, k) => h('span', { class: 'sub2' }, `${k + 2}. ${chapterName(r)} · ${pv(k + 1)}`)),
       h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: ln === 'please_check' ? 'sig' : '' }, L.lanes[ln] || ln)));
     const subs = aps && aps.subs ? aps.subs : (c.subs[i] || []).map(x => [x, null]);
     if (subs.length) add(L.subtopics, subs.map(([code, p], k) => h('span', { class: k ? 'sub2' : '' }, `${k + 1}. ${subName(code)}${p != null ? ' · p ' + p3(p) : ''}`, k ? '' : h('br'))));
@@ -173,6 +193,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
 export function decisionState(tp, id) {
   const L = t(), r = getDec(tp, id);
   if (!r) return '';
-  const when = (r.at || '').replace('T', ' ').slice(0, 16);
-  return `<b>${L.decided[r.d] || r.d}</b>${r.n > 1 ? ` · ${L.sameDec(r.n)}` : ''} · ${esc(r.by || '')} · ${when} · ${r.err ? `<span class="sig">${L.apiErr}</span>` : r.api ? L.apiSaved : L.localSaved}`;
+  const d = new Date(r.at || ''), when = isNaN(d) ? (r.at || '') : d.toLocaleString(UI.lang === 'fr' ? 'fr-CH' : 'de-CH', { dateStyle: 'short', timeStyle: 'short' });
+  const corr = r.corr === true && r.code ? ` → ${esc(r.code)}` : (typeof r.corr === 'string' ? ` → ${esc(r.corr.replace('aps:', ''))}` : '');
+  return `<b>${L.decided[r.d] || r.d}${corr ? ` (${L.corrected}${corr})` : ''}</b>${r.n > 1 ? ` · ${L.sameDec(r.n)}` : ''} · ${esc(r.by || '')} · ${when} · ${r.err ? `<span class="sig">${L.apiErr}</span>` : r.api ? L.apiSaved : L.localSaved}`;
 }

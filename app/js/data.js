@@ -5,8 +5,9 @@ import { dayNum, mondayOf } from './util.js';
 const BASES = ['data/', 'data-fixture/'];
 export const SRC = {}; // file -> base it came from
 
-async function getJSON(url) {
-  const r = await fetch(url, { cache: 'no-cache' });
+async function getJSON(url, tries = 2) {
+  let r;
+  try { r = await fetch(url, { cache: 'no-cache' }); } catch (e) { if (tries > 1) { await new Promise(f => setTimeout(f, 300)); return getJSON(url, tries - 1); } throw e; }
   if (!r.ok) throw new Error(`${r.status} ${url}`);
   return r.json();
 }
@@ -23,7 +24,7 @@ export async function detail(id) {
   const k = Math.floor(id / 1000);
   if (!detailCache.has(k)) {
     const base = SRC['affairs.json'] || BASES[0];
-    detailCache.set(k, getJSON(`${base}detail/${k}.json`).catch(() => ({})));
+    detailCache.set(k, getJSON(`${base}detail/${k}.json`).catch(() => { detailCache.delete(k); return {}; }));
   }
   const d = await detailCache.get(k);
   return d[String(id)] || null;
@@ -106,7 +107,7 @@ export async function load() {
   const week = new Int16Array(n);
   for (let i = 0; i < n; i++) week[i] = Math.floor((day[i] - w0) / 7);
   D.c = { id: c.id, body: c.body, date: c.date, title: c.title, lang: c.lang, type_h: c.type_h || [], type: c.type || [], type_h_fr: c.type_h_fr || [],
-    be: c.be || [], bi: c.bi || [],
+    be: c.be || [], bi: c.bi || [], beLane: c.be_lane || [],
     state: c.state || [], party: c.party || [], submitter: c.submitter || [], number: c.number || [], subs: c.subs || [],
     bodyIdx, bodyKeys, day, week, ch, chp, lane, dp, df, dl, kw, lvl };
   D.w0 = w0; D.nWeeks = Math.floor((dmax - w0) / 7) + 1; D.dmin = dmin; D.dmax = dmax;
@@ -132,6 +133,9 @@ function buildTopics() {
       scored: i => !Number.isNaN(c.dp[i]), hit: i => c.df[i] === 1, p: i => c.dp[i], check: i => c.dl[i] === 1,
       coverage: b => b.n_affairs ? (b.n_dig ?? b.n_scored) / b.n_affairs : null });
   }
+  // every affair, no topic: search across all of them
+  addTopic({ id: 'all', kind: 'all', names: { de: 'alle Geschäfte', fr: 'tous les objets', it: 'tutti gli oggetti' }, aliases: ['alle', 'tous', 'all', 'tutti'],
+    code: 'all', scored: () => true, hit: () => true, p: () => NaN, check: () => false, coverage: () => null, count: 0 });
   // scheme swap: Bern's directorates (Grand Council affairs only)
   const be = ((D.scheme && D.scheme.schemes) || []).find(x => x.id === 'be-directorates');
   if (be && c.be.length) {
@@ -139,25 +143,26 @@ function buildTopics() {
     addTopic({ id: 'be-directorates', kind: 'be', scheme: 'be-directorates', scope: be.body || 'BE', options: be.options, opt,
       names: { de: 'Kanton Bern: Direktionen', fr: 'Canton de Berne : directions', it: 'Canton Berna: direzioni' },
       aliases: ['Bern', 'Berne', 'Direktionen', 'directions', 'BE'], codeOf: i => `be:${c.be[i]}`,
-      scored: i => c.be[i] != null, hit: i => c.be[i] != null, p: () => NaN, check: i => c.bi[i] === 1,
+      scored: i => c.be[i] != null, hit: i => c.be[i] != null, p: () => NaN, check: i => c.beLane[i] === 1,
       coverage: b => b.n_affairs ? (b.n_scored || 0) / b.n_affairs : null });
   }
   const chs = (D.scheme && D.scheme.chapters) || [];
   chs.forEach((x, i) => {
     const idx = x.i ?? i;
     addTopic({ id: x.code, kind: 'chapter', scheme: 'aps', code: x.code, idx, names: { de: x.de, fr: x.fr || x.de, it: x.it || x.de }, aliases: [x.code.replace('aps:', '')],
-      scored: j => c.ch[j] >= 0, hit: j => c.ch[j] === idx, p: j => c.chp[j], check: j => c.lane[j] === 1,
+      scored: j => c.ch[j] >= 0, hit: j => c.ch[j] === idx, p: j => c.chp[j], check: j => c.ch[j] === idx && c.lane[j] === 1,
       coverage: b => b.n_affairs ? (b.n_scored || 0) / b.n_affairs : null });
   });
   const subs = (D.scheme && D.scheme.subtopics) || {};
   for (const [k, x] of Object.entries(subs)) {
     const code = +k;
     addTopic({ id: x.code, kind: 'sub', scheme: 'aps', code: x.code, idx: code, ch: x.ch, names: { de: x.de, fr: x.de, it: x.de }, aliases: [],
-      scored: j => c.ch[j] >= 0, hit: j => { const sb = c.subs[j]; return !!sb && sb[0] === code; }, p: j => c.chp[j], check: j => c.lane[j] === 1,
+      scored: j => c.ch[j] >= 0, hit: j => { const sb = c.subs[j]; return !!sb && sb[0] === code; }, p: j => c.chp[j], check: j => { const sb = c.subs[j]; return !!sb && sb[0] === code && c.lane[j] === 1; },
       coverage: b => b.n_affairs ? (b.n_scored || 0) / b.n_affairs : null });
   }
   // counts per topic (hits over all rows)
   for (const tp of TOPICS) tp.count = 0;
+  TOPIC_BY_ID.get('all').count = D.n;
   const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
   const chT = new Map(TOPICS.filter(x => x.kind === 'chapter').map(x => [x.idx, x]));
   const subT = new Map(TOPICS.filter(x => x.kind === 'sub').map(x => [x.idx, x]));
@@ -197,10 +202,51 @@ export function setDec(tp, id, rec) {
   try { localStorage.setItem(DKEY, JSON.stringify(DEC)); } catch (e) { /* storage off */ }
 }
 export function allDec() { return DEC; }
+// server decisions (who/when) → the same map; the newest row per (topic, affair) wins, a closed newest row = undone
+const keyOf = r => r.scheme === 'aps' ? `${r.code}|${r.affair_id}` : `${r.scheme}|${r.affair_id}`;
 export function importApiDecisions(rows) {
+  const latest = new Map();
   for (const r of rows || []) {
+    if (r.provenance !== 'confirmed' && r.status !== 'confirmed' && r.status !== 'rejected') continue;
     if (r.status !== 'confirmed' && r.status !== 'rejected') continue;
-    const k = `${r.scheme === 'aps' ? r.code : r.scheme}|${r.affair_id}`;
-    if (!DEC[k]) DEC[k] = { d: r.status, by: r.confirmed_by || '', at: r.confirmed_at || r.valid_from, api: true };
+    const k = keyOf(r), t0 = r.valid_from || r.confirmed_at || '';
+    const o = latest.get(k); if (!o || (o.valid_from || '') <= t0) latest.set(k, r);
   }
+  let n = 0;
+  for (const [k, r] of latest) {
+    const at = r.confirmed_at || r.valid_from || '', cur = DEC[k];
+    if (cur && !cur.srv && (cur.at || '') > at) continue; // a newer local decision stays
+    if (r.valid_to) {
+      // closed: superseded or undone; only drop it when it is the newest row we know
+      if (cur && cur.srv && cur.at <= at) { delete DEC[k]; n++; }
+      continue;
+    }
+    const code = r.code && r.scheme === 'be-directorates' ? String(r.code).replace(/^be:/, '') : null;
+    DEC[k] = { d: r.status, by: r.confirmed_by || '', at, api: true, srv: true, code };
+    n++;
+  }
+  try { localStorage.setItem(DKEY, JSON.stringify(DEC)); } catch (e) { /* */ }
+  return n;
+}
+let SINCE = null;
+export async function syncDecisions() {
+  if (!API.live) return 0;
+  const all = []; let url = `/changes?kind=decisions&since=${encodeURIComponent(SINCE || '1970-01-01T00:00:00Z')}&limit=5000`, pages = 0, offset = 0, base = url;
+  while (url && pages < 30) {
+    pages++;
+    let j; try { const r = await fetch(API.base + url, { cache: 'no-store' }); if (!r.ok) break; j = await r.json(); } catch (e) { break; }
+    const rows = Array.isArray(j) ? j : (j.rows || []);
+    const machine = rows.filter(r => r.provenance === 'inferred');
+    all.push(...rows.filter(r => r.provenance !== 'inferred'));
+    const next = !Array.isArray(j) && (j.next || j.next_cursor || j.cursor);
+    if (next && rows.length) url = String(next).startsWith('/') ? String(next) : `/changes?kind=decisions&cursor=${encodeURIComponent(next)}&limit=5000`;
+    else if (machine.length && pages === 1) {
+      // a server without kind=decisions: machine rows share their load time; ask for what came after it
+      const t = machine.reduce((a, r) => (r.valid_from > a ? r.valid_from : a), '');
+      base = `/changes?since=${encodeURIComponent(t)}&limit=5000`; offset = 0; url = base;
+    } else if (rows.length >= 5000) { offset += 5000; url = `${base}&offset=${offset}`; }
+    else url = null;
+  }
+  for (const r of all) { const t = r.valid_to && r.valid_to > (r.valid_from || '') ? r.valid_to : r.valid_from; if (t && (!SINCE || t > SINCE)) SINCE = t; }
+  return importApiDecisions(all);
 }

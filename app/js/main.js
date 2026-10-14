@@ -1,5 +1,5 @@
 // Shell: one bar (wordmark, three views with counts, DE/FR, build), one mono fact line, the view, provenance footer.
-import { D, SRC, API, load, probeApi, TOPIC_BY_ID, findTopic, importApiDecisions } from './data.js';
+import { D, SRC, API, load, probeApi, TOPIC_BY_ID, findTopic, syncDecisions } from './data.js';
 import { $, h, t, UI, num, pct } from './util.js';
 import { Board } from './board.js';
 import { Neu, loadSaved } from './neu.js';
@@ -69,7 +69,7 @@ function writeHash() {
     if (S.sel != null) p.set('a', S.sel);
     if (S.body) p.set('p', S.body);
     if (S.brush) p.set('w', S.brush.join('-'));
-    if (S.mode === 'pult') { p.set('m', 'pult'); p.set('tab', S.tab); }
+    if (S.mode === 'pult') { p.set('m', 'pult'); p.set('tab', S.tab); if (S.pw != null) p.set('pw', S.pw); }
     if (S.f.q) p.set('q', S.f.q);
     s += `?${p}`;
   }
@@ -92,6 +92,7 @@ function keys(e) {
   if (k === 'n') { show('neu'); return; }
   if (k === 'b') { show('pruef'); return; }
   if (!b) return;
+  if (b.corr && /^[0-9]$/.test(k)) { b.pickCorrection(+k); e.preventDefault(); return; }
   if (k === 'j' || k === 'ArrowDown') { b.step(1); e.preventDefault(); }
   else if (k === 'k' || k === 'ArrowUp') { b.step(-1); e.preventDefault(); }
   else if (k === '1') b.decide('confirmed');
@@ -103,10 +104,11 @@ function keys(e) {
   else if (k === 't' && b.picker) { b.picker.focus(); e.preventDefault(); }
   else if (k === 'e') b.exportCsv();
   else if (k === 'Enter' && b.S.sel == null) b.step(1);
-  else if (k === 'Escape') {
-    if (b.S.sel != null) b.select(null);
-    else if (b.S.body) { b.S.body = null; b.refresh(); }
-    else if (b.S.brush) { b.S.brush = null; b.refresh(); }
+  else if ((k === '[' || k === ']') && b.S.mode === 'pult') b.stepWeek(k === '[' ? -1 : 1);
+  else if (k === 'Escape') { // never resets the period
+    if (b.corr || b.pend) { b.corr = null; b.pend = null; const r = D.rowOf.get(b.S.sel); if (r != null) b.stateLine(r); }
+    else if (b.S.sel != null) b.select(null);
+    else if (b.S.body && !(b.tp && b.tp.scope)) { b.S.body = null; b.refresh(); }
   }
 }
 
@@ -117,7 +119,8 @@ async function boot() {
   document.documentElement.lang = UI.lang;
   const [, ok] = await Promise.all([load(), probeApi()]);
   if (API.live) {
-    try { const r = await fetch(`${API.base}/changes?since=1970-01-01T00:00:00Z`); if (r.ok) { const j = await r.json(); importApiDecisions(Array.isArray(j) ? j : j.rows); } } catch (e) { /* optional */ }
+    await syncDecisions();
+    setInterval(async () => { if (await syncDecisions() && karte) { karte.refresh(); } }, 60000);
   }
   loadSaved();
   const { view: v0, p } = readHash();
@@ -125,7 +128,7 @@ async function boot() {
   karte = new Board($('#v-karte'), { topic: tp, onChange: () => writeHash() });
   if (p.get('p')) karte.S.body = p.get('p');
   if (p.get('w')) { const [a, b] = p.get('w').split('-').map(Number); if (b >= a) karte.S.brush = [a, b]; }
-  if (p.get('m') === 'pult') { karte.S.mode = 'pult'; karte.S.tab = p.get('tab') || 'todo'; }
+  if (p.get('m') === 'pult') { karte.S.mode = 'pult'; karte.S.tab = p.get('tab') || 'neu'; if (p.get('pw')) { karte.S.pw = +p.get('pw'); karte.S.pwFor = karte.tp.id; } }
   if (p.get('q')) { karte.S.f.q = p.get('q'); karte.q.value = p.get('q'); }
   karte.refresh();
   if (p.get('a')) karte.select(+p.get('a')); else karte.renderCase();

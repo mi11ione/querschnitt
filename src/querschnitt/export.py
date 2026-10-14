@@ -149,6 +149,7 @@ def main(argv=None):
     ap.add_argument("--out", default=str(ROOT / "app/data"))
     ap.add_argument("--since", default="2025-01-01")
     ap.add_argument("--until", default="9999")
+    ap.add_argument("--topics-file", dest="topics_file", action="store_true", default=True, help="write the open topics file (default)")
     ap.add_argument("--no-topics-file", dest="topics_file", action="store_false", help="skip the open topics file")
     run(ap.parse_args(argv))
 

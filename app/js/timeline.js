@@ -19,7 +19,7 @@ export class Timeline {
     const r = this.svg.getBoundingClientRect(), x = e.clientX - r.left - LEFT;
     return Math.max(0, Math.min(D.nWeeks - 1, Math.floor(x / this.bw)));
   }
-  down(e) { if (e.button) return; this.drag = { a: this.wAt(e), moved: false }; this.svg.setPointerCapture(e.pointerId); }
+  down(e) { if (e.button) return; this.prev = this.brush; this.drag = { a: this.wAt(e), moved: false }; this.svg.setPointerCapture(e.pointerId); }
   move(e) {
     const w = this.wAt(e);
     if (this.drag) { if (w !== this.drag.a) this.drag.moved = true; this.brush = [Math.min(this.drag.a, w), Math.max(this.drag.a, w)]; this.draw(); }
@@ -28,7 +28,7 @@ export class Timeline {
   up(e) {
     if (!this.drag) return;
     const d = this.drag; this.drag = null;
-    if (!d.moved) this.brush = null;
+    if (!d.moved) this.brush = this.prev && this.prev[0] === d.a && this.prev[1] === d.a ? null : [d.a, d.a]; // click = that week; again = all
     this.draw(); this.onBrush && this.onBrush(this.brush);
   }
   set(counts, brush, mark) { this.counts = counts; this.brush = brush; this.mark = mark; this.draw(); }

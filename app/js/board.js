@@ -1,5 +1,5 @@
 // Karte (and the Neues Thema board): topic → map + weekly timeline → ruled list (or Pult) → the selected affair.
-import { D, API, apiPost, getDec, setDec, detail, TOPICS, norm } from './data.js';
+import { D, API, apiPost, getDec, setDec, detail, TOPICS, TOPIC_BY_ID, norm, syncDecisions } from './data.js';
 import { h, t, UI, num, pct, p3, fmtDate, isoWeek, isoOfDay, dayNum, debounce, toast, download } from './util.js';
 import { SwissMap, rampBreaks, rampClass } from './map.js';
 import { Timeline } from './timeline.js';
@@ -14,7 +14,7 @@ const ls = (k, v) => { try { if (v === undefined) return localStorage.getItem(k)
 export class Board {
   constructor(root, { topic, picker = true, pult = true, order = 'date', head = null, onChange } = {}) {
     this.root = root; this.tp = topic; this.order = order; this.onChange = onChange;
-    this.S = { brush: null, body: null, f: { type: '', status: '', party: '', q: '' }, mode: 'list', tab: 'todo', sel: null };
+    this.S = { brush: null, body: null, f: { type: '', status: '', party: '', q: '' }, mode: 'list', tab: 'neu', sel: null, pw: null };
     const L = t();
     this.work = h('div', { class: 'work' });
     // map column
@@ -38,7 +38,7 @@ export class Board {
     this.vl = h('div', { class: 'vlist' });
     this.count = h('div', { class: 'count' });
     this.reg.append(this.lhead, this.tabs, this.pline, this.filters, this.vl, this.count);
-    this.pultOn = pult;
+    this.pultAllowed = pult; this.pultOn = pult;
     // case
     this.case = h('section', { class: 'case', 'aria-label': 'Geschäft', tabindex: '-1' });
     this.case.addEventListener('close', () => this.select(null));
@@ -57,7 +57,9 @@ export class Board {
     const L = t(), c = D.c, F = this.S.f;
     const opts = (vals) => [...vals.entries()].sort((a, b) => b[1] - a[1]).slice(0, 60).map(([v]) => v);
     const types = new Map(), states = new Map(), parties = new Map();
+    const scope = this.tp && this.tp.scope;
     for (let i = 0; i < D.n; i++) {
+      if (scope && c.body[i] !== scope) continue;
       const ty = typeOf(i); if (ty) types.set(ty, (types.get(ty) || 0) + 1);
       const st = c.state[i]; if (st) states.set(st, (states.get(st) || 0) + 1);
       const pa = c.party[i]; if (pa) parties.set(pa, (parties.get(pa) || 0) + 1);
@@ -110,40 +112,53 @@ export class Board {
     const br = S.brush, inP = i => !br || (c.week[i] >= br[0] && c.week[i] <= br[1]);
     const stats = new Map();
     const counts = [new Int32Array(D.nWeeks), new Int32Array(D.nWeeks), new Int32Array(D.nWeeks)];
-    const tabsN = { todo: 0, ok: 0, changed: 0, done: 0 };
+    const tabsN = { neu: 0, todo: 0, ok: 0, changed: 0, done: 0 };
     const items = [];
-    const gen = (D.meta.generated_at || '').slice(0, 10);
-    const lastW = gen ? Math.floor((dayNum(gen) - D.w0) / 7) : c.week.reduce((a, b) => Math.max(a, b), 0);
-    let newW = 0, scoredSel = 0, hitsSel = 0;
+    const isAll = tp && tp.kind === 'all';
+    this.pultOn = this.pultAllowed && tp && tp.kind !== 'all' && tp.kind !== 'live';
+    const lastW = Math.floor((D.dmax - D.w0) / 7);
+    // the Pult's week: by default the newest week (up to today) with a hit of this topic
+    if (S.pw == null || S.pwFor !== (tp && tp.id)) {
+      let w = -1; if (tp) for (let i = 0; i < n; i++) if (c.week[i] <= lastW && c.week[i] > w && tp.scored(i) && tp.hit(i)) w = c.week[i];
+      S.pw = w >= 0 ? w : lastW; S.pwFor = tp && tp.id;
+    }
+    let scoredSel = 0, hitsSel = 0;
     const lv = [{ n: 0, hits: 0 }, { n: 0, hits: 0 }, { n: 0, hits: 0 }, { n: 0, hits: 0 }];
-    for (let i = 0; i < n; i++) {
-      if (!mask[i] || !tp) continue;
+    const stat = k => { let st = stats.get(k); if (!st) stats.set(k, st = { n: 0, hits: 0, check: 0 }); return st; };
+    const pult = S.mode === 'pult' && this.pultOn;
+    for (let i = 0; tp && i < n; i++) {
       const sc = tp.scored(i); if (!sc) continue;
+      const k = c.body[i];
+      if (isAll && inP(i)) { stat(k).n++; lv[c.lvl[i]].n++; if (!S.body || k === S.body) scoredSel++; } // denominators ignore the search
+      if (!mask[i]) continue;
       if (isBe && S.f.dir && c.be[i] !== S.f.dir) continue;
-      const hit = tp.hit(i), chk = tp.check(i), k = c.body[i];
-      if (hit && (!S.body || k === S.body) && c.lvl[i] < 3) counts[c.lvl[i]][c.week[i]]++;
-      if (!inP(i)) continue;
+      const hit = tp.hit(i), chk = tp.check(i);
+      const inB = !S.body || k === S.body;
+      if (hit && inB && c.lvl[i] < 3) counts[c.lvl[i]][c.week[i]]++;
       const dec = getDec(tp, c.id[i]);
-      let st = stats.get(k); if (!st) stats.set(k, st = { n: 0, hits: 0, check: 0 });
-      st.n++; if (hit) st.hits++; if (chk && !dec) st.check++;
-      lv[c.lvl[i]].n++; if (hit) lv[c.lvl[i]].hits++;
-      if (S.body && k !== S.body) continue;
-      scoredSel++; if (hit) hitsSel++;
-      if (hit && c.week[i] === lastW) newW++;
+      // «neu diese Woche»: every undecided hit begun in the Pult's week (the brush does not apply)
+      if (inB && hit && !dec && c.week[i] === S.pw) { tabsN.neu++; if (pult && S.tab === 'neu') items.push(i); }
+      if (!inP(i)) continue;
+      const st = stat(k);
+      if (!isAll) st.n++;
+      if (hit) st.hits++; if (chk && !dec) st.check++;
+      if (!isAll) lv[c.lvl[i]].n++; if (hit) lv[c.lvl[i]].hits++;
+      if (!inB) continue;
+      if (!isAll) scoredSel++; if (hit) hitsSel++;
       const todo = chk && !dec; // one definition everywhere: undecided rows in the please_check lane
       if (todo) tabsN.todo++;
       if (dec && dec.d === 'confirmed') tabsN.ok++;
       const changed = dec && dec.d === 'confirmed' && dec.state != null && dec.state !== c.state[i];
       if (changed) tabsN.changed++;
       if (dec) tabsN.done++;
-      if (S.mode === 'pult' && this.pultOn) {
+      if (pult) {
         if ((S.tab === 'todo' && todo) || (S.tab === 'ok' && dec && dec.d === 'confirmed') || (S.tab === 'changed' && changed) || (S.tab === 'done' && dec)) items.push(i);
       } else if (hit) items.push(i);
     }
     if (this.order === 'arrival' && tp && tp.dec) {
       const rank = new Map(); let r = 0; for (const id of tp.dec.keys()) rank.set(id, r++);
       items.sort((a, b) => rank.get(c.id[b]) - rank.get(c.id[a]));
-    } else if (S.mode === 'pult' && this.pultOn && S.tab === 'todo') {
+    } else if (pult && S.tab === 'neu') {
       items.sort((a, b) => ((tp.check(b) ? 1 : 0) - (tp.check(a) ? 1 : 0)) || (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
     } else if (isBe) {
       const k = i => (tp.opt.get(c.be[i]) || { k: 99 }).k;
@@ -169,7 +184,7 @@ export class Board {
       st.cls = st.hatch && !st.hits ? 0 : rampClass(st.share, breaks);
       all.set(b.key, st);
     }
-    this.stats = all; this.breaks = breaks; this.lv = lv; this.tabsN = tabsN; this.newW = newW; this.lastW = lastW;
+    this.stats = all; this.breaks = breaks; this.lv = lv; this.tabsN = tabsN; this.lastW = lastW;
     this.items = items;
     // identical title + parliament + date in a row → one line with a count; decisions apply to the whole group
     const rows = [], posOf = new Map();
@@ -188,6 +203,7 @@ export class Board {
     const pos = selRow != null && posOf.has(selRow) ? posOf.get(selRow) : -1;
     this.list.set(rows, pos);
     this.renderHead(scoredSel, hitsSel);
+    if (S.sel == null) this.summary(); // the «Auswahl» panel follows the brush and filters
     this.onChange && this.onChange(this);
   }
 
@@ -201,6 +217,10 @@ export class Board {
     if (isBe) {
       const o = S.f.dir ? tp.opt.get(S.f.dir) : null;
       this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${L.dir}: ${o ? `${o.abbr[UI.lang] || o.abbr.de} ${o.name[UI.lang] || o.name.de}` : L.all} · ${per}`);
+    } else if (tp && tp.kind === 'all') {
+      this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs}${S.f.q || S.f.type || S.f.status || S.f.party ? ` ${L.of} ${num(scoredSel)} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)}` : ''} · ${per}`,
+        bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`)) : '',
+        S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scored} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
       ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`),
       bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
@@ -215,20 +235,22 @@ export class Board {
       h('span', {}, h('span', { class: 'tk' }), L.tick));
     // list header: mode toggle, Pult tabs, Pult line
     const N = this.tabsN;
+    this.lhead.hidden = !this.pultOn;
     if (this.pultOn) {
       const mk = (m, lab) => h('button', { class: 'tb', type: 'button', 'aria-pressed': String(S.mode === m), onclick: () => this.setMode(m) }, lab);
       this.lhead.replaceChildren(mk('list', `${L.list}`), mk('pult', `${L.pult}`), h('span', { class: 'sp' }, '[l]'));
       this.tabs.hidden = S.mode !== 'pult'; this.pline.hidden = S.mode !== 'pult';
       if (S.mode === 'pult') {
-        const tab = (k) => h('button', { class: `tab ${k === 'todo' && N.todo ? 'need' : ''}`, role: 'tab', type: 'button', 'aria-selected': String(S.tab === k), onclick: () => { S.tab = k; S.sel = null; this.refresh(); this.renderCase(); } },
+        const tab = (k) => h('button', { class: `tab ${(k === 'todo' || k === 'neu') && N[k] ? 'need' : ''}`, role: 'tab', type: 'button', 'aria-selected': String(S.tab === k), onclick: () => { S.tab = k; S.sel = null; this.refresh(); this.renderCase(); } },
           h('span', { class: 't' }, L.tabs[k]), h('span', { class: 'c' }, num(N[k])));
-        this.tabs.replaceChildren(tab('todo'), tab('ok'), tab('changed'), tab('done'));
-        const [y, wk] = isoWeek(D.w0 + this.lastW * 7);
+        this.tabs.replaceChildren(tab('neu'), tab('todo'), tab('ok'), tab('changed'), tab('done'));
+        const [y, wk] = isoWeek(D.w0 + S.pw * 7);
         const budget = +(ls(BUDGET) || 25);
         const bi = h('input', { type: 'text', inputmode: 'numeric', value: budget, 'aria-label': L.budget });
         bi.addEventListener('change', () => { const v = parseInt(bi.value, 10); if (v > 0) ls(BUDGET, String(v)); this.refresh(); });
-        this.pline.replaceChildren(h('b', {}, `${L.week} ${wk} ${y}`), ` · ${L.newW} ${num(this.newW)} · `,
-          h('span', { class: N.todo ? 'sig' : '' }, `${L.pending} ${num(N.todo)}`), ` · ${L.budget} `, bi, L.perWeek);
+        const wb = (d, lab) => h('button', { class: 'tb', type: 'button', disabled: (d < 0 ? S.pw <= 0 : S.pw >= this.lastW) || null, onclick: () => this.stepWeek(d) }, lab);
+        this.pline.replaceChildren(wb(-1, '[‹]'), ' ', h('b', {}, `${L.week} ${wk} ${y}`), ` (${isoOfDay(D.w0 + S.pw * 7).slice(5).split('-').reverse().join('.')}.–${isoOfDay(D.w0 + S.pw * 7 + 6).slice(5).split('-').reverse().join('.')}.) `, wb(1, '[›]'),
+          ` · ${L.newW} ${num(N.neu)} · `, h('span', { class: N.todo ? 'sig' : '' }, `${L.pending} ${num(N.todo)}`), ` · ${L.budget} `, bi, L.perWeek);
       }
     } else { this.lhead.hidden = true; this.tabs.hidden = true; this.pline.hidden = true; }
     this.count.replaceChildren(h('span', {}, `${num(this.items.length)} ${L.affairs}${this.rows.length !== this.items.length ? ` · ${num(this.rows.length)} ${L.lines}` : ''}`),
@@ -238,6 +260,7 @@ export class Board {
   relang() { this.buildFilters(); if (this.picker) this.picker.set(this.tp); this.refresh(); this.renderCase(); }
 
   setMode(m) { this.S.mode = m; this.S.sel = null; this.refresh(); this.renderCase(); }
+  stepWeek(d) { const S = this.S; S.pw = Math.max(0, Math.min(this.lastW, S.pw + d)); S.pwFor = this.tp && this.tp.id; S.sel = null; this.refresh(); this.renderCase(); }
 
   row(g) {
     const i = g[0], c = D.c, tp = this.tp, L = t();
@@ -279,49 +302,136 @@ export class Board {
     if (id == null) { this.summary(); return; }
     const i = D.rowOf.get(id);
     if (i == null) { root.replaceChildren(h('p', { class: 'empty' }, `#${id}`)); return; }
+    this.pend = null; this.corr = null;
     renderCase(root, i, this.tp, { onOpen: j => this.select(D.c.id[j]), decideBar: this.decideBar(i), group: this.groupOf(i) });
   }
   decideBar(i) {
     const L = t(), id = D.c.id[i], tp = this.tp;
+    if (!tp || tp.kind === 'all') return null;
     const b = (k, key, lab) => h('button', { class: 'box', type: 'button', onclick: () => this.decide(k) }, h('span', { class: 'k' }, `[${key}] `), lab);
     const who = h('input', { type: 'text', value: ls(WHO) || '', 'aria-label': L.who, placeholder: L.whoAsk });
     who.addEventListener('change', () => ls(WHO, who.value.trim()));
     who.addEventListener('keydown', e => { if (e.key === 'Enter') { ls(WHO, who.value.trim()); who.blur(); } });
     this.who = who;
-    const st = h('div', { class: 'st', html: tp ? decisionState(tp, id) : '' });
-    const grp = this.groupOf(i);
-    if (grp.length > 1 && !getDec(tp, id)) st.textContent = `[1] [2] ${L.sameDec(grp.length)}`;
-    const bar = h('div', { class: 'decide' }, h('div', { class: 'btns' }, b('confirmed', '1', L.accept), b('rejected', '2', L.reject), b('skip', '0', L.skip),
-),
-      h('div', { class: 'who' }, L.who, who), st);
-    if (getDec(tp, id)) st.append(' · ', h('button', { class: 'tb', type: 'button', onclick: () => this.decide('undo') }, `[u] ${L.undo}`));
+    this.st = h('div', { class: 'st', 'aria-live': 'polite' });
+    const bar = h('div', { class: 'decide' }, h('div', { class: 'btns' }, b('confirmed', '1', L.accept), b('rejected', '2', L.reject), b('skip', '0', L.skip)),
+      h('div', { class: 'who' }, L.who, who), this.st);
+    this.stateLine(i);
     return bar;
   }
+  // the one mono state line under the buttons: decision, pending overwrite, correction choices
+  stateLine(i, extra) {
+    const L = t(), tp = this.tp, st = this.st; if (!st || !tp) return;
+    const id = D.c.id[i], dec = getDec(tp, id), grp = this.groupOf(i);
+    st.replaceChildren();
+    if (extra) { st.append(extra); return; }
+    if (dec) {
+      st.innerHTML = decisionState(tp, id);
+      st.append(' · ', h('button', { class: 'tb', type: 'button', onclick: () => this.undo() }, `[u] ${L.undo}`));
+    } else if (grp.length > 1) st.textContent = `[1] [2] ${L.sameDec(grp.length)}`;
+    if (tp.kind === 'chapter' && !tp.hit(i)) st.append(h('span', { class: 'dim' }, `${st.textContent ? ' · ' : ''}${L.notSuggested}`));
+  }
   groupOf(row) { return this.posOf && this.posOf.has(row) ? this.rows[this.posOf.get(row)] : [row]; }
+  who_() {
+    const L = t(), by = (this.who && this.who.value.trim()) || ls(WHO) || '';
+    if (!by) { const w = this.case.querySelector('.who'); if (w) { w.classList.add('ask'); w.querySelector('input').focus(); } toast(L.whoAsk); }
+    else ls(WHO, by);
+    return by;
+  }
+  async post(aid, code, scheme, action, by) {
+    if (!API.live) return {};
+    try {
+      const r = await apiPost(`/affairs/${aid}/topics/${encodeURIComponent(code)}/${action}`, { by, scheme });
+      return { api: true, row: r && (r.valid_from || r.confirmed_at) ? { valid_from: r.valid_from, confirmed_at: r.confirmed_at } : null };
+    } catch (e) { return { err: String(e.message || e) }; }
+  }
   async decide(kind) {
     const id = this.S.sel, tp = this.tp, L = t(), c = D.c;
-    if (id == null || !tp) return;
-    if (kind === 'skip') { this.step(1); return; }
+    if (id == null || !tp || tp.kind === 'all') return;
+    if (this.corr) { this.corr = null; }
+    if (kind === 'skip') { this.pend = null; this.step(1); return; }
+    if (kind === 'undo') return this.undo();
     const row = D.rowOf.get(id), group = this.groupOf(row), pos = this.posOf.get(row);
-    if (kind === 'undo') { for (const j of group) setDec(tp, c.id[j], null); this.refresh(); this.renderCase(); return; }
-    const by = (this.who && this.who.value.trim()) || ls(WHO) || '';
-    if (!by) { const w = this.case.querySelector('.who'); if (w) { w.classList.add('ask'); w.querySelector('input').focus(); } toast(L.whoAsk); return; }
-    ls(WHO, by);
+    if (tp.kind === 'chapter' && !tp.hit(row)) { this.stateLine(row, h('span', { class: 'sig' }, L.notSuggested)); return; }
+    // never overwrite a decision silently: the same key twice confirms
+    const cur = getDec(tp, id);
+    if (cur && cur.d !== kind && !(this.pend && this.pend.id === id && this.pend.kind === kind)) {
+      this.pend = { id, kind };
+      this.stateLine(row, h('span', { class: 'sig' }, L.overwrite(L.decided[cur.d] || cur.d, cur.by || '–', fmtWhen(cur.at), kind === 'confirmed' ? '1' : '2')));
+      return;
+    }
+    this.pend = null;
+    const by = this.who_(); if (!by) return;
     const at = new Date().toISOString();
     for (const j of group) { // one key decides every affair of a group of identical affairs
-      const aid = c.id[j], rec = { d: kind, by, at, state: c.state[j], n: group.length };
-      if (API.live) {
-        try {
-          const r = await apiPost(`/affairs/${aid}/topics/${encodeURIComponent(tp.codeOf ? tp.codeOf(j) : tp.code)}/${kind === 'confirmed' ? 'confirm' : 'reject'}`, { by, scheme: tp.scheme });
-          rec.api = true; rec.row = r && (r.valid_from || r.confirmed_at) ? { valid_from: r.valid_from, confirmed_at: r.confirmed_at } : null;
-        } catch (e) { rec.err = String(e.message || e); }
-      }
+      const aid = c.id[j], code = tp.codeOf ? tp.codeOf(j) : tp.code;
+      const rec = { d: kind, by, at, state: c.state[j], n: group.length, ...(await this.post(aid, code, tp.scheme, kind === 'confirmed' ? 'confirm' : 'reject', by)) };
       setDec(tp, aid, rec);
     }
+    this.last = { id, tp };
+    await syncDecisions();
+    // a rejection in a scheme with alternatives offers the corrected code on number keys
+    if (kind === 'rejected' && (tp.kind === 'chapter' || tp.kind === 'be')) { this.refresh(); this.select(id); await this.offerCorrection(row); return; }
     this.refresh();
     const stillThere = this.posOf.has(row);
     const next = this.rows[stillThere ? pos + 1 : pos];
     this.select(next ? c.id[next[0]] : id);
+  }
+  async offerCorrection(row) {
+    const L = t(), tp = this.tp, c = D.c, id = c.id[row];
+    let alts = [];
+    if (tp.kind === 'be') alts = tp.options.filter(o => o.code !== c.be[row]).map(o => ({ code: `be:${o.code}`, scheme: 'be-directorates', key: o.code, label: `${o.abbr[UI.lang] || o.abbr.de} ${o.name[UI.lang] || o.name.de}` }));
+    else {
+      const d = await detail(id), ranks = (d && d.aps && d.aps.rank) || [];
+      alts = ranks.filter(r => r !== tp.idx && D.scheme.chapters[r]).map(r => { const ch = D.scheme.chapters[r]; return { code: ch.code, scheme: 'aps', label: UI.lang === 'fr' ? ch.fr || ch.de : ch.de }; });
+    }
+    if (!alts.length) { this.step(1); return; }
+    this.corr = { id, row, alts: alts.slice(0, 9) };
+    this.stateLine(row, h('span', {}, h('b', {}, `${L.correct}: `), ...this.corr.alts.flatMap((a, k) => [h('button', { class: 'tb', type: 'button', onclick: () => this.pickCorrection(k + 1) }, `[${k + 1}] ${a.label}`), ' · ']), h('span', { class: 'dim' }, `[0] ${L.noCorrection}`)));
+  }
+  async pickCorrection(k) {
+    const cr = this.corr; if (!cr) return;
+    this.corr = null;
+    const c = D.c, L = t(), tp = this.tp, row = cr.row, pos = this.posOf.get(row);
+    if (!k) { this.refresh(); const next = this.rows[this.posOf.has(row) ? pos + 1 : pos]; this.select(next ? c.id[next[0]] : cr.id); return; }
+    const a = cr.alts[k - 1]; if (!a) return;
+    const by = this.who_(); if (!by) return;
+    const at = new Date().toISOString();
+    for (const j of this.groupOf(row)) {
+      const aid = c.id[j], res = await this.post(aid, a.code, a.scheme, 'confirm', by);
+      if (tp.kind === 'be') setDec(tp, aid, { d: 'confirmed', by, at, state: c.state[j], code: a.key, corr: true, ...res });
+      else {
+        const cur = getDec(tp, aid); if (cur) setDec(tp, aid, { ...cur, corr: a.code });
+        const t2 = TOPIC_BY_ID.get(a.code); if (t2) setDec(t2, aid, { d: 'confirmed', by, at, state: c.state[j], corr: true, ...res });
+      }
+    }
+    await syncDecisions();
+    toast(`${L.corrected} → ${a.label}`);
+    this.refresh();
+    const next = this.rows[this.posOf.has(row) ? pos + 1 : pos];
+    this.select(next ? c.id[next[0]] : cr.id);
+  }
+  // u: undo the selected row's decision; with an undecided row selected, the last decision of this session
+  async undo() {
+    const L = t(), c = D.c;
+    let tp = this.tp, id = this.S.sel;
+    if (id == null || !getDec(tp, id)) { if (!this.last) return; ({ id, tp } = this.last); }
+    const row = D.rowOf.get(id); if (row == null) return;
+    const dec = getDec(tp, id); if (!dec) return;
+    const by = this.who_() || dec.by;
+    let note = '';
+    for (const j of this.groupOf(row)) {
+      const aid = c.id[j], code = tp.kind === 'be' ? `be:${(getDec(tp, aid) || {}).code || c.be[j]}` : (tp.codeOf ? tp.codeOf(j) : tp.code);
+      if (API.live) {
+        const r = await this.post(aid, code, tp.scheme, 'undo', by);
+        if (r.err) note = L.undoLocal;
+      }
+      setDec(tp, aid, null);
+    }
+    this.last = null;
+    await syncDecisions();
+    this.refresh(); this.select(id);
+    if (note) this.stateLine(row, h('span', { class: 'sig' }, note));
   }
 
   summary() {
@@ -371,9 +481,9 @@ export class Board {
   async exportCsv() {
     const L = t(), tp = this.tp, c = D.c, items = this.items;
     if (!tp) return;
-    const det = new Map(); await Promise.all([...new Set(items.map(i => Math.floor(c.id[i] / 1000)))].map(async k => {
-      const any = items.find(i => Math.floor(c.id[i] / 1000) === k); await detail(c.id[any]);
-    }));
+    const det = new Map(), chunks = [...new Set(items.map(i => Math.floor(c.id[i] / 1000)))];
+    for (let a = 0; a < chunks.length; a += 6) // a few chunk files at a time
+      await Promise.all(chunks.slice(a, a + 6).map(k => detail(c.id[items.find(i => Math.floor(c.id[i] / 1000) === k)])));
     for (const i of items) det.set(i, await detail(c.id[i]));
     const fr = UI.lang === 'fr';
     const LV = fr ? ['Confédération', 'Canton', 'Commune', 'Liechtenstein'] : ['Bund', 'Kanton', 'Gemeinde', 'Liechtenstein'];
@@ -387,13 +497,13 @@ export class Board {
     for (const i of items) {
       const d = det.get(i) || {}, b = D.B.get(c.body[i]) || {}, dec = getDec(tp, c.id[i]);
       lines.push([c.date[i], LV[c.lvl[i]], b.canton || '', bodyName(c.body[i]), d.number || c.number[i] || '', c.title[i], c.lang[i], typeOf(i), c.state[i],
-        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, c.be[i]) : tname, p3(tp.p(i)), tp.check(i) ? 'please_check' : 'readings_agree',
-        dec ? dec.d : 'suggested', dec ? dec.by : '', dec ? dec.at : '', c.id[i], (d.build || D.meta.build || '').slice(-8)].map(q).join(','));
+        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, c.be[i]) : tname, p3(tp.p(i)), L.lanes[tp.check(i) ? 'please_check' : 'readings_agree'],
+        dec ? (L.decided[dec.d] || dec.d) + (dec.code ? ` ${dec.code}` : '') : L.suggested, dec ? dec.by : '', dec ? dec.at : '', c.id[i], (d.build || D.meta.build || '').slice(-8)].map(q).join(','));
     }
     // method line: affairs found, scored share per parliament, machine suggestions
     const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
     const bodies = [...new Set(items.map(i => c.body[i]))];
-    const cov = bodies.map(k => { const s = this.stats.get(k), b = D.B.get(k); return `${k} ${pct(s && s.cov)}${b && b.covered_from ? (fr ? ' dès ' : ' ab ') + b.covered_from : ''}`; }).join('; ');
+    const cov = bodies.map(k => { const s = this.stats.get(k); return `${bodyName(k)} ${pct(s && s.cov)}`; }).join('; ');
     lines.push('');
     lines.push(q(`# ${L.method(items.length, tp.names[UI.lang] || tp.names.de, per, cov || '–', (D.meta.build_short || D.meta.build || '').slice(-8))}`));
     const slug = (tp.names.de || 'thema').toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -404,3 +514,5 @@ export class Board {
 
 export const beAbbr = (tp, code) => { const o = tp.opt.get(code); return o ? (o.abbr[UI.lang] || o.abbr.de) : (code || '–'); };
 export const beFull = (tp, code, l = UI.lang) => { const o = tp.opt.get(code); return o ? `${o.abbr[l] || o.abbr.de} ${o.name[l] || o.name.de}` : (code || ''); };
+
+const fmtWhen = iso => { if (!iso) return '–'; const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString(UI.lang === 'fr' ? 'fr-CH' : 'de-CH', { dateStyle: 'short', timeStyle: 'short' }); };

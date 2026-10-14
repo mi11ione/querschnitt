@@ -55,7 +55,7 @@ class H(http.server.SimpleHTTPRequestHandler):
         if p == "/metrics":
             return self.js({"affairs": len(C["id"]), "rows": len(C["id"]), "pending": 0, "rows_last_night": None, "mock": True})
         if p == "/changes":
-            return self.js({"rows": ROWS})
+            return self.js({"rows": ROWS, "next": None, "total": len(ROWS)})
         m = re.fullmatch(r"/adhoc/([\w-]+)/stream", p)
         if m:
             return self.stream(m.group(1))
@@ -72,12 +72,25 @@ class H(http.server.SimpleHTTPRequestHandler):
                 words = [w.strip() for w in re.split(r"[,·:]", body["terms"]) if len(w.strip()) >= 4 and w.strip() not in ("de", "fr", "it")]
             slug = re.sub(r"[^a-z0-9]+", "-", norm(s))[:40].strip("-") or "thema"
             TOPICS[slug] = {"words": [norm(w)[:7] for w in words]}
-            return self.js({"slug": slug, "topic": {"names": {"de": s, "fr": s, "it": s}, "terms": {"de": words}, "mock": True}})
+            ids = last_week_ids()
+            per = [C["date"][ids[-1][0]], C["date"][ids[0][0]]] if ids else None
+            TOPICS[slug]["period"] = per
+            return self.js({"slug": slug, "period": per, "topic": {"names": {"de": s, "fr": s, "it": s}, "terms": {"de": words}, "mock": True}})
+        m = re.fullmatch(r"/affairs/(\d+)/topics/(.+)/undo", p)
+        if m:
+            now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+            for r in reversed(ROWS):
+                if r["affair_id"] == int(m.group(1)) and r["valid_to"] is None and r["scheme"] == body.get("scheme"):
+                    r["valid_to"] = now; return self.js(r)
+            return self.js({"error": "nothing to undo"}, 404)
         m = re.fullmatch(r"/affairs/(\d+)/topics/(.+)/(confirm|reject)", p)
         if m:
             row = {"affair_id": int(m.group(1)), "code": m.group(2), "scheme": body.get("scheme"), "status": "confirmed" if m.group(3) == "confirm" else "rejected",
                    "provenance": "confirmed", "confirmed_by": body.get("by"), "confirmed_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-                   "valid_from": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
+                   "valid_from": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "valid_to": None}
+            for r in ROWS:
+                if r["affair_id"] == row["affair_id"] and r["scheme"] == row["scheme"] and r["valid_to"] is None and (r["code"] == row["code"] or row["scheme"] != "aps"):
+                    r["valid_to"] = row["valid_from"]
             ROWS.append(row)
             return self.js(row)
         self.js({"error": "not found"}, 404)
@@ -87,12 +100,19 @@ class H(http.server.SimpleHTTPRequestHandler):
         self.send_response(200); self.send_header("content-type", "text/event-stream"); self.send_header("cache-control", "no-cache")
         self.send_header("access-control-allow-origin", "*"); self.end_headers()
         ids = last_week_ids(); t0 = time.time()
+        cap = int(__import__("os").environ.get("MOCK_CAP", "0")) or None
+        per = TOPICS.get(slug, {}).get("period") or [C["date"][ids[-1][0]] if ids else "", C["date"][ids[0][0]] if ids else ""]
         try:
+            self.wfile.write(f"event: topic\ndata: {json.dumps({'slug': slug, 'period': per})}\n\n".encode())
             self.wfile.write(f"event: progress\ndata: {json.dumps({'total': len(ids), 'read': 0})}\n\n".encode()); self.wfile.flush()
             for k, (i, aid) in enumerate(ids):
+                if cap and k >= cap:
+                    self.wfile.write(f"event: done\ndata: {json.dumps({'read': k, 'error': f'RuntimeError(QS_ADHOC_MAX_CALLS {cap} reached)'})}\n\n".encode()); self.wfile.flush()
+                    return
                 hit = any(w and w in norm(C["title"][i]) for w in words)
                 d = {"id": aid, "p": 0.97 if hit else 0.02, "flag": hit, "t": round(time.time() - t0, 2)}
-                self.wfile.write(f"data: {json.dumps(d)}\n\n".encode()); self.wfile.flush()
+                self.wfile.write(f"event: decision\ndata: {json.dumps(d)}\n\n".encode())
+                self.wfile.write(f"event: progress\ndata: {json.dumps({'total': len(ids), 'read': k + 1})}\n\n".encode()); self.wfile.flush()
                 time.sleep(0.02)
             self.wfile.write(b"event: done\ndata: {\"done\": true}\n\n"); self.wfile.flush()
         except (BrokenPipeError, ConnectionResetError):

@@ -3,7 +3,7 @@
 # store → one metrics line. On even days of the month the endpoint is cut for the first pass (`--no-model`): new rows wait
 # as pending; the second pass with the endpoint drains them, and the log records pending count and minutes to drain.
 cd "$(dirname "$0")/.." || exit 1
-export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$PWD/data/inputs.jsonl.gz" QS_EXPORT_DIR="$PWD/data/opd"
+export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$PWD/../data/inputs.jsonl.gz" QS_EXPORT_DIR="$PWD/../data/opd-new"
 L="runs/nightly/$(date +%F).log"; PY=.venv/bin/python
 day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
 {

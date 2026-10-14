@@ -13,11 +13,13 @@ import gzip
 import hashlib
 import html
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
 TAG = re.compile(r"<[^>]+>")
+TRIM_DOCS = os.environ.get("QS_TRIM_DOCS", "0") == "1"   # switch on with the post-slice rebuild (changes ~24% of document input hashes → re-scored, never mixed)
 
 
 def clean(s: str | None) -> str:
@@ -100,6 +102,16 @@ INSTR = re.compile(r"anfrage|interpellation|motion|postulat|auftrag|vorstoss|erk
                    r"chiede|domand|question|résolution|resolution|rappel|demande", re.I)
 WORD = re.compile(r"[A-Za-zÀ-ÿ]{5,}")
 NON_TEXT_CATS = {"recording_video", "recording_audio", "image"}
+
+
+def trim_to_title(text: str, title: str, min_len: int = 15, max_skip: int = 1200) -> str:
+    """Documents often start with a letterhead, addresses or a form header before the affair itself; start the text at the
+    first occurrence of the title (its first 40 characters) when it appears within the first `max_skip` characters."""
+    key = (title or "")[:40].lower()
+    if len(key) < min_len:
+        return text
+    i = text.lower().find(key)
+    return text[i:] if 0 < i <= max_skip else text
 
 
 def restates(t: str, title: str) -> bool:
@@ -244,7 +256,7 @@ def build(d: Path, out: Path, since: str = "0000", docs_path: Path | None = None
             else:
                 r, kind, _ = pick_doc(D.get(a["id"], []), title)
                 if r:
-                    text, src = r["head"][:1500], f"doc:{r['id']}"
+                    text, src = (trim_to_title(r["head"], title) if TRIM_DOCS else r["head"])[:1500], f"doc:{r['id']}"
             sub = S.get(a["id"])
             body = a["body_key"]
             alt = next((l for l in ("fr", "de", "it") if l != tl and (a.get(f"title_{l}") or "").strip()

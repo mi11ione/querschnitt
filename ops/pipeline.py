@@ -10,6 +10,8 @@ INP = "../data/inputs.jsonl.gz"
 PHASES = [
     ("p1-slice", "runs/main", ["--since", "2025-01-01", "--steps", "ch", "sub", "yn"]),
     ("p1b-aps-gold", "runs/main", ["--ids", "runs/pipeline/ids_s9_gold.txt", "--steps", "ch", "sub"]),
+    ("p1c-trim-inputs", None, ["QS_TRIM_DOCS=1", "build-inputs"]),          # documents start at the title (letterheads cut)
+    ("p1d-rescore-changed", "runs/main", ["--since", "2025-01-01", "--steps", "ch", "sub", "yn"]),   # cache: only changed
     ("p2-evidence-2026", "runs/main", ["--since", "2026-01-01", "--steps", "ev"]),
     ("p3-evidence-2025", "runs/main", ["--since", "2025-01-01", "--until", "2025-12-31", "--steps", "ev"]),
     ("p4-since-2015-chapters", "runs/main", ["--since", "2015-01-01", "--until", "2024-12-31", "--steps", "ch"]),
@@ -31,6 +33,14 @@ def log(*a):
 for name, run, args in PHASES:
     if (PIPE / f"{name}.done").exists():
         continue
+    if run is None:   # a command phase: rebuild inputs with the given environment
+        env = dict(os.environ, **dict(a.split("=", 1) for a in args if "=" in a))
+        log("start", name)
+        rc = subprocess.call([str(ROOT / ".venv/bin/python"), "-m", "querschnitt.data", str(ROOT.parent / "data/opd-new"),
+                              str(ROOT.parent / "data/inputs.jsonl.gz")], cwd=ROOT, env=env)
+        if rc == 0:
+            (PIPE / f"{name}.done").write_text(time.strftime("%Y-%m-%dT%H:%M:%S%z")); log("done", name); continue
+        log("command phase failed", name, rc); sys.exit(1)
     while alive(run):
         time.sleep(30)
     while (ROOT / run / "STOP.md").exists() and "Disk low" in (ROOT / run / "STOP.md").read_text():

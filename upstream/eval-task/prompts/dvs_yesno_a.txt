@@ -1,0 +1,14 @@
+# DVS item 45381 (BS): 'Digitalisierung' yes/no, order a (A = yes)
+# prompt_id 51ca265f3342 = sha256(user + '\x00' + prefill)[:12]
+[user]
+Betrifft das folgende parlamentarische Geschäft das Thema «Digitalisierung» (digitale Transformation der Verwaltung, E-Government, digitale Infrastruktur, Daten, Cybersicherheit, digitale Souveränität)?
+
+A = Ja, das Geschäft betrifft Digitalisierung
+B = Nein, anderes Thema
+
+Geschäft:
+Titel: Digitalisierung vorantreiben - Einbürgerungsverfahren digitalisieren
+
+Antworte nur mit dem Buchstaben als JSON: {"antwort": "<Buchstabe>"}
+[assistant prefill]
+{"antwort": "

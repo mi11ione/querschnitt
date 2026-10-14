@@ -1,0 +1,39 @@
+# APS item 202727 (Curia 24.453): chapter, S1 code permutation (D0 reading b)
+# prompt_id 2b09f5e8dee9 = sha256(user + '\x00' + prefill)[:12]
+[user]
+Ordne das folgende parlamentarische Geschäft genau einem Thema der Année Politique Suisse zu.
+
+Themen:
+A = Raumplanung und Wohnungswesen (Mietwesen; Raumplanung; Bodenrecht; Wohnungsbau und -eigentum; Wohnqualität)
+B = Bildung und Forschung (Grundschulen; Mittelschulen; Berufsbildung; Hochschulen; Forschung)
+C = Aussenpolitik (Beziehungen zur EU; Beziehungen zu internationalen Organisationen; Zwischenstaatliche Beziehungen; Gute Dienste; Auslandschweizer; Entwicklungspolitik; Aussenwirtschaftspolitik)
+D = Parteien (Parteiensystem; Grosse Parteien; Linke und ökologische Parteien; Liberale Parteien; Konservative und Rechte Parteien; Andere Parteien)
+E = Verbände (Industrie, Handel und Unternehmer; Arbeitgeber; Landwirtschaft; Gewerbe, Dienstleistungen, Konsum; Arbeitnehmer, Gewerkschaften; Gesundheit; Sozialwesen, Soziale Gruppen; Raumplanung und Wohnungswesen; Verkehr; Energie; Natur und Umwelt; Bildung; Kultur, Medien und Sprachen; Kirche, Religion; Freizeit, Tourismus, Gastgewerbe; Überparteiliche politische Interessen / Think Tanks)
+F = Gesundheit, Sozialhilfe, Sport (Gesundheitspolitik; Ärzte und Pflegepersonal; Medikamente; Epidemien; Medizinische Forschung; Suchtmittel; Sozialhilfe; Sport)
+G = Wirtschaftspolitik (Konjunkturlage- und politik; Strukturpolitik; Wettbewerb; Gesellschaftsrecht; Wirtschaftsordnung)
+H = Kein Sachthema (Wahl oder Ernennung von Personen, Einbürgerung, Rücktritt, Verfahrensfragen des Rats)
+I = Landwirtschaft (Agrarpolitik; Internationale Landwirtschaftspolitik; Landwirt (Beruf); Landwirtschaft und Umweltschutz; Agrarprodukte; Tierische Produktion; Pflanzliche Produktion; Lebensmittel; Tierhaltung, -versuche und -schutz; Forstwirtschaft; Fischerei; Jagd)
+J = Landesverteidigung (Landesverteidigung und Gesellschaft; Militäreinsätze; Militärorganisation; Ausrüstung und Beschaffung; Zivildienst und Dienstverweigerung; Bevölkerungsschutz)
+K = Bevölkerung und Arbeit (Bevölkerungsentwicklung; Arbeitsmarkt; Löhne; Arbeitszeit; Kollektive Arbeitsbeziehungen; Arbeitnehmerschutz; Arbeitsrecht)
+L = Politische Grundfragen (Verfassungsfragen; Nationale Identität; Landes- und Weltausstellungen; Staatsjubiläen; Image der Schweiz im Ausland; Stimmung in der Bevölkerung)
+M = Soziale Gruppen (Migrationspolitik; Asylpolitik; Familienpolitik; Frauen und Gleichstellungspolitik; Kinder- und Jugendpolitik; Alterspolitik; Menschen mit Behinderungen; LGBTQIA+)
+N = Geld, Währung und Kredit (Finanzmarkt; Geldpolitik; Makroprudenzielle Regulierung; Nationalbank; Internationale Finanzinstitutionen; Wettbewerbsfähigkeit; Banken; Börsen; Versicherungen; Kapitalmarkt)
+O = Umweltschutz (Naturschutz; Naturgefahren; Gewässerschutz; Luftreinhaltung; Lärmschutz; Bodenschutz; Allgemeiner Umweltschutz; Klimapolitik; Abfälle)
+P = Medien (Radio und Fernsehen; Presse; Medienpolitische Grundfragen; Telekommunikation; Neue Medien; Meinungsforschung)
+Q = Energie (Energiepolitik; Netz und Vertrieb; Wasserkraft; Kernenergie; Alternativenergien; Erdöl und Erdgas)
+R = Föderativer Aufbau (Beziehungen zwischen Bund und Kantonen; Interkantonale Zusammenarbeit; Städte, Regionen, Gemeinden; Territorialfragen; Jurafrage)
+S = Sozialversicherungen (Alters- und Hinterlassenenversicherung (AHV); Invalidenversicherung (IV); Ergänzungsleistungen (EL); Erwerbsersatzordnung (EO); Berufliche Vorsorge; Private Vorsorge; Krankenversicherung; Unfallversicherung; Arbeitslosenversicherung (ALV))
+T = Institutionen und Volksrechte (Bundesrat; Regierungspolitik; Bundesverwaltung - Organisation; Bundesverwaltung - Personal; Parlamentsmandat; Parlamentsorganisation; Organisation der Bundesrechtspflege; Volksrechte; Wahl- und Abstimmungsverfahren)
+U = Rechtsordnung (Bürgerrecht; Niederlassungsrecht; Stimm- und Wahlrecht; Datenschutz und Statistik; Grundrechte; Öffentliche Ordnung; Innere Sicherheit; Kriminalität; Polizei; Äussere Sicherheit; Rechtshilfe; Strafrecht; Privatrecht)
+V = Kultur, Sprache, Kirchen (Kulturpolitik; Urheberrecht; Heimatschutz und Denkmalpflege; Archive, Bibliotheken, Museen; Buchmarkt; Musik; Film; Sprachen; Fahrende; Kirchen und religionspolitische Fragen)
+W = Verkehr und Kommunikation (Verkehrspolitik; Strassenverkehr; Eisenbahn; Agglomerationsverkehr, öffentlicher Verkehr; Schiffahrt; Luftfahrt; Post und Telekommunikation)
+X = Wahlen (Wahlen in kantonale Parlamente; Wahlen in kantonale Regierungen; Kantonale Ersatzwahlen; Kommunale Wahlen; Kommunale Ersatzwahlen; Eidgenössische Wahlen; Ständeratsersatzwahlen)
+Y = Öffentliche Finanzen (Direkte Steuern; Indirekte Steuern; Finanz- und Ausgabenordnung; Finanzplan und Sanierungsmassnahmen; Staatsrechnung; Voranschlag; Finanzausgleich; Finanzhaushalt der Kantone und Gemeinden)
+
+Geschäft:
+Titel: Migration. Einführung des Schweden-Modells
+Text (Auszug): Gestützt auf Artikel 160 Absatz 1 der Bundesverfassung und Artikel 107 des Parlamentsgesetzes reiche ich folgende parlamentarische Initiative ein: Es werden in der Asylgesetzgebung die nötigen Änderungen vorgenommen, damit in der Schweiz die nachfolgenden in Schweden geltenden Ansätze in der Asyl- und Migrationsgesetzgebung umgesetzt werden: Der Schutzstatus anerkannter Flüchtlinge wird alle drei Jahre überprüft. Anerkannte Flüchtlinge und vorläufig Aufgenommene dürfen nur noch dann Angehörige ins Land holen, wenn sie für deren Unterhalt garantieren können (Ausnahme: Für anerkannte Flüchtlinge innerhalb der ersten drei Monate). Abgewiesene Asylbewerber erhalten nach Ablauf der Ausreisefrist keine Nothilfe mehr, sofern sie keine Kinder haben. Wer in der Schweiz als Flüchtling anerkannt wird, erhält eine B-Bewilligung und darf in der Regel dauerhaft im Land bleiben. In Schweden ist dies anders: Anerkannte Flüchtlinge erhalten nur noch befristeten Schutz. Nach drei Jahren wird der Status überprüft. Hat sich die Gefahrenlage im Herkunftsland verändert oder wird eine Unregelmässigkeit festgestellt (z.B. falsche Angabe zur Identität), kann die Aufenthaltsberechtigung verfallen. In Schweden wurden 2023 rund 11’000 Aufenthaltstitel von Personen entzogen, die die Voraussetzungen nicht erfüllten. Der Familiennachzug gehört zu den grössten Treibern der Migration. Schweden hat ihn so weit wie möglich eingedämmt, indem Flüchtlinge und andere Zuwanderer in der Regel nur noch dann Angehörig
+
+Antworte nur mit dem Buchstaben des Themas als JSON: {"kapitel": "<Buchstabe>"}
+[assistant prefill]
+{"kapitel": "

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Querschnitt -> OpenParlData: load topics.jsonl.gz into the `topics` table (upstream/opd/migrations/0001_topics.up.sql).
+Licensed under the Apache License, Version 2.0. Generated for Apache Hop 2.x; open it in Hop GUI to edit.
+-->
+<workflow>
+  <name>load_topics</name>
+  <name_sync_with_filename>Y</name_sync_with_filename>
+  <description>Load Querschnitt topics into OpenParlData and close superseded machine rows</description>
+  <extended_description/>
+  <workflow_version>1</workflow_version>
+  <created_user>querschnitt</created_user>
+  <created_date>2026/10/14 03:00:00.000</created_date>
+  <modified_user>querschnitt</modified_user>
+  <modified_date>2026/10/14 03:00:00.000</modified_date>
+  <parameters>
+      <parameter><name>QS_TOPICS_FILE</name><default_value>${PROJECT_HOME}/../../app/data/topics.jsonl.gz</default_value><description>Querschnitt topics file (gzip-compressed JSON lines, docs/CONTRACT.md rows)</description></parameter>
+      <parameter><name>QS_COMMIT_SIZE</name><default_value>1000</default_value><description>rows per commit in the insert / update transform</description></parameter>
+  </parameters>
+  <actions>
+    <action>
+      <name>Start</name>
+      <description/>
+      <type>SPECIAL</type>
+      <attributes/>
+      <repeat>N</repeat>
+      <schedulerType>0</schedulerType>
+      <intervalSeconds>0</intervalSeconds>
+      <intervalMinutes>60</intervalMinutes>
+      <hour>12</hour>
+      <minutes>0</minutes>
+      <weekDay>1</weekDay>
+      <DayOfMonth>1</DayOfMonth>
+      <parallel>N</parallel>
+      <xloc>64</xloc>
+      <yloc>96</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>load topics.jsonl.gz</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/load_topics.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>256</xloc>
+      <yloc>96</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>close superseded machine rows</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>-- Close machine rows superseded by a newer machine row of the same key (affair, scheme, level, rank).
+-- valid_to = the newer row's valid_from. Decision rows (provenance 'confirmed') are never touched here.
+UPDATE topics
+SET valid_to = (SELECT MIN(n.valid_from) FROM topics n
+                WHERE n.affair_id = topics.affair_id AND n.scheme_key = topics.scheme_key AND n.level = topics.level
+                  AND n.rank = topics.rank AND n.provenance = 'inferred' AND n.valid_from &gt; topics.valid_from),
+    updated_at = CURRENT_TIMESTAMP
+WHERE provenance = 'inferred' AND valid_to IS NULL
+  AND EXISTS (SELECT 1 FROM topics n
+              WHERE n.affair_id = topics.affair_id AND n.scheme_key = topics.scheme_key AND n.level = topics.level
+                AND n.rank = topics.rank AND n.provenance = 'inferred' AND n.valid_from &gt; topics.valid_from);
+</sql>
+      <useVariableSubstitution>N</useVariableSubstitution>
+      <sqlfromfile>N</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>N</sendOneStatement>
+      <connection>opd</connection>
+      <parallel>N</parallel>
+      <xloc>480</xloc>
+      <yloc>96</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>Success</name>
+      <description/>
+      <type>SUCCESS</type>
+      <attributes/>
+
+      <parallel>N</parallel>
+      <xloc>704</xloc>
+      <yloc>96</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>Abort</name>
+      <description/>
+      <type>ABORT</type>
+      <attributes/>
+      <message>load_topics failed; nothing was closed. See the log above.</message>
+      <parallel>N</parallel>
+      <xloc>256</xloc>
+      <yloc>240</yloc>
+      <attributes_hac/>
+    </action>
+  </actions>
+  <hops>
+    <hop><from>Start</from><to>load topics.jsonl.gz</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>Y</unconditional></hop>
+    <hop><from>load topics.jsonl.gz</from><to>close superseded machine rows</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>close superseded machine rows</from><to>Success</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>load topics.jsonl.gz</from><to>Abort</to><enabled>Y</enabled><evaluation>N</evaluation><unconditional>N</unconditional></hop>
+  </hops>
+  <notepads>
+  </notepads>
+  <attributes/>
+</workflow>

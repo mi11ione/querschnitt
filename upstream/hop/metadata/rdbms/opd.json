@@ -1,0 +1,26 @@
+{
+  "rdbms": {
+    "POSTGRESQL": {
+      "databaseName": "${OPD_DB_NAME}",
+      "pluginId": "POSTGRESQL",
+      "accessType": 0,
+      "hostname": "${OPD_DB_HOST}",
+      "password": "${OPD_DB_PASSWORD}",
+      "pluginName": "PostgreSQL",
+      "port": "${OPD_DB_PORT}",
+      "attributes": {
+        "SUPPORTS_TIMESTAMP_DATA_TYPE": "Y",
+        "QUOTE_ALL_FIELDS": "N",
+        "SUPPORTS_BOOLEAN_DATA_TYPE": "Y",
+        "FORCE_IDENTIFIERS_TO_LOWERCASE": "N",
+        "PRESERVE_RESERVED_WORD_CASE": "Y",
+        "SQL_CONNECT": "SET TIME ZONE 'UTC'",
+        "FORCE_IDENTIFIERS_TO_UPPERCASE": "N",
+        "PREFERRED_SCHEMA_NAME": ""
+      },
+      "manualUrl": "",
+      "username": "${OPD_DB_USER}"
+    }
+  },
+  "name": "opd"
+}

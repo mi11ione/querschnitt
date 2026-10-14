@@ -1,0 +1,79 @@
+# Prüfstand: topic classification of Swiss parliamentary affairs, as a re-runnable task for any Apertus build.
+# Shape follows lm-evaluation-harness task configs (group / task / dataset / doc_to_* / metric_list); it does not depend
+# on the harness. Reference implementation: run.py (querschnitt.prompts, querschnitt.client). Card: TASK.md.
+group: querschnitt_pruefstand
+version: 1.0
+reference_build: vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840   # Public AI swiss-ai/apertus-v1.5-8b, Oct 2026
+request:
+  api: openai-chat-completions
+  messages: [user, assistant-prefill]        # no system message
+  continue_final_message: true
+  add_generation_prompt: false
+  max_tokens: 1
+  temperature: 0.0
+  logprobs: true
+  top_logprobs: 20
+  record: [model, system_fingerprint, prompt_id]
+  build_lock: true                           # stop when system_fingerprint changes; never mix builds in one result
+readout: >-
+  Next-token distribution after the prefill, restricted to the listed codes and renormalised (log-probabilities of the
+  code tokens among top_logprobs). Without log-probabilities: the generated code, checked against the list (lanes and
+  top-1 only; no calibration metrics).
+
+task:
+  - task: aps_chapter_s9
+    description: APS chapter (24 chapters + "no policy topic") of 1,357 federal affairs, labelled by APS editors.
+    dataset_path: data/aps_s9.jsonl.gz
+    dataset_manifest: data/MANIFEST.json
+    test_split: all                          # held out from prompt design (S9 pre-registration); S16 compared D4/D4S on the same items under a rule fixed before its calls
+    doc_to_input: "{{de.title}} / {{de.title_long}} / {{de.text[:1500]}}"
+    doc_to_target: gold_chapter              # index 0-24 into prompts.CODES order of the scheme; gold_code = "aps:1.7.4."
+    output_type: closed_choice_logprobs
+    choices: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y]
+    readings:
+      d0a: {prompt: prompts.chapter_prompt(doc.de, identity), file: prompts/aps_d0a.txt}
+      d0b: {prompt: prompts.chapter_prompt(doc.de, S1PERM), file: prompts/aps_d0b.txt}
+      d3m: {prompt: prompts.chapter_prompt_examples(doc.de, identity, doc.examples), file: prompts/aps_d3m.txt}
+      sub: {prompt: "prompts.subtopic_prompt(doc.de, subtopic_chapters(prior))", file: prompts/aps_subtopic.txt,
+            note: "one request over the subtopics of the top 2-3 chapters of the prior; last code = none of these"}
+    designs:
+      D0: geometric mean of d0a and d0b                                        # plain list prompting, two code orders
+      D1: chapter read back from sub, prior = mean(d0a, d0b)
+      D3: geometric mean of d3m and d0b                                        # five APS-labelled examples
+      D4S: chapter read back from sub, prior = d3m if max(d3m) >= 0.9 else mean(d3m, d0b)   # shipped design
+    calls_per_item: "3 chapter + 1-2 subtopic (identical prompts sent once)"
+    metric_list:
+      - {metric: top1_accuracy, interval: wilson_95}
+      - {metric: top3_accuracy, interval: wilson_95}
+      - {metric: paired_difference_top1, pairs: [D1-D0, D3-D0, D4S-D0, D4S-D3, D4S-D1], interval: bootstrap_2000_percentile, seed: 2026}
+      - {metric: ece_10_bins, of: top-1 confidence}
+      - {metric: ece_isotonic_crossfit, folds: 2, seed: 3}
+      - {metric: order_agreement, of: [d0a, d0b], with: precision_when_agree_and_disagree}
+    baselines:
+      majority_chapter: computed by run.py
+      keywords: 0.192 on the reference items (S9, ideation2/spikes/s9-aps/data/keywords_frozen.json); not re-run
+    reference_results:                                      # build above; eval/s16/results.md, ideation2/spikes/s9-aps/results.md
+      D0: {top1: 0.655, top1_ci: [0.629, 0.680], ece_raw: 0.2623}
+      D1: {top1: 0.7038, top1_ci: [0.679, 0.727], ece_raw: 0.2791, ece_isotonic_crossfit: 0.0319}
+      D3: {top1: 0.7222, top1_ci: [0.698, 0.745]}
+      D4S: {top1: 0.7487, top1_ci: [0.725, 0.771]}
+
+  - task: dvs_digitalisierung_30
+    description: Recall of the ad-hoc topic "Digitalisierung" on the 30 affairs on the public DVS list (all positives).
+    dataset_path: data/dvs30.jsonl
+    test_split: all
+    doc_to_input: "{{title}} / {{title_long}}"
+    doc_to_target: gold                      # 1 for every item
+    output_type: closed_choice_logprobs
+    choices: [A, B]
+    readings:
+      yn_a: {prompt: "prompts.yesno_prompt(adhoc('digitalisierung'), doc.lang, doc.title, doc.title_long, 'a')", file: prompts/dvs_yesno_a.txt}
+      yn_b: {prompt: "prompts.yesno_prompt(..., 'b')", file: prompts/dvs_yesno_b.txt, when: "0.1 < p_yes(a) < 0.9"}
+    decision: p = mean of the available readings' p(yes); flagged at p >= 0.5
+    metric_list:
+      - {metric: recall, interval: wilson_95}
+    note: >-
+      The question and the 0.5 cut-off were written on these same items (S3), so this is a recall check, not a held-out
+      test; a held-out recall test needs the full POLITmonitor list.
+    reference_results:
+      recall: {found: 27, n: 30, ci: [0.744, 0.965]}                          # ideation2/spikes/s8-dvs/results.md

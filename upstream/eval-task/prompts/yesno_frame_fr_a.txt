@@ -1,0 +1,14 @@
+# the fr frame of the same question (affairs in fr); title shown as on the DVS item
+# prompt_id 138d8ea93f00 = sha256(user + '\x00' + prefill)[:12]
+[user]
+L'objet parlementaire suivant concerne-t-il le thème « numérique » (transformation numérique de l'administration, cyberadministration, infrastructure numérique, données, cybersécurité, souveraineté numérique) ?
+
+A = Oui, l'objet concerne le numérique
+B = Non, autre thème
+
+Objet:
+Titre: Digitalisierung vorantreiben - Einbürgerungsverfahren digitalisieren
+
+Réponds uniquement par la lettre en JSON : {"reponse": "<lettre>"}
+[assistant prefill]
+{"reponse": "

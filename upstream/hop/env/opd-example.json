@@ -1,0 +1,9 @@
+{
+  "variables" : [
+    { "name" : "OPD_DB_HOST", "value" : "localhost", "description" : "OPD PostgreSQL host" },
+    { "name" : "OPD_DB_PORT", "value" : "5432", "description" : "OPD PostgreSQL port" },
+    { "name" : "OPD_DB_NAME", "value" : "openparldata", "description" : "database name" },
+    { "name" : "OPD_DB_USER", "value" : "openparldata", "description" : "INSERT, UPDATE, SELECT on topics; SELECT on bodies, topic_schemes, topic_codes" },
+    { "name" : "OPD_DB_PASSWORD", "value" : "", "description" : "keep the real value in a copy outside the repo" }
+  ]
+}

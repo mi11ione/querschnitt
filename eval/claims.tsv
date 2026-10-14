@@ -378,3 +378,20 @@ S16	-	0.002	S16 D4-D3 > ci[0]	0.0022	bern/querschnitt/eval/s16/results.json	D4-D
 S16	-	0.034	S16 D4-D3 > ci[1] (rounded outward)	0.0339	bern/querschnitt/eval/s16/results.json	D4-D3 > ci[1] (rounded outward)	OK		truncated, never rounded up
 S16	-	0.0319	S16 calibration > aps > ece_crossfit	0.0319	bern/querschnitt/eval/s16/results.json	calibration > aps > ece_crossfit	OK		truncated, never rounded up
 S16	-	0.0574	S16 calibration > aps-fed > ece_crossfit	0.0574	bern/querschnitt/eval/s16/results.json	calibration > aps-fed > ece_crossfit	OK		truncated, never rounded up
+APERTUS-NOTES	-	250	same 250 MMLU questions	250	loop/learnings.md	VERDICT (9 Oct, 19:45): 'Same 250 MMLU questions'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	211/250	the route's model scored 211/250	211/250	loop/learnings.md	VERDICT: 'shared model 84.4% (211/250)'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	177/250	against 177/250 for apertus-8b-instruct (v1 8B)	177/250	loop/learnings.md	VERDICT: '`apertus-8b-instruct` (v1 8B) 70.8% (177/250)'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	110	generated token equalled the top-1 code on 110 of 110 calls	110	bern/ideation/spikes/s1-runtime/results.md	line 52: 'Generated token = top-1 code on 110 of 110.'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	0.2791	ECE 0.2791 -> 0.0319 (chapter read back from the subtopic)	0.2791	bern/querschnitt/eval/s16/results.md	Calibration aps: ECE 0.2791	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	0.2416	ECE 0.2416 -> 0.0574 (with labelled examples)	0.2416	bern/querschnitt/eval/s16/results.md	Calibration aps-fed: ECE 0.2416	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	189/300	identity and permuted code order agreed on 189/300	189/300	bern/ideation/spikes/s3-accuracy/results.md	E2: 'names + desc: 189/300 = 63.0 % [57.4, 68.3]'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	63.0%	agreed on 189/300 (63.0%)	63.0%	bern/ideation/spikes/s3-accuracy/results.md	E2: '189/300 = 63.0 %'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	20/20	20/20 bitwise-identical log-probabilities in each of four series	20/20	spikes/live/results.md	(e) Determinism: '20/20 bitwise-identical logprobs in each of the 4 series'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	16/20	p within 0.001 on 16/20	16/20	bern/ideation2/spikes/s9-aps/results.md	Reuse check: 'p reproduces S5 raw q1a within 1e-3 for 16/20'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	19/20	top-1 equal on 19/20	19/20	bern/ideation2/spikes/s9-aps/results.md	Reuse check: 'top-1 equal 19/20'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	3/3	answered by Qwen-SEA-LION-v4-32B-IT 3/3 times	3/3	spikes/live/results.md	6. Determinism: 'This happened 3/3 times'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	127/384	127/384 system-prompt requests were not served by Apertus	127/384	spikes/subst/results.md	'127/384 (33%) of system-prompt requests were not served by Apertus'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	384	n = 384 + 32	384	spikes/subst/results.md	system-prompt arms 192 + 192	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	0/32	against 0/32 without one	0/32	spikes/subst/results.md	no system prompt arm: 0/32	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	14/14	14/14 one answer on one backend	14/14	spikes/live/results.md	(e): 'fp1-nes "Nein." 14/14'	OK		upstream/APERTUS-NOTES.md
+APERTUS-NOTES	-	6/6	6/6 the other answer on the other	6/6	spikes/live/results.md	(e): 'tp2 "Ja. ..." 6/6'	OK		upstream/APERTUS-NOTES.md

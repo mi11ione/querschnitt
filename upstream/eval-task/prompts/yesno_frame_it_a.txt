@@ -1,0 +1,14 @@
+# the it frame of the same question (affairs in it); title shown as on the DVS item
+# prompt_id 3ac753381fe6 = sha256(user + '\x00' + prefill)[:12]
+[user]
+Il seguente oggetto parlamentare riguarda il tema «digitalizzazione» (trasformazione digitale dell'amministrazione, e-government, infrastruttura digitale, dati, cibersicurezza, sovranità digitale)?
+
+A = Sì, l'oggetto riguarda la digitalizzazione
+B = No, altro tema
+
+Oggetto:
+Titolo: Digitalisierung vorantreiben - Einbürgerungsverfahren digitalisieren
+
+Rispondi solo con la lettera in JSON: {"risposta": "<lettera>"}
+[assistant prefill]
+{"risposta": "

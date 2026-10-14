@@ -1,0 +1,43 @@
+# APS item 202727: subtopics of the top chapters (here chapters 18, 17, 16), top chapter first; last code = none
+# prompt_id 9ff40d44aa63 = sha256(user + '\x00' + prefill)[:12]
+[user]
+Das folgende parlamentarische Geschäft gehört zu einem der Themen «Soziale Gruppen», «Sozialversicherungen», «Gesundheit, Sozialhilfe, Sport» der Année Politique Suisse. Ordne es genau einem Unterthema zu.
+
+Unterthemen:
+Thema «Soziale Gruppen»:
+A = Migrationspolitik
+B = Asylpolitik
+C = Familienpolitik
+D = Frauen und Gleichstellungspolitik
+E = Kinder- und Jugendpolitik
+F = Alterspolitik
+G = Menschen mit Behinderungen
+H = LGBTQIA+
+Thema «Sozialversicherungen»:
+I = Alters- und Hinterlassenenversicherung (AHV)
+J = Invalidenversicherung (IV)
+K = Ergänzungsleistungen (EL)
+L = Erwerbsersatzordnung (EO)
+M = Berufliche Vorsorge
+N = Private Vorsorge
+O = Krankenversicherung
+P = Unfallversicherung
+Q = Arbeitslosenversicherung (ALV)
+Thema «Gesundheit, Sozialhilfe, Sport»:
+R = Gesundheitspolitik
+S = Ärzte und Pflegepersonal
+T = Medikamente
+U = Epidemien
+V = Medizinische Forschung
+W = Suchtmittel
+X = Sozialhilfe
+Y = Sport
+Z = Keines dieser Unterthemen passt
+
+Geschäft:
+Titel: Migration. Einführung des Schweden-Modells
+Text (Auszug): Gestützt auf Artikel 160 Absatz 1 der Bundesverfassung und Artikel 107 des Parlamentsgesetzes reiche ich folgende parlamentarische Initiative ein: Es werden in der Asylgesetzgebung die nötigen Änderungen vorgenommen, damit in der Schweiz die nachfolgenden in Schweden geltenden Ansätze in der Asyl- und Migrationsgesetzgebung umgesetzt werden: Der Schutzstatus anerkannter Flüchtlinge wird alle drei Jahre überprüft. Anerkannte Flüchtlinge und vorläufig Aufgenommene dürfen nur noch dann Angehörige ins Land holen, wenn sie für deren Unterhalt garantieren können (Ausnahme: Für anerkannte Flüchtlinge innerhalb der ersten drei Monate). Abgewiesene Asylbewerber erhalten nach Ablauf der Ausreisefrist keine Nothilfe mehr, sofern sie keine Kinder haben. Wer in der Schweiz als Flüchtling anerkannt wird, erhält eine B-Bewilligung und darf in der Regel dauerhaft im Land bleiben. In Schweden ist dies anders: Anerkannte Flüchtlinge erhalten nur noch befristeten Schutz. Nach drei Jahren wird der Status überprüft. Hat sich die Gefahrenlage im Herkunftsland verändert oder wird eine Unregelmässigkeit festgestellt (z.B. falsche Angabe zur Identität), kann die Aufenthaltsberechtigung verfallen. In Schweden wurden 2023 rund 11’000 Aufenthaltstitel von Personen entzogen, die die Voraussetzungen nicht erfüllten. Der Familiennachzug gehört zu den grössten Treibern der Migration. Schweden hat ihn so weit wie möglich eingedämmt, indem Flüchtlinge und andere Zuwanderer in der Regel nur noch dann Angehörig
+
+Antworte nur mit dem Buchstaben des Unterthemas als JSON: {"unterthema": "<Buchstabe>"}
+[assistant prefill]
+{"unterthema": "

@@ -1,0 +1,44 @@
+{
+ "files": [
+  {
+   "entity": "topics",
+   "type": "split",
+   "format": "ndjson.gz",
+   "directory": "topics/",
+   "url": "https://files.openparldata.ch/exports/topics/",
+   "file_count": 86,
+   "total_size": 456217,
+   "total_size_human": "445.5K",
+   "total_row_count": 15386,
+   "files": [
+    {
+     "filename": "topics_1024.ndjson.gz",
+     "url": "https://files.openparldata.ch/exports/topics/topics_1024.ndjson.gz",
+     "size": 1701,
+     "size_human": "1.7K",
+     "row_count": 37,
+     "created": "2026-10-14T00:28:19Z"
+    },
+    {
+     "filename": "topics_1058.ndjson.gz",
+     "url": "https://files.openparldata.ch/exports/topics/topics_1058.ndjson.gz",
+     "size": 1683,
+     "size_human": "1.6K",
+     "row_count": 34,
+     "created": "2026-10-14T00:28:19Z"
+    },
+    {
+     "filename": "topics_1059.ndjson.gz",
+     "url": "https://files.openparldata.ch/exports/topics/topics_1059.ndjson.gz",
+     "size": 882,
+     "size_human": "882B",
+     "row_count": 17,
+     "created": "2026-10-14T00:28:19Z"
+    },
+    {
+     "...": "one file per body_key"
+    }
+   ]
+  }
+ ]
+}

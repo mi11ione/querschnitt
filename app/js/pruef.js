@@ -2,6 +2,7 @@
 // shipped operating point).
 import { D, SRC } from './data.js';
 import { h, s, t, UI, num, pct, p3 } from './util.js';
+import { bindTips } from './viz.js';
 
 export function testCount() {
   const P = D.pruef; if (!P) return 0;
@@ -42,6 +43,8 @@ export function renderPruef(root) {
   }
   if (SRC['pruefstand.json'] === 'data-fixture/') left.append(h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `pruefstand.json ${L.fromFixture}`));
   if (P.curve) right.append(chart(P.curve));
+  if (D.conf) right.append(lanesBar(D.conf), confusion(D.conf));
+  bindTips(right);
 }
 
 function chart(cv) {
@@ -74,4 +77,36 @@ function chart(cv) {
     svg,
     cv.op ? h('p', { class: 'tm mono', style: 'font-size:12px;margin-top:8px' }, `${(fr ? cv.op.label_fr : cv.op.label_de) || ''}: ${L.cpX} ${pct(cv.op.coverage)}, ${L.cpY} ${p3(cv.op.precision)} (n ${num(cv.op.n)})`) : '',
     cv.file ? h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `${L.file}: ${cv.file}`) : '');
+}
+
+// the two lanes of the shipped design as one split bar: width = share of affairs, dark part = precision in that lane
+function lanesBar(cf) {
+  const L = t(), l = cf.lanes, n = l.agree_n + l.disagree_n, a = l.agree_n / n;
+  const seg = (w, k, nn, cls, lab) => h('span', { class: `lseg ${cls}`, style: `width:${w * 100}%`, tabindex: '0', 'data-tip': `${lab} · ${pct(nn / n)} (n ${num(nn)}) · ${L.cpY} ${p3(k / nn)}` },
+    h('span', { class: 'lok', style: `width:${(k / nn) * 100}%` }));
+  return h('div', { class: 'lanes' }, h('h3', {}, L.lanesT),
+    h('div', { class: 'lbar' }, seg(a, l.agree_k, l.agree_n, 'ag', L.agree), seg(1 - a, l.disagree_k, l.disagree_n, 'dis', L.disagree)),
+    h('div', { class: 'llab' }, h('span', { style: `width:${a * 100}%` }, `${L.agree} ${pct(a)} · ${p3(l.agree_k / l.agree_n)}`),
+      h('span', { style: `width:${(1 - a) * 100}%` }, h('span', { class: 'rtick' }), ` ${L.disagree} · ${p3(l.disagree_k / l.disagree_n)}`)),
+    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:6px 0 0' }, `${L.cpY}: ${L.dark}; n ${num(n)} · ${cf.design}`));
+}
+
+// confusion: rows = APS editors' chapter, columns = Querschnitt's; cell grey = share of the row; diagonal outlined
+function confusion(cf) {
+  const L = t(), m = cf.m, K = m.length, chs = D.scheme.chapters;
+  const nm = k => chs[k] ? (UI.lang === 'fr' ? chs[k].fr || chs[k].de : chs[k].de) : String(k);
+  const rows = [...Array(K).keys()].filter(r => m[r].some(v => v) || m.some(row => row[r]));
+  const n = rows.length, cs = 12, LW = 0, W = n * cs, H = n * cs;
+  const svg = s('svg', { viewBox: `-1 -1 ${W + 2} ${H + 2}`, class: 'cf', role: 'img', 'aria-label': L.confusion });
+  rows.forEach((r, ri) => {
+    const tot = m[r].reduce((a, b) => a + b, 0);
+    rows.forEach((c, cj) => {
+      const v = m[r][c]; const sh = tot ? v / tot : 0;
+      const cls = v ? Math.min(5, 1 + Math.floor(sh * 5)) : 0;
+      svg.append(s('rect', { x: cj * cs, y: ri * cs, width: cs - 1, height: cs - 1, style: `fill:var(--r${cls})`, class: r === c ? 'dia' : 'off',
+        'data-tip': `${L.gold}: ${nm(r)} → ${L.pred}: ${nm(c)} · ${num(v)} ${L.of} ${num(tot)}${tot ? ` (${pct(sh)})` : ''}` }));
+    });
+  });
+  return h('div', { class: 'cfw' }, h('h3', {}, L.confusion),
+    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, `${L.rowsGold} · ${L.colsPred} · n ${num(cf.n)} · top-1 ${p3(cf.correct / cf.n)}`), svg);
 }

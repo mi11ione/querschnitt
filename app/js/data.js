@@ -65,6 +65,7 @@ export async function load() {
   const [meta, bodies, affairs, scheme, geo] = await Promise.all([
     loadFile('meta.json'), loadFile('bodies.json'), loadFile('affairs.json'), loadFile('scheme_aps.json'), loadFile('geo.json')]);
   const pruef = await loadFile('pruefstand.json', true);
+  D.conf = await loadFile('pruef_confusion.json', true);
   D.meta = meta; D.scheme = scheme; D.geo = geo; D.pruef = pruef;
   // bodies
   D.bodies = bodies;

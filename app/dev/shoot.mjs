@@ -52,6 +52,13 @@ const SCEN = [
   { name: 'brush-esc-1440', w: 1440, h: 900, url: '#karte?w=80-90', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}))`] },
   { name: 'sync-live-1440', live: true, w: 1440, h: 900, url: '#karte?m=pult&tab=ok', pre: async () => { for (const id of [340652, 340520]) await fetch(LIVE + 'affairs/' + id + '/topics/adhoc%2Fdigitalisierung%3Ayes/confirm', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ by: 'Kollegin (DVS)', scheme: 'adhoc/digitalisierung' }) }); }, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'neu-cap-1440', live: true, w: 1440, h: 900, url: '#neu', steps: [`(()=>{const f=document.querySelector('.nt-field textarea');f.value='Schule, Unterricht, Lehrpersonen und Bildung';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 4000] },
+  { name: 'why-1440', w: 1440, h: 900, url: '#karte?a=96375', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
+  { name: 'why-bil-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?a=40171', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
+  { name: 'why-dig-1440', w: 1440, h: 900, url: '#karte?a=340652', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
+  { name: 'similar-1440', w: 1440, h: 900, url: '#karte?a=340652', steps: [`document.querySelector('#v-karte .strip').scrollIntoView()`] },
+  { name: 'matrix-1440', w: 1440, h: 900, url: '#karte?v=matrix' },
+  { name: 'matrix-375', w: 375, h: 812, mobile: true, url: '#karte?v=matrix', full: true },
+  { name: 'overview-375', w: 375, h: 812, mobile: true, url: '#karte', full: true },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 

@@ -154,6 +154,25 @@
    "split_fr": "déposés après la publication du modèle BFH"
   },
   {
+   "test": "Basel-Stadt: Themen der Kantons- und Stadtentwicklung (46), Grossratsgeschäfte 2019–24",
+   "test_fr": "Bâle-Ville : thèmes du développement cantonal et urbain (46), objets du Grand Conseil 2019–24",
+   "gold": "human",
+   "design": "Schema-Datei: nur die 46 Themennamen, nichts abgestimmt",
+   "design_fr": "fichier de schéma : les 46 noms de thèmes seulement, rien d'ajusté",
+   "n": 2437,
+   "result": "top-1 0.498 · Thema 1 oder 2 0.605 · top-3 0.665",
+   "result_fr": "top-1 0,498 · thème 1 ou 2 0,605 · top-3 0,665",
+   "interval": [
+    0.478,
+    0.518
+   ],
+   "baseline": "Stichwort 0.181 · Mehrheit 0.053",
+   "baseline_fr": "mots-clés 0,181 · majorité 0,053",
+   "split": "alle 2'437, vorregistriert (S20)",
+   "split_fr": "les 2 437, préenregistré (S20)",
+   "file": "querschnitt/eval/s20/results.json"
+  },
+  {
    "test": "Bern, Leitdirektion (8), Grossratsgeschäfte 2025–26, Produktionslauf",
    "test_fr": "Berne, direction compétente (8), objets du Grand Conseil 2025–26, production",
    "gold": "human",

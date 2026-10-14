@@ -112,3 +112,23 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
   offers no [speichern].
 - Esc never resets the period; click on a week = that week, click again = all; «Auswahl» re-renders on every change.
 - Picker «alle Geschäfte»: every affair, search across all; share = matches / all affairs of the parliament; no Pult.
+
+## Graphics round (14 Oct)
+- Detail «Thema»: yes/no gauge (p on 0–1 with the cut-off hairline, the two readings as thin bars beneath); APS
+  chapter graphic: up to 5 chapters (rank ∪ `aps.reads`), main bar = p_raw (black for the shipped chapter), two thin bars
+  per chapter for the readings (`aps.bilingual.reads` DE/FR preferred, else `aps.reads` «Lesart 1/2»), each reading's own
+  top chapter in black, red tick where the readings point to different chapters; then the top-3 subtopics. Hover/focus = exact p.
+- Überblick (nothing selected): ranked parliaments (share bar, hatched when coverage < 25 %, red tick = rows to check;
+  click = filter) and up to 5 notable affairs (newest week with hits on ≥ 2 levels, then the newest p ≥ 0.99 hits).
+  The weekly per-level chart was cut: the please-check share now sits as a red base segment in the main timeline.
+- Querschnitt matrix (`[x]` or the «Querschnitt» toggle above the map; `#karte?v=matrix`): APS chapters × Bund, cantons
+  de | fr | it, communes aggregated, FL; cell = share of the parliament's scored affairs in the chapter (period + filters),
+  quintile grey ramp, hatched where coverage < 25 %; click a cell = that chapter and parliament on the map; phones get
+  Bund / de / fr / it / Gemeinden / FL.
+- List rows: 40 px hairline confidence bar under p; red tick for please-check (no `[!]`).
+- «Ähnliche Geschäfte»: a strip per level on the main timeline's weeks above the titles.
+- Prüfstand: lanes as one split bar (width = share, dark = precision) and the 25×25 confusion heatmap of the shipped
+  design (row share, diagonal outlined), from `app/dev/make_confusion.py` → `app/data/pruef_confusion.json` (top-1
+  0.7406, lanes 720/871 and 285/486, identical to eval/s16/results.json).
+- `app/dev/serve.py`: dev static server with a larger accept queue (the stock http.server drops connections under the
+  headless suite).

@@ -31,13 +31,14 @@ export class Timeline {
     if (!d.moved) this.brush = this.prev && this.prev[0] === d.a && this.prev[1] === d.a ? null : [d.a, d.a]; // click = that week; again = all
     this.draw(); this.onBrush && this.onBrush(this.brush);
   }
-  set(counts, brush, mark) { this.counts = counts; this.brush = brush; this.mark = mark; this.draw(); }
+  set(counts, brush, mark, checks) { this.counts = counts; this.brush = brush; this.mark = mark; if (checks !== undefined) this.checks = checks; this.draw(); }
   weekLabel(w) { const d = D.w0 + w * 7, [y, k] = isoWeek(d); return `${t().week} ${k} ${y}`; }
   head() {
     const L = t(), w = this.hover;
     if (w != null) {
       const c = this.counts;
-      this.hd.innerHTML = `<b>${this.weekLabel(w)}</b><span>${L.federal} ${num(c[0][w] || 0)}</span><span>${L.cantonal} ${num(c[1][w] || 0)}</span><span>${L.communal} ${num(c[2][w] || 0)}</span>`;
+      const k = this.checks ? this.checks[0][w] + this.checks[1][w] + this.checks[2][w] : 0;
+      this.hd.innerHTML = `<b>${this.weekLabel(w)}</b><span>${L.federal} ${num(c[0][w] || 0)}</span><span>${L.cantonal} ${num(c[1][w] || 0)}</span><span>${L.communal} ${num(c[2][w] || 0)}</span>${k ? `<span class="sig">${L.pending} ${num(k)}</span>` : ''}`;
     } else if (this.brush) {
       const [a, b] = this.brush;
       this.hd.innerHTML = `<b>${isoOfDay(D.w0 + a * 7)} – ${isoOfDay(D.w0 + b * 7 + 6)}</b><span>${this.weekLabel(a)} – ${this.weekLabel(b)}</span>`;
@@ -71,12 +72,23 @@ export class Timeline {
         d += `M${(LEFT + w * bw + (bw > 3 ? .5 : 0)).toFixed(1)} ${base}h${Math.max(.8, bw - (bw > 3 ? 1 : 0)).toFixed(1)}v${-hh.toFixed(1)}h${-Math.max(.8, bw - (bw > 3 ? 1 : 0)).toFixed(1)}z`;
       }
       svg.append(s('path', { class: 'bar0', d }));
+      // the undecided please-check rows of each week as a red base segment
+      const ck = this.checks && this.checks[l];
+      if (ck) {
+        let dc = '';
+        for (let w = 0; w < nW; w++) {
+          const v = row[w], k = Math.min(ck[w] || 0, v || 0); if (!k) continue;
+          const hh = Math.max(1.5, (v / max) * (ROW - 4)) * (k / v), bwi = Math.max(.8, bw - (bw > 3 ? 1 : 0));
+          dc += `M${(LEFT + w * bw + (bw > 3 ? .5 : 0)).toFixed(1)} ${base}h${bwi.toFixed(1)}v${-Math.max(1, hh).toFixed(1)}h${-bwi.toFixed(1)}z`;
+        }
+        if (dc) svg.append(s('path', { class: 'mark', d: dc }));
+      }
     }
     if (this.mark) {
       const x = LEFT + (this.mark.w + .5) * bw;
       svg.append(s('line', { class: 'selw', x1: x, x2: x, y1: 0, y2: 3 * ROW + 2 * GAP }));
       const y = this.mark.l * (ROW + GAP) + ROW;
-      svg.append(s('rect', { class: 'mark', x: x - 3, y: y + 2, width: 6, height: 4 }));
+      svg.append(s('rect', { class: 'selm', x: x - 3, y: y + 2, width: 6, height: 4 }));
     }
     // month ticks
     const yA = 3 * ROW + 2 * GAP + 14, M = MONTHS[UI.lang];

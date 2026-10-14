@@ -1,7 +1,8 @@
 // The selected affair: title and text in its own language with the quoted passage highlighted, the topic decision,
 // chapter and ranked subtopics, lane, provenance, the parliament's page, similar affairs, and the decision bar.
 import { D, detail, getDec, API, TOPIC_BY_ID, norm } from './data.js';
-import { h, esc, t, UI, num, p3, pct, fmtDate } from './util.js';
+import { h, s, esc, t, UI, num, p3, pct, fmtDate, MONTHS } from './util.js';
+import { bar, bindTips, grow } from './viz.js';
 
 const EN = /^(parliament|grand council|council|municipal council)$/i;
 export const bodyName = (k, long = true) => {
@@ -127,12 +128,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const dig = d && d.dig;
   if (!Number.isNaN(c.dp[i]) || dig) {
     const tn = (TOPIC_BY_ID.get('adhoc/digitalisierung') || {}).names || { de: 'Digitalisierung', fr: 'numérique' };
-    const ln = c.dl[i] === 1 ? 'please_check' : 'readings_agree';
-    add(tn[UI.lang] || tn.de,
-      h('span', { class: 'mono' }, `${c.df[i] ? L.yes : L.no} · p ${p3(c.dp[i])}`),
-      h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: ln === 'please_check' ? 'sig' : '' }, L.lanes[ln]),
-        dig && dig.p_a != null ? ` · ${L.readings} ${p3(dig.p_a)}${dig.p_b != null ? ' / ' + p3(dig.p_b) : ''}` : '',
-        ` · ${c.kw[i] ? L.kwYes : L.kwNo}`));
+    add(tn[UI.lang] || tn.de, yesNoGraphic(c.dp[i], dig, c.dl[i] === 1, !!c.df[i], c.kw[i]));
   }
   if (tp && tp.kind === 'live') {
     const x = tp.dec.get(id);
@@ -148,29 +144,19 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   }
   const aps = d && d.aps;
   const bil = aps && aps.bilingual;
-  if (bil && bil.top) {
+  if (bil && bil.top && !bil.reads) {
     const pc = bil.lane === 'please_check';
     add(L.bilingual, h('span', { class: 'mono', style: 'font-size:12px' }, `DE ${chapterName(bil.top.de)} · FR ${chapterName(bil.top.fr)} → `,
       h('span', { class: pc ? 'sig' : '' }, L.lanes[bil.lane] || bil.lane)));
   } else if (c.bi[i] === 1) {
     add(L.bilingual, h('span', { class: 'mono sig', style: 'font-size:12px' }, L.lanes.please_check));
   }
-  if (c.ch[i] >= 0 || aps) {
-    const ranks = aps && aps.rank ? aps.rank : [c.ch[i]];
-    // the API row's values: rank 1 the calibrated p (= c.chp[i]); ranks 2–3 carry only the engine's p_raw
-    const ps = aps && aps.p ? aps.p : [c.chp[i]], pr = (aps && aps.p_raw) || [];
-    const pv = k => ps[k] != null ? `p ${p3(ps[k])}` : pr[k] != null ? `p_raw ${p3(pr[k])}` : '';
-    const ln = (aps && aps.lane) || (c.lane[i] === 1 ? 'please_check' : 'readings_agree');
-    add(L.chapter,
-      h('span', {}, chapterName(ranks[0]), ' ', h('span', { class: 'mono dim' }, pv(0))),
-      ranks.slice(1).map((r, k) => h('span', { class: 'sub2' }, `${k + 2}. ${chapterName(r)} · ${pv(k + 1)}`)),
-      h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: ln === 'please_check' ? 'sig' : '' }, L.lanes[ln] || ln)));
-    const subs = aps && aps.subs ? aps.subs : (c.subs[i] || []).map(x => [x, null]);
-    if (subs.length) add(L.subtopics, subs.map(([code, p], k) => h('span', { class: k ? 'sub2' : '' }, `${k + 1}. ${subName(code)}${p != null ? ' · p ' + p3(p) : ''}`, k ? '' : h('br'))));
-  } else {
-    add(L.chapter, h('span', { class: 'dim' }, L.notScored));
-  }
-  holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.topicSec), facts));
+  let chartEl = null;
+  if (c.ch[i] >= 0 || aps) chartEl = chapterGraphic(aps, c.ch[i], c.chp[i], c.lane[i] === 1);
+  else add(L.chapter, h('span', { class: 'dim' }, L.notScored));
+  const tsec2 = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.topicSec), facts);
+  if (chartEl) tsec2.append(chartEl);
+  holder.append(tsec2);
   // provenance
   const pv = h('dl', { class: 'facts' });
   const addp = (k, ...v) => pv.append(h('dt', {}, k), h('dd', {}, ...v));
@@ -180,14 +166,95 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const pids = d && ((d.aps && d.aps.pids) || d.prompt_ids || []);
   if (pids && pids.length) addp('prompt', h('span', { class: 'mono' }, pids.join(' ')));
   holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.prov), pv));
-  // similar
+  // similar affairs: one strip per level on the main timeline's weeks, then the titles
   const sim = similar(i, tp);
   if (sim.length) {
     const ul = h('ul', { class: 'sim' });
-    for (const j of sim) ul.append(h('li', { onclick: () => onOpen && onOpen(j), lang: c.lang[j] }, c.title[j],
+    for (const j of sim) ul.append(h('li', { onclick: () => onOpen && onOpen(j), lang: c.lang[j], tabindex: '0', onkeydown: e => { if (e.key === 'Enter') onOpen && onOpen(j); } }, c.title[j],
       h('span', { class: 'm' }, `${fmtDate(c.date[j])} · ${bodyName(c.body[j])}${tp && tp.hit(j) ? ' · ' + (tp.names[UI.lang] || tp.names.de) : ''}`)));
-    holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.similar), ul));
+    holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.similar), simStrip(i, sim, onOpen), ul));
   }
+  bindTips(holder); grow(holder);
+}
+
+// ---------------------------------------------------------------- graphics
+// yes/no topic: the decision's p on a 0–1 track with the cut-off, the two readings as thin bars beneath
+function yesNoGraphic(p, dig, check, flag, kw) {
+  const L = t(), cut = 0.5, rn = [L.read1, L.read2];
+  const rows = [{ label: `${flag ? L.yes : L.no}`, v: p, tone: flag ? 'ink' : 'grey', value: p3(p), tip: `p ${p3(p)} · ${L.cutoff} ${cut}`, strong: true }];
+  if (dig && dig.p_a != null) rows.push({ label: rn[0], v: dig.p_a, tone: dig.p_a >= cut ? 'ink' : 'grey', value: p3(dig.p_a), thin: true, tip: `${rn[0]} p ${p3(dig.p_a)}` });
+  if (dig && dig.p_b != null) rows.push({ label: rn[1], v: dig.p_b, tone: dig.p_b >= cut ? 'ink' : 'grey', value: p3(dig.p_b), thin: true, tip: `${rn[1]} p ${p3(dig.p_b)}` });
+  const el = h('div', { class: 'dg' });
+  for (const r of rows) el.append(h('div', { class: `dgr ${r.thin ? 'thin' : ''}`, 'data-tip': r.tip, tabindex: '0' },
+    h('span', { class: `rk ${r.strong ? 'on' : 'dim'}` }, r.label),
+    h('span', { class: 'rbar cut' }, bar(r.v, r.tone, '', r.thin), h('span', { class: 'cutl', style: `left:${cut * 100}%` })),
+    h('span', { class: 'rv' }, r.value)));
+  el.append(h('p', { class: 'dgn' }, check ? h('span', { class: 'sig' }, `${L.lanes.please_check}`) : L.lanes.readings_agree, ` · ${kw ? L.kwYes : L.kwNo}`));
+  return el;
+}
+
+// APS chapter: up to 5 chapters; per chapter the shipped read-back value (black for the shipped chapter) and the two
+// readings as thin bars (code orders, or DE / FR in bilingual parliaments); the reading's own top chapter in black, so
+// agreement is visible; a red tick where the readings point to different chapters. Then the ranked subtopics.
+function chapterGraphic(aps, ch, chp, laneCheck) {
+  const L = t();
+  const rank = (aps && aps.rank) || (ch >= 0 ? [ch] : []);
+  const praw = (aps && (aps.p_raw || aps.p)) || [chp];
+  const bil = aps && aps.bilingual && aps.bilingual.reads ? aps.bilingual : null;
+  const reads = bil ? bil.reads : aps && aps.reads;
+  const rnames = bil ? (bil.langs || ['de', 'fr']).map(x => x.toUpperCase()) : [L.read1, L.read2].slice(0, (aps && aps.read_names && aps.read_names.length) || 2);
+  const nR = reads ? Math.max(...Object.values(reads).map(v => v.length)) : 0;
+  const rp = (k, r) => reads && reads[k] && reads[k][r] != null ? reads[k][r] : null;
+  const top = [];
+  for (let r = 0; r < nR; r++) { let best = null, bv = -1; for (const k of Object.keys(reads)) { const v = rp(k, r); if (v != null && v > bv) { bv = v; best = +k; } } top.push(best); }
+  const disagree = nR > 1 && top[0] != null && top[1] != null && top[0] !== top[1];
+  const lane = bil ? bil.lane : (aps && aps.lane) || (laneCheck ? 'please_check' : 'readings_agree');
+  const keys = [...rank];
+  if (reads) for (const k of Object.keys(reads).sort((a, b) => Math.max(...reads[b]) - Math.max(...reads[a]))) if (!keys.includes(+k)) keys.push(+k);
+  const shown = keys.slice(0, 5);
+  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim' }, reads ? `${L.chapterP} · ${rnames.join(' / ')}` : L.chapterP)));
+  for (const k of shown) {
+    const ri = rank.indexOf(k), v = ri >= 0 ? praw[ri] : null, shipped = ri === 0;
+    const subs = [];
+    for (let r = 0; r < nR; r++) { const x = rp(k, r); subs.push({ v: x || 0, tone: top[r] === k ? 'ink' : 'grey', tip: `${rnames[r]} p ${x == null ? '–' : p3(x)}` }); }
+    const tick = disagree && (top[0] === k || top[1] === k);
+    const tip = `${chapterName(k)}${v != null ? ` · p_raw ${p3(v)}` : ''}${shipped && aps && aps.p && aps.p[0] != null ? ` · p ${p3(aps.p[0])}` : ''}${subs.map(x => ` · ${x.tip}`).join('')}`;
+    el.append(h('div', { class: 'dgr', 'data-tip': tip, tabindex: '0' },
+      h('span', { class: `rk ${shipped ? 'on' : ''}` }, chapterName(k)),
+      h('span', { class: 'rbar' }, v != null ? bar(v, shipped ? 'ink' : 'grey') : h('span', { class: 'vb none' }), ...subs.map(x => bar(x.v, x.tone, '', true))),
+      h('span', { class: 'rv' }, v != null ? p3(v) : '', tick ? h('span', { class: 'rtick' }) : '')));
+  }
+  el.append(h('p', { class: 'dgn' }, h('span', { class: lane === 'please_check' ? 'sig' : '' }, L.lanes[lane] || lane),
+    disagree ? ` · ${rnames[0]} → ${chapterName(top[0])}, ${rnames[1]} → ${chapterName(top[1])}` : nR > 1 ? ` · ${rnames.join(' = ')}` : ''));
+  const subs = aps && aps.subs ? aps.subs : [];
+  if (subs.length) {
+    el.append(h('div', { class: 'dgh' }, h('span', {}, L.subtopics)));
+    subs.slice(0, 3).forEach(([code, p], k) => el.append(h('div', { class: 'dgr', 'data-tip': `${subName(code)} · p ${p3(p)}`, tabindex: '0' },
+      h('span', { class: `rk ${k === 0 ? 'on' : ''}` }, `${k + 1}. ${subName(code)}`), h('span', { class: 'rbar' }, bar(p, k === 0 ? 'ink' : 'grey')), h('span', { class: 'rv' }, p3(p)))));
+  }
+  return el;
+}
+
+// similar affairs on the main timeline's weeks, one strip per level; the open affair as a black mark with a hairline
+function simStrip(i, sim, onOpen) {
+  const L = t(), c = D.c, W = 400, RH = 18, LEFT = 92, rows = [L.federal, L.cantonal, L.communal];
+  const svg = s('svg', { viewBox: `0 0 ${W} ${rows.length * RH + 16}`, class: 'strip', role: 'img', 'aria-label': L.similar });
+  const X = w => LEFT + (w + .5) / D.nWeeks * (W - LEFT);
+  rows.forEach((r, l) => { svg.append(s('line', { x1: LEFT, x2: W, y1: l * RH + RH - 3.5, y2: l * RH + RH - 3.5, class: 'base' })); const tx = s('text', { x: 0, y: l * RH + RH - 4 }); tx.textContent = r; svg.append(tx); });
+  const xi = X(c.week[i]);
+  svg.append(s('line', { x1: xi, x2: xi, y1: 0, y2: rows.length * RH, class: 'now' }));
+  const mark = (j, cur) => {
+    const l = Math.min(2, c.lvl[j]), x = X(c.week[j]), y = l * RH + RH - 9;
+    const r = s('rect', { x: x - 3, y, width: 6, height: 6, class: cur ? 'cur' : 'sm', tabindex: cur ? null : '0', 'data-tip': `${fmtDate(c.date[j])} · ${bodyName(c.body[j])} · ${c.title[j]}` });
+    if (!cur) { r.addEventListener('click', () => onOpen && onOpen(j)); r.addEventListener('keydown', e => { if (e.key === 'Enter') onOpen && onOpen(j); }); }
+    svg.append(r);
+  };
+  sim.forEach(j => mark(j, false)); mark(i, true);
+  const y = rows.length * RH + 14, M = MONTHS[UI.lang];
+  let last = -99;
+  for (let d = D.w0; d <= D.dmax; d++) { const dt = new Date(d * 864e5); if (dt.getUTCDate() !== 1) continue; const x = LEFT + (d - D.w0) / 7 / D.nWeeks * (W - LEFT); if (x - last < 40) continue; last = x;
+    const tx = s('text', { x, y }); tx.textContent = dt.getUTCMonth() === 0 ? String(dt.getUTCFullYear()) : M[dt.getUTCMonth()]; svg.append(tx); }
+  return svg;
 }
 
 export function decisionState(tp, id) {

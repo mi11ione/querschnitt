@@ -71,6 +71,7 @@ function writeHash() {
     if (S.brush) p.set('w', S.brush.join('-'));
     if (S.mode === 'pult') { p.set('m', 'pult'); p.set('tab', S.tab); if (S.pw != null) p.set('pw', S.pw); }
     if (S.f.q) p.set('q', S.f.q);
+    if (karte.mapMode === 'matrix') p.set('v', 'matrix');
     s += `?${p}`;
   }
   history.replaceState(null, '', s);
@@ -103,6 +104,7 @@ function keys(e) {
   else if (k === '/') { b.q.focus(); e.preventDefault(); }
   else if (k === 't' && b.picker) { b.picker.focus(); e.preventDefault(); }
   else if (k === 'e') b.exportCsv();
+  else if (k === 'x' && b.modeEl) b.setMapMode(b.mapMode === 'matrix' ? 'map' : 'matrix');
   else if (k === 'Enter' && b.S.sel == null) b.step(1);
   else if ((k === '[' || k === ']') && b.S.mode === 'pult') b.stepWeek(k === '[' ? -1 : 1);
   else if (k === 'Escape') { // never resets the period
@@ -131,6 +133,7 @@ async function boot() {
   if (p.get('m') === 'pult') { karte.S.mode = 'pult'; karte.S.tab = p.get('tab') || 'neu'; if (p.get('pw')) { karte.S.pw = +p.get('pw'); karte.S.pwFor = karte.tp.id; } }
   if (p.get('q')) { karte.S.f.q = p.get('q'); karte.q.value = p.get('q'); }
   karte.refresh();
+  if (p.get('v') === 'matrix') karte.setMapMode('matrix');
   if (p.get('a')) karte.select(+p.get('a')); else karte.renderCase();
   for (const x of VIEWS) $(`#t-${x}`).addEventListener('click', () => show(x));
   $('#l-de').addEventListener('click', () => setLang('de'));

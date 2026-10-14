@@ -6,6 +6,8 @@ import { Timeline } from './timeline.js';
 import { VList } from './vlist.js';
 import { Picker } from './picker.js';
 import { renderCase, bodyName, typeOf, decisionState } from './case.js';
+import { rankList, weekly, bindTips, bar } from './viz.js';
+import { Matrix } from './matrix.js';
 
 const WHO = 'qs.who', BUDGET = 'qs.budget';
 export const HATCH_COV = 0.25, HATCH_TITLE = 0.5;
@@ -23,11 +25,14 @@ export class Board {
     if (picker) {
       const pr = h('div', { class: 'picker' });
       this.picker = new Picker(pr, { onPick: tp => this.setTopic(tp) });
-      this.mapcol.append(h('div', { class: 'topicrow' }, pr));
+      this.modeEl = h('span', { class: 'mmode' });
+      this.mapcol.append(h('div', { class: 'topicrow' }, pr, this.modeEl));
     }
     this.tsub = h('p', { class: 'tsub' }); this.mapcol.append(this.tsub);
     this.mapEl = h('div', { class: 'map', id: `map-${Math.random().toString(36).slice(2, 7)}` }); this.mapcol.append(this.mapEl);
     this.legend = h('p', { class: 'legend' }); this.mapcol.append(this.legend);
+    this.mxEl = h('div', { class: 'matrix', hidden: true }); this.mapEl.after(this.mxEl);
+    this.mapMode = 'map';
     this.tlEl = h('div', { class: 'tl' }); this.mapcol.append(this.tlEl);
     // register
     this.reg = h('section', { class: 'register', 'aria-label': 'Liste' });
@@ -46,6 +51,7 @@ export class Board {
     root.append(this.work);
     this.map = new SwissMap(this.mapEl, { onClick: k => { this.S.body = k && k !== this.S.body ? k : null; this.refresh(); } });
     this.tl = new Timeline(this.tlEl, { onBrush: b => { this.S.brush = b; this.refresh(); } });
+    this.matrix = new Matrix(this.mxEl, this);
     this.list = new VList(this.vl, { render: i => this.row(i), onOpen: p => this.openPos(p) });
     this.buildFilters();
     if (this.picker) this.picker.set(topic);
@@ -108,10 +114,11 @@ export class Board {
     const tp = this.tp, c = D.c, n = D.n, S = this.S, L = t();
     const isBe = tp && tp.kind === 'be';
     if (tp && tp.scope) S.body = tp.scope;
-    const mask = this.passMask();
+    const mask = this.mask = this.passMask();
     const br = S.brush, inP = i => !br || (c.week[i] >= br[0] && c.week[i] <= br[1]);
     const stats = new Map();
     const counts = [new Int32Array(D.nWeeks), new Int32Array(D.nWeeks), new Int32Array(D.nWeeks)];
+    const checks = [new Int32Array(D.nWeeks), new Int32Array(D.nWeeks), new Int32Array(D.nWeeks)];
     const tabsN = { neu: 0, todo: 0, ok: 0, changed: 0, done: 0 };
     const items = [];
     const isAll = tp && tp.kind === 'all';
@@ -134,8 +141,9 @@ export class Board {
       if (isBe && S.f.dir && c.be[i] !== S.f.dir) continue;
       const hit = tp.hit(i), chk = tp.check(i);
       const inB = !S.body || k === S.body;
-      if (hit && inB && c.lvl[i] < 3) counts[c.lvl[i]][c.week[i]]++;
       const dec = getDec(tp, c.id[i]);
+      if (hit && inB && c.lvl[i] < 3) counts[c.lvl[i]][c.week[i]]++;
+      if (chk && !dec && inB && c.lvl[i] < 3) checks[c.lvl[i]][c.week[i]]++;
       // «neu diese Woche»: every undecided hit begun in the Pult's week (the brush does not apply)
       if (inB && hit && !dec && c.week[i] === S.pw) { tabsN.neu++; if (pult && S.tab === 'neu') items.push(i); }
       if (!inP(i)) continue;
@@ -184,6 +192,7 @@ export class Board {
       st.cls = st.hatch && !st.hits ? 0 : rampClass(st.share, breaks);
       all.set(b.key, st);
     }
+    this.counts = counts; this.checks = checks;
     this.stats = all; this.breaks = breaks; this.lv = lv; this.tabsN = tabsN; this.lastW = lastW;
     this.items = items;
     // identical title + parliament + date in a row → one line with a count; decisions apply to the whole group
@@ -197,12 +206,13 @@ export class Board {
     }
     this.rows = rows; this.posOf = posOf;
     this.map.update(all, S.body);
+    if (this.mapMode === 'matrix') this.matrix.render();
     const selRow = S.sel != null ? D.rowOf.get(S.sel) : null;
-    this.tl.set(counts, S.brush, selRow != null ? { w: c.week[selRow], l: Math.min(2, c.lvl[selRow]) } : null);
+    this.tl.set(counts, S.brush, selRow != null ? { w: c.week[selRow], l: Math.min(2, c.lvl[selRow]) } : null, checks);
     // list
     const pos = selRow != null && posOf.has(selRow) ? posOf.get(selRow) : -1;
     this.list.set(rows, pos);
-    this.renderHead(scoredSel, hitsSel);
+    this.renderHead(scoredSel, hitsSel); this.renderMode();
     if (S.sel == null) this.summary(); // the «Auswahl» panel follows the brush and filters
     this.onChange && this.onChange(this);
   }
@@ -257,6 +267,18 @@ export class Board {
       h('span', { class: 'sp' }, h('button', { class: 'tb', type: 'button', onclick: () => this.exportCsv() }, `[e] ${L.export}`)));
   }
 
+  setMapMode(m) {
+    this.mapMode = m;
+    this.mapEl.hidden = m === 'matrix'; this.legend.hidden = m === 'matrix'; this.mxEl.hidden = m !== 'matrix';
+    if (m === 'matrix') this.matrix.render();
+    this.renderMode();
+    this.onChange && this.onChange(this);
+  }
+  renderMode() {
+    if (!this.modeEl) return;
+    const L = t(), mk = (m, lab) => h('button', { class: 'tb mono', type: 'button', 'aria-pressed': String(this.mapMode === m), onclick: () => this.setMapMode(m) }, lab);
+    this.modeEl.replaceChildren(mk('map', L.mapMode), ' ', mk('matrix', L.matrix), h('span', { class: 'dim' }, ' [x]'));
+  }
   relang() { this.buildFilters(); if (this.picker) this.picker.set(this.tp); this.refresh(); this.renderCase(); }
 
   setMode(m) { this.S.mode = m; this.S.sel = null; this.refresh(); this.renderCase(); }
@@ -271,8 +293,8 @@ export class Board {
     const mark = dec ? (dec.d === 'confirmed' ? '✓' : '–') : chk ? '!' : '';
     return h('div', { class: dec ? 'dec' : '' },
       h('div', { class: 'tc' }, h('div', { class: 't', lang: c.lang[i] }, c.title[i]), h('div', { class: 'm' }, g.length > 1 ? h('b', { class: 'grpn' }, `×${g.length} `) : '', meta)),
-      h('div', { class: 'p' }, tp && tp.kind === 'be' ? beAbbr(tp, c.be[i]) : p3(p)),
-      h('div', { class: `x ${dec ? 'd' : ''}`, title: chk ? L.lanes.please_check : '' }, mark ? `[${mark}]` : ''));
+      h('div', { class: 'p' }, tp && tp.kind === 'be' ? beAbbr(tp, c.be[i]) : Number.isNaN(p) ? '' : [p3(p), h('span', { class: 'pc' }, h('span', { style: `width:${Math.round(Math.max(0, Math.min(1, p)) * 40)}px` }))]),
+      h('div', { class: `x ${dec ? 'd' : ''}`, 'aria-label': chk && !dec ? L.lanes.please_check : null }, dec ? `[${mark}]` : chk ? h('span', { class: 'rtick' }) : ''));
   }
 
   // ------------------------------------------------------------ selection + case
@@ -434,47 +456,48 @@ export class Board {
     if (note) this.stateLine(row, h('span', { class: 'sig' }, note));
   }
 
+  // Überblick (nothing selected): weeks by level with the please-check share in red, the parliaments as a ranked bar
+  // list (hatched where coverage is low), a few notable affairs. Every element filters or opens.
   summary() {
-    const L = t(), tp = this.tp, root = this.case;
+    const L = t(), tp = this.tp, root = this.case, S = this.S, c = D.c;
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
     const sc = h('div', { class: 'scroll' });
     root.replaceChildren(sc);
-    const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
-    sc.append(h('div', { class: 'sl' }, L.summary, h('span', { class: 'sp' }, `${name} · ${per}`)));
-    if (tp && tp.kind === 'be') { this.beSummary(sc); return; }
-    const lvN = [L.federal, L.cantonal, L.communal, 'FL'];
-    const tb = h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, L.perLevel), h('th', { class: 'n' }, L.hits), h('th', { class: 'n' }, L.scored), h('th', { class: 'n' }, L.share))));
-    const body = h('tbody');
-    this.lv.forEach((x, k) => { if (x.n) body.append(h('tr', {}, h('td', {}, lvN[k]), h('td', { class: 'n' }, num(x.hits)), h('td', { class: 'n' }, num(x.n)), h('td', { class: 'n' }, pct(x.n ? x.hits / x.n : NaN)))); });
-    tb.append(body);
-    sc.append(h('div', { class: 'tw' }, tb));
-    const top = [...this.stats].filter(([, s]) => s.hits).sort((a, b) => b[1].hits - a[1].hits).slice(0, 15);
-    if (!top.length) { sc.append(h('p', { class: 'empty' }, L.none)); return; }
-    const t2 = h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, L.selParl), h('th', { class: 'n cov' }, L.covered), h('th', { class: 'n' }, L.hits), h('th', { class: 'n' }, L.share), h('th', { class: 'n' }, L.pending))));
-    const b2 = h('tbody');
-    for (const [k, s] of top) {
-      const b = D.B.get(k);
-      b2.append(h('tr', { class: 'clk', onclick: () => { this.S.body = k; this.refresh(); } },
-        h('td', {}, bodyName(k)), h('td', { class: 'n dim cov' }, b && b.covered_from ? String(b.covered_from) : '–'),
-        h('td', { class: 'n' }, num(s.hits)), h('td', { class: 'n' }, pct(s.share)), h('td', { class: `n ${s.check ? 'sig' : 'dim'}` }, s.check ? num(s.check) : '–')));
-    }
-    t2.append(b2);
-    sc.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.topParl), h('div', { class: 'tw' }, t2)));
+    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
+    sc.append(h('div', { class: 'sl' }, L.overview, h('span', { class: 'sp' }, `${name} · ${per}`)));
+    if (tp && tp.kind === 'be') { this.beSummary(sc); bindTips(sc); return; }
+    if (!this.items.length) { sc.append(h('p', { class: 'empty' }, L.none)); return; }
+    const wl = w => { const [y, k] = isoWeek(D.w0 + w * 7); return `${L.week} ${k} ${y}`; };
+    // (b) parliaments
+    const top = [...this.stats].filter(([, x]) => x.hits).sort((a, b) => (b[1].hits - a[1].hits) || (b[1].share - a[1].share)).slice(0, 10);
+    const mx = Math.max(...top.map(([, x]) => x.share), 1e-9);
+    sc.append(h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, L.topParl), h('span', { class: 'dim' }, L.share)),
+      rankList(top.map(([k, x]) => ({ label: shortName(k), v: x.share / mx, tone: x.hatch ? 'hatch' : (k === S.body ? 'ink' : 'grey'), strong: k === S.body,
+        value: `${num(x.hits)} · ${pct(x.share)}`, mark: x.check ? L.pending : null,
+        tip: `${bodyName(k)} · ${num(x.hits)} ${L.of} ${num(x.n)} · ${pct(x.share)} · ${L.coverage} ${pct(x.cov)}${x.check ? ` · ${L.pending} ${num(x.check)}` : ''}`,
+        onClick: () => { S.body = S.body === k ? null : k; this.refresh(); } })))));
+    // (c) notable: the newest week with hits on two or more levels (best p per level), then the newest confident hits
+    const pick = [], seen = new Set(), P = i => (tp ? tp.p(i) : NaN);
+    const byW = new Map();
+    for (const i of this.items) { if (c.lvl[i] > 2) continue; const w = c.week[i]; if (!byW.has(w)) byW.set(w, [null, null, null]); const a = byW.get(w); const l = c.lvl[i]; if (a[l] == null || (P(i) || 0) > (P(a[l]) || 0)) a[l] = i; }
+    for (const w of [...byW.keys()].sort((a, b) => b - a)) { const a = byW.get(w).filter(x => x != null); if (a.length >= 2) { a.forEach(i => { pick.push([i, `${L.acrossLv(a.length)} · ${wl(w)}`]); seen.add(i); }); break; } }
+    for (const i of this.items) { if (pick.length >= 5) break; if (seen.has(i)) continue; if (Number.isNaN(P(i)) || P(i) >= 0.99) { pick.push([i, `${L.newest}${Number.isNaN(P(i)) ? '' : ` · p ${p3(P(i))}`}`]); seen.add(i); } }
+    const nl = h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, L.notable)));
+    for (const [i, why] of pick) nl.append(h('button', { class: 'nt-a', type: 'button', lang: c.lang[i], onclick: () => this.select(c.id[i]) },
+      h('span', { class: 't' }, c.title[i]), h('span', { class: 'm' }, `${fmtDate(c.date[i])} · ${bodyName(c.body[i])} · ${why}`)));
+    sc.append(nl);
+    bindTips(sc);
   }
 
   beSummary(sc) {
     const L = t(), tp = this.tp, c = D.c, cnt = new Map(), chk = new Map();
     for (const i of this.items) { const k = c.be[i]; cnt.set(k, (cnt.get(k) || 0) + 1); if (tp.check(i) && !getDec(tp, c.id[i])) chk.set(k, (chk.get(k) || 0) + 1); }
-    const tb = h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, L.dir), h('th', { class: 'n' }, L.affairs), h('th', { class: 'n' }, L.pending))));
-    const body = h('tbody');
-    for (const o of tp.options) {
-      const n = cnt.get(o.code) || 0;
-      body.append(h('tr', { class: 'clk', onclick: () => { this.S.f.dir = this.S.f.dir === o.code ? '' : o.code; this.buildFilters(); this.refresh(); this.renderCase(); } },
-        h('td', {}, h('span', { class: 'mono' }, `${o.abbr[UI.lang] || o.abbr.de} `), o.name[UI.lang] || o.name.de),
-        h('td', { class: 'n' }, n ? num(n) : '–'), h('td', { class: `n ${chk.get(o.code) ? 'sig' : 'dim'}` }, chk.get(o.code) ? num(chk.get(o.code)) : '–')));
-    }
-    tb.append(body);
-    sc.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.beGroup), h('div', { class: 'tw' }, tb)));
+    const mx = Math.max(1, ...cnt.values());
+    sc.append(h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, L.beGroup)),
+      rankList(tp.options.map(o => ({ label: `${o.abbr[UI.lang] || o.abbr.de} · ${o.name[UI.lang] || o.name.de}`, v: (cnt.get(o.code) || 0) / mx,
+        tone: this.S.f.dir === o.code ? 'ink' : 'grey', strong: this.S.f.dir === o.code, value: num(cnt.get(o.code) || 0), mark: chk.get(o.code) ? L.pending : null,
+        tip: `${o.name[UI.lang] || o.name.de} · ${num(cnt.get(o.code) || 0)}${chk.get(o.code) ? ` · ${L.pending} ${num(chk.get(o.code))}` : ''}`,
+        onClick: () => { this.S.f.dir = this.S.f.dir === o.code ? '' : o.code; this.buildFilters(); this.refresh(); } })))));
   }
 
   // ------------------------------------------------------------ export: CSV in the DVS list's columns + method line
@@ -516,3 +539,7 @@ export const beAbbr = (tp, code) => { const o = tp.opt.get(code); return o ? (o.
 export const beFull = (tp, code, l = UI.lang) => { const o = tp.opt.get(code); return o ? `${o.abbr[l] || o.abbr.de} ${o.name[l] || o.name.de}` : (code || ''); };
 
 const fmtWhen = iso => { if (!iso) return '–'; const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString(UI.lang === 'fr' ? 'fr-CH' : 'de-CH', { dateStyle: 'short', timeStyle: 'short' }); };
+
+// compact parliament label for ranked lists: the Federal Assembly by name, cantons as "BE Bern", communes by place
+const shortName = k => { const b = D.B.get(k); if (!b) return k; if (b.level === 'federal') return bodyName(k);
+  if (b.key === 'LIE') return 'Landtag FL'; const pl = UI.lang === 'fr' ? b.place_fr || b.place_de : b.place_de; return b.level === 'cantonal' ? `${b.key} ${pl}` : pl; };

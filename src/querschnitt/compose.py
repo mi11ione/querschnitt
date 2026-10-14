@@ -169,7 +169,22 @@ def bilingual(a: dict, rows: dict) -> dict | None:
                 reads={str(i): [round(rm["p"][i], 3), round(ro["p"][i], 3)] for i in top6}, langs=[a["lang"], a["alt_lang"]])
 
 
+_EV_AIDS: dict = {}
+
+
+def _ev_aids(rows) -> set:
+    """Affair ids that have any evidence row (indexed once per rows mapping; most affairs have none yet)."""
+    k = id(rows)
+    if k not in _EV_AIDS:
+        _EV_AIDS.clear()
+        _EV_AIDS[k] = {r.get("aid") for r in rows.values() if r.get("step") == "ev"}
+    return _EV_AIDS[k]
+
+
 def evidence_of(a: dict, name: str, rows: dict) -> dict | None:
+    if a["id"] not in _ev_aids(rows):   # the evidence prompt is identical for identical sentences, so its row's aid can
+        if not a.get("_ev_any"):        # differ: affairs without a row of their own are checked only when asked to
+            return None
     sents = P.sentences(a)
     if not sents:
         return None
@@ -204,7 +219,11 @@ def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "")
         for k, (code, pr) in enumerate(d["subs"], 1):
             out.append(dict(base, scheme="aps", level=2, code=code, rank=k, p_raw=round(pr, 4), p=None, lane=None,
                             cutoffs_id=f"aps@{lock['fp'][-8:]}", prompt_id=d["pids"][-1], evidence=None))
+    named_ids = {sch["id"] for sch in named_schemes()}
     for key, v in dec.items():
+        if key in named_ids:   # a parliament's own scheme file
+            out.append(dict(base, scheme=key, level=1, code=v["code"], rank=1, p_raw=round(v["p"], 4), p=None, lane=v["lane"],
+                            cutoffs_id=None, prompt_id=None, evidence=None))
         if key.startswith("adhoc/"):
             out.append(dict(base, scheme=key, level=1, code=f"{key}:{'yes' if v['flag'] else 'no'}", rank=1, p_raw=round(v["p"], 4),
                             p=round(v["p"], 4), lane=v["lane"], cutoffs_id=f"{key}@0.5", prompt_id=",".join(v.get("pids") or []) or None, evidence=v.get("evidence")))

@@ -52,7 +52,21 @@ def named(name: str) -> dict:
     return flat(name)
 
 
-def named_schemes() -> list[dict]:
+@functools.lru_cache(maxsize=None)
+def _named_schemes() -> tuple:
+    out = []
+    for p in sorted(HERE.glob("*.yaml")):
+        d = yaml.safe_load(p.read_text())
+        if d.get("kind") == "named":
+            out.append(d)
+    return tuple(out)
+
+
+def named_schemes() -> list[dict]:   # parsed once per process (it was re-parsed per affair)
+    return list(_named_schemes())
+
+
+def _named_schemes_uncached() -> list[dict]:
     """Every named scheme file (topic names only) with the parliament it applies to (`body`)."""
     out = []
     for p in sorted(HERE.glob("*.yaml")):

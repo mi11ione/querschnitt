@@ -149,7 +149,7 @@ def run(args):
         chapters=[dict(i=i, code=APS.codes[i], de=APS.short(i, "de"), fr=APS.short(i, "fr"), it=APS.short(i, "it")) for i in range(25)],
         subtopics={str(1000 * i + j): dict(code=APS.sub_codes[i][j], de=APS.subs_de[i][j], ch=i) for i in range(24) for j in range(len(APS.subs_de[i]))},
         topics=[dict(id=t["id"], names=t["names"], aliases=t.get("aliases", []), question=t.get("question"),
-                     source=t.get("source")) for t in topics],
+                     source=t.get("source"), period=t.get("scored_period")) for t in topics],
         schemes=[dict(id="be-directorates", body="BE", title=flat("be-directorates")["title"],
                       options=[dict(code=o["code"].split(":")[1], abbr=o["abbr"], name=o["name"]) for o in flat("be-directorates")["options"]]
                       + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]

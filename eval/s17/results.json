@@ -1,0 +1,91 @@
+{
+ "n": 200,
+ "A": 200,
+ "B": 200,
+ "C": 11,
+ "disagreements": 11,
+ "kappa_AB": 0.94,
+ "agree_AB": 0.945,
+ "top1": {
+  "acc": 0.64,
+  "ci": [
+   0.571,
+   0.703
+  ]
+ },
+ "top3": {
+  "acc": 0.77,
+  "ci": [
+   0.707,
+   0.823
+  ]
+ },
+ "majority": {
+  "label": "1.6.4.",
+  "acc": 0.135
+ },
+ "lang_de": {
+  "n": 144,
+  "acc": 0.6319,
+  "ci": [
+   0.551,
+   0.706
+  ]
+ },
+ "lang_fr": {
+  "n": 32,
+  "acc": 0.6875,
+  "ci": [
+   0.514,
+   0.82
+  ]
+ },
+ "lang_it": {
+  "n": 24,
+  "acc": 0.625,
+  "ci": [
+   0.427,
+   0.788
+  ]
+ },
+ "lane_readings_agree": {
+  "n": 155,
+  "acc": 0.6774,
+  "ci": [
+   0.6,
+   0.746
+  ]
+ },
+ "lane_please_check": {
+  "n": 45,
+  "acc": 0.5111,
+  "ci": [
+   0.37,
+   0.65
+  ]
+ },
+ "title_only": {
+  "n": 24,
+  "acc": 0.6667,
+  "ci": [
+   0.467,
+   0.82
+  ]
+ },
+ "with_text": {
+  "n": 176,
+  "acc": 0.6364,
+  "ci": [
+   0.563,
+   0.704
+  ]
+ },
+ "keyword": {
+  "acc": 0.15,
+  "ci": [
+   0.107,
+   0.206
+  ],
+  "file": "/Users/mi11ion/Desktop/hackapertus/bern/ideation2/spikes/s9-aps/data/keywords_frozen.json"
+ }
+}

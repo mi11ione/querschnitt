@@ -42,6 +42,10 @@ Querschnitt's "Digitalisierung" flags agree in 0.905 [0.865, 0.945] of cases (ke
 census of Swiss parliaments (14,512 affairs, 1 Jan–6 Oct): Querschnitt flags 651 affairs in 57 parliaments; the judge
 estimates 894 [657, 1,190] digitalisation affairs in total.
 
+On the production run itself, 200 random communal affairs of 2026 were judged blind (two runs, κ 0.94, tie-break on the
+11 disagreements): the shipped chapter matches the judge's consensus in 0.640 [0.571, 0.703] (keywords 0.150, majority
+0.135); where the readings agree 0.677, in the please-check lane 0.511; German 0.631, French 0.687, Italian 0.625.
+
 ## 4. Neutrality
 No measurable difference between German and French: Bern directorates +0.002 [−0.030, +0.034] (same affairs, both
 titles); federal APS chapters from German vs French text +0.017 [−0.003, +0.036]. No measurable difference in chapter

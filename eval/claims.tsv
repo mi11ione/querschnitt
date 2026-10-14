@@ -458,3 +458,15 @@ S8full	-	1,190	S8 full census pos ci1	1190.368	bern/querschnitt/eval/s8full/resu
 S8full	-	nine in ten	S8 full census a_P 0.905	0.905	bern/querschnitt/eval/s8full/results.json	a_P 0.905	OK		truncated / outward
 S8full	-	three in four	S8 full census k_P 0.756	0.756	bern/querschnitt/eval/s8full/results.json	k_P 0.756	OK		truncated / outward
 S8full	-	nearly 900	S8 full census est positives 893.89	893.89	bern/querschnitt/eval/s8full/results.json	est positives 893.89	OK		truncated / outward
+S17	-	0.640	S17 top1	0.64	bern/querschnitt/eval/s17/results.json	top1	OK		truncated
+S17	-	0.571	S17 ci0	0.571	bern/querschnitt/eval/s17/results.json	ci0	OK		truncated
+S17	-	0.703	S17 ci1	0.703	bern/querschnitt/eval/s17/results.json	ci1	OK		truncated
+S17	-	0.770	S17 top3	0.77	bern/querschnitt/eval/s17/results.json	top3	OK		truncated
+S17	-	0.94	S17 kappa	0.94	bern/querschnitt/eval/s17/results.json	kappa	OK		truncated
+S17	-	0.150	S17 keyword	0.15	bern/querschnitt/eval/s17/results.json	keyword	OK		truncated
+S17	-	0.135	S17 majority	0.135	bern/querschnitt/eval/s17/results.json	majority	OK		truncated
+S17	-	0.677	S17 lane agree	0.6774	bern/querschnitt/eval/s17/results.json	lane agree	OK		truncated
+S17	-	0.511	S17 lane check	0.5111	bern/querschnitt/eval/s17/results.json	lane check	OK		truncated
+S17	-	0.631	S17 de	0.6319	bern/querschnitt/eval/s17/results.json	de	OK		truncated
+S17	-	0.687	S17 fr	0.6875	bern/querschnitt/eval/s17/results.json	fr	OK		truncated
+S17	-	0.625	S17 it	0.625	bern/querschnitt/eval/s17/results.json	it	OK		truncated

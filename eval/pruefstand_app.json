@@ -225,6 +225,25 @@
    "split_fr": "champ du Grand Conseil"
   },
   {
+   "test": "APS-Kapitel, Gemeindeparlamente 2026, Produktionslauf vs. KI-Richter",
+   "test_fr": "Chapitre APS, parlements communaux 2026, production vs juge IA",
+   "gold": "judge",
+   "design": "ausgeliefertes Kapitel (Rücklesen), Richter: 2 blinde Läufe + Stichentscheid, κ 0.94",
+   "design_fr": "chapitre livré (relecture), juge : 2 passages aveugles + départage, κ 0,94",
+   "n": 200,
+   "result": "top-1 0.640 · top-3 0.770",
+   "result_fr": "top-1 0,640 · top-3 0,770",
+   "interval": [
+    0.571,
+    0.703
+   ],
+   "baseline": "Stichwort 0.150 · Mehrheit 0.135",
+   "baseline_fr": "mots-clés 0,150 · majorité 0,135",
+   "split": "Zufallsstichprobe, vorregistriert (S17)",
+   "split_fr": "échantillon aléatoire, préenregistré (S17)",
+   "file": "querschnitt/eval/s17/results.json"
+  },
+  {
    "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
    "test_fr": "« numérique » 2026, parlements suisses vs juge IA",
    "gold": "judge",

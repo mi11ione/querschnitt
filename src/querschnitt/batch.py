@@ -108,6 +108,11 @@ class Runner:
         self.topics = [adhoc(t) for t in args.topics]
         self.counts = collections.Counter()
         self.t0 = time.time()
+        self.extra = {}
+        if args.read_from:   # decisions made in other run dirs (same build), e.g. evidence for the main run's rows
+            from .compose import read_run
+            lk, self.extra = read_run(*[Path(r) for r in args.read_from])
+            assert not lock or lk["fp"] == lock["fp"], "read-from runs are on another build"
         self.events = collections.deque(maxlen=50000)
 
     # ------------------------------------------------------------------ one call, cached by prompt id
@@ -139,11 +144,11 @@ class Runner:
             r1 = self._step(P.pid(built[0], built[1]), lambda: dict(self.engine.ch1(a, built), aid=a["id"], ih=ih)) if "ch" in S \
                 else self.store.done.get(P.pid(built[0], built[1]))
             r2 = None
-            if r1 and need_ch2(r1["p"]):
+            if r1 and need_ch2(r1["p"], bool(r1.get("ex"))):
                 u, p = P.chapter_prompt(a, P.S1PERM)
                 r2 = self._step(P.pid(u, p), lambda: dict(self.engine.ch2(a), aid=a["id"], ih=ih)) if "ch" in S \
                     else self.store.done.get(P.pid(u, p))
-            if "sub" in S and r1 and (r2 or not need_ch2(r1["p"])):
+            if "sub" in S and r1 and (r2 or not need_ch2(r1["p"], bool(r1.get("ex")))):
                 chs = P.subtopic_chapters(mean_p(r1["p"], r2["p"] if r2 else None))
                 u, p, _, _ = P.subtopic_prompt(a, chs)
                 self._step(P.pid(u, p), lambda: dict(self.engine.sub(a, chs), aid=a["id"], ih=ih))
@@ -185,7 +190,8 @@ class Runner:
         """Evidence sentence for what an editor sees: the shipped chapter (where the read-back exists) and every
         ad-hoc flag or please-check row."""
         from .compose import decide
-        d = decide(a, self.store.done, self.engine.ch1_prompt, self.topics)
+        rows = collections.ChainMap(self.store.done, self.extra) if self.extra else self.store.done
+        d = decide(a, rows, self.engine.ch1_prompt, self.topics)
         jobs = []
         if d.get("aps") and d["aps"]["ch"] < 24 and (a["text"] or a["title_long"]):
             jobs.append(APS.names["de"][d["aps"]["ch"]])
@@ -267,6 +273,7 @@ def main(argv=None):
     r.add_argument("--topics", nargs="*", default=["digitalisierung"])
     r.add_argument("--steps", nargs="*", default=["ch", "sub", "yn"], help="ch sub yn bi be ev")
     r.add_argument("--no-examples", dest="examples", action="store_false")
+    r.add_argument("--read-from", nargs="*", default=[], help="other run dirs whose rows decide what evidence to fetch")
     r.add_argument("--conc", type=int, default=6)
     r.add_argument("--max-rate", type=float, default=1.6)
     r.add_argument("--cap", type=float, default=60.0)

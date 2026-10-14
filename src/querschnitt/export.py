@@ -139,7 +139,7 @@ def run(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", default=f"{ROOT / 'runs/main'},{ROOT / 'runs/side'}")
+    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev") if (ROOT / "runs" / r / "state.json").exists()))
     ap.add_argument("--inputs", default=str(ROOT.parent / "data/inputs.jsonl.gz"))
     ap.add_argument("--opd", default=str(ROOT.parent / "data/opd-new"))
     ap.add_argument("--out", default=str(ROOT / "app/data"))

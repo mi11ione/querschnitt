@@ -69,12 +69,19 @@ for a_, b_ in (("D4", "D3"), ("D4", "D1"), ("D4S", "D3"), ("D4S", "D1"), ("D3", 
     diffs.sort()
     R[f"{a_}-{b_}"] = dict(diff=round((sum(va) - sum(vb)) / len(ids), 4), ci=(round(diffs[50], 4), round(diffs[1949], 4)))
 ship = "D4" if R["designs"]["D4"]["top1"] >= R["designs"]["D3"]["top1"] else "D3"
-R["decision"] = f"{ship} shipped for federal affairs (pre-registered rule: D4 if its top-1 ≥ D3's)"
+R["decision"] = (f"{ship} shipped for federal affairs (pre-registered rule: D4 if its top-1 ≥ D3's). The corpus run uses D4 as "
+                 "registered: both code orders always, examples on the first. D4s (secondary) is reported, not shipped.")
+# lanes of the shipped design: the two code orders (d3m with examples, d0b without) agree / disagree on the top chapter
+agree = [o for o in ids if order(raw["d3m"][o]["p"])[0] == order(raw["d0b"][o]["p"])[0]]
+dis = [o for o in ids if o not in set(agree)]
+ka = sum(pred["D4"][o][0] == gold[o] for o in agree); kd = sum(pred["D4"][o][0] == gold[o] for o in dis)
+R["lanes_D4"] = dict(agree_share=round(len(agree) / len(ids), 4), agree_n=len(agree), agree_precision=round(ka / len(agree), 4),
+                     agree_ci=wilson(ka, len(agree)), disagree_n=len(dis), disagree_precision=round(kd / len(dis), 4), disagree_ci=wilson(kd, len(dis)))
 new = sum(1 for o in ids if s16[o]["d4"]["src"] == "new") + sum(1 for o in ids if s16[o]["d4s"]["src"] == "new")
 R["new_calls"] = new
 # calibration: aps = D1 (no examples), aps-fed = production federal rule (D4s if D4 shipped, else D3)
 cal = dict(build=BUILD, fitted_on="S9 held-out federal affairs (APS editors' chapters)", n=len(ids), maps={})
-for key, d in (("aps", "D1"), ("aps-fed", "D4S" if ship == "D4" else "D3")):
+for key, d in (("aps", "D1"), ("aps-fed", ship)):
     ps = [pred[d][o][2] for o in ids]; ys = [int(pred[d][o][0] == gold[o]) for o in ids]
     cal["maps"][key] = dict(design=d, map=pav(ps, ys), **crossfit(ps, ys))
     R.setdefault("calibration", {})[key] = {k: v for k, v in cal["maps"][key].items() if k != "map"}
@@ -82,7 +89,7 @@ for key, d in (("aps", "D1"), ("aps-fed", "D4S" if ship == "D4" else "D3")):
     o_ = sorted(range(len(ps)), key=lambda i: -ps[i]); k = 0; cp = []
     for n_, i in enumerate(o_, 1):
         k += ys[i]
-        if n_ % max(1, len(ps) // 20) == 0 or n_ == len(ps): cp.append((round(n_ / len(ps), 3), round(k / n_, 4)))
+        cp.append((round(n_ / len(ps), 4), round(k / n_, 4)))
     R.setdefault("coverage_precision", {})[key] = cp
 (ROOT / "eval/calibration.json").write_text(json.dumps(cal, indent=1))
 (HERE / "results.json").write_text(json.dumps(R, indent=1))
@@ -92,6 +99,8 @@ for d, v in R["designs"].items():
     md.append(f"| {d} | {v['top1']} [{v['top1_ci'][0]}, {v['top1_ci'][1]}] | {v['top3']} |")
 md += ["", *(f"- {k}: {v['diff']:+} [{v['ci'][0]:+}, {v['ci'][1]:+}]" for k, v in R.items() if "-" in k and isinstance(v, dict) and "diff" in v),
        f"- Decision: {R['decision']}", f"- New subtopic calls: {new}",
+       f"- Lanes (D4): orders agree on {R['lanes_D4']['agree_share']} of affairs, precision {R['lanes_D4']['agree_precision']} {R['lanes_D4']['agree_ci']}; "
+       f"disagree: precision {R['lanes_D4']['disagree_precision']} {R['lanes_D4']['disagree_ci']} (n {R['lanes_D4']['disagree_n']})",
        *(f"- Calibration {k}: ECE {v['ece_raw']} → {v['ece_crossfit']} (2-fold cross-fitted, n {v['n']}, acc {v['acc']})" for k, v in R["calibration"].items())]
 (HERE / "results.md").write_text("\n".join(md) + "\n")
 print("\n".join(md))

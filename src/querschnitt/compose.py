@@ -86,9 +86,9 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
     r1 = rows.get(P.pid(u, p))
     if r1:
         r2 = None
-        if need_ch2(r1["p"]):
+        if need_ch2(r1["p"], bool(r1.get("ex"))):
             r2 = rows.get(P.pid(*P.chapter_prompt(a, P.S1PERM)))
-        if r2 or not need_ch2(r1["p"]):
+        if r2 or not need_ch2(r1["p"], bool(r1.get("ex"))):
             chs = P.subtopic_chapters(mean_p(r1["p"], r2["p"] if r2 else None))
             u, p, _, _ = P.subtopic_prompt(a, chs)
             rs = rows.get(P.pid(u, p))

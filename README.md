@@ -12,8 +12,8 @@ Human labels first. Full table with intervals, baselines and source files: [docs
 
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
-| APS chapter vs APS editors, held-out federal affairs, pre-registered | 1,357 | **0.748** [0.725, 0.771] as shipped (five APS-labelled examples, chapter read back from the subtopic); 0.704 read-back alone | plain list prompting 0.655 · keywords 0.192 |
-| "Digitalisierung": the 30 affairs DVS curated by hand on its public page | 30 | 27 recognised | keywords 21 |
+| APS chapter vs APS editors, held-out federal affairs, pre-registered | 1,357 | **0.740** [0.717, 0.763] as shipped (five APS-labelled examples, two code orders, chapter read back from the subtopic); where the two readings agree (64% of affairs) 0.826 [0.800, 0.850] | plain list prompting 0.655 · keywords 0.192 |
+| "Digitalisierung": the 30 affairs DVS curated by hand on its public page (the question and its 0.5 cut-off were written with these items in view) | 30 | 27 recognised | keywords 21 |
 | Bern's lead directorate (scheme swap, 8 directorates) vs the Grand Council's own field, DE / FR | 200 | 0.615 / 0.645 | keywords 0.520 / 0.495 |
 | Evidence: the quoted sentence supports the topic (blind AI judge) | 120 | 0.850 | — |
 
@@ -31,9 +31,10 @@ prefill, served build, throughput) before a run.
 - **Closed choices only.** Every classification step — chapter, subtopic, yes/no for an ad-hoc topic, evidence sentence — is
   a choice among listed codes, read from Apertus's next-token probabilities. A label outside the scheme is never stored.
   Asked to name a topic freely, Apertus answered outside the scheme in 36 of 40 affairs; with the list shown, in 0 of 40.
-- **Chapter, then subtopic, read back.** Two readings of the chapter question in two code orders (the second only when the
-  first is below p 0.9); one request over the subtopics of the top two or three chapters; the shipped chapter is the one read
-  back from the chosen subtopic. Federal affairs see the five most similar APS-labelled affairs as examples.
+- **Chapter, then subtopic, read back.** Two readings of the chapter question in two code orders; one request over the
+  subtopics of the top two or three chapters; the shipped chapter is the one read back from the chosen subtopic. Federal
+  affairs see the five most similar APS-labelled affairs as examples (both readings always). Elsewhere the second reading
+  runs when the first is below p 0.9 (a single reading at p ≥ 0.9 counts as agreeing).
 - **Lanes.** The two readings agree → `readings_agree`; they disagree → `please_check`. In bilingual parliaments (Bern,
   Fribourg, Valais) the German and the French version are the two readings.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored with

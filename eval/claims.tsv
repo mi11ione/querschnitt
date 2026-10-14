@@ -395,3 +395,10 @@ APERTUS-NOTES	-	384	n = 384 + 32	384	spikes/subst/results.md	system-prompt arms 
 APERTUS-NOTES	-	0/32	against 0/32 without one	0/32	spikes/subst/results.md	no system prompt arm: 0/32	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	14/14	14/14 one answer on one backend	14/14	spikes/live/results.md	(e): 'fp1-nes "Nein." 14/14'	OK		upstream/APERTUS-NOTES.md
 APERTUS-NOTES	-	6/6	6/6 the other answer on the other	6/6	spikes/live/results.md	(e): 'tp2 "Ja. ..." 6/6'	OK		upstream/APERTUS-NOTES.md
+S16	-	0.800	S16 lanes_D4 > agree_ci[0]	0.8	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_ci[0]	OK		truncated, never rounded up
+S16	-	0.850	S16 lanes_D4 > agree_ci[1]	0.85	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_ci[1]	OK		truncated, never rounded up
+S16	-	0.826	S16 lanes_D4 > agree_precision	0.8266	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_precision	OK		truncated, never rounded up
+S16	-	0.586	S16 lanes_D4 > disagree_precision	0.5864	bern/querschnitt/eval/s16/results.json	lanes_D4 > disagree_precision	OK		truncated, never rounded up
+S16	-	64%	S16 lanes_D4 > agree_share	0.6419	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_share	OK		truncated, never rounded up
+S16	-	0.021	S16 calibration > aps-fed (D4) > ece_crossfit	0.0211	bern/querschnitt/eval/s16/results.json	calibration > aps-fed (D4) > ece_crossfit	OK		truncated, never rounded up
+S16	-	0.246	S16 calibration > aps-fed (D4) > ece_raw	0.2463	bern/querschnitt/eval/s16/results.json	calibration > aps-fed (D4) > ece_raw	OK		truncated, never rounded up

@@ -112,8 +112,10 @@ class Engine:
                     p=round(math.exp(d[k]), 4) if d else None, meta=meta)
 
 
-def need_ch2(p1: list[float]) -> bool:
-    return max(p1) < 0.9
+def need_ch2(p1: list[float], examples: bool = False) -> bool:
+    """Second code order: always with examples (federal design D4, S16 primary); otherwise when the first reading's top
+    probability is below 0.9 (S6)."""
+    return examples or max(p1) < 0.9
 
 
 def mean_p(p1: list[float], p2: list[float] | None) -> list[float]:

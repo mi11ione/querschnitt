@@ -9,7 +9,7 @@
 #   make smoke            start the API, check /health and /metrics, stop it (CI)
 #   make fake-endpoint    an OpenAI-compatible fake on 127.0.0.1:8099 (QS_BASE_URL=http://127.0.0.1:8099/v1)
 #   make up-full / up-lite   docker compose profiles (full: Postgres + API + app + nightly; lite: nightly into QS_PG_DSN)
-.PHONY: install run load serve test eval delta delta-plan smoke fake-endpoint docker up-full up-lite clean-db data data-release
+.PHONY: install run load serve test claims eval delta delta-plan smoke fake-endpoint docker up-full up-lite clean-db data data-release
 PY     ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python3)
 HOST   ?= 127.0.0.1
 PORT   ?= 8000
@@ -32,6 +32,9 @@ serve:
 
 test:
 	$(PY) -m pytest -q
+
+claims:
+	$(PY) -I tools/claims_check.py README.md docs/*.md
 
 eval:
 	@test -n "$(GOLD)" || { echo "usage: make eval GOLD=file.csv [SCHEME=adhoc/digitalisierung]"; exit 2; }

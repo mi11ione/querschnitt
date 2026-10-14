@@ -23,6 +23,8 @@ jobs:
         env: {QS_TEST_PG_DSN: "postgresql://qs:qs@localhost:5432/qs", QS_TEST_ALL_PG: "1"}
       - name: make run smoke (load shipped data, /health, /metrics)
         run: make smoke PY=python
+      - name: every number in README and docs is backed by eval/claims.tsv or eval/pruefstand.json
+        run: make claims PY=python
   docker:
     runs-on: ubuntu-latest
     steps:

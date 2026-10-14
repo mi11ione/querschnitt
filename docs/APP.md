@@ -136,7 +136,7 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 ## Atlas round (14 Oct)
 - New first view «Überblick» (`#ueber`, default route, key `a`): one line of large numbers (affairs scored, parliaments,
   weeks, rows waiting in red), 26 small Switzerlands (Digitalisierung, the 24 APS chapters by volume, «Kein Sachthema»)
-  on one fixed doubling ramp (< 2.5 / 2.5 / 5 / 10 / ≥ 20 % of the canton's scored affairs), Federal Assembly as a band,
+  on one fixed doubling ramp (`< 2.5 / 2.5 / 5 / 10 / ≥ 20 %` of the canton's scored affairs), Federal Assembly as a band,
   cantons without scored affairs hatched; click = Karte on that topic with the Überblick panel. «Diese Woche»: newest
   week with ≥ 20 affairs, per-level bars and up to 5 notable affairs (one chapter on ≥ 2 levels, then highest p).
   Canton paths are defined once and reused (`<use>`), so 26 maps cost one geometry. The fact line is hidden there.
@@ -176,10 +176,10 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
   «bitte prüfen» / «ohne Prüfung».
 - Prüfstand: shipped point = p ≥ 0.7 (0.6684, 0.8644 from eval/lanes/results.json, via make_confusion.py
   `lanes_tau`, used when `curve.op` is still the readings point); the readings-agree point stays as a grey dot; the
-  lanes bar shows p ≥ 0.7 (66.8 %, 0.864) vs p < 0.7 (0.491).
+  lanes bar shows p ≥ 0.7 (66.8%, 0.864) vs p < 0.7 (0.491).
 - Saved topics without a Prüfstand row (`measured` in the topic entry, or a pruefstand row with `topic` = id) are
   marked «nicht gemessen» in the picker and on their atlas maps.
-- Überblick: «47 % gehen an eine Person» = please-check rows / scored APS rows in 2025–26 (count on hover); weeks
+- Überblick: «… % gehen an eine Person» = please-check rows / scored APS rows in 2025–26 (count on hover); weeks
   count the main slice only.
 - No «Beleg» block without a quote: the text shows under «Text», and is omitted when there is none.
 

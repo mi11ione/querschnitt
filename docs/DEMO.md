@@ -2,7 +2,7 @@
 
 Setup on the laptop: `make run` (API + app at http://127.0.0.1:8000, live mode: Pult decisions and Neues Thema work);
 the static copy https://querschnitt.mi11ion.io is the fallback (read-only, decisions stay in the browser). Endpoint for
-Neues Thema: the event's CSCS endpoint if the hour-1 probe passed (`QS_BASE_URL` …), else Public AI. Browser at 1440 px,
+Neues Thema: the event's CSCS endpoint if the hour-1 probe passed (`QS_BASE_URL` …), else Public AI. Browser at `1440 px`,
 zoom 110 %, DE first. Close every other tab.
 
 Keys: `a` Überblick · `m` Karte · `n` Neues Thema · `b` Prüfstand · `t` topic picker · `/` search · `j`/`k` next/previous

@@ -124,7 +124,8 @@ def run(args):
                       + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]))
     tot = sum(c["n"] for c in cov.values())
     meta = dict(generated_at=now, version=VERSION, model=lock["model"], build=lock["fp"], build_short=lock["fp"][-8:],
-                since=args.since, until=X[0]["date"] if X else None, affairs=tot, parliaments=len(cov),
+                since=args.since, until=min(X[0]["date"], time.strftime("%Y-%m-%d")) if X else None,
+                n_future_dated=sum(1 for x in X if x["date"] > time.strftime("%Y-%m-%d")), affairs=tot, parliaments=len(cov),
                 scored=n_dec["aps"], scored_share=round(n_dec["aps"] / tot, 4) if tot else 0, dig_scored=n_dec["dig"],
                 please_check=sum(c["check"] for c in cov.values()), calibration=bool(calib))
     nl = ROOT / "runs/nightly/last.json"

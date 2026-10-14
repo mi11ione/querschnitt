@@ -21,7 +21,8 @@ Human labels first. Full table with intervals, baselines and source files: [docs
 
 ## Quick start
 ```sh
-make run                    # API + app on the shipped data at http://127.0.0.1:8000 (SQLite; no model calls)
+make data                   # the scored data (GitHub release `data-latest`): app export, inputs, topic rows
+make run                    # API + app at http://127.0.0.1:8000 (SQLite; no model calls)
 make test
 make eval GOLD=my.csv       # score any labelled CSV (affair_id,label) against the stored topic rows
 ```

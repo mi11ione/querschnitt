@@ -1,0 +1,40 @@
+{
+ "endpoint": "https://api.publicai.co/v1",
+ "model": "swiss-ai/apertus-v1.5-8b",
+ "t": "2026-10-14T17:06:14+0200",
+ "models": "error: <HTTPError 403: 'Forbidden'>",
+ "served_model": "swiss-ai/apertus-v1.5-8b",
+ "fingerprint": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "latency_s": 0.53,
+ "logprobs": true,
+ "top_logprobs_n": 20,
+ "generated": "L",
+ "prefill_ok": true,
+ "code_mass": 1.0,
+ "deterministic": true,
+ "throughput": [
+  {
+   "conc": 1,
+   "n": 8,
+   "req_per_s": 0.984,
+   "p50": 0.5,
+   "p95": 0.757,
+   "n429": 0
+  },
+  {
+   "conc": 4,
+   "n": 16,
+   "req_per_s": 0.506,
+   "p50": 0.504,
+   "p95": 0.941,
+   "n429": 1
+  }
+ ],
+ "replay": {
+  "n": 6,
+  "top1_agree": 6,
+  "mean_abs_dp": 0.0159,
+  "old_build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ },
+ "usd_list_price": 0.0043
+}

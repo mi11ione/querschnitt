@@ -42,6 +42,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--replay", default=str(ROOT / "runs/main"))
     ap.add_argument("--n", type=int, default=60)
+    ap.add_argument("--conc", default="1,4,8,16", help="concurrency levels for the throughput test")
     a = ap.parse_args()
     ep = Endpoint.from_env(); ep.max_rate, ep.conc = 50.0, 16
     c = Client(ep, ledger=str(ROOT / f"runs/probe-{ep.name}-ledger.jsonl"), cap_usd=2.0, tag="probe")
@@ -70,7 +71,7 @@ def main():
                           and read_codes(ch2, P.CODES) == d)
     # 5 throughput
     R["throughput"] = []
-    for conc in (1, 4, 8, 16):
+    for conc in [int(c) for c in a.conc.split(",") if c]:
         lat, n429 = [], [0]
         lock = threading.Lock()
         n = max(8, conc * 4)

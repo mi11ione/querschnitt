@@ -20,7 +20,8 @@ Map it onto the variants below; pick the lead screen; note what the partner asks
 ## 11:30–13:00 — endpoint hour
 ```sh
 # capabilities of the CSCS endpoint (logprobs, prefill, served model, fingerprint, throughput, replay vs Public AI rows)
-QS_NAME=cscs QS_BASE_URL=<url> QS_MODEL=<model> QS_API_KEY=<key> .venv/bin/python tools/probe_endpoint.py --n 60
+QS_NAME=cscs QS_BASE_URL=<url> QS_MODEL=<model> QS_API_KEY=<key> .venv/bin/python tools/probe_endpoint.py --n 60 --conc 1,4,8,16
+# validated on Public AI 14 Oct: logprobs true, prefill_ok true, deterministic, replay 6/6 (eval/probe-publicai-*.json)
 ```
 - `logprobs` true + `prefill_ok` true → CSCS can take the corpus run: refit cut-offs on the CSCS build (S16 analysis on the
   S9 items: `QS_*=… python eval/s16/run.py` into a fresh dir, then `eval/s16/analyze.py`), start a new run dir (a new build is
@@ -41,6 +42,14 @@ QS_NAME=cscs QS_BASE_URL=<url> QS_MODEL=<model> QS_API_KEY=<key> .venv/bin/pytho
 | V8 Strict VPS limit | Terminal + `lite` footprint | endpoint-based service; footprint as measured | < 1 h | `docker compose --profile lite` |
 | V9 Taxonomy handed over | Karte on the new scheme | new `schemes/<name>.yaml`; cut-offs and examples from any gold | 2–3 h | copy `be-directorates.yaml` shape |
 | V10 Cantonal/communal emphasis | Karte, communes on | per-level table first; bilingual lane | 1 h | — |
+
+## Live `make eval` on whatever the partner hands over
+```sh
+make eval GOLD=their.csv            # columns affair_id,label (APS code, ad-hoc yes/no, or their own scheme code)
+make eval GOLD=data/eval/gold_aps_s9.csv     # fallback: 1,357 APS editors' chapters on production rows
+```
+Their own taxonomy: copy `src/querschnitt/schemes/bs-themen.yaml` (names only) → `querschnitt run --named <file> --ids …`
+(S20 shape); their labels as examples: `eval/s21/run.py` shape (two folds).
 
 ## Afternoon / night
 Tailor per variant; check-in with the partner on the live path; `make eval` on any sample received; re-runs; polish; rehearse

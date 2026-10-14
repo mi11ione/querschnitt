@@ -33,9 +33,9 @@ function renderShell() {
   $('#fixture').textContent = L.fixture;
   $('#build').replaceChildren();
   // fact line: affairs, parliaments, scored share, build, last night's new rows, pending rows
-  const ng = m.nightly || null, nRows = ng ? (ng.new_rows ?? ng.rows ?? ng.scored ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
-  const night = ng ? [nRows != null ? num(nRows) : (ng.date || '').slice(5, 10).split('-').reverse().join('.'), ng.wall_min != null ? `${L.night} · ${num(ng.wall_min)} min` : L.night]
-    : nRows != null ? [num(nRows), L.night] : null;
+  // «letzte Nacht: 412 neu · 8 min»; nothing when the night added no rows
+  const ng = m.nightly || null, nRows = ng ? (ng.new_rows ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
+  const night = nRows ? [`${num(nRows)} ${L.newW}${ng && ng.wall_min != null ? ` · ${Math.floor(ng.wall_min)} min` : ''}`, `${L.night}:`, true] : null;
   const items = [
     [num(m.affairs ?? D.n), L.affairs],
     [num(m.parliaments ?? D.bodies.length), L.parls],

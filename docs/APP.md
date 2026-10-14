@@ -146,3 +146,11 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
   shared content words (procedural words removed; cut set by eye on 20 cases, `simcal` scenario prints them).
 - Fact line kept to one line (items dropped from the end), build only in the footer; list titles on up to two lines
   (rows 70 px); map column wider; the federal band says «Bund» instead of repeating the parliament name.
+
+## Juror round 2 (14 Oct)
+- One p per row: list, Pult, CSV and the detail show the calibrated p (`ch_p` / `aps.p[0]`, `dig_p`); the decision
+  graphic shows a number only on the shipped chapter, raw values (`p_raw`, readings) only on hover.
+- Fact line: «letzte Nacht: N neu · M min» from `meta.nightly.new_rows` / `wall_min` (minutes truncated); dropped when 0.
+- Pult opens on the newest week with undecided hits of the topic; a week without any says «keine offenen» in the week
+  line and in the list; every empty list says why.
+- Prüfstand strings are printed as delivered (result strings verbatim, interval numbers joined, no formatting).

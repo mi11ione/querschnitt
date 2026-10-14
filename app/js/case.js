@@ -190,8 +190,8 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
 function yesNoGraphic(p, dig, check, flag, kw) {
   const L = t(), cut = 0.5, rn = [L.read1, L.read2];
   const rows = [{ label: `${flag ? L.yes : L.no}`, v: p, tone: flag ? 'ink' : 'grey', value: p3(p), tip: `p ${p3(p)} · ${L.cutoff} ${cut}`, strong: true }];
-  if (dig && dig.p_a != null) rows.push({ label: rn[0], v: dig.p_a, tone: dig.p_a >= cut ? 'ink' : 'grey', value: p3(dig.p_a), thin: true, tip: `${rn[0]} p ${p3(dig.p_a)}` });
-  if (dig && dig.p_b != null) rows.push({ label: rn[1], v: dig.p_b, tone: dig.p_b >= cut ? 'ink' : 'grey', value: p3(dig.p_b), thin: true, tip: `${rn[1]} p ${p3(dig.p_b)}` });
+  if (dig && dig.p_a != null) rows.push({ label: rn[0], v: dig.p_a, tone: dig.p_a >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[0]} p ${p3(dig.p_a)}` });
+  if (dig && dig.p_b != null) rows.push({ label: rn[1], v: dig.p_b, tone: dig.p_b >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[1]} p ${p3(dig.p_b)}` });
   const el = h('div', { class: 'dg' });
   for (const r of rows) el.append(h('div', { class: `dgr ${r.thin ? 'thin' : ''}`, 'data-tip': r.tip, tabindex: '0' },
     h('span', { class: `rk ${r.strong ? 'on' : 'dim'}` }, r.label),
@@ -208,6 +208,8 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const L = t();
   const rank = (aps && aps.rank) || (ch >= 0 ? [ch] : []);
   const praw = (aps && (aps.p_raw || aps.p)) || [chp];
+  // one p per row, the same number as in the list and the Pult: the calibrated p of the shipped chapter; raw values only on hover
+  const pShip = aps && aps.p && aps.p[0] != null ? aps.p[0] : (Number.isNaN(chp) ? null : chp);
   const bil = aps && aps.bilingual && aps.bilingual.reads ? aps.bilingual : null;
   const reads = bil ? bil.reads : aps && aps.reads;
   const rnames = bil ? (bil.langs || ['de', 'fr']).map(x => x.toUpperCase()) : [L.read1, L.read2].slice(0, (aps && aps.read_names && aps.read_names.length) || 2);
@@ -220,17 +222,17 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const keys = [...rank];
   if (reads) for (const k of Object.keys(reads).sort((a, b) => Math.max(...reads[b]) - Math.max(...reads[a]))) if (!keys.includes(+k)) keys.push(+k);
   const shown = keys.slice(0, 5);
-  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim' }, reads ? `${L.chapterP} · ${rnames.join(' / ')}` : L.chapterP)));
+  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim' }, reads ? `p · ${rnames.join(' / ')}` : 'p')));
   for (const k of shown) {
     const ri = rank.indexOf(k), v = ri >= 0 ? praw[ri] : null, shipped = ri === 0;
     const subs = [];
     for (let r = 0; r < nR; r++) { const x = rp(k, r); subs.push({ v: x || 0, tone: top[r] === k ? 'ink' : 'grey', tip: `${rnames[r]} p ${x == null ? '–' : p3(x)}` }); }
     const tick = disagree && (top[0] === k || top[1] === k);
-    const tip = `${chapterName(k)}${v != null ? ` · p_raw ${p3(v)}` : ''}${shipped && aps && aps.p && aps.p[0] != null ? ` · p ${p3(aps.p[0])}` : ''}${subs.map(x => ` · ${x.tip}`).join('')}`;
+    const tip = `${chapterName(k)}${shipped && pShip != null ? ` · p ${p3(pShip)}` : ''}${v != null ? ` · ${L.chapterP} ${p3(v)}` : ''}${subs.map(x => ` · ${x.tip}`).join('')}`;
     el.append(h('div', { class: 'dgr', 'data-tip': tip, tabindex: '0' },
       h('span', { class: `rk ${shipped ? 'on' : ''}` }, chapterName(k)),
       h('span', { class: 'rbar' }, v != null ? bar(v, shipped ? 'ink' : 'grey') : h('span', { class: 'vb none' }), ...subs.map(x => bar(x.v, x.tone, '', true))),
-      h('span', { class: 'rv' }, v != null ? p3(v) : '', tick ? h('span', { class: 'rtick' }) : '')));
+      h('span', { class: 'rv' }, shipped && pShip != null ? p3(pShip) : '', tick ? h('span', { class: 'rtick' }) : '')));
   }
   el.append(h('p', { class: 'dgn' }, h('span', { class: lane === 'please_check' ? 'sig' : '' }, L.lanes[lane] || lane),
     disagree ? ` · ${rnames[0]} → ${chapterName(top[0])}, ${rnames[1]} → ${chapterName(top[1])}` : nR > 1 ? ` · ${rnames.join(' = ')}` : ''));

@@ -34,7 +34,7 @@ export function renderPruef(root) {
       h('thead', {}, h('tr', {}, h('th', {}, L.design), h('th', { class: 'n' }, 'n'), h('th', {}, L.result), h('th', {}, L.ci), h('th', {}, L.baseline))));
     const body = h('tbody');
     for (const r of rs) {
-      const ci = Array.isArray(r.interval) ? `[${r.interval.join(', ')}]` : (r.interval || '–');
+      const ci = Array.isArray(r.interval) ? `[${r.interval.map(v => typeof v === 'number' ? v.toFixed(3) : v).join(', ')}]` : (r.interval || '–');  // bounds are stored at 3 decimals (truncated / outward)
       const ship = r === order[0][1][0]; // the production row leads the first human-label table
       body.append(h('tr', { class: ship ? 'ship' : '' }, h('td', {}, (fr && r.design_fr) || r.design), h('td', { class: 'n' }, num(r.n)), h('td', { class: 'res' }, String((fr && r.result_fr) || r.result)),
         h('td', { class: 'res' }, ci), h('td', { class: 'base' }, (fr && r.baseline_fr) || r.baseline || '–')));

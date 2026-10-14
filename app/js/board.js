@@ -126,7 +126,8 @@ export class Board {
     const lastW = Math.floor((D.dmax - D.w0) / 7);
     // the Pult's week: by default the newest week (up to today) with a hit of this topic
     if (S.pw == null || S.pwFor !== (tp && tp.id)) {
-      let w = -1; if (tp) for (let i = 0; i < n; i++) if (c.week[i] <= lastW && c.week[i] > w && tp.scored(i) && tp.hit(i)) w = c.week[i];
+      // the newest week (up to today) that still has open rows: undecided hits of this topic
+      let w = -1; if (tp) for (let i = 0; i < n; i++) if (c.week[i] <= lastW && c.week[i] > w && tp.scored(i) && tp.hit(i) && !getDec(tp, c.id[i])) w = c.week[i];
       S.pw = w >= 0 ? w : lastW; S.pwFor = tp && tp.id;
     }
     let scoredSel = 0, hitsSel = 0;
@@ -212,6 +213,7 @@ export class Board {
     // list
     const pos = selRow != null && posOf.has(selRow) ? posOf.get(selRow) : -1;
     this.list.set(rows, pos);
+    this.listEmpty(rows.length ? null : (pult && S.tab === 'neu' ? L.noneOpenWeek : pult ? L.noneTab : L.none));
     this.renderHead(scoredSel, hitsSel); this.renderMode();
     if (S.sel == null) this.summary(); // the «Auswahl» panel follows the brush and filters
     this.onChange && this.onChange(this);
@@ -260,7 +262,7 @@ export class Board {
         bi.addEventListener('change', () => { const v = parseInt(bi.value, 10); if (v > 0) ls(BUDGET, String(v)); this.refresh(); });
         const wb = (d, lab) => h('button', { class: 'tb', type: 'button', disabled: (d < 0 ? S.pw <= 0 : S.pw >= this.lastW) || null, onclick: () => this.stepWeek(d) }, lab);
         this.pline.replaceChildren(wb(-1, '[‹]'), ' ', h('b', {}, `${L.week} ${wk} ${y}`), ` (${isoOfDay(D.w0 + S.pw * 7).slice(5).split('-').reverse().join('.')}.–${isoOfDay(D.w0 + S.pw * 7 + 6).slice(5).split('-').reverse().join('.')}.) `, wb(1, '[›]'),
-          ` · ${L.newW} ${num(N.neu)} · `, h('span', { class: N.todo ? 'sig' : '' }, `${L.pending} ${num(N.todo)}`), ` · ${L.budget} `, bi, L.perWeek);
+          N.neu ? ` · ${L.newW} ${num(N.neu)} · ` : h('span', {}, ' · ', h('b', {}, L.noneOpen), ' · '), h('span', { class: N.todo ? 'sig' : '' }, `${L.pending} ${num(N.todo)}`), ` · ${L.budget} `, bi, L.perWeek);
       }
     } else { this.lhead.hidden = true; this.tabs.hidden = true; this.pline.hidden = true; }
     this.count.replaceChildren(h('span', {}, `${num(this.items.length)} ${L.affairs}${this.rows.length !== this.items.length ? ` · ${num(this.rows.length)} ${L.lines}` : ''}`),
@@ -281,6 +283,12 @@ export class Board {
   }
   relang() { this.buildFilters(); if (this.picker) this.picker.set(this.tp); this.refresh(); this.renderCase(); }
 
+  listEmpty(msg) {
+    let e = this.vl.querySelector('.empty');
+    if (!msg) { if (e) e.remove(); return; }
+    if (!e) { e = h('p', { class: 'empty' }); this.vl.append(e); }
+    e.textContent = msg;
+  }
   setMode(m) { this.S.mode = m; this.S.sel = null; this.refresh(); this.renderCase(); }
   stepWeek(d) { const S = this.S; S.pw = Math.max(0, Math.min(this.lastW, S.pw + d)); S.pwFor = this.tp && this.tp.id; S.sel = null; this.refresh(); this.renderCase(); }
 

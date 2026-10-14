@@ -1,8 +1,65 @@
 {
  "rows": [
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "gold": "human",
+   "design": "Produktionspipeline wie ausgeliefert (D4; D1 bei FR/IT-Text, 10 Geschäfte)",
+   "design_fr": "pipeline de production tel que livré (D4 ; D1 si texte FR/IT, 10 objets)",
+   "n": 927,
+   "result": "top-1 0.696 · top-3 0.839",
+   "result_fr": "top-1 0,696 · top-3 0,839",
+   "interval": [
+    0.666,
+    0.726
+   ],
+   "baseline": "Stichwort 0.186 [0.162, 0.213]",
+   "baseline_fr": "mots-clés 0,186 [0,162, 0,213]",
+   "split": "held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
+   "split_fr": "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement",
+   "file": "eval/s25/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "gold": "human",
+   "design": "ausgeliefert: rekalibriertes p ≥ 0.7 (67.3% der Geschäfte)",
+   "design_fr": "livré : p recalibré ≥ 0,7 (67,3% des objets)",
+   "n": 624,
+   "result": "0.812",
+   "result_fr": "0,812",
+   "interval": [
+    0.779,
+    0.842
+   ],
+   "baseline": "p < 0.7 → bitte prüfen: 0.458 [0.403, 0.516] (n 303)",
+   "baseline_fr": "p < 0,7 → à vérifier : 0,458 [0,403, 0,516] (n 303)",
+   "split": "held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
+   "split_fr": "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement",
+   "file": "eval/s25/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "gold": "human",
+   "design": "Lesarten einig (bisherige Regel; 65.1% der Geschäfte)",
+   "design_fr": "lectures concordantes (règle précédente ; 65,1% des objets)",
+   "n": 604,
+   "result": "0.786",
+   "result_fr": "0,786",
+   "interval": [
+    0.751,
+    0.818
+   ],
+   "baseline": "uneinig: 0.529 [0.474, 0.584] (n 323)",
+   "baseline_fr": "discordantes : 0,529 [0,474, 0,584] (n 323)",
+   "split": "held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
+   "split_fr": "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement",
+   "file": "eval/s25/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "Beispiele + Rücklesen, beide Lesarten (D4, ausgeliefert)",
    "design_fr": "exemples + relecture, deux lectures (D4, livré)",
@@ -15,13 +72,13 @@
    ],
    "baseline": "Listen-Prompt 0.655 · Stichwort 0.191 · Mehrheit 0.079",
    "baseline_fr": "liste 0,655 · mots-clés 0,191 · majorité 0,079",
-   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (vorregistriert, läuft)",
-   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (préenregistré, en cours)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 neue Geschäfte, unten)",
+   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (927 nouveaux objets, ci-dessous)",
    "file": "eval/s16/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "D4, ausgeliefert: rekalibriertes p ≥ 0.7 (66.8% der Geschäfte)",
    "design_fr": "D4, livré : p recalibré ≥ 0,7 (66,8% des objets)",
@@ -34,13 +91,13 @@
    ],
    "baseline": "p < 0.7 → bitte prüfen: 0.491 [0.445, 0.538] (n 450) · Lesarten einig 0.826 [0.800, 0.851]",
    "baseline_fr": "p < 0,7 → à vérifier : 0,491 [0,445, 0,538] (n 450) · lectures concordantes 0,826 [0,800, 0,851]",
-   "split": "nach S16 aus seinen Zeilen gewählt, 2-fach kreuzangepasst; hold-out getestet in S25 (vorregistriert, läuft)",
-   "split_fr": "choisie après S16 à partir de ses lignes, validation croisée à 2 plis ; testée hors échantillon dans S25 (préenregistré, en cours)",
+   "split": "nach S16 aus seinen Zeilen gewählt, 2-fach kreuzangepasst; hold-out getestet in S25 (unten)",
+   "split_fr": "choisie après S16 à partir de ses lignes, validation croisée à 2 plis ; testée hors échantillon dans S25 (ci-dessous)",
    "file": "eval/lanes/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "D4, Lesarten einig (bisherige Regel; 64.1% der Geschäfte)",
    "design_fr": "D4, lectures concordantes (règle précédente ; 64,1% des objets)",
@@ -53,13 +110,13 @@
    ],
    "baseline": "uneinig → bitte prüfen: 0.586 [0.542, 0.630] (n 486)",
    "baseline_fr": "discordantes → à vérifier : 0,586 [0,542, 0,630] (n 486)",
-   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (vorregistriert, läuft)",
-   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (préenregistré, en cours)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 neue Geschäfte, unten)",
+   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (927 nouveaux objets, ci-dessous)",
    "file": "eval/s16/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "D4, Konfidenz nach isotoner Rekalibrierung (ECE)",
    "design_fr": "D4, confiance après recalibration isotone (ECE)",
@@ -74,8 +131,8 @@
    "file": "eval/calibration.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "wie D4, zweite Lesart nur unter p 0.9 (D4s, sekundär)",
    "design_fr": "comme D4, seconde lecture seulement sous p 0,9 (D4s, secondaire)",
@@ -88,13 +145,13 @@
    ],
    "baseline": "D3 0.722",
    "baseline_fr": "D3 0,722",
-   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (vorregistriert, läuft)",
-   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (préenregistré, en cours)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 neue Geschäfte, unten)",
+   "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (927 nouveaux objets, ci-dessous)",
    "file": "eval/s16/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "fünf APS-Beispiele (D3)",
    "design_fr": "cinq exemples APS (D3)",
@@ -112,8 +169,8 @@
    "file": "eval/spikes/s9-aps/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "Kapitel aus Unterthema, ohne Beispiele (D1; ausgeliefert, wo keine APS-Beispiele)",
    "design_fr": "chapitre déduit du sous-thème, sans exemples (D1 ; livré sans exemples APS)",
@@ -131,8 +188,8 @@
    "file": "eval/spikes/s9-aps/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "Listen-Prompt, zwei Reihenfolgen (D0)",
    "design_fr": "liste, deux ordres (D0)",
@@ -150,8 +207,8 @@
    "file": "eval/spikes/s9-aps/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "DE + FR gemittelt (D2)",
    "design_fr": "DE + FR moyennés (D2)",
@@ -169,8 +226,8 @@
    "file": "eval/spikes/s9-aps/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "Unterthema, durchgehend",
    "design_fr": "sous-thème, de bout en bout",
@@ -188,8 +245,8 @@
    "file": "eval/spikes/s9-aps/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "Unterthema, durchgehend, ausgeliefertes Design (D4)",
    "design_fr": "sous-thème, de bout en bout, design livré (D4)",
@@ -207,8 +264,8 @@
    "file": "eval/s16/hierarchical.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
-   "test_fr": "Chapitre APS vs rédaction APS, objets fédéraux",
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
    "design": "D4, hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 makro",
    "design_fr": "D4, F1 hiérarchique (chapitre + sous-thème) · F1 macro par chapitre",
@@ -224,6 +281,22 @@
    "split": "nach S16 aus seinen Zeilen berechnet",
    "split_fr": "calculé après S16 à partir de ses lignes",
    "file": "eval/s16/hierarchical.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "gold": "human",
+   "design": "vor dem Determinismus-Fix gesehen (alter Beispielabruf, zwei Auswertungen)",
+   "design_fr": "vu avant la correction du déterminisme (ancienne recherche d'exemples, deux compositions)",
+   "n": null,
+   "result": "top-1 0.7035 (636/904) · 0.6994 (633/905)",
+   "result_fr": "top-1 0,7035 (636/904) · 0,6994 (633/905)",
+   "interval": null,
+   "baseline": "final 0.696 (646/927)",
+   "baseline_fr": "final 0,696 (646/927)",
+   "split": "Änderung vor dem finalen Score (vorregistriert)",
+   "split_fr": "amendement avant le score final (préenregistré)",
+   "file": "eval/PREREG-BUILD.md"
   },
   {
    "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",

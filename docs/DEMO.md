@@ -17,7 +17,7 @@ affair · `1` übernehmen · `2` verwerfen (then a digit picks the correction) �
 | Why this label | point at the two reading bars and the highlighted sentence | — |
 | Decide | `1` (name preset to «Demo») → state line shows who/when | static: "stored in this browser" is fine |
 | Neues Thema | `n` → Christian's sentence → Enter; while it streams, go on talking | if slower than 30 s to first rows: open a saved topic (`t` → «Wolf») and say it was defined in one sentence yesterday |
-| Prüfstand | `b`; point at the first row (0.740) and the lane split bar | — |
+| Prüfstand | `b`; point at the held-out row (0.696, 927 fresh affairs), then the lane split bar | — |
 | Integration | terminal: `psql "$DSN" -f upstream/opd/migrations/0001_topics.up.sql`, the Hop workflow (`upstream/hop/README.md`, `./hop-run.sh -j querschnitt-opd -e opd -r local -f '${PROJECT_HOME}/load_topics.hwf' …`), `curl -s ':8000/changes?after=0&limit=3'` | screenshots in docs/img |
 | make eval | terminal: `make eval GOLD=their.csv` or the Basel view (`t` → «Basel-Stadt») | `make eval GOLD=data/eval/gold_aps_s9.csv` |
 

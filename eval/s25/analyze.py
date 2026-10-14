@@ -1,7 +1,7 @@
 """S25 analysis (eval/PREREG-BUILD.md 2026-10-14 20:20): the shipped federal design on fresh APS-labelled affairs, held out.
 Decisions are composed from runs/s25 exactly as the export composes them (compose.decide, the S5+S9 example pool, the
 calibration map fitted on S16 only) and scored against the APS editors' chapter. No model calls.
--> eval/s25/results.json"""
+-> eval/s25/results.json, eval/s25/decisions.jsonl"""
 import collections, gzip, json, math, sys
 from pathlib import Path
 HERE = Path(__file__).resolve().parent; ROOT = HERE.parents[1]
@@ -73,6 +73,10 @@ R["by_lang"] = {l: share(sum(D[o]["ch"] == gold[o] for o in v), len(v)) for l, v
 R["by_design"] = {k: share(sum(D[o]["ch"] == gold[o] for o in v), len(v)) for k, v in
                   (("D4 (German text: five examples)", [o for o in ids if D[o].get("examples")]),
                    ("D1 (French/Italian text: no examples)", [o for o in ids if not D[o].get("examples")]))}
-R["curia_year"] = dict(sorted(collections.Counter("20" + items[o]["curia_number"][:2] for o in ids).items()))
+R["curia_year"] = dict(sorted(collections.Counter(("19" if items[o]["curia_number"][:2] >= "50" else "20") + items[o]["curia_number"][:2] for o in ids).items()))
 R["gold_chapters"] = {APS.names["de"][c]: n for c, n in collections.Counter(gold[o] for o in ids).most_common()}
+with open(HERE / "decisions.jsonl", "w") as f:   # one line per affair: what shipped vs the editors' chapter (app: Prüfstand)
+    for o in ids:
+        f.write(json.dumps(dict(oid=o, gold=gold[o], ch=D[o]["ch"], rank=D[o]["rank"][:3], p_cal=round(D[o]["p_cal"], 4) if D[o]["p_cal"] is not None else None,
+                                lane=D[o]["lane"], readings=D[o]["readings"], examples=bool(D[o].get("examples")), keyword=K[o])) + "\n")
 (HERE / "results.json").write_text(json.dumps(R, indent=1, ensure_ascii=False)); print(json.dumps(R, indent=1, ensure_ascii=False))

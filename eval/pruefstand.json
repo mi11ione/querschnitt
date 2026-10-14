@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T22:33:40Z",
+ "generated_utc": "2026-10-14T23:41:20Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -44,8 +44,7 @@
     "shown": {
      "value": [
       "0.7",
-      "0.74",
-      "0.740"
+      "0.74"
      ],
      "ci95": [
       "0.7",
@@ -72,8 +71,7 @@
      "shown": {
       "value": [
        "0.8",
-       "0.88",
-       "0.883"
+       "0.88"
       ]
      }
     },
@@ -97,6 +95,7 @@
       "ci95": [
        "0.0",
        "0.00",
+       "0.034",
        "0.04",
        "0.1"
       ]
@@ -117,8 +116,7 @@
      "shown": {
       "value": [
        "0.0",
-       "0.03",
-       "0.036"
+       "0.03"
       ],
       "ci95": [
        "0.0",
@@ -191,8 +189,7 @@
      "shown": {
       "value": [
        "0.7",
-       "0.70",
-       "0.703"
+       "0.70"
       ],
       "ci95": [
        "0.6",
@@ -256,8 +253,7 @@
      "shown": {
       "value": [
        "0.1",
-       "0.19",
-       "0.191"
+       "0.19"
       ],
       "ci95": [
        "0.1",
@@ -293,8 +289,7 @@
      "shown": {
       "value": [
        "0.0",
-       "0.07",
-       "0.079"
+       "0.07"
       ],
       "ci95": [
        "0.0",
@@ -328,13 +323,11 @@
       "shown": {
        "share": [
         "0.6",
-        "0.64",
-        "0.641"
+        "0.64"
        ],
        "precision": [
         "0.8",
-        "0.82",
-        "0.826"
+        "0.82"
        ],
        "ci95": [
         "0.86",
@@ -401,8 +394,7 @@
      "shown": {
       "acc": [
        "0.7",
-       "0.74",
-       "0.740"
+       "0.74"
       ],
       "ece_raw": [
        "0.2",
@@ -455,8 +447,7 @@
        "shown": {
         "precision": [
          "0.9",
-         "0.94",
-         "0.948"
+         "0.94"
         ],
         "ci": [
          "0.8",
@@ -482,8 +473,7 @@
         ],
         "precision": [
          "0.9",
-         "0.95",
-         "0.955"
+         "0.95"
         ],
         "ci": [
          "0.9",
@@ -506,8 +496,7 @@
        "shown": {
         "precision": [
          "0.9",
-         "0.93",
-         "0.933"
+         "0.93"
         ],
         "ci": [
          "0.8",
@@ -581,8 +570,7 @@
         ],
         "precision": [
          "0.9",
-         "0.91",
-         "0.911"
+         "0.91"
         ],
         "ci": [
          "0.8",
@@ -605,8 +593,7 @@
        "shown": {
         "precision": [
          "0.9",
-         "0.90",
-         "0.900"
+         "0.90"
         ],
         "ci": [
          "0.8",
@@ -655,8 +642,7 @@
        "shown": {
         "precision": [
          "0.8",
-         "0.89",
-         "0.890"
+         "0.89"
         ],
         "ci": [
          "0.8",
@@ -682,8 +668,7 @@
         ],
         "precision": [
          "0.8",
-         "0.88",
-         "0.884"
+         "0.88"
         ],
         "ci": [
          "0.8",
@@ -706,8 +691,7 @@
        "shown": {
         "precision": [
          "0.8",
-         "0.87",
-         "0.875"
+         "0.87"
         ],
         "ci": [
          "0.8",
@@ -755,8 +739,7 @@
        "shown": {
         "precision": [
          "0.8",
-         "0.85",
-         "0.850"
+         "0.85"
         ],
         "ci": [
          "0.8",
@@ -879,8 +862,7 @@
         ],
         "precision": [
          "0.7",
-         "0.76",
-         "0.762"
+         "0.76"
         ],
         "ci": [
          "0.7",
@@ -903,8 +885,7 @@
        "shown": {
         "precision": [
          "0.7",
-         "0.74",
-         "0.740"
+         "0.74"
         ],
         "ci": [
          "0.7",
@@ -928,7 +909,7 @@
      }
     }
    },
-   "split": "pre-registered (S16), measured on the S9 items; the D4 design was chosen after S9 on the same items (D4 combines D1 and D3), so this is not a held-out result; fresh held-out set: S25 (pre-registered, running) (S16 decision rule fixed before any call: ship D4 if its top-1 ≥ D3's)",
+   "split": "pre-registered (S16), measured on the S9 items; the D4 design was chosen after S9 on the same items (D4 combines D1 and D3), so this is not a held-out result; fresh held-out test: S25 (pre-registered, held out): 927 fresh APS-labelled federal affairs, the production pipeline as shipped, top-1 0.696 [0.666, 0.726] (aps_chapter_heldout_s25) (S16 decision rule fixed before any call: ship D4 if its top-1 ≥ D3's)",
    "prereg": {
     "file": "eval/PREREG-BUILD.md",
     "anchor": "— S16 read-back combined with examples",
@@ -939,7 +920,10 @@
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
    },
-   "heldout_test": "fresh held-out set: S25 (pre-registered, running; no result yet)",
+   "heldout_test": {
+    "id": "aps_chapter_heldout_s25",
+    "what": "fresh held-out test: S25 (pre-registered, held out): 927 fresh APS-labelled federal affairs, the production pipeline as shipped, top-1 0.696 [0.666, 0.726] (aps_chapter_heldout_s25)"
+   },
    "decision": "D4 shipped for federal affairs (pre-registered rule: D4 if its top-1 ≥ D3's). The corpus run uses D4 as registered: both code orders always, examples on the first. D4s (secondary) is reported, not shipped.",
    "decision_at": {
     "file": "eval/s16/results.json",
@@ -1003,6 +987,763 @@
    }
   },
   {
+   "id": "aps_chapter_heldout_s25",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
+   "title_fr": "Chapitre APS contre la rédaction APS, 927 nouveaux objets fédéraux (hors échantillon) : design livré, pipeline de production inchangé (S25)",
+   "n": 927,
+   "design": "Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: D4 (fünf BM25-nächste APS-gelabelte Beispiele aus dem S5+S9-Pool + zweite Lesart ohne Beispiele, Kapitel aus dem Unterthema zurückgelesen), D1 (ohne Beispiele) für die 10 Geschäfte mit französischem/italienischem Text; Lane: rekalibriertes p ≥ 0.7 → durchgelassen, Kalibrierkarte nur auf S16 angepasst; Entscheide komponiert wie im Export (compose.decide)",
+   "result": {
+    "metric": "chapter top-1 vs APS editors (the production pipeline as shipped, held out)",
+    "value": 0.6968,
+    "ci95": [
+     0.666,
+     0.726
+    ],
+    "k": 646,
+    "n": 927,
+    "kn": "646/927",
+    "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+    "at": {
+     "file": "eval/s25/results.json",
+     "key": "top1"
+    },
+    "display": "0.696 [0.666, 0.726]",
+    "shown": {
+     "value": [
+      "0.6",
+      "0.69"
+     ],
+     "ci95": [
+      "0.6",
+      "0.66",
+      "0.73",
+      "0.8"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3",
+     "value": 0.8392,
+     "ci95": [
+      0.814,
+      0.862
+     ],
+     "k": 778,
+     "n": 927,
+     "kn": "778/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "top3"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.83"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ]
+     }
+    },
+    {
+     "metric": "pre-fix reading 1 (old, non-deterministic example retrieval; seen before the fix): chapter top-1",
+     "value": 0.7035,
+     "k": 636,
+     "n": 904,
+     "kn": "636/904",
+     "ci95": [
+      0.672,
+      0.733
+     ],
+     "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n (the amendment states k/n only), bounds rounded outward",
+     "at": {
+      "file": "eval/PREREG-BUILD.md",
+      "line": 132,
+      "text": "904 affairs scored, top-1 0.7035 (636/904)"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.70"
+      ],
+      "ci95": [
+       "0.6",
+       "0.67",
+       "0.74",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "pre-fix reading 2 (old, non-deterministic example retrieval; seen before the fix): chapter top-1",
+     "value": 0.6994,
+     "k": 633,
+     "n": 905,
+     "kn": "633/905",
+     "ci95": [
+      0.668,
+      0.729
+     ],
+     "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n (the amendment states k/n only), bounds rounded outward",
+     "at": {
+      "file": "eval/PREREG-BUILD.md",
+      "line": 132,
+      "text": "905 scored, 0.6994 (633/905)"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69"
+      ],
+      "ci95": [
+       "0.6",
+       "0.66",
+       "0.73",
+       "0.8"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "keyword top-1",
+     "value": 0.1866,
+     "ci95": [
+      0.162,
+      0.213
+     ],
+     "k": 173,
+     "n": 927,
+     "kn": "173/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "keyword_top1"
+     },
+     "name": "keyword (S9 frozen rule: APS subtopic words, ties by the S9 majority order), same input",
+     "shown": {
+      "value": [
+       "0.1",
+       "0.18"
+      ],
+      "ci95": [
+       "0.1",
+       "0.16",
+       "0.22",
+       "0.3"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "lanes": {
+     "pass": {
+      "metric": "precision, pass: recalibrated p ≥ 0.7 (shipped lane rule; map fitted on S16 only)",
+      "value": 0.8125,
+      "ci95": [
+       0.779,
+       0.842
+      ],
+      "k": 507,
+      "n": 624,
+      "kn": "507/624",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.6731,
+      "at": {
+       "file": "eval/s25/results.json",
+       "key": "lanes > pass"
+      },
+      "cell": "pass",
+      "shown": {
+       "value": [
+        "0.8",
+        "0.81"
+       ],
+       "ci95": [
+        "0.7",
+        "0.77",
+        "0.85",
+        "0.9"
+       ],
+       "share": [
+        "0.6",
+        "0.67"
+       ]
+      }
+     },
+     "please_check": {
+      "metric": "precision, please check: recalibrated p < 0.7",
+      "value": 0.4587,
+      "ci95": [
+       0.403,
+       0.516
+      ],
+      "k": 139,
+      "n": 303,
+      "kn": "139/303",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.3268,
+      "at": {
+       "file": "eval/s25/results.json",
+       "key": "lanes > please_check"
+      },
+      "cell": "please_check",
+      "shown": {
+       "value": [
+        "0.4",
+        "0.45"
+       ],
+       "ci95": [
+        "0.4",
+        "0.40",
+        "0.52",
+        "0.6"
+       ],
+       "share": [
+        "0.3",
+        "0.32"
+       ]
+      }
+     },
+     "readings_agree": {
+      "metric": "precision, the two readings (with / without examples) agree on the chapter",
+      "value": 0.7864,
+      "ci95": [
+       0.751,
+       0.818
+      ],
+      "k": 475,
+      "n": 604,
+      "kn": "475/604",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.6515,
+      "at": {
+       "file": "eval/s25/results.json",
+       "key": "lanes > readings_agree"
+      },
+      "cell": "readings_agree",
+      "shown": {
+       "value": [
+        "0.7",
+        "0.78"
+       ],
+       "ci95": [
+        "0.7",
+        "0.75",
+        "0.82",
+        "0.9"
+       ],
+       "share": [
+        "0.6",
+        "0.65"
+       ]
+      }
+     },
+     "readings_disagree": {
+      "metric": "precision, the two readings disagree",
+      "value": 0.5294,
+      "ci95": [
+       0.474,
+       0.584
+      ],
+      "k": 171,
+      "n": 323,
+      "kn": "171/323",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.3484,
+      "at": {
+       "file": "eval/s25/results.json",
+       "key": "lanes > readings_disagree"
+      },
+      "cell": "readings_disagree",
+      "shown": {
+       "value": [
+        "0.5",
+        "0.52"
+       ],
+       "ci95": [
+        "0.4",
+        "0.47",
+        "0.59",
+        "0.6"
+       ],
+       "share": [
+        "0.3",
+        "0.34"
+       ]
+      }
+     },
+     "rule": "shipped: pass when the recalibrated p ≥ 0.7 (src/querschnitt/compose.py LANE_TAU), else please check; readings agree / disagree is the earlier lane rule, reported as pre-registered",
+     "share_note": "share = share of the scored affairs (truncated)"
+    },
+    "routing_by_p_cal": {
+     "points": [
+      {
+       "metric": "precision of the affairs with recalibrated p ≥ 0.5",
+       "value": 0.7752,
+       "ci95": [
+        0.743,
+        0.804
+       ],
+       "k": 576,
+       "n": 743,
+       "kn": "576/743",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "coverage": 0.8015,
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "routing_by_p_cal > 0.5"
+       },
+       "threshold": 0.5,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.77"
+        ],
+        "ci95": [
+         "0.7",
+         "0.74",
+         "0.81",
+         "0.9"
+        ],
+        "coverage": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "precision of the affairs with recalibrated p ≥ 0.6",
+       "value": 0.7817,
+       "ci95": [
+        0.75,
+        0.811
+       ],
+       "k": 566,
+       "n": 724,
+       "kn": "566/724",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "coverage": 0.781,
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "routing_by_p_cal > 0.6"
+       },
+       "threshold": 0.6,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.78"
+        ],
+        "ci95": [
+         "0.7",
+         "0.82",
+         "0.9"
+        ],
+        "coverage": [
+         "0.7",
+         "0.78"
+        ]
+       }
+      },
+      {
+       "metric": "precision of the affairs with recalibrated p ≥ 0.7",
+       "value": 0.8125,
+       "ci95": [
+        0.779,
+        0.842
+       ],
+       "k": 507,
+       "n": 624,
+       "kn": "507/624",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "coverage": 0.6731,
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "routing_by_p_cal > 0.7"
+       },
+       "threshold": 0.7,
+       "shown": {
+        "value": [
+         "0.8",
+         "0.81"
+        ],
+        "ci95": [
+         "0.7",
+         "0.77",
+         "0.85",
+         "0.9"
+        ],
+        "coverage": [
+         "0.6",
+         "0.67"
+        ]
+       }
+      },
+      {
+       "metric": "precision of the affairs with recalibrated p ≥ 0.8",
+       "value": 0.8368,
+       "ci95": [
+        0.802,
+        0.866
+       ],
+       "k": 441,
+       "n": 527,
+       "kn": "441/527",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "coverage": 0.5685,
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "routing_by_p_cal > 0.8"
+       },
+       "threshold": 0.8,
+       "shown": {
+        "value": [
+         "0.8",
+         "0.83"
+        ],
+        "ci95": [
+         "0.8",
+         "0.80",
+         "0.87",
+         "0.9"
+        ],
+        "coverage": [
+         "0.5",
+         "0.56"
+        ]
+       }
+      },
+      {
+       "metric": "precision of the affairs with recalibrated p ≥ 0.9",
+       "value": 0.9126,
+       "ci95": [
+        0.871,
+        0.942
+       ],
+       "k": 230,
+       "n": 252,
+       "kn": "230/252",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "coverage": 0.2718,
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "routing_by_p_cal > 0.9"
+       },
+       "threshold": 0.9,
+       "shown": {
+        "value": [
+         "0.9",
+         "0.91"
+        ],
+        "ci95": [
+         "0.8",
+         "0.87",
+         "0.95",
+         "1.0"
+        ],
+        "coverage": [
+         "0.2",
+         "0.27"
+        ]
+       }
+      }
+     ],
+     "note": "coverage = share of the scored affairs at or above the threshold; calibration map fitted on S16 only",
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "routing_by_p_cal"
+     }
+    },
+    "by_design": {
+     "cells": [
+      {
+       "metric": "chapter top-1, D4 (German text: five examples)",
+       "value": 0.6957,
+       "ci95": [
+        0.665,
+        0.725
+       ],
+       "k": 638,
+       "n": 917,
+       "kn": "638/917",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "by_design > D4 (German text: five examples)"
+       },
+       "cell": "D4",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.66",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, D1 (French/Italian text: no examples)",
+       "value": 0.8,
+       "ci95": [
+        0.49,
+        0.944
+       ],
+       "k": 8,
+       "n": 10,
+       "kn": "8/10",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "by_design > D1 (French/Italian text: no examples)"
+       },
+       "cell": "D1",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.4",
+         "0.95",
+         "1.0"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "by_design"
+     }
+    },
+    "by_lang": {
+     "cells": [
+      {
+       "metric": "chapter top-1, affair language de",
+       "value": 0.6965,
+       "ci95": [
+        0.666,
+        0.726
+       ],
+       "k": 645,
+       "n": 926,
+       "kn": "645/926",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "by_lang > de"
+       },
+       "cell": "de",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.66",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, affair language fr",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s25/results.json",
+        "key": "by_lang > fr"
+       },
+       "cell": "fr",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      }
+     ],
+     "note": "OPD language of the affair; the D4/D1 split (by_design) follows whether the chapter step showed examples",
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "by_lang"
+     }
+    },
+    "curia_year": {
+     "before_2015": 244,
+     "from_2015": 683,
+     "by_year": {
+      "1990": 1,
+      "1991": 2,
+      "1992": 1,
+      "1993": 5,
+      "1994": 2,
+      "1995": 5,
+      "1996": 2,
+      "1997": 11,
+      "1998": 2,
+      "1999": 10,
+      "2000": 9,
+      "2001": 9,
+      "2002": 5,
+      "2003": 4,
+      "2004": 5,
+      "2005": 9,
+      "2006": 10,
+      "2007": 15,
+      "2008": 9,
+      "2009": 12,
+      "2010": 19,
+      "2011": 16,
+      "2012": 22,
+      "2013": 25,
+      "2014": 34,
+      "2015": 61,
+      "2016": 85,
+      "2017": 138,
+      "2018": 114,
+      "2019": 66,
+      "2020": 59,
+      "2021": 40,
+      "2022": 19,
+      "2023": 14,
+      "2024": 43,
+      "2025": 44
+     },
+     "derived": "years from the Curia number (analyze.py), summed here",
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "curia_year"
+     }
+    },
+    "gold_chapters": {
+     "chapters": 22,
+     "counts": {
+      "Institutionen und Volksrechte": 108,
+      "Aussenpolitik": 93,
+      "Sozialversicherungen": 92,
+      "Verkehr und Kommunikation": 78,
+      "Soziale Gruppen": 68,
+      "Rechtsordnung": 57,
+      "Geld, Währung und Kredit": 54,
+      "Wirtschaftspolitik": 53,
+      "Gesundheit, Sozialhilfe, Sport": 50,
+      "Öffentliche Finanzen": 46,
+      "Umweltschutz": 36,
+      "Landwirtschaft": 35,
+      "Energie": 28,
+      "Landesverteidigung": 23,
+      "Bildung und Forschung": 20,
+      "Raumplanung und Wohnungswesen": 18,
+      "Bevölkerung und Arbeit": 17,
+      "Politische Grundfragen": 15,
+      "Kultur, Sprache, Kirchen": 14,
+      "Föderativer Aufbau": 11,
+      "Medien": 8,
+      "Verbände": 3
+     },
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "gold_chapters"
+     }
+    },
+    "with_examples": {
+     "value": 917,
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "with_examples"
+     }
+    },
+    "scored": {
+     "in_set": 927,
+     "scored": 927,
+     "missing": 0,
+     "at": {
+      "file": "eval/s25/results.json",
+      "key": "scored"
+     }
+    }
+   },
+   "pre_fix_note": "results_more[1:]: two compositions of the finished run seen with the old example retrieval (set order, randomised per process) before the determinism fix; reported as such next to the final score (amendment)",
+   "split": "held out, pre-registered (S25): fresh items never used while designing (none in S5, S9 or the example pool); nothing tuned on them; calibration map fitted on S16 only; the example retrieval was made deterministic before the final score (amendment, a bug fix, not a design change), and the two readings seen before the fix are reported",
+   "prereg": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S25 fresh APS-labelled federal affairs",
+    "line": 85
+   },
+   "prereg_more": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S25 amendment: a determinism fix before the final score",
+    "line": 127
+   },
+   "sources": [
+    "eval/s25/results.json",
+    "eval/s25/analyze.py",
+    "eval/s25/decisions.jsonl",
+    "eval/s25/items.jsonl",
+    "eval/s25/FETCH.md",
+    "src/querschnitt/compose.py",
+    "src/querschnitt/examples.py",
+    "eval/calibration.json",
+    "eval/PREREG-BUILD.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s25)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-15",
+   "shipped": "federal affairs: the production design as shipped (D4; D1 where the text is French or Italian)",
+   "test": "APS-Kapitel gegen APS-Redaktion, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
+   "interval": [
+    0.666,
+    0.726
+   ],
+   "baseline": {
+    "name": "keyword (S9 frozen rule: APS subtopic words, ties by the S9 majority order), same input",
+    "value": 0.1866,
+    "ci95": [
+     0.162,
+     0.213
+    ],
+    "shown": {
+     "value": [
+      "0.1",
+      "0.18"
+     ],
+     "ci95": [
+      "0.1",
+      "0.16",
+      "0.22",
+      "0.3"
+     ]
+    }
+   },
+   "file": "eval/s25/results.json",
+   "key": "top1",
+   "shown": {
+    "interval": [
+     "0.6",
+     "0.66",
+     "0.7",
+     "0.72"
+    ]
+   }
+  },
+  {
    "id": "aps_chapter_d4s",
    "gold": "human",
    "subject": "Apertus",
@@ -1032,8 +1773,7 @@
     "shown": {
      "value": [
       "0.7",
-      "0.74",
-      "0.748"
+      "0.74"
      ],
      "ci95": [
       "0.7",
@@ -1084,7 +1824,6 @@
       "ci95": [
        "0.0",
        "0.01",
-       "0.011",
        "0.042",
        "0.05",
        "0.1"
@@ -1111,6 +1850,7 @@
       "ci95": [
        "0.0",
        "0.02",
+       "0.063",
        "0.07",
        "0.1"
       ]
@@ -1178,8 +1918,7 @@
      "shown": {
       "value": [
        "0.7",
-       "0.70",
-       "0.703"
+       "0.70"
       ],
       "ci95": [
        "0.6",
@@ -1327,8 +2066,7 @@
      "shown": {
       "value": [
        "0.8",
-       "0.87",
-       "0.874"
+       "0.87"
       ],
       "ci95": [
        "0.8",
@@ -1367,6 +2105,7 @@
       "ci95": [
        "0.0",
        "0.04",
+       "0.085",
        "0.09",
        "0.1"
       ]
@@ -1422,8 +2161,7 @@
      "shown": {
       "value": [
        "0.1",
-       "0.19",
-       "0.191"
+       "0.19"
       ],
       "ci95": [
        "0.1",
@@ -1459,8 +2197,7 @@
      "shown": {
       "value": [
        "0.0",
-       "0.07",
-       "0.079"
+       "0.07"
       ],
       "ci95": [
        "0.0",
@@ -1509,8 +2246,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.67",
-         "0.678"
+         "0.67"
         ],
         "ci95": [
          "0.4",
@@ -1688,8 +2424,7 @@
         ],
         "precision": [
          "0.8",
-         "0.81",
-         "0.812"
+         "0.81"
         ],
         "ci95": [
          "0.7",
@@ -1727,8 +2462,7 @@
        "shown": {
         "share": [
          "0.3",
-         "0.38",
-         "0.389"
+         "0.38"
         ],
         "share_ci95": [
          "0.3",
@@ -1967,8 +2701,7 @@
     "shown": {
      "value": [
       "0.7",
-      "0.70",
-      "0.703"
+      "0.70"
      ],
      "ci95": [
       "0.6",
@@ -2040,12 +2773,12 @@
      "shown": {
       "value": [
        "0.0",
-       "0.04",
-       "0.048"
+       "0.04"
       ],
       "ci95": [
        "0.0",
        "0.03",
+       "0.066",
        "0.07",
        "0.1"
       ]
@@ -2101,8 +2834,7 @@
      "shown": {
       "value": [
        "0.1",
-       "0.19",
-       "0.191"
+       "0.19"
       ],
       "ci95": [
        "0.1",
@@ -2138,8 +2870,7 @@
      "shown": {
       "value": [
        "0.0",
-       "0.07",
-       "0.079"
+       "0.07"
       ],
       "ci95": [
        "0.0",
@@ -2450,10 +3181,10 @@
      "shown": {
       "value": [
        "-0.02",
-       "-0.020",
        "0.0"
       ],
       "ci95": [
+       "-0.037",
        "-0.04",
        "-0.1",
        "0.0",
@@ -2572,8 +3303,7 @@
     "shown": {
      "value": [
       "0.5",
-      "0.52",
-      "0.520"
+      "0.52"
      ],
      "ci95": [
       "0.4",
@@ -2647,8 +3377,7 @@
      "shown": {
       "value": [
        "0.8",
-       "0.83",
-       "0.830"
+       "0.83"
       ],
       "ci95": [
        "0.8",
@@ -2812,7 +3541,6 @@
       "value": [
        "0.5",
        "0.53",
-       "0.538",
        "0.5389"
       ],
       "ci95": [
@@ -2948,7 +3676,6 @@
       "value": [
        "0.7",
        "0.70",
-       "0.705",
        "0.7057"
       ],
       "ci95": [
@@ -3004,7 +3731,6 @@
       "value": [
        "0.5",
        "0.56",
-       "0.561",
        "0.5619"
       ],
       "ci95": [
@@ -3032,7 +3758,6 @@
       "value": [
        "0.1",
        "0.13",
-       "0.135",
        "0.1359"
       ],
       "ci95": [
@@ -3062,7 +3787,6 @@
       "value": [
        "0.5",
        "0.52",
-       "0.520",
        "0.5208"
       ],
       "ci95": [
@@ -3206,7 +3930,6 @@
       "value": [
        "0.7",
        "0.71",
-       "0.710",
        "0.7105"
       ],
       "ci95": [
@@ -3288,7 +4011,6 @@
       "value": [
        "0.5",
        "0.56",
-       "0.564",
        "0.5649"
       ],
       "ci95": [
@@ -3316,7 +4038,6 @@
       "value": [
        "0.5",
        "0.55",
-       "0.558",
        "0.5589"
       ],
       "ci95": [
@@ -3344,7 +4065,6 @@
       "value": [
        "0.2",
        "0.20",
-       "0.203",
        "0.2039"
       ],
       "ci95": [
@@ -3372,7 +4092,6 @@
       "value": [
        "0.1",
        "0.10",
-       "0.101",
        "0.1019"
       ],
       "ci95": [
@@ -3399,7 +4118,6 @@
       "value": [
        "0.6",
        "0.67",
-       "0.676",
        "0.6767"
       ],
       "ci95": [
@@ -3427,7 +4145,6 @@
       "value": [
        "0.6",
        "0.62",
-       "0.625",
        "0.6258"
       ],
       "ci95": [
@@ -3455,7 +4172,6 @@
       "value": [
        "0.1",
        "0.16",
-       "0.165",
        "0.1657"
       ],
       "ci95": [
@@ -3482,7 +4198,6 @@
         "value": [
          "0.5",
          "0.59",
-         "0.590",
          "0.5909"
         ],
         "ci95": [
@@ -3526,7 +4241,6 @@
         "value": [
          "0.7",
          "0.73",
-         "0.739",
          "0.7398"
         ],
         "ci95": [
@@ -3550,7 +4264,6 @@
         "value": [
          "0.6",
          "0.69",
-         "0.697",
          "0.6976"
         ],
         "ci95": [
@@ -3611,7 +4324,6 @@
         "value": [
          "0.5",
          "0.55",
-         "0.559",
          "0.5595"
         ],
         "ci95": [
@@ -3698,7 +4410,6 @@
         "value": [
          "0.8",
          "0.85",
-         "0.852",
          "0.8529"
         ],
         "ci95": [
@@ -3743,7 +4454,6 @@
         "value": [
          "0.7",
          "0.76",
-         "0.760",
          "0.7608"
         ],
         "ci95": [
@@ -3766,7 +4476,6 @@
         "value": [
          "0.6",
          "0.67",
-         "0.673",
          "0.6735"
         ],
         "ci95": [
@@ -3810,7 +4519,6 @@
         "value": [
          "0.7",
          "0.77",
-         "0.772",
          "0.7729"
         ],
         "ci95": [
@@ -3854,7 +4562,6 @@
         "value": [
          "0.6",
          "0.68",
-         "0.686",
          "0.6867"
         ],
         "ci95": [
@@ -3877,7 +4584,6 @@
         "value": [
          "0.7",
          "0.79",
-         "0.793",
          "0.7936"
         ],
         "ci95": [
@@ -3976,7 +4682,7 @@
      }
     }
    },
-   "split": "S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items (it combines D1 and D3), so not a held-out result; fresh held-out set: S25 (pre-registered, running)",
+   "split": "S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items (it combines D1 and D3), so not a held-out result; the held-out test S25 scores the chapter only (aps_chapter_heldout_s25)",
    "prereg": null,
    "prereg_more": {
     "file": "eval/PREREG-BUILD.md",
@@ -4055,8 +4761,7 @@
      ],
      "acc": [
       "0.7",
-      "0.74",
-      "0.740"
+      "0.74"
      ]
     }
    },
@@ -4073,13 +4778,11 @@
      "shown": {
       "value": [
        "0.0",
-       "0.03",
-       "0.031"
+       "0.03"
       ],
       "acc": [
        "0.7",
-       "0.70",
-       "0.703"
+       "0.70"
       ]
      }
     }
@@ -4194,8 +4897,7 @@
       ],
       "coverage": [
        "0.3",
-       "0.33",
-       "0.331"
+       "0.33"
       ]
      }
     },
@@ -4217,8 +4919,7 @@
      "shown": {
       "value": [
        "0.8",
-       "0.86",
-       "0.866"
+       "0.86"
       ],
       "ci95": [
        "0.8",
@@ -4228,8 +4929,7 @@
       ],
       "coverage": [
        "0.6",
-       "0.64",
-       "0.641"
+       "0.64"
       ]
      }
     },
@@ -4261,8 +4961,7 @@
       ],
       "coverage": [
        "0.5",
-       "0.59",
-       "0.596"
+       "0.59"
       ]
      }
     },
@@ -4350,8 +5049,7 @@
      "shown": {
       "value": [
        "0.8",
-       "0.82",
-       "0.826"
+       "0.82"
       ],
       "ci95": [
        "0.86",
@@ -4359,8 +5057,7 @@
       ],
       "coverage": [
        "0.6",
-       "0.64",
-       "0.641"
+       "0.64"
       ]
      }
     },
@@ -4398,14 +5095,17 @@
      }
     }
    ],
-   "split": "S9 items (S16 rows); rule chosen after S16 on these items, calibration 2-fold cross-fitted (not pre-registered; no new calls); tested held out in S25 (pre-registered, running)",
+   "split": "S9 items (S16 rows); rule chosen after S16 on these items, calibration 2-fold cross-fitted (not pre-registered; no new calls); tested held out in S25 (pre-registered; lanes in aps_chapter_heldout_s25)",
    "prereg": null,
    "prereg_more": {
     "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
    },
-   "heldout_test": "S25 (pre-registered, running; no result yet)",
+   "heldout_test": {
+    "id": "aps_chapter_heldout_s25",
+    "what": "the same rule (recalibrated p ≥ 0.7 passes, map fitted on S16 only) on the 927 fresh S25 affairs: breakdowns > lanes > pass / please_check"
+   },
    "sources": [
     "eval/lanes/results.json",
     "eval/lanes/analyze.py",
@@ -4432,8 +5132,7 @@
     "shown": {
      "value": [
       "0.8",
-      "0.82",
-      "0.826"
+      "0.82"
      ],
      "ci95": [
       "0.86",
@@ -5090,8 +5789,7 @@
     "shown": {
      "value": [
       "0.6",
-      "0.65",
-      "0.651"
+      "0.65"
      ],
      "ci95": [
       "0.6",
@@ -5151,8 +5849,7 @@
      "shown": {
       "value": [
        "0.0",
-       "0.00",
-       "0.001"
+       "0.00"
       ],
       "ci95": [
        "-0.031",
@@ -5187,8 +5884,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.65",
-       "0.651"
+       "0.65"
       ],
       "ci95": [
        "0.6",
@@ -5258,8 +5954,7 @@
      "shown": {
       "value": [
        "0.2",
-       "0.21",
-       "0.214"
+       "0.21"
       ]
      }
     }
@@ -5678,8 +6373,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.60",
-       "0.605"
+       "0.60"
       ],
       "ci95": [
        "0.5",
@@ -5708,8 +6402,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.66",
-       "0.665"
+       "0.66"
       ],
       "ci95": [
        "0.6",
@@ -5738,14 +6431,13 @@
      "shown": {
       "value": [
        "0.3",
-       "0.31",
-       "0.316"
+       "0.31"
       ],
       "ci95": [
        "0.2",
        "0.29",
-       "0.293",
        "0.34",
+       "0.340",
        "0.4"
       ]
      }
@@ -5820,8 +6512,7 @@
      "shown": {
       "value": [
        "0.5",
-       "0.56",
-       "0.565"
+       "0.56"
       ],
       "ci95": [
        "0.5",
@@ -5831,8 +6522,7 @@
       ],
       "share": [
        "0.7",
-       "0.71",
-       "0.719"
+       "0.71"
       ]
      }
     },
@@ -5986,8 +6676,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.51",
-         "0.517"
+         "0.51"
         ],
         "ci95": [
          "0.4",
@@ -6019,8 +6708,7 @@
        "shown": {
         "value": [
          "0.4",
-         "0.41",
-         "0.419"
+         "0.41"
         ],
         "ci95": [
          "0.3",
@@ -6081,8 +6769,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.55",
-         "0.555"
+         "0.55"
         ],
         "ci95": [
          "0.3",
@@ -6144,8 +6831,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.66",
-         "0.666"
+         "0.66"
         ],
         "ci95": [
          "0.2",
@@ -6344,8 +7030,7 @@
      "shown": {
       "value": [
        "0.7",
-       "0.71",
-       "0.711"
+       "0.71"
       ]
      }
     }
@@ -6398,8 +7083,7 @@
       ],
       "share": [
        "0.5",
-       "0.54",
-       "0.549"
+       "0.54"
       ],
       "ci95_source": [
        "0.6",
@@ -6429,8 +7113,7 @@
      "shown": {
       "value": [
        "0.3",
-       "0.37",
-       "0.373"
+       "0.37"
       ],
       "ci95": [
        "0.3",
@@ -6884,10 +7567,10 @@
     "shown": {
      "value": [
       "0.0",
-      "0.01",
-      "0.016"
+      "0.01"
      ],
      "ci95": [
+      "-0.003",
       "-0.01",
       "-0.1",
       "0.037",
@@ -6928,10 +7611,8 @@
       "ci_source": [
        "0.5",
        "0.57",
-       "0.578",
        "0.6",
-       "0.63",
-       "0.630"
+       "0.63"
       ]
      }
     },
@@ -6962,7 +7643,6 @@
       "ci_source": [
        "0.5",
        "0.56",
-       "0.561",
        "0.6",
        "0.61"
       ]
@@ -7005,10 +7685,8 @@
         "ci95_source": [
          "0.5",
          "0.58",
-         "0.581",
          "0.7",
-         "0.73",
-         "0.737"
+         "0.73"
         ]
        }
       },
@@ -7073,7 +7751,6 @@
         "ci95_source": [
          "0.5",
          "0.59",
-         "0.591",
          "0.7",
          "0.74"
         ]
@@ -7107,7 +7784,6 @@
         "ci95_source": [
          "0.5",
          "0.54",
-         "0.544",
          "0.7",
          "0.71"
         ]
@@ -7130,8 +7806,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.57",
-         "0.578"
+         "0.57"
         ],
         "ci95": [
          "0.4",
@@ -7176,8 +7851,7 @@
          "0.4",
          "0.49",
          "0.7",
-         "0.76",
-         "0.767"
+         "0.76"
         ]
        }
       },
@@ -7198,8 +7872,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.68",
-         "0.687"
+         "0.68"
         ],
         "ci95": [
          "0.5",
@@ -7211,8 +7884,7 @@
          "0.5",
          "0.51",
          "0.8",
-         "0.82",
-         "0.820"
+         "0.82"
         ]
        }
       },
@@ -7276,8 +7948,7 @@
         "ci95_source": [
          "0.7",
          "0.8",
-         "0.83",
-         "0.835"
+         "0.83"
         ]
        }
       },
@@ -7298,8 +7969,7 @@
        "shown": {
         "value": [
          "0.7",
-         "0.72",
-         "0.729"
+         "0.72"
         ],
         "ci95": [
          "0.6",
@@ -7311,8 +7981,7 @@
          "0.6",
          "0.61",
          "0.8",
-         "0.81",
-         "0.817"
+         "0.81"
         ]
        }
       },
@@ -7344,7 +8013,6 @@
         "ci95_source": [
          "0.5",
          "0.52",
-         "0.526",
          "0.8",
          "0.82"
         ]
@@ -7358,8 +8026,7 @@
       "shown": {
        "p_perm": [
         "0.4",
-        "0.46",
-        "0.465"
+        "0.46"
        ],
        "p_chi2": [
         "0.4",
@@ -7384,6 +8051,7 @@
        "ci95": [
         "-0.01",
         "-0.1",
+        "0.242",
         "0.25",
         "0.3"
        ]
@@ -7425,8 +8093,7 @@
          "0.1",
          "0.18",
          "0.3",
-         "0.32",
-         "0.326"
+         "0.32"
         ]
        }
       },
@@ -7553,7 +8220,6 @@
         "ci95_source": [
          "0.1",
          "0.13",
-         "0.131",
          "0.2",
          "0.29"
         ]
@@ -7576,8 +8242,7 @@
        "shown": {
         "value": [
          "0.0",
-         "0.08",
-         "0.088"
+         "0.08"
         ],
         "ci95": [
          "0.0",
@@ -7610,8 +8275,7 @@
        "shown": {
         "value": [
          "0.0",
-         "0.09",
-         "0.093"
+         "0.09"
         ],
         "ci95": [
          "0.0",
@@ -7644,8 +8308,7 @@
        "shown": {
         "value": [
          "0.1",
-         "0.17",
-         "0.175"
+         "0.17"
         ],
         "ci95": [
          "0.1",
@@ -7688,7 +8351,6 @@
         "ci95_source": [
          "0.1",
          "0.19",
-         "0.190",
          "0.2",
          "0.29"
         ]
@@ -7711,8 +8373,7 @@
        "shown": {
         "value": [
          "0.2",
-         "0.20",
-         "0.202"
+         "0.20"
         ],
         "ci95": [
          "0.1",
@@ -7723,10 +8384,8 @@
         "ci95_source": [
          "0.1",
          "0.12",
-         "0.126",
          "0.3",
-         "0.30",
-         "0.307"
+         "0.30"
         ]
        }
       },
@@ -7758,10 +8417,8 @@
         "ci95_source": [
          "0.1",
          "0.10",
-         "0.106",
          "0.3",
-         "0.37",
-         "0.377"
+         "0.37"
         ]
        }
       }
@@ -7773,8 +8430,7 @@
       "shown": {
        "p_perm": [
         "0.1",
-        "0.14",
-        "0.145"
+        "0.14"
        ],
        "p_chi2": [
         "0.1",
@@ -7829,8 +8485,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.65",
-         "0.657"
+         "0.65"
         ],
         "ci95": [
          "0.6",
@@ -7841,8 +8496,7 @@
         "ci95_source": [
          "0.6",
          "0.62",
-         "0.69",
-         "0.690"
+         "0.69"
         ]
        }
       },
@@ -7906,8 +8560,7 @@
         "ci95_source": [
          "0.7",
          "0.8",
-         "0.83",
-         "0.835"
+         "0.83"
         ]
        }
       },
@@ -7928,8 +8581,7 @@
        "shown": {
         "value": [
          "0.7",
-         "0.72",
-         "0.729"
+         "0.72"
         ],
         "ci95": [
          "0.6",
@@ -7941,8 +8593,7 @@
          "0.6",
          "0.61",
          "0.8",
-         "0.81",
-         "0.817"
+         "0.81"
         ]
        }
       },
@@ -7974,7 +8625,6 @@
         "ci95_source": [
          "0.5",
          "0.52",
-         "0.526",
          "0.8",
          "0.82"
         ]
@@ -7992,8 +8642,7 @@
        ],
        "p_chi2": [
         "0.0",
-        "0.00",
-        "0.000"
+        "0.00"
        ]
       }
      },
@@ -8044,8 +8693,7 @@
        "shown": {
         "value": [
          "0.1",
-         "0.17",
-         "0.177"
+         "0.17"
         ],
         "ci95": [
          "0.1",
@@ -8057,8 +8705,7 @@
          "0.1",
          "0.15",
          "0.2",
-         "0.20",
-         "0.206"
+         "0.20"
         ]
        }
       },
@@ -8079,8 +8726,7 @@
        "shown": {
         "value": [
          "0.1",
-         "0.17",
-         "0.175"
+         "0.17"
         ],
         "ci95": [
          "0.1",
@@ -8123,7 +8769,6 @@
         "ci95_source": [
          "0.1",
          "0.19",
-         "0.190",
          "0.2",
          "0.29"
         ]
@@ -8146,8 +8791,7 @@
        "shown": {
         "value": [
          "0.2",
-         "0.20",
-         "0.202"
+         "0.20"
         ],
         "ci95": [
          "0.1",
@@ -8158,10 +8802,8 @@
         "ci95_source": [
          "0.1",
          "0.12",
-         "0.126",
          "0.3",
-         "0.30",
-         "0.307"
+         "0.30"
         ]
        }
       },
@@ -8193,10 +8835,8 @@
         "ci95_source": [
          "0.1",
          "0.10",
-         "0.106",
          "0.3",
-         "0.37",
-         "0.377"
+         "0.37"
         ]
        }
       }
@@ -8208,13 +8848,11 @@
       "shown": {
        "p_perm": [
         "0.2",
-        "0.27",
-        "0.270"
+        "0.27"
        ],
        "p_chi2": [
         "0.2",
-        "0.27",
-        "0.273"
+        "0.27"
        ]
       }
      },
@@ -8233,6 +8871,7 @@
         "0.06"
        ],
        "ci95": [
+        "-0.011",
         "-0.02",
         "-0.1",
         "0.131",
@@ -8265,8 +8904,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.65",
-         "0.653"
+         "0.65"
         ],
         "ci95": [
          "0.6",
@@ -8277,8 +8915,7 @@
         "ci95_source": [
          "0.6",
          "0.60",
-         "0.69",
-         "0.695"
+         "0.69"
         ]
        }
       },
@@ -8299,8 +8936,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.65",
-         "0.658"
+         "0.65"
         ],
         "ci95": [
          "0.6",
@@ -8312,8 +8948,7 @@
          "0.6",
          "0.60",
          "0.7",
-         "0.71",
-         "0.710"
+         "0.71"
         ]
        }
       },
@@ -8344,8 +8979,7 @@
         "ci95_source": [
          "0.7",
          "0.8",
-         "0.83",
-         "0.835"
+         "0.83"
         ]
        }
       },
@@ -8375,10 +9009,8 @@
         "ci95_source": [
          "0.7",
          "0.70",
-         "0.700",
          "0.8",
-         "0.80",
-         "0.807"
+         "0.80"
         ]
        }
       },
@@ -8399,8 +9031,7 @@
        "shown": {
         "value": [
          "0.7",
-         "0.72",
-         "0.729"
+         "0.72"
         ],
         "ci95": [
          "0.6",
@@ -8412,8 +9043,7 @@
          "0.6",
          "0.61",
          "0.8",
-         "0.81",
-         "0.817"
+         "0.81"
         ]
        }
       },
@@ -8480,7 +9110,6 @@
        "ci95": [
         "0.0",
         "0.06",
-        "0.068",
         "0.201",
         "0.21",
         "0.3"
@@ -8511,8 +9140,7 @@
        "shown": {
         "value": [
          "0.1",
-         "0.18",
-         "0.180"
+         "0.18"
         ],
         "ci95": [
          "0.1",
@@ -8524,8 +9152,7 @@
          "0.1",
          "0.14",
          "0.2",
-         "0.21",
-         "0.218"
+         "0.21"
         ]
        }
       },
@@ -8546,8 +9173,7 @@
        "shown": {
         "value": [
          "0.1",
-         "0.14",
-         "0.141"
+         "0.14"
         ],
         "ci95": [
          "0.1",
@@ -8558,7 +9184,6 @@
         "ci95_source": [
          "0.1",
          "0.10",
-         "0.106",
          "0.18"
         ]
        }
@@ -8590,7 +9215,6 @@
         "ci95_source": [
          "0.1",
          "0.19",
-         "0.190",
          "0.2",
          "0.29"
         ]
@@ -8645,8 +9269,7 @@
        "shown": {
         "value": [
          "0.2",
-         "0.20",
-         "0.202"
+         "0.20"
         ],
         "ci95": [
          "0.1",
@@ -8657,10 +9280,8 @@
         "ci95_source": [
          "0.1",
          "0.12",
-         "0.126",
          "0.3",
-         "0.30",
-         "0.307"
+         "0.30"
         ]
        }
       },
@@ -8688,10 +9309,8 @@
         "ci95_source": [
          "0.0",
          "0.05",
-         "0.056",
          "0.5",
-         "0.50",
-         "0.509"
+         "0.50"
         ]
        }
       }
@@ -8703,13 +9322,11 @@
       "shown": {
        "p_perm": [
         "0.0",
-        "0.07",
-        "0.079"
+        "0.07"
        ],
        "p_chi2": [
         "0.0",
-        "0.07",
-        "0.079"
+        "0.07"
        ]
       }
      },
@@ -8770,13 +9387,11 @@
       ],
       "p_perm": [
        "0.0",
-       "0.00",
-       "0.005"
+       "0.00"
       ],
       "p_chi2": [
        "0.0",
-       "0.00",
-       "0.005"
+       "0.00"
       ]
      }
     }
@@ -8807,7 +9422,6 @@
    "key": "S9 > language (paired, same affairs; single identity-order call) > diff_DE_minus_FR",
    "shown": {
     "interval": [
-     "-0.002",
      "0.0",
      "0.00",
      "0.03"
@@ -8842,7 +9456,6 @@
      "value": [
       "0.7",
       "0.70",
-      "0.702",
       "0.7029"
      ],
      "value_source": [
@@ -8881,24 +9494,22 @@
       "value": [
        "0.0",
        "0.00",
-       "0.000",
        "0.0007"
       ],
       "value_source": [
        "0.0",
-       "0.00",
-       "0.000"
+       "0.00"
       ],
       "ci95": [
        "-0.1",
        "0.0208",
+       "0.021",
        "0.03",
        "0.1"
       ],
       "ci95_source": [
        "0.0",
-       "0.02",
-       "0.020"
+       "0.02"
       ]
      }
     },
@@ -8917,13 +9528,11 @@
       "value": [
        "0.8",
        "0.84",
-       "0.843",
        "0.8437"
       ],
       "value_source": [
        "0.8",
-       "0.84",
-       "0.843"
+       "0.84"
       ]
      }
     },
@@ -8942,7 +9551,6 @@
       "value": [
        "0.8",
        "0.84",
-       "0.842",
        "0.8429"
       ],
       "value_source": [
@@ -9023,13 +9631,11 @@
        "value": [
         "0.7",
         "0.78",
-        "0.782",
         "0.7826"
        ],
        "value_source": [
         "0.7",
-        "0.78",
-        "0.782"
+        "0.78"
        ]
       }
      },
@@ -9037,13 +9643,11 @@
       "value": [
        "0.7",
        "0.72",
-       "0.724",
        "0.7246"
       ],
       "value_source": [
        "0.7",
-       "0.72",
-       "0.724"
+       "0.72"
       ]
      }
     }
@@ -9069,13 +9673,11 @@
       "value": [
        "0.7",
        "0.70",
-       "0.703",
        "0.7037"
       ],
       "value_source": [
        "0.7",
-       "0.70",
-       "0.703"
+       "0.70"
       ],
       "ci95": [
        "0.6",
@@ -9117,7 +9719,6 @@
      "value": [
       "0.7",
       "0.70",
-      "0.703",
       "0.7037"
      ],
      "ci95": [
@@ -9358,15 +9959,10 @@
       "key": "gold_AB_C > point > pos"
      },
      "shown": {
-      "value": [
-       "893",
-       "893.8"
-      ],
       "ci95": [
        "1190.37",
-       "1191",
-       "656",
-       "656.7"
+       "1190.4",
+       "1191"
       ]
      }
     },
@@ -9719,7 +10315,6 @@
      },
      "shown": {
       "value": [
-       "653.2",
        "653.29"
       ],
       "ci95": [
@@ -9743,14 +10338,12 @@
      },
      "shown": {
       "value": [
-       "913.2",
        "913.25"
       ],
       "ci95": [
+       "1217.3",
        "1217.30",
        "1218",
-       "668",
-       "668.9",
        "668.98"
       ]
      }
@@ -10049,14 +10642,12 @@
        "0.9"
       ],
       "flags": [
-       "734.1",
        "734.16"
       ],
       "flags_ci95": [
-       "711",
-       "711.5",
        "711.55",
        "756.39",
+       "756.4",
        "757"
       ],
       "qwen_only": [
@@ -10202,15 +10793,13 @@
         "ci95": [
          "0.8",
          "0.84",
-         "0.848",
          "0.992",
          "1.0",
          "1.00"
         ],
         "unweighted": [
          "0.8",
-         "0.88",
-         "0.888"
+         "0.88"
         ]
        }
       },
@@ -10228,8 +10817,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.94",
-         "0.944"
+         "0.94"
         ],
         "ci95": [
          "0.8",
@@ -10249,8 +10837,7 @@
       "shown": {
        "p_perm": [
         "0.8",
-        "0.85",
-        "0.856"
+        "0.85"
        ]
       }
      },
@@ -10269,6 +10856,7 @@
         "0.01"
        ],
        "ci95": [
+        "-0.078",
         "-0.08",
         "-0.1",
         "0.094",
@@ -10329,8 +10917,7 @@
         ],
         "ci95": [
          "0.2",
-         "0.28",
-         "0.281"
+         "0.28"
         ],
         "unweighted": [
          "0.9",
@@ -10352,13 +10939,11 @@
        "shown": {
         "value": [
          "0.8",
-         "0.89",
-         "0.894"
+         "0.89"
         ],
         "ci95": [
          "0.7",
-         "0.71",
-         "0.715"
+         "0.71"
         ],
         "unweighted": [
          "0.8",
@@ -10425,6 +11010,7 @@
         "ci95": [
          "0.7",
          "0.77",
+         "0.961",
          "0.97",
          "1.0"
         ],
@@ -10447,12 +11033,12 @@
        "shown": {
         "value": [
          "0.9",
-         "0.93",
-         "0.936"
+         "0.93"
         ],
         "ci95": [
          "0.8",
          "0.88",
+         "0.978",
          "0.98",
          "1.0"
         ],
@@ -10475,20 +11061,18 @@
        "shown": {
         "value": [
          "0.9",
-         "0.90",
-         "0.907"
+         "0.90"
         ],
         "ci95": [
          "0.8",
          "0.82",
-         "0.821",
+         "0.973",
          "0.98",
          "1.0"
         ],
         "unweighted": [
          "0.8",
-         "0.86",
-         "0.860"
+         "0.86"
         ]
        }
       },
@@ -10531,8 +11115,10 @@
         "0.05"
        ],
        "ci95": [
+        "-0.038",
         "-0.04",
         "-0.1",
+        "0.166",
         "0.17",
         "0.2"
        ]
@@ -10558,14 +11144,14 @@
        "shown": {
         "value": [
          "0.4",
-         "0.44",
-         "0.443"
+         "0.44"
         ],
         "ci95": [
          "0.2",
          "0.24",
          "0.9",
-         "0.90"
+         "0.90",
+         "0.900"
         ],
         "unweighted": [
          "0.8",
@@ -10591,6 +11177,7 @@
         "ci95": [
          "0.4",
          "0.49",
+         "0.934",
          "0.94",
          "1.0"
         ],
@@ -10613,8 +11200,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.92",
-         "0.929"
+         "0.92"
         ],
         "ci95": [
          "0.8",
@@ -10643,18 +11229,15 @@
        "shown": {
         "value": [
          "0.1",
-         "0.19",
-         "0.191"
+         "0.19"
         ],
         "ci95": [
          "0.0",
-         "0.03",
-         "0.038"
+         "0.03"
         ],
         "unweighted": [
          "0.6",
-         "0.66",
-         "0.666"
+         "0.66"
         ]
        }
       }
@@ -10666,8 +11249,7 @@
       "shown": {
        "p_perm": [
         "0.1",
-        "0.19",
-        "0.194"
+        "0.19"
        ]
       }
      },
@@ -10683,13 +11265,12 @@
       "shown": {
        "diff": [
         "0.4",
-        "0.48",
-        "0.485"
+        "0.48"
        ],
        "ci95": [
         "0.0",
         "0.02",
-        "0.021",
+        "0.692",
         "0.7",
         "0.70"
        ]
@@ -10720,6 +11301,7 @@
         "ci95": [
          "0.7",
          "0.77",
+         "0.961",
          "0.97",
          "1.0"
         ],
@@ -10742,8 +11324,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.91",
-         "0.917"
+         "0.91"
         ],
         "ci95": [
          "0.8",
@@ -10754,8 +11335,7 @@
         ],
         "unweighted": [
          "0.8",
-         "0.88",
-         "0.888"
+         "0.88"
         ]
        }
       },
@@ -10776,8 +11356,7 @@
         ],
         "ci95": [
          "0.9",
-         "0.91",
-         "0.911"
+         "0.91"
         ],
         "unweighted": [
          "0.9",
@@ -10799,8 +11378,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.94",
-         "0.944"
+         "0.94"
         ],
         "ci95": [
          "0.8",
@@ -10830,8 +11408,7 @@
         ],
         "ci95": [
          "0.7",
-         "0.74",
-         "0.740"
+         "0.74"
         ],
         "unweighted": [
          "0.8",
@@ -10859,8 +11436,7 @@
       "shown": {
        "p_perm": [
         "0.6",
-        "0.64",
-        "0.642"
+        "0.64"
        ]
       }
      },
@@ -10881,6 +11457,7 @@
         "-0.012",
         "-0.02",
         "-0.1",
+        "0.199",
         "0.2",
         "0.20"
        ]
@@ -10912,6 +11489,7 @@
         "ci95": [
          "0.3",
          "0.31",
+         "0.929",
          "0.93",
          "1.0"
         ],
@@ -10941,8 +11519,7 @@
         ],
         "unweighted": [
          "0.9",
-         "0.91",
-         "0.916"
+         "0.91"
         ]
        }
       },
@@ -10964,8 +11541,7 @@
         ],
         "ci95": [
          "0.5",
-         "0.56",
-         "0.564"
+         "0.56"
         ]
        }
       },
@@ -11020,8 +11596,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.91",
-         "0.913"
+         "0.91"
         ],
         "ci95": [
          "0.7",
@@ -11029,8 +11604,7 @@
         ],
         "unweighted": [
          "0.8",
-         "0.86",
-         "0.866"
+         "0.86"
         ]
        }
       },
@@ -11067,8 +11641,7 @@
         ],
         "unweighted": [
          "0.9",
-         "0.91",
-         "0.916"
+         "0.91"
         ]
        }
       },
@@ -11115,8 +11688,7 @@
         ],
         "ci95": [
          "0.3",
-         "0.37",
-         "0.370"
+         "0.37"
         ]
        }
       },
@@ -11242,20 +11814,18 @@
        "shown": {
         "value": [
          "0.7",
-         "0.76",
-         "0.764"
+         "0.76"
         ],
         "ci95": [
          "0.6",
          "0.63",
-         "0.637",
+         "0.874",
          "0.88",
          "0.9"
         ],
         "unweighted": [
          "0.6",
-         "0.65",
-         "0.657"
+         "0.65"
         ]
        }
       },
@@ -11273,12 +11843,12 @@
        "shown": {
         "value": [
          "0.6",
-         "0.68",
-         "0.689"
+         "0.68"
         ],
         "ci95": [
          "0.4",
          "0.43",
+         "0.899",
          "0.9",
          "0.90"
         ],
@@ -11302,13 +11872,12 @@
        "shown": {
         "value": [
          "0.8",
-         "0.84",
-         "0.845"
+         "0.84"
         ],
         "ci95": [
          "0.6",
          "0.66",
-         "0.668",
+         "0.981",
          "0.99",
          "1.0"
         ],
@@ -11331,8 +11900,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.65",
-         "0.652"
+         "0.65"
         ],
         "ci95": [
          "0.4",
@@ -11341,8 +11909,7 @@
         ],
         "unweighted": [
          "0.5",
-         "0.52",
-         "0.523"
+         "0.52"
         ]
        }
       },
@@ -11360,8 +11927,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.92",
-         "0.927"
+         "0.92"
         ],
         "ci95": [
          "0.7",
@@ -11391,6 +11957,7 @@
         "ci95": [
          "0.7",
          "0.73",
+         "0.956",
          "0.96",
          "1.0"
         ],
@@ -11444,6 +12011,7 @@
         "ci95": [
          "0.7",
          "0.72",
+         "0.969",
          "0.97",
          "1.0"
         ]
@@ -11471,8 +12039,7 @@
         ],
         "unweighted": [
          "0.6",
-         "0.66",
-         "0.666"
+         "0.66"
         ]
        }
       },
@@ -11506,7 +12073,6 @@
         "ci95": [
          "0.4",
          "0.49",
-         "0.493",
          "0.847",
          "0.85",
          "0.9"
@@ -11546,6 +12112,7 @@
        "ci95": [
         "0.0",
         "0.07",
+        "0.623",
         "0.63",
         "0.7"
        ]
@@ -11576,6 +12143,7 @@
         "ci95": [
          "0.7",
          "0.77",
+         "0.961",
          "0.97",
          "1.0"
         ],
@@ -11615,13 +12183,11 @@
         ],
         "ci95": [
          "0.8",
-         "0.85",
-         "0.859"
+         "0.85"
         ],
         "unweighted": [
          "0.9",
-         "0.93",
-         "0.937"
+         "0.93"
         ]
        }
       },
@@ -11639,8 +12205,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.94",
-         "0.944"
+         "0.94"
         ],
         "ci95": [
          "0.8",
@@ -11666,8 +12231,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.94",
-         "0.944"
+         "0.94"
         ],
         "ci95": [
          "0.8",
@@ -11675,8 +12239,7 @@
         ],
         "unweighted": [
          "0.9",
-         "0.91",
-         "0.916"
+         "0.91"
         ]
        }
       },
@@ -11694,13 +12257,11 @@
        "shown": {
         "value": [
          "0.9",
-         "0.93",
-         "0.938"
+         "0.93"
         ],
         "ci95": [
          "0.7",
-         "0.78",
-         "0.784"
+         "0.78"
         ],
         "unweighted": [
          "0.9",
@@ -11792,8 +12353,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.69",
-         "0.693"
+         "0.69"
         ]
        }
       },
@@ -11811,8 +12371,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.54",
-         "0.540"
+         "0.54"
         ]
        }
       },
@@ -11858,8 +12417,7 @@
         ],
         "unweighted": [
          "0.6",
-         "0.66",
-         "0.666"
+         "0.66"
         ]
        }
       },
@@ -13078,8 +13636,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.63",
-       "0.631"
+       "0.63"
       ],
       "ci95": [
        "0.5",
@@ -13114,8 +13671,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.68",
-       "0.687"
+       "0.68"
       ],
       "ci95": [
        "0.5",
@@ -13269,8 +13825,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.66",
-       "0.666"
+       "0.66"
       ],
       "ci95": [
        "0.4",
@@ -13522,7 +14077,6 @@
      "value": [
       "0.6",
       "0.67",
-      "0.678",
       "0.6785"
      ],
      "ci95": [
@@ -13555,10 +14109,10 @@
       ],
       "ci95": [
        "-0.01",
-       "-0.019",
        "-0.0196",
        "-0.1699",
        "-0.17",
+       "-0.170",
        "-0.2",
        "0.0"
       ]
@@ -13588,6 +14142,7 @@
        "-0.1",
        "0.0396",
        "0.04",
+       "0.040",
        "0.1"
       ]
      }
@@ -13644,11 +14199,9 @@
       "value": [
        "0.7",
        "0.76",
-       "0.767",
        "0.7678",
        "0.8",
        "0.89",
-       "0.895",
        "0.8958"
       ],
       "ci95": [
@@ -13717,11 +14270,9 @@
      "value": [
       "0.7",
       "0.76",
-      "0.767",
       "0.7678",
       "0.8",
       "0.89",
-      "0.895",
       "0.8958"
      ],
      "ci95": [
@@ -13826,8 +14377,7 @@
        "0.8",
        "0.81",
        "0.9",
-       "0.94",
-       "0.949"
+       "0.94"
       ]
      }
     },
@@ -13852,8 +14402,7 @@
      "shown": {
       "value": [
        "0.7",
-       "0.73",
-       "0.736"
+       "0.73"
       ],
       "ci95": [
        "0.5",
@@ -13864,7 +14413,6 @@
       "ci95_source": [
        "0.5",
        "0.57",
-       "0.579",
        "0.8",
        "0.85"
       ]
@@ -13921,8 +14469,7 @@
      "shown": {
       "value": [
        "0.9",
-       "0.99",
-       "0.991"
+       "0.99"
       ],
       "ci95": [
        "0.9",
@@ -13937,8 +14484,7 @@
       "ci95_source": [
        "0.9",
        "0.95",
-       "0.99",
-       "0.998"
+       "0.99"
       ]
      }
     }
@@ -14222,7 +14768,6 @@
         "value": [
          "0.8",
          "0.88",
-         "0.888",
          "0.8888"
         ],
         "ci95": [
@@ -14250,7 +14795,6 @@
         "value": [
          "0.7",
          "0.79",
-         "0.793",
          "0.7936"
         ],
         "ci95": [
@@ -14312,7 +14856,6 @@
         "value": [
          "0.6",
          "0.66",
-         "0.666",
          "0.6666"
         ],
         "ci95": [
@@ -15149,8 +15692,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.55",
-         "0.555"
+         "0.55"
         ],
         "ci95": [
          "0.3",
@@ -15195,10 +15737,8 @@
         "ci95_source": [
          "0.4",
          "0.45",
-         "0.453",
          "0.8",
-         "0.88",
-         "0.882"
+         "0.88"
         ]
        }
       },
@@ -15257,7 +15797,6 @@
         "ci95_source": [
          "0.3",
          "0.39",
-         "0.396",
          "0.8",
          "0.89"
         ]
@@ -15281,8 +15820,7 @@
        "shown": {
         "value": [
          "0.7",
-         "0.77",
-         "0.777"
+         "0.77"
         ],
         "ci95": [
          "0.4",
@@ -15293,10 +15831,8 @@
         "ci95_source": [
          "0.4",
          "0.45",
-         "0.452",
          "0.9",
-         "0.93",
-         "0.936"
+         "0.93"
         ]
        }
       },
@@ -15318,8 +15854,7 @@
        "shown": {
         "value": [
          "0.8",
-         "0.88",
-         "0.888"
+         "0.88"
         ],
         "ci95": [
          "0.5",
@@ -15353,8 +15888,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.66",
-         "0.666"
+         "0.66"
         ],
         "ci95": [
          "0.2",
@@ -15393,7 +15927,6 @@
         "ci95_source": [
          "0.1",
          "0.18",
-         "0.187",
          "0.8",
          "0.81"
         ]
@@ -15424,10 +15957,8 @@
         "ci95_source": [
          "0.3",
          "0.37",
-         "0.375",
          "0.9",
-         "0.96",
-         "0.963"
+         "0.96"
         ]
        }
       },
@@ -15455,7 +15986,6 @@
         "ci95_source": [
          "0.2",
          "0.23",
-         "0.230",
          "0.8",
          "0.88"
         ]
@@ -15483,8 +16013,7 @@
         ],
         "ci95_source": [
          "0.5",
-         "0.56",
-         "0.565"
+         "0.56"
         ]
        }
       },
@@ -15510,8 +16039,7 @@
         ],
         "ci95_source": [
          "0.5",
-         "0.56",
-         "0.565"
+         "0.56"
         ]
        }
       },
@@ -15541,7 +16069,6 @@
         "ci95_source": [
          "0.3",
          "0.30",
-         "0.300",
          "0.9",
          "0.95"
         ]
@@ -15597,7 +16124,6 @@
         "ci95_source": [
          "0.0",
          "0.09",
-         "0.094",
          "0.9",
          "0.90"
         ]
@@ -15763,8 +16289,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.65",
-         "0.657"
+         "0.65"
         ],
         "ci95": [
          "0.4",
@@ -15775,10 +16300,8 @@
         "ci95_source": [
          "0.4",
          "0.49",
-         "0.498",
          "0.7",
-         "0.78",
-         "0.787"
+         "0.78"
         ]
        }
       },
@@ -15843,10 +16366,8 @@
         "ci95_source": [
          "0.5",
          "0.56",
-         "0.566",
          "0.9",
-         "0.91",
-         "0.914"
+         "0.91"
         ]
        }
       }
@@ -15858,13 +16379,11 @@
       "shown": {
        "p_perm": [
         "0.7",
-        "0.78",
-        "0.788"
+        "0.78"
        ],
        "p_chi2": [
         "0.7",
-        "0.76",
-        "0.768"
+        "0.76"
        ]
       }
      },
@@ -15886,6 +16405,7 @@
         "-0.185",
         "-0.19",
         "-0.2",
+        "0.237",
         "0.24",
         "0.3"
        ]
@@ -15926,8 +16446,7 @@
          "0.3",
          "0.34",
          "0.7",
-         "0.74",
-         "0.741"
+         "0.74"
         ]
        }
       },
@@ -16022,7 +16541,6 @@
         "ci95_source": [
          "0.1",
          "0.18",
-         "0.187",
          "0.8",
          "0.81"
         ]
@@ -16056,10 +16574,8 @@
         "ci95_source": [
          "0.2",
          "0.25",
-         "0.250",
          "0.8",
-         "0.84",
-         "0.841"
+         "0.84"
         ]
        }
       },
@@ -16149,8 +16665,7 @@
          "0.4",
          "0.41",
          "0.8",
-         "0.82",
-         "0.826"
+         "0.82"
         ]
        }
       },
@@ -16183,8 +16698,7 @@
          "0.4",
          "0.43",
          "0.9",
-         "0.96",
-         "0.969"
+         "0.96"
         ]
        }
       },
@@ -16255,8 +16769,7 @@
       "shown": {
        "p_perm": [
         "0.1",
-        "0.17",
-        "0.171"
+        "0.17"
        ],
        "p_chi2": [
         "0.1",
@@ -16282,6 +16795,7 @@
         "-0.008",
         "-0.01",
         "-0.1",
+        "0.529",
         "0.53",
         "0.6"
        ]
@@ -17066,8 +17580,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.52",
-         "0.528"
+         "0.52"
         ],
         "ci95": [
          "0.4",
@@ -17111,10 +17624,8 @@
         "ci95_source": [
          "0.4",
          "0.45",
-         "0.454",
          "0.6",
-         "0.68",
-         "0.680"
+         "0.68"
         ]
        }
       },
@@ -17145,7 +17656,6 @@
         "ci95_source": [
          "0.4",
          "0.44",
-         "0.440",
          "0.6",
          "0.66"
         ]
@@ -17159,13 +17669,11 @@
       "shown": {
        "p_perm": [
         "0.9",
-        "0.91",
-        "0.911"
+        "0.91"
        ],
        "p_chi2": [
         "0.8",
-        "0.87",
-        "0.873"
+        "0.87"
        ]
       }
      },
@@ -17181,10 +17689,10 @@
       "shown": {
        "diff": [
         "0.0",
-        "0.04",
-        "0.042"
+        "0.04"
        ],
        "ci95": [
+        "-0.129",
         "-0.13",
         "-0.2"
        ]
@@ -17247,8 +17755,7 @@
        "shown": {
         "value": [
          "0.4",
-         "0.48",
-         "0.485"
+         "0.48"
         ],
         "ci95": [
          "0.3",
@@ -17298,6 +17805,7 @@
         "-0.01",
         "-0.010",
         "-0.1",
+        "0.267",
         "0.27",
         "0.3"
        ]
@@ -17338,7 +17846,6 @@
         "ci95_source": [
          "0.4",
          "0.40",
-         "0.408",
          "0.7",
          "0.72"
         ]
@@ -17372,7 +17879,6 @@
         "ci95_source": [
          "0.4",
          "0.43",
-         "0.436",
          "0.7",
          "0.75"
         ]
@@ -17396,8 +17902,7 @@
        "shown": {
         "value": [
          "0.6",
-         "0.63",
-         "0.631"
+         "0.63"
         ],
         "ci95": [
          "0.4",
@@ -17429,8 +17934,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.56",
-         "0.566"
+         "0.56"
         ],
         "ci95": [
          "0.3",
@@ -17464,8 +17968,7 @@
        "shown": {
         "value": [
          "0.3",
-         "0.35",
-         "0.352"
+         "0.35"
         ],
         "ci95": [
          "0.1",
@@ -17511,8 +18014,7 @@
          "0.2",
          "0.29",
          "0.7",
-         "0.76",
-         "0.767"
+         "0.76"
         ]
        }
       },
@@ -17574,7 +18076,6 @@
         "ci95_source": [
          "0.0",
          "0.09",
-         "0.094",
          "0.9",
          "0.90"
         ]
@@ -17597,8 +18098,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.53",
-         "0.536"
+         "0.53"
         ],
         "ci95": [
          "0.3",
@@ -17608,7 +18108,6 @@
         "ci95_source": [
          "0.3",
          "0.38",
-         "0.387",
          "0.6",
          "0.67"
         ]
@@ -17632,8 +18131,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.55",
-         "0.555"
+         "0.55"
         ],
         "ci95": [
          "0.2",
@@ -17644,7 +18142,6 @@
         "ci95_source": [
          "0.2",
          "0.26",
-         "0.266",
          "0.8",
          "0.81"
         ]
@@ -17658,13 +18155,11 @@
       "shown": {
        "p_perm": [
         "0.6",
-        "0.61",
-        "0.613"
+        "0.61"
        ],
        "p_chi2": [
         "0.5",
-        "0.59",
-        "0.596"
+        "0.59"
        ]
       }
      },
@@ -17686,6 +18181,7 @@
         "-0.216",
         "-0.22",
         "-0.3",
+        "0.273",
         "0.28",
         "0.3"
        ]
@@ -17875,8 +18371,7 @@
      "shown": {
       "recall": [
        "0.5",
-       "0.55",
-       "0.555"
+       "0.55"
       ],
       "recall_ci95": [
        "0.3",
@@ -17973,8 +18468,7 @@
     "shown": {
      "agree_AB": [
       "0.9",
-      "0.96",
-      "0.963"
+      "0.96"
      ]
     }
    },
@@ -18096,8 +18590,7 @@
        "shown": {
         "value": [
          "0.5",
-         "0.55",
-         "0.555"
+         "0.55"
         ],
         "ci95": [
          "0.3",
@@ -18705,7 +19198,6 @@
      "value": [
       "0.0",
       "0.01",
-      "0.012",
       "0.03"
      ],
      "ci95": [
@@ -18754,7 +19246,6 @@
       "value": [
        "0.2",
        "0.21",
-       "0.218",
        "0.7",
        "0.70"
       ],
@@ -18785,8 +19276,7 @@
      "shown": {
       "value": [
        "0.9",
-       "0.98",
-       "0.981"
+       "0.98"
       ]
      }
     }
@@ -18812,8 +19302,7 @@
      "shown": {
       "value": [
        "0.2",
-       "0.20",
-       "0.205"
+       "0.20"
       ],
       "ci95": [
        "0.1",
@@ -18843,8 +19332,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.67",
-       "0.670"
+       "0.67"
       ],
       "ci95": [
        "0.6",
@@ -18940,8 +19428,7 @@
         "shown": {
          "value": [
           "0.2",
-          "0.20",
-          "0.205"
+          "0.20"
          ],
          "ci95": [
           "0.1",
@@ -19000,8 +19487,7 @@
         "shown": {
          "value": [
           "0.2",
-          "0.21",
-          "0.218"
+          "0.21"
          ],
          "ci95": [
           "0.1",
@@ -19052,8 +19538,7 @@
        "shown": {
         "value": [
          "0.0",
-         "0.01",
-         "0.012"
+         "0.01"
         ],
         "ci95": [
          "-0.02",
@@ -19114,8 +19599,7 @@
         "shown": {
          "value": [
           "0.6",
-          "0.67",
-          "0.670"
+          "0.67"
          ],
          "ci95": [
           "0.6",
@@ -19201,8 +19685,7 @@
         "shown": {
          "value": [
           "0.9",
-          "0.98",
-          "0.981"
+          "0.98"
          ],
          "ci95": [
           "0.9",
@@ -19416,8 +19899,7 @@
     "shown": {
      "value": [
       "0.2",
-      "0.20",
-      "0.205"
+      "0.20"
      ],
      "ci95": [
       "0.1",
@@ -19542,7 +20024,6 @@
       "value": [
        "0.1",
        "0.11",
-       "0.113",
        "0.2",
        "0.21"
       ],
@@ -19579,8 +20060,7 @@
        "0.4",
        "0.44",
        "0.9",
-       "0.96",
-       "0.969"
+       "0.96"
       ]
      }
     }
@@ -19913,8 +20393,7 @@
        "shown": {
         "value": [
          "0.9",
-         "0.96",
-         "0.969"
+         "0.96"
         ],
         "ci95": [
          "0.9",
@@ -20070,8 +20549,7 @@
        "shown": {
         "value": [
          "0.1",
-         "0.11",
-         "0.113"
+         "0.11"
         ],
         "ci95": [
          "0.28",
@@ -20178,8 +20656,7 @@
     "shown": {
      "value": [
       "0.8",
-      "0.85",
-      "0.856"
+      "0.85"
      ]
     }
    },
@@ -20252,8 +20729,7 @@
      "shown": {
       "value": [
        "0.1",
-       "0.17",
-       "0.171"
+       "0.17"
       ]
      }
     },
@@ -20273,8 +20749,7 @@
      "shown": {
       "value": [
        "0.9",
-       "0.91",
-       "0.911"
+       "0.91"
       ]
      }
     },
@@ -20284,8 +20759,7 @@
      "shown": {
       "value": [
        "0.6",
-       "0.61",
-       "0.613"
+       "0.61"
       ]
      }
     }
@@ -20372,8 +20846,7 @@
      "shown": {
       "precision": [
        "0.9",
-       "0.94",
-       "0.948"
+       "0.94"
       ],
       "ci": [
        "0.8",
@@ -20399,8 +20872,7 @@
       ],
       "precision": [
        "0.9",
-       "0.95",
-       "0.955"
+       "0.95"
       ],
       "ci": [
        "0.9",
@@ -20423,8 +20895,7 @@
      "shown": {
       "precision": [
        "0.9",
-       "0.93",
-       "0.933"
+       "0.93"
       ],
       "ci": [
        "0.8",
@@ -20498,8 +20969,7 @@
       ],
       "precision": [
        "0.9",
-       "0.91",
-       "0.911"
+       "0.91"
       ],
       "ci": [
        "0.8",
@@ -20522,8 +20992,7 @@
      "shown": {
       "precision": [
        "0.9",
-       "0.90",
-       "0.900"
+       "0.90"
       ],
       "ci": [
        "0.8",
@@ -20572,8 +21041,7 @@
      "shown": {
       "precision": [
        "0.8",
-       "0.89",
-       "0.890"
+       "0.89"
       ],
       "ci": [
        "0.8",
@@ -20599,8 +21067,7 @@
       ],
       "precision": [
        "0.8",
-       "0.88",
-       "0.884"
+       "0.88"
       ],
       "ci": [
        "0.8",
@@ -20623,8 +21090,7 @@
      "shown": {
       "precision": [
        "0.8",
-       "0.87",
-       "0.875"
+       "0.87"
       ],
       "ci": [
        "0.8",
@@ -20672,8 +21138,7 @@
      "shown": {
       "precision": [
        "0.8",
-       "0.85",
-       "0.850"
+       "0.85"
       ],
       "ci": [
        "0.8",
@@ -20796,8 +21261,7 @@
       ],
       "precision": [
        "0.7",
-       "0.76",
-       "0.762"
+       "0.76"
       ],
       "ci": [
        "0.7",
@@ -20820,8 +21284,7 @@
      "shown": {
       "precision": [
        "0.7",
-       "0.74",
-       "0.740"
+       "0.74"
       ],
       "ci": [
        "0.7",
@@ -20841,7 +21304,7 @@
      0.84,
      0.886
     ],
-    "note": "shipped operating point (14 Oct): pass when the recalibrated p ≥ 0.7 (2-fold cross-fitted on the S16 items); the rest go to 'please check'. Computed after S16 from its rows; tested held out in S25",
+    "note": "shipped operating point (14 Oct): pass when the recalibrated p ≥ 0.7 (2-fold cross-fitted on the S16 items); the rest go to 'please check'. Computed after S16 from its rows; tested held out in S25 (aps_chapter_heldout_s25 > breakdowns > lanes)",
     "at": {
      "file": "eval/lanes/results.json",
      "key": "D4 > calibrated_tau_0_7"
@@ -20878,13 +21341,11 @@
     "shown": {
      "coverage": [
       "0.6",
-      "0.64",
-      "0.641"
+      "0.64"
      ],
      "precision": [
       "0.8",
-      "0.82",
-      "0.826"
+      "0.82"
      ],
      "ci": [
       "0.86",
@@ -20950,8 +21411,7 @@
      "shown": {
       "precision": [
        "0.9",
-       "0.97",
-       "0.977"
+       "0.97"
       ],
       "ci": [
        "0.9",
@@ -20992,8 +21452,7 @@
       ],
       "precision": [
        "0.9",
-       "0.96",
-       "0.960"
+       "0.96"
       ],
       "ci": [
        "0.9",
@@ -21070,8 +21529,7 @@
       ],
       "precision": [
        "0.9",
-       "0.95",
-       "0.955"
+       "0.95"
       ],
       "ci": [
        "0.9",
@@ -21105,8 +21563,7 @@
      "shown": {
       "precision": [
        "0.9",
-       "0.95",
-       "0.955"
+       "0.95"
       ],
       "ci": [
        "0.9",
@@ -21142,8 +21599,7 @@
       ],
       "precision": [
        "0.9",
-       "0.93",
-       "0.934"
+       "0.93"
       ],
       "ci": [
        "0.9",
@@ -21233,8 +21689,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.99",
-       "0.999"
+       "0.99"
       ],
       "p_cal_insample": [
        "0.7",
@@ -21277,8 +21732,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.99",
-       "0.999"
+       "0.99"
       ],
       "p_cal_insample": [
        "0.7",
@@ -21354,8 +21808,7 @@
      "shown": {
       "precision": [
        "0.8",
-       "0.86",
-       "0.864"
+       "0.86"
       ],
       "ci": [
        "0.8",
@@ -21399,8 +21852,7 @@
       ],
       "precision": [
        "0.8",
-       "0.85",
-       "0.852"
+       "0.85"
       ],
       "ci": [
        "0.8",
@@ -21496,8 +21948,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.97",
-       "0.976"
+       "0.97"
       ],
       "p_cal_insample": [
        "0.5",
@@ -21539,8 +21990,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.93",
-       "0.938"
+       "0.93"
       ],
       "p_cal_insample": [
        "0.4",
@@ -21582,8 +22032,7 @@
       ],
       "p_raw_threshold": [
        "0.8",
-       "0.88",
-       "0.880"
+       "0.88"
       ],
       "p_cal_insample": [
        "0.4"
@@ -21605,8 +22054,7 @@
      "shown": {
       "precision": [
        "0.7",
-       "0.76",
-       "0.764"
+       "0.76"
       ],
       "ci": [
        "0.7",
@@ -21640,8 +22088,7 @@
       ],
       "precision": [
        "0.7",
-       "0.74",
-       "0.745"
+       "0.74"
       ],
       "ci": [
        "0.7",
@@ -21651,8 +22098,7 @@
       ],
       "p_raw_threshold": [
        "0.6",
-       "0.60",
-       "0.609"
+       "0.60"
       ],
       "p_cal_insample": [
        "0.3",
@@ -21752,8 +22198,7 @@
      "shown": {
       "precision": [
        "0.7",
-       "0.76",
-       "0.764"
+       "0.76"
       ],
       "ci": [
        "0.7",
@@ -21809,8 +22254,7 @@
       ],
       "precision": [
        "0.9",
-       "0.91",
-       "0.911"
+       "0.91"
       ],
       "ci": [
        "0.8",
@@ -21844,8 +22288,7 @@
      "shown": {
       "precision": [
        "0.9",
-       "0.93",
-       "0.933"
+       "0.93"
       ],
       "ci": [
        "0.8",
@@ -21881,8 +22324,7 @@
       ],
       "precision": [
        "0.9",
-       "0.92",
-       "0.921"
+       "0.92"
       ],
       "ci": [
        "0.8",
@@ -21921,8 +22363,7 @@
      "shown": {
       "precision": [
        "0.8",
-       "0.89",
-       "0.896"
+       "0.89"
       ],
       "ci": [
        "0.8",
@@ -21997,8 +22438,7 @@
      "shown": {
       "precision": [
        "0.8",
-       "0.87",
-       "0.879"
+       "0.87"
       ],
       "ci": [
        "0.8",
@@ -22259,8 +22699,7 @@
       ],
       "precision": [
        "0.8",
-       "0.82",
-       "0.827"
+       "0.82"
       ],
       "ci": [
        "0.8",
@@ -22340,8 +22779,7 @@
       ],
       "precision": [
        "0.7",
-       "0.79",
-       "0.798"
+       "0.79"
       ],
       "ci": [
        "0.7",
@@ -22390,8 +22828,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.99",
-       "0.999"
+       "0.99"
       ],
       "p_cal_insample": [
        "0.5",
@@ -22427,8 +22864,7 @@
       ],
       "precision": [
        "0.7",
-       "0.76",
-       "0.767"
+       "0.76"
       ],
       "ci": [
        "0.7",
@@ -22438,8 +22874,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.99",
-       "0.998"
+       "0.99"
       ],
       "p_cal_insample": [
        "0.3",
@@ -22471,8 +22906,7 @@
      "shown": {
       "precision": [
        "0.7",
-       "0.74",
-       "0.744"
+       "0.74"
       ],
       "ci": [
        "0.7",
@@ -22482,8 +22916,7 @@
       ],
       "p_raw_threshold": [
        "0.9",
-       "0.99",
-       "0.991"
+       "0.99"
       ],
       "p_cal_insample": [
        "0.3",
@@ -22550,8 +22983,7 @@
      "shown": {
       "precision": [
        "0.7",
-       "0.70",
-       "0.703"
+       "0.70"
       ],
       "ci": [
        "0.6",
@@ -22577,14 +23009,6 @@
   }
  },
  "to_measure": [
-  {
-   "item": "S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — running, no result yet",
-   "prereg": {
-    "file": "eval/PREREG-BUILD.md",
-    "anchor": "— S25 fresh APS-labelled federal affairs",
-    "line": 85
-   }
-  },
   "FR/IT rows with the headline Curia design + BFH on the same items",
   "recalibration refit on the build that serves at the event",
   "ECE intervals (bootstrap)",

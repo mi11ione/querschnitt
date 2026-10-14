@@ -596,9 +596,44 @@ def s16curve(key):
 SRC_S16 = [S16R, S16M, f"{QE}/s16/analyze.py", f"{QE}/s16/raw.jsonl", f"{QE}/calibration.json"]
 pre16 = pre(PB, "— S16 read-back combined with examples")
 pre25 = pre(PB, "— S25 fresh APS-labelled federal affairs")
+pre25a = pre(PB, "— S25 amendment: a determinism fix before the final score")
+S25R = f"{QE}/s25/results.json"
+s25 = g(S25R); N25 = s25["scored"]
+assert s25["items"] == N25 and s25["missing"] == 0, (s25["items"], N25, s25["missing"])
+
+
+def s25p(*keys, metric):
+    """a {k, n, value, ci} block of eval/s25/results.json: value = k / n truncated to 4 decimals and ci = Wilson 95% with bounds
+    rounded outward at 3 decimals, both by eval/s25/analyze.py; re-checked here from k and n (asserts)."""
+    b = g(S25R, *keys); k, n = b["k"], b["n"]
+    assert b["value"] == math.floor(k / n * 10 ** 4) / 10 ** 4, (keys, b)
+    lo_, hi_ = wilson_exact(k, n)
+    assert list(b["ci"]) == [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))], (keys, b, lo_, hi_)
+    out = {"metric": metric, "value": b["value"], "ci95": list(b["ci"]), "k": k, "n": n, "kn": f"{k}/{n}",
+           "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)"}
+    for x in ("share", "coverage"):
+        if x in b: out[x] = b[x]
+    out["at"] = loc(S25R, *keys)
+    return out
+
+
+def s25prefix(k, n, stored, needle, metric):
+    """a pre-fix reading stated in the S25 amendment (k/n and the 4-decimal share as written there); Wilson 95% computed here."""
+    m_ = md(PB, needle)
+    assert stored == math.floor(k / n * 10 ** 4) / 10 ** 4 and f"{stored} ({k}/{n})" in open(os.path.join(ROOT, PB), encoding="utf-8").read(), (k, n, stored)
+    lo_, hi_ = wilson_exact(k, n)
+    return {"metric": metric, "value": stored, "k": k, "n": n, "kn": f"{k}/{n}",
+            "ci95": [float(F.q(lo_, 3, F.ROUND_FLOOR)), float(F.q(hi_, 3, F.ROUND_CEILING))],
+            "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n (the amendment states k/n only), bounds rounded outward",
+            "at": m_}
+
+
+t25 = s25p("top1", metric="chapter top-1 vs APS editors (the production pipeline as shipped, held out)")
+H25 = (f"S25 (pre-registered, held out): {N25} fresh APS-labelled federal affairs, the production pipeline as shipped, "
+       f"top-1 {F.t(t25['value'])} [{F.lo(t25['ci95'][0])}, {F.hi(t25['ci95'][1])}] (aps_chapter_heldout_s25)")
 SPLIT_D4 = ("pre-registered (S16), measured on the S9 items; the D4 design was chosen after S9 on the same items (D4 combines D1 and D3), "
-            "so this is not a held-out result; fresh held-out set: S25 (pre-registered, running)")
-HELDOUT_D4 = "fresh held-out set: S25 (pre-registered, running; no result yet)"
+            "so this is not a held-out result; fresh held-out test: " + H25)
+HELDOUT_D4 = {"id": "aps_chapter_heldout_s25", "what": "fresh held-out test: " + H25}
 ln16 = g(S16R, "lanes_D4")
 cal16 = g(S16R, "calibration")
 d4, d4s = s16top1("D4"), s16top1("D4S")
@@ -683,8 +718,10 @@ tests.append(dict(
     baselines=[dict(lane("D4", "readings_agree", "D4: readings agree (earlier lane rule)"), name="D4 readings agree (lane rule until 14 Oct)"),
                dict(lane("D1", "readings_agree", "D1: readings agree"), name="D1 readings agree")],
     split="S9 items (S16 rows); rule chosen after S16 on these items, calibration 2-fold cross-fitted (not pre-registered; no new calls); "
-          "tested held out in S25 (pre-registered, running)",
-    prereg=None, prereg_more=pre25, heldout_test="S25 (pre-registered, running; no result yet)",
+          "tested held out in S25 (pre-registered; lanes in aps_chapter_heldout_s25)",
+    prereg=None, prereg_more=pre25,
+    heldout_test={"id": "aps_chapter_heldout_s25", "what": "the same rule (recalibrated p ≥ 0.7 passes, map fitted on S16 only) on the "
+                  f"{N25} fresh S25 affairs: breakdowns > lanes > pass / please_check"},
     sources=[LR, f"{QE}/lanes/analyze.py", S16R, f"{QE}/s16/analyze.py", f"{QE}/s16/raw.jsonl"], build=B16, model=MODEL, date="2026-10-14",
     shipped="lane rule of the APS chapter (D4 federal, D1 elsewhere; src/querschnitt/compose.py LANE_TAU): please check when the "
             "recalibrated p < 0.7, or when the German and French readings of a bilingual parliament disagree"))
@@ -734,9 +771,70 @@ tests.append(dict(
                 "all_items_hF": hblk("D4", "hierarchical", "all_items", "hF",
                                      metric="hierarchical F1 on all 1,357 items (gold depth 1 where the main subtopic is not among the 190)")},
     split="S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items "
-          "(it combines D1 and D3), so not a held-out result; fresh held-out set: S25 (pre-registered, running)", prereg=None, prereg_more=pre25,
+          "(it combines D1 and D3), so not a held-out result; the held-out test S25 scores the chapter only (aps_chapter_heldout_s25)",
+    prereg=None, prereg_more=pre25,
     sources=[HR, f"{QE}/s16/hierarchical.py", f"{QE}/s16/raw.jsonl", f"{I2}/s9-aps/raw/", f"{I2}/s9-aps/data/items.json"],
     build=B16, model=MODEL, date="2026-10-14", shipped="ranked subtopic suggestions (federal affairs, D4)"))
+
+# ---------------------------------------------------------------- S25: the shipped federal design held out, on fresh APS-labelled affairs
+L25 = {"pass": "pass: recalibrated p ≥ 0.7 (shipped lane rule; map fitted on S16 only)",
+       "please_check": "please check: recalibrated p < 0.7",
+       "readings_agree": "the two readings (with / without examples) agree on the chapter",
+       "readings_disagree": "the two readings disagree"}
+cy25 = g(S25R, "curia_year")
+cy25_before = sum(v for y_, v in cy25.items() if int(y_) < 2015); cy25_from = sum(v for y_, v in cy25.items() if int(y_) >= 2015)
+assert cy25_before + cy25_from == N25, (cy25_before, cy25_from, N25)
+gc25 = g(S25R, "gold_chapters"); assert sum(gc25.values()) == N25
+DES25 = {"D4 (German text: five examples)": "D4", "D1 (French/Italian text: no examples)": "D1"}
+bd25 = g(S25R, "by_design"); assert set(bd25) == set(DES25) and sum(v["n"] for v in bd25.values()) == N25
+assert g(S25R, "with_examples") == bd25["D4 (German text: five examples)"]["n"]
+pf25 = [s25prefix(636, 904, 0.7035, "904 affairs scored, top-1 0.7035 (636/904)",
+                  "pre-fix reading 1 (old, non-deterministic example retrieval; seen before the fix): chapter top-1"),
+        s25prefix(633, 905, 0.6994, "905 scored, 0.6994 (633/905)",
+                  "pre-fix reading 2 (old, non-deterministic example retrieval; seen before the fix): chapter top-1")]
+tests.append(dict(
+    id="aps_chapter_heldout_s25", gold="human", subject="Apertus",
+    title_de=f"APS-Kapitel gegen APS-Redaktion, {N25} neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
+    title_fr=f"Chapitre APS contre la rédaction APS, {N25} nouveaux objets fédéraux (hors échantillon) : design livré, pipeline de production "
+             "inchangé (S25)",
+    n=N25, design=f"Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den "
+    "S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: "
+    "D4 (fünf BM25-nächste APS-gelabelte Beispiele aus dem S5+S9-Pool + zweite Lesart ohne Beispiele, Kapitel aus dem Unterthema zurückgelesen), "
+    f"D1 (ohne Beispiele) für die {bd25['D1 (French/Italian text: no examples)']['n']} Geschäfte mit französischem/italienischem Text; "
+    "Lane: rekalibriertes p ≥ 0.7 → durchgelassen, Kalibrierkarte nur auf S16 angepasst; Entscheide komponiert wie im Export (compose.decide)",
+    result=dict(t25, display=f"{F.t(t25['value'])} [{F.lo(t25['ci95'][0])}, {F.hi(t25['ci95'][1])}]"),
+    results_more=[s25p("top3", metric="chapter top-3")] + pf25,
+    baselines=[dict(s25p("keyword_top1", metric="keyword top-1"),
+                    name="keyword (S9 frozen rule: APS subtopic words, ties by the S9 majority order), same input")],
+    breakdowns={
+        "lanes": {k_: dict(s25p("lanes", k_, metric=f"precision, {L25[k_]}"), cell=k_) for k_ in ("pass", "please_check", "readings_agree", "readings_disagree")}
+        | {"rule": "shipped: pass when the recalibrated p ≥ 0.7 (src/querschnitt/compose.py LANE_TAU), else please check; readings agree / "
+                   "disagree is the earlier lane rule, reported as pre-registered", "share_note": "share = share of the scored affairs (truncated)"},
+        "routing_by_p_cal": {"points": [dict(s25p("routing_by_p_cal", t_, metric=f"precision of the affairs with recalibrated p ≥ {t_}"),
+                                             threshold=float(t_)) for t_ in g(S25R, "routing_by_p_cal")],
+                             "note": "coverage = share of the scored affairs at or above the threshold; calibration map fitted on S16 only",
+                             "at": loc(S25R, "routing_by_p_cal")},
+        "by_design": {"cells": [dict(s25p("by_design", k_, metric=f"chapter top-1, {k_}"), cell=DES25[k_],
+                                     **({"small": True} if bd25[k_]["n"] < 20 else {})) for k_ in DES25], "at": loc(S25R, "by_design")},
+        "by_lang": {"cells": [dict(s25p("by_lang", l_, metric=f"chapter top-1, affair language {l_}"), cell=l_,
+                                   **({"small": True} if v_["n"] < 20 else {})) for l_, v_ in g(S25R, "by_lang").items()],
+                    "note": "OPD language of the affair; the D4/D1 split (by_design) follows whether the chapter step showed examples",
+                    "at": loc(S25R, "by_lang")},
+        "curia_year": {"before_2015": cy25_before, "from_2015": cy25_from, "by_year": cy25,
+                       "derived": "years from the Curia number (analyze.py), summed here", "at": loc(S25R, "curia_year")},
+        "gold_chapters": {"chapters": len(gc25), "counts": gc25, "at": loc(S25R, "gold_chapters")},
+        "with_examples": {"value": g(S25R, "with_examples"), "at": loc(S25R, "with_examples")},
+        "scored": {"in_set": g(S25R, "items"), "scored": N25, "missing": g(S25R, "missing"), "at": loc(S25R, "scored")}},
+    pre_fix_note="results_more[1:]: two compositions of the finished run seen with the old example retrieval (set order, randomised per "
+                 "process) before the determinism fix; reported as such next to the final score (amendment)",
+    split="held out, pre-registered (S25): fresh items never used while designing (none in S5, S9 or the example pool); nothing tuned on "
+          "them; calibration map fitted on S16 only; the example retrieval was made deterministic before the final score (amendment, a bug "
+          "fix, not a design change), and the two readings seen before the fix are reported",
+    prereg=pre25, prereg_more=pre25a,
+    sources=[S25R, f"{QE}/s25/analyze.py", f"{QE}/s25/decisions.jsonl", f"{QE}/s25/items.jsonl", f"{QE}/s25/FETCH.md", "src/querschnitt/compose.py",
+             "src/querschnitt/examples.py", f"{QE}/calibration.json", PB],
+    build=s25["build"] + " (run runs/s25)", model=MODEL, date="2026-10-15",
+    shipped="federal affairs: the production design as shipped (D4; D1 where the text is French or Italian)"))
 
 s18 = g(S18R)
 tests.append(dict(
@@ -1162,7 +1260,7 @@ for t_ in tests:
         t_["title_de"] += " (S8-Momentaufnahme, ersetzt durch die volle Erhebung)"
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
-ORDER = ["aps_chapter_shipped_d4", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
+ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
          "aps_hierarchical_d4",
          "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
          "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
@@ -1208,7 +1306,8 @@ _lr = TD["aps_lane_rule"]["result"]
 cur["aps_d4"] = {"n": N16, "design": "D4 shipped federal design (S16)", "points": TD["aps_chapter_shipped_d4"]["breakdowns"]["coverage_precision"]["points"],
                  "operating_point": {"coverage": _lr["coverage"], "precision": _lr["value"], "n": _lr["n"], "k": _lr["k"], "ci": _lr["ci95"],
                                      "note": "shipped operating point (14 Oct): pass when the recalibrated p ≥ 0.7 (2-fold cross-fitted on the "
-                                     "S16 items); the rest go to 'please check'. Computed after S16 from its rows; tested held out in S25",
+                                     "S16 items); the rest go to 'please check'. Computed after S16 from its rows; tested held out in S25 "
+                                     "(aps_chapter_heldout_s25 > breakdowns > lanes)",
                                      "at": _lr["at"]},
                  "operating_point_old": {"coverage": lanes["agree"]["share"], "precision": lanes["agree"]["precision"], "n": lanes["agree"]["n"],
                                          "ci": lanes["agree"]["ci95"], "note": "lane rule until 14 Oct: both readings agree", "at": loc(S16R, "lanes_D4")},
@@ -1298,6 +1397,7 @@ for blk, key in ((_tx["result"], "title_text"), (_tx["baselines"][0], "title_onl
 for t_ in tests: t_["interval"] = t_["result"].get("ci95")
 print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
+assert not [x for x in WILSON_LOG if x[0].split(".")[0] == "aps_chapter_heldout_s25"]   # S25 intervals are already outward
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
 BOUND = re.compile(r"(^|_)ci(95)?(_w)?$")
@@ -1346,8 +1446,6 @@ out = {
     "tests": tests,
     "curves": {k: cur[k] for k in ("aps_d4", "aps_d3", "aps_d1")},
     "to_measure": [
-        {"item": "S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — "
-                 "running, no result yet", "prereg": pre25},
         "FR/IT rows with the headline Curia design + BFH on the same items",
         "recalibration refit on the build that serves at the event",
         "ECE intervals (bootstrap)",
@@ -1368,9 +1466,9 @@ sciv = lambda c, d=3: f"[{F.signed(F.lo(c[0], d))}, {F.signed(F.hi(c[1], d))}]"
 rel = lambda f: f[len("bern/"):] if f.startswith("bern/") else f
 SPLIT_S9 = ("held-out, vorregistriert", "hors échantillon, préenregistré")
 SPLIT_S16 = ("vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); "
-             "Hold-out-Test: S25 (vorregistriert, läuft)",
+             f"Hold-out-Test: S25 ({N25} neue Geschäfte, unten)",
              "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; "
-             "test hors échantillon : S25 (préenregistré, en cours)")
+             f"test hors échantillon : S25 ({F.t(N25, sep=' ')} nouveaux objets, ci-dessous)")
 rows = []
 
 
@@ -1386,15 +1484,15 @@ T4, T4s, T3, T1, T2, TS = (TD[k] for k in ("aps_chapter_shipped_d4", "aps_chapte
 D0, KW, MJ = s9b
 bl_de = f"Listen-Prompt {p3(D0['value'])} · Stichwort {p3(KW['value'])} · Mehrheit {p3(MJ['value'])}"
 bl_fr = fr(f"liste {p3(D0['value'])} · mots-clés {p3(KW['value'])} · majorité {p3(MJ['value'])}")
-APS = ("APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte", "Chapitre APS vs rédaction APS, objets fédéraux")
+APS = ("APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)", "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)")
 r4 = T4["results_more"]
 row(*APS, "human", "Beispiele + Rücklesen, beide Lesarten (D4, ausgeliefert)", "exemples + relecture, deux lectures (D4, livré)", N16,
     f"top-1 {p3(T4['result']['value'])} · top-3 {p3(r4[0]['value'])}", iv(T4["result"]["ci95"]), bl_de, bl_fr,
     *SPLIT_S16, T4["file"])
 la, ld = T4["breakdowns"]["lanes"]["agree"], T4["breakdowns"]["lanes"]["disagree"]
 TL = TD["aps_lane_rule"]; lp_, lc_ = TL["result"], TL["results_more"][0]; lo_ = TL["baselines"][0]
-SPLIT_LANE = ("nach S16 aus seinen Zeilen gewählt, 2-fach kreuzangepasst; hold-out getestet in S25 (vorregistriert, läuft)",
-              "choisie après S16 à partir de ses lignes, validation croisée à 2 plis ; testée hors échantillon dans S25 (préenregistré, en cours)")
+SPLIT_LANE = ("nach S16 aus seinen Zeilen gewählt, 2-fach kreuzangepasst; hold-out getestet in S25 (unten)",
+              "choisie après S16 à partir de ses lignes, validation croisée à 2 plis ; testée hors échantillon dans S25 (ci-dessous)")
 row(*APS, "human", f"D4, ausgeliefert: rekalibriertes p ≥ 0.7 ({F.pct(lp_['coverage'])} der Geschäfte)",
     fr(f"D4, livré : p recalibré ≥ 0.7 ({F.pct(lp_['coverage'])} des objets)"), lp_["n"], p3(lp_["value"]), iv(lp_["ci95"]),
     f"p < 0.7 → bitte prüfen: {p3(lc_['value'])} {civ(lc_['ci95'])} (n {lc_['n']}) · Lesarten einig {p3(lo_['value'])} {civ(lo_['ci95'])}",
@@ -1443,6 +1541,32 @@ row(*APS, "human", "D4, hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 m
     f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · Stichwort {p3(hf_b['kw'])}",
     fr(f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · mots-clés {p3(hf_b['kw'])}"), *SPLIT_H, TH["file"],
     result_fr=fr(f"hF {p3(TH['result']['value'])} · F1 macro {p3(mf['value'])} (les {F.t(mf['n'], sep=' ')})"))
+# S25: the held-out test of the shipped design (its own table, right after the design set above)
+T25 = TD["aps_chapter_heldout_s25"]; m25 = T25["results_more"]; b25 = T25["breakdowns"]; l25 = b25["lanes"]; kw25 = T25["baselines"][0]
+APS25 = (f"APS-Kapitel vs. APS-Redaktion, {p3(N25)} neue Bundesgeschäfte (hold-out, S25)",
+         f"Chapitre APS vs rédaction APS, {F.t(N25, sep=' ')} nouveaux objets fédéraux (hors échantillon, S25)")
+SPLIT_S25 = ("held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
+             "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement")
+dd25 = {c["cell"]: c for c in b25["by_design"]["cells"]}
+row(*APS25, "human", f"Produktionspipeline wie ausgeliefert (D4; D1 bei FR/IT-Text, {dd25['D1']['n']} Geschäfte)",
+    f"pipeline de production tel que livré (D4 ; D1 si texte FR/IT, {dd25['D1']['n']} objets)", N25,
+    f"top-1 {p3(T25['result']['value'])} · top-3 {p3(m25[0]['value'])}", iv(T25["result"]["ci95"]),
+    f"Stichwort {p3(kw25['value'])} {civ(kw25['ci95'])}", fr(f"mots-clés {p3(kw25['value'])} {civ(kw25['ci95'])}"), *SPLIT_S25, T25["file"])
+lp25, lc25, la25, ld25 = (l25[k] for k in ("pass", "please_check", "readings_agree", "readings_disagree"))
+row(*APS25, "human", f"ausgeliefert: rekalibriertes p ≥ 0.7 ({F.pct(lp25['share'])} der Geschäfte)",
+    fr(f"livré : p recalibré ≥ 0.7 ({F.pct(lp25['share'])} des objets)"), lp25["n"], p3(lp25["value"]), iv(lp25["ci95"]),
+    f"p < 0.7 → bitte prüfen: {p3(lc25['value'])} {civ(lc25['ci95'])} (n {lc25['n']})",
+    fr(f"p < 0.7 → à vérifier : {p3(lc25['value'])} {civ(lc25['ci95'])} (n {lc25['n']})"), *SPLIT_S25, T25["file"], result_fr=fr(p3(lp25["value"])))
+row(*APS25, "human", f"Lesarten einig (bisherige Regel; {F.pct(la25['share'])} der Geschäfte)",
+    f"lectures concordantes (règle précédente ; {fr(F.pct(la25['share']))} des objets)", la25["n"], p3(la25["value"]), iv(la25["ci95"]),
+    f"uneinig: {p3(ld25['value'])} {civ(ld25['ci95'])} (n {ld25['n']})", fr(f"discordantes : {p3(ld25['value'])} {civ(ld25['ci95'])} (n {ld25['n']})"),
+    *SPLIT_S25, T25["file"], result_fr=fr(p3(la25["value"])))
+pa25, pb25 = m25[1], m25[2]
+row(*APS25, "human", "vor dem Determinismus-Fix gesehen (alter Beispielabruf, zwei Auswertungen)",
+    "vu avant la correction du déterminisme (ancienne recherche d'exemples, deux compositions)", None,
+    f"top-1 {F.t(pa25['value'], 4)} ({pa25['kn']}) · {F.t(pb25['value'], 4)} ({pb25['kn']})", None,
+    f"final {p3(T25['result']['value'])} ({T25['result']['kn']})", fr(f"final {p3(T25['result']['value'])} ({T25['result']['kn']})"),
+    "Änderung vor dem finalen Score (vorregistriert)", "amendement avant le score final (préenregistré)", PB)
 
 dv = TD["dvs_human30"]
 row("«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)", "« numérique » : 30 objets DVS choisis à la main (rappel)", "human",
@@ -1584,6 +1708,8 @@ for s_ in TOPICS19:
         f"ohne zweite Frage (S19) {p3(P0_['value'])} ({P0_['kn']})", fr(f"sans seconde question (S19) {p3(P0_['value'])} ({P0_['kn']})"),
         *SP27, T27["file"])
 
+# the held-out test (S25) leads: its rows open the app's first human-label table (the highlighted, shipped row)
+rows = [r for r in rows if r["file"].startswith("eval/s25/")] + [r for r in rows if not r["file"].startswith("eval/s25/")]
 app = {"rows": rows,
        "curve": {"test": "APS-Kapitel, 1'357 Bundesgeschäfte, ausgeliefertes Design (D4)", "test_fr": "Chapitre APS, 1 357 objets fédéraux, design livré (D4)",
                  "n": N16, "x": "coverage", "y": "precision", "points": g(S16R, "coverage_precision", "aps-fed"),

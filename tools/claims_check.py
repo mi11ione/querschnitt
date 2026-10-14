@@ -9,7 +9,7 @@ A number passes when its normalised form equals the "written" value of a claims.
 stored in pruefstand.json (exactly as stored, or at 3 decimals / as a percentage with the same digits). A number that only matches a
 MISMATCH row is reported with the correct value from that row. Section refs (§6.1), test ids (S9, D3, P8.5), years, calendar days,
 clock times, inline code and HTML tags are skipped. Spelled-out ratios ("seven in ten") are checked as "7 in 10". Stdlib only."""
-import argparse, csv, html, json, os, re, sys
+import argparse, csv, html, json, math, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -79,10 +79,10 @@ def variants(v):
             for d in (1, 2, 3, 4):
                 f = f"{v:.{d}f}"
                 if float(f) == round(v, d) and abs(float(f) - v) < 1e-12: s.add(norm(f))
-            if abs(v) >= 100:
-                s.add(str(round(v))); s.add(norm(f"{v:.1f}"))   # estimated counts: whole affairs
-            if abs(v * 1000 - round(v * 1000)) > 1e-9:
-                s.add(norm(f"{v:.3f}"))   # 3-decimal display used by every results.md
+            if abs(v) >= 100:   # estimated counts: whole affairs, truncated (never rounded up)
+                s.add(str(math.trunc(v))); s.add(norm(f"{math.trunc(v * 10) / 10:.1f}"))
+            if abs(v * 1000 - round(v * 1000)) > 1e-9:   # 3-decimal display, truncated toward zero (never rounded up)
+                s.add(norm(f"{math.trunc(v * 1000 + (1e-9 if v >= 0 else -1e-9)) / 1000:.3f}"))
             if 0 <= v <= 1:
                 pct = v * 100
                 if abs(pct - round(pct, 1)) < 1e-9: s.add(norm(f"{round(pct, 1):g}%"))
@@ -128,6 +128,11 @@ def load_pruefstand(path):
         if key in PATH_KEYS or (isinstance(key, str) and key.endswith("_source")): return   # superseded source roundings are not citable
         if isinstance(o, dict):
             for k, v in o.items(): walk(v, k)
+        elif isinstance(o, list) and len(o) == 2 and isinstance(key, str) and re.search(r"(^|_)ci(95)?($|_)", key) \
+                and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in o):
+            # an interval: its bounds may also be shown rounded outward at 3 decimals (lower floored, upper ceiled)
+            vals.update(variants(o[0])); vals.update(variants(o[1]))
+            vals.add(norm(f"{math.floor(o[0] * 1000 + 1e-9) / 1000:.3f}")); vals.add(norm(f"{math.ceil(o[1] * 1000 - 1e-9) / 1000:.3f}"))
         elif isinstance(o, list):
             for v in o: walk(v, key)
         elif isinstance(o, str):

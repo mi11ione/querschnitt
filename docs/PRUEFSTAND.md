@@ -6,7 +6,7 @@ Every measured test behind Querschnitt, as one ruled table each. Human labels fi
 
 ### 1 · APS chapter vs APS editors — 1,357 federal affairs, pre-registered (S9, S16)
 
-Wayback process pages not used before; German title + submitted text. Pre-registration: [PREREG.md § S9](../eval/spikes/PREREG.md#L32); the shipped federal design and its decision rule: [PREREG-BUILD.md § S16](../eval/PREREG-BUILD.md#L6). D0–D3 are held out on these items (S9, nothing tuned on them). D4 is pre-registered (S16) and measured on the same S9 items, but its design was chosen after S9 on those items (D4 combines D1 and D3), so its row is not a held-out result; the fresh held-out set is S25 ([PREREG-BUILD.md § S25](../eval/PREREG-BUILD.md#L85), pre-registered, running, no result yet).
+Wayback process pages not used before; German title + submitted text. Pre-registration: [PREREG.md § S9](../eval/spikes/PREREG.md#L32); the shipped federal design and its decision rule: [PREREG-BUILD.md § S16](../eval/PREREG-BUILD.md#L6). D0–D3 are held out on these items (S9, nothing tuned on them). D4 is pre-registered (S16) and measured on the same S9 items, but its design was chosen after S9 on those items (D4 combines D1 and D3): these 1,357 items are the set the shipped design was chosen on, so its row is not a held-out result. The held-out test of the shipped design is §1b: S25, 927 fresh federal affairs ([PREREG-BUILD.md § S25](../eval/PREREG-BUILD.md#L85)).
 
 | Design | top-1 | top-3 | Δ top-1, paired | |
 |---|---|---|---|---|
@@ -23,7 +23,7 @@ Decision ([S16 results](../eval/s16/results.json)): D4 shipped for federal affai
 
 **Lanes of D4** (the reading with examples and the reading without agree / disagree on the chapter): readings agree on [64.1%](../eval/s16/results.json) of affairs ([871](../eval/s16/results.json)), precision [0.826 [0.800, 0.851]](../eval/s16/results.json); they disagree on [486](../eval/s16/results.json), precision [0.586 [0.542, 0.630]](../eval/s16/results.json). This was the lane rule until 14 Oct; the shipped rule is now the recalibrated p (below).
 
-**Lane rule: `please check` when the recalibrated p < 0.7** — computed after S16 from its rows (not pre-registered; no new calls); tested held out in S25 ([PREREG-BUILD.md § S25](../eval/PREREG-BUILD.md#L85), pre-registered, running). The isotonic map is 2-fold cross-fitted on the 1,357 S16 items, so every affair's recalibrated p comes from the half it was not fitted on ([`eval/lanes/analyze.py`](../eval/lanes/analyze.py) → [`eval/lanes/results.json`](../eval/lanes/results.json)). The threshold was chosen on these same items, so the numbers below are in-sample for the choice of rule. In production the rule is `LANE_TAU` in [`src/querschnitt/compose.py`](../src/querschnitt/compose.py); a bilingual parliament whose German and French readings disagree still goes to `please check`.
+**Lane rule: `please check` when the recalibrated p < 0.7** — computed after S16 from its rows (not pre-registered; no new calls); tested held out in S25 ([PREREG-BUILD.md § S25](../eval/PREREG-BUILD.md#L85), §1b). The isotonic map is 2-fold cross-fitted on the 1,357 S16 items, so every affair's recalibrated p comes from the half it was not fitted on ([`eval/lanes/analyze.py`](../eval/lanes/analyze.py) → [`eval/lanes/results.json`](../eval/lanes/results.json)). The threshold was chosen on these same items, so the numbers below are in-sample for the choice of rule (held out: §1b). In production the rule is `LANE_TAU` in [`src/querschnitt/compose.py`](../src/querschnitt/compose.py); a bilingual parliament whose German and French readings disagree still goes to `please check`.
 
 | Design | rule | passed (share of affairs, n) | precision of the passed | `please check`: precision (n) |
 |---|---|---|---|---|
@@ -55,7 +55,38 @@ Per chapter: macro-F1 [0.677](../eval/spikes/s9c-calibration/perlevel.json) (D1)
 | D3 examples (S9) | [0.895 [0.869, 0.917]](../eval/aps_curves.json) | [0.864 [0.839, 0.887]](../eval/aps_curves.json) | [0.842 [0.817, 0.864]](../eval/aps_curves.json) | [0.808 [0.783, 0.831]](../eval/aps_curves.json) | [0.764 [0.740, 0.788]](../eval/aps_curves.json) | [0.722 [0.697, 0.746]](../eval/aps_curves.json) |
 | D1 read-back (S9) | [0.864 [0.836, 0.889]](../eval/aps_curves.json) | [0.845 [0.818, 0.869]](../eval/aps_curves.json) | [0.809 [0.783, 0.834]](../eval/aps_curves.json) | [0.787 [0.761, 0.811]](../eval/aps_curves.json) | [0.744 [0.719, 0.769]](../eval/aps_curves.json) | [0.703 [0.678, 0.728]](../eval/aps_curves.json) |
 
-D4 points are read from [S16 coverage_precision](../eval/s16/results.json) (one point per affair). S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at 50, 70, 90 and 100% equal [S9 results.json](../eval/spikes/s9-aps/results.json). The app's chart is the D4 curve with the shipped operating point marked: recalibrated p ≥ 0.7, coverage [66.8%](../eval/lanes/results.json), precision [0.864 [0.840, 0.886]](../eval/lanes/results.json) (chosen after S16 on these items; tested held out in S25); the earlier point, readings agree, is shown for comparison: coverage [64.1%](../eval/s16/results.json), precision [0.826 [0.800, 0.851]](../eval/s16/results.json).
+D4 points are read from [S16 coverage_precision](../eval/s16/results.json) (one point per affair). S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at 50, 70, 90 and 100% equal [S9 results.json](../eval/spikes/s9-aps/results.json). The app's chart is the D4 curve with the shipped operating point marked: recalibrated p ≥ 0.7, coverage [66.8%](../eval/lanes/results.json), precision [0.864 [0.840, 0.886]](../eval/lanes/results.json) (chosen after S16 on these items; tested held out in S25, §1b); the earlier point, readings agree, is shown for comparison: coverage [64.1%](../eval/s16/results.json), precision [0.826 [0.800, 0.851]](../eval/s16/results.json).
+
+### 1b · APS chapter held out — 927 fresh federal affairs, the shipped design as in production (S25, pre-registered)
+
+The held-out test of the shipped federal design. §1's 1,357 items are the set the design was chosen on; none of these 927 was used while designing. Items: federal affairs with an APS editors' chapter recovered from Wayback captures of anneepolitique.swiss process pages, none in the S5 or S9 sets or in the example pool (the analysis asserts it), parsed with the S9 rules ([`eval/s25/FETCH.md`](../eval/s25/FETCH.md)). The production pipeline as shipped, unchanged: D4 (the five BM25-nearest APS-labelled examples from the S5+S9 pool + a second reading without examples, chapter read back from the subtopic) for the [917](../eval/s25/results.json) affairs with German text, D1 (no examples) for the [10](../eval/s25/results.json) whose text is French or Italian; lanes by the recalibrated p with the calibration map fitted on S16 only; decisions composed exactly as the export composes them ([`eval/s25/analyze.py`](../eval/s25/analyze.py) → [`eval/s25/results.json`](../eval/s25/results.json); one line per affair in [`eval/s25/decisions.jsonl`](../eval/s25/decisions.jsonl)). Pre-registration: [PREREG-BUILD.md § S25](../eval/PREREG-BUILD.md#L85) and [its amendment](../eval/PREREG-BUILD.md#L127) (a determinism fix before the final score).
+
+| n = 927, gold = APS editors' chapter | top-1 | top-3 |
+|---|---|---|
+| **production pipeline as shipped, held out** | **[0.696 [0.666, 0.726]](../eval/s25/results.json)** ([646/927](../eval/s25/results.json)) | [0.839 [0.814, 0.862]](../eval/s25/results.json) |
+| keyword (S9 frozen rule, same input) | [0.186 [0.162, 0.213]](../eval/s25/results.json) | — |
+| for reference: D4 on the design set (§1, other items, not held out) | [0.740 [0.716, 0.764]](../eval/s16/results.json) | [0.883](../eval/s16/results.json) |
+
+**Before the fix** ([amendment](../eval/PREREG-BUILD.md#L127)): the BM25 example retrieval summed over a Python set, whose order is randomised per process, so a restarted run could ask different examples for the same affair. Two compositions of the finished run were seen with the old retrieval before the fix: [904](../eval/PREREG-BUILD.md#L132) scored, top-1 [0.7035 (636/904)](../eval/PREREG-BUILD.md#L132) [0.672, 0.733], and [905](../eval/PREREG-BUILD.md#L132) scored, [0.6994 (633/905)](../eval/PREREG-BUILD.md#L132) [0.668, 0.729] (Wilson intervals computed here from k and n). The final score above is the fixed code on all 927 affairs, scored once.
+
+| S25 lane, held out | share of affairs (n) | precision | design set, for reference (§1, 1,357 items: n, precision) |
+|---|---|---|---|
+| **pass: recalibrated p ≥ 0.7 (shipped)** | [67.3%](../eval/s25/results.json) ([624](../eval/s25/results.json)) | **[0.812 [0.779, 0.842]](../eval/s25/results.json)** | [907](../eval/lanes/results.json), [0.864 [0.840, 0.886]](../eval/lanes/results.json) |
+| `please check`: recalibrated p < 0.7 | [32.6%](../eval/s25/results.json) ([303](../eval/s25/results.json)) | [0.458 [0.403, 0.516]](../eval/s25/results.json) | [450](../eval/lanes/results.json), [0.491 [0.445, 0.538]](../eval/lanes/results.json) |
+| readings agree (earlier rule) | [65.1%](../eval/s25/results.json) ([604](../eval/s25/results.json)) | [0.786 [0.751, 0.818]](../eval/s25/results.json) | [871](../eval/lanes/results.json), [0.826 [0.800, 0.851]](../eval/lanes/results.json) |
+| readings disagree | [34.8%](../eval/s25/results.json) ([323](../eval/s25/results.json)) | [0.529 [0.474, 0.584]](../eval/s25/results.json) | [486](../eval/s16/results.json), [0.586 [0.542, 0.630]](../eval/s16/results.json) |
+
+The design-set figures of the recalibrated rule are in-sample for the choice of the 0.7 threshold (2-fold cross-fitted map); in S25 the map is the one fitted on S16 and the threshold is fixed.
+
+**Routing by the recalibrated p** (S25, held out; coverage = share of affairs at or above the threshold, precision of those):
+
+| recalibrated p ≥ | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 |
+|---|---|---|---|---|---|
+| coverage | [80.1%](../eval/s25/results.json) | [78.1%](../eval/s25/results.json) | [67.3%](../eval/s25/results.json) | [56.8%](../eval/s25/results.json) | [27.1%](../eval/s25/results.json) |
+| precision | [0.775 [0.743, 0.804]](../eval/s25/results.json) | [0.781 [0.750, 0.811]](../eval/s25/results.json) | [0.812 [0.779, 0.842]](../eval/s25/results.json) | [0.836 [0.802, 0.866]](../eval/s25/results.json) | [0.912 [0.871, 0.942]](../eval/s25/results.json) |
+| n | [743](../eval/s25/results.json) | [724](../eval/s25/results.json) | [624](../eval/s25/results.json) | [527](../eval/s25/results.json) | [252](../eval/s25/results.json) |
+
+By design: D4 (German text, five examples) [0.695 [0.665, 0.725]](../eval/s25/results.json), n 917; D1 (French or Italian text, no examples) [8/10](../eval/s25/results.json) [0.490, 0.944] (small). By Curia year: [244](../eval/s25/results.json) affairs submitted before 2015, [683](../eval/s25/results.json) from 2015 on. Gold chapters ([22](../eval/s25/results.json) present): Institutionen und Volksrechte [108](../eval/s25/results.json) · Aussenpolitik [93](../eval/s25/results.json) · Sozialversicherungen [92](../eval/s25/results.json) · Verkehr und Kommunikation [78](../eval/s25/results.json) · Soziale Gruppen [68](../eval/s25/results.json) · Rechtsordnung [57](../eval/s25/results.json) · Geld, Währung und Kredit [54](../eval/s25/results.json) · Wirtschaftspolitik [53](../eval/s25/results.json) · Gesundheit, Sozialhilfe, Sport [50](../eval/s25/results.json) · Öffentliche Finanzen [46](../eval/s25/results.json) · Umweltschutz [36](../eval/s25/results.json) · Landwirtschaft [35](../eval/s25/results.json) · Energie [28](../eval/s25/results.json) · Landesverteidigung [23](../eval/s25/results.json) · Bildung und Forschung [20](../eval/s25/results.json) · Raumplanung und Wohnungswesen [18](../eval/s25/results.json) · Bevölkerung und Arbeit [17](../eval/s25/results.json) · Politische Grundfragen [15](../eval/s25/results.json) · Kultur, Sprache, Kirchen [14](../eval/s25/results.json) · Föderativer Aufbau [11](../eval/s25/results.json) · Medien [8](../eval/s25/results.json) · Verbände [3](../eval/s25/results.json).
 
 ### 2 · APS subtopic vs APS editors, end to end (S9)
 
@@ -374,11 +405,11 @@ Reading: one sentence casts a wide net on narrow topics: every judge-relevant af
 - On the Federal Parliament's own multi-tag task the trained BFH model is ahead (micro-F1 0.687 vs 0.654, paired −0.079 to +0.010); the Curia design was tuned on 100 dev items.
 - Where no official labels exist, the gold is the AI judge. It matches APS editors on [0.790 [0.728, 0.841]](../eval/spikes/s11-anchor/anchor.json) of chapters and says yes to 27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.
 - New topics defined in one sentence are measured against the AI judge only. They flag every judge-relevant affair in S19 but over-flag narrow topics: precision of flags [0.225 [0.123, 0.376] (9/40)](../eval/s19/results.json) for wolf, [0.136 [0.047, 0.334] (3/22)](../eval/s19/results.json) for AI in schools (§15).
+- The held-out test (S25, §1b) scores the chapter and its lanes; subtopic and hierarchical figures of the shipped design (§2) are on the design set only. Its D1 cell (French or Italian text) holds 10 affairs.
 - All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.
 
 ## To measure
 
-- S25: the shipped design (D4) and the lane rule (recalibrated p < 0.7) on fresh APS-labelled federal affairs, held out — running, no result yet (pre-registered: [PREREG-BUILD.md § S25](../eval/PREREG-BUILD.md#L85))
 - FR/IT rows with the headline Curia design + BFH on the same items
 - recalibration refit on the build that serves at the event
 - ECE intervals (bootstrap)

@@ -10,8 +10,9 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 - **Closed choices.** Each step — chapter, subtopic, yes/no for an ad-hoc topic, evidence sentence — is a choice among
   listed codes, read from the next-token probabilities. A label outside the scheme cannot be stored. (Asked to name a topic
   freely, Apertus answered outside the scheme in 36 of 40 affairs; with the list shown, in 0 of 40.)
-- **Two readings.** The chapter question is asked in two code orders; in bilingual parliaments the German and the French
-  version are the two readings. Readings agree → `readings_agree`; they disagree → `please_check`.
+- **Two readings, one lane.** The chapter question is asked in two code orders; in bilingual parliaments the German and the
+  French version are the two readings. The readings feed one recalibrated confidence; the lane is `please_check` when it is
+  below 0.7 or the German and French readings disagree, otherwise `pass`. The readings stay visible as the explanation.
 - **Read-back.** One request over the subtopics of the top chapters; the chapter is read back from the chosen subtopic.
   Federal affairs see the five most similar APS-labelled affairs as examples.
 - **Schemes are files.** APS, Bern's directorates, Basel-Stadt's own themes and ad-hoc topics run on the same engine from
@@ -22,7 +23,8 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 ## 2. Results on human labels
 | Test | n | Querschnitt | Baseline, same items |
 |---|---|---|---|
-| APS chapter vs APS editors, federal affairs (S9/S16; the shipped design was chosen after S9 on these items — fresh items: S25) | 1,357 | 0.740 [0.716, 0.764] as shipped; the 66.8% passing without a check (recalibrated p ≥ 0.7, cross-fitted) 0.864 [0.840, 0.886]; formerly: where the two readings agree (64% of affairs) 0.826 [0.800, 0.851] | plain list prompting 0.655 · keywords 0.191 · majority 0.079 |
+| APS chapter vs APS editors, 927 federal affairs never used while designing (S25, held out) | 927 | 0.696 [0.666, 0.726]; top 3 0.839; the 67.3% passing without a check (recalibrated p ≥ 0.7) 0.812 [0.779, 0.842], the rest 0.458 | keywords 0.186 |
+| APS chapter vs APS editors, the 1,357 federal affairs the shipped design was chosen on (S9/S16) | 1,357 | 0.740 [0.716, 0.764] as shipped; the 66.8% passing without a check (cross-fitted) 0.864 [0.840, 0.886]; formerly: where the two readings agree (64% of affairs) 0.826 [0.800, 0.851] | plain list prompting 0.655 · keywords 0.191 · majority 0.079 |
 | APS subtopic vs APS editors, end to end (S9) | 1,221 | top-1 0.520 · top-3 0.677 | chapter step → best subtopic 0.469 |
 | Bern: lead directorate vs the Grand Council's own field, 2025–26 (S18) | 531 | 0.651 [0.610, 0.691] German titles · 0.650 French titles | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt: the canton's own 46 themes vs its hand-assigned «Thema 1», 2019–24 (S20) | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
@@ -30,8 +32,11 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 | "Digitalisierung": the 30 affairs DVS curates by hand (question written with them in view) | 30 | 27 recognised | keywords 21 |
 | Federal Sachbereiche vs Parliament's own Curia tags (S3/S5) | 200 | micro-F1 0.654 | BFH model, trained on 15,007 tagged affairs: 0.687 |
 
-The lane separates confident from doubtful rows on the human-labelled sets where it was measured: on the federal APS
-affairs the 66.8% passing without a check (recalibrated p ≥ 0.7) are right in 0.864, the rest in 0.491; by reading agreement,
+The held-out test (S25) is the shipped pipeline, unchanged, on 927 APS-labelled federal affairs that appear in no design
+set and no example pool: 0.696 top-1, 0.839 top-3. It is below the 0.740 on the affairs the design was chosen on, which is
+the expected direction for a held-out set. The lane carries over: 67.3% pass without a check and are right in 0.812, the
+rest go to a person (0.458). The lane separates confident from doubtful rows on every human-labelled set where it was
+measured: on the 1,357 design affairs the 66.8% passing without a check (cross-fitted) are right in 0.864, the rest in 0.491; by reading agreement,
 0.826 vs 0.586; on Basel-Stadt with examples, by reading agreement, 0.651 vs 0.373. A partner's own labels raise
 accuracy without any training step: on Basel-Stadt by +0.028 (S21), on the federal APS affairs by +0.067 (S9).
 
@@ -72,6 +77,8 @@ Measured on the corpus run at Public AI list price ([`eval/cost/results.json`](.
 843,173 requests, USD 102.24, about 241.8 h at that rate; wall time, not money, sets the schedule.
 
 ## 6. Limits
+- On fresh federal affairs the chapter is right in 0.696 and the pass lane in 0.812, below the 0.740 and 0.864 of the design
+  set; the recalibration map was fitted on the design set and is refitted per build.
 - Subtopics are suggestions (0.520 top-1), never a lane of their own.
 - Fine-grained cantonal schemes without descriptions are harder (Basel-Stadt 46 themes: 0.498); the lane separates the
   confident half from the rest.

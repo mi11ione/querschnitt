@@ -347,9 +347,9 @@ def classify(tok, written_norm, f, line, approx):
 
 
 # ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
-# are; the S19 / S26 / S27 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
+# are; the S19 / S26 / S27 and S25 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
 ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
-GEN_SECTIONS = {"S19-27"}
+GEN_SECTIONS = {"S19-27", "S25"}
 
 
 def adhoc_rows():
@@ -403,6 +403,59 @@ def adhoc_rows():
     for tid in ADHOC:
         for topic, b in T[tid]["breakdowns"]["per_topic"].items():
             walk(tid, topic, b)
+    return rows
+
+
+def s25_rows():
+    """S25, the shipped federal design held out on fresh APS-labelled affairs (gold = APS editors' chapter): every k/n block of
+    eval/pruefstand.json > aps_chapter_heldout_s25 → the share (truncated, never rounded up), its Wilson bounds (outward, as stored by
+    eval/s25/analyze.py and re-checked by build_pruefstand.py), k/n, n, and the lane shares as percentages (truncated)."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "aps_chapter_heldout_s25")
+    rows = []
+
+    def r(ctx, written, src, file, key, note):
+        rows.append(dict(section="S25", line="-", written=written, context=f"S25 {ctx}".replace("\t", " "), source_value=str(src), file=file,
+                         key=key, status="OK", correct="", note=note))
+
+    def block(ctx, b, pct_of=None):
+        at = b["at"]; ctx = ctx + (f" ({b['metric']})" if b.get("metric") else "")
+        key = at.get("key") or f"line {at['line']}: {at['text']}"
+        r(ctx, NF.t(b["value"]), b["value"], at["file"], key, "truncated, never rounded up")
+        for i, (fn, side) in enumerate(((NF.lo, "floored"), (NF.hi, "ceiled"))):
+            r(f"{ctx} ci95[{i}]", fn(b["ci95"][i]), b["ci95"][i], at["file"],
+              f"{key}: k = {b['k']}, n {b['n']} → Wilson 95%, bounds rounded outward at 3 decimals ({side})", b.get("ci_method", ""))
+        r(f"{ctx} k/n", b["kn"], b["kn"], at["file"], key, "count")
+        r(f"{ctx} n", NF.t(b["n"]), b["n"], at["file"], key, "count")
+        for x in ("share", "coverage"):
+            if x in b:
+                r(f"{ctx} {x}", NF.pct(b[x]), b[x], at["file"], f"{key} > {x}", "share of the scored affairs as a percentage, truncated")
+
+    sc = t["breakdowns"]["scored"]
+    r("affairs scored (fresh APS-labelled federal affairs, none missing)", NF.t(t["n"]), t["n"], sc["at"]["file"], sc["at"]["key"], "count")
+    block("chapter top-1, held out", t["result"])
+    rm = t["results_more"]
+    block("chapter top-3", rm[0])
+    for i, b in enumerate(rm[1:], 1):
+        block(f"pre-fix reading {i} (amendment)", b)
+        r(f"pre-fix reading {i} (amendment) as written there", NF.t(b["value"], 4), b["value"], b["at"]["file"],
+          f"line {b['at']['line']}: {b['at']['text']}",
+          "4 decimals as written in the amendment (truncated)")
+    block("keyword baseline (S9 frozen rule)", t["baselines"][0])
+    bd = t["breakdowns"]
+    for k, b in bd["lanes"].items():
+        if isinstance(b, dict): block(f"lane {k}", b)
+    for b in bd["routing_by_p_cal"]["points"]:
+        block(f"routing, recalibrated p ≥ {b['threshold']}", b)
+    for c in bd["by_design"]["cells"]:
+        block(f"by design {c['cell']}", c)
+    cy = bd["curia_year"]
+    for k in ("before_2015", "from_2015"):
+        r(f"Curia year {k}", NF.t(cy[k]), cy[k], cy["at"]["file"], f"{cy['at']['key']} (years summed by build_pruefstand.py)", "count")
+    gc = bd["gold_chapters"]
+    r("gold chapters present", str(gc["chapters"]), gc["chapters"], gc["at"]["file"], gc["at"]["key"], "count")
+    we = bd["with_examples"]
+    r("affairs with examples (D4)", NF.t(we["value"]), we["value"], we["at"]["file"], we["at"]["key"], "count")
     return rows
 
 
@@ -464,7 +517,7 @@ def main():
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
         kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
-    gen = adhoc_rows()
+    gen = adhoc_rows() + s25_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
@@ -473,7 +526,7 @@ def main():
     from collections import Counter
     c = Counter(r["status"] for r in rows + gen)
     c.update(l.split("\t")[7] for l in kept)
-    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 generated {len(gen)})")
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

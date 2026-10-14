@@ -43,12 +43,8 @@ export function renderPruef(root) {
   }
   if (SRC['pruefstand.json'] === 'data-fixture/') left.append(h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `pruefstand.json ${L.fromFixture}`));
   if (P.curve) {
-    // the shipped operating point is the calibrated lane (p ≥ 0.7); the readings-agree point stays as a grey reference
-    const lt = D.conf && D.conf.lanes_tau, cv = { ...P.curve };
-    if (lt && cv.op && Math.abs(cv.op.coverage - lt.readings_agree.coverage) < 1e-4) {
-      cv.op2 = { ...cv.op, label_de: t().readAgree, label_fr: t().readAgree };
-      cv.op = { coverage: lt.pass_.coverage, precision: lt.pass_.precision, n: lt.pass_.n, label_de: 'ausgeliefert: p ≥ 0.7', label_fr: 'livré : p ≥ 0,7' };
-    }
+    // held out first: the S25 curve (black, red dot at the shipped lane); the design-set curve stays as a grey reference
+    const hc = D.conf && D.conf.curve, cv = hc ? { ...hc, ref: P.curve.points, refLabel: [P.curve.test, P.curve.test_fr] } : { ...P.curve };
     right.append(chart(cv));
   }
   if (D.conf) right.append(D.conf.lanes_tau ? lanesTau(D.conf.lanes_tau) : lanesBar(D.conf), confusion(D.conf));
@@ -59,7 +55,7 @@ function chart(cv) {
   const L = t(), fr = UI.lang === 'fr';
   const W = 400, H = 300, ml = 44, mr = 12, mt = 12, mb = 36;
   const pts = cv.points || [];
-  const ys = pts.map(p => p[1]);
+  const ys = pts.concat(cv.ref || []).map(p => p[1]);
   const y0 = Math.max(0, Math.floor((Math.min(...ys, cv.op ? cv.op.precision : 1) - .05) * 10) / 10), y1 = 1;
   const X = v => ml + v * (W - ml - mr), Y = v => mt + (1 - (v - y0) / (y1 - y0)) * (H - mt - mb);
   const svg = s('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': L.cpTitle });
@@ -73,6 +69,7 @@ function chart(cv) {
   }
   svg.append(s('line', { class: 'ax', x1: ml, x2: W - mr, y1: H - mb, y2: H - mb }), s('line', { class: 'ax', x1: ml, x2: ml, y1: mt, y2: H - mb }));
   const xl = s('text', { x: W - mr, y: H - 4, 'text-anchor': 'end' }); xl.textContent = `${L.cpX} %`; svg.append(xl);
+  if (cv.ref) svg.append(s('path', { class: 'ln ref', d: cv.ref.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join('') }));
   svg.append(s('path', { class: 'ln', d: pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join('') }));
   if (cv.op2) {
     const ox = X(cv.op2.coverage), oy = Y(cv.op2.precision);
@@ -88,6 +85,7 @@ function chart(cv) {
     h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 12px' }, `${(fr && cv.test_fr) || cv.test || ''} · n ${num(cv.n)}`),
     svg,
     cv.op ? h('p', { class: 'tm mono', style: 'font-size:12px;margin-top:8px' }, `${(fr ? cv.op.label_fr : cv.op.label_de) || ''}: ${L.cpX} ${pct(cv.op.coverage)}, ${L.cpY} ${p3(cv.op.precision)} (n ${num(cv.op.n)})`) : '',
+    cv.ref ? h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `${L.refCurve}: ${(fr && cv.refLabel[1]) || cv.refLabel[0]}`) : '',
     cv.file ? h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `${L.file}: ${cv.file}`) : '');
 }
 
@@ -119,7 +117,7 @@ function confusion(cf) {
         'data-tip': `${L.gold}: ${nm(r)} → ${L.pred}: ${nm(c)} · ${num(v)} ${L.of} ${num(tot)}${tot ? ` (${pct(sh)})` : ''}` }));
     });
   });
-  return h('div', { class: 'cfw' }, h('h3', {}, L.confusion),
+  return h('div', { class: 'cfw' }, h('h3', {}, (UI.lang === 'fr' ? cf.title_fr : cf.title_de) || L.confusion),
     h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, `${L.rowsGold} · ${L.colsPred} · n ${num(cf.n)} · top-1 ${p3(cf.correct / cf.n)}`), svg);
 }
 

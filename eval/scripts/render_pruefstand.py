@@ -77,13 +77,15 @@ w("## Human labels")
 w("")
 d4, d4s = T["aps_chapter_shipped_d4"], T["aps_chapter_d4s"]
 d3, d1, d2 = T["aps_chapter_examples"], T["aps_chapter_readback"], T["aps_chapter_pooling"]
+h25 = T["aps_chapter_heldout_s25"]
 w(f"### 1 · APS chapter vs APS editors — {num(d4['n'], 0)} federal affairs, pre-registered (S9, S16)")
 w("")
 w(f"Wayback process pages not used before; German title + submitted text. "
   f"Pre-registration: {L('PREREG.md § S9', d1['prereg'])}; the shipped federal design and its decision rule: {L('PREREG-BUILD.md § S16', d4['prereg'])}. "
   "D0–D3 are held out on these items (S9, nothing tuned on them). D4 is pre-registered (S16) and measured on the same S9 items, but its "
-  "design was chosen after S9 on those items (D4 combines D1 and D3), so its row is not a held-out result; the fresh held-out set is "
-  f"S25 ({L('PREREG-BUILD.md § S25', d4['prereg_more'])}, pre-registered, running, no result yet).")
+  f"design was chosen after S9 on those items (D4 combines D1 and D3): these {num(d4['n'], 0)} items are the set the shipped design was "
+  f"chosen on, so its row is not a held-out result. The held-out test of the shipped design is §1b: S25, {num(h25['n'], 0)} fresh "
+  f"federal affairs ({L('PREREG-BUILD.md § S25', d4['prereg_more'])}).")
 w("")
 w("| Design | top-1 | top-3 | Δ top-1, paired | |")
 w("|---|---|---|---|---|")
@@ -112,10 +114,10 @@ w(f"**Lanes of D4** (the reading with examples and the reading without agree / d
 w("")
 lr = T["aps_lane_rule"]; lrm = {x["metric"]: x for x in lr["results_more"]}; lrb = {x["name"]: x for x in lr["baselines"]}
 w(f"**Lane rule: `please check` when the recalibrated p < 0.7** — computed after S16 from its rows (not pre-registered; no new calls); "
-  f"tested held out in S25 ({L('PREREG-BUILD.md § S25', lr['prereg_more'])}, pre-registered, running). The isotonic map is 2-fold "
+  f"tested held out in S25 ({L('PREREG-BUILD.md § S25', lr['prereg_more'])}, §1b). The isotonic map is 2-fold "
   f"cross-fitted on the {num(lr['n'], 0)} S16 items, so every affair's recalibrated p comes from the half it was not fitted on "
   "([`eval/lanes/analyze.py`](../eval/lanes/analyze.py) → [`eval/lanes/results.json`](../eval/lanes/results.json)). The threshold was "
-  "chosen on these same items, so the numbers below are in-sample for the choice of rule. In production the rule is "
+  "chosen on these same items, so the numbers below are in-sample for the choice of rule (held out: §1b). In production the rule is "
   "`LANE_TAU` in [`src/querschnitt/compose.py`](../src/querschnitt/compose.py); a bilingual parliament whose German and French readings "
   "disagree still goes to `please check`.")
 w("")
@@ -173,8 +175,68 @@ w(f"D4 points are read from {L('S16 coverage_precision', cur['aps_d4']['at'])} (
   f"S9 rows recomputed from S9 raw logs by [`eval/scripts/aps_curves.py`](../eval/scripts/aps_curves.py) (full curve in 5% steps); the D3 precisions at "
   f"50, 70, 90 and 100% equal {L('S9 results.json', {'file': 'eval/spikes/s9-aps/results.json'})}. The app's chart is the D4 curve with "
   f"the shipped operating point marked: recalibrated p ≥ 0.7, coverage {L(F.pct(op['coverage']), op['at'])}, precision "
-  f"{L(num(op['precision']) + ci(op['ci']), op['at'])} (chosen after S16 on these items; tested held out in S25); the earlier point, readings "
+  f"{L(num(op['precision']) + ci(op['ci']), op['at'])} (chosen after S16 on these items; tested held out in S25, §1b); the earlier point, readings "
   f"agree, is shown for comparison: coverage {L(F.pct(oo['coverage']), oo['at'])}, precision {L(num(oo['precision']) + ci(oo['ci']), oo['at'])}.")
+w("")
+
+# ------------------------------------------------------------------ S25: the shipped design held out
+m25 = h25["results_more"]; b25 = h25["breakdowns"]; l25 = b25["lanes"]; t25, pa25, pb25 = m25[0], m25[1], m25[2]
+dd25 = {c["cell"]: c for c in b25["by_design"]["cells"]}
+w(f"### 1b · APS chapter held out — {num(h25['n'], 0)} fresh federal affairs, the shipped design as in production (S25, pre-registered)")
+w("")
+w(f"The held-out test of the shipped federal design. §1's {num(d4['n'], 0)} items are the set the design was chosen on; none of these "
+  f"{num(h25['n'], 0)} was used while designing. Items: federal affairs with an APS editors' chapter recovered from Wayback captures of "
+  "anneepolitique.swiss process pages, none in the S5 or S9 sets or in the example pool (the analysis asserts it), parsed with the S9 rules "
+  f"([`eval/s25/FETCH.md`](../eval/s25/FETCH.md)). The production pipeline as shipped, unchanged: D4 (the five BM25-nearest APS-labelled "
+  "examples from the S5+S9 pool + a second reading without examples, chapter read back from the subtopic) for the "
+  f"{L(num(dd25['D4']['n']), dd25['D4']['at'])} affairs with German text, D1 (no examples) for the {L(num(dd25['D1']['n']), dd25['D1']['at'])} "
+  "whose text is French or Italian; lanes by the recalibrated p with the calibration map fitted on S16 only; decisions composed exactly as "
+  "the export composes them ([`eval/s25/analyze.py`](../eval/s25/analyze.py) → [`eval/s25/results.json`](../eval/s25/results.json); "
+  f"one line per affair in [`eval/s25/decisions.jsonl`](../eval/s25/decisions.jsonl)). Pre-registration: {L('PREREG-BUILD.md § S25', h25['prereg'])} "
+  f"and {L('its amendment', h25['prereg_more'])} (a determinism fix before the final score).")
+w("")
+w(f"| n = {num(h25['n'], 0)}, gold = APS editors' chapter | top-1 | top-3 |")
+w("|---|---|---|")
+w(f"| **production pipeline as shipped, held out** | **{r(h25['result'])}** ({L(h25['result']['kn'], h25['result']['at'])}) | {r(t25)} |")
+w(f"| keyword (S9 frozen rule, same input) | {r(h25['baselines'][0])} | — |")
+w(f"| for reference: D4 on the design set (§1, other items, not held out) | {r(d4['result'])} | {r(m4[0])} |")
+w("")
+w(f"**Before the fix** ({L('amendment', h25['prereg_more'])}): the BM25 example retrieval summed over a Python set, whose order is "
+  "randomised per process, so a restarted run could ask different examples for the same affair. Two compositions of the finished run "
+  f"were seen with the old retrieval before the fix: {L(num(pa25['n']), pa25['at'])} scored, top-1 {L(num(pa25['value'], 4) + ' (' + pa25['kn'] + ')', pa25['at'])}"
+  f"{ci(pa25['ci95'])}, and {L(num(pb25['n']), pb25['at'])} scored, {L(num(pb25['value'], 4) + ' (' + pb25['kn'] + ')', pb25['at'])}{ci(pb25['ci95'])} "
+  "(Wilson intervals computed here from k and n). The final score above is the fixed code on all "
+  f"{num(h25['n'], 0)} affairs, scored once.")
+w("")
+lr_pass, lr_chk = lr["result"], lrm["D4: precision of the rest (recalibrated p < 0.7 → please check)"]
+lr_agree = lrb["D4 readings agree (lane rule until 14 Oct)"]
+DS = {"pass": lr_pass, "please_check": lr_chk, "readings_agree": lr_agree,
+      "readings_disagree": {"value": ld["precision"], "ci95": ld["ci95"], "n": ld["n"], "at": ln4["at"]}}
+w(f"| S25 lane, held out | share of affairs (n) | precision | design set, for reference (§1, {num(d4['n'], 0)} items: n, precision) |")
+w("|---|---|---|---|")
+for k_, nm_ in (("pass", "**pass: recalibrated p ≥ 0.7 (shipped)**"), ("please_check", "`please check`: recalibrated p < 0.7"),
+                ("readings_agree", "readings agree (earlier rule)"), ("readings_disagree", "readings disagree")):
+    c_ = l25[k_]; ref_ = DS[k_]
+    pv = f"**{r(c_)}**" if k_ == "pass" else r(c_)
+    w(f"| {nm_} | {L(F.pct(c_['share']), c_['at'])} ({L(num(c_['n']), c_['at'])}) | {pv} | {L(num(ref_['n']), ref_['at'])}, {r(ref_)} |")
+w("")
+w("The design-set figures of the recalibrated rule are in-sample for the choice of the 0.7 threshold (2-fold cross-fitted map); in S25 the map "
+  "is the one fitted on S16 and the threshold is fixed.")
+w("")
+rp = b25["routing_by_p_cal"]["points"]
+w("**Routing by the recalibrated p** (S25, held out; coverage = share of affairs at or above the threshold, precision of those):")
+w("")
+w("| recalibrated p ≥ | " + " | ".join(num(x["threshold"], 1) for x in rp) + " |")
+w("|---|" + "---|" * len(rp))
+w("| coverage | " + " | ".join(L(F.pct(x["coverage"]), x["at"]) for x in rp) + " |")
+w("| precision | " + " | ".join(r(x) for x in rp) + " |")
+w("| n | " + " | ".join(L(num(x["n"]), x["at"]) for x in rp) + " |")
+w("")
+cy = b25["curia_year"]; gc = b25["gold_chapters"]
+w(f"By design: D4 (German text, five examples) {r(dd25['D4'])}, n {num(dd25['D4']['n'])}; D1 (French or Italian text, no examples) "
+  f"{L(dd25['D1']['kn'], dd25['D1']['at'])}{ci(dd25['D1']['ci95'])} (small). By Curia year: {L(num(cy['before_2015']), cy['at'])} affairs "
+  f"submitted before 2015, {L(num(cy['from_2015']), cy['at'])} from 2015 on. Gold chapters ({L(str(gc['chapters']), gc['at'])} present): "
+  + " · ".join(f"{c_} {L(str(v_), gc['at'])}" for c_, v_ in gc["counts"].items()) + ".")
 w("")
 
 sub = T["aps_subtopic"]
@@ -649,6 +711,8 @@ w(f"- Where no official labels exist, the gold is the AI judge. It matches APS e
   "27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.")
 w(f"- New topics defined in one sentence are measured against the AI judge only. They flag every judge-relevant affair in S19 but over-flag "
   f"narrow topics: precision of flags {rk(p19['wolf']['precision'])} for wolf, {rk(p19['ki-schule']['precision'])} for AI in schools (§15).")
+w(f"- The held-out test (S25, §1b) scores the chapter and its lanes; subtopic and hierarchical figures of the shipped design (§2) are on the "
+  f"design set only. Its D1 cell (French or Italian text) holds {num(dd25['D1']['n'])} affairs.")
 w("- All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.")
 w("")
 w("## To measure")

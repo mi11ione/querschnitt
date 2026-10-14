@@ -17,8 +17,9 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
-| APS chapter vs APS editors, federal affairs (pre-registered; the shipped design combines the two best designs measured earlier on the same items — a fresh held-out set is S25) | 1,357 | **0.740** [0.716, 0.764] as shipped; the 66.8% that pass without a check (recalibrated p ≥ 0.7, cross-fitted) 0.864 [0.840, 0.886] | plain list prompting 0.655 · keywords 0.191 |
-| The same affairs as shipped: `make eval GOLD=data/eval/gold_aps_s9.csv` on the production rows (OPD inputs, the corpus pipeline) | 1,339 | 0.717 [0.692, 0.742]; top 3 0.860 | — |
+| APS chapter vs APS editors, 927 federal affairs never used while designing (held out, pre-registered) | 927 | **0.696** [0.666, 0.726]; top 3 0.839; the 67.3% that pass without a check (recalibrated p ≥ 0.7) 0.812 [0.779, 0.842], the rest 0.458 | keywords 0.186 |
+| The same question on the 1,357 federal affairs the shipped design was chosen on (pre-registered) | 1,357 | 0.740 [0.716, 0.764]; the 66.8% that pass without a check (cross-fitted) 0.864 [0.840, 0.886] | plain list prompting 0.655 · keywords 0.191 |
+| The same 1,357 as shipped: `make eval GOLD=data/eval/gold_aps_s9.csv` on the production rows (OPD inputs, the corpus pipeline) | 1,340 | 0.718 [0.693, 0.743]; top 3 0.860 | — |
 | The same affairs from the Italian vs the German text (read-back design, no examples) | 1,350 | Italian 0.702 [0.678, 0.727] · German 0.703 [0.678, 0.728]; difference +0.0007 [−0.020, +0.021] | — |
 | Bern's 8 directorates as a scheme file vs the Grand Council's own lead-directorate field, 2025–26, DE / FR titles | 531 | 0.651 [0.610, 0.691] / 0.650; DE–FR +0.001 [−0.031, +0.034] | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt's own 46 themes as a scheme file (names only) vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
@@ -46,8 +47,8 @@ prefill, served build, throughput, replay of stored prompts) before a run.
   APS-labelled affairs as examples and once without, in two code orders; elsewhere in two code orders (the second only when
   the first is below p 0.9); in bilingual parliaments (Bern, Fribourg, Valais, from OPD's body languages) in German and in
   French. The two readings feed the confidence and stay visible as the explanation; the lane is `please_check` when the
-  recalibrated p is below 0.7 or the German and French readings disagree, otherwise `pass` (on the federal APS affairs,
-  cross-fitted: 66.8% pass at precision 0.864; the readings-agree rule gave 0.826 at 64.1%).
+  recalibrated p is below 0.7 or the German and French readings disagree, otherwise `pass` (on the 927 held-out federal
+  affairs: 67.3% pass and are right in 0.812, the rest in 0.458; on the 1,357 design affairs, cross-fitted: 66.8% at 0.864).
 - **Read back from the subtopic.** One request over the subtopics of the top two or three chapters; the shipped chapter is
   the one read back from the chosen subtopic; the top three subtopics ship as ranked suggestions.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored

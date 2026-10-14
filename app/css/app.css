@@ -239,6 +239,7 @@ details>summary:hover{color:var(--ink)}
 .pr table col.c-d{width:30%}
 .chart svg{display:block;width:100%;height:auto}
 .chart .ln{fill:none;stroke:var(--ink);stroke-width:1.5}
+.chart .ln.ref{stroke:var(--r3);stroke-width:1}
 .chart .ax{stroke:var(--ink);stroke-width:1}
 .chart .gr{stroke:var(--hair);stroke-width:1}
 .chart text{font:400 var(--f1) var(--mono);fill:var(--ink2)}

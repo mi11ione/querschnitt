@@ -61,6 +61,11 @@ for pid, rows in proc.items():
         continue
     best = max(rows, key=lambda r: ("/fr/" not in r[0], r[1]))
     cands.append((pid, best, sn))
+if os.path.exists(f"{HERE}/extra_cands.json"):          # article route (art.py): process ids found via redirects
+    have = {c[0] for c in cands}
+    for pid, row in json.load(open(f"{HERE}/extra_cands.json")).items():
+        if pid not in have and pid not in EX_P:
+            cands.append((pid, row, slugnum([row])))
 cands.sort(key=lambda c: -int(c[0]))
 
 FET, ITEMS = f"{HERE}/fetched.jsonl", f"{HERE}/items.jsonl"

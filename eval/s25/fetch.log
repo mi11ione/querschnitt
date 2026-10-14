@@ -4,3 +4,112 @@ candidates 2578 done 21 qualifying 4
 75 tried, 30 qualifying, 0 err, 4.00s/item, pid 69388
 100 tried, 47 qualifying, 0 err, 3.94s/item, pid 69206
 125 tried, 61 qualifying, 0 err, 3.89s/item, pid 68996
+150 tried, 66 qualifying, 0 err, 3.84s/item, pid 68757
+175 tried, 67 qualifying, 0 err, 3.85s/item, pid 68602
+ERR 68543 URLError(gaierror(8, 'nodename nor servname provided, or not known'))
+ERR 68541 URLError(gaierror(8, 'nodename nor servname provided, or not known'))
+ERR 68540 URLError(gaierror(8, 'nodename nor servname provided, or not known'))
+ERR 68532 URLError(gaierror(8, 'nodename nor servname provided, or not known'))
+200 tried, 69 qualifying, 4 err, 4.48s/item, pid 68491
+ERR 68449 URLError(ConnectionRefusedError(61, 'Connection refused'))
+225 tried, 71 qualifying, 5 err, 4.31s/item, pid 68367
+250 tried, 77 qualifying, 5 err, 4.26s/item, pid 68071
+275 tried, 81 qualifying, 5 err, 4.20s/item, pid 67589
+300 tried, 85 qualifying, 5 err, 4.21s/item, pid 67175
+ERR 67091 URLError(ConnectionRefusedError(61, 'Connection refused'))
+325 tried, 86 qualifying, 6 err, 4.12s/item, pid 67003
+350 tried, 86 qualifying, 6 err, 4.16s/item, pid 66837
+375 tried, 87 qualifying, 6 err, 4.11s/item, pid 66537
+400 tried, 88 qualifying, 6 err, 4.07s/item, pid 66342
+425 tried, 90 qualifying, 6 err, 4.07s/item, pid 66213
+450 tried, 93 qualifying, 6 err, 4.05s/item, pid 65999
+475 tried, 95 qualifying, 6 err, 4.07s/item, pid 65808
+500 tried, 105 qualifying, 6 err, 4.08s/item, pid 65560
+525 tried, 107 qualifying, 6 err, 4.05s/item, pid 65406
+550 tried, 107 qualifying, 6 err, 4.16s/item, pid 65253
+575 tried, 111 qualifying, 6 err, 4.18s/item, pid 65122
+600 tried, 114 qualifying, 6 err, 4.15s/item, pid 64928
+625 tried, 116 qualifying, 6 err, 4.12s/item, pid 64725
+650 tried, 119 qualifying, 6 err, 4.10s/item, pid 64575
+675 tried, 130 qualifying, 6 err, 4.09s/item, pid 64416
+700 tried, 138 qualifying, 6 err, 4.07s/item, pid 64229
+725 tried, 139 qualifying, 6 err, 4.05s/item, pid 64039
+750 tried, 143 qualifying, 6 err, 4.07s/item, pid 63851
+775 tried, 149 qualifying, 6 err, 4.03s/item, pid 63742
+800 tried, 162 qualifying, 6 err, 4.01s/item, pid 63533
+825 tried, 173 qualifying, 6 err, 4.00s/item, pid 63365
+850 tried, 181 qualifying, 6 err, 3.98s/item, pid 63122
+875 tried, 188 qualifying, 6 err, 3.96s/item, pid 62867
+900 tried, 194 qualifying, 6 err, 3.96s/item, pid 62660
+925 tried, 198 qualifying, 6 err, 3.95s/item, pid 62514
+950 tried, 201 qualifying, 6 err, 4.00s/item, pid 62405
+ERR 62312 URLError(ConnectionRefusedError(61, 'Connection refused'))
+975 tried, 215 qualifying, 7 err, 4.00s/item, pid 62273
+1000 tried, 220 qualifying, 7 err, 4.00s/item, pid 62093
+1025 tried, 230 qualifying, 7 err, 3.98s/item, pid 61885
+1050 tried, 234 qualifying, 7 err, 4.05s/item, pid 61749
+1075 tried, 237 qualifying, 7 err, 4.04s/item, pid 61378
+1100 tried, 250 qualifying, 7 err, 4.03s/item, pid 61106
+1125 tried, 258 qualifying, 7 err, 4.02s/item, pid 60891
+1150 tried, 267 qualifying, 7 err, 4.01s/item, pid 60776
+1175 tried, 270 qualifying, 7 err, 4.00s/item, pid 60695
+1200 tried, 276 qualifying, 7 err, 4.00s/item, pid 60638
+1225 tried, 289 qualifying, 7 err, 3.98s/item, pid 60437
+1250 tried, 302 qualifying, 7 err, 3.97s/item, pid 60265
+1275 tried, 312 qualifying, 7 err, 3.95s/item, pid 60199
+1300 tried, 336 qualifying, 7 err, 3.96s/item, pid 60081
+ERR 60012 URLError(ConnectionRefusedError(61, 'Connection refused'))
+1325 tried, 359 qualifying, 8 err, 3.95s/item, pid 59999
+1350 tried, 376 qualifying, 8 err, 3.93s/item, pid 59947
+1375 tried, 389 qualifying, 8 err, 3.98s/item, pid 59863
+1400 tried, 405 qualifying, 8 err, 3.97s/item, pid 59763
+1425 tried, 419 qualifying, 8 err, 3.97s/item, pid 59659
+1450 tried, 435 qualifying, 8 err, 3.96s/item, pid 59514
+1475 tried, 447 qualifying, 8 err, 3.95s/item, pid 59374
+1500 tried, 459 qualifying, 8 err, 3.94s/item, pid 59232
+1525 tried, 475 qualifying, 8 err, 3.94s/item, pid 59133
+1550 tried, 496 qualifying, 8 err, 3.94s/item, pid 59029
+1575 tried, 513 qualifying, 8 err, 3.96s/item, pid 58891
+1600 tried, 525 qualifying, 8 err, 3.95s/item, pid 58767
+1625 tried, 532 qualifying, 8 err, 3.93s/item, pid 58643
+1650 tried, 554 qualifying, 8 err, 3.93s/item, pid 58521
+1675 tried, 575 qualifying, 8 err, 3.93s/item, pid 58367
+1700 tried, 593 qualifying, 8 err, 3.93s/item, pid 58177
+1725 tried, 606 qualifying, 8 err, 3.93s/item, pid 57975
+1750 tried, 622 qualifying, 8 err, 3.92s/item, pid 57681
+1775 tried, 640 qualifying, 8 err, 3.92s/item, pid 57454
+1800 tried, 653 qualifying, 8 err, 3.92s/item, pid 57265
+1825 tried, 669 qualifying, 8 err, 3.91s/item, pid 56974
+1850 tried, 688 qualifying, 8 err, 3.92s/item, pid 56659
+1875 tried, 696 qualifying, 8 err, 3.92s/item, pid 56198
+1900 tried, 702 qualifying, 8 err, 3.91s/item, pid 55953
+1925 tried, 705 qualifying, 8 err, 3.91s/item, pid 55565
+1950 tried, 717 qualifying, 8 err, 3.90s/item, pid 55163
+1975 tried, 728 qualifying, 8 err, 3.90s/item, pid 54713
+2000 tried, 728 qualifying, 8 err, 3.89s/item, pid 53337
+2025 tried, 729 qualifying, 8 err, 3.89s/item, pid 38549
+2050 tried, 739 qualifying, 8 err, 3.88s/item, pid 34530
+2075 tried, 752 qualifying, 8 err, 3.88s/item, pid 31652
+2100 tried, 767 qualifying, 8 err, 3.88s/item, pid 29570
+2125 tried, 782 qualifying, 8 err, 3.88s/item, pid 27972
+2150 tried, 788 qualifying, 8 err, 3.87s/item, pid 27209
+2175 tried, 796 qualifying, 8 err, 3.86s/item, pid 25185
+2200 tried, 804 qualifying, 8 err, 3.86s/item, pid 23953
+2225 tried, 810 qualifying, 8 err, 3.85s/item, pid 21303
+2250 tried, 821 qualifying, 8 err, 3.85s/item, pid 18640
+2275 tried, 834 qualifying, 8 err, 3.84s/item, pid 17256
+2300 tried, 845 qualifying, 8 err, 3.85s/item, pid 15140
+2325 tried, 855 qualifying, 8 err, 3.84s/item, pid 12981
+2350 tried, 866 qualifying, 8 err, 3.84s/item, pid 10708
+2375 tried, 874 qualifying, 8 err, 3.83s/item, pid 7614
+2400 tried, 875 qualifying, 8 err, 3.83s/item, pid 6418
+2425 tried, 875 qualifying, 8 err, 3.82s/item, pid 6034
+ERR 5747 URLError(ConnectionRefusedError(61, 'Connection refused'))
+2450 tried, 875 qualifying, 9 err, 3.82s/item, pid 5281
+2475 tried, 887 qualifying, 9 err, 3.82s/item, pid 3243
+2500 tried, 901 qualifying, 9 err, 3.82s/item, pid 2500
+2525 tried, 911 qualifying, 9 err, 3.81s/item, pid 1906
+2550 tried, 922 qualifying, 9 err, 3.81s/item, pid 743
+DONE tried 2557 qualifying 925 err 9 in 9736s
+candidates 2585 done 2569 qualifying 925
+DONE tried 16 qualifying 927 err 0 in 55s

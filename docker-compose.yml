@@ -58,10 +58,11 @@ services:
   nightly-lite:
     <<: *common
     profiles: [lite]
-    command: ["python", "-m", "querschnitt", "nightly"]
+    # the DSN is checked here, not with ${VAR:?}: compose interpolates every service, so that would break `--profile full`
+    command: ["sh", "-c", "test -n \"$$QS_PG_DSN\" || { echo 'set QS_PG_DSN to the existing Postgres (the topics table is created if missing)'; exit 2; }; exec python -m querschnitt nightly"]
     environment:
       <<: *model-env
-      QS_PG_DSN: ${QS_PG_DSN:?set QS_PG_DSN to the existing Postgres (the topics table is created if missing)}
+      QS_PG_DSN: ${QS_PG_DSN:-}
       QS_PROFILE: lite
     volumes: [data:/app/data, runs:/app/runs]
     healthcheck: {disable: true}

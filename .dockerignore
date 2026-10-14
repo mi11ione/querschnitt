@@ -8,3 +8,6 @@ data/cache
 app/data-fixture
 app/dev
 node_modules
+data/opd
+data/inputs.jsonl.gz
+.ruff_cache

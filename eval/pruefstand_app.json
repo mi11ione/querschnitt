@@ -154,6 +154,24 @@
    "split_fr": "déposés après la publication du modèle BFH"
   },
   {
+   "test": "Bern, Leitdirektion (8), Grossratsgeschäfte 2025–26, Produktionslauf",
+   "test_fr": "Berne, direction compétente (8), objets du Grand Conseil 2025–26, production",
+   "gold": "human",
+   "design": "Schema-Datei, Titel DE / FR",
+   "design_fr": "fichier de schéma, titre DE / FR",
+   "n": 531,
+   "result": "DE 0.651 · FR 0.650",
+   "interval": [
+    0.61,
+    0.691
+   ],
+   "baseline": "Stichwort 0.525 / 0.512 · Mehrheit 0.214",
+   "baseline_fr": "mots-clés 0,525 / 0,512 · majorité 0,214",
+   "split": "vorregistriert (S18), nichts abgestimmt",
+   "split_fr": "préenregistré (S18), rien d'ajusté",
+   "file": "querschnitt/eval/s18/results.json"
+  },
+  {
    "test": "Bern, Leitdirektion (8), Titel, DE / FR",
    "test_fr": "Berne, direction responsable (8), titres, DE / FR",
    "gold": "human",

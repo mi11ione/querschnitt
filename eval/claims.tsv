@@ -402,3 +402,14 @@ S16	-	0.586	S16 lanes_D4 > disagree_precision	0.5864	bern/querschnitt/eval/s16/r
 S16	-	64%	S16 lanes_D4 > agree_share	0.6419	bern/querschnitt/eval/s16/results.json	lanes_D4 > agree_share	OK		truncated, never rounded up
 S16	-	0.021	S16 calibration > aps-fed (D4) > ece_crossfit	0.0211	bern/querschnitt/eval/s16/results.json	calibration > aps-fed (D4) > ece_crossfit	OK		truncated, never rounded up
 S16	-	0.246	S16 calibration > aps-fed (D4) > ece_raw	0.2463	bern/querschnitt/eval/s16/results.json	calibration > aps-fed (D4) > ece_raw	OK		truncated, never rounded up
+S18	-	531	S18 n_scored	531	bern/querschnitt/eval/s18/results.json	n_scored	OK		truncated, never rounded up
+S18	-	0.651	S18 lang_de > acc	0.6516	bern/querschnitt/eval/s18/results.json	lang_de > acc	OK		truncated, never rounded up
+S18	-	0.650	S18 lang_fr > acc	0.6503	bern/querschnitt/eval/s18/results.json	lang_fr > acc	OK		truncated, never rounded up
+S18	-	0.610	S18 lang_de > ci[0]	0.61	bern/querschnitt/eval/s18/results.json	lang_de > ci[0]	OK		truncated, never rounded up
+S18	-	0.691	S18 lang_de > ci[1]	0.691	bern/querschnitt/eval/s18/results.json	lang_de > ci[1]	OK		truncated, never rounded up
+S18	-	0.525	S18 keyword > acc	0.5254	bern/querschnitt/eval/s18/results.json	keyword > acc	OK		truncated, never rounded up
+S18	-	0.512	S18 lang_fr > keyword	0.5123	bern/querschnitt/eval/s18/results.json	lang_fr > keyword	OK		truncated, never rounded up
+S18	-	0.214	S18 majority > acc	0.2147	bern/querschnitt/eval/s18/results.json	majority > acc	OK		truncated, never rounded up
+S18	-	0.002	S18 paired diff	0.0019	bern/querschnitt/eval/s18/results.json	paired diff	OK		truncated, never rounded up
+S18	-	0.030	S18 paired ci[0] (abs)	0.0302	bern/querschnitt/eval/s18/results.json	paired ci[0] (abs)	OK		truncated, never rounded up
+S18	-	0.034	S18 paired ci[1]	0.034	bern/querschnitt/eval/s18/results.json	paired ci[1]	OK		truncated, never rounded up

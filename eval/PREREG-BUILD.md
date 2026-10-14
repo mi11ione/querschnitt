@@ -65,3 +65,11 @@ their «Thema 1», in the S9 D3 example shape ("Frühere Geschäfte mit ihren Th
 examples for every item (run where S20 did not); decision = top of the mean of the two.
 Primary: top-1 = Thema 1, paired against S20 on the same items (paired bootstrap 2,000). Secondary: Thema 1 or 2, top-3,
 lanes. Reported as measured.
+
+## 2026-10-14 14:30 CEST — S22 Italian on human labels (written before any S22 call)
+Items: the S9 held-out federal affairs whose OPD Italian title differs from the French one (1,350 of 1,357); gold = APS editors'
+chapter. Italian input: OPD `title_it` + `title_long_it` + the Italian submitted text from OPD's texts export («Testo
+depositato», first 1,500 characters) where it differs from the French text, else title only. Design D1 in the Italian frame
+(S6 frames; chapter names in Italian, subtopic names German as published): both code orders, one subtopic request over the
+top 2–3 chapters, chapter read back. Primary: top-1 Italian vs the S9 D1 German top-1 on the same items (paired bootstrap
+2,000). Secondary: top-3; Italian with vs without submitted text. Reported as measured.

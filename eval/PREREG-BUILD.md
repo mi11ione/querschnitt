@@ -101,3 +101,14 @@ random (random.Random(26) over the pid-sorted packet) are the editor's first dec
 item is re-scored with the shipped yes/no rule (order a; order b when 0.1 < p < 0.9; flag at mean p ≥ 0.5) with examples.
 Primary: precision of flags on the re-scored items vs S19's flags on the same items (paired bootstrap 2,000). Secondary:
 weighted recall (S19 estimator), flags per topic. Reported as measured.
+
+## 2026-10-14 23:05 CEST — S27 a second, stricter check on flagged affairs for new topics (after S19/S26 results; dev/test split fixed now)
+Question: does a verification step on flagged affairs raise precision of one-sentence topics without losing recall?
+Design V: affairs flagged by the shipped yes/no rule get one more closed question, same frame and input (title + long title):
+"Ist «{name}» ein zentrales Thema dieses Geschäfts – nicht nur am Rande erwähnt oder bloss ähnlich?" A = Ja, zentral /
+B = Nein (order a; order b when 0.1 < p < 0.9; keep the flag at mean p ≥ 0.5); de/fr/it frames as the yes/no step.
+Dev (tuning allowed: wording of the verification only, at most 3 variants): the 577 affairs of the S13 census week
+(30 Sep–6 Oct 2026) for the three S13 topics, gold = blind Claude judge A/B + tie-break C on every flagged affair and on
+60 random unflagged affairs per topic (S19 guide). Test (held out, no tuning): the S19 packets and gold; the single variant
+chosen on dev is applied once. Primary (test): precision of flags with V vs without (paired bootstrap over items); secondary:
+recall among judged positives, per topic. Reported as measured.

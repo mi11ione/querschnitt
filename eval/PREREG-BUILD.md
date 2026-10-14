@@ -112,3 +112,6 @@ Dev (tuning allowed: wording of the verification only, at most 3 variants): the 
 60 random unflagged affairs per topic (S19 guide). Test (held out, no tuning): the S19 packets and gold; the single variant
 chosen on dev is applied once. Primary (test): precision of flags with V vs without (paired bootstrap over items); secondary:
 recall among judged positives, per topic. Reported as measured.
+Amendment 2026-10-14 23:10 CEST (before any S27 call): the S13 dev week holds only 33 flags (wolf 4, hitze 24, ki-schule 5),
+too few to choose between wordings. S27 therefore uses the single wording above with no tuning and no dev step; it is applied
+once to the S19 packets (test). Everything else unchanged.

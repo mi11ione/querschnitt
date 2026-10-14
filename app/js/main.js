@@ -31,14 +31,16 @@ function renderShell() {
   $('#fixture').textContent = L.fixture;
   $('#build').replaceChildren(`${L.build} `, h('b', {}, m.build_short || String(m.build || '').slice(-8)));
   // fact line: affairs, parliaments, scored share, build, last night's new rows, pending rows
-  const night = (m.nightly && (m.nightly.new_rows ?? m.nightly.rows)) ?? (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
+  const ng = m.nightly || null, nRows = ng ? (ng.new_rows ?? ng.rows ?? ng.scored ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
+  const night = ng ? [nRows != null ? num(nRows) : (ng.date || '').slice(5, 10).split('-').reverse().join('.'), ng.wall_min != null ? `${L.night} · ${num(ng.wall_min)} min` : L.night]
+    : nRows != null ? [num(nRows), L.night] : null;
   const items = [
     [num(m.affairs ?? D.n), L.affairs],
     [num(m.parliaments ?? D.bodies.length), L.parls],
     [pct(m.scored_share), `${L.scored} (APS)`],
     m.dig_scored != null ? [num(m.dig_scored), `${L.scored} (${(TOPIC_BY_ID.get('adhoc/digitalisierung') || { names: { de: 'Digitalisierung', fr: 'numérique' } }).names[UI.lang]})`] : null,
     [m.build_short || String(m.build || '').slice(-8), L.build, true],
-    [night != null ? num(night) : '–', L.night],
+    night,
     [num(m.please_check ?? 0), L.pending],
   ].filter(Boolean);
   $('#facts').replaceChildren(...items.map(([v, k, pre]) => h('span', {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));

@@ -28,14 +28,15 @@ export function renderPruef(root) {
     const file = r0.file ? (/^https?:/.test(r0.file) ? h('a', { href: r0.file, target: '_blank', rel: 'noopener' }, r0.file) : r0.file) : '';
     const sec = h('section', { class: 'test' },
       h('h3', {}, (fr && r0.test_fr) || name),
-      h('p', { class: 'tm' }, [r0.split ? `${L.split}: ${r0.split}` : '', r0.file ? `${L.file}: ` : ''].filter(Boolean).join(' · '), file));
+      h('p', { class: 'tm' }, [r0.split ? `${L.split}: ${(fr && r0.split_fr) || r0.split}` : '', r0.file ? `${L.file}: ` : ''].filter(Boolean).join(' · '), file));
     const tb = h('table', {}, h('colgroup', {}, h('col', { class: 'c-d' }), h('col'), h('col'), h('col'), h('col')),
       h('thead', {}, h('tr', {}, h('th', {}, L.design), h('th', { class: 'n' }, 'n'), h('th', {}, L.result), h('th', {}, L.ci), h('th', {}, L.baseline))));
     const body = h('tbody');
     for (const r of rs) {
       const ci = Array.isArray(r.interval) ? `[${r.interval.join(', ')}]` : (r.interval || '–');
-      body.append(h('tr', {}, h('td', {}, (fr && r.design_fr) || r.design), h('td', { class: 'n' }, num(r.n)), h('td', { class: 'res' }, String(r.result)),
-        h('td', { class: 'res' }, ci), h('td', { class: 'base' }, r.baseline || '–')));
+      const ship = r === order[0][1][0]; // the production row leads the first human-label table
+      body.append(h('tr', { class: ship ? 'ship' : '' }, h('td', {}, (fr && r.design_fr) || r.design), h('td', { class: 'n' }, num(r.n)), h('td', { class: 'res' }, String((fr && r.result_fr) || r.result)),
+        h('td', { class: 'res' }, ci), h('td', { class: 'base' }, (fr && r.baseline_fr) || r.baseline || '–')));
     }
     tb.append(body); sec.append(h('div', { class: 'tw' }, tb)); left.append(sec);
   }
@@ -65,7 +66,7 @@ function chart(cv) {
   if (cv.op) {
     const ox = X(cv.op.coverage), oy = Y(cv.op.precision);
     svg.append(s('circle', { class: 'op', cx: ox, cy: oy, r: 5 }));
-    const tx = s('text', { x: ox + 9, y: oy + 18, class: 'opl' }); tx.textContent = `${pct(cv.op.coverage)} · ${p3(cv.op.precision)}`; svg.append(tx);
+    const tx = s('text', { x: ox - 9, y: oy + 20, class: 'opl', 'text-anchor': 'end' }); tx.textContent = `${pct(cv.op.coverage)} · ${p3(cv.op.precision)}`; svg.append(tx);
   }
   return h('div', { class: 'chart' },
     h('h3', {}, L.cpTitle),

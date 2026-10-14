@@ -19,7 +19,7 @@ const SCEN = [
   { name: 'karte-detail-1440', w: 1440, h: 900, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'karte-search-1440', w: 1440, h: 900, url: '#karte', steps: [`(()=>{const q=document.querySelector('#v-karte .filters input');q.value='rechenzentr|data cent|centre de donn|centri dati|datacenter';q.dispatchEvent(new Event('input'))})()`, 400, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'pult-1440', w: 1440, h: 900, url: '#karte?m=pult&tab=todo', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
-  { name: 'karte-fr-1440', w: 1440, h: 900, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'f'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  { name: 'karte-fr-1440', w: 1440, h: 900, url: '#karte', steps: [`localStorage.clear()`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'f'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'karte-1100', w: 1100, h: 800, url: '#karte' },
   { name: 'neu-1440', w: 1440, h: 900, url: '#neu' },
   { name: 'pruef-1440', w: 1440, h: 900, url: '#pruef' },
@@ -32,6 +32,14 @@ const SCEN = [
   { name: 'pult-live-1440', live: true, w: 1440, h: 900, url: '#karte?m=pult&tab=todo', steps: [`localStorage.setItem('qs.who','R. Test')`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'1'}))`, 600, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'k'}))`] },
   { name: 'picker-1440', w: 1440, h: 900, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'t'}))`, `(()=>{const i=document.querySelector('.picker input');i.value='verk';i.dispatchEvent(new Event('input'))})()`] },
   { name: 'chapter-1440', w: 1440, h: 900, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'t'}))`, `(()=>{const i=document.querySelector('.picker input');i.value='numérique';i.dispatchEvent(new Event('input'));i.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}))})()`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'t'}))`, `(()=>{const i=document.querySelector('.picker input');i.value='Gesundheit';i.dispatchEvent(new Event('input'));i.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}))})()`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `window.__csv = __qs.karte.exportCsv().then(()=>'ok',e=>'ERR '+e)`] },
+  { name: 'bern-1440', w: 1440, h: 900, url: '#karte?t=be-directorates', steps: [`(()=>{const k=__qs.karte, c=__qs.D.c; const i=k.items.find(i=>c.bi[i]===1); if(i!=null) k.select(c.id[i]);})()`] },
+  { name: 'bern-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?t=be-directorates', steps: [`(()=>{const k=__qs.karte, c=__qs.D.c; const i=k.items.find(i=>c.bi[i]===1); if(i!=null) k.select(c.id[i]);})()`,
+     `(URL.createObjectURL=b=>{b.text().then(t=>window.__csv=t);return '#'},HTMLAnchorElement.prototype.click=function(){})`, `__qs.karte.exportCsv()`, 800], print: `(()=>{const L=(window.__csv||'').split(String.fromCharCode(10));return L.slice(0,2).concat(L.slice(-1)).join(' ¶ ')})()` },
+  { name: 'csv-fr', w: 1440, h: 900, lang: 'fr', url: '#karte', steps: [`(URL.createObjectURL=b=>{b.text().then(t=>window.__csv=t);return '#'},HTMLAnchorElement.prototype.click=function(){})`, `__qs.karte.exportCsv()`, 1500], print: `(()=>{const L=(window.__csv||'').split(String.fromCharCode(10));return L.slice(0,2).concat(L.slice(-1)).join(' ¶ ')})()` },
+  { name: 'evidence', w: 1440, h: 900, url: '#karte', steps: [], print: `import('./js/case.js').then(m=>[m.highlight('abc def ghi',{field:'text',start:4,end:7,quote:'def'},'text','de').innerHTML, m.highlight('abc def ghi',{field:'text',start:1,end:2,quote:'ghi'},'text','de').innerHTML, m.highlight('abc',{field:'title_long',start:0,end:1,quote:'a'},'text','de').innerHTML].join(' | '))` },
+  { name: 'pult-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?m=pult&tab=todo', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  { name: 'pruef-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#pruef' },
+  { name: 'neu-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#neu' },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 
@@ -80,6 +88,7 @@ async function main() {
     if (sc.full) { const m = JSON.parse(info); params.clip = { x: 0, y: 0, width: sc.w, height: Math.min(m.h, 6000), scale: 1 }; params.captureBeyondViewport = true; }
     const shot = await send('Page.captureScreenshot', params, S);
     writeFileSync(join(HERE, 'shots', `${sc.name}.png`), Buffer.from(shot.data, 'base64'));
+    if (sc.print) console.log(await evalJs(sc.print));
     console.log(`${sc.name}: ready ${ready} ms ${info}${errs.length ? '\n  ' + errs.join('\n  ') : ''}`);
   }
   ws.close(); ch.kill('SIGTERM');

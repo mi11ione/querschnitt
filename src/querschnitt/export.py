@@ -51,7 +51,7 @@ def run(args):
     with gzip.open(args.inputs, "rt") as f:
         for line in f:
             x = json.loads(line)
-            if x["date"]:
+            if x["date"] and x["date"][:4] >= "1800":   # a few OPD dates are typos (e.g. 0209)
                 first_year[x["body"]] = min(first_year[x["body"]], x["date"][:4])
             if x["date"] and args.since <= x["date"] <= args.until:
                 X.append(x)

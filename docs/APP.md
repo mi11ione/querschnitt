@@ -70,3 +70,16 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 7. Evidence: app accepts `{field: title|title_long|text, start|char_start, end|char_end, quote}` in `detail.dig` / `detail.aps`
    and falls back to searching the quote if offsets do not match the shown text.
 8. `app/data/geo.json` is written by `app/dev/make_geo.py`; the export must not delete it (or call the script).
+
+## Polish round (14 Oct)
+- Bern scheme swap: picker group «Schemata» → «Kanton Bern: Direktionen» (topic `be-directorates`, scope BE). List sorted by
+  directorate (abbr in the p column), Direktion filter, summary table per directorate (click filters), detail shows abbr +
+  name in the UI language, p, and the Grand Council's own field (`be.gold`). Pult lane for this scheme = `bi` (DE/FR readings
+  disagree). Decisions POST code `be:<CODE>`, scheme `be-directorates`.
+- Every affair with `aps.bilingual` shows `DE <chapter> · FR <chapter> → <lane>` (red only for please_check).
+- Evidence: `{field, start, end, quote}` per `detail.dig|aps|be.evidence`; title highlight sits in the heading; long title is
+  shown whenever it carries the evidence; a text with evidence is never collapsed.
+- Fact line: «letzte Nacht» only when `meta.nightly` (or `/metrics`) has it; renders new rows, else date, plus `wall_min`.
+- CSV headers, level names, topic and method line follow the UI language. Prüfstand uses `*_fr` fields when present
+  (some rows still carry German baseline/split only); the first row of the first human table is set in bold.
+- Coverage now uses `n_by_month`; `covered_from` years before 1800 (OPD body 616: "0209") are dropped.

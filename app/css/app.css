@@ -266,3 +266,5 @@ details>summary:hover{color:var(--ink)}
 .more{display:block;margin-top:4px;font:400 var(--f1)/1.5 var(--mono)}
 @media (max-width:599px){.filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media (max-width:599px){.cov{display:none}}
+.fl.wide{grid-column:1/-1}
+.pr tr.ship td{font-weight:600;color:var(--ink)}.pr tr.ship td.res{font-weight:400}

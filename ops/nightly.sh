@@ -19,5 +19,11 @@ day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
   echo "-- $(date '+%F %T') after model pass:"; $PY -m querschnitt metrics
   [ "$cut" = 1 ] && echo "drain_minutes=$(( (t2 - t1) / 60 ))"
   echo "== $(date '+%F %T') nightly end, wall $(( (t2 - t0) / 60 )) min"
-  $PY -c "import json,sys,time; json.dump(dict(date=time.strftime('%F'), cut=bool($cut), wall_min=round(($t2-$t0)/60,1)), open('runs/nightly/last.json','w'))"
+  $PY - <<PYEOF
+import json, time
+from querschnitt.store import Store
+m = Store().metrics() if hasattr(Store, "metrics") else {}
+json.dump(dict(date=time.strftime('%F'), endpoint_cut_first_pass=bool($cut), wall_min=round(($t2-$t0)/60, 1),
+               new_rows=(m.get("last_run") or {}).get("affairs"), pending=m.get("pending")), open('runs/nightly/last.json', 'w'))
+PYEOF
 } >> "$L" 2>&1

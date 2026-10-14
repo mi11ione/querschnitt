@@ -33,7 +33,8 @@
    "baseline": "D3 0.722: Δ +0.018 [+0.002, +0.034]",
    "split": "held-out, vorregistriert (S16)",
    "split_fr": "hors échantillon, préenregistré (S16)",
-   "file": "querschnitt/eval/s16/results.md"
+   "file": "querschnitt/eval/s16/results.md",
+   "baseline_fr": "D3 0,722: Δ +0,018 [+0,002, +0,034]"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -49,7 +50,9 @@
    ],
    "baseline": "Listen-Prompt 0.655 · Stichwort 0.192 · Mehrheit 0.080",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md"
+   "file": "ideation2/spikes/s9-aps/results.md",
+   "baseline_fr": "liste 0,655 · mots-clés 0,192 · majorité 0,080",
+   "split_fr": "hors échantillon, préenregistré"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -65,7 +68,9 @@
    ],
    "baseline": "Listen-Prompt 0.655",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md"
+   "file": "ideation2/spikes/s9-aps/results.md",
+   "baseline_fr": "liste 0,655",
+   "split_fr": "hors échantillon, préenregistré"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -81,7 +86,9 @@
    ],
    "baseline": "—",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md"
+   "file": "ideation2/spikes/s9-aps/results.md",
+   "baseline_fr": "—",
+   "split_fr": "hors échantillon, préenregistré"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -94,7 +101,9 @@
    "interval": null,
    "baseline": "Δ vs D0 −0.021 [−0.037, −0.004]",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md"
+   "file": "ideation2/spikes/s9-aps/results.md",
+   "baseline_fr": "Δ vs D0 −0,021 [−0,037, −0,004]",
+   "split_fr": "hors échantillon, préenregistré"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, Bundesgeschäfte",
@@ -107,7 +116,9 @@
    "interval": null,
    "baseline": "—",
    "split": "held-out, vorregistriert",
-   "file": "ideation2/spikes/s9-aps/results.md"
+   "file": "ideation2/spikes/s9-aps/results.md",
+   "baseline_fr": "—",
+   "split_fr": "hors échantillon, préenregistré"
   },
   {
    "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",
@@ -120,7 +131,9 @@
    "interval": null,
    "baseline": "Stichwort 21/30 · KI-Richter 27/30",
    "split": "alle öffentlichen Einträge",
-   "file": "ideation2/spikes/s8-dvs/results.md"
+   "file": "ideation2/spikes/s8-dvs/results.md",
+   "baseline_fr": "mots-clés 21/30 · juge IA 27/30",
+   "split_fr": "toutes les entrées publiques"
   },
   {
    "test": "Sachbereiche Bund vs. Curia-Tags",
@@ -137,7 +150,8 @@
    "baseline": "BFH (trainiert, 15'007) 0.687 [0.652, 0.722]",
    "split": "nach BFH-Publikation eingereicht",
    "file": "ideation/spikes/s5",
-   "baseline_fr": "BFH (entraîné, 15 007) 0,687 [0,652, 0,722]"
+   "baseline_fr": "BFH (entraîné, 15 007) 0,687 [0,652, 0,722]",
+   "split_fr": "déposés après la publication du modèle BFH"
   },
   {
    "test": "Bern, Leitdirektion (8), Titel, DE / FR",
@@ -150,7 +164,9 @@
    "interval": null,
    "baseline": "Stichwort 0.520 / 0.495 · Mehrheit 0.175",
    "split": "Grossratsfeld",
-   "file": "ideation/spikes/s6"
+   "file": "ideation/spikes/s6",
+   "baseline_fr": "mots-clés 0,520 / 0,495 · majorité 0,175",
+   "split_fr": "champ du Grand Conseil"
   },
   {
    "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
@@ -166,7 +182,9 @@
    ],
    "baseline": "Stichwort 0.753 [0.714, 0.790]",
    "split": "453 geprüft, gewichtet",
-   "file": "ideation2/spikes/s8-dvs/results.md"
+   "file": "ideation2/spikes/s8-dvs/results.md",
+   "baseline_fr": "mots-clés 0,753 [0,714, 0,790]",
+   "split_fr": "453 vérifiés, pondérés"
   },
   {
    "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
@@ -182,7 +200,9 @@
    ],
    "baseline": "Stichwort 0.605 [0.451, 0.827]",
    "split": "453 geprüft, gewichtet",
-   "file": "ideation2/spikes/s8-dvs/results.md"
+   "file": "ideation2/spikes/s8-dvs/results.md",
+   "baseline_fr": "mots-clés 0,605 [0,451, 0,827]",
+   "split_fr": "453 vérifiés, pondérés"
   },
   {
    "test": "Beleg stützt das Thema (blinder KI-Richter)",
@@ -198,7 +218,9 @@
    ],
    "baseline": "—",
    "split": "Stichprobe",
-   "file": "ideation2/spikes/s12-evidence"
+   "file": "ideation2/spikes/s12-evidence",
+   "baseline_fr": "—",
+   "split_fr": "échantillon"
   },
   {
    "test": "APS-Kapitel, kantonal + kommunal vs. KI-Richter",
@@ -211,7 +233,9 @@
    "interval": null,
    "baseline": "—",
    "split": "zwei Läufe, κ 0.95",
-   "file": "ideation/spikes/s7"
+   "file": "ideation/spikes/s7",
+   "baseline_fr": "—",
+   "split_fr": "deux passages, κ 0,95"
   },
   {
    "test": "Zweisprachige Kantone, Titel, DE vs. FR",
@@ -227,7 +251,9 @@
    ],
    "baseline": "—",
    "split": "vorregistriert",
-   "file": "ideation2/spikes/s10-bilingual"
+   "file": "ideation2/spikes/s10-bilingual",
+   "baseline_fr": "—",
+   "split_fr": "préenregistré"
   },
   {
    "test": "Zweisprachige Kantone, Titel, DE vs. FR",
@@ -243,7 +269,9 @@
    ],
    "baseline": "Differenz +0.014 [−0.043, +0.076]",
    "split": "vorregistriert",
-   "file": "ideation2/spikes/s10-bilingual"
+   "file": "ideation2/spikes/s10-bilingual",
+   "baseline_fr": "différence +0,014 [−0,043, +0,076]",
+   "split_fr": "préenregistré"
   },
   {
    "test": "KI-Richter selbst vs. APS-Redaktion",
@@ -259,7 +287,9 @@
    ],
    "baseline": "Apertus 0.695 / 0.720",
    "split": "Stichprobe",
-   "file": "ideation2/spikes/s11-anchor"
+   "file": "ideation2/spikes/s11-anchor",
+   "baseline_fr": "Apertus 0,695 / 0,720",
+   "split_fr": "échantillon"
   }
  ],
  "curve": {

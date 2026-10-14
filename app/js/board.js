@@ -72,6 +72,14 @@ export class Board {
     this.q.addEventListener('keydown', e => { if (e.key === 'Escape') { this.q.blur(); e.stopPropagation(); } if (e.key === 'Enter') { this.q.blur(); this.vl.focus(); } });
     this.filters.replaceChildren(sel('type', L.type, types), sel('status', L.status, states), sel('party', L.party, parties),
       h('div', { class: 'fl' }, h('label', { class: 'k' }, L.search), this.q));
+    const tp = this.tp;
+    if (tp && tp.kind === 'be') {
+      const cnt = new Map(); for (let i = 0; i < D.n; i++) if (c.be[i] != null) cnt.set(c.be[i], (cnt.get(c.be[i]) || 0) + 1);
+      const ds = h('select', { 'aria-label': L.dir }, h('option', { value: '' }, L.all),
+        tp.options.map(o => h('option', { value: o.code, selected: F.dir === o.code }, `${o.abbr[UI.lang] || o.abbr.de} · ${o.name[UI.lang] || o.name.de} (${num(cnt.get(o.code) || 0)})`)));
+      ds.addEventListener('change', () => { F.dir = ds.value; this.refresh(); });
+      this.filters.prepend(h('div', { class: 'fl wide' }, h('label', { class: 'k' }, L.dir), ds));
+    }
   }
   passMask() {
     const c = D.c, F = this.S.f, n = D.n, m = new Uint8Array(n);
@@ -88,14 +96,16 @@ export class Board {
 
   // ------------------------------------------------------------ topic
   setTopic(tp) {
-    this.tp = tp; this.S.sel = null; this.S.body = null;
+    this.tp = tp; this.S.sel = null; this.S.body = tp && tp.scope ? tp.scope : null; this.S.f.dir = '';
     if (this.picker) this.picker.set(tp);
-    this.refresh(); this.renderCase();
+    this.buildFilters(); this.refresh(); this.renderCase();
   }
 
   // ------------------------------------------------------------ compute + render everything
   refresh() {
     const tp = this.tp, c = D.c, n = D.n, S = this.S, L = t();
+    const isBe = tp && tp.kind === 'be';
+    if (tp && tp.scope) S.body = tp.scope;
     const mask = this.passMask();
     const br = S.brush, inP = i => !br || (c.week[i] >= br[0] && c.week[i] <= br[1]);
     const stats = new Map();
@@ -109,6 +119,7 @@ export class Board {
     for (let i = 0; i < n; i++) {
       if (!mask[i] || !tp) continue;
       const sc = tp.scored(i); if (!sc) continue;
+      if (isBe && S.f.dir && c.be[i] !== S.f.dir) continue;
       const hit = tp.hit(i), chk = tp.check(i), k = c.body[i];
       if (hit && (!S.body || k === S.body) && c.lvl[i] < 3) counts[c.lvl[i]][c.week[i]]++;
       if (!inP(i)) continue;
@@ -134,6 +145,9 @@ export class Board {
       items.sort((a, b) => rank.get(c.id[b]) - rank.get(c.id[a]));
     } else if (S.mode === 'pult' && this.pultOn && S.tab === 'todo') {
       items.sort((a, b) => ((tp.check(b) ? 1 : 0) - (tp.check(a) ? 1 : 0)) || (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
+    } else if (isBe) {
+      const k = i => (tp.opt.get(c.be[i]) || { k: 99 }).k;
+      items.sort((a, b) => (k(a) - k(b)) || (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
     } else items.sort((a, b) => (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
     // ramp + coverage
     for (const [k, st] of stats) st.share = st.n ? st.hits / st.n : 0;
@@ -173,15 +187,19 @@ export class Board {
     const bsel = S.body ? D.B.get(S.body) : null;
     const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
     this.tsub.innerHTML = '';
-    this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scored} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
-      bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`)) : '',
+    const isBe = tp && tp.kind === 'be';
+    if (isBe) {
+      const o = S.f.dir ? tp.opt.get(S.f.dir) : null;
+      this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${L.dir}: ${o ? `${o.abbr[UI.lang] || o.abbr.de} ${o.name[UI.lang] || o.name.de}` : L.all} · ${per}`);
+    } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scored} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
+      bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
       S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     // legend
     const br = this.breaks;
     const ramp = h('span', { class: 'ramp' }, [1, 2, 3, 4, 5].slice(0, Math.max(1, br.length)).map(k => h('span', { class: 'sw', style: `background:var(--r${k})` })));
     this.legend.replaceChildren(
-      h('span', {}, `${L.ramp} `, ramp, br.length ? ` ${pct(br[0])} … ${pct(this.maxShare)}` : ' –'),
-      h('span', {}, h('span', { class: 'sw', style: 'background:var(--r0)' }), '0'),
+      isBe ? '' : h('span', {}, `${L.ramp} `, ramp, br.length ? ` ${pct(br[0])} … ${pct(this.maxShare)}` : ' –'),
+      isBe ? '' : h('span', {}, h('span', { class: 'sw', style: 'background:var(--r0)' }), '0'),
       h('span', { html: `<svg width="14" height="10" viewBox="0 0 14 10" style="vertical-align:-1px;margin-right:4px;border:1px solid var(--ink);box-sizing:content-box"><defs><pattern id="lg-h" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" style="stroke:var(--hatch);stroke-width:1.2"/></pattern></defs><rect width="14" height="10" fill="url(#lg-h)"/></svg>${L.hatch}` }),
       h('span', {}, h('span', { class: 'tk' }), L.tick));
     // list header: mode toggle, Pult tabs, Pult line
@@ -219,7 +237,7 @@ export class Board {
     const mark = dec ? (dec.d === 'confirmed' ? '✓' : '×') : chk ? '!' : '';
     return h('div', { class: dec ? 'dec' : '' },
       h('div', { class: 'tc' }, h('div', { class: 't', lang: c.lang[i] }, c.title[i]), h('div', { class: 'm' }, meta)),
-      h('div', { class: 'p' }, p3(p)),
+      h('div', { class: 'p' }, tp && tp.kind === 'be' ? beAbbr(tp, c.be[i]) : p3(p)),
       h('div', { class: `x ${dec ? 'd' : ''}`, title: chk ? L.lanes.please_check : '' }, mark ? `[${mark}]` : ''));
   }
 
@@ -278,7 +296,7 @@ export class Board {
     const rec = { d: kind, by, at: new Date().toISOString(), state: D.c.state[i] };
     if (API.live) {
       try {
-        const r = await apiPost(`/affairs/${id}/topics/${encodeURIComponent(tp.code)}/${kind === 'confirmed' ? 'confirm' : 'reject'}`, { by, scheme: tp.scheme });
+        const r = await apiPost(`/affairs/${id}/topics/${encodeURIComponent(tp.codeOf ? tp.codeOf(i) : tp.code)}/${kind === 'confirmed' ? 'confirm' : 'reject'}`, { by, scheme: tp.scheme });
         rec.api = true; rec.row = r && (r.valid_from || r.confirmed_at) ? { valid_from: r.valid_from, confirmed_at: r.confirmed_at } : null;
       } catch (e) { rec.err = String(e.message || e); }
     }
@@ -297,6 +315,7 @@ export class Board {
     root.replaceChildren(sc);
     const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
     sc.append(h('div', { class: 'sl' }, L.summary, h('span', { class: 'sp' }, `${name} · ${per}`)));
+    if (tp && tp.kind === 'be') { this.beSummary(sc); return; }
     const lvN = [L.federal, L.cantonal, L.communal, 'FL'];
     const tb = h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, L.perLevel), h('th', { class: 'n' }, L.hits), h('th', { class: 'n' }, L.scored), h('th', { class: 'n' }, L.share))));
     const body = h('tbody');
@@ -317,6 +336,21 @@ export class Board {
     sc.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.topParl), h('div', { class: 'tw' }, t2)));
   }
 
+  beSummary(sc) {
+    const L = t(), tp = this.tp, c = D.c, cnt = new Map(), chk = new Map();
+    for (const i of this.items) { const k = c.be[i]; cnt.set(k, (cnt.get(k) || 0) + 1); if (tp.check(i) && !getDec(tp, c.id[i])) chk.set(k, (chk.get(k) || 0) + 1); }
+    const tb = h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, L.dir), h('th', { class: 'n' }, L.affairs), h('th', { class: 'n' }, L.pending))));
+    const body = h('tbody');
+    for (const o of tp.options) {
+      const n = cnt.get(o.code) || 0;
+      body.append(h('tr', { class: 'clk', onclick: () => { this.S.f.dir = this.S.f.dir === o.code ? '' : o.code; this.buildFilters(); this.refresh(); this.renderCase(); } },
+        h('td', {}, h('span', { class: 'mono' }, `${o.abbr[UI.lang] || o.abbr.de} `), o.name[UI.lang] || o.name.de),
+        h('td', { class: 'n' }, n ? num(n) : '–'), h('td', { class: `n ${chk.get(o.code) ? 'sig' : 'dim'}` }, chk.get(o.code) ? num(chk.get(o.code)) : '–')));
+    }
+    tb.append(body);
+    sc.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.beGroup), h('div', { class: 'tw' }, tb)));
+  }
+
   // ------------------------------------------------------------ export: CSV in the DVS list's columns + method line
   async exportCsv() {
     const L = t(), tp = this.tp, c = D.c, items = this.items;
@@ -325,26 +359,32 @@ export class Board {
       const any = items.find(i => Math.floor(c.id[i] / 1000) === k); await detail(c.id[any]);
     }));
     for (const i of items) det.set(i, await detail(c.id[i]));
-    const LV = ['Bund', 'Kanton', 'Gemeinde', 'Liechtenstein'];
-    const head = ['Datum', 'Ebene', 'Kanton', 'Parlament', 'Geschäftsnummer', 'Titel', 'Sprache', 'Typ', 'Status', 'Urheber/in', 'Partei', 'Link',
+    const fr = UI.lang === 'fr';
+    const LV = fr ? ['Confédération', 'Canton', 'Commune', 'Liechtenstein'] : ['Bund', 'Kanton', 'Gemeinde', 'Liechtenstein'];
+    const head = fr ? ['Date', 'Niveau', 'Canton', 'Parlement', 'Numéro', 'Titre', 'Langue', 'Type', 'Statut', 'Auteur·e', 'Parti', 'Lien',
+      'Thème', 'p', 'Voie', 'Décision', 'Décidé par', 'Décidé le', 'ID OPD', 'Build']
+      : ['Datum', 'Ebene', 'Kanton', 'Parlament', 'Geschäftsnummer', 'Titel', 'Sprache', 'Typ', 'Status', 'Urheber/in', 'Partei', 'Link',
       'Thema', 'p', 'Spur', 'Entscheid', 'Entschieden von', 'Entschieden am', 'OPD-ID', 'Build'];
+    const tname = tp.kind === 'be' ? null : (tp.names[UI.lang] || tp.names.de);
     const q = v => { const s = String(v ?? ''); return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
     const lines = [head.join(',')];
     for (const i of items) {
       const d = det.get(i) || {}, b = D.B.get(c.body[i]) || {}, dec = getDec(tp, c.id[i]);
       lines.push([c.date[i], LV[c.lvl[i]], b.canton || '', bodyName(c.body[i]), d.number || c.number[i] || '', c.title[i], c.lang[i], typeOf(i), c.state[i],
-        c.submitter[i], c.party[i], d.url || '', tp.names.de, p3(tp.p(i)), tp.check(i) ? 'please_check' : 'readings_agree',
+        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, c.be[i]) : tname, p3(tp.p(i)), tp.check(i) ? 'please_check' : 'readings_agree',
         dec ? dec.d : 'suggested', dec ? dec.by : '', dec ? dec.at : '', c.id[i], (d.build || D.meta.build || '').slice(-8)].map(q).join(','));
     }
     // method line: affairs found, scored share per parliament, machine suggestions
     const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
     const bodies = [...new Set(items.map(i => c.body[i]))];
-    const cov = bodies.map(k => { const s = this.stats.get(k), b = D.B.get(k); return `${k} ${pct(s && s.cov)}${b && b.covered_from ? ' ab ' + b.covered_from : ''}`; }).join('; ');
+    const cov = bodies.map(k => { const s = this.stats.get(k), b = D.B.get(k); return `${k} ${pct(s && s.cov)}${b && b.covered_from ? (fr ? ' dès ' : ' ab ') + b.covered_from : ''}`; }).join('; ');
     lines.push('');
-    lines.push(q(`# ${T_method(items.length, tp.names.de, per, cov, (D.meta.build_short || D.meta.build || '').slice(-8))}`));
+    lines.push(q(`# ${L.method(items.length, tp.names[UI.lang] || tp.names.de, per, cov || '–', (D.meta.build_short || D.meta.build || '').slice(-8))}`));
     const slug = (tp.names.de || 'thema').toLowerCase().replace(/[^a-z0-9]+/g, '-');
     download(`querschnitt-${slug}-${new Date().toISOString().slice(0, 10)}.csv`, lines.join('\n'));
     toast(`${num(items.length)} → CSV`);
   }
 }
-const T_method = (n, topic, per, cov, build) => `Querschnitt: ${n} Geschäfte zum Thema «${topic}», ${per}; bewertet pro Parlament: ${cov || '–'}; Build ${build}; maschinelle Vorschläge, wahrscheinlich unvollständig.`;
+
+export const beAbbr = (tp, code) => { const o = tp.opt.get(code); return o ? (o.abbr[UI.lang] || o.abbr.de) : (code || '–'); };
+export const beFull = (tp, code, l = UI.lang) => { const o = tp.opt.get(code); return o ? `${o.abbr[l] || o.abbr.de} ${o.name[l] || o.name.de}` : (code || ''); };

@@ -13,7 +13,7 @@ export const bodyName = (k, long = true) => {
 export const typeOf = i => (UI.lang === 'fr' && D.c.type_h_fr[i]) || D.c.type_h[i] || D.c.type[i] || '';
 const lname = l => ({ de: 'de', fr: 'fr', it: 'it', rm: 'rm' }[l] || l || '');
 
-function highlight(text, ev, field, want) {
+export function highlight(text, ev, field, want) {
   if (!text) return null;
   const el = h('p', { class: 'txt', lang: want });
   if (ev && ev.field === field) {
@@ -65,7 +65,8 @@ export async function renderCase(root, i, tp, { onOpen, decideBar }) {
   root.replaceChildren(scroll);
   const back = h('button', { class: 'tb back', type: 'button', onclick: () => root.dispatchEvent(new CustomEvent('close')) }, '← ' + L.list);
   const lang = c.lang[i];
-  scroll.append(back, h('h2', { lang }, c.title[i]));
+  const h2 = h('h2', { lang }, c.title[i]);
+  scroll.append(back, h2);
   const sub = c.submitter[i] ? `${c.submitter[i]}${c.party[i] ? ` (${c.party[i]})` : ''}` : '';
   scroll.append(h('p', { class: 'ref' },
     h('b', {}, fmtDate(c.date[i])), ' · ', bodyName(c.body[i]), ' · ', typeOf(i) || '–', c.state[i] ? ` · ${c.state[i]}` : '',
@@ -74,12 +75,14 @@ export async function renderCase(root, i, tp, { onOpen, decideBar }) {
   if (decideBar) root.append(decideBar);
   const d = await detail(id);
   if (root.dataset.id !== String(id)) return; // a newer selection won
-  const ev = d ? ((tp && tp.kind !== 'chapter' && tp.kind !== 'sub' ? d.dig && d.dig.evidence : d.aps && d.aps.evidence) || (d.evidence) || null) : null;
+  const evOf = x => x && x.evidence && (x.evidence.quote || x.evidence.start != null) ? x.evidence : null;
+  const ev = d ? (tp && (tp.kind === 'adhoc' || tp.kind === 'live') ? evOf(d.dig) || evOf(d.aps)
+    : tp && tp.kind === 'be' ? evOf(d.be) || evOf(d.aps) : evOf(d.aps) || evOf(d.dig)) || evOf(d) : null;
   if (d && d.number) scroll.querySelector('.ref').append(` · ${d.number}`);
   // text
-  const tsec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.evidence, h('span', { class: 'sp' }, ev && ev.quote ? `${ev.field || ''} ${ev.start ?? ''}–${ev.end ?? ''}` : L.noEvidence)));
-  if (ev && ev.field === 'title') tsec.append(highlight(c.title[i], ev, 'title', lang));
-  if (d && d.title_long && d.title_long !== c.title[i]) {
+  const tsec = h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.evidence, h('span', { class: 'sp' }, ev ? `${ev.field || ''} ${ev.start ?? ev.char_start ?? ''}–${ev.end ?? ev.char_end ?? ''}` : L.noEvidence)));
+  if (ev && ev.field === 'title') { const hp = highlight(c.title[i], ev, 'title', lang); h2.replaceChildren(...hp.childNodes); }
+  if (d && d.title_long && (d.title_long !== c.title[i] || (ev && ev.field === 'title_long'))) {
     tsec.append(h('div', { class: 'sl dim' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, L.titleLong)));
     tsec.append(highlight(d.title_long, ev, 'title_long', lang));
   }
@@ -112,7 +115,23 @@ export async function renderCase(root, i, tp, { onOpen, decideBar }) {
     const x = tp.dec.get(id);
     if (x) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${x.flag ? L.yes : L.no} · p ${p3(x.p)}`));
   }
+  const be = (d && d.be) || (c.be[i] != null ? { code: c.be[i] } : null);
+  const beT = TOPIC_BY_ID.get('be-directorates');
+  if (be && beT) {
+    const code = String(be.code || '').replace(/^be:/, ''), o = beT.opt.get(code);
+    add(L.dir, h('span', {}, o ? h('span', { class: 'mono' }, `${o.abbr[UI.lang] || o.abbr.de} `) : '', o ? (o.name[UI.lang] || o.name.de) : code,
+      be.p != null ? h('span', { class: 'mono dim' }, ` p ${p3(be.p)}`) : ''),
+      be.gold ? h('span', { class: 'sub2' }, `${L.beField}: ${String(be.gold).trim()}`) : '');
+  }
   const aps = d && d.aps;
+  const bil = aps && aps.bilingual;
+  if (bil && bil.top) {
+    const pc = bil.lane === 'please_check';
+    add(L.bilingual, h('span', { class: 'mono', style: 'font-size:12px' }, `DE ${chapterName(bil.top.de)} · FR ${chapterName(bil.top.fr)} → `,
+      h('span', { class: pc ? 'sig' : '' }, L.lanes[bil.lane] || bil.lane)));
+  } else if (c.bi[i] === 1) {
+    add(L.bilingual, h('span', { class: 'mono sig', style: 'font-size:12px' }, L.lanes.please_check));
+  }
   if (c.ch[i] >= 0 || aps) {
     const ranks = aps && aps.rank ? aps.rank : [c.ch[i]];
     const ps = aps && aps.p ? aps.p : [c.chp[i]];

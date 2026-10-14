@@ -72,6 +72,7 @@ export async function load() {
     if (b.key === 'LIE' && (!b.name_de || b.name_de === b.place_de || /Liechtenstein/.test(b.name_de))) { b.name_de = 'Landtag'; b.name_fr = 'Landtag'; }
     if (b.level === 'other' && b.key !== 'LIE') b.level = 'other';
     b.lang = (b.lang || '').toLowerCase() || null;
+    if (b.covered_from != null && !(+b.covered_from >= 1800)) b.covered_from = null;
     D.B.set(b.key, b);
   }
   // affairs (columnar)
@@ -103,6 +104,7 @@ export async function load() {
   const week = new Int16Array(n);
   for (let i = 0; i < n; i++) week[i] = Math.floor((day[i] - w0) / 7);
   D.c = { id: c.id, body: c.body, date: c.date, title: c.title, lang: c.lang, type_h: c.type_h || [], type: c.type || [], type_h_fr: c.type_h_fr || [],
+    be: c.be || [], bi: c.bi || [],
     state: c.state || [], party: c.party || [], submitter: c.submitter || [], number: c.number || [], subs: c.subs || [],
     bodyIdx, bodyKeys, day, week, ch, chp, lane, dp, df, dl, kw, lvl };
   D.w0 = w0; D.nWeeks = Math.floor((dmax - w0) / 7) + 1; D.dmin = dmin; D.dmax = dmax;
@@ -128,6 +130,16 @@ function buildTopics() {
       scored: i => !Number.isNaN(c.dp[i]), hit: i => c.df[i] === 1, p: i => c.dp[i], check: i => c.dl[i] === 1,
       coverage: b => b.n_affairs ? (b.n_dig ?? b.n_scored) / b.n_affairs : null });
   }
+  // scheme swap: Bern's directorates (Grand Council affairs only)
+  const be = ((D.scheme && D.scheme.schemes) || []).find(x => x.id === 'be-directorates');
+  if (be && c.be.length) {
+    const opt = new Map(be.options.map((o, k) => [o.code, { ...o, k }]));
+    addTopic({ id: 'be-directorates', kind: 'be', scheme: 'be-directorates', scope: be.body || 'BE', options: be.options, opt,
+      names: { de: 'Kanton Bern: Direktionen', fr: 'Canton de Berne : directions', it: 'Canton Berna: direzioni' },
+      aliases: ['Bern', 'Berne', 'Direktionen', 'directions', 'BE'], codeOf: i => `be:${c.be[i]}`,
+      scored: i => c.be[i] != null, hit: i => c.be[i] != null, p: () => NaN, check: i => c.bi[i] === 1,
+      coverage: b => b.n_affairs ? (b.n_scored || 0) / b.n_affairs : null });
+  }
   const chs = (D.scheme && D.scheme.chapters) || [];
   chs.forEach((x, i) => {
     const idx = x.i ?? i;
@@ -147,8 +159,10 @@ function buildTopics() {
   const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
   const chT = new Map(TOPICS.filter(x => x.kind === 'chapter').map(x => [x.idx, x]));
   const subT = new Map(TOPICS.filter(x => x.kind === 'sub').map(x => [x.idx, x]));
+  const beT = TOPIC_BY_ID.get('be-directorates');
   for (let i = 0; i < D.n; i++) {
     if (dig && c.df[i]) dig.count++;
+    if (beT && c.be[i] != null) beT.count++;
     if (c.ch[i] >= 0) { const tc = chT.get(c.ch[i]); if (tc) tc.count++; const sb = c.subs[i]; if (sb && sb.length) { const ts = subT.get(sb[0]); if (ts) ts.count++; } }
   }
 }

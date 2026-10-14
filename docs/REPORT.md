@@ -26,11 +26,13 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 | APS subtopic vs APS editors, end to end (S9) | 1,221 | top-1 0.521 · top-3 0.677 | chapter step → best subtopic 0.469 |
 | Bern: lead directorate vs the Grand Council's own field, 2025–26 (S18) | 531 | 0.651 [0.610, 0.691] German titles · 0.650 French titles | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt: the canton's own 46 themes vs its hand-assigned «Thema 1», 2019–24 (S20) | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
+| — with five of Basel's own labelled affairs as examples, other half of the data (S21) | 2,437 | 0.526 [0.507, 0.546]; paired +0.028 [+0.014, +0.043]; top 3: 0.711 | names only: 0.498 |
 | "Digitalisierung": the 30 affairs DVS curates by hand (question written with them in view) | 30 | 27 recognised | keywords 21 |
 | Federal Sachbereiche vs Parliament's own Curia tags (S3/S5) | 200 | micro-F1 0.654 | BFH model, trained on 15,007 tagged affairs: 0.687 |
 
 The lanes do what they promise on every human-labelled set: on the federal APS affairs precision is 0.826 where the
-readings agree and 0.586 where they disagree; on Basel-Stadt 0.565 vs 0.325.
+readings agree and 0.586 where they disagree; on Basel-Stadt with examples 0.651 vs 0.373. A partner's own labels raise
+accuracy without any training step: on Basel-Stadt by +0.028 (S21), on the federal APS affairs by +0.067 (S9).
 
 ## 3. Where no human labels exist: a blind AI judge
 For "Digitalisierung" across all Swiss parliaments in 2026 and for cantonal and communal APS chapters, gold comes from a

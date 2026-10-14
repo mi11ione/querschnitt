@@ -429,3 +429,14 @@ S20	-	0.316	S20 minus_keyword diff	0.3168	bern/querschnitt/eval/s20/results.json
 run	-	27,904	corpus run requests so far (14 Oct 09:40)	27904	bern/querschnitt/runs/main/ledger.jsonl	line count	OK		
 run	-	0.000107	list-price USD per request	0.0001074	bern/querschnitt/runs/main/ledger.jsonl	sum(usd)/n, truncated	OK		
 run	-	1,072	mean prompt tokens per request	1072.4	bern/querschnitt/runs/main/ledger.jsonl	mean(pt), truncated	OK		
+S21	-	0.526	S21 s21_top1	0.5265	bern/querschnitt/eval/s21/results.json	s21_top1	OK		truncated / outward
+S21	-	0.507	S21 ci0	0.507	bern/querschnitt/eval/s21/results.json	ci0	OK		truncated / outward
+S21	-	0.546	S21 ci1	0.546	bern/querschnitt/eval/s21/results.json	ci1	OK		truncated / outward
+S21	-	0.631	S21 t1_or_t2	0.6315	bern/querschnitt/eval/s21/results.json	t1_or_t2	OK		truncated / outward
+S21	-	0.711	S21 top3	0.7115	bern/querschnitt/eval/s21/results.json	top3	OK		truncated / outward
+S21	-	0.028	S21 diff	0.0283	bern/querschnitt/eval/s21/results.json	diff	OK		truncated / outward
+S21	-	0.014	S21 diff ci0	0.0144	bern/querschnitt/eval/s21/results.json	diff ci0	OK		truncated / outward
+S21	-	0.043	S21 diff ci1 (outward)	0.0423	bern/querschnitt/eval/s21/results.json	diff ci1 (outward)	OK		truncated / outward
+S21	-	54.9%	S21 lane agree share	0.5499	bern/querschnitt/eval/s21/results.json	lane agree share	OK		truncated / outward
+S21	-	0.651	S21 lane agree acc	0.6515	bern/querschnitt/eval/s21/results.json	lane agree acc	OK		truncated / outward
+S21	-	0.373	S21 lane disagree acc	0.3737	bern/querschnitt/eval/s21/results.json	lane disagree acc	OK		truncated / outward

@@ -329,6 +329,37 @@ def shipped_data() -> tuple[str | None, list[str], Path | None]:
     return str(fx / "inputs_sample.jsonl"), [str(fx / "topics_sample.jsonl")], None
 
 
+# ---------------------------------------------------------------- editor decisions → examples
+def examples_cmd(argv):
+    """querschnitt examples --topic digitalisierung [--dry-run]
+    Reads the current confirmed/rejected rows of `adhoc/<topic>` from the store and writes them into
+    schemes/adhoc/<topic>.yaml as `examples` ({affair_id, title, match, by, at}). From the next run on, each yes/no prompt
+    for that topic shows the four most similar decided affairs (the S8 P8.5 loop shape; rows change prompt id and are
+    re-scored, never mixed)."""
+    import yaml
+    ap = argparse.ArgumentParser(prog="querschnitt examples")
+    ap.add_argument("--topic", required=True)
+    ap.add_argument("--dry-run", action="store_true")
+    a = ap.parse_args(argv)
+    st = Store(); sch = f"adhoc/{a.topic}"
+    rows = st.all("SELECT t.affair_id, t.code, t.status, t.confirmed_by, t.confirmed_at, a.title FROM topics t "
+                  "JOIN qs_affairs a ON a.id = t.affair_id WHERE t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'confirmed'", (sch,))
+    ex = {}
+    for r in rows:
+        yes = r["code"].endswith(":yes")
+        match = yes if r["status"] == "confirmed" else (not yes)
+        ex[r["affair_id"]] = dict(affair_id=r["affair_id"], title=r["title"], match=match, by=r["confirmed_by"], at=str(r["confirmed_at"]))
+    p = ROOT / "src/querschnitt/schemes/adhoc" / f"{a.topic}.yaml"
+    doc = yaml.safe_load(p.read_text())
+    old = {e.get("affair_id"): e for e in doc.get("examples") or [] if isinstance(e, dict)}
+    old.update(ex)
+    doc["examples"] = list(old.values())
+    print(f"{sch}: {len(ex)} decisions in the store → {len(doc['examples'])} examples in {p.name}"
+          f" ({sum(e['match'] for e in doc['examples'])} yes, {sum(not e['match'] for e in doc['examples'])} no)")
+    if not a.dry_run:
+        p.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False, width=300))
+
+
 # ---------------------------------------------------------------- main
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
@@ -341,6 +372,8 @@ def main(argv=None):
     if argv and argv[0] == "eval":
         from . import evaluate
         return evaluate.main(argv[1:])
+    if argv and argv[0] == "examples":                  # editor decisions → the topic file's examples (used from the next run)
+        return examples_cmd(argv[1:])
     if argv and argv[0] == "export":                    # pass-through to the static export (its own flags)
         from . import export
         return export.main(argv[1:])

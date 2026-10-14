@@ -41,3 +41,16 @@ def test_examples_format_matches_loop():
     t = dict(question={"de": "Q?"}, answer_yes={"de": "Ja"})
     u, _ = P.yesno_prompt(t, "de", "Titel X", "", "a", [("Beispiel eins", True), ("Beispiel zwei", False)])
     assert "Beispiele, von einer Redaktorin entschieden:\n- Titel: Beispiel eins → A\n- Titel: Beispiel zwei → B\n\nGeschäft:" in u
+
+
+def test_topic_examples_nearest_and_stable():
+    from querschnitt.examples import topic_examples
+    t = dict(id="adhoc/x", question={"de": "Q?"}, answer_yes={"de": "Ja"},
+             examples=[dict(affair_id=1, title="Rechenzentren im Kanton", match=True),
+                       dict(affair_id=2, title="Velowege in der Stadt", match=False),
+                       dict(affair_id=3, title="Digitale Verwaltung und Rechenzentren", match=True)])
+    a = dict(id=9, title="Neue Rechenzentren bauen", title_long="", lang="de")
+    ex = topic_examples(t, a)
+    assert ex and ex[0][1] is True and all(isinstance(m, bool) for _, m in ex)
+    assert topic_examples(t, a) == ex                       # same examples → same prompt id in batch and compose
+    assert topic_examples(dict(id="adhoc/y", question={}, answer_yes={}), a) is None

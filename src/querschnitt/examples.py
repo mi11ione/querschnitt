@@ -57,3 +57,20 @@ class ExamplePool:
         """An editor's confirmed decision becomes an example (pool rebuilt; small pools only)."""
         self.pool.append(row)
         self.bm = BM25([toks(x["title"]) for x in self.pool])
+
+
+_TOPIC_POOLS: dict = {}
+
+
+def topic_examples(topic: dict, a: dict, k: int = 4) -> list[tuple[str, bool]] | None:
+    """An ad-hoc topic's editor decisions as examples: the k most similar decided affairs (BM25 over titles, the S8 P8.5
+    loop shape), excluding the affair itself. None when the topic file has no examples (the prompt is then unchanged)."""
+    ex = [e for e in (topic.get("examples") or []) if e.get("title")]
+    if not ex:
+        return None
+    key = (topic["id"], len(ex))
+    if key not in _TOPIC_POOLS:
+        _TOPIC_POOLS[key] = (BM25([toks(e["title"]) for e in ex]), ex)
+    bm, ex = _TOPIC_POOLS[key]
+    hits = [j for j, _ in bm.top(toks(a["title"]), k + 2) if ex[j].get("affair_id") != a.get("id") and ex[j]["title"] != a["title"]][:k]
+    return [(ex[j]["title"], bool(ex[j]["match"])) for j in hits] or None

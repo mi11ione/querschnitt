@@ -16,6 +16,7 @@ from pathlib import Path
 
 from . import prompts as P
 from .engine import mean_p, need_ch2, need_yn_b
+from .examples import topic_examples
 from .scheme import APS, adhoc, flat, named_schemes
 
 VERSION = "0.6.0"
@@ -97,12 +98,15 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
             out["aps"]["pids"] = [r1["pid"]] + ([r2["pid"]] if r2 else []) + ([rs["pid"]] if rs else [])
             out["aps"]["examples"] = r1.get("ex")
     for t in topics:
-        ua, pa_ = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a")
+        ex = topic_examples(t, a)
+        ua, pa_ = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a", ex)
         ra = rows.get(P.pid(ua, pa_))
+        if ra is None and ex:   # rows made before the topic had examples still count until re-scored
+            ex = None; ra = rows.get(P.pid(*P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a")))
         if ra:
             rb = None
             if need_yn_b(ra["p_yes"]):
-                rb = rows.get(P.pid(*P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b")))
+                rb = rows.get(P.pid(*P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b", ex)))
                 if rb is None:
                     continue
             out[t["id"]] = yn_decision(ra, rb, t.get("cutoff", 0.5))

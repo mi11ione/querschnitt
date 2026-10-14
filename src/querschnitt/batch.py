@@ -24,7 +24,7 @@ from pathlib import Path
 from . import prompts as P
 from .client import BuildChanged, Client, Endpoint
 from .engine import Engine, mean_p, need_ch2, need_yn_b
-from .examples import ExamplePool
+from .examples import ExamplePool, topic_examples
 from .scheme import APS, adhoc, flat, named
 
 BILINGUAL = {"BE", "FR", "VS"}   # fallback for inputs built before the `bilingual` field (OPD body languages)
@@ -156,11 +156,12 @@ class Runner:
                 self._step(P.pid(u, p), lambda: dict(self.engine.sub(a, chs), aid=a["id"], ih=ih))
             if "yn" in S:
                 for t in self.topics:
-                    u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a")
-                    ra = self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "a"), aid=a["id"], ih=ih))
+                    ex = topic_examples(t, a)   # editor decisions on this topic become examples (None = unchanged prompt)
+                    u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a", ex)
+                    ra = self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "a", ex), aid=a["id"], ih=ih))
                     if need_yn_b(ra["p_yes"]):
-                        u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b")
-                        self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b"), aid=a["id"], ih=ih))
+                        u, p = P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b", ex)
+                        self._step(P.pid(u, p), lambda: dict(self.engine.yn(t, a, "b", ex), aid=a["id"], ih=ih))
             if "bi" in S and a.get("bilingual", a["body"] in BILINGUAL) and a.get("alt_lang") in ("de", "fr"):
                 # bilingual parliaments: the other language version is the second reading (S10: titles only)
                 b = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])

@@ -13,6 +13,7 @@ import collections
 import gzip
 import json
 import os
+import shutil
 import signal
 import sys
 import threading
@@ -258,6 +259,9 @@ class Runner:
                             self.client.guard.max_rate = mr; self.client.guard.rate = min(self.client.guard.rate, mr)
                 except (FileNotFoundError, ValueError):
                     pass
+                free = shutil.disk_usage(self.out).free
+                if free < 1.5e9:   # pause before the disk fills; everything done is on disk, resume with the same command
+                    self.halt("Disk low", f"{free / 1e9:.2f} GB free on the run's disk; free space, delete STOP.md, resume.")
                 self.progress(len(items))
         threading.Thread(target=ticker, daemon=True).start()
         with ThreadPoolExecutor(self.args.conc) as ex:

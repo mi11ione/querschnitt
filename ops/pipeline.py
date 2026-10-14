@@ -33,6 +33,11 @@ for name, run, args in PHASES:
         continue
     while alive(run):
         time.sleep(30)
+    while (ROOT / run / "STOP.md").exists() and "Disk low" in (ROOT / run / "STOP.md").read_text():
+        import shutil
+        if shutil.disk_usage(ROOT).free > 3e9:   # space came back: resume by itself
+            (ROOT / run / "STOP.md").rename(ROOT / run / f"STOP-{time.strftime('%Y%m%d-%H%M%S')}.md"); break
+        time.sleep(300)
     if (ROOT / run / "STOP.md").exists():
         log("STOP.md in", run, "- pipeline halted"); sys.exit(1)
     log("start", name, args)
@@ -44,6 +49,8 @@ for name, run, args in PHASES:
     if rc == 0 and "**finished**" in prog:
         (PIPE / f"{name}.done").write_text(time.strftime("%Y-%m-%dT%H:%M:%S%z") + "\n" + prog)
         log("done", name)
+    elif (ROOT / run / "STOP.md").exists() and "Disk low" in (ROOT / run / "STOP.md").read_text():
+        log("paused for disk", name); PHASES.insert(PHASES.index((name, run, args)) + 1, (name, run, args))
     else:
         log("phase ended without finishing", name, "rc", rc); sys.exit(1)
 log("pipeline complete")

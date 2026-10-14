@@ -73,3 +73,11 @@ depositato», first 1,500 characters) where it differs from the French text, els
 (S6 frames; chapter names in Italian, subtopic names German as published): both code orders, one subtopic request over the
 top 2–3 chapters, chapter read back. Primary: top-1 Italian vs the S9 D1 German top-1 on the same items (paired bootstrap
 2,000). Secondary: top-3; Italian with vs without submitted text. Reported as measured.
+
+## 2026-10-14 17:10 CEST — S23 evidence on production rows (written before any S23 sample is drawn)
+Items: 200 evidence rows of the corpus run (`runs/ev`, `runs/main`), drawn uniformly at random (random.Random(20261023)) among
+2026 affairs with a stored quote: 100 chapter quotes (the shipped APS chapter) and 100 "Digitalisierung" quotes (flagged or
+please-check rows). Packet per item: parliament, type, title, long title, text excerpt as the model saw it, the topic name,
+and the quoted sentence. Gold: blind Claude annotators A and B (Y = the sentence supports that the affair concerns the
+topic, N = it does not), tie-break C. Outcomes: support rate per kind (Wilson 95%), overall; substring check rate (code);
+compared descriptively with S12 (0.850, spike). Reported as measured.

@@ -38,8 +38,9 @@ accuracy without any training step: on Basel-Stadt by +0.028 (S21), on the feder
 For "Digitalisierung" across all Swiss parliaments in 2026 and for cantonal and communal APS chapters, gold comes from a
 blind AI judge (two runs of a Claude model + a tie-break run, cross-checked by the open-weights Qwen-SEA-LION). Against
 human labels the judge matches APS editors on 0.790 of chapters and says yes to 27 of the 30 DVS items. Against that judge,
-Querschnitt's "Digitalisierung" flags agree in 0.914 of cases (keywords 0.753); the judge estimates about 900
-digitalisation affairs in 2026, in at least 45 parliaments.
+Querschnitt's "Digitalisierung" flags agree in 0.905 [0.865, 0.945] of cases (keyword hits: 0.756), over the full 2026
+census of Swiss parliaments (14,512 affairs, 1 Jan–6 Oct): Querschnitt flags 651 affairs in 57 parliaments; the judge
+estimates 894 [657, 1,190] digitalisation affairs in total.
 
 ## 4. Neutrality
 No measurable difference between German and French: Bern directorates +0.002 [−0.030, +0.034] (same affairs, both

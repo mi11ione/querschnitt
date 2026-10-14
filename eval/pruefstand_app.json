@@ -230,17 +230,16 @@
    "gold": "judge",
    "design": "Präzision",
    "design_fr": "précision",
-   "n": 14513,
-   "result": "0.914",
+   "n": 14512,
+   "result": "0.905",
    "interval": [
-    0.876,
-    0.952
+    0.865,
+    0.945
    ],
-   "baseline": "Stichwort 0.753 [0.714, 0.790]",
-   "split": "453 geprüft, gewichtet",
-   "file": "ideation2/spikes/s8-dvs/results.md",
-   "baseline_fr": "mots-clés 0,753 [0,714, 0,790]",
-   "split_fr": "453 vérifiés, pondérés"
+   "baseline": "Stichwort 0.756 [0.717, 0.793]",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "file": "querschnitt/eval/s8full/results.json",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés"
   },
   {
    "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
@@ -248,17 +247,16 @@
    "gold": "judge",
    "design": "Recall",
    "design_fr": "rappel",
-   "n": 14513,
-   "result": "0.654",
+   "n": 14512,
+   "result": "0.659",
    "interval": [
-    0.486,
-    0.894
+    0.491,
+    0.9
    ],
-   "baseline": "Stichwort 0.605 [0.451, 0.827]",
-   "split": "453 geprüft, gewichtet",
-   "file": "ideation2/spikes/s8-dvs/results.md",
-   "baseline_fr": "mots-clés 0,605 [0,451, 0,827]",
-   "split_fr": "453 vérifiés, pondérés"
+   "baseline": "Stichwort 0.584 [0.435, 0.795]",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "file": "querschnitt/eval/s8full/results.json",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés"
   },
   {
    "test": "Beleg stützt das Thema (blinder KI-Richter)",

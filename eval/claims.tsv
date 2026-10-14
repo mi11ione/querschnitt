@@ -440,3 +440,21 @@ S21	-	0.043	S21 diff ci1 (outward)	0.0423	bern/querschnitt/eval/s21/results.json
 S21	-	54.9%	S21 lane agree share	0.5499	bern/querschnitt/eval/s21/results.json	lane agree share	OK		truncated / outward
 S21	-	0.651	S21 lane agree acc	0.6515	bern/querschnitt/eval/s21/results.json	lane agree acc	OK		truncated / outward
 S21	-	0.373	S21 lane disagree acc	0.3737	bern/querschnitt/eval/s21/results.json	lane disagree acc	OK		truncated / outward
+S8full	-	14,512	S8 full census flags_swiss n	14512	bern/querschnitt/eval/s8full/results.json	flags_swiss n	OK		truncated / outward
+S8full	-	651	S8 full census flags apertus	651	bern/querschnitt/eval/s8full/results.json	flags apertus	OK		truncated / outward
+S8full	-	690	S8 full census flags keyword	690	bern/querschnitt/eval/s8full/results.json	flags keyword	OK		truncated / outward
+S8full	-	57	S8 full census parliaments flagged	57	bern/querschnitt/eval/s8full/results.json	parliaments flagged	OK		truncated / outward
+S8full	-	0.905	S8 full census a_P	0.905	bern/querschnitt/eval/s8full/results.json	a_P	OK		truncated / outward
+S8full	-	0.865	S8 full census a_P ci0	0.865	bern/querschnitt/eval/s8full/results.json	a_P ci0	OK		truncated / outward
+S8full	-	0.945	S8 full census a_P ci1	0.945	bern/querschnitt/eval/s8full/results.json	a_P ci1	OK		truncated / outward
+S8full	-	0.756	S8 full census k_P	0.756	bern/querschnitt/eval/s8full/results.json	k_P	OK		truncated / outward
+S8full	-	0.659	S8 full census a_R	0.659	bern/querschnitt/eval/s8full/results.json	a_R	OK		truncated / outward
+S8full	-	0.491	S8 full census a_R ci0	0.491	bern/querschnitt/eval/s8full/results.json	a_R ci0	OK		truncated / outward
+S8full	-	0.900	S8 full census a_R ci1	0.9	bern/querschnitt/eval/s8full/results.json	a_R ci1	OK		truncated / outward
+S8full	-	0.584	S8 full census k_R	0.584	bern/querschnitt/eval/s8full/results.json	k_R	OK		truncated / outward
+S8full	-	894	S8 full census est positives (893.89, rounded to nearest)	893.89	bern/querschnitt/eval/s8full/results.json	est positives (893.89, rounded to nearest)	OK		truncated / outward
+S8full	-	657	S8 full census pos ci0	656.76	bern/querschnitt/eval/s8full/results.json	pos ci0	OK		truncated / outward
+S8full	-	1,190	S8 full census pos ci1	1190.368	bern/querschnitt/eval/s8full/results.json	pos ci1	OK		truncated / outward
+S8full	-	nine in ten	S8 full census a_P 0.905	0.905	bern/querschnitt/eval/s8full/results.json	a_P 0.905	OK		truncated / outward
+S8full	-	three in four	S8 full census k_P 0.756	0.756	bern/querschnitt/eval/s8full/results.json	k_P 0.756	OK		truncated / outward
+S8full	-	nearly 900	S8 full census est positives 893.89	893.89	bern/querschnitt/eval/s8full/results.json	est positives 893.89	OK		truncated / outward

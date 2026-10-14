@@ -1,0 +1,774 @@
+{"pid": "W001", "topic": "wolf", "oid": 339619, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W002", "topic": "wolf", "oid": 337821, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999869928746357, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "W003", "topic": "wolf", "oid": 340257, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W004", "topic": "wolf", "oid": 340448, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.83504178505825e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W005", "topic": "wolf", "oid": 336926, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W006", "topic": "wolf", "oid": 337347, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "W007", "topic": "wolf", "oid": 339131, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9241418163225626, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W008", "topic": "wolf", "oid": 338503, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W009", "topic": "wolf", "oid": 338007, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 6.914400106935422e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W010", "topic": "wolf", "oid": 338754, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W011", "topic": "wolf", "oid": 340195, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W012", "topic": "wolf", "oid": 338795, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "W013", "topic": "wolf", "oid": 339232, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "W014", "topic": "wolf", "oid": 338210, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.7495444744840208, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W015", "topic": "wolf", "oid": 338413, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W016", "topic": "wolf", "oid": 337826, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9994472213818889, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W017", "topic": "wolf", "oid": 339683, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "W018", "topic": "wolf", "oid": 338128, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "198"}
+{"pid": "W019", "topic": "wolf", "oid": 340988, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.7974371638822497, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W020", "topic": "wolf", "oid": 339714, "stratum": "K only", "N_h": 4, "n_h": 4, "p": 1.2664165549094015e-14, "flag": false, "kw": true, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W021", "topic": "wolf", "oid": 337109, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "6643"}
+{"pid": "W022", "topic": "wolf", "oid": 339197, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W023", "topic": "wolf", "oid": 338703, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W024", "topic": "wolf", "oid": 339488, "stratum": "A∩K", "N_h": 6, "n_h": 6, "p": 0.9999999999622486, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "W025", "topic": "wolf", "oid": 339130, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.384940217751136e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W026", "topic": "wolf", "oid": 339618, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W027", "topic": "wolf", "oid": 339447, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "W028", "topic": "wolf", "oid": 338926, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W029", "topic": "wolf", "oid": 340236, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W030", "topic": "wolf", "oid": 337620, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.109089028037223e-12, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "W031", "topic": "wolf", "oid": 337972, "stratum": "K only", "N_h": 4, "n_h": 4, "p": 1.2015425731770343e-13, "flag": false, "kw": true, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W032", "topic": "wolf", "oid": 337254, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.384940217751136e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W033", "topic": "wolf", "oid": 340099, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 6.914400106935422e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "W034", "topic": "wolf", "oid": 338378, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "W035", "topic": "wolf", "oid": 339614, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W036", "topic": "wolf", "oid": 339669, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W037", "topic": "wolf", "oid": 337484, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "W038", "topic": "wolf", "oid": 338549, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996940976636, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W039", "topic": "wolf", "oid": 337929, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "JU"}
+{"pid": "W040", "topic": "wolf", "oid": 337087, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W041", "topic": "wolf", "oid": 337428, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1061"}
+{"pid": "W042", "topic": "wolf", "oid": 340254, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W043", "topic": "wolf", "oid": 338239, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W044", "topic": "wolf", "oid": 337595, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.5436656473762755e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "W045", "topic": "wolf", "oid": 339887, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W046", "topic": "wolf", "oid": 337059, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999999987498471, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W047", "topic": "wolf", "oid": 338644, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.982013792702756, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W048", "topic": "wolf", "oid": 338910, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W049", "topic": "wolf", "oid": 340056, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W050", "topic": "wolf", "oid": 339407, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W051", "topic": "wolf", "oid": 338962, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.7496451647631748, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "TG"}
+{"pid": "W052", "topic": "wolf", "oid": 96375, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.5436656473762755e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "191"}
+{"pid": "W053", "topic": "wolf", "oid": 339994, "stratum": "A∩K", "N_h": 6, "n_h": 6, "p": 0.999999974890009, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W054", "topic": "wolf", "oid": 337606, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W055", "topic": "wolf", "oid": 338236, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9820137865176772, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W056", "topic": "wolf", "oid": 338720, "stratum": "A∩K", "N_h": 6, "n_h": 6, "p": 0.9999999973534264, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W057", "topic": "wolf", "oid": 338777, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999921107336521, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W058", "topic": "wolf", "oid": 338773, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W059", "topic": "wolf", "oid": 339722, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999999990263799, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W060", "topic": "wolf", "oid": 336618, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "4001"}
+{"pid": "W061", "topic": "wolf", "oid": 338189, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "W062", "topic": "wolf", "oid": 339949, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W063", "topic": "wolf", "oid": 339343, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W064", "topic": "wolf", "oid": 339857, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "W065", "topic": "wolf", "oid": 338730, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.6898754896509485, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W066", "topic": "wolf", "oid": 340397, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 8.878266536823496e-13, "flag": false, "kw": false, "lang": "it", "level": "federal", "body": "CHE"}
+{"pid": "W067", "topic": "wolf", "oid": 339566, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W068", "topic": "wolf", "oid": 338908, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W069", "topic": "wolf", "oid": 338123, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.1937956583777856e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "W070", "topic": "wolf", "oid": 337834, "stratum": "A∩K", "N_h": 6, "n_h": 6, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W071", "topic": "wolf", "oid": 336822, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "W072", "topic": "wolf", "oid": 340086, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "W073", "topic": "wolf", "oid": 336629, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W074", "topic": "wolf", "oid": 338642, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W075", "topic": "wolf", "oid": 337173, "stratum": "K only", "N_h": 4, "n_h": 4, "p": 1.0815941557168708e-11, "flag": false, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "W076", "topic": "wolf", "oid": 337404, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.098819138712223e-12, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W077", "topic": "wolf", "oid": 339352, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "W078", "topic": "wolf", "oid": 339583, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999251537905441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W079", "topic": "wolf", "oid": 338886, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.5435380256244887, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "W080", "topic": "wolf", "oid": 339971, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "W081", "topic": "wolf", "oid": 337242, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W082", "topic": "wolf", "oid": 339286, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 8.878265478451776e-13, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "W083", "topic": "wolf", "oid": 340828, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.628344178047032e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W084", "topic": "wolf", "oid": 337875, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "W085", "topic": "wolf", "oid": 336628, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W086", "topic": "wolf", "oid": 338205, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "W087", "topic": "wolf", "oid": 340296, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 8.423463754397692e-12, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "W088", "topic": "wolf", "oid": 340654, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W089", "topic": "wolf", "oid": 339228, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "W090", "topic": "wolf", "oid": 336602, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W091", "topic": "wolf", "oid": 338938, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "W092", "topic": "wolf", "oid": 338668, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W093", "topic": "wolf", "oid": 336862, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "W094", "topic": "wolf", "oid": 340815, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W095", "topic": "wolf", "oid": 341088, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9959298627144747, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "W096", "topic": "wolf", "oid": 336656, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W097", "topic": "wolf", "oid": 340695, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W098", "topic": "wolf", "oid": 339664, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W099", "topic": "wolf", "oid": 339143, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W100", "topic": "wolf", "oid": 338297, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W101", "topic": "wolf", "oid": 340253, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W102", "topic": "wolf", "oid": 340639, "stratum": "A∩K", "N_h": 6, "n_h": 6, "p": 0.9999999317439628, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W103", "topic": "wolf", "oid": 338448, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W104", "topic": "wolf", "oid": 340528, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W105", "topic": "wolf", "oid": 337758, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W106", "topic": "wolf", "oid": 339064, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W107", "topic": "wolf", "oid": 337200, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W108", "topic": "wolf", "oid": 338952, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999999468421502, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "W109", "topic": "wolf", "oid": 339540, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W110", "topic": "wolf", "oid": 340872, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W111", "topic": "wolf", "oid": 338582, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999999999622486, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W112", "topic": "wolf", "oid": 338891, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.5436656473762755e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "W113", "topic": "wolf", "oid": 337985, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.1937956583777856e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W114", "topic": "wolf", "oid": 340424, "stratum": "A∩K", "N_h": 6, "n_h": 6, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "UR"}
+{"pid": "W115", "topic": "wolf", "oid": 340799, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9924227583224411, "flag": true, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W116", "topic": "wolf", "oid": 337192, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9968273173114128, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "W117", "topic": "wolf", "oid": 339251, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W118", "topic": "wolf", "oid": 340980, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W119", "topic": "wolf", "oid": 339742, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W120", "topic": "wolf", "oid": 339781, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W121", "topic": "wolf", "oid": 338576, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W122", "topic": "wolf", "oid": 338738, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W123", "topic": "wolf", "oid": 340578, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W124", "topic": "wolf", "oid": 338221, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W125", "topic": "wolf", "oid": 339423, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W126", "topic": "wolf", "oid": 339436, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "W127", "topic": "wolf", "oid": 336872, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "W128", "topic": "wolf", "oid": 339927, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W129", "topic": "wolf", "oid": 338949, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "W130", "topic": "wolf", "oid": 340255, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999996533672135, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W131", "topic": "wolf", "oid": 340500, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.4133627718273893e-12, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "W132", "topic": "wolf", "oid": 337742, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "W133", "topic": "wolf", "oid": 340650, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W134", "topic": "wolf", "oid": 336698, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "W135", "topic": "wolf", "oid": 338779, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W136", "topic": "wolf", "oid": 337178, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.098819138712223e-12, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "W137", "topic": "wolf", "oid": 338051, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 6.101936677601601e-13, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5002"}
+{"pid": "W138", "topic": "wolf", "oid": 339661, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.989013057318807, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W139", "topic": "wolf", "oid": 339149, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.6732312160907115, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W140", "topic": "wolf", "oid": 337129, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "W141", "topic": "wolf", "oid": 340859, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W142", "topic": "wolf", "oid": 338428, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W143", "topic": "wolf", "oid": 338869, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.1399918530430558e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "W144", "topic": "wolf", "oid": 339399, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W145", "topic": "wolf", "oid": 336932, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W146", "topic": "wolf", "oid": 335181, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.1937956583777856e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W147", "topic": "wolf", "oid": 339373, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.384940217751136e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W148", "topic": "wolf", "oid": 339213, "stratum": "K only", "N_h": 4, "n_h": 4, "p": 7.287724095819161e-14, "flag": false, "kw": true, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W149", "topic": "wolf", "oid": 339511, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "W150", "topic": "wolf", "oid": 339218, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.098819138712223e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "W151", "topic": "wolf", "oid": 338919, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "W152", "topic": "wolf", "oid": 338436, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W153", "topic": "wolf", "oid": 337493, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.628344178047032e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W154", "topic": "wolf", "oid": 340918, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 4.599055376537186e-10, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "W155", "topic": "wolf", "oid": 337895, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "W156", "topic": "wolf", "oid": 336967, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "W157", "topic": "wolf", "oid": 338765, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W158", "topic": "wolf", "oid": 338625, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.8886493204953627, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W159", "topic": "wolf", "oid": 341084, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9999999804443193, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "W160", "topic": "wolf", "oid": 339358, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AI"}
+{"pid": "W161", "topic": "wolf", "oid": 339517, "stratum": "neither", "N_h": 4261, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "W162", "topic": "wolf", "oid": 339799, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.8395810021246575, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "247"}
+{"pid": "W163", "topic": "wolf", "oid": 337114, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.5876371308334453, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "W164", "topic": "wolf", "oid": 338709, "stratum": "A only", "N_h": 34, "n_h": 34, "p": 0.9525741264858408, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H001", "topic": "hitze", "oid": 340667, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999317439628, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "247"}
+{"pid": "H002", "topic": "hitze", "oid": 339731, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H003", "topic": "hitze", "oid": 340052, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999995400946, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H004", "topic": "hitze", "oid": 336875, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.8257572871156028e-15, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H005", "topic": "hitze", "oid": 337023, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5595920046905312, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "351"}
+{"pid": "H006", "topic": "hitze", "oid": 338863, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999200804, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "H007", "topic": "hitze", "oid": 338432, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H008", "topic": "hitze", "oid": 340930, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.109089028037223e-12, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H009", "topic": "hitze", "oid": 337436, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998973812, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H010", "topic": "hitze", "oid": 340014, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8112295306220064, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H011", "topic": "hitze", "oid": 339310, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8111752206480753, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H012", "topic": "hitze", "oid": 337376, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999993086, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H013", "topic": "hitze", "oid": 340816, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999987498471, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H014", "topic": "hitze", "oid": 338131, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "191"}
+{"pid": "H015", "topic": "hitze", "oid": 339782, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999006880431, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H016", "topic": "hitze", "oid": 341403, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "H017", "topic": "hitze", "oid": 339104, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "1024"}
+{"pid": "H018", "topic": "hitze", "oid": 338084, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999377585, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H019", "topic": "hitze", "oid": 339061, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999997455, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H020", "topic": "hitze", "oid": 339439, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.912881361933995, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H021", "topic": "hitze", "oid": 337559, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "GR"}
+{"pid": "H022", "topic": "hitze", "oid": 338362, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9046505370289059, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "H023", "topic": "hitze", "oid": 337897, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "4045"}
+{"pid": "H024", "topic": "hitze", "oid": 340201, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "198"}
+{"pid": "H025", "topic": "hitze", "oid": 336591, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999814460854, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2703"}
+{"pid": "H026", "topic": "hitze", "oid": 340605, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H027", "topic": "hitze", "oid": 340013, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H028", "topic": "hitze", "oid": 339799, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6340686647741084, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "247"}
+{"pid": "H029", "topic": "hitze", "oid": 338516, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.752193062768895e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H030", "topic": "hitze", "oid": 337534, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999996734, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H031", "topic": "hitze", "oid": 339067, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.940077739198032e-11, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H032", "topic": "hitze", "oid": 339163, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.628344178047032e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H033", "topic": "hitze", "oid": 336752, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H034", "topic": "hitze", "oid": 339979, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.3355930333443423e-09, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H035", "topic": "hitze", "oid": 338941, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8886475380395278, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H036", "topic": "hitze", "oid": 337351, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9980732654842024, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H037", "topic": "hitze", "oid": 338783, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H038", "topic": "hitze", "oid": 339309, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999993524053562, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H039", "topic": "hitze", "oid": 337314, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H040", "topic": "hitze", "oid": 336939, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998973812, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H041", "topic": "hitze", "oid": 337177, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6306820950771567, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H042", "topic": "hitze", "oid": 337059, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999998837177, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H043", "topic": "hitze", "oid": 338877, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999997210531, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "H044", "topic": "hitze", "oid": 340003, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H045", "topic": "hitze", "oid": 337134, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5958408440466246, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H046", "topic": "hitze", "oid": 338507, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999975866, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H047", "topic": "hitze", "oid": 331951, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999778405081, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H048", "topic": "hitze", "oid": 337010, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7806862074140544, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H049", "topic": "hitze", "oid": 334151, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999855501979, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H050", "topic": "hitze", "oid": 339094, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9706877688776584, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H051", "topic": "hitze", "oid": 338786, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999646437366367, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H052", "topic": "hitze", "oid": 339500, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "230"}
+{"pid": "H053", "topic": "hitze", "oid": 337973, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 6.560200168110742e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H054", "topic": "hitze", "oid": 338030, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H055", "topic": "hitze", "oid": 338953, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999979388463, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H056", "topic": "hitze", "oid": 338020, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.628344178047032e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AI"}
+{"pid": "H057", "topic": "hitze", "oid": 339394, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H058", "topic": "hitze", "oid": 337324, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H059", "topic": "hitze", "oid": 338840, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H060", "topic": "hitze", "oid": 340812, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H061", "topic": "hitze", "oid": 337580, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H062", "topic": "hitze", "oid": 339928, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999677581336, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H063", "topic": "hitze", "oid": 340123, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999997210531, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H064", "topic": "hitze", "oid": 337002, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999997897565838, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H065", "topic": "hitze", "oid": 337922, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999985363, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "JU"}
+{"pid": "H066", "topic": "hitze", "oid": 337514, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999996734, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H067", "topic": "hitze", "oid": 341010, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999996734, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "6643"}
+{"pid": "H068", "topic": "hitze", "oid": 337908, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999998973812, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "3203"}
+{"pid": "H069", "topic": "hitze", "oid": 338087, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9259742876869542, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H070", "topic": "hitze", "oid": 338382, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999992417439, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H071", "topic": "hitze", "oid": 338731, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H072", "topic": "hitze", "oid": 336679, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "H073", "topic": "hitze", "oid": 339093, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999985363, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H074", "topic": "hitze", "oid": 339106, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H075", "topic": "hitze", "oid": 337725, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "H076", "topic": "hitze", "oid": 336567, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "H077", "topic": "hitze", "oid": 340866, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.2897348455931243e-11, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H078", "topic": "hitze", "oid": 339315, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999998973812, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H079", "topic": "hitze", "oid": 338866, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999945777803837, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "H080", "topic": "hitze", "oid": 337189, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9859363738607045, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H081", "topic": "hitze", "oid": 340158, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999515263, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H082", "topic": "hitze", "oid": 338187, "stratum": "K only", "N_h": 2, "n_h": 2, "p": 0.001169510299868875, "flag": false, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H083", "topic": "hitze", "oid": 337687, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "243"}
+{"pid": "H084", "topic": "hitze", "oid": 338721, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H085", "topic": "hitze", "oid": 340944, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.109089028037223e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H086", "topic": "hitze", "oid": 339493, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7810655515031603, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "OW"}
+{"pid": "H087", "topic": "hitze", "oid": 337886, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "H088", "topic": "hitze", "oid": 339322, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999934397, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H089", "topic": "hitze", "oid": 338502, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999991123, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H090", "topic": "hitze", "oid": 337573, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H091", "topic": "hitze", "oid": 338326, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H092", "topic": "hitze", "oid": 340787, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9525741264858408, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H093", "topic": "hitze", "oid": 338125, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "1058"}
+{"pid": "H094", "topic": "hitze", "oid": 339074, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999724643023313, "flag": true, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H095", "topic": "hitze", "oid": 340214, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.978962535821407e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H096", "topic": "hitze", "oid": 338835, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999814460854, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "H097", "topic": "hitze", "oid": 339085, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9259763053953743, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H098", "topic": "hitze", "oid": 336750, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "H099", "topic": "hitze", "oid": 337636, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999740539, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H100", "topic": "hitze", "oid": 338331, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H101", "topic": "hitze", "oid": 340723, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999997210531, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H102", "topic": "hitze", "oid": 337623, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999200804, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H103", "topic": "hitze", "oid": 338848, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "H104", "topic": "hitze", "oid": 340154, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8771612516693783, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H105", "topic": "hitze", "oid": 337561, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "GR"}
+{"pid": "H106", "topic": "hitze", "oid": 338254, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999952149049348, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H107", "topic": "hitze", "oid": 337830, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H108", "topic": "hitze", "oid": 339304, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9986749776450224, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "743"}
+{"pid": "H109", "topic": "hitze", "oid": 341097, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.1399918530430558e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H110", "topic": "hitze", "oid": 339374, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H111", "topic": "hitze", "oid": 340414, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H112", "topic": "hitze", "oid": 337914, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8989916741585253, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "3203"}
+{"pid": "H113", "topic": "hitze", "oid": 336845, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9820137907945936, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H114", "topic": "hitze", "oid": 338553, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999989322970027, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H115", "topic": "hitze", "oid": 339681, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5849969393564924, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H116", "topic": "hitze", "oid": 338694, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999997897565838, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H117", "topic": "hitze", "oid": 338924, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.8257572871156028e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H118", "topic": "hitze", "oid": 337618, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999984465026158, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H119", "topic": "hitze", "oid": 338183, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H120", "topic": "hitze", "oid": 338777, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9933071479891094, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H121", "topic": "hitze", "oid": 339645, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H122", "topic": "hitze", "oid": 338391, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6886550809999714, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H123", "topic": "hitze", "oid": 338124, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.0815941557168708e-11, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1058"}
+{"pid": "H124", "topic": "hitze", "oid": 337529, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999993086, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H125", "topic": "hitze", "oid": 336530, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.7482341282707514e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H126", "topic": "hitze", "oid": 336678, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999962733602715, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "H127", "topic": "hitze", "oid": 340376, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 8.878265478451776e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H128", "topic": "hitze", "oid": 337281, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999151889181479, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "UR"}
+{"pid": "H129", "topic": "hitze", "oid": 337665, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H130", "topic": "hitze", "oid": 339107, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.6470898141509843, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H131", "topic": "hitze", "oid": 339441, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999999868235, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H132", "topic": "hitze", "oid": 338685, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998308102, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H133", "topic": "hitze", "oid": 338580, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999996734, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H134", "topic": "hitze", "oid": 336861, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.5436656473762755e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H135", "topic": "hitze", "oid": 338838, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H136", "topic": "hitze", "oid": 338746, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999868235, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H137", "topic": "hitze", "oid": 337429, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.725782769012759e-08, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H138", "topic": "hitze", "oid": 337713, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "H139", "topic": "hitze", "oid": 338466, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999377585, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H140", "topic": "hitze", "oid": 339542, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999885212277686, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H141", "topic": "hitze", "oid": 338540, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "ZG"}
+{"pid": "H142", "topic": "hitze", "oid": 338025, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9997388097832411, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1061"}
+{"pid": "H143", "topic": "hitze", "oid": 337041, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999961492576, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H144", "topic": "hitze", "oid": 337325, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999200804, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H145", "topic": "hitze", "oid": 340802, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999987498471, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H146", "topic": "hitze", "oid": 338089, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999966017321, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H147", "topic": "hitze", "oid": 336869, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.629616474845724, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H148", "topic": "hitze", "oid": 336796, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "GL"}
+{"pid": "H149", "topic": "hitze", "oid": 338412, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H150", "topic": "hitze", "oid": 339849, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "H151", "topic": "hitze", "oid": 337520, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999996734, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H152", "topic": "hitze", "oid": 337831, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H153", "topic": "hitze", "oid": 340708, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8844372766894489, "flag": true, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H154", "topic": "hitze", "oid": 339413, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H155", "topic": "hitze", "oid": 338088, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9933071496081828, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H156", "topic": "hitze", "oid": 336594, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999997210531, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2939"}
+{"pid": "H157", "topic": "hitze", "oid": 338046, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H158", "topic": "hitze", "oid": 338778, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H159", "topic": "hitze", "oid": 338547, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7498847466696146, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "ZG"}
+{"pid": "H160", "topic": "hitze", "oid": 338620, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999515263, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "230"}
+{"pid": "H161", "topic": "hitze", "oid": 337841, "stratum": "K only", "N_h": 2, "n_h": 2, "p": 1.3007128465316716e-05, "flag": false, "kw": true, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H162", "topic": "hitze", "oid": 340399, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5586380938720346, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H163", "topic": "hitze", "oid": 337630, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999200804, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H164", "topic": "hitze", "oid": 337430, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.902263460650535, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H165", "topic": "hitze", "oid": 340720, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H166", "topic": "hitze", "oid": 339069, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H167", "topic": "hitze", "oid": 340150, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H168", "topic": "hitze", "oid": 337385, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999993086, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H169", "topic": "hitze", "oid": 340870, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H170", "topic": "hitze", "oid": 337629, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9984988178341766, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H171", "topic": "hitze", "oid": 337320, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999973534264, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H172", "topic": "hitze", "oid": 337634, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H173", "topic": "hitze", "oid": 340257, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H174", "topic": "hitze", "oid": 338451, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999417087135934, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H175", "topic": "hitze", "oid": 337331, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999956365377, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2831"}
+{"pid": "H176", "topic": "hitze", "oid": 336488, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.99999998813888, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "H177", "topic": "hitze", "oid": 337512, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999985363, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H178", "topic": "hitze", "oid": 340253, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H179", "topic": "hitze", "oid": 338210, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9626731130574597, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H180", "topic": "hitze", "oid": 339335, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.4133627718273893e-12, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5002"}
+{"pid": "H181", "topic": "hitze", "oid": 337904, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999200804, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4045"}
+{"pid": "H182", "topic": "hitze", "oid": 336644, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H183", "topic": "hitze", "oid": 339062, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7185097065285603, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H184", "topic": "hitze", "oid": 281752, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999994094697, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H185", "topic": "hitze", "oid": 340195, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H186", "topic": "hitze", "oid": 338374, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H187", "topic": "hitze", "oid": 339246, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H188", "topic": "hitze", "oid": 338774, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H189", "topic": "hitze", "oid": 340687, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H190", "topic": "hitze", "oid": 339081, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999782756, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H191", "topic": "hitze", "oid": 338609, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999998308102, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "306"}
+{"pid": "H192", "topic": "hitze", "oid": 340034, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H193", "topic": "hitze", "oid": 339436, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999973534264, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H194", "topic": "hitze", "oid": 337176, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999996149258, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H195", "topic": "hitze", "oid": 336572, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 6.914400106935422e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H196", "topic": "hitze", "oid": 338047, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999417087205447, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H197", "topic": "hitze", "oid": 340056, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H198", "topic": "hitze", "oid": 339317, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H199", "topic": "hitze", "oid": 337581, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998308102, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H200", "topic": "hitze", "oid": 339484, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7493374886649966, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4001"}
+{"pid": "H201", "topic": "hitze", "oid": 339306, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6603906218202575, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "743"}
+{"pid": "H202", "topic": "hitze", "oid": 337899, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999994956523514, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4045"}
+{"pid": "H203", "topic": "hitze", "oid": 339686, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999666846, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H204", "topic": "hitze", "oid": 338759, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H205", "topic": "hitze", "oid": 337622, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999200804, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H206", "topic": "hitze", "oid": 336996, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.99999999999886, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H207", "topic": "hitze", "oid": 339066, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H208", "topic": "hitze", "oid": 337166, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999970010391, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H209", "topic": "hitze", "oid": 338443, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H210", "topic": "hitze", "oid": 338724, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.8074410491253923, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H211", "topic": "hitze", "oid": 340129, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999771028, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H212", "topic": "hitze", "oid": 337562, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "GR"}
+{"pid": "H213", "topic": "hitze", "oid": 339113, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H214", "topic": "hitze", "oid": 336956, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H215", "topic": "hitze", "oid": 340541, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999317439628, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H216", "topic": "hitze", "oid": 339406, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H217", "topic": "hitze", "oid": 337874, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5725493142950467, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "H218", "topic": "hitze", "oid": 340629, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 6.914400106935422e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H219", "topic": "hitze", "oid": 336773, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "it", "level": "communal", "body": "5113"}
+{"pid": "H220", "topic": "hitze", "oid": 341096, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.1399918530430558e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H221", "topic": "hitze", "oid": 337870, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.2241866333029355e-08, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "3901"}
+{"pid": "H222", "topic": "hitze", "oid": 339448, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999998874648245, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H223", "topic": "hitze", "oid": 340640, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H224", "topic": "hitze", "oid": 336531, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H225", "topic": "hitze", "oid": 337839, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.0815941557168708e-11, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5002"}
+{"pid": "H226", "topic": "hitze", "oid": 336970, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H227", "topic": "hitze", "oid": 337778, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 8.878265478451776e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H228", "topic": "hitze", "oid": 338491, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H229", "topic": "hitze", "oid": 337931, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "JU"}
+{"pid": "H230", "topic": "hitze", "oid": 340690, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999006880431, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H231", "topic": "hitze", "oid": 337637, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999990455, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H232", "topic": "hitze", "oid": 336775, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H233", "topic": "hitze", "oid": 337389, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H234", "topic": "hitze", "oid": 339902, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H235", "topic": "hitze", "oid": 339708, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H236", "topic": "hitze", "oid": 338416, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H237", "topic": "hitze", "oid": 338092, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9241418252018901, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H238", "topic": "hitze", "oid": 339333, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.7832472907828393e-11, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H239", "topic": "hitze", "oid": 340015, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.888647222057646, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H240", "topic": "hitze", "oid": 340278, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999996418252, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H241", "topic": "hitze", "oid": 336595, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999993086, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "NW"}
+{"pid": "H242", "topic": "hitze", "oid": 336705, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "H243", "topic": "hitze", "oid": 339236, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H244", "topic": "hitze", "oid": 338524, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999546021259337, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H245", "topic": "hitze", "oid": 339205, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999226557685, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H246", "topic": "hitze", "oid": 338675, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H247", "topic": "hitze", "oid": 338316, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999989322968754, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H248", "topic": "hitze", "oid": 340026, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9975273773619391, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6153"}
+{"pid": "H249", "topic": "hitze", "oid": 338795, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "H250", "topic": "hitze", "oid": 339569, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7810874736942071, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H251", "topic": "hitze", "oid": 340566, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H252", "topic": "hitze", "oid": 338056, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H253", "topic": "hitze", "oid": 337042, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.99999999999886, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H254", "topic": "hitze", "oid": 339091, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999975866, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H255", "topic": "hitze", "oid": 338843, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999785550592533, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H256", "topic": "hitze", "oid": 338264, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.0815941557168708e-11, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H257", "topic": "hitze", "oid": 340072, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999962733602715, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H258", "topic": "hitze", "oid": 339337, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999377585, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H259", "topic": "hitze", "oid": 336897, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8395755882359216, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H260", "topic": "hitze", "oid": 338951, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999957771680655, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H261", "topic": "hitze", "oid": 337604, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9259642508623389, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "247"}
+{"pid": "H262", "topic": "hitze", "oid": 338669, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H263", "topic": "hitze", "oid": 338373, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999377585, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H264", "topic": "hitze", "oid": 338716, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H265", "topic": "hitze", "oid": 340408, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.6911638017642294e-08, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H266", "topic": "hitze", "oid": 337432, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999996418252, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "H267", "topic": "hitze", "oid": 337852, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H268", "topic": "hitze", "oid": 340254, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H269", "topic": "hitze", "oid": 340918, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5310882504428991, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H270", "topic": "hitze", "oid": 339068, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9998415638206688, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H271", "topic": "hitze", "oid": 339900, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.384940217751136e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H272", "topic": "hitze", "oid": 337818, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999123575151, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "62"}
+{"pid": "H273", "topic": "hitze", "oid": 340740, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H274", "topic": "hitze", "oid": 340809, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999966017321, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H275", "topic": "hitze", "oid": 337557, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "GR"}
+{"pid": "H276", "topic": "hitze", "oid": 337381, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H277", "topic": "hitze", "oid": 338624, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H278", "topic": "hitze", "oid": 338198, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "H279", "topic": "hitze", "oid": 339806, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999941708755285, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H280", "topic": "hitze", "oid": 340393, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999782756, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H281", "topic": "hitze", "oid": 337422, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999974890009, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "TG"}
+{"pid": "H282", "topic": "hitze", "oid": 339364, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9080366482436222, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H283", "topic": "hitze", "oid": 338173, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999992417439, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H284", "topic": "hitze", "oid": 339646, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.4133627718273893e-12, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H285", "topic": "hitze", "oid": 338600, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9995694428560856, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H286", "topic": "hitze", "oid": 338079, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H287", "topic": "hitze", "oid": 337898, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999915765, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4045"}
+{"pid": "H288", "topic": "hitze", "oid": 338112, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "H289", "topic": "hitze", "oid": 336597, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999622486, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "4001"}
+{"pid": "H290", "topic": "hitze", "oid": 339937, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H291", "topic": "hitze", "oid": 340255, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H292", "topic": "hitze", "oid": 337638, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H293", "topic": "hitze", "oid": 338402, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999991123, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H294", "topic": "hitze", "oid": 338049, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.4927883506529765e-11, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H295", "topic": "hitze", "oid": 339290, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5595222436470618, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H296", "topic": "hitze", "oid": 337326, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "2831"}
+{"pid": "H297", "topic": "hitze", "oid": 338665, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999972653, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H298", "topic": "hitze", "oid": 338339, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H299", "topic": "hitze", "oid": 337827, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9992903294416452, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H300", "topic": "hitze", "oid": 339557, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998308102, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H301", "topic": "hitze", "oid": 341107, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "6421"}
+{"pid": "H302", "topic": "hitze", "oid": 337152, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.0815941557168708e-11, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H303", "topic": "hitze", "oid": 338505, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999999989184, "flag": true, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H304", "topic": "hitze", "oid": 337419, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "H305", "topic": "hitze", "oid": 281736, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999677581336, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H306", "topic": "hitze", "oid": 339087, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H307", "topic": "hitze", "oid": 338393, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H308", "topic": "hitze", "oid": 340841, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H309", "topic": "hitze", "oid": 339607, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999468421439, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H310", "topic": "hitze", "oid": 338692, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999377585, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H311", "topic": "hitze", "oid": 341377, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 7.582560422162384e-10, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SZ"}
+{"pid": "H312", "topic": "hitze", "oid": 340992, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 0.02297736819559898, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H313", "topic": "hitze", "oid": 337154, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H314", "topic": "hitze", "oid": 338948, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H315", "topic": "hitze", "oid": 337179, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9984988180147824, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H316", "topic": "hitze", "oid": 339418, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "361"}
+{"pid": "H317", "topic": "hitze", "oid": 337748, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999994956527721, "flag": true, "kw": false, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "H318", "topic": "hitze", "oid": 340210, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.4133627718273893e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H319", "topic": "hitze", "oid": 337701, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 7.681204685202035e-15, "flag": false, "kw": false, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "H320", "topic": "hitze", "oid": 337472, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9924227574610248, "flag": true, "kw": false, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "H321", "topic": "hitze", "oid": 337644, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999804443193, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H322", "topic": "hitze", "oid": 336994, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999622486, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H323", "topic": "hitze", "oid": 336998, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.99999999999886, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H324", "topic": "hitze", "oid": 339316, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H325", "topic": "hitze", "oid": 340725, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H326", "topic": "hitze", "oid": 337868, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "3901"}
+{"pid": "H327", "topic": "hitze", "oid": 337019, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "351"}
+{"pid": "H328", "topic": "hitze", "oid": 338129, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999907625504, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "191"}
+{"pid": "H329", "topic": "hitze", "oid": 336971, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999943972036, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H330", "topic": "hitze", "oid": 337388, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.99999999999886, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H331", "topic": "hitze", "oid": 339743, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H332", "topic": "hitze", "oid": 339952, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H333", "topic": "hitze", "oid": 338828, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999622486, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H334", "topic": "hitze", "oid": 336814, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.7832472907828393e-11, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5254"}
+{"pid": "H335", "topic": "hitze", "oid": 338729, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999982396567867, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H336", "topic": "hitze", "oid": 338018, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "4001"}
+{"pid": "H337", "topic": "hitze", "oid": 337758, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H338", "topic": "hitze", "oid": 340318, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999782756, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H339", "topic": "hitze", "oid": 340402, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H340", "topic": "hitze", "oid": 339892, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 7.681204685202035e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H341", "topic": "hitze", "oid": 338862, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "H342", "topic": "hitze", "oid": 327219, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H343", "topic": "hitze", "oid": 339767, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9820137907945936, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H344", "topic": "hitze", "oid": 336975, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H345", "topic": "hitze", "oid": 337085, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "198"}
+{"pid": "H346", "topic": "hitze", "oid": 337633, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H347", "topic": "hitze", "oid": 337626, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999377585, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H348", "topic": "hitze", "oid": 340130, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999200804, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H349", "topic": "hitze", "oid": 339696, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.5595979791015006, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1061"}
+{"pid": "H350", "topic": "hitze", "oid": 340630, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999997210531, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H351", "topic": "hitze", "oid": 339323, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999546021367564, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H352", "topic": "hitze", "oid": 336631, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H353", "topic": "hitze", "oid": 340987, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.098819138712223e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H354", "topic": "hitze", "oid": 338488, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999724643056137, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H355", "topic": "hitze", "oid": 340829, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H356", "topic": "hitze", "oid": 338408, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999622486, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H357", "topic": "hitze", "oid": 340631, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.1937956583777856e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H358", "topic": "hitze", "oid": 96375, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "191"}
+{"pid": "H359", "topic": "hitze", "oid": 337565, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999988967441, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H360", "topic": "hitze", "oid": 338390, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H361", "topic": "hitze", "oid": 339086, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999468421439, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H362", "topic": "hitze", "oid": 337624, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8525506133632842, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H363", "topic": "hitze", "oid": 339092, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999981204, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H364", "topic": "hitze", "oid": 338765, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8655198267431372, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H365", "topic": "hitze", "oid": 340265, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H366", "topic": "hitze", "oid": 339768, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.996406396761629, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H367", "topic": "hitze", "oid": 337291, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999586006244, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "3203"}
+{"pid": "H368", "topic": "hitze", "oid": 338967, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999979388463, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H369", "topic": "hitze", "oid": 338421, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H370", "topic": "hitze", "oid": 339258, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9251260425157182, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H371", "topic": "hitze", "oid": 337395, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H372", "topic": "hitze", "oid": 339362, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AI"}
+{"pid": "H373", "topic": "hitze", "oid": 340613, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9525741264858408, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H374", "topic": "hitze", "oid": 339196, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.5436656473762755e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H375", "topic": "hitze", "oid": 340783, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999989322968754, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H376", "topic": "hitze", "oid": 338062, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999992417439, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H377", "topic": "hitze", "oid": 337423, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999943972036, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "TG"}
+{"pid": "H378", "topic": "hitze", "oid": 337640, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H379", "topic": "hitze", "oid": 336989, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999993086, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H380", "topic": "hitze", "oid": 340415, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9997040427584595, "flag": true, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H381", "topic": "hitze", "oid": 338085, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "H382", "topic": "hitze", "oid": 337828, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9706877686656669, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H383", "topic": "hitze", "oid": 339851, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8333735204740083, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "H384", "topic": "hitze", "oid": 337526, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999982396567867, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H385", "topic": "hitze", "oid": 340722, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H386", "topic": "hitze", "oid": 336885, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "UR"}
+{"pid": "H387", "topic": "hitze", "oid": 337380, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H388", "topic": "hitze", "oid": 340550, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H389", "topic": "hitze", "oid": 339267, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H390", "topic": "hitze", "oid": 340831, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.6113406016773526, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H391", "topic": "hitze", "oid": 340236, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.6112956157990441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H392", "topic": "hitze", "oid": 339968, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999006880431, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H393", "topic": "hitze", "oid": 339552, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H394", "topic": "hitze", "oid": 340128, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999377585, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H395", "topic": "hitze", "oid": 337632, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999622486, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H396", "topic": "hitze", "oid": 337917, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9980732654790534, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2939"}
+{"pid": "H397", "topic": "hitze", "oid": 336824, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "198"}
+{"pid": "H398", "topic": "hitze", "oid": 338463, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999869928715347, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H399", "topic": "hitze", "oid": 337821, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.7262870629904762, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "H400", "topic": "hitze", "oid": 338396, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999934397, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "404"}
+{"pid": "H401", "topic": "hitze", "oid": 338508, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H402", "topic": "hitze", "oid": 338448, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H403", "topic": "hitze", "oid": 339077, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999998308102, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H404", "topic": "hitze", "oid": 337979, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 3.978962535821407e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H405", "topic": "hitze", "oid": 340428, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999975866, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "UR"}
+{"pid": "H406", "topic": "hitze", "oid": 340016, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9241418116217417, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H407", "topic": "hitze", "oid": 338707, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H408", "topic": "hitze", "oid": 338330, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H409", "topic": "hitze", "oid": 338738, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H410", "topic": "hitze", "oid": 338966, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H411", "topic": "hitze", "oid": 339382, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 7.681204685202035e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H412", "topic": "hitze", "oid": 339494, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999821676, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "3443"}
+{"pid": "H413", "topic": "hitze", "oid": 339083, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "H414", "topic": "hitze", "oid": 337780, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.998830489979046, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H415", "topic": "hitze", "oid": 338282, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999989184, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SH"}
+{"pid": "H416", "topic": "hitze", "oid": 340786, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H417", "topic": "hitze", "oid": 336936, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H418", "topic": "hitze", "oid": 337509, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999969011, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H419", "topic": "hitze", "oid": 338717, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H420", "topic": "hitze", "oid": 340776, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H421", "topic": "hitze", "oid": 338954, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999996021, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H422", "topic": "hitze", "oid": 339072, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999705993, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H423", "topic": "hitze", "oid": 339425, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H424", "topic": "hitze", "oid": 338688, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999515263, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "H425", "topic": "hitze", "oid": 337689, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9046505434556231, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2939"}
+{"pid": "H426", "topic": "hitze", "oid": 339456, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999847700205, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "942"}
+{"pid": "H427", "topic": "hitze", "oid": 338234, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8886441912005457, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H428", "topic": "hitze", "oid": 337374, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999962733602715, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H429", "topic": "hitze", "oid": 337617, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999985363, "flag": true, "kw": true, "lang": "it", "level": "communal", "body": "5254"}
+{"pid": "H430", "topic": "hitze", "oid": 338606, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999983298584127, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "H431", "topic": "hitze", "oid": 336868, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.847368706035286e-11, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H432", "topic": "hitze", "oid": 338241, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H433", "topic": "hitze", "oid": 338174, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "H434", "topic": "hitze", "oid": 337620, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999999450722, "flag": true, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H435", "topic": "hitze", "oid": 339971, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H436", "topic": "hitze", "oid": 337732, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "H437", "topic": "hitze", "oid": 339966, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998308102, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H438", "topic": "hitze", "oid": 339415, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H439", "topic": "hitze", "oid": 340097, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999468421502, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H440", "topic": "hitze", "oid": 339268, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999992417439, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H441", "topic": "hitze", "oid": 337316, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999981204, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "2829"}
+{"pid": "H442", "topic": "hitze", "oid": 340093, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999925664, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H443", "topic": "hitze", "oid": 337330, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "2831"}
+{"pid": "H444", "topic": "hitze", "oid": 338506, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.7482341282707514e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H445", "topic": "hitze", "oid": 340951, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "H446", "topic": "hitze", "oid": 339023, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999377585, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H447", "topic": "hitze", "oid": 336586, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9022634673687688, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "H448", "topic": "hitze", "oid": 339838, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999832985761634, "flag": true, "kw": false, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "H449", "topic": "hitze", "oid": 337770, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H450", "topic": "hitze", "oid": 339071, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998973812, "flag": true, "kw": true, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "H451", "topic": "hitze", "oid": 338560, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999993086, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H452", "topic": "hitze", "oid": 340168, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999771028, "flag": true, "kw": true, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H453", "topic": "hitze", "oid": 339344, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.9999999865595887, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H454", "topic": "hitze", "oid": 339191, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "TG"}
+{"pid": "H455", "topic": "hitze", "oid": 340103, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.7832472907828393e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H456", "topic": "hitze", "oid": 337161, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "H457", "topic": "hitze", "oid": 339446, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998973812, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H458", "topic": "hitze", "oid": 338380, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999934397, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "H459", "topic": "hitze", "oid": 340085, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.8095460204264053, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "H460", "topic": "hitze", "oid": 339969, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999994956523514, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "H461", "topic": "hitze", "oid": 337628, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999994094697, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "H462", "topic": "hitze", "oid": 337015, "stratum": "neither", "N_h": 3957, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "UR"}
+{"pid": "H463", "topic": "hitze", "oid": 338132, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.999999855501979, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "2703"}
+{"pid": "H464", "topic": "hitze", "oid": 340346, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999998308102, "flag": true, "kw": true, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "H465", "topic": "hitze", "oid": 338510, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.999999999986112, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "H466", "topic": "hitze", "oid": 339445, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.9999999999915765, "flag": true, "kw": true, "lang": "fr", "level": "communal", "body": "6621"}
+{"pid": "H467", "topic": "hitze", "oid": 338324, "stratum": "A only", "N_h": 157, "n_h": 157, "p": 0.99999998813888, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "H468", "topic": "hitze", "oid": 337508, "stratum": "A∩K", "N_h": 189, "n_h": 189, "p": 0.99999999999886, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BL"}
+{"pid": "K001", "topic": "ki-schule", "oid": 338433, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K002", "topic": "ki-schule", "oid": 338425, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K003", "topic": "ki-schule", "oid": 338217, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1024"}
+{"pid": "K004", "topic": "ki-schule", "oid": 339218, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.2897348455931243e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K005", "topic": "ki-schule", "oid": 337087, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K006", "topic": "ki-schule", "oid": 339344, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K007", "topic": "ki-schule", "oid": 339393, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "K008", "topic": "ki-schule", "oid": 339359, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AI"}
+{"pid": "K009", "topic": "ki-schule", "oid": 340836, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K010", "topic": "ki-schule", "oid": 338125, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.384940217751136e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "1058"}
+{"pid": "K011", "topic": "ki-schule", "oid": 336873, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "K012", "topic": "ki-schule", "oid": 338572, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.1399918530430558e-12, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "K013", "topic": "ki-schule", "oid": 338120, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "K014", "topic": "ki-schule", "oid": 339870, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "3203"}
+{"pid": "K015", "topic": "ki-schule", "oid": 341398, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SH"}
+{"pid": "K016", "topic": "ki-schule", "oid": 337550, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999999988967441, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "1711"}
+{"pid": "K017", "topic": "ki-schule", "oid": 338763, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K018", "topic": "ki-schule", "oid": 338375, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "K019", "topic": "ki-schule", "oid": 340308, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.781087645509841, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "K020", "topic": "ki-schule", "oid": 340281, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999646437408511, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "NW"}
+{"pid": "K021", "topic": "ki-schule", "oid": 340470, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "K022", "topic": "ki-schule", "oid": 338744, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K023", "topic": "ki-schule", "oid": 339214, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.109089028037223e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K024", "topic": "ki-schule", "oid": 338234, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K025", "topic": "ki-schule", "oid": 337982, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.7832472907828393e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K026", "topic": "ki-schule", "oid": 336657, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "GL"}
+{"pid": "K027", "topic": "ki-schule", "oid": 336927, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K028", "topic": "ki-schule", "oid": 338963, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9216876559899532, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "TG"}
+{"pid": "K029", "topic": "ki-schule", "oid": 338925, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K030", "topic": "ki-schule", "oid": 338661, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.2664165549094015e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K031", "topic": "ki-schule", "oid": 339764, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 6.914400106935422e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "K032", "topic": "ki-schule", "oid": 336863, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "K033", "topic": "ki-schule", "oid": 338314, "stratum": "A∩K", "N_h": 4, "n_h": 4, "p": 0.9999982396567867, "flag": true, "kw": true, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "K034", "topic": "ki-schule", "oid": 339600, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K035", "topic": "ki-schule", "oid": 339649, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "K036", "topic": "ki-schule", "oid": 340426, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "UR"}
+{"pid": "K037", "topic": "ki-schule", "oid": 340793, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K038", "topic": "ki-schule", "oid": 338770, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9399133561377042, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K039", "topic": "ki-schule", "oid": 339326, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K040", "topic": "ki-schule", "oid": 338899, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K041", "topic": "ki-schule", "oid": 338186, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "K042", "topic": "ki-schule", "oid": 338859, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.2897348455931243e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "K043", "topic": "ki-schule", "oid": 340851, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K044", "topic": "ki-schule", "oid": 339668, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K045", "topic": "ki-schule", "oid": 339202, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.978962535821407e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K046", "topic": "ki-schule", "oid": 340960, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.734698291584396e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K047", "topic": "ki-schule", "oid": 338500, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.752193062768895e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "K048", "topic": "ki-schule", "oid": 337647, "stratum": "A∩K", "N_h": 4, "n_h": 4, "p": 0.9999991684719723, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K049", "topic": "ki-schule", "oid": 339954, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K050", "topic": "ki-schule", "oid": 340376, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.4637785141237664e-12, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "K051", "topic": "ki-schule", "oid": 338289, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "3427"}
+{"pid": "K052", "topic": "ki-schule", "oid": 339527, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.8553916819077567e-07, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K053", "topic": "ki-schule", "oid": 336629, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K054", "topic": "ki-schule", "oid": 340832, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999999992417439, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K055", "topic": "ki-schule", "oid": 339184, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K056", "topic": "ki-schule", "oid": 337873, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "LU"}
+{"pid": "K057", "topic": "ki-schule", "oid": 340457, "stratum": "A∩K", "N_h": 4, "n_h": 4, "p": 0.9999999999985363, "flag": true, "kw": true, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "K058", "topic": "ki-schule", "oid": 338880, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 6.224144622520382e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VS"}
+{"pid": "K059", "topic": "ki-schule", "oid": 338962, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9166856053359839, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "TG"}
+{"pid": "K060", "topic": "ki-schule", "oid": 338915, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K061", "topic": "ki-schule", "oid": 337239, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K062", "topic": "ki-schule", "oid": 339433, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K063", "topic": "ki-schule", "oid": 339604, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 7.681204685202035e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K064", "topic": "ki-schule", "oid": 339267, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.1937956583777856e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "K065", "topic": "ki-schule", "oid": 338445, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K066", "topic": "ki-schule", "oid": 339605, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.2015425731770343e-13, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K067", "topic": "ki-schule", "oid": 340629, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 8.878265478451776e-13, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "K068", "topic": "ki-schule", "oid": 339408, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K069", "topic": "ki-schule", "oid": 339498, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "4401"}
+{"pid": "K070", "topic": "ki-schule", "oid": 338938, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "K071", "topic": "ki-schule", "oid": 338728, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K072", "topic": "ki-schule", "oid": 339335, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5002"}
+{"pid": "K073", "topic": "ki-schule", "oid": 338768, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K074", "topic": "ki-schule", "oid": 337927, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 6.914400106935422e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "JU"}
+{"pid": "K075", "topic": "ki-schule", "oid": 96375, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "191"}
+{"pid": "K076", "topic": "ki-schule", "oid": 339131, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 6.825603724121505e-08, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K077", "topic": "ki-schule", "oid": 337247, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999251537816229, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K078", "topic": "ki-schule", "oid": 337742, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "other", "body": "LIE"}
+{"pid": "K079", "topic": "ki-schule", "oid": 336823, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "198"}
+{"pid": "K080", "topic": "ki-schule", "oid": 340674, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 6.101936677601601e-13, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "K081", "topic": "ki-schule", "oid": 339237, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "K082", "topic": "ki-schule", "oid": 340875, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999999928058669, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K083", "topic": "ki-schule", "oid": 340555, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K084", "topic": "ki-schule", "oid": 338410, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K085", "topic": "ki-schule", "oid": 339779, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.8290484675464147, "flag": true, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "K086", "topic": "ki-schule", "oid": 340898, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K087", "topic": "ki-schule", "oid": 279964, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.989013056144891, "flag": true, "kw": false, "lang": "fr", "level": "cantonal", "body": "JU"}
+{"pid": "K088", "topic": "ki-schule", "oid": 337195, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "OW"}
+{"pid": "K089", "topic": "ki-schule", "oid": 338236, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9859363721431995, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K090", "topic": "ki-schule", "oid": 340806, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "fr", "level": "federal", "body": "CHE"}
+{"pid": "K091", "topic": "ki-schule", "oid": 338048, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.2897348455931243e-11, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "5586"}
+{"pid": "K092", "topic": "ki-schule", "oid": 336603, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "FR"}
+{"pid": "K093", "topic": "ki-schule", "oid": 337109, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.1937956583777856e-13, "flag": false, "kw": false, "lang": "fr", "level": "communal", "body": "6643"}
+{"pid": "K094", "topic": "ki-schule", "oid": 337490, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SH"}
+{"pid": "K095", "topic": "ki-schule", "oid": 337402, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.7010116785913024e-13, "flag": false, "kw": false, "lang": "it", "level": "cantonal", "body": "TI"}
+{"pid": "K096", "topic": "ki-schule", "oid": 339053, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.628344178047032e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K097", "topic": "ki-schule", "oid": 338004, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.7832472907828393e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K098", "topic": "ki-schule", "oid": 337482, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "NE"}
+{"pid": "K099", "topic": "ki-schule", "oid": 338908, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.3576229688393e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K100", "topic": "ki-schule", "oid": 337128, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "K101", "topic": "ki-schule", "oid": 339725, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K102", "topic": "ki-schule", "oid": 336968, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "K103", "topic": "ki-schule", "oid": 336630, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.9810087980485874e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K104", "topic": "ki-schule", "oid": 339553, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K105", "topic": "ki-schule", "oid": 337893, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "K106", "topic": "ki-schule", "oid": 340633, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K107", "topic": "ki-schule", "oid": 337758, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K108", "topic": "ki-schule", "oid": 338636, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K109", "topic": "ki-schule", "oid": 338785, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SG"}
+{"pid": "K110", "topic": "ki-schule", "oid": 341370, "stratum": "A∩K", "N_h": 4, "n_h": 4, "p": 0.999999999994891, "flag": true, "kw": true, "lang": "de", "level": "cantonal", "body": "SZ"}
+{"pid": "K111", "topic": "ki-schule", "oid": 337594, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 9.862862046580357e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "SO"}
+{"pid": "K112", "topic": "ki-schule", "oid": 339474, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.5912113151920964, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "VS"}
+{"pid": "K113", "topic": "ki-schule", "oid": 339420, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.5595397629412765, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "361"}
+{"pid": "K114", "topic": "ki-schule", "oid": 340080, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.109089028037223e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "K115", "topic": "ki-schule", "oid": 339932, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K116", "topic": "ki-schule", "oid": 340067, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.7832472907828393e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "K117", "topic": "ki-schule", "oid": 338696, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.6261110446177924e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K118", "topic": "ki-schule", "oid": 339504, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.3440409770490404e-08, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K119", "topic": "ki-schule", "oid": 336933, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.1399918530430558e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K120", "topic": "ki-schule", "oid": 338202, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "2703"}
+{"pid": "K121", "topic": "ki-schule", "oid": 337605, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.6756852326324e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K122", "topic": "ki-schule", "oid": 337345, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "261"}
+{"pid": "K123", "topic": "ki-schule", "oid": 338897, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.3347932285976013e-15, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "2939"}
+{"pid": "K124", "topic": "ki-schule", "oid": 339385, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.08796791164589e-14, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K125", "topic": "ki-schule", "oid": 336626, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.658886145103376e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K126", "topic": "ki-schule", "oid": 339119, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 5.9821282237671e-15, "flag": false, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K127", "topic": "ki-schule", "oid": 339421, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.2897348455931243e-11, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "361"}
+{"pid": "K128", "topic": "ki-schule", "oid": 337252, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 4.420228103640978e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K129", "topic": "ki-schule", "oid": 339838, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.2661313427863805e-13, "flag": false, "kw": false, "lang": "it", "level": "communal", "body": "5192"}
+{"pid": "K130", "topic": "ki-schule", "oid": 339654, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 3.442477108469858e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "AG"}
+{"pid": "K131", "topic": "ki-schule", "oid": 341391, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K132", "topic": "ki-schule", "oid": 340271, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 8.258073285555239e-14, "flag": false, "kw": false, "lang": "it", "level": "federal", "body": "CHE"}
+{"pid": "K133", "topic": "ki-schule", "oid": 337426, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 7.287724095819161e-14, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "GR"}
+{"pid": "K134", "topic": "ki-schule", "oid": 340247, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999251537905441, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}
+{"pid": "K135", "topic": "ki-schule", "oid": 339909, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 7.681204685202035e-15, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BS"}
+{"pid": "K136", "topic": "ki-schule", "oid": 338755, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.5428112031916497e-13, "flag": false, "kw": false, "lang": "de", "level": "cantonal", "body": "BE"}
+{"pid": "K137", "topic": "ki-schule", "oid": 340507, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.0815941557168708e-11, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "VD"}
+{"pid": "K138", "topic": "ki-schule", "oid": 336699, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 2.6810038677817314e-14, "flag": false, "kw": false, "lang": "de", "level": "communal", "body": "2937"}
+{"pid": "K139", "topic": "ki-schule", "oid": 337821, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999546021367564, "flag": true, "kw": false, "lang": "de", "level": "communal", "body": "4082"}
+{"pid": "K140", "topic": "ki-schule", "oid": 340303, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9999999999094393, "flag": true, "kw": false, "lang": "de", "level": "cantonal", "body": "ZH"}
+{"pid": "K141", "topic": "ki-schule", "oid": 335182, "stratum": "neither", "N_h": 4283, "n_h": 120, "p": 1.8795288165355504e-12, "flag": false, "kw": false, "lang": "fr", "level": "cantonal", "body": "GE"}
+{"pid": "K142", "topic": "ki-schule", "oid": 340569, "stratum": "A only", "N_h": 18, "n_h": 18, "p": 0.9770226287937005, "flag": true, "kw": false, "lang": "de", "level": "federal", "body": "CHE"}

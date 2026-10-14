@@ -1,0 +1,170 @@
+{
+ "note": "S20 keyword baseline, frozen 2026-10-14 07:45 CEST before any S20 call: theme with the most stem hits in the title (case-insensitive substring); ties and no hit -> the theme listed first among the tied in the frequency order of Thema 1 (computed at scoring).",
+ "stems": {
+  "Abfall & Recycling": [
+   "abfal",
+   "recyc"
+  ],
+  "Arbeitsmarkt": [
+   "arbei"
+  ],
+  "Areale & Quartiere": [
+   "areal",
+   "quart"
+  ],
+  "Bevölkerungsschutz": [
+   "bevöl"
+  ],
+  "Biodiversität": [
+   "biodi"
+  ],
+  "Boden & Wasser": [
+   "boden",
+   "wasse"
+  ],
+  "Energieversorgung": [
+   "energ"
+  ],
+  "Fussverkehr": [
+   "fussv"
+  ],
+  "Gestaltung & Infrastruktur": [
+   "gesta",
+   "infra"
+  ],
+  "Gesundheitsförderung": [
+   "gesun"
+  ],
+  "Gesundheitsversorgung": [
+   "gesun"
+  ],
+  "Gleichstellung der Geschlechter": [
+   "gesch",
+   "gleic"
+  ],
+  "Grenzüberschreitende Zusammenarbeit": [
+   "grenz",
+   "zusam"
+  ],
+  "Hochschulen & Weiterbildung": [
+   "hochs",
+   "weite"
+  ],
+  "Kinder, Jugendliche & Familien": [
+   "famil",
+   "jugen",
+   "kinde"
+  ],
+  "Klima & Luft": [
+   "klima",
+   "luft"
+  ],
+  "Kommunikationsinfrastruktur": [
+   "kommu"
+  ],
+  "Künste & Unterhaltung": [
+   "künst",
+   "unter"
+  ],
+  "Lärm": [
+   "lärm"
+  ],
+  "Menschen mit Behinderung": [
+   "behin",
+   "mensc"
+  ],
+  "Migration & Integration": [
+   "integ",
+   "migra"
+  ],
+  "Mittelschulen & Berufsbildung": [
+   "beruf",
+   "mitte"
+  ],
+  "Motorisierter Individualverkehr": [
+   "indiv",
+   "motor"
+  ],
+  "Nutzung & Regulierung": [
+   "nutzu",
+   "regul"
+  ],
+  "Parkraumbewirtschaftung": [
+   "parkr"
+  ],
+  "Parlament & Regierung": [
+   "parla",
+   "regie"
+  ],
+  "Politische Beteiligung": [
+   "betei",
+   "polit"
+  ],
+  "Polizei & Kriminalität": [
+   "krimi",
+   "poliz"
+  ],
+  "Privatwirtschaft & Standort": [
+   "priva",
+   "stand"
+  ],
+  "Raumplanung": [
+   "raump"
+  ],
+  "Recht & Strafvollzug": [
+   "recht",
+   "straf"
+  ],
+  "Religion": [
+   "relig"
+  ],
+  "Schifffahrt, Flug- & Güterverkehr": [
+   "flug",
+   "güter",
+   "schif"
+  ],
+  "Sozialhilfe": [
+   "sozia"
+  ],
+  "Sozialversicherungen und -leistungen": [
+   "leist",
+   "sozia"
+  ],
+  "Sport": [
+   "sport"
+  ],
+  "Staatsfinanzen": [
+   "staat"
+  ],
+  "Stadtgrün": [
+   "stadt"
+  ],
+  "Steuerpolitik": [
+   "steue"
+  ],
+  "Veloverkehr": [
+   "velov"
+  ],
+  "Verkehrssicherheit": [
+   "verke"
+  ],
+  "Verwaltung": [
+   "verwa"
+  ],
+  "Volksschulen & Tagesbetreuung": [
+   "tages",
+   "volks"
+  ],
+  "Wohnen": [
+   "wohne"
+  ],
+  "Ältere Bevölkerung": [
+   "bevöl",
+   "älter"
+  ],
+  "Öffentlicher Verkehr": [
+   "verke",
+   "öffen"
+  ]
+ }
+}

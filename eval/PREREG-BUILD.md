@@ -44,3 +44,14 @@ Gold sample per topic: every affair flagged by Apertus or by keywords, plus 120 
 type, date, title, long title; the topic question), Y/N; tie-break C on disagreements; Qwen-SEA-LION as a cross-family check
 on the same packet. Outcomes per topic: Apertus precision (Wilson 95%), recall against the judge (weighted by the neither-stratum
 sampling fraction; stratified bootstrap 2,000), the same for keywords, flags per topic. Reported as measured.
+
+## 2026-10-14 07:50 CEST — S20 Basel-Stadt topics, human cantonal gold, scheme handed over as a file (before any S20 call)
+Items: all 2,437 Grand Council affairs of Basel-Stadt OGD dataset 100086 (Jan 2019–Mar 2024; topics assigned by hand by the
+canton's Kantons- und Stadtentwicklung), joined to OPD by number (Signatur = OPD `number`; 2,437 of 2,437 join).
+Scheme: `schemes/bs-themen.yaml` — the 46 theme names verbatim from the dataset, alphabetical, codes A–Z then a–t, plus
+"Keines dieser Themen"; no descriptions, nothing tuned; German frame. Input: the production input block (title, long title,
+first 1,500 characters of the affair's text as chosen by `data.py`). Readings: identity order; a second code order
+(random.Random(7) permutation) when the first top probability is below 0.9; decision = top of the mean.
+Gold: «Thema 1». Outcomes: top-1 = Thema 1 (primary, Wilson 95%); top-1 ∈ {Thema 1, Thema 2} (secondary); top-3 contains
+Thema 1; lanes (orders agree / disagree) with precision each; by affair type. Baselines on the same items: majority theme;
+frozen keyword stems (`eval/s20/keywords_frozen.json`). Reported as measured.

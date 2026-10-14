@@ -1,0 +1,154 @@
+id: bs-themen
+kind: named
+title:
+  de: 'Basel-Stadt: Themen der Kantons- und Stadtentwicklung (Grosser Rat)'
+source: Theme names verbatim from Basel-Stadt OGD dataset 100086 (CC BY 4.0), columns «Thema 1» / «Thema 2»; alphabetical order; no descriptions added.
+frame:
+  de:
+    ask: Ordne das folgende Geschäft des Grossen Rates Basel-Stadt genau einem Thema der Basler Themenliste zu.
+    head: Themen
+    key: thema
+    fmt: 'Antworte nur mit dem Buchstaben des Themas als JSON: {"thema": "<Buchstabe>"}'
+options:
+- code: bs:abfall-recycling
+  name:
+    de: Abfall & Recycling
+- code: bs:arbeitsmarkt
+  name:
+    de: Arbeitsmarkt
+- code: bs:areale-quartiere
+  name:
+    de: Areale & Quartiere
+- code: bs:bev-lkerungsschutz
+  name:
+    de: Bevölkerungsschutz
+- code: bs:biodiversit-t
+  name:
+    de: Biodiversität
+- code: bs:boden-wasser
+  name:
+    de: Boden & Wasser
+- code: bs:energieversorgung
+  name:
+    de: Energieversorgung
+- code: bs:fussverkehr
+  name:
+    de: Fussverkehr
+- code: bs:gestaltung-infrastruktur
+  name:
+    de: Gestaltung & Infrastruktur
+- code: bs:gesundheitsf-rderung
+  name:
+    de: Gesundheitsförderung
+- code: bs:gesundheitsversorgung
+  name:
+    de: Gesundheitsversorgung
+- code: bs:gleichstellung-der-geschlechter
+  name:
+    de: Gleichstellung der Geschlechter
+- code: bs:grenz-berschreitende-zusammenarbeit
+  name:
+    de: Grenzüberschreitende Zusammenarbeit
+- code: bs:hochschulen-weiterbildung
+  name:
+    de: Hochschulen & Weiterbildung
+- code: bs:kinder-jugendliche-familien
+  name:
+    de: Kinder, Jugendliche & Familien
+- code: bs:klima-luft
+  name:
+    de: Klima & Luft
+- code: bs:kommunikationsinfrastruktur
+  name:
+    de: Kommunikationsinfrastruktur
+- code: bs:k-nste-unterhaltung
+  name:
+    de: Künste & Unterhaltung
+- code: bs:l-rm
+  name:
+    de: Lärm
+- code: bs:menschen-mit-behinderung
+  name:
+    de: Menschen mit Behinderung
+- code: bs:migration-integration
+  name:
+    de: Migration & Integration
+- code: bs:mittelschulen-berufsbildung
+  name:
+    de: Mittelschulen & Berufsbildung
+- code: bs:motorisierter-individualverkehr
+  name:
+    de: Motorisierter Individualverkehr
+- code: bs:nutzung-regulierung
+  name:
+    de: Nutzung & Regulierung
+- code: bs:parkraumbewirtschaftung
+  name:
+    de: Parkraumbewirtschaftung
+- code: bs:parlament-regierung
+  name:
+    de: Parlament & Regierung
+- code: bs:politische-beteiligung
+  name:
+    de: Politische Beteiligung
+- code: bs:polizei-kriminalit-t
+  name:
+    de: Polizei & Kriminalität
+- code: bs:privatwirtschaft-standort
+  name:
+    de: Privatwirtschaft & Standort
+- code: bs:raumplanung
+  name:
+    de: Raumplanung
+- code: bs:recht-strafvollzug
+  name:
+    de: Recht & Strafvollzug
+- code: bs:religion
+  name:
+    de: Religion
+- code: bs:schifffahrt-flug-g-terverkehr
+  name:
+    de: Schifffahrt, Flug- & Güterverkehr
+- code: bs:sozialhilfe
+  name:
+    de: Sozialhilfe
+- code: bs:sozialversicherungen-und-leistungen
+  name:
+    de: Sozialversicherungen und -leistungen
+- code: bs:sport
+  name:
+    de: Sport
+- code: bs:staatsfinanzen
+  name:
+    de: Staatsfinanzen
+- code: bs:stadtgr-n
+  name:
+    de: Stadtgrün
+- code: bs:steuerpolitik
+  name:
+    de: Steuerpolitik
+- code: bs:veloverkehr
+  name:
+    de: Veloverkehr
+- code: bs:verkehrssicherheit
+  name:
+    de: Verkehrssicherheit
+- code: bs:verwaltung
+  name:
+    de: Verwaltung
+- code: bs:volksschulen-tagesbetreuung
+  name:
+    de: Volksschulen & Tagesbetreuung
+- code: bs:wohnen
+  name:
+    de: Wohnen
+- code: bs:ltere-bev-lkerung
+  name:
+    de: Ältere Bevölkerung
+- code: bs:ffentlicher-verkehr
+  name:
+    de: Öffentlicher Verkehr
+none:
+  code: bs:none
+  name:
+    de: Keines dieser Themen

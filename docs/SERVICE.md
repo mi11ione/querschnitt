@@ -176,25 +176,12 @@ all 326,123 input hashes identical to the full build (0 to re-score); the full r
 `lite` on OPD's ~20 GB VPS: about 0.95 GB of files (exports 370 MB, docs 335 MB, inputs 174 MB, chapter step rows
 ≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (chapter rows only, ≈ 45 MB for 2025–26); `full` adds
 the API, the app and a Postgres volume.
-Docker is not available on the build Mac: CI builds the image, checks it runs as uid 10001, starts it, calls `/health`,
-`/metrics` and `/coverage`, and validates both compose profiles.
+CI (GitHub Actions) builds the image, checks it runs as uid 10001, starts it, calls `/health`, `/metrics` and `/coverage`,
+and brings up both compose profiles (footprint below).
 
 ## Requests to the lead
-1. `batch`: pass a topic file's `examples` to `engine.yn` (Neues-Thema files carry editor decisions; the batch ignores
-   them now). It changes those topics' prompt ids, so it is your call.
-2. `compose.topic_rows`: ad-hoc rows have `prompt_id = None`; Neues-Thema rows carry `pid_a[,pid_b]` — the nightly rows
-   could do the same.
-3. The calibration rule is duplicated (export.run and cli.compose_rows: `aps-fed` when the decision used examples). A
-   `compose.calibrated(calib)` helper both call would keep them in step.
-4. `data.parl_name(…, "fr")`: for FR and VD the OPD field gives "Grand Council" (English) as the French name.
-5. `.gitignore`: add `data/*.sqlite-wal`, `data/*.sqlite-shm`.
-6. Runtime deps include pyarrow and duckdb (≈ 125 MB of the image); the service reads Parquet only when given a
-   `.parquet` file. Moving them to an extra would shrink the image; your call.
-7. Ship (or let the nightly download) a seed `inputs.jsonl.gz` + `topics.jsonl.gz` so a fresh `full`/`lite` deploy does
-   not start with a 4.7 GB full rebuild and a 33k-affair batch.
-
-## Footprint (GitHub Actions `compose` job)
-`docker stats` after start for both profiles (`full`: db, api, nightly; `lite`: nightly-lite into an existing Postgres) is written to the job summary only, not to the repo; every push re-measures it.
+All resolved (14 Oct): parliament names, `.gitignore`, slimmer image (Parquet support is the `parquet` extra), seed data as the
+`data-latest` release (`make data`), ad-hoc prompt ids, export flags.
 
 ## Footprint (GitHub Actions `compose` job; `docker stats`, idle after start) — source: [`eval/ci_footprint.txt`](../eval/ci_footprint.txt)
 | profile | containers | memory | image |

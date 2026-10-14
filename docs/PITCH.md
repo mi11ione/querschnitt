@@ -1,36 +1,37 @@
-# Pitch scripts (draft, Wed 14 Oct — re-time against the real demo; numbers from eval/claims.tsv only)
+# Pitch scripts (Wed 14 Oct — re-time against the real demo; numbers from eval/claims.tsv only)
 
 Rules: the screen shows what has actually run (scored share, last night's log); every spoken number is in the Prüfstand;
-wherever a number comes from the AI judge, the sentence says so. Check this file with `python3 tools/claims_check.py docs/PITCH.md`.
+wherever a number comes from the AI judge, the sentence says so. Three numbers carry each pitch. Check with
+`python3 tools/claims_check.py docs/PITCH.md`.
 
 ## Gate 1 — 5 min live demo + 3 min Q&A (Christian Gutknecht, OpenParlData)
 
 | Time | On screen | Said (gist) |
 |---|---|---|
-| 0:00–1:30 | Karte, "Digitalisierung", 2026 → list → «Rechenzentren im Kanton Bern» → timeline for data centres → Pult, `[1]` on one affair | "Your deck's real use case is DVS, which curates its list by hand. Of the 30 affairs on DVS's public page — the ones the question was written against — Querschnitt recognises 27; keyword search 21. In our AI-judge-checked sample there are seven data-centre affairs — Vaud, Geneva, Schaffhausen, Vaud again, Bern, then twice the Federal Assembly; Querschnitt flags all seven, the keyword list two. `[1]` — confirmed, with who and when, next to the inferred row." |
-| 1:30–2:10 | Neues Thema: Christian names a topic | Terms appear, decisions stream in for last week. "No training. It is now a file in the nightly job." |
-| 2:10–2:50 | Prüfstand, human labels first | "1,357 held-out federal affairs labelled by APS editors, pre-registered: the shipped chapter is right in 0.740 — plain list prompting 0.655, keywords 0.191. No measurable language or party difference in chapter accuracy. The AI-judge rows for 2026 are marked as judge agreement. On the Federal Parliament's own Curia tags the trained BFH model is ahead (0.687 vs 0.654, not significant)." |
-| 2:50–4:00 | Integration, a full minute: `upstream/opd/` migration in Postgres, the Hop pipeline loading the bulk file (`hop-run`), `lite` profile, `GET /changes`, last night's `/metrics` line | "These are the merge-request files. Inferred and confirmed rows stay apart; every row names the build that made it." |
-| 4:00–5:00 | `make eval GOLD=…` live on a POLITmonitor/DVS export if one came at the deep dive, otherwise Basel-Stadt: their own 46 themes as a file, Prüfstand rows S20/S21 | "Basel-Stadt tags its motions by hand with its own 46 themes. We loaded the theme names as a file — no training — and got the canton's own label in 0.498 of 2,437 affairs, keywords 0.181. Then we showed five of their own labelled affairs as examples: 0.526, and where the two readings agree, 0.651. Hand us your labels: precision, recall, the misses per level — and the labels become examples." |
+| 0:00–0:40 | Überblick: the atlas — one small Switzerland per topic, Digitalisierung first | "OpenParlData has no topic field. This is every affair of 2026 from your exports, each with an APS chapter, a lane and a quoted sentence — one map per topic, same scale." |
+| 0:40–1:40 | Digitalisierung → Karte → «Rechenzentren im Kanton Bern» → its decision graphic and quote → Pult, `[1]` | "Each label is a choice from a closed list, read twice. Here both readings agree and the sentence that supports it is highlighted. `[1]` — confirmed, with who and when, next to the inferred row." |
+| 1:40–2:20 | Neues Thema: Christian names a topic | Terms appear, decisions stream in for last week. "No training. It is now a file in the nightly job." |
+| 2:20–3:10 | Prüfstand, human labels first | "1,357 federal affairs labelled by APS editors, tested as registered in advance: the shipped chapter is right in 0.740, plain list prompting 0.655. Where the two readings agree it is right in 0.826; where they disagree, 0.586 — those go to a person." |
+| 3:10–3:50 | Integration: `upstream/opd/` migration, `hop-run` loading the bulk file, `GET /changes?after=`, the nightly log line | "These are the merge-request files. Inferred and confirmed rows stay apart; every row names the build that made it. Model cost at list price: USD 0.333 per 1,000 affairs." |
+| 3:50–5:00 | `make eval GOLD=…` live on a POLITmonitor/DVS export if one came at the deep dive; otherwise Basel-Stadt | "Basel-Stadt tags its motions by hand with 46 own themes. Loaded as a file, no training: 0.498 of 2,437; with five of their own labelled affairs as examples, 0.526. Hand us your labels — they become examples." |
 
-Q&A cards: APS licence (public feed with chapters; subtopics internal until APS agrees) · POLITmonitor scheme as a file
-(`be-directorates.yaml` shape) · where it runs (`lite` / `full`; lanes need no log-probabilities) · build changes (refit +
-quality gate + `GET /changes`) · recall (titles: judge-based 0.654; editor examples lift it; text makes it stricter) · who
-the judge is (Claude runs + Qwen; DVS items 27/30; APS chapters 0.790) · private subscriptions · Romansh (German prompt; not
-measured).
+Q&A cards: APS licence (chapters in the public feed; subtopics internal until APS agrees) · another scheme (`bs-themen.yaml`,
+`be-directorates.yaml`: a file) · where it runs (`lite` on the current VPS; lanes need no log-probabilities) · build changes
+(refit + quality gate + `GET /changes`) · recall of ad-hoc topics (judge-based 0.659 on titles; examples lift it) · who the
+judge is (Claude runs + Qwen; matches APS editors on 0.790 of chapters; says yes to 27 of the 30 DVS items) · the DVS 27/30
+is not held out (the question was written with those items in view) · Romansh (German prompt; not measured).
 
 ## Finals — 5 min, jurors who did not read the case (plain words)
 
 | Time | Beat |
 |---|---|
-| 0:00–0:20 | (German, then French) "OpenParlData collects about 90 parliaments, four languages, about 50 new affairs a day — and no topic field. 'What are parliaments doing about digitalisation?' means guessing keywords in every language." |
-| 0:20–1:15 | Karte: "Digitalisierung" → Switzerland fills canton by canton, communes as points; the timeline by level: digital sovereignty in Stadtrat Bern, the Federal Assembly and Kanton Bern; a Ticino affair, its sentence highlighted; the interface switches to French with one key. |
-| 1:15–1:55 | One table (shipped 0.740 · plain prompting 0.655 · keywords 0.191 · subtopic 0.520): "Against 1,357 federal affairs labelled by the editors of Année Politique Suisse, tested as registered in advance, it picks the right chapter in nearly three of four. Where its two readings disagree, it says so and a person decides." |
-| 1:55–2:30 | Data centres on the timeline — seven affairs, Vaud to the Federal Assembly; Querschnitt flags all seven, the keyword list two. "Across this year, an AI judge checked by an open model estimates nearly 900 affairs on digitalisation; the judge agrees with nine in ten of our flags, and with three in four keyword hits." |
-| 2:30–3:10 | Neues Thema, live: a juror's topic in one sentence → last week across Switzerland; rows arrive while the pitch goes on. |
-| 3:10–3:50 | Bern, reused: Kanton Bern's own scheme — its eight directorates — loaded from a file. On 531 Grand Council affairs from this and last year it picks the directorate the Grand Council itself recorded in 0.651 from the German title and 0.650 from the French one — no measurable difference between the languages. An affair where German and French disagree goes to a clerk; `2` and the right directorate, and the confirmed row shows name and date. |
-| 3:50–4:30 | One ops screen from the last logged night: affairs scored, wall time, list-price USD, rows pending after the endpoint was cut, minutes to drain. |
-| 4:30–5:00 | The open trail with links and a QR code: repo, topics file, Prüfstand with raw logs and the blind annotations. |
+| 0:00–0:20 | (German, then French) "About 90 Swiss parliaments, about 50 new affairs a day — and no topic field. 'What are parliaments doing about digitalisation?' means guessing keywords in every language." |
+| 0:20–1:10 | The atlas: one Switzerland per topic; Digitalisierung → the map and the timeline by level: digital sovereignty in Stadtrat Bern, the Federal Assembly and Kanton Bern; a Ticino affair, its sentence highlighted; French with one key. |
+| 1:10–1:50 | One table: "Against 1,357 federal affairs labelled by the editors of Année Politique Suisse, registered in advance, it picks the right chapter in 0.740. Where its two readings disagree it says so, and a person decides." |
+| 1:50–2:30 | Neues Thema, live: a juror's topic in one sentence → last week across Switzerland; rows arrive while the pitch goes on. |
+| 2:30–3:20 | Reused, not retrained: Kanton Bern's eight directorates as a file — 0.651 from German titles, 0.650 from French ones against the Grand Council's own field; Basel-Stadt's 46 themes — and with their own examples it gets better. |
+| 3:20–4:20 | Ops: last night's log — affairs scored, wall time, USD at list price, rows pending after the endpoint was cut, minutes to drain; `docker compose` footprint from CI. |
+| 4:20–5:00 | The open trail: repo, topics file, Prüfstand with raw logs and the blind annotations; QR code. |
 
-TO UPDATE when measured: S19 (three new ad-hoc topics vs the judge), nightly numbers, Neues Thema timing on the event endpoint
-(S17, the communal slice on the production run, and S8 on the full 2026 census are measured: docs/PRUEFSTAND.md §10–§11).
+TO UPDATE when measured: S19 (three new ad-hoc topics vs the judge), the nightly numbers, Neues Thema timing on the event
+endpoint.

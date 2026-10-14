@@ -558,3 +558,12 @@ CI	-	12.72	compose footprint	12.72	bern/querschnitt/eval/ci_footprint.txt	nightl
 CI	-	90.22	compose footprint	90.22	bern/querschnitt/eval/ci_footprint.txt	sum full	OK		
 CI	-	12.7	compose footprint	12.7	bern/querschnitt/eval/ci_footprint.txt	nightly-lite	OK		
 CI	-	173	compose footprint	173	bern/querschnitt/eval/ci_footprint.txt	image MB	OK		
+cost	-	0.333	corpus-run cost	0.333	bern/querschnitt/eval/cost/results.json	usd_per_1000_affairs_all_steps	OK		
+cost	-	0.314	corpus-run cost	0.314	bern/querschnitt/eval/cost/results.json	chapter_only	OK		
+cost	-	61.5	corpus-run cost	61.5	bern/querschnitt/eval/cost/results.json	minutes per 1000	OK		
+cost	-	0.969	corpus-run cost	0.969	bern/querschnitt/eval/cost/results.json	job rate	OK		
+cost	-	843,173	corpus-run cost	843,173	bern/querschnitt/eval/cost/results.json	projection requests	OK		
+cost	-	102.24	corpus-run cost	102.24	bern/querschnitt/eval/cost/results.json	projection usd	OK		
+cost	-	241.8	corpus-run cost	241.8	bern/querschnitt/eval/cost/results.json	projection hours	OK		
+cost	-	326,123	corpus-run cost	326,123	bern/querschnitt/eval/cost/results.json	affairs in OPD 11 Oct export	OK		
+cost	-	16-way	corpus-run cost	16-way	bern/querschnitt/eval/cost/results.json	tp8-pp2 build tag	OK		

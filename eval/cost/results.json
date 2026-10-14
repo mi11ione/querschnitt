@@ -1,0 +1,33 @@
+{
+ "generated": "2026-10-14T14:16:09+0200",
+ "requests": {
+  "sub": 16030,
+  "yn": 15287,
+  "ch2": 8345,
+  "ch1": 15702
+ },
+ "affairs_with_chapter_reading": 15501,
+ "requests_per_affair": {
+  "sub": 1.034,
+  "yn": 0.986,
+  "ch2": 0.538,
+  "ch1": 1.013
+ },
+ "usd_per_request_mean": {
+  "sub": 6.43e-05,
+  "yn": 1.95e-05,
+  "ch2": 0.0001555,
+  "ch1": 0.0001612
+ },
+ "usd_per_1000_affairs_all_steps": 0.333,
+ "usd_per_1000_affairs_chapter_only": 0.314,
+ "wall_hours_so_far": 13.3,
+ "job_rate_req_per_s": 0.969,
+ "minutes_per_1000_affairs_all_steps_at_job_rate": 61.5,
+ "projection_all_326123_affairs_chapter_step": {
+  "requests": 843173,
+  "usd": 102.24,
+  "hours_at_job_rate": 241.8,
+  "note": "projection, not run"
+ }
+}

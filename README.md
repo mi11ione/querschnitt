@@ -38,8 +38,9 @@ prefill, served build, throughput) before a run.
   subtopics of the top two or three chapters; the shipped chapter is the one read back from the chosen subtopic. Federal
   affairs see the five most similar APS-labelled affairs as examples (both readings always). Elsewhere the second reading
   runs when the first is below p 0.9 (a single reading at p ≥ 0.9 counts as agreeing).
-- **Lanes.** The two readings agree → `readings_agree`; they disagree → `please_check`. In bilingual parliaments (Bern,
-  Fribourg, Valais) the German and the French version are the two readings.
+- **Lanes.** The two readings agree → `readings_agree`; they disagree → `please_check`. For federal affairs the two readings
+  are the chapter question with five APS-labelled examples and without them, in two code orders; elsewhere two code orders;
+  in bilingual parliaments (Bern, Fribourg, Valais; from OPD's body languages) the German and the French version.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored with
   its character offsets.
 - **Schemes are files.** `src/querschnitt/schemes/`: `aps.yaml` (24 chapters × 190 subtopics, APS identifiers),
@@ -48,6 +49,11 @@ prefill, served build, throughput) before a run.
 - **Builds are never mixed.** Every row names the served model, its `system_fingerprint`, the prompt id and the input hash;
   a run locks the first build it sees and stops on any other. Prompts are pinned byte-identical to the measured ones by tests.
 
+## Runtime and cost (measured on the corpus run, Public AI list price — [`eval/cost/results.json`](eval/cost/results.json))
+- USD 0.333 per 1,000 affairs for chapter, subtopic and one ad-hoc topic (USD 0.314 chapter step alone).
+- About 61.5 minutes per 1,000 affairs at this job's own 0.969 requests/s on a key shared with other jobs.
+- All 326,123 OPD affairs, chapter step: 843,173 requests, USD 102.24, about 241.8 h at that rate — a projection, not run; a dedicated endpoint shortens it in proportion to its rate.
+
 ## Output
 A `topics` row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); Postgres DDL in [sql/topics.sql](sql/topics.sql)):
 `affair_id, scheme, level, code, rank, p, lane, status (suggested|confirmed|rejected), provenance (inferred|confirmed),
@@ -55,7 +61,9 @@ evidence {source, char_start, char_end, quote}, model, build, prompt_id, input_h
 Generated and confirmed content stay distinguishable; a correction adds a row and never overwrites one.
 
 ## Model roles
-Apertus (`swiss-ai/apertus-v1.5-8b` on Public AI) makes every topic decision. Retrieval of examples is BM25 in code. In the
+Apertus makes every topic decision, through Public AI's route `swiss-ai/apertus-v1.5-8b` (served build `…dd237840`; its
+16-way parallel build tag and an MMLU spot check in our notes point to the 70B weights behind this route name, see
+[upstream/APERTUS-NOTES.md](upstream/APERTUS-NOTES.md)). Retrieval of examples is BM25 in code. In the
 evaluation only, blind Claude runs and the open-weights Qwen-SEA-LION serve as annotators where no human labels exist; every
 figure measured against them is labelled as agreement with that judge. The code was written with Claude Code.
 

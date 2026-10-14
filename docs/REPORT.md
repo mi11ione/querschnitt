@@ -53,9 +53,10 @@ accuracy among the six main parties. What does differ is the submitter type: Fed
 members' motions (0.792 vs 0.653), and quality is reported per submitter type.
 
 ## 5. Runtime and cost
-Over the first 27,904 requests of the corpus run, a request cost USD 0.000107 at Public AI list price (mean 1,072 prompt
-tokens). Wall time, not money, sets the schedule: the shared key serves about 100 requests a minute. Per-affair cost and
-wall time of the full 2025–26 slice are reported when the run completes.
+Measured on the corpus run at Public AI list price ([`eval/cost/results.json`](../eval/cost/results.json)): USD 0.333 per
+1,000 affairs for chapter, subtopic and one ad-hoc topic; about 61.5 minutes per 1,000 affairs at the job's own
+0.969 requests/s on a shared key. Projection for all 326,123 OPD affairs (chapter step, not run):
+843,173 requests, USD 102.24, about 241.8 h at that rate; wall time, not money, sets the schedule.
 
 ## 6. Limits
 - Subtopics are suggestions (0.520 top-1), never a lane of their own.

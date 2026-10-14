@@ -1,0 +1,2861 @@
+{
+ "gold": "data/eval/gold_aps_s9.csv",
+ "n_gold": 1357,
+ "schemes": {
+  "aps": {
+   "kind": "multiclass",
+   "level": 1,
+   "n_gold": 1357,
+   "not_scored": 18,
+   "overall": {
+    "n": 1339,
+    "accuracy": {
+     "k": 961,
+     "n": 1339,
+     "value": 0.7177,
+     "ci": [
+      0.693,
+      0.7412
+     ]
+    },
+    "top3": {
+     "k": 1152,
+     "n": 1339,
+     "value": 0.8603,
+     "ci": [
+      0.8407,
+      0.8779
+     ]
+    },
+    "macro_precision": 0.7117,
+    "macro_recall": 0.6764,
+    "macro_f1": 0.6821,
+    "per_class": {
+     "aps:1.1.1.": {
+      "support": 20,
+      "precision": 0.5,
+      "recall": 0.45,
+      "f1": 0.4737,
+      "precision_ci": [
+       0.2903,
+       0.7097
+      ],
+      "recall_ci": [
+       0.2582,
+       0.6579
+      ]
+     },
+     "aps:1.1.2.": {
+      "support": 108,
+      "precision": 0.58,
+      "recall": 0.8056,
+      "f1": 0.6744,
+      "precision_ci": [
+       0.5,
+       0.656
+      ],
+      "recall_ci": [
+       0.721,
+       0.8692
+      ]
+     },
+     "aps:1.1.3.": {
+      "support": 83,
+      "precision": 0.7071,
+      "recall": 0.8434,
+      "f1": 0.7692,
+      "precision_ci": [
+       0.611,
+       0.7876
+      ],
+      "recall_ci": [
+       0.7502,
+       0.9061
+      ]
+     },
+     "aps:1.1.4.": {
+      "support": 18,
+      "precision": 0.6154,
+      "recall": 0.8889,
+      "f1": 0.7273,
+      "precision_ci": [
+       0.4253,
+       0.7757
+      ],
+      "recall_ci": [
+       0.672,
+       0.969
+      ]
+     },
+     "aps:1.1.5.": {
+      "support": 0,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0,
+      "precision_ci": [
+       0.0,
+       0.7935
+      ],
+      "recall_ci": null
+     },
+     "aps:1.2.": {
+      "support": 57,
+      "precision": 0.5949,
+      "recall": 0.8246,
+      "f1": 0.6912,
+      "precision_ci": [
+       0.4847,
+       0.6963
+      ],
+      "recall_ci": [
+       0.7063,
+       0.9018
+      ]
+     },
+     "aps:1.3.": {
+      "support": 63,
+      "precision": 0.9388,
+      "recall": 0.7302,
+      "f1": 0.8214,
+      "precision_ci": [
+       0.8348,
+       0.979
+      ],
+      "recall_ci": [
+       0.6097,
+       0.8242
+      ]
+     },
+     "aps:1.4.1.": {
+      "support": 104,
+      "precision": 0.7015,
+      "recall": 0.4519,
+      "f1": 0.5497,
+      "precision_ci": [
+       0.5834,
+       0.7977
+      ],
+      "recall_ci": [
+       0.3597,
+       0.5476
+      ]
+     },
+     "aps:1.4.2.": {
+      "support": 54,
+      "precision": 0.8333,
+      "recall": 0.5556,
+      "f1": 0.6667,
+      "precision_ci": [
+       0.6811,
+       0.9213
+      ],
+      "recall_ci": [
+       0.4238,
+       0.68
+      ]
+     },
+     "aps:1.4.3.": {
+      "support": 105,
+      "precision": 0.907,
+      "recall": 0.7429,
+      "f1": 0.8168,
+      "precision_ci": [
+       0.827,
+       0.9521
+      ],
+      "recall_ci": [
+       0.6517,
+       0.8168
+      ]
+     },
+     "aps:1.5.": {
+      "support": 57,
+      "precision": 0.7091,
+      "recall": 0.6842,
+      "f1": 0.6964,
+      "precision_ci": [
+       0.5786,
+       0.8123
+      ],
+      "recall_ci": [
+       0.5552,
+       0.79
+      ]
+     },
+     "aps:1.6.1.": {
+      "support": 72,
+      "precision": 0.9242,
+      "recall": 0.8472,
+      "f1": 0.8841,
+      "precision_ci": [
+       0.8346,
+       0.9672
+      ],
+      "recall_ci": [
+       0.7468,
+       0.9125
+      ]
+     },
+     "aps:1.6.2.": {
+      "support": 85,
+      "precision": 0.9538,
+      "recall": 0.7294,
+      "f1": 0.8267,
+      "precision_ci": [
+       0.8729,
+       0.9842
+      ],
+      "recall_ci": [
+       0.6266,
+       0.8124
+      ]
+     },
+     "aps:1.6.3.": {
+      "support": 49,
+      "precision": 0.9143,
+      "recall": 0.6531,
+      "f1": 0.7619,
+      "precision_ci": [
+       0.7762,
+       0.9704
+      ],
+      "recall_ci": [
+       0.5131,
+       0.7708
+      ]
+     },
+     "aps:1.6.4.": {
+      "support": 75,
+      "precision": 0.562,
+      "recall": 0.9067,
+      "f1": 0.6939,
+      "precision_ci": [
+       0.473,
+       0.6471
+      ],
+      "recall_ci": [
+       0.8197,
+       0.9541
+      ]
+     },
+     "aps:1.7.1.": {
+      "support": 39,
+      "precision": 0.7895,
+      "recall": 0.7692,
+      "f1": 0.7792,
+      "precision_ci": [
+       0.6365,
+       0.8893
+      ],
+      "recall_ci": [
+       0.6166,
+       0.8735
+      ]
+     },
+     "aps:1.7.2.": {
+      "support": 100,
+      "precision": 0.7071,
+      "recall": 0.7,
+      "f1": 0.7035,
+      "precision_ci": [
+       0.611,
+       0.7876
+      ],
+      "recall_ci": [
+       0.6042,
+       0.7811
+      ]
+     },
+     "aps:1.7.3.": {
+      "support": 81,
+      "precision": 0.747,
+      "recall": 0.7654,
+      "f1": 0.7561,
+      "precision_ci": [
+       0.644,
+       0.8281
+      ],
+      "recall_ci": [
+       0.6625,
+       0.8444
+      ]
+     },
+     "aps:1.7.4.": {
+      "support": 81,
+      "precision": 0.6933,
+      "recall": 0.642,
+      "f1": 0.6667,
+      "precision_ci": [
+       0.5817,
+       0.7861
+      ],
+      "recall_ci": [
+       0.5333,
+       0.7378
+      ]
+     },
+     "aps:1.8.1.": {
+      "support": 31,
+      "precision": 0.7917,
+      "recall": 0.6129,
+      "f1": 0.6909,
+      "precision_ci": [
+       0.5953,
+       0.9076
+      ],
+      "recall_ci": [
+       0.4382,
+       0.7627
+      ]
+     },
+     "aps:1.8.2.": {
+      "support": 27,
+      "precision": 0.7778,
+      "recall": 0.5185,
+      "f1": 0.6222,
+      "precision_ci": [
+       0.5479,
+       0.91
+      ],
+      "recall_ci": [
+       0.3399,
+       0.6926
+      ]
+     },
+     "aps:1.8.3.": {
+      "support": 29,
+      "precision": 0.7097,
+      "recall": 0.7586,
+      "f1": 0.7333,
+      "precision_ci": [
+       0.5341,
+       0.839
+      ],
+      "recall_ci": [
+       0.5789,
+       0.8778
+      ]
+     },
+     "aps:2.0.1.": {
+      "support": 0,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0,
+      "precision_ci": [
+       0.0,
+       0.7935
+      ],
+      "recall_ci": null
+     },
+     "aps:2.0.2.": {
+      "support": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "precision_ci": [
+       0.0,
+       0.7935
+      ],
+      "recall_ci": [
+       0.0,
+       0.7935
+      ]
+     },
+     "aps:none": {
+      "support": 0,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0,
+      "precision_ci": [
+       0.0,
+       0.1936
+      ],
+      "recall_ci": null
+     }
+    }
+   },
+   "by": {
+    "level": {
+     "federal": {
+      "n": 1339,
+      "accuracy": {
+       "k": 961,
+       "n": 1339,
+       "value": 0.7177,
+       "ci": [
+        0.693,
+        0.7412
+       ]
+      },
+      "top3": {
+       "k": 1152,
+       "n": 1339,
+       "value": 0.8603,
+       "ci": [
+        0.8407,
+        0.8779
+       ]
+      },
+      "macro_precision": 0.7117,
+      "macro_recall": 0.6764,
+      "macro_f1": 0.6821
+     }
+    },
+    "lang": {
+     "de": {
+      "n": 1339,
+      "accuracy": {
+       "k": 961,
+       "n": 1339,
+       "value": 0.7177,
+       "ci": [
+        0.693,
+        0.7412
+       ]
+      },
+      "top3": {
+       "k": 1152,
+       "n": 1339,
+       "value": 0.8603,
+       "ci": [
+        0.8407,
+        0.8779
+       ]
+      },
+      "macro_precision": 0.7117,
+      "macro_recall": 0.6764,
+      "macro_f1": 0.6821
+     }
+    },
+    "body_key": {
+     "CHE": {
+      "n": 1339,
+      "accuracy": {
+       "k": 961,
+       "n": 1339,
+       "value": 0.7177,
+       "ci": [
+        0.693,
+        0.7412
+       ]
+      },
+      "top3": {
+       "k": 1152,
+       "n": 1339,
+       "value": 0.8603,
+       "ci": [
+        0.8407,
+        0.8779
+       ]
+      },
+      "macro_precision": 0.7117,
+      "macro_recall": 0.6764,
+      "macro_f1": 0.6821
+     }
+    }
+   },
+   "misses": [
+    {
+     "affair_id": 46931,
+     "gold": "aps:1.1.1.",
+     "predicted": "aps:1.5.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2000-05-17",
+     "title": "Stiftung solidarische Schweiz. Verwendung von Goldreserven"
+    },
+    {
+     "affair_id": 50210,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.8169,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2005-12-16",
+     "title": "Scheinehen unterbinden"
+    },
+    {
+     "affair_id": 51104,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2007-10-17",
+     "title": "Gesamtschau FinöV (ZEB)"
+    },
+    {
+     "affair_id": 51859,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2008-12-05",
+     "title": "Gegen die Abzockerei. Volksinitiative. OR. Änderung"
+    },
+    {
+     "affair_id": 52988,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2009-04-29",
+     "title": "Stärkere Rechte der Bauherrschaft bei der Behebung von Baumängeln"
+    },
+    {
+     "affair_id": 54044,
+     "gold": "aps:1.1.1.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2010-03-19",
+     "title": "Umsetzung der neuen Spitalfinanzierung"
+    },
+    {
+     "affair_id": 55086,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.2.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2011-03-18",
+     "title": "Die Ratifizierung des Doppelbesteuerungsabkommens mit Deutschland an Einigung im Fluglärmstreit knüpfen"
+    },
+    {
+     "affair_id": 56498,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2012-12-13",
+     "title": "Niederlassungsfreiheit auch im Alter"
+    },
+    {
+     "affair_id": 59104,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2015-12-04",
+     "title": "KVG. Stärkung von Qualität und Wirtschaftlichkeit"
+    },
+    {
+     "affair_id": 60170,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-11-23",
+     "title": "OR. Aktienrecht"
+    },
+    {
+     "affair_id": 60843,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-12-13",
+     "title": "Aufnahme des Rechtsinstituts des Trusts in die schweizerische Gesetzgebung"
+    },
+    {
+     "affair_id": 61222,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-10-11",
+     "title": "Schutz gewaltbetroffener Personen. Bundesgesetz"
+    },
+    {
+     "affair_id": 61772,
+     "gold": "aps:1.6.4.",
+     "predicted": "aps:1.6.1.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-02-27",
+     "title": "Verlängerung der Befristung der Steuererleichterungen für Erdgas, Flüssiggas und biogene Treibstoffe"
+    },
+    {
+     "affair_id": 61788,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.7794,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-12-13",
+     "title": "Praxistaugliches Bauhandwerker-Pfandrecht. Recht des Eigentümers auf die Stellung einer Ersatzsicherheit konkretisieren"
+    },
+    {
+     "affair_id": 61852,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-12-14",
+     "title": "Erweiterter Ansatz der Infrastrukturförderung"
+    },
+    {
+     "affair_id": 61877,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-03-17",
+     "title": "Mitwirkungspflicht im Asylverfahren. Überprüfungsmöglichkeit bei Mobiltelefonen"
+    },
+    {
+     "affair_id": 61918,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:2.0.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-12-15",
+     "title": "Isos-Bewertungsausschuss. Ausgewogenere Zusammensetzung"
+    },
+    {
+     "affair_id": 62482,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.5.",
+     "p": 0.7564,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-08-16",
+     "title": "Beseitigung der Wertfreigrenze im Einkaufstourismus"
+    },
+    {
+     "affair_id": 62517,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-03-15",
+     "title": "Möglichkeit für die Kantone, eine Klimareserve einzurichten"
+    },
+    {
+     "affair_id": 62519,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-12-03",
+     "title": "Ermöglichung der institutionellen Beaufsichtigung von privaten Unternehmen und Organisationen"
+    },
+    {
+     "affair_id": 62529,
+     "gold": "aps:1.6.4.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-03-15",
+     "title": "Geplante Obsoleszenz. Schweizer Konsumentinnen und Konsumenten schützen"
+    },
+    {
+     "affair_id": 62903,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-11-29",
+     "title": "Zu hoher Einsatz von Antibiotika? Fehlanreize eliminieren"
+    },
+    {
+     "affair_id": 63035,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.2.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-12-14",
+     "title": "Freihandelsabkommen. Streitbeilegungsbestimmungen müssen auch auf das Nachhaltigkeitskapitel anwendbar sein"
+    },
+    {
+     "affair_id": 63067,
+     "gold": "aps:1.1.1.",
+     "predicted": "aps:1.8.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-04",
+     "title": "Die Schweizer Landeshymne im Bundeshaus"
+    },
+    {
+     "affair_id": 63096,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.5.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-12-13",
+     "title": "Gleichbehandlung von KMU und Grossunternehmen. Rechtsformneutrale Besteuerung einführen"
+    },
+    {
+     "affair_id": 63558,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-26",
+     "title": "Geldwäschereigesetz. Änderung"
+    },
+    {
+     "affair_id": 63562,
+     "gold": "aps:1.7.1.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.7564,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-10-30",
+     "title": "Überbrückungsleistung für ältere Arbeitslose. Bundesgesetz"
+    },
+    {
+     "affair_id": 63565,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-10-30",
+     "title": "AHVG. Änderung (Systematische Verwendung der AHV-Nummer durch Behörden)"
+    },
+    {
+     "affair_id": 63574,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-11-27",
+     "title": "Anpassung des Bundesrechts an Entwicklungen der Technik verteilter elektronischer Register. Bundesgesetz"
+    },
+    {
+     "affair_id": 63577,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-13",
+     "title": "Programme \"SUPERB\" und \"ERP Systeme V/ar\". Verpflichtungskredite"
+    },
+    {
+     "affair_id": 63579,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-13",
+     "title": "Ja zum Tier- und Menschenversuchsverbot - Ja zu Forschungswegen mit Impulsen für Sicherheit und Fortschritt. Volksinitiative"
+    },
+    {
+     "affair_id": 63708,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-03-21",
+     "title": "Deklarationspflicht für Reptilienleder"
+    },
+    {
+     "affair_id": 63846,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-05-09",
+     "title": "Gegen die Einsamkeit. Soziale Isolation als gesellschaftliches Phänomen politisch angehen"
+    },
+    {
+     "affair_id": 63910,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:1.2.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-14",
+     "title": "Freiwilliges Engagement fördern. Beitritt zum European Solidarity Corps"
+    },
+    {
+     "affair_id": 63981,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-20",
+     "title": "Bericht über die Umwelterziehung"
+    },
+    {
+     "affair_id": 64096,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-09-12",
+     "title": "Besteuerung und italienische schwarze Liste für natürliche Personen"
+    },
+    {
+     "affair_id": 64124,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.5526,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-09-19",
+     "title": "Nationale Strategie für Kinder und Gesundheit"
+    },
+    {
+     "affair_id": 64271,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.2,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-09-27",
+     "title": "Green-Finance-Produkte. Steuerstrafe beseitigen"
+    },
+    {
+     "affair_id": 64352,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-19",
+     "title": "Finanzmittelflüsse so ausrichten, dass das 1,5-Grad-Ziel eingehalten werden kann."
+    },
+    {
+     "affair_id": 64356,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-19",
+     "title": "Keine Schweizer Versicherungen mehr für Klimasünder"
+    },
+    {
+     "affair_id": 64357,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-19",
+     "title": "Ab 2025 klimafreundliche Benchmarks für Anlegerinnen und Anleger"
+    },
+    {
+     "affair_id": 64434,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-09-03",
+     "title": "Gewährleistung der Ergänzungsleistungen ehemaliger Verdingkinder und Administrativversorgter"
+    },
+    {
+     "affair_id": 64881,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-27",
+     "title": "Elektronische Verfahren im Steuerbereich. Bundesgesetz"
+    },
+    {
+     "affair_id": 64890,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-08-26",
+     "title": "Ja zum Schutz der Kinder und Jugendlichen vor Tabakwerbung (Kinder und Jugendliche ohne Tabakwerbung). Volksinitiative"
+    },
+    {
+     "affair_id": 64920,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-04-28",
+     "title": "Erklärung des Bundesrates zur Corona-Pandemie"
+    },
+    {
+     "affair_id": 64942,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:1.8.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-01-24",
+     "title": "Erhalt des Gosteli-Archivs"
+    },
+    {
+     "affair_id": 64979,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-03-09",
+     "title": "Handelsregister. Auf Zefix verlässliche und rechtswirksame Informationen veröffentlichen"
+    },
+    {
+     "affair_id": 64987,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-03-11",
+     "title": "Förderung grenzüberschreitender Branchenvereinbarungen"
+    },
+    {
+     "affair_id": 64996,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-03-03",
+     "title": "Moratorium für die 5G- (und 4G-plus-) Technologie in der Schweiz"
+    },
+    {
+     "affair_id": 65023,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-04-21",
+     "title": "Covid-19-Solidarbürgschaftsverordnung. Frist zur Rückzahlung auf acht Jahre verlängern"
+    },
+    {
+     "affair_id": 65111,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-06",
+     "title": "Errichtung eines Fonds zur Stabilisierung und Stärkung der Wirtschaft (souveräner Staatsfonds)"
+    },
+    {
+     "affair_id": 65129,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-06",
+     "title": "Die Schweiz muss ein Land des Bargeldes bleiben"
+    },
+    {
+     "affair_id": 65154,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-06",
+     "title": "Errichtung eines souveränen Staatsfonds zur Stabilisierung und Stärkung der Wirtschaft"
+    },
+    {
+     "affair_id": 65453,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-17",
+     "title": "Systemrelevanz sozialer Einrichtungen bei Pandemien anerkennen"
+    },
+    {
+     "affair_id": 65461,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.1.4.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-21",
+     "title": "Enteignung des Bundesplatzes"
+    },
+    {
+     "affair_id": 65475,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-22",
+     "title": "Speziesismus. Welche Wege führen weg von einer tierquälerischen Gesellschaft?"
+    },
+    {
+     "affair_id": 65522,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.7.1.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-04",
+     "title": "Beim Sonntagsverkauf Klarheit schaffen"
+    },
+    {
+     "affair_id": 65764,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-12-17",
+     "title": "Verbesserung des Sozialversicherungsschutzes gemäss der AP 2022 plus mit einer Änderung des Landwirtschaftsgesetzes umsetzen, unabhängig von der Behandlung der neuen Agrarpolitik"
+    },
+    {
+     "affair_id": 65847,
+     "gold": "aps:1.7.1.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-12-18",
+     "title": "Grüner aus der Corona-Krise. Für ein nachhaltiges Impulsprogramm, das Klimaschutz-, Zukunfts- und Care-Jobs schafft"
+    },
+    {
+     "affair_id": 65861,
+     "gold": "aps:1.1.1.",
+     "predicted": "aps:none",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-12-15",
+     "title": "Verbot der Sponsoring-Annahme durch den Bund"
+    },
+    {
+     "affair_id": 66568,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-03-10",
+     "title": "Vertrauenswürdige staatliche E-ID"
+    },
+    {
+     "affair_id": 66620,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.4.3.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-06-01",
+     "title": "Für eine klare Darstellung der Menge des schnellen Zuckers in Lebensmitteln"
+    },
+    {
+     "affair_id": 66640,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.2.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-09-22",
+     "title": "Impfungen von öffentlichem Interesse müssen für alle zugänglich sein"
+    },
+    {
+     "affair_id": 66677,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-03-17",
+     "title": "Risiken bei der Beschaffung hochspezialisierter Produkte minimieren"
+    },
+    {
+     "affair_id": 66686,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-11-15",
+     "title": "Für eine kohärente Bundespolitik zur Bekämpfung sexuell übertragbarer Infektionen"
+    },
+    {
+     "affair_id": 66693,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.6.1.",
+     "p": 0.7794,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-03-18",
+     "title": "Vereinfachung des Aufbaus der Infrastruktur für Wasserstoffmobilität"
+    },
+    {
+     "affair_id": 66699,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-03-18",
+     "title": "Wie steht es um die soziale Sicherheit der Kulturschaffenden in der Schweiz?"
+    },
+    {
+     "affair_id": 66802,
+     "gold": "aps:1.6.1.",
+     "predicted": "aps:1.2.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-05-04",
+     "title": "Rechtssicherheit für die Zusammenarbeit zwischen der Schweiz und der EU im europäischen Stromsystem gewährleisten!"
+    },
+    {
+     "affair_id": 66864,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.4.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-12-14",
+     "title": "Schluss mit dem Meldeschein-Chaos in der Beherbergung"
+    },
+    {
+     "affair_id": 66880,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.7.1.",
+     "p": 0.2,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-06-08",
+     "title": "Keine Benachteiligung älterer Menschen bei Anstellungen durch den Staat"
+    },
+    {
+     "affair_id": 66944,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:none",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-06-17",
+     "title": "Schweizerisches Zentrum für Islam und Gesellschaft in Freiburg. Stopp der Finanzierung durch öffentliche Gelder prüfen"
+    },
+    {
+     "affair_id": 66996,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.4.3.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-06-17",
+     "title": "Auswirkungen von Pestiziden auf die Gesundheit. Standortbestimmung in der Schweiz"
+    },
+    {
+     "affair_id": 67008,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-06-18",
+     "title": "Standortvorteil eines unabhängigen Schweizer Rechts"
+    },
+    {
+     "affair_id": 67118,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-03-08",
+     "title": "Wer schlägt, geht!"
+    },
+    {
+     "affair_id": 67213,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-10-15",
+     "title": "Systematische Datenerhebung im Kultursektor zur Förderung der Gleichstellung von Frau und Mann"
+    },
+    {
+     "affair_id": 67345,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-12-17",
+     "title": "Welche Regulierung braucht es für Produkte, die den Schutz der Privatsphäre stark beeinträchtigen?"
+    },
+    {
+     "affair_id": 67359,
+     "gold": "aps:1.6.1.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2021-09-21",
+     "title": "Erneuerbare Energien und wirtschaftliche Entwicklung höher gewichten als Behördeninventare ohne demokratische Legitimation"
+    },
+    {
+     "affair_id": 68042,
+     "gold": "aps:1.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-04-27",
+     "title": "Soziale Sicherheit. Abkommen mit dem Vereinigten Königreich"
+    },
+    {
+     "affair_id": 68064,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-12-02",
+     "title": "Informationssicherheitsgesetz. Änderung (Einführung einer Meldepflicht für Cyberangriffe auf kritische Infrastrukturen)"
+    },
+    {
+     "affair_id": 68066,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:none",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-12-09",
+     "title": "«Für Freiheit und körperliche Unversehrtheit». Volksinitiative"
+    },
+    {
+     "affair_id": 68191,
+     "gold": "aps:1.6.1.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.7794,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-03-17",
+     "title": "Verlängerung der Stabilitätsphase für werdende Mütter im Ausschaffungsverfahren"
+    },
+    {
+     "affair_id": 68258,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-05-11",
+     "title": "Swiss Green Investment Bank"
+    },
+    {
+     "affair_id": 68364,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-06-16",
+     "title": "Messung der durch die F-35A verursachten Lärmbelastung unter realen Bedingungen auf dem Ausweichflugplatz Sitten"
+    },
+    {
+     "affair_id": 68370,
+     "gold": "aps:1.6.1.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-06-16",
+     "title": "Gezielte Entlastung von Haushalten in bescheidenen Verhältnissen bei steigenden Energiepreisen"
+    },
+    {
+     "affair_id": 68402,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-06-28",
+     "title": "Erhöhung der Wirksamkeit des Gewässerschutzprogramms in der Landwirtschaft"
+    },
+    {
+     "affair_id": 68435,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-09-21",
+     "title": "Den Besonderheiten von Eseln, Maultieren und Mauleseln in der Tierschutzverordnung Rechnung tragen"
+    },
+    {
+     "affair_id": 68479,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-09-29",
+     "title": "Mobilisierung von Privatkapital zur Erreichung der Klima- und Biodiversitätsziele der Schweiz im Ausland"
+    },
+    {
+     "affair_id": 68488,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.5.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-03-14",
+     "title": "Bei aussergewöhnlichen Umständen vorübergehende Mineralölsteuererleichterungen ermöglichen"
+    },
+    {
+     "affair_id": 68505,
+     "gold": "aps:1.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.9139,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-09-29",
+     "title": "Ein Abkommen zwischen der Schweiz und Österreich zur erleichterten Rückübernahme im Migrationsbereich"
+    },
+    {
+     "affair_id": 68520,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-03-18",
+     "title": "Flugtransporte bei Lebensmitteln deklarieren"
+    },
+    {
+     "affair_id": 68647,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-09-29",
+     "title": "Radio- und Fernsehabgabe steuerlich abziehen"
+    },
+    {
+     "affair_id": 68649,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2022-09-29",
+     "title": "Ratsmitglieder, die für Krankenkassen lobbyieren, sollen wenigstens offenlegen müssen, wie hohe Entschädigungen sie von ihnen erhalten"
+    },
+    {
+     "affair_id": 69178,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-02-15",
+     "title": "Bundesgesetz über die Plattformen für die elektronische Kommunikation in der Justiz"
+    },
+    {
+     "affair_id": 69182,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-02-15",
+     "title": "Arbeitslosenversicherungsgesetz (AVIG). Änderung (Kurzarbeitsentschädigung für Berufsbildnerinnen/Berufsbildner)"
+    },
+    {
+     "affair_id": 69194,
+     "gold": "aps:1.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-05-24",
+     "title": "Haager Gerichtsstandsübereinkommen. Genehmigung und Umsetzung"
+    },
+    {
+     "affair_id": 69197,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:none",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-11-15",
+     "title": "Movetiagesetz"
+    },
+    {
+     "affair_id": 69283,
+     "gold": "aps:1.7.1.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-03-01",
+     "title": "Positiv geprägte Vision einer 10-Millionen-Schweiz"
+    },
+    {
+     "affair_id": 69325,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-09-25",
+     "title": "Für eine kohärente Bundespolitik im Bereich der sexuellen und reproduktiven Gesundheit"
+    },
+    {
+     "affair_id": 69432,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-05-04",
+     "title": "Die Gebühren von Inkassounternehmen regeln und deckeln"
+    },
+    {
+     "affair_id": 69443,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.4.3.",
+     "p": 0.8169,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-05-31",
+     "title": "Herkunftsangaben im Online-Angebot von Lebensmitteln"
+    },
+    {
+     "affair_id": 69451,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-06-07",
+     "title": "Kennzeichnungspflicht für retuschierte Personenbilder"
+    },
+    {
+     "affair_id": 69470,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-06-13",
+     "title": "Finanzierung der Kosten für das Dolmetschen im Gesundheitswesen"
+    },
+    {
+     "affair_id": 69529,
+     "gold": "aps:1.1.4.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-03-17",
+     "title": "Transparentes Lobbying der Kantone"
+    },
+    {
+     "affair_id": 69561,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.7564,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-06-20",
+     "title": "Datenverkehr der Bundesverwaltung sichern"
+    },
+    {
+     "affair_id": 69612,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.7794,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-09-27",
+     "title": "Geeignete Massnahmen, um die Anzahl der Angriffe auf Geldautomaten zu reduzieren"
+    },
+    {
+     "affair_id": 69620,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-09-27",
+     "title": "Wahlkreise für die Auslandschweizerinnen und Auslandschweizer"
+    },
+    {
+     "affair_id": 69686,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.6.2.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-09-29",
+     "title": "Barzahlung in subventionierten Transportmitteln beibehalten"
+    },
+    {
+     "affair_id": 69718,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-10-26",
+     "title": "Qualitätssicherung ohne kantonalen Grenzschutz"
+    },
+    {
+     "affair_id": 69724,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-11-09",
+     "title": "Für eine Strategie und einen Aktionsplan gegen Rassismus und Antisemitismus"
+    },
+    {
+     "affair_id": 69735,
+     "gold": "aps:1.1.1.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-11-20",
+     "title": "Fonds für Demokratie und Rechtsstaatlichkeit im Gedenken an 1848"
+    },
+    {
+     "affair_id": 69828,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2023-09-28",
+     "title": "Einreiseabgabe für Ausländerinnen und Ausländer"
+    },
+    {
+     "affair_id": 70359,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:none",
+     "p": 0.2,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-04-25",
+     "title": "Asylgesetz (Sicherheit und Betrieb in den Zentren des Bundes). Änderung"
+    },
+    {
+     "affair_id": 70373,
+     "gold": "aps:1.2.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-11-04",
+     "title": "Erklärung des Nationalrates. Anerkennung des Völkermords an den Jesidinnen und Jesiden"
+    },
+    {
+     "affair_id": 70440,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.1.4.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-02-21",
+     "title": "Keine kantonsübergreifenden Vorhaben ohne Mitsprache"
+    },
+    {
+     "affair_id": 70489,
+     "gold": "aps:1.1.1.",
+     "predicted": "aps:none",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-03-13",
+     "title": "Nationalmannschaft verliert gegen das Wappenschutzgesetz?"
+    },
+    {
+     "affair_id": 70528,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.2.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-03-14",
+     "title": "Mangel an Medikamenten und Impfstoffen. Sollte sich die Schweiz nicht mit der Europäischen Union einigen?"
+    },
+    {
+     "affair_id": 70539,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-03-14",
+     "title": "Überprüfung der staatlichen Leistungen. Konzentration der Kräfte"
+    },
+    {
+     "affair_id": 70545,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-03-14",
+     "title": "Deklaration von Werbung bei Influencern in der Schweiz"
+    },
+    {
+     "affair_id": 70581,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-03-15",
+     "title": "Ausweitung der Untersuchung des sexuellen Missbrauchs von Minderjährigen"
+    },
+    {
+     "affair_id": 70624,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-05-13",
+     "title": "Die Kontrolle über Beyond Gravity zu behalten, ist von strategischem Interesse"
+    },
+    {
+     "affair_id": 70643,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-05-03",
+     "title": "Sexueller Missbrauch in Organisationen mit einem Auftrag in der Betreuung von vulnerablen Personen in der Schweiz"
+    },
+    {
+     "affair_id": 70662,
+     "gold": "aps:1.1.4.",
+     "predicted": "aps:1.5.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-06-10",
+     "title": "Ressourcenstarke Kantone stärker am Finanz- und Lastenausgleich beteiligen"
+    },
+    {
+     "affair_id": 70676,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.5.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-06-12",
+     "title": "Massnahmenpaket zur Übergangsfinanzierung von AHV und Armee mittels befristetem \"Sicherheitsprozent\""
+    },
+    {
+     "affair_id": 70872,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-09-26",
+     "title": "Die Verfassung braucht einen Digitalisierungsartikel"
+    },
+    {
+     "affair_id": 71061,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.7.1.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-12-19",
+     "title": "Besserer Schutz für Arbeitnehmende, die Dienst leisten"
+    },
+    {
+     "affair_id": 71072,
+     "gold": "aps:1.8.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2024-12-19",
+     "title": "Psychische Gesundheit von Jugendlichen und Exposition gegenüber sozialen Netzwerken. Was wird unternommen?"
+    },
+    {
+     "affair_id": 71761,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2025-01-16",
+     "title": "Verbesserung der Versicherungsdeckung bei Baumängeln"
+    },
+    {
+     "affair_id": 71764,
+     "gold": "aps:1.3.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2025-01-27",
+     "title": "Kapazitätserweiterung der Nitrochemie"
+    },
+    {
+     "affair_id": 71817,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2025-04-01",
+     "title": "PFAS-Grenzwerte unter Berücksichtigung der Auswirkungen, insbesondere für die Landwirtschaft oder die Wasserversorger, sachgerecht festlegen und Massnahmen zur Unterstützung der Landwirtschaft einleiten"
+    },
+    {
+     "affair_id": 138568,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2001-02-28",
+     "title": "\"Goldinitiative\". Volksinitiative"
+    },
+    {
+     "affair_id": 142063,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2007-12-07",
+     "title": "Bekämpfung terroristischer Handlungen gegen die nukleare und maritime Sicherheit. Übereinkommen und Protokolle"
+    },
+    {
+     "affair_id": 144393,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.5.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2009-12-10",
+     "title": "Stempelsteuer schrittweise abschaffen und Arbeitsplätze schaffen"
+    },
+    {
+     "affair_id": 144773,
+     "gold": "aps:2.0.2.",
+     "predicted": "aps:1.6.3.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2010-06-23",
+     "title": "Sicheres Wohnen im Alter. Volksinitiative"
+    },
+    {
+     "affair_id": 146346,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2011-04-13",
+     "title": "Rehabilitierung administrativ versorgter Menschen"
+    },
+    {
+     "affair_id": 146756,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.2.",
+     "p": 0.9139,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2012-12-19",
+     "title": "Auswirkungen des Betriebs des Flughafens Zürich auf das Hoheitsgebiet der Bundesrepublik Deutschland. Vertrag"
+    },
+    {
+     "affair_id": 147431,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2012-12-12",
+     "title": "Beschwerdeberechtigung bei Haftentscheiden"
+    },
+    {
+     "affair_id": 148484,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2013-12-12",
+     "title": "Einführung einer Adoptionsentschädigung"
+    },
+    {
+     "affair_id": 148819,
+     "gold": "aps:1.6.4.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2014-02-12",
+     "title": "Für eine nachhaltige und ressourceneffiziente Wirtschaft (Grüne Wirtschaft). Volksinitiative und indirekter Gegenvorschlag"
+    },
+    {
+     "affair_id": 149391,
+     "gold": "aps:1.6.4.",
+     "predicted": "aps:1.4.3.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2014-12-01",
+     "title": "Bundesgesetz über die Fischerei. Die Verwendung von Widerhaken in Fliessgewässern zulassen"
+    },
+    {
+     "affair_id": 149553,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2014-12-09",
+     "title": "Schweizer Stiftungsstandort. Stärkung"
+    },
+    {
+     "affair_id": 150612,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2015-06-08",
+     "title": "Mutterschaftsurlaub für hinterbliebene Väter"
+    },
+    {
+     "affair_id": 150624,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2015-06-18",
+     "title": "Missbräuchliche Untermiete vermeiden"
+    },
+    {
+     "affair_id": 151034,
+     "gold": "aps:1.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9451,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-12-16",
+     "title": "Klimaübereinkommen von Paris. Genehmigung"
+    },
+    {
+     "affair_id": 151089,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.2.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-03-07",
+     "title": "Steuerung des Angebots von Käse mit Ursprungsbezeichnung in den Mitgliedstaaten der Europäischen Union"
+    },
+    {
+     "affair_id": 151150,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-11-29",
+     "title": "Abschaffung der Heiratsstrafe"
+    },
+    {
+     "affair_id": 151571,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-03-10",
+     "title": "Vernetzung sämtlicher Betreibungsregister"
+    },
+    {
+     "affair_id": 151674,
+     "gold": "aps:1.6.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.5526,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2016-12-16",
+     "title": "Unterstellung der strategischen Infrastrukturen der Energiewirtschaft unter die Lex Koller"
+    },
+    {
+     "affair_id": 152002,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-09-06",
+     "title": "Fernmeldegesetz. Revision"
+    },
+    {
+     "affair_id": 152080,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.8.1.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-04-26",
+     "title": "Ärztliche Weiterbildungsfinanzierung"
+    },
+    {
+     "affair_id": 152217,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-05-31",
+     "title": "Die wirtschaftsfeindliche Strafpraxis der Zollverwaltung umgehend korrigieren"
+    },
+    {
+     "affair_id": 152265,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.5.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-06-15",
+     "title": "Für stabilere Einkommen in der Landwirtschaft"
+    },
+    {
+     "affair_id": 152565,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.5526,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-03-07",
+     "title": "Daten sind das höchste Gut privater Unternehmen. Datenherausgabe beim Konkurs von Providern regeln"
+    },
+    {
+     "affair_id": 152619,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.2.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-12-15",
+     "title": "Geoblocking. Verpasst die Schweiz wieder den Anschluss? Task-Force zum digitalen Freihandel jetzt!"
+    },
+    {
+     "affair_id": 152656,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.4.2.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-12-15",
+     "title": "Attraktive Rahmenbedingungen für einen Risikokapitalfonds nach dem Vorbild des israelischen Yozma-Fonds in der Schweiz schaffen"
+    },
+    {
+     "affair_id": 152722,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2017-12-06",
+     "title": "Schutz der älteren Menschen in der Schweiz vor missbräuchlichen Mietkündigungen"
+    },
+    {
+     "affair_id": 153125,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-11-30",
+     "title": "Erwerbsersatzgesetz. Mutterschaftsentschädigung bei längerem Spitalaufenthalt des Neugeborenen"
+    },
+    {
+     "affair_id": 153162,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.5.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-01-30",
+     "title": "Abschaffung des Eigenmietwertes in der Schweiz"
+    },
+    {
+     "affair_id": 153199,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.8169,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-04-10",
+     "title": "Glyphosat und Vorsorgeprinzip"
+    },
+    {
+     "affair_id": 153461,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.7564,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-06-14",
+     "title": "Dem Missbrauch von geldspielähnlichen Mikrotransaktionen in Videospielen vorbeugen"
+    },
+    {
+     "affair_id": 153465,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-06-14",
+     "title": "Die Einführung eines Globallizenz-Systems in der Schweiz für bestimmte Güter und Dienstleistungen prüfen"
+    },
+    {
+     "affair_id": 153494,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.2.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-06-14",
+     "title": "Internationale Visibilität des Schweizer Start-up-Ökosystems verbessern"
+    },
+    {
+     "affair_id": 153527,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-06-15",
+     "title": "Die schädliche Mengenausweitung des Palmölkonsums endlich stoppen"
+    },
+    {
+     "affair_id": 153687,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-09-27",
+     "title": "Den Handlungsspielraum für die Handelsregisterämter vergrössern"
+    },
+    {
+     "affair_id": 153794,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-12-12",
+     "title": "Pflegesparkonto. Finanzierungsinstrument des 21. Jahrhunderts"
+    },
+    {
+     "affair_id": 153795,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-12-12",
+     "title": "Mehr qualitativer und quantitativer Wettbewerb im Spitalbereich dank Wahlfreiheit der Patienten"
+    },
+    {
+     "affair_id": 153821,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-12-13",
+     "title": "Lernsysteme in Spitälern zur Vermeidung von Fehlern müssen geschützt werden"
+    },
+    {
+     "affair_id": 153930,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.8484,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2018-09-28",
+     "title": "Einbezug aller Bestandteile eines Gegenstands in die Gewährleistung wegen Mängel der Sache"
+    },
+    {
+     "affair_id": 154312,
+     "gold": "aps:1.1.2.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-03-15",
+     "title": "Ja zum Verhüllungsverbot. Volksinitiative und indirekter Gegenvorschlag"
+    },
+    {
+     "affair_id": 154313,
+     "gold": "aps:1.7.1.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-03-08",
+     "title": "Beiträge an die Kosten der Kantone für die Kontrolle der Einhaltung der Stellenmeldepflicht. Bundesgesetz"
+    },
+    {
+     "affair_id": 154314,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-02-27",
+     "title": "Für eine Schweiz ohne synthetische Pestizide. Volksinitiative"
+    },
+    {
+     "affair_id": 154315,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.1.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-05-22",
+     "title": "Verbesserung der Vereinbarkeit von Erwerbstätigkeit und Angehörigenbetreuung. Bundesgesetz"
+    },
+    {
+     "affair_id": 154323,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.8484,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-26",
+     "title": "Bekämpfung des missbräuchlichen Konkurses. Bundesgesetz"
+    },
+    {
+     "affair_id": 154386,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-03-07",
+     "title": "Vergleichender Bericht über die Gesundheit von LGB"
+    },
+    {
+     "affair_id": 154469,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-03-21",
+     "title": "Jagdtrophäen, die von Tieren nach den Anhängen I bis III des Cites-Übereinkommens stammen. Verbot der Ein- und Durchfuhr"
+    },
+    {
+     "affair_id": 154580,
+     "gold": "aps:1.6.2.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-05-09",
+     "title": "Klimaschutzpotenzial in der Schifffahrt"
+    },
+    {
+     "affair_id": 154643,
+     "gold": "aps:1.7.3.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.3333,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-13",
+     "title": "Gesetzesgrundlage zur Kontrolle der Oberaufsichtskommission über die berufliche Vorsorge"
+    },
+    {
+     "affair_id": 154882,
+     "gold": "aps:1.6.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.7794,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-03-14",
+     "title": "Kein \"David gegen Goliath\" beim Verbandsbeschwerderecht"
+    },
+    {
+     "affair_id": 154951,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-09-26",
+     "title": "Irreführende Angaben über Kosmetika verhindern"
+    },
+    {
+     "affair_id": 155048,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.1.3.",
+     "p": 0.5526,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-09-27",
+     "title": "Keine Prüfung durch die Eidgenössische Finanzkontrolle bei teilprivatisierten Unternehmen des Bundes"
+    },
+    {
+     "affair_id": 155061,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-05",
+     "title": "Assistenzhunde auch für kranke Kinder und Jugendliche"
+    },
+    {
+     "affair_id": 155152,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-20",
+     "title": "System der Alimentenbevorschussung verbessern"
+    },
+    {
+     "affair_id": 155172,
+     "gold": "aps:1.8.3.",
+     "predicted": "aps:1.1.1.",
+     "p": 0.3158,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-12-20",
+     "title": "Staatliches Schubsen hinterfragen"
+    },
+    {
+     "affair_id": 155175,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.4.",
+     "p": 0.3158,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2019-06-21",
+     "title": "Für ein Programm zu Jugend und Ernährung"
+    },
+    {
+     "affair_id": 155574,
+     "gold": "aps:1.8.1.",
+     "predicted": "aps:none",
+     "p": 0.2,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-20",
+     "title": "Horizon-Paket 2021–2027"
+    },
+    {
+     "affair_id": 155580,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.7564,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-08-19",
+     "title": "Kollektivanlagengesetz. Limited Qualified Investor Fund (L-QIF)"
+    },
+    {
+     "affair_id": 155583,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-11",
+     "title": "Jugendschutz in den Bereichen Film und Videospiele. Bundesgesetz"
+    },
+    {
+     "affair_id": 155589,
+     "gold": "aps:1.4.2.",
+     "predicted": "aps:1.1.2.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-10-21",
+     "title": "Versicherungsaufsichtsgesetz. Änderung"
+    },
+    {
+     "affair_id": 155687,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.4.2.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-04-21",
+     "title": "Covid-19-Solidarbürgschaftsverordnung. Sicherung des Nullzinses für Kredite an krisenbetroffene Unternehmen"
+    },
+    {
+     "affair_id": 155696,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.7.1.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-04-29",
+     "title": "Keine Dividenden bei Kurzarbeit"
+    },
+    {
+     "affair_id": 155724,
+     "gold": "aps:1.7.4.",
+     "predicted": "aps:1.7.1.",
+     "p": 0.7564,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-07-03",
+     "title": "Für die Verlängerung des Kündigungsschutzes nach dem Mutterschaftsurlaub"
+    },
+    {
+     "affair_id": 155929,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.6.4.",
+     "p": 0.9451,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-06-11",
+     "title": "Die ökologische Verwertung von Schlachtabfällen und Speiseabfällen prüfen"
+    },
+    {
+     "affair_id": 155998,
+     "gold": "aps:1.4.1.",
+     "predicted": "aps:1.8.1.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-06-18",
+     "title": "Stärkung des Pharma- und Biotechnologie-Standorts Schweiz"
+    },
+    {
+     "affair_id": 156119,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.6095,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-10",
+     "title": "Das Burn-out-Syndrom als Berufskrankheit anerkennen und die Prävention fördern"
+    },
+    {
+     "affair_id": 156141,
+     "gold": "aps:1.7.2.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.6095,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-17",
+     "title": "Ethanol-Pflichtlager. Für eine dauerhafte Lösung!"
+    },
+    {
+     "affair_id": 156220,
+     "gold": "aps:1.7.1.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.8169,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-04",
+     "title": "Kurzarbeitsentschädigung für tiefe und mittlere Einkommen bei lang andauernden Krisen erhöhen"
+    },
+    {
+     "affair_id": 156223,
+     "gold": "aps:1.8.2.",
+     "predicted": "aps:1.4.1.",
+     "p": 0.4494,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-09-24",
+     "title": "Die Attraktivität der Schweiz für MICE und Grossveranstaltungen stärken"
+    },
+    {
+     "affair_id": 156230,
+     "gold": "aps:1.5.",
+     "predicted": "aps:1.7.2.",
+     "p": 0.8169,
+     "in_top3": false,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-05-04",
+     "title": "Grundprodukte, die die Gesundheit der Schweizer Bevölkerung schützen, von der Mehrwertsteuer ausnehmen"
+    },
+    {
+     "affair_id": 156300,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.2.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-11-30",
+     "title": "Stärkung der Möglichkeiten zur demokratischen Partizipation von Auslandschweizern und Auslandschweizerinnen"
+    },
+    {
+     "affair_id": 156340,
+     "gold": "aps:1.1.3.",
+     "predicted": "aps:1.8.3.",
+     "p": 0.7564,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-12-09",
+     "title": "Politische Werbung im Internet und Schutz der Demokratie"
+    },
+    {
+     "affair_id": 156385,
+     "gold": "aps:1.4.3.",
+     "predicted": "aps:1.7.3.",
+     "p": 0.4494,
+     "in_top3": true,
+     "level": "federal",
+     "body_key": "CHE",
+     "lang": "de",
+     "date": "2020-12-16",
+     "title": "Sozialversicherungsschutz für Bauernfamilien. Risikovorsorge für auf dem Betrieb arbeitende Ehepartnerinnen und Ehepartner"
+    }
+   ]
+  }
+ }
+}

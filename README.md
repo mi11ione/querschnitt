@@ -18,6 +18,7 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
 | APS chapter vs APS editors, federal affairs (pre-registered; the shipped design combines the two best designs measured earlier on the same items — a fresh held-out set is S25) | 1,357 | **0.740** [0.716, 0.764] as shipped; the 66.8% that pass without a check (recalibrated p ≥ 0.7, cross-fitted) 0.864 [0.840, 0.886] | plain list prompting 0.655 · keywords 0.191 |
+| The same affairs as shipped: `make eval GOLD=data/eval/gold_aps_s9.csv` on the production rows (OPD inputs, the corpus pipeline) | 1,339 | 0.717 [0.692, 0.742]; top 3 0.860 | — |
 | The same affairs from the Italian vs the German text (read-back design, no examples) | 1,350 | Italian 0.702 [0.678, 0.727] · German 0.703 [0.678, 0.728]; difference +0.0007 [−0.020, +0.021] | — |
 | Bern's 8 directorates as a scheme file vs the Grand Council's own lead-directorate field, 2025–26, DE / FR titles | 531 | 0.651 [0.610, 0.691] / 0.650; DE–FR +0.001 [−0.031, +0.034] | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt's own 46 themes as a scheme file (names only) vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |

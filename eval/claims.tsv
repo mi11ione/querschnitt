@@ -691,3 +691,8 @@ lanes	-	two thirds	lane rule	0.6684	bern/querschnitt/eval/lanes/results.json	0.6
 lanes	-	0.7	lane rule	0.7	bern/querschnitt/eval/lanes/results.json	LANE_TAU	OK		
 cost	-	13.3	wall hours of the job when cost was measured	13.3	bern/querschnitt/eval/cost/results.json	wall_hours_so_far	OK		
 lanes	-	59.6%	lane rule, D1 share passed at recalibrated p ≥ 0.7	0.5969	bern/querschnitt/eval/lanes/results.json	D1 calibrated_tau_0_7 coverage	OK		truncated (59.69%)
+prodgold	-	1,339	make eval on production rows, S9 gold	1339	bern/querschnitt/eval/results/eval-gold_aps_s9.json	overall.accuracy.n	OK		
+prodgold	-	0.717	make eval on production rows, S9 gold	0.7176997759522031	bern/querschnitt/eval/results/eval-gold_aps_s9.json	overall.accuracy.value	OK		
+prodgold	-	0.692	make eval on production rows, S9 gold	0.692	bern/querschnitt/eval/results/eval-gold_aps_s9.json	wilson outward from k/n	OK		
+prodgold	-	0.742	make eval on production rows, S9 gold	0.742	bern/querschnitt/eval/results/eval-gold_aps_s9.json	wilson outward from k/n	OK		
+prodgold	-	0.860	make eval on production rows, S9 gold	0.8603	bern/querschnitt/eval/results/eval-gold_aps_s9.json	overall.top3.value	OK		

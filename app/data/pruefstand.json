@@ -173,6 +173,25 @@
    "file": "querschnitt/eval/s20/results.json"
   },
   {
+   "test": "Basel-Stadt: Themen der Kantons- und Stadtentwicklung (46), Grossratsgeschäfte 2019–24",
+   "test_fr": "Bâle-Ville : thèmes du développement cantonal et urbain (46), objets du Grand Conseil 2019–24",
+   "gold": "human",
+   "design": "+ fünf Basler Beispiele mit ihrem Thema (andere Hälfte), zwei Lesarten",
+   "design_fr": "+ cinq exemples bâlois avec leur thème (autre moitié), deux lectures",
+   "n": 2437,
+   "result": "top-1 0.526 · Thema 1 oder 2 0.631 · top-3 0.711",
+   "result_fr": "top-1 0,526 · thème 1 ou 2 0,631 · top-3 0,711",
+   "interval": [
+    0.507,
+    0.546
+   ],
+   "baseline": "nur Themennamen 0.498: Δ +0.028 [+0.014, +0.043]",
+   "baseline_fr": "noms seulement 0,498 : Δ +0,028 [+0,014, +0,043]",
+   "split": "2 Hälften, vorregistriert (S21)",
+   "split_fr": "2 moitiés, préenregistré (S21)",
+   "file": "querschnitt/eval/s21/results.json"
+  },
+  {
    "test": "Bern, Leitdirektion (8), Grossratsgeschäfte 2025–26, Produktionslauf",
    "test_fr": "Berne, direction compétente (8), objets du Grand Conseil 2025–26, production",
    "gold": "human",
@@ -211,17 +230,16 @@
    "gold": "judge",
    "design": "Präzision",
    "design_fr": "précision",
-   "n": 14513,
-   "result": "0.914",
+   "n": 14512,
+   "result": "0.905",
    "interval": [
-    0.876,
-    0.952
+    0.865,
+    0.945
    ],
-   "baseline": "Stichwort 0.753 [0.714, 0.790]",
-   "split": "453 geprüft, gewichtet",
-   "file": "ideation2/spikes/s8-dvs/results.md",
-   "baseline_fr": "mots-clés 0,753 [0,714, 0,790]",
-   "split_fr": "453 vérifiés, pondérés"
+   "baseline": "Stichwort 0.756 [0.717, 0.793]",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "file": "querschnitt/eval/s8full/results.json",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés"
   },
   {
    "test": "«Digitalisierung» 2026, Schweizer Parlamente vs. KI-Richter",
@@ -229,17 +247,16 @@
    "gold": "judge",
    "design": "Recall",
    "design_fr": "rappel",
-   "n": 14513,
-   "result": "0.654",
+   "n": 14512,
+   "result": "0.659",
    "interval": [
-    0.486,
-    0.894
+    0.491,
+    0.9
    ],
-   "baseline": "Stichwort 0.605 [0.451, 0.827]",
-   "split": "453 geprüft, gewichtet",
-   "file": "ideation2/spikes/s8-dvs/results.md",
-   "baseline_fr": "mots-clés 0,605 [0,451, 0,827]",
-   "split_fr": "453 vérifiés, pondérés"
+   "baseline": "Stichwort 0.584 [0.435, 0.795]",
+   "split": "volle Erhebung 2026, 453 geprüft, gewichtet",
+   "file": "querschnitt/eval/s8full/results.json",
+   "split_fr": "recensement complet 2026, 453 vérifiés, pondérés"
   },
   {
    "test": "Beleg stützt das Thema (blinder KI-Richter)",

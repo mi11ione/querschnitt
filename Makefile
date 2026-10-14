@@ -74,4 +74,4 @@ data-release:
 	PY=$(PY) sh tools/make_data_release.sh
 
 data:
-	@mkdir -p app/data data && curl -fsSL https://github.com/mi11ione/querschnitt/releases/download/$(DATA_TAG)/querschnitt-data.tar.gz | tar -xz
+	@mkdir -p app/data data && curl -fsSL https://github.com/mi11ione/querschnitt/releases/download/$(DATA_TAG)/querschnitt-data.tar.gz | tar -xzf -

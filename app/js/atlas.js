@@ -16,9 +16,10 @@ export class Atlas {
   }
   topics() {
     const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
+    const saved = [...TOPIC_BY_ID.values()].filter(x => x.saved).sort((a, b) => b.count - a.count);
     const ch = [...TOPIC_BY_ID.values()].filter(x => x.kind === 'chapter' && x.code !== 'aps:none').sort((a, b) => b.count - a.count);
     const none = TOPIC_BY_ID.get('aps:none');
-    return [dig, ...ch, none].filter(Boolean);
+    return [dig, ...saved, ...ch, none].filter(Boolean);
   }
   render() {
     const L = t(), c = D.c, root = this.root, m = D.meta;
@@ -29,6 +30,7 @@ export class Atlas {
     const stat = tps.map(() => ({ n: new Int32Array(nK), hit: new Int32Array(nK) }));
     let scoredAny = 0;
     for (let i = 0; i < D.n; i++) {
+      if (c.day[i] < D.dmin) continue; // the main slice only
       const k = ki.get(c.body[i]); const sc = c.ch[i] >= 0 || !Number.isNaN(c.dp[i]); if (sc) scoredAny++;
       if (k == null) continue;
       tps.forEach((tp, j) => { if (tp.scored(i)) { stat[j].n[k]++; if (tp.hit(i)) stat[j].hit[k]++; } });
@@ -62,7 +64,7 @@ export class Atlas {
         if (!st.n[j2]) svg.append(s('use', { href: `#cp-${k}`, fill: 'url(#atl-h)', class: 'atl-hz' }));
       }
       const cell = h('button', { class: `atl-cell ${j === 0 ? 'first' : ''}`, type: 'button', onclick: () => this.openTopic(tp), 'aria-label': name },
-        svg, h('span', { class: 'atl-n' }, h('span', { class: 'nm' }, name), h('span', { class: 'ct' }, num(tp.count))));
+        svg, h('span', { class: 'atl-n' }, h('span', { class: 'nm' }, name, tp.saved ? h('span', { class: 'sv' }, ` ${L.savedMark}`) : ''), h('span', { class: 'ct' }, num(tp.count))));
       grid.append(cell);
     });
     const legend = h('p', { class: 'atl-leg' }, L.atlasLeg, ' ',

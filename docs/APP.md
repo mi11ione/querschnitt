@@ -154,3 +154,17 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 - Pult opens on the newest week with undecided hits of the topic; a week without any says «keine offenen» in the week
   line and in the list; every empty list says why.
 - Prüfstand strings are printed as delivered (result strings verbatim, interval numbers joined, no formatting).
+
+## Own schemes and saved topics (14 Oct)
+- Picker groups «Gespeicherte Themen» (scheme_aps.json `topics[]` other than Digitalisierung, column `adhoc` =
+  {slug: [p, flag, lane]}, plus topics saved in this browser) and «Eigene Schemata der Parlamente» (Bern directorates;
+  every `schemes[]` entry with `kind: "named"`, column `own` = [schemeId, code, lane]).
+- Named schemes reuse the Bern view: scoped to the body, list grouped and filtered by theme, Pult lane = `own` lane,
+  overview = themes as a ranked bar list (click filters) with «stimmt mit dem Kanton überein: k / n (Thema 1) · k / n
+  (Thema 1 oder 2)» from `own_gold`; detail = model theme, lane, the canton's Thema 1/2 with a mono mark ([=], [= 2],
+  [≠]; red only for [≠] in the please-check lane) and the CC BY credit. Period = the scheme's own range (2019–24).
+- The main slice starts at `meta.since`; affairs before it count only in the scheme views that cover them (atlas,
+  matrix, topic counts and every other topic stay on 2025–26).
+- Saved topics: the scored period is the weeks where ≥ 50 % of all affairs carry a decision (a `period: [from, to]` in
+  the topic entry would override it); the Karte opens brushed to it, the timeline hatches the weeks outside, the subtitle
+  says «bewertet dd.mm.–dd.mm.yyyy»; their small maps follow Digitalisierung in the atlas, marked «gespeichert».

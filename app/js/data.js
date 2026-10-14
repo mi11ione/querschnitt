@@ -108,10 +108,13 @@ export async function load() {
   const week = new Int16Array(n);
   for (let i = 0; i < n; i++) week[i] = Math.floor((day[i] - w0) / 7);
   D.c = { id: c.id, body: c.body, date: c.date, title: c.title, lang: c.lang, type_h: c.type_h || [], type: c.type || [], type_h_fr: c.type_h_fr || [],
-    be: c.be || [], bi: c.bi || [], beLane: c.be_lane || [],
+    be: c.be || [], bi: c.bi || [], beLane: c.be_lane || [], own: c.own || [], ownGold: c.own_gold || [], adhoc: c.adhoc || [],
     state: c.state || [], party: c.party || [], submitter: c.submitter || [], number: c.number || [], subs: c.subs || [],
     bodyIdx, bodyKeys, day, week, ch, chp, lane, dp, df, dl, kw, lvl };
-  D.w0 = w0; D.nWeeks = Math.floor((dmax - w0) / 7) + 1; D.dmin = dmin; D.dmax = dmax;
+  D.w0 = w0; D.nWeeks = Math.floor((dmax - w0) / 7) + 1; D.dmax = dmax;
+  // the main slice (meta.since …); extra affairs before it (e.g. Basel-Stadt 2019–24 for its own scheme) only show in their scheme's view
+  D.dminAll = dmin; D.dmin = meta.since ? Math.max(dmin, dayNum(meta.since)) : dmin;
+  D.mainW = Math.floor((D.dmin - w0) / 7); D.lastW = Math.floor((dmax - w0) / 7);
   D.rowOf = new Map(); for (let i = 0; i < n; i++) D.rowOf.set(c.id[i], i);
   D.anyCh = ch.some(v => v >= 0);
   buildTopics();
@@ -141,11 +144,41 @@ function buildTopics() {
   const be = ((D.scheme && D.scheme.schemes) || []).find(x => x.id === 'be-directorates');
   if (be && c.be.length) {
     const opt = new Map(be.options.map((o, k) => [o.code, { ...o, k }]));
-    addTopic({ id: 'be-directorates', kind: 'be', scheme: 'be-directorates', scope: be.body || 'BE', options: be.options, opt,
+    addTopic({ id: 'be-directorates', kind: 'be', scheme: 'be-directorates', scope: be.body || 'BE', options: be.options, opt, prefix: 'be',
       names: { de: 'Kanton Bern: Direktionen', fr: 'Canton de Berne : directions', it: 'Canton Berna: direzioni' },
-      aliases: ['Bern', 'Berne', 'Direktionen', 'directions', 'BE'], codeOf: i => `be:${c.be[i]}`,
+      aliases: ['Bern', 'Berne', 'Direktionen', 'directions', 'BE'], codeAt: i => c.be[i], codeOf: i => `be:${c.be[i]}`,
       scored: i => c.be[i] != null, hit: i => c.be[i] != null, p: () => NaN, check: i => c.beLane[i] === 1,
       coverage: b => b.n_affairs ? (b.n_scored || 0) / b.n_affairs : null });
+  }
+  // a parliament's own named scheme (e.g. Basel-Stadt's 46 Themen): column own = [schemeId, code, lane]
+  for (const sc of ((D.scheme && D.scheme.schemes) || []).filter(x => x.kind === 'named')) {
+    const opt = new Map(sc.options.map((o, k) => [o.code, { ...o, k }]));
+    const mine = i => { const o = c.own[i]; return o && o[0] === sc.id ? o : null; };
+    let a = Infinity, z = -Infinity, da = Infinity, dz = -Infinity;
+    for (let i = 0; i < D.n; i++) if (mine(i)) { if (c.week[i] < a) a = c.week[i]; if (c.week[i] > z) z = c.week[i]; if (c.day[i] < da) da = c.day[i]; if (c.day[i] > dz) dz = c.day[i]; }
+    const place = (D.B.get(sc.body) || {}).place_de || sc.body;
+    addTopic({ id: sc.id, kind: 'be', named: true, scheme: sc.id, scope: sc.body, options: sc.options, opt, prefix: sc.id,
+      names: { de: `${place}: ${sc.options.length - 1} Themen`, fr: `${(D.B.get(sc.body) || {}).place_fr || place} : ${sc.options.length - 1} thèmes`, it: place },
+      title: sc.title, aliases: [place, sc.body, 'Themen', 'thèmes'], dom: a <= z ? [a, z] : null, domDays: a <= z ? [da, dz] : null, gold: c.ownGold.length > 0,
+      codeAt: i => { const o = mine(i); return o ? o[1] : null; }, codeOf: i => `${sc.id}:${(mine(i) || [])[1]}`,
+      scored: i => !!mine(i), hit: i => !!mine(i), p: () => NaN, check: i => { const o = mine(i); return !!o && o[2] === 1; },
+      coverage: () => null });
+  }
+  // saved ad-hoc topics: column adhoc = {slug: [p, flag, lane]}; scored over a narrower period than the slice
+  for (const x of ((D.scheme && D.scheme.topics) || []).filter(x => x.id !== 'adhoc/digitalisierung')) {
+    const slug = x.id.replace(/^adhoc\//, '');
+    const P = new Float32Array(D.n).fill(NaN), F = new Uint8Array(D.n), Ln = new Int8Array(D.n);
+    // the scored period: the weeks in which at least half of all affairs carry a decision (a topic file may say it: x.period)
+    const sw = new Int32Array(D.nWeeks), aw = new Int32Array(D.nWeeks);
+    for (let i = 0; i < D.n; i++) {
+      if (c.day[i] >= D.dmin && c.day[i] <= D.dmax) aw[c.week[i]]++;
+      const v = c.adhoc[i] && c.adhoc[i][slug]; if (!v) continue; P[i] = v[0]; F[i] = v[1] ? 1 : 0; Ln[i] = v[2] ? 1 : 0; sw[c.week[i]]++;
+    }
+    let a = Infinity, z = -Infinity;
+    for (let w = 0; w < D.nWeeks; w++) if (aw[w] && sw[w] / aw[w] >= 0.5) { a = Math.min(a, D.w0 + w * 7); z = Math.max(z, Math.min(D.dmax, D.w0 + w * 7 + 6)); }
+    if (x.period && x.period[0]) { a = dayNum(String(x.period[0]).slice(0, 10)); z = Math.min(D.dmax, dayNum(String(x.period[1]).slice(0, 10))); }
+    addTopic({ id: x.id, kind: 'adhoc', saved: true, scheme: x.id, code: `${x.id}:yes`, names: x.names || { de: slug, fr: slug }, aliases: [...Object.values(x.names || {}), slug],
+      scoredDays: a <= z ? [a, z] : null, scored: i => !Number.isNaN(P[i]), hit: i => F[i] === 1, p: i => P[i], check: i => Ln[i] === 1, coverage: () => null, count: 0 });
   }
   const chs = (D.scheme && D.scheme.chapters) || [];
   chs.forEach((x, i) => {
@@ -163,12 +196,15 @@ function buildTopics() {
   }
   // counts per topic (hits over all rows)
   for (const tp of TOPICS) tp.count = 0;
-  TOPIC_BY_ID.get('all').count = D.n;
+  for (const tp of TOPICS) if (tp.saved) for (let i = 0; i < D.n; i++) if (tp.hit(i)) tp.count++;
+  TOPIC_BY_ID.get('all').count = [...D.c.day].filter(d => d >= D.dmin).length;
   const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
   const chT = new Map(TOPICS.filter(x => x.kind === 'chapter').map(x => [x.idx, x]));
   const subT = new Map(TOPICS.filter(x => x.kind === 'sub').map(x => [x.idx, x]));
   const beT = TOPIC_BY_ID.get('be-directorates');
   for (let i = 0; i < D.n; i++) {
+    if (c.own[i]) { const tn = TOPIC_BY_ID.get(c.own[i][0]); if (tn) tn.count++; }
+    if (c.day[i] < D.dmin) continue; // topic counts cover the main slice
     if (dig && c.df[i]) dig.count++;
     if (beT && c.be[i] != null) beT.count++;
     if (c.ch[i] >= 0) { const tc = chT.get(c.ch[i]); if (tc) tc.count++; const sb = c.subs[i]; if (sb && sb.length) { const ts = subT.get(sb[0]); if (ts) ts.count++; } }

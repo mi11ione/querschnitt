@@ -34,7 +34,7 @@ export class Matrix {
     const cnt = Array.from({ length: K }, () => new Int32Array(nC)), tot = new Int32Array(nC), rowTot = new Int32Array(K);
     const mask = B.mask, br = S.brush;
     for (let i = 0; i < D.n; i++) {
-      const ch = c.ch[i]; if (ch < 0 || (mask && !mask[i])) continue;
+      const ch = c.ch[i]; if (ch < 0 || (mask && !mask[i]) || c.day[i] < D.dmin) continue;
       if (br && (c.week[i] < br[0] || c.week[i] > br[1])) continue;
       const k = colOf(i); if (k < 0) continue;
       cnt[ch][k]++; tot[k]++; rowTot[ch]++;

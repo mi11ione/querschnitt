@@ -24,7 +24,7 @@ export class Picker {
   open(q) {
     const n = norm(q), L = t();
     const match = tp => !n || tp.aliases.some(a => norm(a).includes(n)) || Object.values(tp.names).some(v => norm(v).includes(n)) || norm(tp.code).includes(n);
-    const groups = [[L.allGroup, TOPICS.filter(x => x.kind === 'all')], [L.adhoc, TOPICS.filter(x => x.kind === 'adhoc' || x.kind === 'live')], [L.schemes, TOPICS.filter(x => x.kind === 'be')], [L.chapters, TOPICS.filter(x => x.kind === 'chapter' || x.kind === 'sub')]];
+    const groups = [[L.allGroup, TOPICS.filter(x => x.kind === 'all')], [L.adhoc, TOPICS.filter(x => x.kind === 'adhoc' && !x.saved)], [L.savedTopics, TOPICS.filter(x => x.saved || x.kind === 'live')], [L.ownSchemes, TOPICS.filter(x => x.kind === 'be')], [L.chapters, TOPICS.filter(x => x.kind === 'chapter' || x.kind === 'sub')]];
     const curCh = this.cur && (this.cur.kind === 'chapter' ? this.cur.idx : this.cur.kind === 'sub' ? this.cur.ch : null);
     this.items = []; const frag = [];
     for (const [g, list] of groups) {
@@ -33,7 +33,7 @@ export class Picker {
       frag.push(h('li', { class: 'grp', role: 'presentation' }, g));
       for (const tp of sel) {
         const i = this.items.length; this.items.push(tp);
-        const cd = tp.kind === 'chapter' ? tp.code.replace('aps:', '') : tp.kind === 'sub' ? '' : tp.kind === 'live' ? 'neu' : tp.kind === 'be' ? 'BE' : tp.kind === 'all' ? '' : 'ad hoc';
+        const cd = tp.kind === 'chapter' ? tp.code.replace('aps:', '') : tp.kind === 'sub' ? '' : tp.kind === 'live' ? 'neu' : tp.kind === 'be' ? tp.scope : tp.kind === 'all' ? '' : 'ad hoc';
         frag.push(h('li', { 'data-i': i, role: 'option', class: `${tp.kind === 'sub' ? 'sub' : ''} ${tp.count ? '' : 'off'}` },
           h('span', { class: 'cd' }, cd), h('span', { class: 'nm' }, this.label(tp)), h('span', { class: 'n' }, tp.count ? num(tp.count) : '–')));
       }

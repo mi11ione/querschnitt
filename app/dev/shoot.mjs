@@ -63,6 +63,10 @@ const SCEN = [
   { name: 'matrix-375', w: 375, h: 812, mobile: true, url: '#karte?v=matrix', full: true },
   { name: 'overview-375', w: 375, h: 812, mobile: true, url: '#karte', full: true },
   { name: 'simcal', w: 800, h: 600, url: '#karte', steps: [], print: `import('./js/case.js').then(m=>{const D=__qs.D,c=D.c;const out=[];const ids=[];for(let i=0;i<D.n&&ids.length<20;i+=1601){if(c.df[i]||c.ch[i]>=0)ids.push(i)}for(const i of ids){out.push('## '+c.title[i].slice(0,80));for(const [j,v,n,ss] of m.similar(i,null,true))out.push('   '+v+' '+n+(ss?' S':'  ')+' '+c.body[j]+' '+c.title[j].slice(0,80))}return out.join(String.fromCharCode(10))})` },
+  { name: 'basel-1440', w: 1440, h: 900, url: '#karte?t=bs-themen' },
+  { name: 'basel-detail-1440', w: 1440, h: 900, url: '#karte?t=bs-themen', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  { name: 'basel-pult-1440', w: 1440, h: 900, url: '#karte?t=bs-themen&m=pult&tab=todo', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  { name: 'saved-1440', w: 1440, h: 900, url: '#karte?t=adhoc%2Fwolf' },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 

@@ -148,6 +148,7 @@ async function boot() {
     openAffair: i => { const c = D.c; const x = c.df[i] ? TOPIC_BY_ID.get('adhoc/digitalisierung') : (c.ch[i] >= 0 ? TOPIC_BY_ID.get(D.scheme.chapters[c.ch[i]].code) : karte.tp); karte.S.brush = null; show('karte'); karte.setTopic(x); karte.select(c.id[i]); } });
   if (p.get('p')) karte.S.body = p.get('p');
   if (p.get('w')) { const [a, b] = p.get('w').split('-').map(Number); if (b >= a) karte.S.brush = [a, b]; }
+  else if (tp.scoredDays) karte.S.brush = [Math.floor((tp.scoredDays[0] - D.w0) / 7), Math.floor((tp.scoredDays[1] - D.w0) / 7)];
   if (p.get('m') === 'pult') { karte.S.mode = 'pult'; karte.S.tab = p.get('tab') || 'neu'; if (p.get('pw')) { karte.S.pw = +p.get('pw'); karte.S.pwFor = karte.tp.id; } }
   if (p.get('q')) { karte.S.f.q = p.get('q'); karte.q.value = p.get('q'); }
   karte.refresh();

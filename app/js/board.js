@@ -82,11 +82,11 @@ export class Board {
       h('div', { class: 'fl' }, h('label', { class: 'k' }, L.search), this.q));
     const tp = this.tp;
     if (tp && tp.kind === 'be') {
-      const cnt = new Map(); for (let i = 0; i < D.n; i++) if (c.be[i] != null) cnt.set(c.be[i], (cnt.get(c.be[i]) || 0) + 1);
+      const cnt = new Map(); for (let i = 0; i < D.n; i++) { const cd = tp.codeAt(i); if (cd != null) cnt.set(cd, (cnt.get(cd) || 0) + 1); }
       const ds = h('select', { 'aria-label': L.dir }, h('option', { value: '' }, L.all),
-        tp.options.map(o => h('option', { value: o.code, selected: F.dir === o.code }, `${o.abbr[UI.lang] || o.abbr.de} · ${o.name[UI.lang] || o.name.de} (${num(cnt.get(o.code) || 0)})`)));
+        tp.options.map(o => h('option', { value: o.code, selected: F.dir === o.code }, `${optLabel(o)} (${num(cnt.get(o.code) || 0)})`)));
       ds.addEventListener('change', () => { F.dir = ds.value; this.refresh(); });
-      this.filters.prepend(h('div', { class: 'fl wide' }, h('label', { class: 'k' }, L.dir), ds));
+      this.filters.prepend(h('div', { class: 'fl wide' }, h('label', { class: 'k' }, tp.named ? L.theme : L.dir), ds));
     }
   }
   passMask() {
@@ -105,6 +105,8 @@ export class Board {
   // ------------------------------------------------------------ topic
   setTopic(tp) {
     this.tp = tp; this.S.sel = null; this.S.body = tp && tp.scope ? tp.scope : null; this.S.f.dir = '';
+    if (tp && tp.scoredDays) this.S.brush = [Math.floor((tp.scoredDays[0] - D.w0) / 7), Math.floor((tp.scoredDays[1] - D.w0) / 7)];
+    else if (tp && tp.dom) this.S.brush = null;
     if (this.picker) this.picker.set(tp);
     this.buildFilters(); this.refresh(); this.renderCase();
   }
@@ -122,8 +124,12 @@ export class Board {
     const tabsN = { neu: 0, todo: 0, ok: 0, changed: 0, done: 0 };
     const items = [];
     const isAll = tp && tp.kind === 'all';
+    // the period domain: the main slice, or the topic's own range (Basel-Stadt 2019–24)
+    const dom = this.dom = (tp && tp.dom) || [D.mainW, D.lastW];
+    this.dA = tp && tp.domDays ? tp.domDays[0] : Math.max(D.dmin, D.w0 + dom[0] * 7);
+    this.dZ = tp && tp.domDays ? tp.domDays[1] : Math.min(D.dmax, D.w0 + dom[1] * 7 + 6);
     this.pultOn = this.pultAllowed && tp && tp.kind !== 'all' && tp.kind !== 'live';
-    const lastW = Math.floor((D.dmax - D.w0) / 7);
+    const lastW = Math.min(D.lastW, ((tp && tp.dom) || [0, D.lastW])[1]);
     // the Pult's week: by default the newest week (up to today) with a hit of this topic
     if (S.pw == null || S.pwFor !== (tp && tp.id)) {
       // the newest week (up to today) that still has open rows: undecided hits of this topic
@@ -136,10 +142,11 @@ export class Board {
     const pult = S.mode === 'pult' && this.pultOn;
     for (let i = 0; tp && i < n; i++) {
       const sc = tp.scored(i); if (!sc) continue;
+      if (c.week[i] < dom[0] || c.week[i] > dom[1]) continue;
       const k = c.body[i];
       if (isAll && inP(i)) { stat(k).n++; lv[c.lvl[i]].n++; if (!S.body || k === S.body) scoredSel++; } // denominators ignore the search
       if (!mask[i]) continue;
-      if (isBe && S.f.dir && c.be[i] !== S.f.dir) continue;
+      if (isBe && S.f.dir && tp.codeAt(i) !== S.f.dir) continue;
       const hit = tp.hit(i), chk = tp.check(i);
       const inB = !S.body || k === S.body;
       const dec = getDec(tp, c.id[i]);
@@ -170,7 +177,7 @@ export class Board {
     } else if (pult && S.tab === 'neu') {
       items.sort((a, b) => ((tp.check(b) ? 1 : 0) - (tp.check(a) ? 1 : 0)) || (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
     } else if (isBe) {
-      const k = i => (tp.opt.get(c.be[i]) || { k: 99 }).k;
+      const k = i => (tp.opt.get(tp.codeAt(i)) || { k: 99 }).k;
       items.sort((a, b) => (k(a) - k(b)) || (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
     } else items.sort((a, b) => (c.day[b] - c.day[a]) || (c.id[b] - c.id[a]));
     // ramp + coverage
@@ -184,7 +191,7 @@ export class Board {
       // else the body's scored share overall
       let cov = null;
       if (b.n_by_month) {
-        const a = isoOfDay(br ? D.w0 + br[0] * 7 : D.dmin).slice(0, 7), z = isoOfDay(br ? D.w0 + br[1] * 7 + 6 : D.dmax).slice(0, 7);
+        const a = isoOfDay(br ? D.w0 + br[0] * 7 : this.dA).slice(0, 7), z = isoOfDay(br ? D.w0 + br[1] * 7 + 6 : this.dZ).slice(0, 7);
         let pop = 0; for (const [m, v] of Object.entries(b.n_by_month)) if (m >= a && m <= z) pop += v;
         cov = pop ? Math.min(1, st.n / pop) : null;
       } else cov = tp && tp.coverage ? tp.coverage(b) : null;
@@ -209,7 +216,8 @@ export class Board {
     this.map.update(all, S.body);
     if (this.mapMode === 'matrix') this.matrix.render();
     const selRow = S.sel != null ? D.rowOf.get(S.sel) : null;
-    this.tl.set(counts, S.brush, selRow != null ? { w: c.week[selRow], l: Math.min(2, c.lvl[selRow]) } : null, checks);
+    const sd = tp && tp.scoredDays ? [Math.floor((tp.scoredDays[0] - D.w0) / 7), Math.floor((tp.scoredDays[1] - D.w0) / 7)] : null;
+    this.tl.set(counts, S.brush, selRow != null ? { w: c.week[selRow], l: Math.min(2, c.lvl[selRow]) } : null, checks, dom, sd);
     // list
     const pos = selRow != null && posOf.has(selRow) ? posOf.get(selRow) : -1;
     this.list.set(rows, pos);
@@ -223,18 +231,19 @@ export class Board {
     const L = t(), S = this.S, tp = this.tp;
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
     const bsel = S.body ? D.B.get(S.body) : null;
-    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
+    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(this.dA)} – ${isoOfDay(this.dZ)}`;
     this.tsub.innerHTML = '';
     const isBe = tp && tp.kind === 'be';
     if (isBe) {
       const o = S.f.dir ? tp.opt.get(S.f.dir) : null;
-      this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${L.dir}: ${o ? `${o.abbr[UI.lang] || o.abbr.de} ${o.name[UI.lang] || o.name.de}` : L.all} · ${per}`);
+      this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${tp.named ? L.theme : L.dir}: ${o ? optLabel(o) : L.all} · ${per}`, ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`));
     } else if (tp && tp.kind === 'all') {
       this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs}${S.f.q || S.f.type || S.f.status || S.f.party ? ` ${L.of} ${num(scoredSel)} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)}` : ''} · ${per}`,
         bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`)) : '',
         S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scored} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
       ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`),
+      tp && tp.scoredDays ? ` · ${L.scoredPeriod} ${fmtDay(tp.scoredDays[0])}–${fmtDay(tp.scoredDays[1])}` : '',
       bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
       S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     // legend
@@ -296,12 +305,12 @@ export class Board {
     const i = g[0], c = D.c, tp = this.tp, L = t();
     const dec = tp ? getDec(tp, c.id[i]) : null, chk = tp && tp.check(i);
     const sub = c.submitter[i] ? `${c.submitter[i]}${c.party[i] ? ` (${c.party[i]})` : ''}` : '';
-    const meta = [fmtDate(c.date[i]), bodyName(c.body[i], false), typeOf(i), sub, c.state[i]].filter(Boolean).join(' · ');
+    const meta = [tp && tp.named ? beFull(tp, tp.codeAt(i)) : null, fmtDate(c.date[i]), bodyName(c.body[i], false), typeOf(i), sub, c.state[i]].filter(Boolean).join(' · ');
     const p = tp ? tp.p(i) : NaN;
     const mark = dec ? (dec.d === 'confirmed' ? '✓' : '–') : chk ? '!' : '';
     return h('div', { class: dec ? 'dec' : '' },
       h('div', { class: 'tc' }, h('div', { class: 't', lang: c.lang[i] }, c.title[i]), h('div', { class: 'm' }, g.length > 1 ? h('b', { class: 'grpn' }, `×${g.length} `) : '', meta)),
-      h('div', { class: 'p' }, tp && tp.kind === 'be' ? beAbbr(tp, c.be[i]) : Number.isNaN(p) ? '' : [p3(p), h('span', { class: 'pc' }, h('span', { style: `width:${Math.round(Math.max(0, Math.min(1, p)) * 40)}px` }))]),
+      h('div', { class: 'p' }, tp && tp.kind === 'be' ? beAbbr(tp, tp.codeAt(i)) : Number.isNaN(p) ? '' : [p3(p), h('span', { class: 'pc' }, h('span', { style: `width:${Math.round(Math.max(0, Math.min(1, p)) * 40)}px` }))]),
       h('div', { class: `x ${dec ? 'd' : ''}`, 'aria-label': chk && !dec ? L.lanes.please_check : null }, dec ? `[${mark}]` : chk ? h('span', { class: 'rtick' }) : ''));
   }
 
@@ -410,7 +419,7 @@ export class Board {
   async offerCorrection(row) {
     const L = t(), tp = this.tp, c = D.c, id = c.id[row];
     let alts = [];
-    if (tp.kind === 'be') alts = tp.options.filter(o => o.code !== c.be[row]).map(o => ({ code: `be:${o.code}`, scheme: 'be-directorates', key: o.code, label: `${o.abbr[UI.lang] || o.abbr.de} ${o.name[UI.lang] || o.name.de}` }));
+    if (tp.kind === 'be') alts = tp.options.filter(o => o.code !== tp.codeAt(row)).map(o => ({ code: `${tp.prefix}:${o.code}`, scheme: tp.scheme, key: o.code, label: optLabel(o) }));
     else {
       const d = await detail(id), ranks = (d && d.aps && d.aps.rank) || [];
       alts = ranks.filter(r => r !== tp.idx && D.scheme.chapters[r]).map(r => { const ch = D.scheme.chapters[r]; return { code: ch.code, scheme: 'aps', label: UI.lang === 'fr' ? ch.fr || ch.de : ch.de }; });
@@ -451,7 +460,7 @@ export class Board {
     const by = this.who_() || dec.by;
     let note = '';
     for (const j of this.groupOf(row)) {
-      const aid = c.id[j], code = tp.kind === 'be' ? `be:${(getDec(tp, aid) || {}).code || c.be[j]}` : (tp.codeOf ? tp.codeOf(j) : tp.code);
+      const aid = c.id[j], code = tp.kind === 'be' ? `${tp.prefix}:${(getDec(tp, aid) || {}).code || tp.codeAt(j)}` : (tp.codeOf ? tp.codeOf(j) : tp.code);
       if (API.live) {
         const r = await this.post(aid, code, tp.scheme, 'undo', by);
         if (r.err) note = L.undoLocal;
@@ -471,7 +480,7 @@ export class Board {
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
     const sc = h('div', { class: 'scroll' });
     root.replaceChildren(sc);
-    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
+    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(this.dA)} – ${isoOfDay(this.dZ)}`;
     sc.append(h('div', { class: 'sl' }, L.overview, h('span', { class: 'sp' }, `${name} · ${per}`)));
     if (tp && tp.kind === 'be') { this.beSummary(sc); bindTips(sc); return; }
     if (!this.items.length) { sc.append(h('p', { class: 'empty' }, L.none)); return; }
@@ -499,13 +508,21 @@ export class Board {
 
   beSummary(sc) {
     const L = t(), tp = this.tp, c = D.c, cnt = new Map(), chk = new Map();
-    for (const i of this.items) { const k = c.be[i]; cnt.set(k, (cnt.get(k) || 0) + 1); if (tp.check(i) && !getDec(tp, c.id[i])) chk.set(k, (chk.get(k) || 0) + 1); }
+    let n1 = 0, k1 = 0, k12 = 0;
+    for (const i of this.items) {
+      const k = tp.codeAt(i); cnt.set(k, (cnt.get(k) || 0) + 1); if (tp.check(i) && !getDec(tp, c.id[i])) chk.set(k, (chk.get(k) || 0) + 1);
+      const g = tp.named && c.ownGold[i]; if (g && g[0]) { n1++; if (g[0] === k) k1++; if (g[0] === k || g[1] === k) k12++; }
+    }
     const mx = Math.max(1, ...cnt.values());
-    sc.append(h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, L.beGroup)),
-      rankList(tp.options.map(o => ({ label: `${o.abbr[UI.lang] || o.abbr.de} · ${o.name[UI.lang] || o.name.de}`, v: (cnt.get(o.code) || 0) / mx,
-        tone: this.S.f.dir === o.code ? 'ink' : 'grey', strong: this.S.f.dir === o.code, value: num(cnt.get(o.code) || 0), mark: chk.get(o.code) ? L.pending : null,
-        tip: `${o.name[UI.lang] || o.name.de} · ${num(cnt.get(o.code) || 0)}${chk.get(o.code) ? ` · ${L.pending} ${num(chk.get(o.code))}` : ''}`,
-        onClick: () => { this.S.f.dir = this.S.f.dir === o.code ? '' : o.code; this.buildFilters(); this.refresh(); } })))));
+    const opts = tp.named ? [...tp.options].sort((a, b) => (cnt.get(b.code) || 0) - (cnt.get(a.code) || 0)).filter(o => cnt.get(o.code)) : tp.options;
+    const box = h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, tp.named ? L.themes : L.beGroup)));
+    if (n1) box.append(h('p', { class: 'dgn', style: 'margin:0 0 8px' }, `${L.goldMatch}: `, h('b', {}, `${num(k1)} / ${num(n1)}`), ` (${L.theme1}) · ${num(k12)} / ${num(n1)} (${L.theme12})`));
+    box.append(rankList(opts.map(o => ({ label: optLabel(o), v: (cnt.get(o.code) || 0) / mx,
+      tone: this.S.f.dir === o.code ? 'ink' : 'grey', strong: this.S.f.dir === o.code, value: num(cnt.get(o.code) || 0), mark: chk.get(o.code) ? L.pending : null,
+      tip: `${optName(o)} · ${num(cnt.get(o.code) || 0)}${chk.get(o.code) ? ` · ${L.pending} ${num(chk.get(o.code))}` : ''}`,
+      onClick: () => { this.S.f.dir = this.S.f.dir === o.code ? '' : o.code; this.buildFilters(); this.refresh(); } }))));
+    if (tp.named && n1) box.append(h('p', { class: 'tm mono dim', style: 'font-size:12px;margin-top:8px' }, L.bsCredit));
+    sc.append(box);
   }
 
   // ------------------------------------------------------------ export: CSV in the DVS list's columns + method line
@@ -528,11 +545,11 @@ export class Board {
     for (const i of items) {
       const d = det.get(i) || {}, b = D.B.get(c.body[i]) || {}, dec = getDec(tp, c.id[i]);
       lines.push([c.date[i], LV[c.lvl[i]], b.canton || '', bodyName(c.body[i]), d.number || c.number[i] || '', c.title[i], c.lang[i], typeOf(i), c.state[i],
-        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, c.be[i]) : tname, p3(tp.p(i)), L.lanes[tp.check(i) ? 'please_check' : 'readings_agree'],
+        c.submitter[i], c.party[i], d.url || '', tp.kind === 'be' ? beFull(tp, tp.codeAt(i)) : tname, p3(tp.p(i)), L.lanes[tp.check(i) ? 'please_check' : 'readings_agree'],
         dec ? (L.decided[dec.d] || dec.d) + (dec.code ? ` ${dec.code}` : '') : L.suggested, dec ? dec.by : '', dec ? dec.at : '', c.id[i], (d.build || D.meta.build || '').slice(-8)].map(q).join(','));
     }
     // method line: affairs found, scored share per parliament, machine suggestions
-    const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(D.dmin)} – ${isoOfDay(D.dmax)}`;
+    const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(this.dA)} – ${isoOfDay(this.dZ)}`;
     const bodies = [...new Set(items.map(i => c.body[i]))];
     const cov = bodies.map(k => { const s = this.stats.get(k); return `${bodyName(k)} ${pct(s && s.cov)}`; }).join('; ');
     lines.push('');
@@ -543,11 +560,15 @@ export class Board {
   }
 }
 
-export const beAbbr = (tp, code) => { const o = tp.opt.get(code); return o ? (o.abbr[UI.lang] || o.abbr.de) : (code || '–'); };
-export const beFull = (tp, code, l = UI.lang) => { const o = tp.opt.get(code); return o ? `${o.abbr[l] || o.abbr.de} ${o.name[l] || o.name.de}` : (code || ''); };
+export const beAbbr = (tp, code) => { const o = tp.opt.get(code); return o && o.abbr ? (o.abbr[UI.lang] || o.abbr.de) : ''; };
+export const optName = (o, l = UI.lang) => (o.name && (o.name[l] || o.name.de)) || o.code;
+export const optLabel = (o, l = UI.lang) => o.abbr ? `${o.abbr[l] || o.abbr.de} ${optName(o, l)}` : optName(o, l);
+export const beFull = (tp, code, l = UI.lang) => { const o = tp.opt.get(code); return o ? optLabel(o, l) : (code || ''); };
 
 const fmtWhen = iso => { if (!iso) return '–'; const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString(UI.lang === 'fr' ? 'fr-CH' : 'de-CH', { dateStyle: 'short', timeStyle: 'short' }); };
 
 // compact parliament label for ranked lists: the Federal Assembly by name, cantons as "BE Bern", communes by place
 const shortName = k => { const b = D.B.get(k); if (!b) return k; if (b.level === 'federal') return bodyName(k);
   if (b.key === 'LIE') return 'Landtag FL'; const pl = UI.lang === 'fr' ? b.place_fr || b.place_de : b.place_de; return b.level === 'cantonal' ? `${b.key} ${pl}` : pl; };
+
+const fmtDay = d => { const x = isoOfDay(d); return `${x.slice(8, 10)}.${x.slice(5, 7)}.${x.slice(0, 4)}`; };

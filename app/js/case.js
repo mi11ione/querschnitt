@@ -138,6 +138,19 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     const x = tp.dec.get(id);
     if (x) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${x.flag ? L.yes : L.no} · p ${p3(x.p)}`));
   }
+  if (tp && tp.saved && tp.scored(i)) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${tp.hit(i) ? L.yes : L.no} · p ${p3(tp.p(i))}`),
+    h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: tp.check(i) ? 'sig' : '' }, L.lanes[tp.check(i) ? 'please_check' : 'readings_agree'])));
+  // a parliament's own scheme (Basel-Stadt): the model's theme, its lane, and the canton's own label beside it
+  const own = c.own[i], ownT = own && TOPIC_BY_ID.get(own[0]);
+  if (ownT) {
+    const nm = code => { const o = ownT.opt.get(code); return o ? ((o.name && (o.name[UI.lang] || o.name.de)) || code) : code; };
+    const g = c.ownGold[i], pc = own[2] === 1;
+    const m = g && g[0] ? (g[0] === own[1] ? '[=]' : g[1] === own[1] ? '[= 2]' : '[≠]') : null;
+    add(L.theme, h('span', {}, nm(own[1])),
+      h('span', { class: 'sub2' }, `${L.lane}: `, h('span', { class: pc ? 'sig' : '' }, L.lanes[pc ? 'please_check' : 'readings_agree'])),
+      g && g[0] ? h('span', { class: 'sub2' }, h('span', { class: m === '[≠]' && pc ? 'sig' : '' }, `${m} `), `${L.cantonTheme}: ${nm(g[0])}${g[1] ? ` · ${nm(g[1])}` : ''}`) : '',
+      g && g[0] ? h('span', { class: 'sub2 dim' }, L.bsCredit) : '');
+  }
   const be = (d && d.be) || (c.be[i] != null ? { code: c.be[i] } : null);
   const beT = TOPIC_BY_ID.get('be-directorates');
   if (be && beT) {

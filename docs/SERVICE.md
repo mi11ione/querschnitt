@@ -176,3 +176,11 @@ Docker is not available on the build Mac: CI builds the image, checks it runs as
    `.parquet` file. Moving them to an extra would shrink the image; your call.
 7. Ship (or let the nightly download) a seed `inputs.jsonl.gz` + `topics.jsonl.gz` so a fresh `full`/`lite` deploy does
    not start with a 4.8 GB full rebuild and a 33k-affair batch.
+
+## Footprint, measured 14 Oct 07:45 (colima, `docker stats`, idle after start)
+| profile | containers | memory | image |
+|---|---|---|---|
+| full | db (postgres:16-alpine) 46.5 MiB · api 42.9 MiB (34,085 topic rows loaded) · nightly 12.7 MiB | ≈ 102 MiB | querschnitt 307 MB |
+| lite | nightly-lite 12.6 MiB, into an existing Postgres | ≈ 13 MiB | same image |
+Peaks: the nightly input rebuild for changed affairs stays under 1.6 GB (measured by the service build, see "Delta").
+Verified: `docker compose --profile full up -d` → `/health` ok, app at `/`, `/coverage`; `--profile lite` with `QS_PG_DSN`.

@@ -99,7 +99,8 @@ def test_save_writes_topic_file_and_rows(api, tmp_path):
     text = (tmp_path / "adhoc_yaml" / f"{r['slug']}.yaml").read_text()
     assert "\nyes:" not in text and "\n  yes:" not in text
     doc = yaml.safe_load(text)
-    assert list(doc)[:7] == ["id", "names", "question", "answer_yes", "cutoff", "verify", "examples"] and doc["verify"] is True
+    assert list(doc)[:9] == ["id", "names", "question", "answer_yes", "cutoff", "verify", "include", "exclude", "examples"]
+    assert doc["verify"] is True and set(doc["include"]) == set(doc["exclude"]) == {"de", "fr", "it"}   # S30 scope lists
     assert doc["id"] == f"adhoc/{r['slug']}" and doc["cutoff"] == 0.5 and set(doc["question"]) == {"de", "fr", "it"}
     assert doc["examples"][0] == {"title": "Wolfsregulierung im Wallis", "match": True} and doc["examples"][1]["match"] is False
     assert out["rows"] == 6
@@ -344,3 +345,45 @@ def test_slow_topic_request_falls_back_on_time(api, monkeypatch):
     for c, _ in held:
         c.close()
     srv.close()
+
+
+def test_flags_get_the_scope_check(api, fake):
+    """S30: Neues Thema generates include / exclude lists (one more plain request, user message only) and asks the scope
+    check on every flag next to the S27 check; a flag is verified only if both say yes, otherwise it goes to please_check."""
+    from querschnitt.fake_endpoint import SCOPE_Q
+    fake.scope_words = ["verwaltung", "administration", "amministrazione"]   # the fake's scope check: «belongs» only for these
+    r = api.post("/adhoc", json={"sentence": "Digitalisierung", "lang": "de", "period": "2026-09-01..2026-10-31"}).json()
+    t = r["topic"]
+    assert t["include"]["de"] and t["exclude"]["fr"] and P.has_scope_check(t)
+    gen = [b for b in fake.requests if b["messages"][-1]["role"] == "user" and '"include"' in b["messages"][0]["content"]]
+    assert len(gen) == 1 and len(gen[0]["messages"]) == 1 and "logprobs" not in gen[0]
+    st = wait(api, r["slug"])
+    flags = [d for d in st["decisions"] if d["flag"]]
+    assert flags and all(d["p_scope"] is None for d in st["decisions"] if not d["flag"])
+    for d in flags:
+        a = api.app.state.store.affair(d["id"])
+        a = dict(a, title_long=a["title_long"] or "")
+        in_scope = any(w in (a["title"] + " " + a["title_long"][:400]).lower() for w in fake.scope_words)
+        assert (d["p_scope"] >= 0.5) is in_scope and d["verified"] is (d["p_verify"] >= 0.5 and in_scope), (d, a["title"])
+        if not d["verified"]:
+            assert d["lane"] == "please_check" and d["flag"] is True                  # the flag stays; a person decides
+        u, p = P.scope_check_prompt(st["topic"], d["lang"], a["title"], a["title_long"], "a")
+        assert P.pid(u, p) in d["prompt_id"].split(",")
+    sq = [b for b in fake.requests if b["messages"][-1]["role"] == "assistant" and SCOPE_Q.search(b["messages"][0]["content"])]
+    assert len(sq) >= len(flags)
+    out = api.post(f"/adhoc/{r['slug']}/save", json={"by": "t"}).json()
+    doc = yaml.safe_load(out["yaml"])
+    assert doc["include"] == t["include"] and doc["exclude"] == t["exclude"]
+    fake.scope_words = None
+
+
+def test_no_scope_check_without_generation_or_verify(api, fake):
+    from querschnitt.fake_endpoint import SCOPE_Q
+    for body in ({"generate": False}, {"verify": False}):
+        n0 = len(fake.requests)
+        r = api.post("/adhoc", json=dict(sentence="Digitalisierung", lang="de", period="2026-09-01..2026-10-31", **body)).json()
+        st = wait(api, r["slug"])
+        assert "include" not in r["topic"] and not P.has_scope_check(r["topic"])
+        assert all(d.get("p_scope") is None for d in st["decisions"])
+        assert not any(SCOPE_Q.search(b["messages"][0]["content"]) or '"include"' in b["messages"][0]["content"]
+                       for b in fake.requests[n0:])

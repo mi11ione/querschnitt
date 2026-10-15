@@ -1,0 +1,134 @@
+{
+ "wolf": {
+  "s19_yn": {
+   "flags": 40,
+   "tp": 9,
+   "precision": 0.225,
+   "recall": 1.0
+  },
+  "shipped": {
+   "flags": 9,
+   "tp": 4,
+   "precision": 0.444,
+   "recall": 0.444
+  },
+  "V1_yn+scope": {
+   "flags": 23,
+   "tp": 8,
+   "precision": 0.348,
+   "recall": 0.889
+  },
+  "V2_yn+contrast": {
+   "flags": 29,
+   "tp": 7,
+   "precision": 0.241,
+   "recall": 0.778
+  },
+  "V3_scope": {
+   "flags": 23,
+   "tp": 8,
+   "precision": 0.348,
+   "recall": 0.889
+  },
+  "V4_scope+S27": {
+   "flags": 6,
+   "tp": 4,
+   "precision": 0.667,
+   "recall": 0.444
+  },
+  "kw": {
+   "flags": 10,
+   "tp": 5,
+   "precision": 0.5,
+   "recall": 0.556
+  }
+ },
+ "ki-schule": {
+  "s19_yn": {
+   "flags": 22,
+   "tp": 3,
+   "precision": 0.136,
+   "recall": 1.0
+  },
+  "shipped": {
+   "flags": 12,
+   "tp": 3,
+   "precision": 0.25,
+   "recall": 1.0
+  },
+  "V1_yn+scope": {
+   "flags": 6,
+   "tp": 2,
+   "precision": 0.333,
+   "recall": 0.667
+  },
+  "V2_yn+contrast": {
+   "flags": 17,
+   "tp": 3,
+   "precision": 0.176,
+   "recall": 1.0
+  },
+  "V3_scope": {
+   "flags": 6,
+   "tp": 2,
+   "precision": 0.333,
+   "recall": 0.667
+  },
+  "V4_scope+S27": {
+   "flags": 2,
+   "tp": 2,
+   "precision": 1.0,
+   "recall": 0.667
+  },
+  "kw": {
+   "flags": 4,
+   "tp": 3,
+   "precision": 0.75,
+   "recall": 1.0
+  }
+ },
+ "hitze": {
+  "s19_yn": {
+   "flags": 346,
+   "tp": 232,
+   "precision": 0.671,
+   "recall": 1.0
+  },
+  "shipped": {
+   "flags": 292,
+   "tp": 225,
+   "precision": 0.771,
+   "recall": 0.97
+  },
+  "V1_yn+scope": {
+   "flags": 250,
+   "tp": 209,
+   "precision": 0.836,
+   "recall": 0.901
+  },
+  "V2_yn+contrast": {
+   "flags": 270,
+   "tp": 224,
+   "precision": 0.83,
+   "recall": 0.966
+  },
+  "V3_scope": {
+   "flags": 250,
+   "tp": 209,
+   "precision": 0.836,
+   "recall": 0.901
+  },
+  "V4_scope+S27": {
+   "flags": 222,
+   "tp": 204,
+   "precision": 0.919,
+   "recall": 0.879
+  },
+  "kw": {
+   "flags": 191,
+   "tp": 172,
+   "precision": 0.901,
+   "recall": 0.741
+  }
+ }
+}

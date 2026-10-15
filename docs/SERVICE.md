@@ -166,7 +166,13 @@ Every row carries `label` {de, fr, it} from the scheme files.
   (`engine.verify`, order a; b when 0.1 < p < 0.9); an unverified flag stays a flag and goes to `please_check`. Decisions
   stream `{id, p, flag, verified, p_verify, lane, …}`; the summary and the running line report flagged / verified /
   please check; saved files carry `verify: true` (`"verify": false` in the request turns it off).
-- Save: `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, examples as `{title, match}`, terms,
+- Scope check (S30, PRUEFSTAND §15): with verify on, one more plain generation request (`adhoc.SCOPE_PROMPT`, user
+  message only, in parallel with the topic request and under its deadline) writes `include` / `exclude` lists per
+  language; every flag then also gets `engine.scope_check` (`prompts.scope_check_prompt`, same two-order rule), and a
+  flag is `verified` only if both checks say yes. Decisions add `p_scope`; batch and compose ask and read it for every
+  topic file with `include` / `exclude` (`prompts.has_scope_check`). Files without them (Digitalisierung, the S19
+  topics) ask exactly what they asked before.
+- Save: `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, verify, include, exclude, examples as `{title, match}`, terms,
   subtopics, sentence; no bare `yes:` key) and the run's decisions as `adhoc/<slug>` rows; `delta` picks up every file
   in `schemes/adhoc/` (`scheme.adhoc_topics()`).
 - Live check, 14 Oct, Public AI, build `…dd237840` (every call), `Endpoint(max_rate=0.5, conc=2)`, store with all

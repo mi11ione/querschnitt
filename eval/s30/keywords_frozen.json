@@ -1,0 +1,4 @@
+{"note": "S30 keyword baselines, written before any S30 test call or annotation. Match: case-insensitive substring on ' ' + title[:400] + ' ' + long title[:400] (if different) + ' '.",
+ "licht": ["lichtverschmutz", "lichtemission", "lichtimmission", "beleuchtung", "nachtdunkel", "skybeamer", "leuchtreklame", "pollution lumineuse", "éclairage", "nuisances lumineuses", "inquinamento luminoso", "illuminazione"],
+ "drohnen": ["drohne", "drone", "unbemannte luftfahrzeug", "unbemannte fluggerät", "aéronef sans occupant", "aeromobili senza occupanti", "aeromobile senza occupanti"],
+ "pestizide": ["pestizid", "pflanzenschutzmittel", " psm", "glyphosat", "chlorothalonil", "herbizid", "insektizid", "fungizid", "pesticide", "phytosanitaire", "herbicide", "glyphosate", "pesticid", "fitosanitar", "erbicid"]}

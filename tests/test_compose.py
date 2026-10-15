@@ -157,3 +157,68 @@ def test_be_directorates_rows():
     gs = importlib.util.module_from_spec(spec); spec.loader.exec_module(gs)
     seeded = {c["code"] for s, cs in gs.schemes(strict=False) if s["scheme_key"] == "be-directorates" for c in cs}
     assert {o["code"] for o in sch["options"]} | {sch["none"]["code"]} <= seeded
+
+
+def test_scope_check_rows_in_compose():
+    """S30 in compose: a topic with include / exclude lists is verified only when the S27 check and the scope check both
+    say yes, with both checks' readings present; their prompt ids are part of the decision's ids."""
+    from querschnitt.compose import decide
+    t = dict(id="adhoc/t", names={"de": "Wolf"}, question={"de": "Betrifft es «Wolf»?"}, answer_yes={"de": "Ja, Wolf"},
+             cutoff=0.5, verify=True, include={"de": "Wolf, Herdenschutz"}, exclude={"de": "Jagd allgemein"})
+    a = dict(id=7, body="CHE", lang="de", title="Wolfsbestand regulieren", title_long="", text="")
+
+    def row(u_p, py):
+        return dict(pid=P.pid(*u_p), p_yes=py, meta={"fp": "x"})
+
+    ya = row(P.yesno_prompt(t, "de", a["title"], "", "a"), 0.95)
+    va = row(P.verify_prompt(t, "de", a["title"], "", "a"), 0.95)
+    sa = row(P.scope_check_prompt(t, "de", a["title"], "", "a"), 0.45)        # 0.1 < p < 0.9: order b too
+    sb = row(P.scope_check_prompt(t, "de", a["title"], "", "b"), 0.35)
+    rows = {r["pid"]: r for r in (ya, va, sa, sb)}
+    d = decide(a, rows, lambda a: ("", "", None), [t])[t["id"]]
+    assert d["verified"] is False and d["lane"] == "please_check" and d["flag"] is True
+    assert d["pids"] == [ya["pid"], va["pid"], sa["pid"], sb["pid"]]
+    sb["p_yes"] = 0.75                                                         # mean 0.6: both checks say yes
+    d = decide(a, rows, lambda a: ("", "", None), [t])[t["id"]]
+    assert d["verified"] is True and d["lane"] == "readings_agree"
+    del rows[sb["pid"]]                                                       # stopped between the two scope readings
+    d = decide(a, rows, lambda a: ("", "", None), [t])[t["id"]]
+    assert "verified" not in d and d["pids"] == [ya["pid"]]
+
+
+def test_batch_asks_the_scope_check_on_flags(tmp_path, monkeypatch):
+    """The nightly batch asks the S30 scope check on flags of a topic with include / exclude (and only there), with the
+    prompt ids compose looks up; Digitalisierung asks no scope check."""
+    import gzip, json as _json
+    from querschnitt import batch
+    from querschnitt.client import Guard
+    from querschnitt.compose import read_run
+    from querschnitt.fake_endpoint import FakeEndpoint
+    from querschnitt.scheme import adhoc as real_adhoc
+    from querschnitt.store import ROOT
+    inp, run = tmp_path / "inputs.jsonl.gz", tmp_path / "run"
+    lines = [l for l in open(ROOT / "tests/fixtures/inputs_sample.jsonl")]
+    lines = [l for l in lines if "digital" in l.lower()][:4] + [l for l in lines if "digital" not in l.lower()][:4]
+    with gzip.open(inp, "wt") as fh:
+        fh.writelines(lines)
+    t = dict(real_adhoc("digitalisierung"), id="adhoc/digi-scope", verify=True,
+             include={"de": "Verwaltung, Daten"}, exclude={"de": "Telefonie"})
+    monkeypatch.setattr(batch, "adhoc", lambda s: t if s == "digi-scope" else real_adhoc(s))
+    monkeypatch.setattr(Guard.__init__, "__defaults__", (50.0, 0.15))
+    with FakeEndpoint() as f:
+        for k, v in dict(QS_BASE_URL=f.url, QS_API_KEY="test", QS_KEY_FILE=str(tmp_path / "nokey")).items():
+            monkeypatch.setenv(k, v)
+        batch.main(["run", "--inputs", str(inp), "--out", str(run), "--since", "0000", "--no-examples", "--max-rate", "50",
+                    "--steps", "yn", "--topics", "digitalisierung", "digi-scope"])
+    _, rows = read_run(run)
+    steps = [r["step"] for r in rows.values()]
+    assert any(s.startswith("sc:adhoc/digi-scope") for s in steps) and not any(s.startswith("sc:adhoc/digitalisierung") for s in steps)
+    for line in lines:
+        a = _json.loads(line); a = dict(a, title_long=a.get("title_long") or "", lang=a.get("lang") or "de")
+        ra = rows.get(P.pid(*P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "a")))
+        if ra is None:
+            continue
+        rb = rows.get(P.pid(*P.yesno_prompt(t, a["lang"], a["title"], a["title_long"], "b")))
+        pm = (ra["p_yes"] + rb["p_yes"]) / 2 if rb else ra["p_yes"]
+        has = P.pid(*P.scope_check_prompt(t, a["lang"], a["title"], a["title_long"], "a")) in rows
+        assert has is (pm >= 0.5), a["title"]

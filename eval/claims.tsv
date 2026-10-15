@@ -1519,3 +1519,117 @@ S29	-	0.844	S29 gold in the 5 Dipartimenti: Dipartimento dell'educazione, della 
 S29	-	179/225	S29 gold in the 5 Dipartimenti: Dipartimento dell'educazione, della cultura e dello sport (recall of the lead department Dipartimento dell'educazione, della cultura e dello sport (secondary, gold one of the 5 Dipartimenti)) k/n	179/225	eval/s29/results.json	secondary_gold_in_5_departments > by_gold > Dipartimento dell'educazione, della cultura e dello sport	OK		count
 S29	-	225	S29 gold in the 5 Dipartimenti: Dipartimento dell'educazione, della cultura e dello sport (recall of the lead department Dipartimento dell'educazione, della cultura e dello sport (secondary, gold one of the 5 Dipartimenti)) n	225	eval/s29/results.json	secondary_gold_in_5_departments > by_gold > Dipartimento dell'educazione, della cultura e dello sport	OK		count
 S29	-	0.269	S29 share of primary items that asked the second code order	0.2695	eval/s29/results.json	second_order_share	OK		truncated
+S30	-	4	S30 licht judge positives	4	eval/s30/results.json	licht > judge_pos_items	OK		count
+S30	-	3	S30 licht shipped flags	3	eval/s30/results.json	licht > shipped > flags	OK		count
+S30	-	3	S30 licht scope-check flags	3	eval/s30/results.json	licht > variant > flags	OK		count
+S30	-	0.666	S30 licht > shipped precision of flags	0.666	eval/s30/results.json	licht > shipped > precision > value	OK		truncated, never rounded up
+S30	-	0.207	S30 licht > shipped precision of flags ci95[0]	0.207	eval/s30/results.json	licht > shipped > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.939	S30 licht > shipped precision of flags ci95[1]	0.939	eval/s30/results.json	licht > shipped > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	2	S30 licht > shipped precision of flags k	2	eval/s30/results.json	licht > shipped > precision > k	OK		count
+S30	-	3	S30 licht > shipped precision of flags n	3	eval/s30/results.json	licht > shipped > precision > n	OK		count
+S30	-	0.666	S30 licht > variant precision of flags	0.666	eval/s30/results.json	licht > variant > precision > value	OK		truncated, never rounded up
+S30	-	0.207	S30 licht > variant precision of flags ci95[0]	0.207	eval/s30/results.json	licht > variant > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.939	S30 licht > variant precision of flags ci95[1]	0.939	eval/s30/results.json	licht > variant > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	2	S30 licht > variant precision of flags k	2	eval/s30/results.json	licht > variant > precision > k	OK		count
+S30	-	3	S30 licht > variant precision of flags n	3	eval/s30/results.json	licht > variant > precision > n	OK		count
+S30	-	0.000	S30 licht > paired difference (scope check − shipped) P	0.0	eval/s30/results.json	licht > diff_variant_minus_shipped_P > value	OK		truncated, never rounded up
+S30	-	0.000	S30 licht > paired difference (scope check − shipped) P ci95[0]	0.0	eval/s30/results.json	licht > diff_variant_minus_shipped_P > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 licht > paired difference (scope check − shipped) P ci95[1]	0.0	eval/s30/results.json	licht > diff_variant_minus_shipped_P > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.500	S30 licht > shipped weighted recall	0.5	eval/s30/results.json	licht > shipped > recall_weighted > value	OK		truncated, never rounded up
+S30	-	0.000	S30 licht > shipped weighted recall ci95[0]	0.0	eval/s30/results.json	licht > shipped > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 licht > shipped weighted recall ci95[1]	1.0	eval/s30/results.json	licht > shipped > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.500	S30 licht > variant weighted recall	0.5	eval/s30/results.json	licht > variant > recall_weighted > value	OK		truncated, never rounded up
+S30	-	0.000	S30 licht > variant weighted recall ci95[0]	0.0	eval/s30/results.json	licht > variant > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 licht > variant weighted recall ci95[1]	1.0	eval/s30/results.json	licht > variant > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 licht > paired difference (scope check − shipped) R	0.0	eval/s30/results.json	licht > diff_variant_minus_shipped_R > value	OK		truncated, never rounded up
+S30	-	0.000	S30 licht > paired difference (scope check − shipped) R ci95[0]	0.0	eval/s30/results.json	licht > diff_variant_minus_shipped_R > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 licht > paired difference (scope check − shipped) R ci95[1]	0.0	eval/s30/results.json	licht > diff_variant_minus_shipped_R > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 licht > keyword precision	1.0	eval/s30/results.json	licht > kw > precision > value	OK		truncated, never rounded up
+S30	-	1.000	S30 licht > keyword weighted recall	1.0	eval/s30/results.json	licht > kw > recall_weighted > value	OK		truncated, never rounded up
+S30	-	2	S30 drohnen judge positives	2	eval/s30/results.json	drohnen > judge_pos_items	OK		count
+S30	-	4	S30 drohnen shipped flags	4	eval/s30/results.json	drohnen > shipped > flags	OK		count
+S30	-	3	S30 drohnen scope-check flags	3	eval/s30/results.json	drohnen > variant > flags	OK		count
+S30	-	0.500	S30 drohnen > shipped precision of flags	0.5	eval/s30/results.json	drohnen > shipped > precision > value	OK		truncated, never rounded up
+S30	-	0.150	S30 drohnen > shipped precision of flags ci95[0]	0.15	eval/s30/results.json	drohnen > shipped > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.850	S30 drohnen > shipped precision of flags ci95[1]	0.85	eval/s30/results.json	drohnen > shipped > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	2	S30 drohnen > shipped precision of flags k	2	eval/s30/results.json	drohnen > shipped > precision > k	OK		count
+S30	-	4	S30 drohnen > shipped precision of flags n	4	eval/s30/results.json	drohnen > shipped > precision > n	OK		count
+S30	-	0.666	S30 drohnen > variant precision of flags	0.666	eval/s30/results.json	drohnen > variant > precision > value	OK		truncated, never rounded up
+S30	-	0.207	S30 drohnen > variant precision of flags ci95[0]	0.207	eval/s30/results.json	drohnen > variant > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.939	S30 drohnen > variant precision of flags ci95[1]	0.939	eval/s30/results.json	drohnen > variant > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	2	S30 drohnen > variant precision of flags k	2	eval/s30/results.json	drohnen > variant > precision > k	OK		count
+S30	-	3	S30 drohnen > variant precision of flags n	3	eval/s30/results.json	drohnen > variant > precision > n	OK		count
+S30	-	+0.166	S30 drohnen > paired difference (scope check − shipped) P	0.166	eval/s30/results.json	drohnen > diff_variant_minus_shipped_P > value	OK		truncated, never rounded up
+S30	-	0.000	S30 drohnen > paired difference (scope check − shipped) P ci95[0]	0.0	eval/s30/results.json	drohnen > diff_variant_minus_shipped_P > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.667	S30 drohnen > paired difference (scope check − shipped) P ci95[1]	0.667	eval/s30/results.json	drohnen > diff_variant_minus_shipped_P > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 drohnen > shipped weighted recall	1.0	eval/s30/results.json	drohnen > shipped > recall_weighted > value	OK		truncated, never rounded up
+S30	-	1.000	S30 drohnen > shipped weighted recall ci95[0]	1.0	eval/s30/results.json	drohnen > shipped > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 drohnen > shipped weighted recall ci95[1]	1.0	eval/s30/results.json	drohnen > shipped > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 drohnen > variant weighted recall	1.0	eval/s30/results.json	drohnen > variant > recall_weighted > value	OK		truncated, never rounded up
+S30	-	1.000	S30 drohnen > variant weighted recall ci95[0]	1.0	eval/s30/results.json	drohnen > variant > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 drohnen > variant weighted recall ci95[1]	1.0	eval/s30/results.json	drohnen > variant > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 drohnen > paired difference (scope check − shipped) R	0.0	eval/s30/results.json	drohnen > diff_variant_minus_shipped_R > value	OK		truncated, never rounded up
+S30	-	0.000	S30 drohnen > paired difference (scope check − shipped) R ci95[0]	0.0	eval/s30/results.json	drohnen > diff_variant_minus_shipped_R > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 drohnen > paired difference (scope check − shipped) R ci95[1]	0.0	eval/s30/results.json	drohnen > diff_variant_minus_shipped_R > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.666	S30 drohnen > keyword precision	0.666	eval/s30/results.json	drohnen > kw > precision > value	OK		truncated, never rounded up
+S30	-	1.000	S30 drohnen > keyword weighted recall	1.0	eval/s30/results.json	drohnen > kw > recall_weighted > value	OK		truncated, never rounded up
+S30	-	14	S30 pestizide judge positives	14	eval/s30/results.json	pestizide > judge_pos_items	OK		count
+S30	-	21	S30 pestizide shipped flags	21	eval/s30/results.json	pestizide > shipped > flags	OK		count
+S30	-	15	S30 pestizide scope-check flags	15	eval/s30/results.json	pestizide > variant > flags	OK		count
+S30	-	0.666	S30 pestizide > shipped precision of flags	0.666	eval/s30/results.json	pestizide > shipped > precision > value	OK		truncated, never rounded up
+S30	-	0.453	S30 pestizide > shipped precision of flags ci95[0]	0.453	eval/s30/results.json	pestizide > shipped > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.829	S30 pestizide > shipped precision of flags ci95[1]	0.829	eval/s30/results.json	pestizide > shipped > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	14	S30 pestizide > shipped precision of flags k	14	eval/s30/results.json	pestizide > shipped > precision > k	OK		count
+S30	-	21	S30 pestizide > shipped precision of flags n	21	eval/s30/results.json	pestizide > shipped > precision > n	OK		count
+S30	-	0.800	S30 pestizide > variant precision of flags	0.8	eval/s30/results.json	pestizide > variant > precision > value	OK		truncated, never rounded up
+S30	-	0.548	S30 pestizide > variant precision of flags ci95[0]	0.548	eval/s30/results.json	pestizide > variant > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.930	S30 pestizide > variant precision of flags ci95[1]	0.93	eval/s30/results.json	pestizide > variant > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	12	S30 pestizide > variant precision of flags k	12	eval/s30/results.json	pestizide > variant > precision > k	OK		count
+S30	-	15	S30 pestizide > variant precision of flags n	15	eval/s30/results.json	pestizide > variant > precision > n	OK		count
+S30	-	+0.133	S30 pestizide > paired difference (scope check − shipped) P	0.133	eval/s30/results.json	pestizide > diff_variant_minus_shipped_P > value	OK		truncated, never rounded up
+S30	-	-0.008	S30 pestizide > paired difference (scope check − shipped) P ci95[0]	-0.008	eval/s30/results.json	pestizide > diff_variant_minus_shipped_P > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.301	S30 pestizide > paired difference (scope check − shipped) P ci95[1]	0.301	eval/s30/results.json	pestizide > diff_variant_minus_shipped_P > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 pestizide > shipped weighted recall	1.0	eval/s30/results.json	pestizide > shipped > recall_weighted > value	OK		truncated, never rounded up
+S30	-	1.000	S30 pestizide > shipped weighted recall ci95[0]	1.0	eval/s30/results.json	pestizide > shipped > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 pestizide > shipped weighted recall ci95[1]	1.0	eval/s30/results.json	pestizide > shipped > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.857	S30 pestizide > variant weighted recall	0.857	eval/s30/results.json	pestizide > variant > recall_weighted > value	OK		truncated, never rounded up
+S30	-	0.666	S30 pestizide > variant weighted recall ci95[0]	0.666	eval/s30/results.json	pestizide > variant > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 pestizide > variant weighted recall ci95[1]	1.0	eval/s30/results.json	pestizide > variant > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	-0.142	S30 pestizide > paired difference (scope check − shipped) R	-0.142	eval/s30/results.json	pestizide > diff_variant_minus_shipped_R > value	OK		truncated, never rounded up
+S30	-	-0.334	S30 pestizide > paired difference (scope check − shipped) R ci95[0]	-0.334	eval/s30/results.json	pestizide > diff_variant_minus_shipped_R > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 pestizide > paired difference (scope check − shipped) R ci95[1]	0.0	eval/s30/results.json	pestizide > diff_variant_minus_shipped_R > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 pestizide > keyword precision	1.0	eval/s30/results.json	pestizide > kw > precision > value	OK		truncated, never rounded up
+S30	-	0.785	S30 pestizide > keyword weighted recall	0.785	eval/s30/results.json	pestizide > kw > recall_weighted > value	OK		truncated, never rounded up
+S30	-	20	S30 pooled judge positives	20	eval/s30/results.json	pooled > judge_pos_items	OK		count
+S30	-	28	S30 pooled shipped flags	28	eval/s30/results.json	pooled > shipped > flags	OK		count
+S30	-	21	S30 pooled scope-check flags	21	eval/s30/results.json	pooled > variant > flags	OK		count
+S30	-	0.642	S30 pooled > shipped precision of flags	0.642	eval/s30/results.json	pooled > shipped > precision > value	OK		truncated, never rounded up
+S30	-	0.458	S30 pooled > shipped precision of flags ci95[0]	0.458	eval/s30/results.json	pooled > shipped > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.793	S30 pooled > shipped precision of flags ci95[1]	0.793	eval/s30/results.json	pooled > shipped > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	18	S30 pooled > shipped precision of flags k	18	eval/s30/results.json	pooled > shipped > precision > k	OK		count
+S30	-	28	S30 pooled > shipped precision of flags n	28	eval/s30/results.json	pooled > shipped > precision > n	OK		count
+S30	-	0.761	S30 pooled > variant precision of flags	0.761	eval/s30/results.json	pooled > variant > precision > value	OK		truncated, never rounded up
+S30	-	0.549	S30 pooled > variant precision of flags ci95[0]	0.549	eval/s30/results.json	pooled > variant > precision > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.894	S30 pooled > variant precision of flags ci95[1]	0.894	eval/s30/results.json	pooled > variant > precision > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	16	S30 pooled > variant precision of flags k	16	eval/s30/results.json	pooled > variant > precision > k	OK		count
+S30	-	21	S30 pooled > variant precision of flags n	21	eval/s30/results.json	pooled > variant > precision > n	OK		count
+S30	-	+0.119	S30 pooled > paired difference (scope check − shipped) P	0.119	eval/s30/results.json	pooled > diff_variant_minus_shipped_P > value	OK		truncated, never rounded up
+S30	-	0.005	S30 pooled > paired difference (scope check − shipped) P ci95[0]	0.005	eval/s30/results.json	pooled > diff_variant_minus_shipped_P > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.260	S30 pooled > paired difference (scope check − shipped) P ci95[1]	0.26	eval/s30/results.json	pooled > diff_variant_minus_shipped_P > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.900	S30 pooled > shipped weighted recall	0.9	eval/s30/results.json	pooled > shipped > recall_weighted > value	OK		truncated, never rounded up
+S30	-	0.772	S30 pooled > shipped weighted recall ci95[0]	0.772	eval/s30/results.json	pooled > shipped > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	1.000	S30 pooled > shipped weighted recall ci95[1]	1.0	eval/s30/results.json	pooled > shipped > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.800	S30 pooled > variant weighted recall	0.8	eval/s30/results.json	pooled > variant > recall_weighted > value	OK		truncated, never rounded up
+S30	-	0.619	S30 pooled > variant weighted recall ci95[0]	0.619	eval/s30/results.json	pooled > variant > recall_weighted > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.953	S30 pooled > variant weighted recall ci95[1]	0.953	eval/s30/results.json	pooled > variant > recall_weighted > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	-0.099	S30 pooled > paired difference (scope check − shipped) R	-0.099	eval/s30/results.json	pooled > diff_variant_minus_shipped_R > value	OK		truncated, never rounded up
+S30	-	-0.250	S30 pooled > paired difference (scope check − shipped) R ci95[0]	-0.25	eval/s30/results.json	pooled > diff_variant_minus_shipped_R > ci [0]	OK		bounds rounded outward in analyze.py
+S30	-	0.000	S30 pooled > paired difference (scope check − shipped) R ci95[1]	0.0	eval/s30/results.json	pooled > diff_variant_minus_shipped_R > ci [1]	OK		bounds rounded outward in analyze.py
+S30	-	0.944	S30 pooled > keyword precision	0.944	eval/s30/results.json	pooled > kw > precision > value	OK		truncated, never rounded up
+S30	-	0.850	S30 pooled > keyword weighted recall	0.85	eval/s30/results.json	pooled > kw > recall_weighted > value	OK		truncated, never rounded up
+S30	-	1,316	S30 population (affairs with a title begun 16–31 Mar 2026)	1316	eval/s30/results.json	licht > strata > neither > N + any > N	OK		count
+S30	-	399	S30 judged items	399	eval/s30/results.json	pooled > n_items	OK		count
+S30	-	1.000	S30 judge run A = run B	1.0	eval/s30/results.json	agree_AB	OK		truncated, never rounded up
+S30	-	0	S30 tie-breaks	0	eval/s30/results.json	n_C	OK		count
+S30	-	120	S30 random unflagged per topic	120	eval/s30/results.json	licht > strata > neither > n	OK		count
+S30	-	0	S30 judge positives among random unflagged	0	eval/s30/results.json	<topic> > strata > neither > judge_Y	OK		count

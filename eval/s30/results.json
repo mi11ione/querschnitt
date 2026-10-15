@@ -1,0 +1,560 @@
+{
+ "agree_AB": 1.0,
+ "n_C": 0,
+ "drohnen": {
+  "n_items": 128,
+  "judge_pos_items": 2,
+  "relevant_est": {
+   "value": 2.0,
+   "ci": [
+    0.0,
+    5.0
+   ]
+  },
+  "strata": {
+   "neither": {
+    "N": 1308,
+    "n": 120,
+    "judge_Y": 0
+   },
+   "any": {
+    "N": 8,
+    "n": 8,
+    "judge_Y": 2
+   }
+  },
+  "shipped": {
+   "flags": 4,
+   "precision": {
+    "k": 2,
+    "n": 4,
+    "value": 0.5,
+    "ci": [
+     0.15,
+     0.85
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "variant": {
+   "flags": 3,
+   "precision": {
+    "k": 2,
+    "n": 3,
+    "value": 0.666,
+    "ci": [
+     0.207,
+     0.939
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "kw": {
+   "flags": 3,
+   "precision": {
+    "k": 2,
+    "n": 3,
+    "value": 0.666,
+    "ci": [
+     0.207,
+     0.939
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "shipped_yn": {
+   "flags": 8,
+   "precision": {
+    "k": 2,
+    "n": 8,
+    "value": 0.25,
+    "ci": [
+     0.071,
+     0.591
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "yn_sc": {
+   "flags": 6,
+   "precision": {
+    "k": 2,
+    "n": 6,
+    "value": 0.333,
+    "ci": [
+     0.096,
+     0.701
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "diff_variant_minus_shipped_P": {
+   "value": 0.166,
+   "ci": [
+    0.0,
+    0.667
+   ],
+   "n_boot": 1960
+  },
+  "diff_variant_minus_shipped_R": {
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "n_boot": 1791
+  }
+ },
+ "licht": {
+  "n_items": 127,
+  "judge_pos_items": 4,
+  "relevant_est": {
+   "value": 4.0,
+   "ci": [
+    2.0,
+    6.0
+   ]
+  },
+  "strata": {
+   "neither": {
+    "N": 1309,
+    "n": 120,
+    "judge_Y": 0
+   },
+   "any": {
+    "N": 7,
+    "n": 7,
+    "judge_Y": 4
+   }
+  },
+  "shipped": {
+   "flags": 3,
+   "precision": {
+    "k": 2,
+    "n": 3,
+    "value": 0.666,
+    "ci": [
+     0.207,
+     0.939
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.5,
+    "ci": [
+     0.0,
+     1.0
+    ]
+   }
+  },
+  "variant": {
+   "flags": 3,
+   "precision": {
+    "k": 2,
+    "n": 3,
+    "value": 0.666,
+    "ci": [
+     0.207,
+     0.939
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.5,
+    "ci": [
+     0.0,
+     1.0
+    ]
+   }
+  },
+  "kw": {
+   "flags": 4,
+   "precision": {
+    "k": 4,
+    "n": 4,
+    "value": 1.0,
+    "ci": [
+     0.51,
+     1.0
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "shipped_yn": {
+   "flags": 7,
+   "precision": {
+    "k": 4,
+    "n": 7,
+    "value": 0.571,
+    "ci": [
+     0.25,
+     0.842
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "yn_sc": {
+   "flags": 5,
+   "precision": {
+    "k": 4,
+    "n": 5,
+    "value": 0.8,
+    "ci": [
+     0.375,
+     0.964
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "diff_variant_minus_shipped_P": {
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "n_boot": 1954
+  },
+  "diff_variant_minus_shipped_R": {
+   "value": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "n_boot": 1998
+  }
+ },
+ "pestizide": {
+  "n_items": 144,
+  "judge_pos_items": 14,
+  "relevant_est": {
+   "value": 14.0,
+   "ci": [
+    9.0,
+    19.0
+   ]
+  },
+  "strata": {
+   "neither": {
+    "N": 1292,
+    "n": 120,
+    "judge_Y": 0
+   },
+   "any": {
+    "N": 24,
+    "n": 24,
+    "judge_Y": 14
+   }
+  },
+  "shipped": {
+   "flags": 21,
+   "precision": {
+    "k": 14,
+    "n": 21,
+    "value": 0.666,
+    "ci": [
+     0.453,
+     0.829
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "variant": {
+   "flags": 15,
+   "precision": {
+    "k": 12,
+    "n": 15,
+    "value": 0.8,
+    "ci": [
+     0.548,
+     0.93
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.857,
+    "ci": [
+     0.666,
+     1.0
+    ]
+   }
+  },
+  "kw": {
+   "flags": 11,
+   "precision": {
+    "k": 11,
+    "n": 11,
+    "value": 1.0,
+    "ci": [
+     0.741,
+     1.0
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.785,
+    "ci": [
+     0.545,
+     1.0
+    ]
+   }
+  },
+  "shipped_yn": {
+   "flags": 24,
+   "precision": {
+    "k": 14,
+    "n": 24,
+    "value": 0.583,
+    "ci": [
+     0.388,
+     0.756
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "yn_sc": {
+   "flags": 17,
+   "precision": {
+    "k": 12,
+    "n": 17,
+    "value": 0.705,
+    "ci": [
+     0.468,
+     0.868
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.857,
+    "ci": [
+     0.666,
+     1.0
+    ]
+   }
+  },
+  "diff_variant_minus_shipped_P": {
+   "value": 0.133,
+   "ci": [
+    -0.008,
+    0.301
+   ],
+   "n_boot": 2000
+  },
+  "diff_variant_minus_shipped_R": {
+   "value": -0.142,
+   "ci": [
+    -0.334,
+    0.0
+   ],
+   "n_boot": 2000
+  }
+ },
+ "pooled": {
+  "n_items": 399,
+  "judge_pos_items": 20,
+  "relevant_est": {
+   "value": 20.0,
+   "ci": [
+    14.0,
+    26.0
+   ]
+  },
+  "strata": {
+   "licht/neither": {
+    "N": 1309,
+    "n": 120,
+    "judge_Y": 0
+   },
+   "licht/any": {
+    "N": 7,
+    "n": 7,
+    "judge_Y": 4
+   },
+   "drohnen/neither": {
+    "N": 1308,
+    "n": 120,
+    "judge_Y": 0
+   },
+   "drohnen/any": {
+    "N": 8,
+    "n": 8,
+    "judge_Y": 2
+   },
+   "pestizide/neither": {
+    "N": 1292,
+    "n": 120,
+    "judge_Y": 0
+   },
+   "pestizide/any": {
+    "N": 24,
+    "n": 24,
+    "judge_Y": 14
+   }
+  },
+  "shipped": {
+   "flags": 28,
+   "precision": {
+    "k": 18,
+    "n": 28,
+    "value": 0.642,
+    "ci": [
+     0.458,
+     0.793
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.9,
+    "ci": [
+     0.772,
+     1.0
+    ]
+   }
+  },
+  "variant": {
+   "flags": 21,
+   "precision": {
+    "k": 16,
+    "n": 21,
+    "value": 0.761,
+    "ci": [
+     0.549,
+     0.894
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.8,
+    "ci": [
+     0.619,
+     0.953
+    ]
+   }
+  },
+  "kw": {
+   "flags": 18,
+   "precision": {
+    "k": 17,
+    "n": 18,
+    "value": 0.944,
+    "ci": [
+     0.742,
+     0.991
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.85,
+    "ci": [
+     0.681,
+     1.0
+    ]
+   }
+  },
+  "shipped_yn": {
+   "flags": 39,
+   "precision": {
+    "k": 20,
+    "n": 39,
+    "value": 0.512,
+    "ci": [
+     0.361,
+     0.662
+    ]
+   },
+   "recall_weighted": {
+    "value": 1.0,
+    "ci": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "yn_sc": {
+   "flags": 28,
+   "precision": {
+    "k": 18,
+    "n": 28,
+    "value": 0.642,
+    "ci": [
+     0.458,
+     0.793
+    ]
+   },
+   "recall_weighted": {
+    "value": 0.9,
+    "ci": [
+     0.75,
+     1.0
+    ]
+   }
+  },
+  "diff_variant_minus_shipped_P": {
+   "value": 0.119,
+   "ci": [
+    0.005,
+    0.26
+   ],
+   "n_boot": 2000
+  },
+  "diff_variant_minus_shipped_R": {
+   "value": -0.099,
+   "ci": [
+    -0.25,
+    0.0
+   ],
+   "n_boot": 2000
+  }
+ }
+}

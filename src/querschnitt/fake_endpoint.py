@@ -10,7 +10,9 @@ Answers by request shape, the way the engine reads Apertus:
   chapter / subtopic / evidence       top_logprobs with one peaked code (deterministic from the prompt)
   no prefill, the no-prefill line      (QS_PREFILL=0 prompts) the answer `{"kapitel": "X"}`: the same choice as with prefill,
                                       its top_logprobs on the token after the JSON opening
+  scope check (S30, «Dazu gehört:» …)  p(yes) = 0.9 if the item has a scope word (default: the yes words), else 0.1
   no prefill, `"terms"` in the prompt the ad-hoc topic JSON (names, scope, terms)
+  no prefill, `"include"`              the S30 scope lists (include / exclude per language)
   no prefill, `"subtopics"`            {"subtopics": [10, 11]}
 A system message is refused with HTTP 400 (the engine never sends one). Mode `noprefill` refuses the vLLM prefill fields
 the way OpenAI's API does (HTTP 400 "Unrecognized request argument supplied: continue_final_message"); mode
@@ -31,6 +33,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 YES_WORDS = ["digital", "numérique", "digitale", "wolf", "loup", "lupo"]
 NO_ANSWERS = ("Nein, anderes Thema", "Non, autre thème", "No, altro tema")
 VERIFY_Q = re.compile(r"zentrales Thema|thème central|tema centrale")
+SCOPE_Q = re.compile(r"^(?:Dazu gehört:|En font partie :|Ne fanno parte:|Nicht dazu gehört:|N'en font pas partie :|Non ne fanno parte:) ", re.M)
 ITEM = re.compile(r"\n(?:Geschäft|Objet|Oggetto):\n(.*?)\n\n", re.S)
 NOPRE_LINE = re.compile(r"\n\n(?:Beginne deine Antwort genau mit|Commence ta réponse exactement par|Inizia la risposta "
                         r"esattamente con) `(.+?)` [^\n]*$", re.S)
@@ -51,6 +54,7 @@ class FakeEndpoint:
         self.mode, self.yes_words, self.fp, self.model = mode, [w.lower() for w in (yes_words or YES_WORDS)], fingerprint, model
         self.latency, self.n429, self.topic_json, self.gen_text = latency, n429, topic_json, gen_text
         self.central_words: list[str] | None = None      # verify question (S27): «central» only for these (default: yes words)
+        self.scope_words: list[str] | None = None        # scope check (S30): «belongs» only for these (default: yes words)
         self.requests: list[dict] = []
         self.lock = threading.Lock()
         fake = self
@@ -128,6 +132,9 @@ class FakeEndpoint:
                 if VERIFY_Q.search(user):                  # the stricter second question on flags
                     words = [w.lower() for w in (self.central_words or self.yes_words)]
                     py = 0.9 if any(w in item.lower() for w in words) else 0.15
+                elif SCOPE_Q.search(user):                 # the S30 scope check on flags
+                    words = [w.lower() for w in (self.scope_words or self.yes_words)]
+                    py = 0.9 if any(w in item.lower() for w in words) else 0.1
                 else:
                     py = self.p_yes(item)
                 a_is_no = any(f"A = {n}" in user for n in NO_ANSWERS) or bool(re.search(r"^A = (Nein|Non|No)$", user, re.M))
@@ -147,6 +154,11 @@ class FakeEndpoint:
                 name=dict(de="Wolf und Herdenschutz", fr="loup et protection des troupeaux", it="lupo e protezione delle greggi"),
                 scope=dict(de="Wolf, Herdenschutz, Abschuss", fr="loup, protection des troupeaux, tirs", it="lupo, protezione, abbattimenti"),
                 terms=dict(de=["Wolf", "Herdenschutz", "Grossraubtier"], fr=["loup", "prédateur"], it=["lupo"])), ensure_ascii=False)
+        elif '"include"' in user:
+            content = json.dumps(dict(
+                include=dict(de="Wolf, Herdenschutz, Abschuss", fr="loup, protection des troupeaux, tirs", it="lupo, protezione, abbattimenti"),
+                exclude=dict(de="Jagd allgemein, Naturschutz allgemein", fr="chasse en général, protection de la nature", it="caccia in generale")),
+                ensure_ascii=False)
         elif '"subtopics"' in user:
             content = '{"subtopics": [10, 11]}'
         else:

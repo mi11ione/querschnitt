@@ -14,8 +14,14 @@
    with a Wilson interval, estimates what the candidate step misses (VISION §4.1).
 4. Decisions. `engine.Engine.yn`, order a; order b when 0.1 < p < 0.9 (as in the batch); p, flag and lane by
    `compose.yn_decision` (the nightly rows' rule). 3 worker threads, newest affair first, each decision an SSE event.
-5. Save. `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, examples, terms, subtopics) and the
-   run's decisions as `adhoc/<slug>` topic rows; the nightly job picks up every file in schemes/adhoc/.
+   Every flag gets two checks (same two-order rule): the S27 question «is the topic central?» and the S30 scope check
+   (`prompts.scope_check_prompt`) with the topic's generated include / exclude lists; a flag both confirm is `verified`,
+   any other flag goes to `please_check` (the flag stays). The lists come from one more plain generation request
+   (SCOPE_PROMPT, user message only, sent in parallel with step 1 under the same deadline); without them (generation
+   off, no answer in time, unparseable) flags get the S27 check only, as before S30.
+5. Save. `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, verify, include, exclude, examples,
+   terms, subtopics) and the run's decisions as `adhoc/<slug>` topic rows; the nightly job picks up every file in
+   schemes/adhoc/.
 
 An endpoint that does not accept a connection within QS_ADHOC_PROBE_S (3 s) refuses the start (`Unreachable`, HTTP 503)
 instead of waiting out the client's retries; the topic request has QS_ADHOC_GEN_S (20 s) before the fallback frame."""
@@ -41,6 +47,7 @@ from . import scheme as S
 from .client import BuildChanged, Client, Endpoint
 from .compose import VERSION, run_build, yn_decision
 from .engine import Engine, need_yn_b
+from .prompts import has_scope_check
 from .evaluate import wilson
 from .examples import topic_examples
 from .scheme import APS
@@ -64,6 +71,14 @@ TERMS_PROMPT = (
     "vorkommen: pro Sprache bis zu sechs einzelne Wörter oder Wortstämme.\n\n"
     "Antworte nur mit JSON in einer Zeile:\n"
     '{{"terms": {{"de": ["…"], "fr": ["…"], "it": ["…"]}}}}')
+SCOPE_PROMPT = (  # S30 (eval/s30/common.py, measured): include / exclude keywords per language for the scope check
+    "Thema, in einem Satz: «{sentence}»\n\n"
+    "Ein Redaktionsteam prüft Titel von parlamentarischen Geschäften der Schweiz auf dieses Thema. Schreibe für jede Sprache "
+    "(Deutsch, Französisch, Italienisch):\n"
+    "1. include: was dazu gehört, als kurze Liste (höchstens acht Stichworte, durch Kommas getrennt);\n"
+    "2. exclude: verwandte, aber andere Themen, die nicht dazu gehören (höchstens sechs Stichworte, durch Kommas getrennt).\n\n"
+    "Antworte nur mit JSON in einer Zeile:\n"
+    '{{"include": {{"de": "…", "fr": "…", "it": "…"}}, "exclude": {{"de": "…", "fr": "…", "it": "…"}}}}')
 SUB_PROMPT = (
     "Welche Unterthemen der Année Politique Suisse können parlamentarische Geschäfte zum Thema «{name}» ({scope}) "
     "enthalten?\n\nUnterthemen:\n{lines}\n\nAntworte nur mit JSON: {{\"subtopics\": [<höchstens fünf Nummern>]}}")
@@ -110,8 +125,18 @@ def _clean(s, n: int) -> str:
     return re.sub(r"\s+", " ", str(s or "")).strip().strip('"«»').strip()[:n]
 
 
-def build_topic(sentence: str, lang: str, gen: dict | None, slug: str) -> dict:
-    """Generated fields (or the fallback) → topic dict for prompts.yesno_prompt."""
+def parse_scope(gen: dict | None) -> dict:
+    """{"include": {lang: text}, "exclude": {lang: text}} from the SCOPE_PROMPT answer; {} when neither list has text."""
+    out = {}
+    for f in ("include", "exclude"):
+        d = (gen or {}).get(f) if isinstance((gen or {}).get(f), dict) else {}
+        out[f] = {l: _clean(d.get(l), 300) for l in LANGS}
+    return out if any(v for d in out.values() for v in d.values()) else {}
+
+
+def build_topic(sentence: str, lang: str, gen: dict | None, slug: str, scope_gen: dict | None = None) -> dict:
+    """Generated fields (or the fallback) → topic dict for prompts.yesno_prompt; with a parsed SCOPE_PROMPT answer also
+    the include / exclude lists of the S30 scope check (prompts.scope_check_prompt)."""
     sentence = _clean(sentence, 400)
     names, scopes = {}, {}
     for l in LANGS:
@@ -126,8 +151,10 @@ def build_topic(sentence: str, lang: str, gen: dict | None, slug: str) -> dict:
         sc = f" ({scopes[l]})" if scopes[l] and scopes[l].lower() != names[l].lower() else ""
         q[l] = FRAME[l][0].format(name=names[l], scope=sc)
         yes[l] = FRAME[l][1].format(name=names[l])
-    return dict(id=f"adhoc/{slug}", names=names, scope=scopes, question=q, answer_yes=yes, cutoff=0.5,
-                sentence=sentence, lang=lang, generated=bool(gen), verify=True)
+    t = dict(id=f"adhoc/{slug}", names=names, scope=scopes, question=q, answer_yes=yes, cutoff=0.5,
+             sentence=sentence, lang=lang, generated=bool(gen), verify=True)
+    t.update(parse_scope(scope_gen))
+    return t
 
 
 class CapReached(RuntimeError):
@@ -440,9 +467,17 @@ class Adhoc:
         tt = threading.Thread(target=self._terms, args=(box, sentence, terms if (terms is not None or generate) else {}, stop),
                               daemon=True, name="adhoc-terms")
         tt.start()
-        gen, meta = (None, {})
+        gen, meta, sbox, st = (None, {}, {}, None)
+        secs = float(os.environ.get("QS_ADHOC_GEN_S", "20"))
+        if generate and verify:                                # S30: the scope lists, in parallel with the topic request
+            st = threading.Thread(target=lambda: sbox.update(r=self._generate_by(sentence, secs, SCOPE_PROMPT, 600)),
+                                  daemon=True, name="adhoc-scope")
+            st.start()
         if generate:                                           # the fallback frame needs no model
-            gen, meta = self._generate_by(sentence, float(os.environ.get("QS_ADHOC_GEN_S", "20")))
+            gen, meta = self._generate_by(sentence, secs)
+        if st is not None:
+            st.join(secs + 5)
+        scope_gen, scope_meta = sbox.get("r") or (None, dict(error="no scope answer"))
         base = slugify(gen["name"].get("de") or sentence) if (gen and isinstance(gen.get("name"), dict)) else slugify(sentence)
         ex = []
         for e in examples or []:
@@ -452,7 +487,7 @@ class Adhoc:
                     ex.append((title, bool(e.get("match", e.get("yes", True)))))
         with self.lock:                                        # slug chosen and taken at once: same sentence, own run
             slug = self._unique(base)
-            topic = build_topic(sentence, lang, gen, slug)
+            topic = build_topic(sentence, lang, gen, slug, scope_gen)
             topic["verify"] = bool(verify)
             job = Job(slug, topic, {l: [] for l in LANGS}, per[:2], ex)
             job.stop = stop
@@ -460,25 +495,28 @@ class Adhoc:
         job.budget, job.day = self.max_calls, day
         job.info.update(period_name=per[2], estimate=self.estimate(*per[:2]))
         job.info["generation"] = {k: meta.get(k) for k in ("model", "fp", "usd", "lat", "error") if k in meta}
+        if st is not None:
+            job.info["scope_generation"] = {k: scope_meta.get(k) for k in ("usd", "lat", "error") if k in scope_meta}
         job.terms_thread = tt
         job.emit("topic", dict(slug=job.slug, topic=job.topic, period=job.period))       # always the first event
         box["job"] = job; box["ready"].set()
         d = self.out / slug
         d.mkdir(parents=True, exist_ok=True)
-        (d / "topic.json").write_text(json.dumps(dict(topic=topic, period=job.period, examples=ex, generation=meta),
+        (d / "topic.json").write_text(json.dumps(dict(topic=topic, period=job.period, examples=ex, generation=meta,
+                                                      scope_generation=scope_meta if st is not None else None),
                                                  ensure_ascii=False, indent=1))
         job.thread = threading.Thread(target=self._run, args=(job, limit), daemon=True, name=f"adhoc-{slug}")
         job.thread.start()
         return job
 
-    def _generate_by(self, sentence: str, secs: float) -> tuple[dict | None, dict]:
+    def _generate_by(self, sentence: str, secs: float, prompt: str = TOPIC_PROMPT, max_tokens: int = 200) -> tuple[dict | None, dict]:
         """The topic request with a deadline: past it the run starts on the fallback frame (the sentence verbatim) and the
         request stops at its next retry, so POST /adhoc answers within about `secs`."""
         box, stop = {}, threading.Event()
 
         def go():
             try:
-                box["r"] = self.generate(sentence, stop=stop, timeout=secs)
+                box["r"] = self.generate(sentence, prompt, max_tokens, stop=stop, timeout=secs)
             except Exception as e:  # noqa: BLE001
                 box["r"] = (None, dict(error=repr(e)[:300]))
         th = threading.Thread(target=go, daemon=True, name="adhoc-topic")
@@ -554,17 +592,13 @@ class Adhoc:
                     self._count(job)
                     rb = eng.yn(job.topic, a, "b", ex)
                 d = yn_decision(ra, rb, job.topic["cutoff"])
-                verified, pv, vids, vusd = None, None, [], 0.0
-                if job.topic.get("verify") and d["flag"]:              # S27: the stricter question, on flags only
-                    self._count(job)
-                    va = eng.verify(job.topic, a, "a")
-                    vb = None
-                    if need_yn_b(va["p_yes"]):
-                        self._count(job)
-                        vb = eng.verify(job.topic, a, "b")
-                    pv = (va["p_yes"] + vb["p_yes"]) / 2 if vb else va["p_yes"]
-                    verified, vids = pv >= 0.5, [va["pid"]] + ([vb["pid"]] if vb else [])
-                    vusd = va["meta"].get("usd", 0) + (vb["meta"].get("usd", 0) if vb else 0)
+                verified, pv, ps, vids, vusd = None, None, None, [], 0.0
+                if job.topic.get("verify") and d["flag"]:              # S27 (+ S30 scope check), on flags only
+                    pv, vids, vusd = self._check(job, eng.verify, a)
+                    verified = pv >= 0.5
+                    if has_scope_check(job.topic):
+                        ps, sids, susd = self._check(job, eng.scope_check, a)
+                        verified, vids, vusd = verified and ps >= 0.5, vids + sids, vusd + susd
                     if not verified:
                         d["lane"] = "please_check"                    # the flag stays; a person decides
             except CapReached as e:
@@ -576,7 +610,7 @@ class Adhoc:
             if self.client.expect_build is None and ra["meta"].get("fp"):
                 self.client.expect_build = ra["meta"]["fp"]            # one build per process; a change stops the run
             rec = dict(id=a["id"], p=round(d["p"], 4), flag=bool(d["flag"]), verified=verified,
-                       p_verify=None if pv is None else round(pv, 4), lane=d["lane"], t=round(time.time() - job.t0, 2),
+                       p_verify=None if pv is None else round(pv, 4), p_scope=None if ps is None else round(ps, 4), lane=d["lane"], t=round(time.time() - job.t0, 2),
                        sample=a["sample"], title=a["title"], body=a["body_key"], parl=a.get("parl"), level=a.get("level"),
                        lang=a["lang"], date=a["date"], p_a=round(d["p_a"], 4), p_b=None if d["p_b"] is None else round(d["p_b"], 4),
                        model=ra["meta"].get("model"), build=run_build(dict(fp=ra["meta"].get("fp") or "", mode=ra["meta"].get("mode"))) or None,
@@ -604,6 +638,15 @@ class Adhoc:
             job.emit("done", s)
             job.done = True                                # after the last event: a stream never ends before `done`
 
+    def _check(self, job: Job, step, a: dict) -> tuple[float, list[str], float]:
+        """One check on a flag (Engine.verify or Engine.scope_check): order a, order b when 0.1 < p < 0.9 → (mean p, ids, usd)."""
+        self._count(job)
+        rs = [step(job.topic, a, "a")]
+        if need_yn_b(rs[0]["p_yes"]):
+            self._count(job)
+            rs.append(step(job.topic, a, "b"))
+        return sum(r["p_yes"] for r in rs) / len(rs), [r["pid"] for r in rs], sum(r["meta"].get("usd", 0) for r in rs)
+
     def _progress(self, job: Job) -> dict:
         s = job.summary()
         s["line"] = f"read {s['read']} / flagged {s['flagged']} / verified {s['verified']} / please check {s['please_check']} / {s['seconds']:.1f} s"
@@ -622,7 +665,7 @@ class Adhoc:
             if title:
                 ex.append(dict(title=title, match=bool(e.get("match", e.get("yes", True)))))
         doc = dict(id=t["id"], names=t["names"], question=t["question"], answer_yes=t["answer_yes"], cutoff=0.5,
-                   verify=bool(t.get("verify", True)), examples=ex,
+                   verify=bool(t.get("verify", True)), **{k: t[k] for k in ("include", "exclude") if t.get(k)}, examples=ex,
                    terms={l: [x["term"] for x in job.terms.get(l, [])] for l in LANGS}, subtopics=t.get("subtopics") or [],
                    sentence=t["sentence"], created=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                    created_by=by or None)

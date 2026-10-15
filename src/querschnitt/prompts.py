@@ -274,3 +274,37 @@ def verify_prompt(topic: dict, lang: str, title: str, title_long: str, order: st
     blk = f"{ti}: {title[:400]}" + (f"\n{tl}: {title_long[:400]}" if title_long and title_long != title else "")
     u = f"{q}\n\n" + "\n".join(f"{c} = {s}" for c, s in opts) + f"\n\n{item}:\n{blk}\n\n{fmt}"
     return u, '{"' + key + '": "'
+
+
+# ---- scope check for ad-hoc flags (S30): the topic with a generated include / exclude list (adhoc.SCOPE_PROMPT, stored in the
+# topic file as `include` / `exclude` per language); asked on flags together with the S27 check, a flag is verified only if
+# both say yes. Topics without these fields (Digitalisierung, the S19 files) never ask it.
+SCOPE_CHECK = {
+ "de": dict(incl="Dazu gehört:", excl="Nicht dazu gehört:", untitled="Geschäfte, deren Titel das Thema nicht erkennen lässt",
+            ask="Gehört das folgende parlamentarische Geschäft zum Thema «{name}»?", yes="Ja, das Geschäft gehört zum Thema «{name}»"),
+ "fr": dict(incl="En font partie :", excl="N'en font pas partie :", untitled="objets dont le titre ne laisse pas reconnaître le thème",
+            ask="L'objet parlementaire suivant relève-t-il du thème « {name} » ?", yes="Oui, l'objet relève du thème « {name} »"),
+ "it": dict(incl="Ne fanno parte:", excl="Non ne fanno parte:", untitled="oggetti il cui titolo non lascia riconoscere il tema",
+            ask="Il seguente oggetto parlamentare rientra nel tema «{name}»?", yes="Sì, l'oggetto rientra nel tema «{name}»"),
+}
+
+
+def has_scope_check(topic: dict) -> bool:
+    """True when flags of this topic get the S30 scope check (a verified topic with a generated include/exclude list)."""
+    return bool(topic.get("verify")) and bool(topic.get("include") or topic.get("exclude"))
+
+
+def scope_check_prompt(topic: dict, lang: str, title: str, title_long: str, order: str = "a") -> tuple[str, str]:
+    """S30 (eval/s30/common.scope_prompt, byte-identical): «does the affair belong to «name»?», the include line, the
+    exclude line ending in «affairs whose title does not show the topic», A/B as in the yes/no step."""
+    item, ti, tl, no, fmt, key = YN[lang]
+    f = SCOPE_CHECK[lang]; nm = topic["names"][lang]
+    inc = (topic.get("include") or {}).get(lang) or (topic.get("include") or {}).get("de") or ""
+    exc = (topic.get("exclude") or {}).get(lang) or (topic.get("exclude") or {}).get("de") or ""
+    exc = (exc.rstrip(" .;,") + ", " if exc else "") + f["untitled"]
+    lines = (f"{f['incl']} {inc.rstrip(' .')}.\n" if inc else "") + f"{f['excl']} {exc}."
+    yes = f["yes"].format(name=nm)
+    opts = [("A", yes), ("B", no)] if order == "a" else [("A", no), ("B", yes)]
+    blk = f"{ti}: {title[:400]}" + (f"\n{tl}: {title_long[:400]}" if title_long and title_long != title else "")
+    u = f"{f['ask'].format(name=nm)}\n{lines}\n\n" + "\n".join(f"{c} = {s}" for c, s in opts) + f"\n\n{item}:\n{blk}\n\n{fmt}"
+    return u, '{"' + key + '": "'

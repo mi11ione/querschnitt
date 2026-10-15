@@ -1,0 +1,71 @@
+{
+ "wolf": {
+  "sentence": "Wolf und Grossraubtiere: Wolf, Bär, Luchs, Goldschakal, Regulierung und Abschuss, Herdenschutz, Schäden an Nutztieren, Jagd- und Schutzstatus",
+  "names": {
+   "de": "Wolf und Grossraubtiere",
+   "fr": "loup et grands prédateurs",
+   "it": "lupo e grandi predatori"
+  },
+  "scope": {
+   "include": {
+    "de": "Wolf, Bär, Luchs, Goldschakal, Regulierung, Abschuss, Herdenschutz, Schäden an Nutztieren, Jagdstatus, Schutzstatus",
+    "fr": "Loup, Ours, Lynx, Chacal doré, Régulation, Tir, Protection des troupeaux, Dégâts au bétail, Statut de chasse, Statut de protection",
+    "it": "Lupo, Orso, Lince, Sciacallo dorato, Regolamentazione, Abbattimento, Protezione del bestiame, Danni al bestiame, Stato di caccia, Stato di protezione"
+   },
+   "exclude": {
+    "de": "Raubfische, Greifvögel, Wilderei, Jagd allgemein, Naturschutz allgemein, Tourismus, Klimawandel",
+    "fr": "Poissons prédateurs, Rapaces, Braconnage, Chasse en général, Protection de la nature en général, Tourisme, Changement climatique",
+    "it": "Pesci predatori, Rapaci, Bracconaggio, Caccia in generale, Protezione della natura in generale, Turismo, Cambiamento climatico"
+   }
+  },
+  "raw": "{\"include\": {\"de\": \"Wolf, Bär, Luchs, Goldschakal, Regulierung, Abschuss, Herdenschutz, Schäden an Nutztieren, Jagdstatus, Schutzstatus\", \"fr\": \"Loup, Ours, Lynx, Chacal doré, Régulation, Tir, Protection des troupeaux, Dégâts au bétail, Statut de chasse, Statut de protection\", \"it\": \"Lupo, Orso, Lince, Sciacallo dorato, Regolamentazione, Abbattimento, Protezione del bestiame, Danni al bestiame, Stato di caccia, Stato di protezione\"}, \"exclude\": {\"de\": \"Raubfische, Greifvögel, Wilderei, Jagd allgemein, Naturschutz allgemein, Tourismus, Klimawandel\", \"fr\": \"Poissons prédateurs, Rapaces, Braconnage, Chasse en général, Protection de la nature en général, Tourisme, Changement climatique\", \"it\": \"Pesci predatori, Rapaci, Bracconaggio, Caccia in generale, Protezione della natura in generale, Turismo, Cambiamento climatico\"}}}",
+  "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+  "usd": 7.67e-05
+ },
+ "hitze": {
+  "sentence": "Hitzeschutz / Hitzewellen: Hitzewellen, Hitzeaktionspläne, Schutz der Bevölkerung und der Arbeitnehmenden vor Hitze, städtische Hitzeinseln, Kühlung, Beschattung und Begrünung gegen Hitze",
+  "names": {
+   "de": "Hitzeschutz / Hitzewellen",
+   "fr": "protection contre la chaleur / canicules",
+   "it": "protezione dal caldo / ondate di calore"
+  },
+  "scope": {
+   "include": {
+    "de": "Hitzewellen, Hitzeaktionspläne, Bevölkerungsschutz, Arbeitnehmenden-Schutz, städtische Hitzeinseln, Kühlung, Beschattung, Begrünung",
+    "fr": "vagues de chaleur, plans d'action canicule, protection de la population, protection des travailleurs, îlots de chaleur urbains, rafraîchissement, ombrage, végétalisation",
+    "it": "ondate di calore, piani d'azione per la canicola, protezione della popolazione, protezione dei lavoratori, isole di calore urbane, raffrescamento, ombreggiamento, inverdimento"
+   },
+   "exclude": {
+    "de": "Klimaerwärmung allgemein, Dürre, Waldbrände, Kälteschutz, Energieeffizienz, Gesundheit allgemein, Wassermanagement",
+    "fr": "réchauffement climatique général, sécheresse, incendies de forêt, protection contre le froid, efficacité énergétique, santé générale, gestion de l'eau",
+    "it": "riscaldamento climatico generale, siccità, incendi boschivi, protezione dal freddo, efficienza energetica, salute generale, gestione delle acque"
+   }
+  },
+  "raw": "{\"include\": {\"de\": \"Hitzewellen, Hitzeaktionspläne, Bevölkerungsschutz, Arbeitnehmenden-Schutz, städtische Hitzeinseln, Kühlung, Beschattung, Begrünung\", \"fr\": \"vagues de chaleur, plans d'action canicule, protection de la population, protection des travailleurs, îlots de chaleur urbains, rafraîchissement, ombrage, végétalisation\", \"it\": \"ondate di calore, piani d'azione per la canicola, protezione della popolazione, protezione dei lavoratori, isole di calore urbane, raffrescamento, ombreggiamento, inverdimento\"}, \"exclude\": {\"de\": \"Klimaerwärmung allgemein, Dürre, Waldbrände, Kälteschutz, Energieeffizienz, Gesundheit allgemein, Wassermanagement\", \"fr\": \"réchauffement climatique général, sécheresse, incendies de forêt, protection contre le froid, efficacité énergétique, santé générale, gestion de l'eau\", \"it\": \"riscaldamento climatico generale, siccità, incendi boschivi, protezione dal freddo, efficienza energetica, salute generale, gestione delle acque\"}}",
+  "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+  "usd": 7.91e-05
+ },
+ "ki-schule": {
+  "sentence": "Künstliche Intelligenz an Schulen: KI im Unterricht, KI-Werkzeuge wie ChatGPT für Schülerinnen, Schüler und Lehrpersonen, Prüfungen und Plagiate mit KI, KI-Kompetenzen im Lehrplan, Datenschutz beim KI-Einsatz in der Bildung",
+  "names": {
+   "de": "Künstliche Intelligenz an Schulen",
+   "fr": "intelligence artificielle à l'école",
+   "it": "intelligenza artificiale nelle scuole"
+  },
+  "scope": {
+   "include": {
+    "de": "KI im Unterricht, KI-Werkzeuge für Lernende, KI bei Prüfungen, Plagiate mit KI, KI im Lehrplan, Datenschutz in Bildung, Lehrkompetenzen zu KI, digitale Bildung",
+    "fr": "IA en classe, outils IA pour élèves, IA dans les examens, plagiat avec IA, IA dans le programme, protection des données en éducation, compétences pédagogiques IA, éducation numérique",
+    "it": "IA in classe, strumenti IA per studenti, IA negli esami, plagio con IA, IA nel curriculum, protezione dati nell'istruzione, competenze pedagogiche IA, educazione digitale"
+   },
+   "exclude": {
+    "de": "KI in Industrie, medizinische KI, autonome Fahrzeuge, KI in Verwaltung, KI in Forschung, KI in Wirtschaft, KI in Militär",
+    "fr": "IA dans l'industrie, IA médicale, véhicules autonomes, IA dans l'administration, IA dans la recherche, IA dans l'économie, IA dans l'armée",
+    "it": "IA nell'industria, IA medica, veicoli autonomi, IA nell'amministrazione, IA nella ricerca, IA nell'economia, IA nell'esercito"
+   }
+  },
+  "raw": "{\"include\": {\"de\": \"KI im Unterricht, KI-Werkzeuge für Lernende, KI bei Prüfungen, Plagiate mit KI, KI im Lehrplan, Datenschutz in Bildung, Lehrkompetenzen zu KI, digitale Bildung\", \"fr\": \"IA en classe, outils IA pour élèves, IA dans les examens, plagiat avec IA, IA dans le programme, protection des données en éducation, compétences pédagogiques IA, éducation numérique\", \"it\": \"IA in classe, strumenti IA per studenti, IA negli esami, plagio con IA, IA nel curriculum, protezione dati nell'istruzione, competenze pedagogiche IA, educazione digitale\"}, \"exclude\": {\"de\": \"KI in Industrie, medizinische KI, autonome Fahrzeuge, KI in Verwaltung, KI in Forschung, KI in Wirtschaft, KI in Militär\", \"fr\": \"IA dans l'industrie, IA médicale, véhicules autonomes, IA dans l'administration, IA dans la recherche, IA dans l'économie, IA dans l'armée\", \"it\": \"IA nell'industria, IA medica, veicoli autonomi, IA nell'amministrazione, IA nella ricerca, IA nell'economia, IA nell'esercito\"}}}",
+  "fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+  "usd": 8.11e-05
+ }
+}

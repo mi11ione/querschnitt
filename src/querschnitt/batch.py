@@ -90,6 +90,7 @@ class Store:
     def write(self, row: dict):
         fn = ("yn_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("yn:") else \
             ("vf_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("vf:") else \
+            ("sc_" + row["step"].split(":")[1].split("/")[-1]) if row["step"].startswith("sc:") else \
             ("named_" + row["step"].split(":")[1]) if row["step"].startswith("named:") else row["step"].replace(":", "_").replace("/", "_")
         with self.lock:
             f = self.files.get(fn)
@@ -178,6 +179,12 @@ class Runner:
                         if need_yn_b(va["p_yes"]):
                             u, p = P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "b")
                             self._step(P.pid(u, p), lambda: dict(self.engine.verify(t, a, "b"), aid=a["id"], ih=ih))
+                    if P.has_scope_check(t) and pm >= t.get("cutoff", 0.5):   # S30: the generated-scope check, flags only
+                        u, p = P.scope_check_prompt(t, a["lang"], a["title"], a["title_long"], "a")
+                        sa = self._step(P.pid(u, p), lambda: dict(self.engine.scope_check(t, a, "a"), aid=a["id"], ih=ih))
+                        if need_yn_b(sa["p_yes"]):
+                            u, p = P.scope_check_prompt(t, a["lang"], a["title"], a["title_long"], "b")
+                            self._step(P.pid(u, p), lambda: dict(self.engine.scope_check(t, a, "b"), aid=a["id"], ih=ih))
             if "bi" in S and a.get("bilingual", a["body"] in BILINGUAL) and a.get("alt_lang") in ("de", "fr"):
                 # bilingual parliaments: the other language version is the second reading (S10: titles only)
                 b = dict(title=a["title_alt"], title_long=a["title_long_alt"], text="", lang=a["alt_lang"])

@@ -1,0 +1,143 @@
+{
+ "licht": {
+  "sentence": "Lichtverschmutzung: zu viel künstliches Licht in der Nacht, etwa durch Strassenbeleuchtung, beleuchtete Gebäude und Leuchtreklamen, und Massnahmen dagegen",
+  "shipped": {
+   "id": "adhoc/s30-licht",
+   "names": {
+    "de": "Lichtverschmutzung",
+    "fr": "Pollution lumineuse",
+    "it": "Inquinamento luminoso"
+   },
+   "scope": {
+    "de": "Lichtverschmutzung: zu viel künstliches Licht in der Nacht, etwa durch Strassenbeleuchtung, beleuchtete Gebäude und Leuchtreklamen, und Massnahmen dagegen",
+    "fr": "Trop de lumière artificielle la nuit, par exemple par l'éclairage des rues, les bâtiments éclairés et les enseignes lumineuses, et mesures contre",
+    "it": "Troppa luce artificiale di notte, ad esempio da illuminazione stradale, edifici illuminati e insegne luminose, e misure contro"
+   },
+   "question": {
+    "de": "Betrifft das folgende parlamentarische Geschäft das Thema «Lichtverschmutzung» (Lichtverschmutzung: zu viel künstliches Licht in der Nacht, etwa durch Strassenbeleuchtung, beleuchtete Gebäude und Leuchtreklamen, und Massnahmen dagegen)?",
+    "fr": "L'objet parlementaire suivant concerne-t-il le thème « Pollution lumineuse » (Trop de lumière artificielle la nuit, par exemple par l'éclairage des rues, les bâtiments éclairés et les enseignes lumineuses, et mesures contre) ?",
+    "it": "Il seguente oggetto parlamentare riguarda il tema «Inquinamento luminoso» (Troppa luce artificiale di notte, ad esempio da illuminazione stradale, edifici illuminati e insegne luminose, e misure contro)?"
+   },
+   "answer_yes": {
+    "de": "Ja, das Geschäft betrifft Lichtverschmutzung",
+    "fr": "Oui, l'objet concerne le thème « Pollution lumineuse »",
+    "it": "Sì, l'oggetto riguarda il tema «Inquinamento luminoso»"
+   },
+   "cutoff": 0.5,
+   "sentence": "Lichtverschmutzung: zu viel künstliches Licht in der Nacht, etwa durch Strassenbeleuchtung, beleuchtete Gebäude und Leuchtreklamen, und Massnahmen dagegen",
+   "lang": "de",
+   "generated": true,
+   "verify": true
+  },
+  "shipped_raw": "{\n  \"name\": {\n    \"de\": \"Lichtverschmutzung\",\n    \"fr\": \"Pollution lumineuse\",\n    \"it\": \"Inquinamento luminoso\"\n  },\n  \"scope\": {\n    \"de\": \"Zu viel künstliches Licht in der Nacht, etwa durch Strassenbeleuchtung, beleuchtete Gebäude und Leuchtreklamen, und Massnahmen dagegen\",\n    \"fr\": \"Trop de lumière artificielle la nuit, par exemple par l'éclairage des rues, les bâtiments éclairés et les enseignes lumineuses, et mesures contre\",\n    \"it\": \"Troppa luce artificiale di notte, ad esempio da illuminazione stradale, edifici illuminati e insegne luminose, e misure contro\"\n  }\n}",
+  "shipped_fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+  "scope": {
+   "include": {
+    "de": "Strassenbeleuchtung, Gebäudeausleuchtung, Leuchtreklamen, nächtliche Lichtemissionen, astronomische Beobachtung, Energieverbrauch, Biodiversität, Schlafstörungen",
+    "fr": "Éclairage public, éclairage des bâtiments, réclames lumineuses, émissions lumineuses nocturnes, observation astronomique, consommation d'énergie, biodiversité, troubles du sommeil",
+    "it": "Illuminazione stradale, illuminazione degli edifici, insegne luminose, emissioni luminose notturne, osservazione astronomica, consumo energetico, biodiversità, disturbi del sonno"
+   },
+   "exclude": {
+    "de": "Lichtdesign, Innenbeleuchtung, Tageslicht, Sonnenenergie, LED-Technologie, Verkehrsmanagement, Stadtplanung",
+    "fr": "Design lumineux, éclairage intérieur, lumière du jour, énergie solaire, technologie LED, gestion du trafic, urbanisme",
+    "it": "Design della luce, illuminazione interna, luce diurna, energia solare, tecnologia LED, gestione del traffico, pianificazione urbana"
+   }
+  },
+  "scope_raw": "{\"include\": {\"de\": \"Strassenbeleuchtung, Gebäudeausleuchtung, Leuchtreklamen, nächtliche Lichtemissionen, astronomische Beobachtung, Energieverbrauch, Biodiversität, Schlafstörungen\", \"fr\": \"Éclairage public, éclairage des bâtiments, réclames lumineuses, émissions lumineuses nocturnes, observation astronomique, consommation d'énergie, biodiversité, troubles du sommeil\", \"it\": \"Illuminazione stradale, illuminazione degli edifici, insegne luminose, emissioni luminose notturne, osservazione astronomica, consumo energetico, biodiversità, disturbi del sonno\"}, \"exclude\": {\"de\": \"Lichtdesign, Innenbeleuchtung, Tageslicht, Sonnenenergie, LED-Technologie, Verkehrsmanagement, Stadtplanung\", \"fr\": \"Design lumineux, éclairage intérieur, lumière du jour, énergie solaire, technologie LED, gestion du trafic, urbanisme\", \"it\": \"Design della luce, illuminazione interna, luce diurna, energia solare, tecnologia LED, gestione del traffico, pianificazione urbana\"}}}",
+  "scope_fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ },
+ "drohnen": {
+  "sentence": "Drohnen: ihr Einsatz durch Polizei, Armee und Behörden, Regeln für private Drohnen und die Abwehr von Drohnen",
+  "shipped": {
+   "id": "adhoc/s30-drohnen",
+   "names": {
+    "de": "Drohnen-Einsatz",
+    "fr": "Utilisation des drones",
+    "it": "Uso dei droni"
+   },
+   "scope": {
+    "de": "Drohnen: ihr Einsatz durch Polizei, Armee und Behörden, Regeln für private Drohnen und die Abwehr von Drohnen",
+    "fr": "Utilisation par la police, l'armée et les autorités, règles pour les drones privés et défense contre les drones",
+    "it": "Utilizzo da parte di polizia, esercito e autorità, regole per droni privati e difesa contro i droni"
+   },
+   "question": {
+    "de": "Betrifft das folgende parlamentarische Geschäft das Thema «Drohnen-Einsatz» (Drohnen: ihr Einsatz durch Polizei, Armee und Behörden, Regeln für private Drohnen und die Abwehr von Drohnen)?",
+    "fr": "L'objet parlementaire suivant concerne-t-il le thème « Utilisation des drones » (Utilisation par la police, l'armée et les autorités, règles pour les drones privés et défense contre les drones) ?",
+    "it": "Il seguente oggetto parlamentare riguarda il tema «Uso dei droni» (Utilizzo da parte di polizia, esercito e autorità, regole per droni privati e difesa contro i droni)?"
+   },
+   "answer_yes": {
+    "de": "Ja, das Geschäft betrifft Drohnen-Einsatz",
+    "fr": "Oui, l'objet concerne le thème « Utilisation des drones »",
+    "it": "Sì, l'oggetto riguarda il tema «Uso dei droni»"
+   },
+   "cutoff": 0.5,
+   "sentence": "Drohnen: ihr Einsatz durch Polizei, Armee und Behörden, Regeln für private Drohnen und die Abwehr von Drohnen",
+   "lang": "de",
+   "generated": true,
+   "verify": true
+  },
+  "shipped_raw": "{\n  \"name\": {\n    \"de\": \"Drohnen-Einsatz\",\n    \"fr\": \"Utilisation des drones\",\n    \"it\": \"Uso dei droni\"\n  },\n  \"scope\": {\n    \"de\": \"Einsatz durch Polizei, Armee und Behörden, Regeln für private Drohnen und Abwehr von Drohnen\",\n    \"fr\": \"Utilisation par la police, l'armée et les autorités, règles pour les drones privés et défense contre les drones\",\n    \"it\": \"Utilizzo da parte di polizia, esercito e autorità, regole per droni privati e difesa contro i droni\"\n  }\n}",
+  "shipped_fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+  "scope": {
+   "include": {
+    "de": "Polizei-Einsatz, Armeeeinsatz, Behördeneinsatz, private Drohnenregeln, Drohnenabwehr, Luftraumkontrolle, Sicherheit, Gesetzgebung",
+    "fr": "Utilisation par la police, l'armée et les autorités, règles pour drones privés, défense anti-drones, contrôle de l'espace aérien, sécurité, législation",
+    "it": "Impiego da polizia, esercito e autorità, regole per droni privati, difesa anti-droni, controllo dello spazio aereo, sicurezza, legislazione"
+   },
+   "exclude": {
+    "de": "Flugzeuge, Hubschrauber, Satelliten, Modellbau, Landwirtschaft, Logistik, Freizeit",
+    "fr": "Avions, hélicoptères, satellites, modélisme, agriculture, logistique, loisirs",
+    "it": "Aerei, elicotteri, satelliti, modellismo, agricoltura, logistica, tempo libero"
+   }
+  },
+  "scope_raw": "{\"include\": {\"de\": \"Polizei-Einsatz, Armeeeinsatz, Behördeneinsatz, private Drohnenregeln, Drohnenabwehr, Luftraumkontrolle, Sicherheit, Gesetzgebung\", \"fr\": \"Utilisation par la police, l'armée et les autorités, règles pour drones privés, défense anti-drones, contrôle de l'espace aérien, sécurité, législation\", \"it\": \"Impiego da polizia, esercito e autorità, regole per droni privati, difesa anti-droni, controllo dello spazio aereo, sicurezza, legislazione\"}, \"exclude\": {\"de\": \"Flugzeuge, Hubschrauber, Satelliten, Modellbau, Landwirtschaft, Logistik, Freizeit\", \"fr\": \"Avions, hélicoptères, satellites, modélisme, agriculture, logistique, loisirs\", \"it\": \"Aerei, elicotteri, satelliti, modellismo, agricoltura, logistica, tempo libero\"}}",
+  "scope_fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ },
+ "pestizide": {
+  "sentence": "Pestizide und Pflanzenschutzmittel: Zulassung, Rückstände in Gewässern und Lebensmitteln, Verbote und Reduktion",
+  "shipped": {
+   "id": "adhoc/s30-pestizide",
+   "names": {
+    "de": "Pestizide & Rückstände",
+    "fr": "Pesticides & Résidus",
+    "it": "Pesticidi & Residui"
+   },
+   "scope": {
+    "de": "Pestizide und Pflanzenschutzmittel: Zulassung, Rückstände in Gewässern und Lebensmitteln, Verbote und Reduktion",
+    "fr": "Autorisation, résidus dans les eaux et les aliments, interdictions et réduction",
+    "it": "Autorizzazione, residui in acque e alimenti, divieti e riduzione"
+   },
+   "question": {
+    "de": "Betrifft das folgende parlamentarische Geschäft das Thema «Pestizide & Rückstände» (Pestizide und Pflanzenschutzmittel: Zulassung, Rückstände in Gewässern und Lebensmitteln, Verbote und Reduktion)?",
+    "fr": "L'objet parlementaire suivant concerne-t-il le thème « Pesticides & Résidus » (Autorisation, résidus dans les eaux et les aliments, interdictions et réduction) ?",
+    "it": "Il seguente oggetto parlamentare riguarda il tema «Pesticidi & Residui» (Autorizzazione, residui in acque e alimenti, divieti e riduzione)?"
+   },
+   "answer_yes": {
+    "de": "Ja, das Geschäft betrifft Pestizide & Rückstände",
+    "fr": "Oui, l'objet concerne le thème « Pesticides & Résidus »",
+    "it": "Sì, l'oggetto riguarda il tema «Pesticidi & Residui»"
+   },
+   "cutoff": 0.5,
+   "sentence": "Pestizide und Pflanzenschutzmittel: Zulassung, Rückstände in Gewässern und Lebensmitteln, Verbote und Reduktion",
+   "lang": "de",
+   "generated": true,
+   "verify": true
+  },
+  "shipped_raw": "{\n  \"name\": {\n    \"de\": \"Pestizide & Rückstände\",\n    \"fr\": \"Pesticides & Résidus\",\n    \"it\": \"Pesticidi & Residui\"\n  },\n  \"scope\": {\n    \"de\": \"Zulassung, Rückstände in Gewässern und Lebensmitteln, Verbote und Reduktion\",\n    \"fr\": \"Autorisation, résidus dans les eaux et les aliments, interdictions et réduction\",\n    \"it\": \"Autorizzazione, residui in acque e alimenti, divieti e riduzione\"\n  }\n}",
+  "shipped_fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+  "scope": {
+   "include": {
+    "de": "Zulassung, Rückstände in Gewässern, Rückstände in Lebensmitteln, Verbote, Reduktion, Risikobewertung, Monitoring, Verbraucherschutz",
+    "fr": "Autorisation, résidus dans les eaux, résidus dans les aliments, interdictions, réduction, évaluation des risques, surveillance, protection des consommateurs",
+    "it": "Autorizzazione, residui nelle acque, residui negli alimenti, divieti, riduzione, valutazione del rischio, monitoraggio, protezione dei consumatori"
+   },
+   "exclude": {
+    "de": "Biodiversität allgemein, Klimawandel, Gentechnik, Düngemittel, Insektizide spezifisch, Bodenfruchtbarkeit",
+    "fr": "Biodiversité générale, changement climatique, génie génétique, engrais, insecticides spécifiques, fertilité des sols",
+    "it": "Biodiversità generale, cambiamento climatico, ingegneria genetica, fertilizzanti, insetticidi specifici, fertilità del suolo"
+   }
+  },
+  "scope_raw": "{\"include\": {\"de\": \"Zulassung, Rückstände in Gewässern, Rückstände in Lebensmitteln, Verbote, Reduktion, Risikobewertung, Monitoring, Verbraucherschutz\", \"fr\": \"Autorisation, résidus dans les eaux, résidus dans les aliments, interdictions, réduction, évaluation des risques, surveillance, protection des consommateurs\", \"it\": \"Autorizzazione, residui nelle acque, residui negli alimenti, divieti, riduzione, valutazione del rischio, monitoraggio, protezione dei consumatori\"}, \"exclude\": {\"de\": \"Biodiversität allgemein, Klimawandel, Gentechnik, Düngemittel, Insektizide spezifisch, Bodenfruchtbarkeit\", \"fr\": \"Biodiversité générale, changement climatique, génie génétique, engrais, insecticides spécifiques, fertilité des sols\", \"it\": \"Biodiversità generale, cambiamento climatico, ingegneria genetica, fertilizzanti, insetticidi specifici, fertilità del suolo\"}}}",
+  "scope_fp": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+ }
+}

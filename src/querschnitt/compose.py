@@ -88,6 +88,18 @@ def yn_decision(ra: dict, rb: dict | None, cutoff: float = 0.5) -> dict:
     return dict(p=p, p_a=pa, p_b=pb, flag=p >= cutoff, lane="please_check" if (disagree or 0.3 <= p < 0.7) else "readings_agree")
 
 
+def both_readings(rows: dict, prompt, t: dict, a: dict) -> tuple[float, list[str]] | None:
+    """A check on a flag (S27 verify, S30 scope check): (mean p, prompt ids) once order a and, where 0.1 < p < 0.9, order b
+    are in the rows (the batch and Neues Thema ask both); None otherwise."""
+    ra = rows.get(P.pid(*prompt(t, a["lang"], a["title"], a["title_long"], "a")))
+    if not ra:
+        return None
+    if not need_yn_b(ra["p_yes"]):
+        return ra["p_yes"], [ra["pid"]]
+    rb = rows.get(P.pid(*prompt(t, a["lang"], a["title"], a["title_long"], "b")))
+    return ((ra["p_yes"] + rb["p_yes"]) / 2, [ra["pid"], rb["pid"]]) if rb else None
+
+
 def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
     """All decisions available for one affair (missing steps → missing keys)."""
     out = dict(id=a["id"])
@@ -119,15 +131,15 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
                     continue
             out[t["id"]] = yn_decision(ra, rb, t.get("cutoff", 0.5))
             vids = []
-            if t.get("verify") and out[t["id"]]["flag"]:   # S27: unverified flags go to a person (recall kept)
-                va = rows.get(P.pid(*P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "a")))
-                vb = rows.get(P.pid(*P.verify_prompt(t, a["lang"], a["title"], a["title_long"], "b"))) if (va and need_yn_b(va["p_yes"])) else None
-                if va and (vb or not need_yn_b(va["p_yes"])):   # both readings where the batch and Neues Thema ask both
-                    pv = (va["p_yes"] + vb["p_yes"]) / 2 if vb else va["p_yes"]
-                    out[t["id"]]["verified"] = pv >= 0.5
-                    if pv < 0.5:
+            if t.get("verify") and out[t["id"]]["flag"]:   # S27 (+ S30 scope check): unverified flags go to a person
+                checks = [P.verify_prompt] + ([P.scope_check_prompt] if P.has_scope_check(t) else [])
+                got = [both_readings(rows, f, t, a) for f in checks]
+                if all(got):                                     # every check with both readings where it needs both
+                    ok = all(pv >= 0.5 for pv, _ in got)
+                    out[t["id"]]["verified"] = ok
+                    if not ok:
                         out[t["id"]]["lane"] = "please_check"
-                    vids = [va["pid"]] + ([vb["pid"]] if vb else [])
+                    vids = [i for _, ids in got for i in ids]
             out[t["id"]]["meta"] = ra["meta"]
             out[t["id"]]["pids"] = [ra["pid"]] + ([rb["pid"]] if rb else []) + vids   # as Neues Thema's rows (adhoc.save)
             out[t["id"]]["evidence"] = evidence_of(a, t["names"]["de"], rows)

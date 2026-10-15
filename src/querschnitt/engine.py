@@ -137,6 +137,13 @@ class Engine:
         pa, pb = math.exp(d.get("A", -50)), math.exp(d.get("B", -50))
         return dict(step=f"vf:{topic['id']}:{order}", pid=P.pid(u, p), codes=d, p_yes=(pa if order == "a" else pb) / (pa + pb), meta=meta)
 
+    def scope_check(self, topic: dict, a: dict, order: str = "a") -> dict:
+        """S30: does the affair belong to the topic, given its generated include / exclude list? (asked on flags only)"""
+        u, p = P.scope_check_prompt(topic, a["lang"], a["title"], a["title_long"], order)
+        d, meta = self._ask(u, p, ["A", "B"])
+        pa, pb = math.exp(d.get("A", -50)), math.exp(d.get("B", -50))
+        return dict(step=f"sc:{topic['id']}:{order}", pid=P.pid(u, p), codes=d, p_yes=(pa if order == "a" else pb) / (pa + pb), meta=meta)
+
     def evidence(self, a: dict, name: str) -> dict | None:
         sents = P.sentences(a)
         if not sents:

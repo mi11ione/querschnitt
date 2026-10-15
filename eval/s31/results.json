@@ -1,0 +1,248 @@
+{
+ "dev": {
+  "stage1_sub400": {
+   "n_items": 400,
+   "n_scored_all": 400,
+   "designs": {
+    "D4": {
+     "top1": 0.7075,
+     "top1_ci": [
+      0.661,
+      0.75
+     ],
+     "k1": 283,
+     "top3": 0.8575,
+     "n_missing": 0
+    },
+    "V1": {
+     "top1": 0.72,
+     "top1_ci": [
+      0.674,
+      0.762
+     ],
+     "k1": 288,
+     "top3": 0.8625,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.0125,
+      "ci": [
+       -0.005,
+       0.03
+      ]
+     }
+    },
+    "V2": {
+     "top1": 0.7,
+     "top1_ci": [
+      0.653,
+      0.743
+     ],
+     "k1": 280,
+     "top3": 0.8575,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": -0.0075,
+      "ci": [
+       -0.0176,
+       0.0025
+      ]
+     }
+    },
+    "V3": {
+     "top1": 0.72,
+     "top1_ci": [
+      0.674,
+      0.762
+     ],
+     "k1": 288,
+     "top3": 0.8475,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.0125,
+      "ci": [
+       -0.01,
+       0.0375
+      ]
+     }
+    },
+    "V4": {
+     "top1": 0.7175,
+     "top1_ci": [
+      0.671,
+      0.76
+     ],
+     "k1": 287,
+     "top3": 0.855,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.01,
+      "ci": [
+       0.0,
+       0.0225
+      ]
+     }
+    },
+    "V5": {
+     "top1": 0.7175,
+     "top1_ci": [
+      0.671,
+      0.76
+     ],
+     "k1": 287,
+     "top3": 0.8525,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.01,
+      "ci": [
+       -0.01,
+       0.0325
+      ]
+     }
+    }
+   }
+  },
+  "stage2_all": {
+   "n_items": 1357,
+   "n_scored_all": 1357,
+   "designs": {
+    "D4": {
+     "top1": 0.7376,
+     "top1_ci": [
+      0.713,
+      0.761
+     ],
+     "k1": 1001,
+     "top3": 0.8835,
+     "n_missing": 0
+    },
+    "V1": {
+     "top1": 0.745,
+     "top1_ci": [
+      0.721,
+      0.768
+     ],
+     "k1": 1011,
+     "top3": 0.8901,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.0073,
+      "ci": [
+       -0.003,
+       0.017
+      ]
+     }
+    },
+    "V3": {
+     "top1": 0.7494,
+     "top1_ci": [
+      0.725,
+      0.772
+     ],
+     "k1": 1017,
+     "top3": 0.8739,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.0117,
+      "ci": [
+       -0.0008,
+       0.0244
+      ]
+     }
+    }
+   }
+  },
+  "stage2_rest957": {
+   "n_items": 957,
+   "n_scored_all": 957,
+   "designs": {
+    "D4": {
+     "top1": 0.7502,
+     "top1_ci": [
+      0.721,
+      0.777
+     ],
+     "k1": 718,
+     "top3": 0.8944,
+     "n_missing": 0
+    },
+    "V1": {
+     "top1": 0.7554,
+     "top1_ci": [
+      0.727,
+      0.782
+     ],
+     "k1": 723,
+     "top3": 0.9017,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.0052,
+      "ci": [
+       -0.0074,
+       0.0178
+      ]
+     }
+    },
+    "V3": {
+     "top1": 0.7617,
+     "top1_ci": [
+      0.733,
+      0.788
+     ],
+     "k1": 729,
+     "top3": 0.885,
+     "n_missing": 0,
+     "minus_D4": {
+      "diff": 0.0114,
+      "ci": [
+       -0.0032,
+       0.0262
+      ]
+     }
+    }
+   }
+  },
+  "gate": {
+   "V1": {
+    "diff": 0.0073,
+    "ci": [
+     -0.003,
+     0.017
+    ],
+    "passes": false
+   },
+   "V3": {
+    "diff": 0.0117,
+    "ci": [
+     -0.0008,
+     0.0244
+    ],
+    "passes": false
+   }
+  },
+  "winner": null,
+  "note": "D4 is scored with the production decision rule (no policy topic read from the geometric mean of the readings, compose.chapter_decision): 0.7376 on all 1,357; S16 reported 0.7406 with the S16 rule, which has no such check (4 items differ).",
+  "calls": {
+   "by_tag": {
+    "s31-dev": {
+     "calls": 4272,
+     "usd": 0.6822
+    }
+   },
+   "calls": 4272,
+   "usd_list_price": 0.6822,
+   "builds": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ]
+  }
+ },
+ "test": {
+  "run": false,
+  "reason": "no dev winner: neither V1 nor V3 reached the gate (paired difference vs D4 on all 1,357 >= +0.02 with its 95% interval above 0); the S25 items were not used and stay unspent for a later single winner; nothing pre-registered",
+  "fresh_items": {
+   "searched": "Wayback CDX prefix listings anneepolitique.swiss/prozesse/ and /fr/prozesse/ with from=20261011 (the S25 listings end at captures of 2026-10-11), via polite.py (RFC 9309 robots checked: web.archive.org robots.txt 404 = allow all)",
+   "new_process_ids_with_200_capture": 0,
+   "files": "eval/s31/cdx_check/",
+   "also": "S25 pages with a chapter but no OPD join that carry a Geschäftsnr. (61 numbers) re-joined against the newer OPD snapshot (bern/data/opd-new): 4 match, 0 have a production input"
+  }
+ }
+}

@@ -177,6 +177,7 @@ jobs:
       - name: API router (upstream/opd/api/router.py) on the loaded rows; each test in a transaction that is rolled back
         env: {OPD_TEST_DSN: "postgresql://opd:opd@localhost:5432/openparldata"}
         run: |
+          set -o pipefail   # a failing pytest fails the step through the tee
           pip install -q "fastapi>=0.115" "httpx>=0.27" "pytest>=8" "psycopg[binary]>=3.2"
           python -m pytest -p no:cacheprovider -v -rs upstream/opd/tests/test_router.py | tee "$RUNNER_TEMP/router.log"
           if grep -n "SKIPPED" "$RUNNER_TEMP/router.log"; then exit 1; fi

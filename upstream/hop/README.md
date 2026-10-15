@@ -85,7 +85,7 @@ time zone holding UTC, and the JDBC driver writes dates in the JVM's zone. The c
 In CI on every push and pull request: job `hop` in `.github/workflows/ci.yml`, about four minutes. Apache Hop 2.19.0
 client (official zip from downloads.apache.org, archive.apache.org once 2.19.0 leaves the mirror; SHA-512 checked against
 the `.sha512` file at the same location; cached), Temurin JDK 21, the `postgres:16` service image, migrations 0001–0003 up
-over stand-in `affairs` / `bodies` tables (`ci/opd_stand_in.sql`: id and `body_key` only, ids from OPD's export), then
+over stand-in `affairs` / `bodies` tables (`ci/opd_stand_in.sql`: id and `body_key`, and empty `language` / `begin_date` on affairs for the API router's filters; ids from OPD's export), then
 `../opd/tests/smoke.sql`. Every load is the command under "Run" (`hop-run.sh … load_topics.hwf`), and the expected rows
 come from `../opd/export/to_opd.py --with-subtopics` on the same file: each loaded row must equal its converted row in
 every column except `id`, `created_at`, `updated_at` and `content_hash`.
@@ -96,6 +96,7 @@ every column except `id`, `created_at`, `updated_at` and `content_hash`.
 | 2 | the same file again | nothing written: every column of every row as after step 1 |
 | 3 | the same file with two rows changed by the job | `p` changed at the same `valid_from`: updated in place, `updated_at` later, `created_at` kept; code changed with a later `valid_from`: inserted, the old row closed at the new `valid_from`; the other 16 rows untouched |
 | 4 | the released topics file (`make data`, release `data-latest`), into an empty table, stand-in rows added for its affairs and bodies | row count = machine rows of the file; every row equal to `to_opd.py` |
+| – | the rows of step 4 | `../opd/tests/test_router.py`: the API router (`../opd/api/router.py`) against these rows, each test in a transaction that is rolled back (`../opd/api/topics.md`, "Implementation") |
 | 5 | migrations down 0003 → 0002 → 0001 with the rows of step 4 in place | 0002 down leaves no topic rows or schemes; 0001 down leaves no `topic*` relation |
 
 The [run of 15 Oct](https://github.com/mi11ione/querschnitt/actions/runs/38744888546) (PostgreSQL 16.15): step 4

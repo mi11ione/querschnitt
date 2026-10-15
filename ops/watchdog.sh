@@ -5,6 +5,7 @@
 #  - alive but stalled (no ledger line for 20 min since its start, e.g. after a network outage) → graceful restart from cache.
 cd "$(dirname "$0")/.." || exit 1
 echo $$ > runs/watchdog.pid
+strikes() { cut -d' ' -f1 "$1/.resumes" 2>/dev/null || echo 0; }
 while true; do
   free=$(df -k . | awk 'NR==2{print $4}')
   for d in runs/*/; do
@@ -17,7 +18,12 @@ while true; do
       # shellcheck disable=SC2046
       ops/run-start.sh "$d" $(tr '\n' ' ' < "$d/ARGS") >> runs/watchdog.log 2>&1
     elif [ -f "$d/STOP.md" ] && grep -q "^# Errors" "$d/STOP.md" && ! { [ -f "$d/PID" ] && kill -0 "$(cat "$d/PID")" 2>/dev/null; } \
-         && .venv/bin/python ops/endpoint_ok.py "$d" >> runs/watchdog.log 2>&1; then
+         && [ "$(strikes "$d")" -lt 3 ] && .venv/bin/python ops/endpoint_ok.py "$d" >> runs/watchdog.log 2>&1; then
+      # a resume without a successful call since the previous one is a strike; three leave the run stopped for a person
+      n=$(cat "$d/ledger.jsonl" 2>/dev/null | wc -l | tr -d ' '); k=0
+      [ "$n" = "$(cut -d' ' -f2 "$d/.resumes" 2>/dev/null)" ] && k=$(( $(strikes "$d") + 1 ))
+      echo "$k $n" > "$d/.resumes"
+      [ "$k" -ge 3 ] && { echo "$(date '+%F %T') three resumes without a successful call: $d left stopped" >> runs/watchdog.log; continue; }
       mv "$d/STOP.md" "$d/STOP-$(date +%Y%m%d-%H%M%S).md"
       echo "$(date '+%F %T') endpoint back (locked build) → resume $d" >> runs/watchdog.log
       rm -f "$d/PID"

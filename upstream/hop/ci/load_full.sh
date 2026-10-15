@@ -3,7 +3,7 @@
 #   upstream/hop/ci/load_full.sh <topics.jsonl.gz> <label>      (env: HOP_DIR, RUNNER_TEMP, PG*; after the inputs step)
 # Stand-in rows for the file's affairs and bodies (bodies not in opd_stand_in.sql get ids from 100001).
 set -euo pipefail
-full=$1; label=$2
+full=$(realpath "$1"); label=$2   # Hop needs an absolute path
 psql -v ON_ERROR_STOP=1 -q -c "DELETE FROM topics" -c "DROP TABLE IF EXISTS ci.file_affairs" \
   -c "CREATE TABLE ci.file_affairs (affair_id integer, body_key text)"
 gzip -dc "$full" | jq -r '[.affair_id, .body_key] | @tsv' | sort -u | psql -v ON_ERROR_STOP=1 -c "COPY ci.file_affairs FROM STDIN"

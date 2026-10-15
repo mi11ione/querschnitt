@@ -17,8 +17,8 @@ wherever a number comes from the AI judge, the sentence says so. Three numbers c
 Q&A cards: an endpoint without prefill (measured on the held-out affairs: 0.705 without, 0.696 with, paired −0.008 [−0.022, +0.004] — the fallback costs nothing measurable; the morning probe picks the mode) · who owns a wrong label (the parliament's editor: inferred rows say they are inferred, a confirmation or rejection is a new row with who and when, nothing is overwritten — CONTRACT §1) · 0.696 vs 0.740 (0.740 is on the 1,357 affairs the design was chosen on; 0.696 is the fresh set, the number we stand behind) · what the examples add (held out: plain list prompting 0.654 on the same affairs, paired +0.041 [+0.016, +0.067]) · hierarchy (held out, computed after the result: subtopic top 1 0.497, hierarchical F1 0.604) · APS licence (chapters in the public feed; subtopics internal until APS agrees) · another scheme (`bs-themen.yaml`,
 `be-directorates.yaml`: a file) · where it runs (`lite` on the current VPS next to OPD's Postgres; the model endpoint must return log-probabilities — the hour-1 probe checks it) · build changes
 (refit + quality gate + `GET /changes`) · recall of ad-hoc topics (judge-based 0.659 on titles; an editor's examples lifted precision on heat protection, +0.038, not recall) · who the
-judge is (Claude runs + Qwen; matches APS editors on 0.790 of chapters; says yes to 27 of the 30 DVS items) · new narrow topics (one sentence casts a wide net — wolves 0.225 precision of flags; a second "is it central?" question and the
-please-check lane narrow it: S19/S27) · the DVS 27/30
+judge is (Claude runs + Qwen; matches APS editors on 0.790 of chapters; says yes to 27 of the 30 DVS items) · new narrow topics (one sentence casts a wide net — wolves 0.225 precision of flags; a second "is it central?" question and, on
+fresh topics, a generated scope raise precision of flags from 0.642 to 0.761 (S30); keyword lists stay more precise there, 0.944) · the DVS 27/30
 is not held out (the question was written with those items in view) · Romansh (German prompt; not measured).
 
 ## Finals — 5 min, jurors who did not read the case (one user, three numbers)

@@ -36,7 +36,9 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 
 The held-out test (S25) is the shipped pipeline, unchanged, on 927 APS-labelled federal affairs that appear in no design
 set and no example pool: 0.696 top-1, 0.839 top-3, ahead of plain list prompting on the same affairs by +0.041
-[+0.016, +0.067] (pre-registered as S25b after the S25 result). It is below the 0.740 on the affairs the design was chosen on, which is
+[+0.016, +0.067] (pre-registered as S25b after the S25 result). A search over five design variants on the design set
+(S31, leave-one-out) found none better by the pre-set margin (best +0.0117 [−0.0008, +0.0244]), so the held-out set was
+not touched again. It is below the 0.740 on the affairs the design was chosen on, which is
 the expected direction for a held-out set. The lane carries over: 67.3% pass without a check and are right in 0.812, the
 rest go to a person (0.458). The lane separates confident from doubtful rows on every human-labelled set where it was
 measured: on the 1,357 design affairs the 66.8% passing without a check (cross-fitted) are right in 0.864, the rest in 0.491; by reading agreement,
@@ -66,6 +68,11 @@ hits 0.500 / 0.900 / 0.750, which miss some relevant affairs). Thirty editor dec
 (+0.038 [+0.018, +0.060]) and not measurably on wolves. A second question on the flags only — is the topic central or merely
 touched on? — raises precision to 0.444 / 0.770 / 0.250 (heat +0.100 [+0.069, +0.132]) and keeps 0.444 / 0.969 / 1.000 of the
 relevant affairs; so unverified flags are not dropped but go to the please-check lane.
+
+**A scope check for narrow topics (S30, held out):** on three further narrow topics, a generated include/exclude scope
+asked on the flags raised precision of flags from 0.642 to 0.761, +0.119 [+0.005, +0.260] pooled, at a recall cost of
+−0.099 [−0.250, 0.000]; the two dropped affairs go to a person. The pre-registered rule was met, narrowly, so new topics
+carry the scope; keyword lists remain more precise on such topics (0.944).
 
 ## 4. Neutrality
 No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the

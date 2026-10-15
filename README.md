@@ -23,6 +23,7 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 |---|---|---|---|
 | APS chapter vs APS editors, 927 federal affairs never used while designing (held out, pre-registered) | 927 | **0.696** [0.666, 0.726]; top 3 0.839; the 67.3% that pass without a check (recalibrated p ≥ 0.7) 0.812 [0.779, 0.842], the rest 0.458; subtopic top 1 0.497, hierarchical F1 0.604 (computed after the result) | plain list prompting 0.654 [0.623, 0.685] (n 918; paired +0.041 [+0.016, +0.067]) · keywords 0.186 |
 | The same question on the 1,357 federal affairs the shipped design was chosen on (pre-registered) | 1,357 | 0.740 [0.716, 0.764]; the 66.8% that pass without a check (cross-fitted) 0.864 [0.840, 0.886] | plain list prompting 0.655 · keywords 0.191 |
+| Five design variants tried on those 1,357 (leave-one-out examples; not a test): none clears the pre-set gate of +0.02 | 1,357 | best +0.0117 [−0.0008, +0.0244]; the held-out affairs were not touched | shipped design |
 | The same 1,357 as shipped: `make eval GOLD=data/eval/gold_aps_s9.csv` on the production rows (OPD inputs, the corpus pipeline) | 1,340 | 0.718 [0.693, 0.743]; top 3 0.860 | — |
 | The same affairs from the Italian vs the German text (read-back design, no examples) | 1,350 | Italian 0.702 [0.678, 0.727] · German 0.703 [0.678, 0.728]; difference +0.0007 [−0.020, +0.021] | — |
 | The held-out affairs on an endpoint without assistant prefill (the labelled fallback mode, pre-registered) | 927 | 0.705 [0.675, 0.734] vs 0.696 with prefill; paired −0.008 [−0.022, +0.004] | — |
@@ -37,6 +38,7 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 |---|---|---|---|
 | Evidence on production rows: the stored quote supports the topic (blind AI judge, κ 0.92) | 200 | 0.815 [0.755, 0.863]; exact substring at the stored offsets 198/198 | — |
 | Three new topics, each defined in one sentence (wolves · heat protection · AI in schools), Aug–Oct 2026, blind AI judge | 774 | precision of flags 0.225 · 0.670 · 0.136; with a verification question on the flags 0.444 · 0.770 · 0.250 (keeping 0.444 · 0.969 · 1.000 of the relevant ones) — unverified flags go to «please check»; recall outside the checked affairs is not measured (no judge positive among 120 random unflagged affairs per topic) | keywords 0.500 · 0.900 · 0.750 |
+| Three more narrow topics (light pollution · drones · pesticides), held out, with a generated scope check on the flags (pre-registered) | 399 judged | precision of flags 0.642 → 0.761, +0.119 [+0.005, +0.260]; recall −0.099 [−0.250, 0.000] (the dropped ones go to «please check») | keywords: precision 0.944 |
 | "Digitalisierung" in every Swiss parliament, 2026: all 14,512 affairs decided (651 flagged); a stratified sample judged blind by an AI judge and weighted back (pre-registered) | 453 judged (180 flags) | precision of flags 0.905 [0.865, 0.945]; recall estimated at 0.659 [0.491, 0.900] | keywords: precision 0.756 |
 | "Digitalisierung": the 30 affairs DVS curated by hand (the question and its 0.5 cut-off were written with these items in view) | 30 | 27 recognised | keywords 21 |
 

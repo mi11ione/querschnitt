@@ -50,7 +50,7 @@ export class Board {
     this.work.append(this.mapcol, this.reg, this.case);
     root.append(this.work);
     this.map = new SwissMap(this.mapEl, { onClick: k => { this.S.body = k && k !== this.S.body ? k : null; this.refresh(); } });
-    this.tl = new Timeline(this.tlEl, { onBrush: b => { this.S.brush = b; this.refresh(); } });
+    this.tl = new Timeline(this.tlEl, { onBrush: b => { this.S.brush = b; this.fixedPer = null; this.refresh(); }, perText: b => this.perText(b) });
     this.matrix = new Matrix(this.mxEl, this);
     this.list = new VList(this.vl, { render: i => this.row(i), onOpen: p => this.openPos(p) });
     this.buildFilters();
@@ -142,7 +142,7 @@ export class Board {
     const pult = S.mode === 'pult' && this.pultOn;
     for (let i = 0; tp && i < n; i++) {
       const sc = tp.scored(i); if (!sc) continue;
-      if (c.week[i] < dom[0] || c.week[i] > dom[1]) continue;
+      if (c.week[i] < dom[0] || c.week[i] > dom[1] || c.day[i] < this.dA || c.day[i] > this.dZ) continue; // the period the labels name
       const k = c.body[i];
       if (isAll && inP(i)) { stat(k).n++; lv[c.lvl[i]].n++; if (!S.body || k === S.body) scoredSel++; } // denominators ignore the search
       if (!mask[i]) continue;
@@ -227,11 +227,21 @@ export class Board {
     this.onChange && this.onChange(this);
   }
 
+  // the period in words, one definition for every label (header, Überblick panel, timeline, CSV): the brush clamped to
+  // the domain (never past the export date), else the domain; a fixed period (a replayed Neues Thema run) wins
+  perDays(b = this.S.brush) {
+    if (this.fixedPer && b === this.S.brush) return this.fixedPer; // a brush being dragged names its own weeks
+    if (!b) return [this.dA, this.dZ];
+    const a = D.w0 + b[0] * 7, z = D.w0 + b[1] * 7 + 6;
+    return z < this.dA || a > this.dZ ? [a, z] : [Math.max(this.dA, a), Math.min(this.dZ, z)]; // weeks outside the domain: as brushed
+  }
+  perText(b) { const [a, z] = this.perDays(b); return `${isoOfDay(a)} – ${isoOfDay(z)}`; }
+
   renderHead(scoredSel, hitsSel) {
     const L = t(), S = this.S, tp = this.tp;
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
     const bsel = S.body ? D.B.get(S.body) : null;
-    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(this.dA)} – ${isoOfDay(this.dZ)}`;
+    const per = this.perText();
     this.tsub.innerHTML = '';
     const isBe = tp && tp.kind === 'be';
     if (isBe) {
@@ -240,12 +250,12 @@ export class Board {
     } else if (tp && tp.kind === 'all') {
       this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs}${S.f.q || S.f.type || S.f.status || S.f.party ? ` ${L.of} ${num(scoredSel)} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)}` : ''} · ${per}`,
         bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`)) : '',
-        S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
-    } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scored} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
+        S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.fixedPer = null; this.refresh(); } }, `[${L.reset}]`)) : '');
+    } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scoredBoard} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
       ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`),
       tp && tp.scoredDays ? ` · ${L.scoredPeriod} ${fmtDay(tp.scoredDays[0])}–${fmtDay(tp.scoredDays[1])}` : '',
       bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
-      S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.refresh(); } }, `[${L.reset}]`)) : '');
+      S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.fixedPer = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     // legend
     const br = this.breaks;
     const ramp = h('span', { class: 'ramp' }, [1, 2, 3, 4, 5].slice(0, Math.max(1, br.length)).map(k => h('span', { class: 'sw', style: `background:var(--r${k})` })));
@@ -480,7 +490,7 @@ export class Board {
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
     const sc = h('div', { class: 'scroll' });
     root.replaceChildren(sc);
-    const per = S.brush ? `${isoOfDay(D.w0 + S.brush[0] * 7)} – ${isoOfDay(D.w0 + S.brush[1] * 7 + 6)}` : `${isoOfDay(this.dA)} – ${isoOfDay(this.dZ)}`;
+    const per = this.perText();
     sc.append(h('div', { class: 'sl' }, L.overview, h('span', { class: 'sp' }, `${name} · ${per}`)));
     if (tp && tp.kind === 'be') { this.beSummary(sc); bindTips(sc); return; }
     if (!this.items.length) { sc.append(h('p', { class: 'empty' }, L.none)); return; }
@@ -549,7 +559,7 @@ export class Board {
         dec ? (L.decided[dec.d] || dec.d) + (dec.code ? ` ${dec.code}` : '') : L.suggested, dec ? dec.by : '', dec ? dec.at : '', c.id[i], (d.build || D.meta.build || '').slice(-8)].map(q).join(','));
     }
     // method line: affairs found, scored share per parliament, machine suggestions
-    const per = this.S.brush ? `${isoOfDay(D.w0 + this.S.brush[0] * 7)} – ${isoOfDay(D.w0 + this.S.brush[1] * 7 + 6)}` : `${isoOfDay(this.dA)} – ${isoOfDay(this.dZ)}`;
+    const per = this.perText();
     const bodies = [...new Set(items.map(i => c.body[i]))];
     const cov = bodies.map(k => { const s = this.stats.get(k); return `${bodyName(k)} ${pct(s && s.cov)}`; }).join('; ');
     lines.push('');

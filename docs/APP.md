@@ -189,3 +189,24 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
   upstream/hop/README.md, `GET /changes?after=` live (first 3 rows, total, next) or the stored sample marked «Beispiel»,
   last night's line from meta.nightly, and the compose footprint from eval/ci_footprint.txt with the CI run link.
 - Data: `python3 app/dev/make_integration.py` → app/data/integration.json (no runtime fetch of repo files).
+
+## Zählweisen (15 Oct, juror round 5)
+One period and one set of counts for every screen (`D.tally` in data.js): affairs dated `meta.since` … export date
+(`meta.until`). meta.json's own `affairs` / `scored` / `dig_scored` also hold the 3 future-dated affairs; the app does
+not use them for counts. Labels name what they count:
+- «Geschäfte» (fact line, Karte tab) = every affair in the period.
+- «bewertet (APS-Kapitel)» (fact line) = «Geschäfte bewertet (APS-Kapitel)» (Überblick) = affairs with an APS chapter
+  decision. «bewertet (Digitalisierung)» = affairs with a Digitalisierung decision.
+- Karte header «N Treffer von M für dieses Thema bewertet» = M = rows scored for the topic in view, in the named period
+  (no filter, no brush: the same M as the fact line for Digitalisierung and for any APS chapter).
+- «warten auf eine Person (APS-Kapitel)» = APS rows in the please-check lane; the Überblick's «… % ohne Prüfung · aller
+  bewerteten Geschäfte, alle Ebenen» and «… % an eine Person» are shares of the same APS-scored affairs.
+- Prüfstand pass-lane share = share in the pass lane of the 927 held-out federal affairs (S25), labelled as such; it is a test
+  population, not production.
+- Periods: every label (Karte header, Überblick panel, timeline, CSV) comes from `Board.perText()`: the brush clamped to
+  the domain, never past the export date. A Neues Thema run (live or replayed) shows the period it read until a person
+  brushes other weeks. The replay starts by itself once per page load in static mode.
+- Detail: one plain sentence above each decision graphic («Zweimal gefragt (mit und ohne Beispiele): beide Male «X» →
+  ohne Prüfung.»; DE/FR parliaments «Auf Deutsch und auf Französisch gefragt …»); the bars stay for experts.
+- Neues Thema live cap: `#neu?limit=25` or the select beside the period sends `limit` with `POST /adhoc` (newest
+  affairs first); default no cap; hidden in static mode.

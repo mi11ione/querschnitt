@@ -5,7 +5,8 @@ import { s, h, t, num, isoWeek, isoOfDay, MONTHS, UI } from './util.js';
 let LEFT = 92; const ROW = 34, GAP = 6, AXIS = 20;
 
 export class Timeline {
-  constructor(root, { onBrush } = {}) {
+  constructor(root, { onBrush, perText } = {}) {
+    this.perText = perText || null; // the board's period words, so the timeline never names another range
     this.root = root; this.onBrush = onBrush; this.brush = null; this.counts = [[], [], []]; this.mark = null;
     this.hd = h('div', { class: 'hd' }); root.append(this.hd);
     this.svg = s('svg', { role: 'img', 'aria-label': 'Timeline' }); root.append(this.svg);
@@ -45,10 +46,10 @@ export class Timeline {
       this.hd.innerHTML = `<b>${this.weekLabel(w)}</b><span>${L.federal} ${num(c[0][w] || 0)}</span><span>${L.cantonal} ${num(c[1][w] || 0)}</span><span>${L.communal} ${num(c[2][w] || 0)}</span>${k ? `<span class="sig">${L.pending} ${num(k)}</span>` : ''}`;
     } else if (this.brush) {
       const [a, b] = this.brush;
-      this.hd.innerHTML = `<b>${isoOfDay(D.w0 + a * 7)} – ${isoOfDay(D.w0 + b * 7 + 6)}</b><span>${this.weekLabel(a)} – ${this.weekLabel(b)}</span>`;
+      this.hd.innerHTML = `<b>${this.perText ? this.perText(this.brush) : `${isoOfDay(D.w0 + a * 7)} – ${isoOfDay(D.w0 + b * 7 + 6)}`}</b><span>${this.weekLabel(a)} – ${this.weekLabel(b)}</span>`;
     } else {
       const [o, z] = this.dom || [0, D.nWeeks - 1];
-      this.hd.innerHTML = `<span>${L.period}: <b>${isoOfDay(Math.max(D.w0 + o * 7, D.dminAll))} – ${isoOfDay(Math.min(D.dmax, D.w0 + z * 7 + 6))}</b></span>`;
+      this.hd.innerHTML = `<span>${L.period}: <b>${this.perText ? this.perText(null) : `${isoOfDay(Math.max(D.w0 + o * 7, D.dminAll))} – ${isoOfDay(Math.min(D.dmax, D.w0 + z * 7 + 6))}`}</b></span>`;
     }
   }
   draw() {

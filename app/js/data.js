@@ -120,6 +120,14 @@ export async function load() {
   D.mainW = Math.floor((D.dmin - w0) / 7); D.lastW = Math.floor((dmax - w0) / 7);
   D.rowOf = new Map(); for (let i = 0; i < n; i++) D.rowOf.set(c.id[i], i);
   D.anyCh = ch.some(v => v >= 0);
+  // one set of counts for every screen (fact line, Überblick, Karte): affairs dated in the main period, meta.since …
+  // export date (docs/APP.md «Zählweisen»). «aps» = with an APS chapter decision, «dig» = with a Digitalisierung
+  // decision, «check» = APS rows in the please-check lane. meta.json's own counts also hold the future-dated affairs.
+  const T = D.tally = { affairs: 0, aps: 0, dig: 0, check: 0 };
+  for (let i = 0; i < n; i++) {
+    if (day[i] < D.dmin || day[i] > dmax) continue;
+    T.affairs++; if (ch[i] >= 0) { T.aps++; if (lane[i] === 1) T.check++; } if (!Number.isNaN(dp[i])) T.dig++;
+  }
   buildTopics();
 }
 
@@ -201,14 +209,14 @@ function buildTopics() {
   // counts per topic (hits over all rows)
   for (const tp of TOPICS) tp.count = 0;
   for (const tp of TOPICS) if (tp.saved) for (let i = 0; i < D.n; i++) if (tp.hit(i)) tp.count++;
-  TOPIC_BY_ID.get('all').count = [...D.c.day].filter(d => d >= D.dmin).length;
+  TOPIC_BY_ID.get('all').count = [...D.c.day].filter(d => d >= D.dmin && d <= D.dmax).length;
   const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
   const chT = new Map(TOPICS.filter(x => x.kind === 'chapter').map(x => [x.idx, x]));
   const subT = new Map(TOPICS.filter(x => x.kind === 'sub').map(x => [x.idx, x]));
   const beT = TOPIC_BY_ID.get('be-directorates');
   for (let i = 0; i < D.n; i++) {
     if (c.own[i]) { const tn = TOPIC_BY_ID.get(c.own[i][0]); if (tn) tn.count++; }
-    if (c.day[i] < D.dmin) continue; // topic counts cover the main slice
+    if (c.day[i] < D.dmin || c.day[i] > D.dmax) continue; // topic counts cover the main period (as D.tally)
     if (dig && c.df[i]) dig.count++;
     if (beT && c.be[i] != null) beT.count++;
     if (c.ch[i] >= 0) { const tc = chT.get(c.ch[i]); if (tc) tc.count++; const sb = c.subs[i]; if (sb && sb.length) { const ts = subT.get(sb[0]); if (ts) ts.count++; } }

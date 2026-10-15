@@ -17,7 +17,7 @@ const LS = {
     fed: n => `der ${n} neuen Bundesgeschäfte bekommen von Apertus dasselbe Themenkapitel, das ihnen die Redaktion der Année politique suisse (APS) gegeben hat; keines davon wurde beim Entwickeln benutzt.`,
     fedSub: (lp, kw) => [lp != null ? `nur Kapitelliste ${pct(lp)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'Vergleich:',
-    lane: (ok, chk) => [`gehen ohne Prüfung durch, und davon sind ${ok} richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort ${chk} richtig).`],
+    lane: (n, ok, chk) => [`der ${n} neuen Bundesgeschäfte gehen ohne Prüfung durch, und davon sind ${ok} richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort ${chk} richtig).`],
     laneSub: 'Regel: rekalibriertes p ≥ 0.7, vor dem Test festgelegt',
     be: (n, k, other) => `der ${n} Geschäfte des Berner Grossen Rates landen mit deutschem Titel bei der federführenden von ${k} Direktionen; mit französischem Titel ${other}.`,
     beSub: (a, b) => `Stichwortsuche ${pct(a)} / ${pct(b)}`,
@@ -34,6 +34,7 @@ const LS = {
       ['KI-Richter', 'ein zweites Modell (Claude) urteilt, wo keine menschlichen Labels existieren'],
       ['S25, D4 …', 'interne Kennungen von Tests und Varianten (Maus darüber); Ordner eval/']],
     internal: 'intern',
+    lanesPop: n => `der ${n} neuen Bundesgeschäfte (Test)`,
     codes: { D0: 'Listen-Prompt', D1: 'ohne Beispiele', D2: 'DE + FR gemittelt', D3: 'fünf Beispiele', D4: 'mit Beispielen, zwei Lesarten', D4s: 'Variante' },
   },
   fr: {
@@ -41,7 +42,7 @@ const LS = {
     fed: n => `des ${n} nouveaux objets fédéraux reçoivent d’Apertus le chapitre thématique que leur a attribué la rédaction de l’Année politique suisse (APS) ; aucun n’a servi pendant le développement.`,
     fedSub: (lp, kw) => [lp != null ? `liste des chapitres seule ${pct(lp)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'comparaison :',
-    lane: (ok, chk) => [`passent sans vérification, dont ${ok} sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, ${chk} justes).`],
+    lane: (n, ok, chk) => [`des ${n} nouveaux objets fédéraux passent sans vérification, dont ${ok} sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, ${chk} justes).`],
     laneSub: 'règle : p recalibré ≥ 0,7, fixée avant le test',
     be: (n, k, other) => `des ${n} objets du Grand Conseil bernois arrivent, avec le titre français, à la direction compétente parmi ${k} ; avec le titre allemand ${other}.`,
     beSub: (a, b) => `mots-clés ${pct(a)} / ${pct(b)}`,
@@ -58,6 +59,7 @@ const LS = {
       ['juge IA', 'un second modèle (Claude) juge là où il n’y a pas d’étiquettes humaines'],
       ['S25, D4 …', 'identifiants internes des tests et variantes (survol) ; dossier eval/']],
     internal: 'interne',
+    lanesPop: n => `des ${n} nouveaux objets fédéraux (test)`,
     codes: { D0: 'liste', D1: 'sans exemples', D2: 'DE + FR moyennés', D3: 'cinq exemples', D4: 'avec exemples, deux lectures', D4s: 'variante' },
   },
 };
@@ -108,7 +110,7 @@ function lead(rows) {
   }
   const lt = cf && cf.lanes_tau;
   if (lt && lt.pass_ && lt.check) {
-    out.push(item(pct(lt.pass_.coverage), S.lane(pct(lt.pass_.precision), pct(lt.check.precision)),
+    out.push(item(pct(lt.pass_.coverage), S.lane(num(lt.pass_.n + lt.check.n), pct(lt.pass_.precision).replace(' ', '\u00a0'), pct(lt.check.precision).replace(' ', '\u00a0')),
       `${S.laneSub} · n ${num(lt.pass_.n)} + ${num(lt.check.n)}`, lt.file));
   }
   const be = byFile('eval/s18/results.json');
@@ -253,6 +255,7 @@ function lanesTau(lt) {
   const seg = (w, x, cls, lab) => h('span', { class: `lseg ${cls}`, style: `width:${w * 100}%`, tabindex: '0', 'data-tip': `${lab} · ${pct(w)} (n ${num(x.n)}) · ${L.cpY} ${p3(x.precision)} [${x.ci.join(', ')}]` },
     h('span', { class: 'lok', style: `width:${x.precision * 100}%` }));
   return h('div', { class: 'lanes' }, h('h3', {}, L.lanesT),
+    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, ls().lanesPop(num(lt.pass_.n + lt.check.n))),
     h('div', { class: 'lbar' }, seg(a, lt.pass_, 'ag', L.shipped), seg(1 - a, lt.check, 'dis', L.laneCheck)),
     h('div', { class: 'llab' }, h('span', { style: `width:${a * 100}%` }, `${L.shipped} · ${pct(a)} · ${p3(lt.pass_.precision)}`),
       h('span', { style: `width:${(1 - a) * 100}%` }, h('span', { class: 'rtick' }), ` ${L.laneCheck} · ${p3(lt.check.precision)}`)),

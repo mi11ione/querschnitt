@@ -166,7 +166,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     const pc = bil.lane === 'please_check';
     add(L.bilingual, h('span', { class: 'mono', style: 'font-size:12px' }, `DE ${chapterName(bil.top.de)} · FR ${chapterName(bil.top.fr)} → `,
       h('span', { class: pc ? 'sig' : '' }, L.lanes[bil.lane] || bil.lane)));
-  } else if (c.bi[i] === 1) {
+  } else if (c.bi[i] === 1 && !(bil && bil.reads)) { // with the readings, the chapter graphic's sentence says it
     add(L.bilingual, h('span', { class: 'mono sig', style: 'font-size:12px' }, L.lanes.please_check));
   }
   let chart = null;
@@ -200,6 +200,25 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
 }
 
 // ---------------------------------------------------------------- graphics
+// One plain sentence over each decision graphic: how Apertus was asked, what it answered, and what follows. It reads
+// alone; the bars below stay for experts. Kept here (util.js holds the shared strings).
+const WS = {
+  de: { ex: 'Zweimal gefragt (mit und ohne Beispiele)', ord: 'Zweimal gefragt (Themenliste in zwei Reihenfolgen)', bil: 'Auf Deutsch und auf Französisch gefragt',
+    yn: 'Zweimal gefragt (ja/nein in zwei Reihenfolgen)', once: 'Einmal gefragt', q: x => `«${x}»`,
+    both: x => `beide Male «${x}»`, differ: x => `verschiedene Antworten (${x})`, clear: x => `klare Antwort «${x}»`,
+    pick: x => `Apertus wählt «${x}»`, prop: x => `Vorschlag «${x}»`, unsure: p => `aber nicht sicher genug (p ${p} < 0.7)`, sure: (x, p) => `«${x}» trotzdem sicher genug (p ${p} ≥ 0.7)`,
+    pass: 'ohne Prüfung', check: 'eine Person prüft' },
+  fr: { ex: 'Posé deux fois (avec et sans exemples)', ord: 'Posé deux fois (liste des thèmes dans deux ordres)', bil: 'Demandé en allemand et en français',
+    yn: 'Posé deux fois (oui/non dans deux ordres)', once: 'Posé une fois', q: x => `«\u202f${x}\u202f»`,
+    both: x => `deux fois «\u202f${x}\u202f»`, differ: x => `réponses différentes (${x})`, clear: x => `réponse nette «\u202f${x}\u202f»`,
+    pick: x => `Apertus choisit «\u202f${x}\u202f»`, prop: x => `proposition «\u202f${x}\u202f»`, unsure: p => `mais pas assez sûr (p ${p} < 0,7)`, sure: (x, p) => `«\u202f${x}\u202f» quand même assez sûr (p ${p} ≥ 0,7)`,
+    pass: 'sans vérification', check: 'une personne vérifie' },
+};
+const ws = () => WS[UI.lang === 'fr' ? 'fr' : 'de'];
+// asked: how; what: the answers; why: only where the outcome does not follow from the answers alone
+const sentence = (asked, what, why, check) => h('p', { class: 'dgs' }, `${asked ? `${asked}: ` : ''}${what}${why ? `, ${why}` : ''} → `,
+  h('span', { class: check ? 'sig' : '' }, check ? ws().check : ws().pass), '.');
+
 // yes/no topic: the decision's p on a 0–1 track with the cut-off, the two readings as thin bars beneath
 function yesNoGraphic(p, dig, check, flag, kw) {
   const L = t(), cut = 0.5, rn = [L.read1, L.read2];
@@ -207,13 +226,20 @@ function yesNoGraphic(p, dig, check, flag, kw) {
   if (dig && dig.p_a != null) rows.push({ label: rn[0], v: dig.p_a, tone: dig.p_a >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[0]} p ${p3(dig.p_a)}` });
   if (dig && dig.p_b != null) rows.push({ label: rn[1], v: dig.p_b, tone: dig.p_b >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[1]} p ${p3(dig.p_b)}` });
   const el = h('div', { class: 'dg' });
+  { // the sentence: order b is asked only when order a is not clear (0.1 < p < 0.9), so one reading = a clear answer
+    const W = ws(), yn = v => (v >= cut ? L.yes : L.no), two = dig && dig.p_a != null && dig.p_b != null, unsure = p >= 0.3 && p < 0.7;
+    if (two) {
+      const same = (dig.p_a >= cut) === (dig.p_b >= cut);
+      el.append(sentence(W.yn, same ? W.both(yn(dig.p_a)) : W.differ(`${W.q(yn(dig.p_a))} / ${W.q(yn(dig.p_b))}`),
+        same ? (check && unsure ? W.unsure(p3(p)) : '') : W.prop(flag ? L.yes : L.no), check));
+    } else if (dig && dig.p_a != null) el.append(sentence(W.once, W.clear(yn(dig.p_a)), check && unsure ? W.unsure(p3(p)) : '', check));
+    else if (!Number.isNaN(p)) el.append(sentence('', W.pick(yn(p)), check && unsure ? W.unsure(p3(p)) : '', check));
+  }
   for (const r of rows) el.append(h('div', { class: `dgr ${r.thin ? 'thin' : ''}`, 'data-tip': r.tip, tabindex: '0' },
     h('span', { class: `rk ${r.strong ? 'on' : 'dim'}` }, r.label),
     h('span', { class: 'rbar cut' }, bar(r.v, r.tone, '', r.thin), h('span', { class: 'cutl', style: `left:${cut * 100}%` })),
     h('span', { class: 'rv' }, r.value)));
-  const both = dig && dig.p_a != null && dig.p_b != null;
-  el.append(h('p', { class: 'dgn' }, both ? `${(dig.p_a >= cut) === (dig.p_b >= cut) ? L.readAgree : L.readDisagree} · ` : '', kw ? L.kwYes : L.kwNo));
-  if (check) el.append(h('p', { class: 'dgn' }, h('span', { class: 'sig' }, L.lanes.please_check)));
+  el.append(h('p', { class: 'dgn' }, kw ? L.kwYes : L.kwNo)); // the sentence above says agreement and lane
   return el;
 }
 
@@ -242,6 +268,16 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   if (reads) for (const k of Object.keys(reads).sort((a, b) => Math.max(...reads[b]) - Math.max(...reads[a]))) if (!keys.includes(+k)) keys.push(+k);
   const shown = keys.slice(0, 5);
   const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim', 'data-tip': reads ? L.readsTip : '' }, reads ? `p · ${rnames.join(' / ')}` : 'p')));
+  { // the sentence: how it was asked, what came back, what follows; the lane reason only where the answers do not give it
+    const W = ws(), chk = lane === 'please_check', low = pShip != null && pShip < 0.7, ship = rank.length ? chapterName(rank[0]) : '';
+    const asked = bil ? W.bil : aps && aps.examples ? W.ex : W.ord;
+    if (nR > 1 && top[0] != null && top[1] != null) {
+      const a = W.q(chapterName(top[0])), b = W.q(chapterName(top[1]));
+      const what = disagree ? W.differ(bil ? `${rnames[0]} ${a}, ${rnames[1]} ${b}` : `${a} / ${b}`) : W.both(chapterName(top[0]));
+      const why = !disagree ? (chk && low ? W.unsure(p3(pShip)) : '') : !chk && pShip != null ? W.sure(ship, p3(pShip)) : ship ? W.prop(ship) : '';
+      el.append(sentence(asked, what, why, chk));
+    } else if (ship) el.append(sentence('', W.pick(ship), chk && low ? W.unsure(p3(pShip)) : '', chk));
+  }
   for (const k of shown) {
     const ri = rank.indexOf(k), v = ri >= 0 ? praw[ri] : null, shipped = ri === 0;
     const subs = [];
@@ -252,12 +288,6 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
       h('span', { class: `rk ${shipped ? 'on' : ''}` }, chapterName(k)),
       h('span', { class: 'rbar' }, v != null ? bar(v, shipped ? 'ink' : 'grey') : h('span', { class: 'vb none' }), ...subs.map(x => bar(x.v, x.tone, '', true))),
       h('span', { class: 'rv' }, shipped && pShip != null ? p3(pShip) : '')));
-  }
-  // explanation (the two readings), then the lane only when a person is needed
-  if (nR > 1) el.append(h('p', { class: 'dgn' }, disagree ? `${bil ? L.langsDisagree : L.readDisagree} · ${rnames[0]} → ${chapterName(top[0])}, ${rnames[1]} → ${chapterName(top[1])}` : (bil ? L.langsAgree : L.readAgree)));
-  if (lane === 'please_check') {
-    const low = pShip != null && pShip < 0.7;
-    el.append(h('p', { class: 'dgn' }, h('span', { class: 'sig' }, `${L.lanes.please_check}: ${low ? `p ${p3(pShip)} < 0.7` : bil && disagree ? L.langsDisagree : ''}`)));
   }
   const subs = aps && aps.subs ? aps.subs : [];
   let se = null;

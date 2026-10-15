@@ -40,13 +40,19 @@ const termsText = tr => {
 
 // strings of the replay (kept here: util.js holds the shared ones)
 const R = {
-  de: { play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', last: 'zuletzt gelesen, neueste zuerst',
+  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', last: 'zuletzt gelesen, neueste zuerst',
     line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.` },
-  fr: { play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', last: 'derniers lus, le plus récent en haut',
+  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', last: 'derniers lus, le plus récent en haut',
     line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.` },
 };
 const r = () => R[UI.lang] || R.de;
 const SPEEDS = [1, 4];
+// a live run can be capped (POST /adhoc `limit`, newest affairs first): #neu?limit=25, or the quiet select beside the
+// period; default: no cap. A recorded run plays once by itself per page load (the button replays it).
+const LIMITS = [0, 25, 50];
+const hashLimit = () => { const v = +new URLSearchParams(location.hash.split('?')[1] || '').get('limit'); return v > 0 ? Math.floor(v) : 0; };
+const LIMIT0 = hashLimit(); // read at load, before the shell rewrites the hash
+let autoPlayed = false;
 const dmy = iso => `${iso.slice(8, 10)}.${iso.slice(5, 7)}.${iso.slice(0, 4)}`;
 
 // An EventSource stand-in that dispatches the recorded events at their recorded `t` (seconds since job start) × speed.
@@ -86,8 +92,10 @@ export class Neu {
     this.run = h('p', { class: 'runline', 'aria-live': 'polite' });
     this.per = h('select', { class: 'per', 'aria-label': 'Zeitraum' });
     this.perL = h('span', { class: 'perl' });
+    this.limit = LIMIT0;
+    this.lim = h('select', { class: 'per', 'aria-label': 'Umfang', onchange: () => { this.limit = +this.lim.value; history.replaceState(null, '', `#neu${this.limit ? `?limit=${this.limit}` : ''}`); } });
     this.saveB = h('button', { class: 'tb mono', type: 'button', hidden: true, style: 'font-size:12px', onclick: () => this.save() });
-    this.head = h('div', { class: 'nt' }, h('div', { class: 'nt-field' }, this.field), h('p', { class: 'perrow' }, this.per, this.perL), this.exd, this.terms, h('div', { class: 'runrow' }, this.run, this.saveB));
+    this.head = h('div', { class: 'nt' }, h('div', { class: 'nt-field' }, this.field), h('p', { class: 'perrow' }, this.per, ' ', this.lim, this.perL), this.exd, this.terms, h('div', { class: 'runrow' }, this.run, this.saveB));
     this.field.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.start(); } });
     this.field.addEventListener('input', () => { this.field.style.height = 'auto'; this.field.style.height = `${this.field.scrollHeight}px`; });
     this.terms.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); this.start(this.terms.value); } });
@@ -102,8 +110,13 @@ export class Neu {
     this.head.querySelector('.perrow').after(this.recL, this.playRow);
     this.board.reg.prepend(this.feed); // the list column: hits only, so the stream of every decision goes above it
     this.relang();
-    if (!API.live) loadReplay().then(rec => { if (rec && rec.events && !API.live) { this.rec = rec; this.relang(); } });
+    if (!API.live) loadReplay().then(rec => {
+      if (!(rec && rec.events) || API.live) return;
+      this.rec = rec; this.relang(); this.shown();
+    });
   }
+  // the tab is open: in static mode the recording starts by itself, once per page load
+  shown() { if (this.rec && !autoPlayed && !this.root.hidden && !this.es && !API.live) { autoPlayed = true; this.start(); } }
   renderSpeed() {
     const R0 = r();
     this.speedEl.replaceChildren(`${R0.speed} `, ...SPEEDS.flatMap((s, k) => [k ? ' ' : '', h('button', { class: 'tb', type: 'button', 'aria-pressed': String(s === this.speed),
@@ -127,6 +140,9 @@ export class Neu {
     const pv = this.per.value || 'week';
     this.per.replaceChildren(...Object.entries(L.periods).map(([k, v]) => h('option', { value: k, selected: k === pv }, v)));
     this.per.disabled = !API.live;
+    const lv = [...new Set([...LIMITS, this.limit])].sort((a, b) => a - b);
+    this.lim.replaceChildren(...lv.map(k => h('option', { value: String(k), selected: k === this.limit }, r().lim(k))));
+    this.lim.hidden = !API.live; // the cap is for a live run only
     this.field.disabled = !API.live && !this.rec; this.ex.disabled = !API.live;
     this.root.classList.toggle('nt-static', !API.live && !this.rec);
     this.root.classList.toggle('nt-replay', !!this.rec);
@@ -136,6 +152,9 @@ export class Neu {
       this.field.style.height = 'auto'; this.field.style.height = `${this.field.scrollHeight}px`;
       this.recL.hidden = false; this.playRow.hidden = false;
       this.recL.textContent = R0.line(dmy(x.recorded), x.model, x.build_short);
+      // the screen names one period, the recorded one, from the start (before the replayed POST answer arrives)
+      const rp = (x.post && x.post.period) || (x.summary && x.summary.period);
+      if (rp && rp[0] && !this.board.fixedPer) { this.board.fixedPer = [dayNum(rp[0]), dayNum(rp[1])]; this.perL.textContent = ` ${L.periodRead} ${rp[0]} – ${rp[1]}`; this.board.refresh(); }
       this.playB.textContent = this.played ? R0.again : R0.play;
       this.renderSpeed();
       if (!this.played) this.run.textContent = '';
@@ -156,8 +175,10 @@ export class Neu {
     if (pv === 'month') { body.from = isoOfDay(D.dmax - 30); body.to = isoOfDay(D.dmax); }
     else if (pv === 'y2526') body.period = '2025-01-01..2026-12-31';
     if (examples.length) body.examples = examples;
+    if (this.limit) body.limit = this.limit;
     if (terms) body.terms = terms;
-    this.run.className = 'runline'; this.run.textContent = '…';
+    this.run.className = 'runline'; this.run.textContent = rec ? `${L.read} 0 · ${r().rec} ×${this.speed} · …` : '…';
+    if (rec && rec.post && rec.post.topic && rec.post.topic.names) this.board.setTopic(liveTopic('neu', rec.post.topic.names, new Map())); // its name from the first frame
     let res;
     if (rec) { // the recorded POST answer, after the recorded topic generation time
       await new Promise(f => setTimeout(f, (rec.post_lat || 0) * 1000 / this.speed));
@@ -175,6 +196,9 @@ export class Neu {
       if (!p || !p[0]) return;
       const a = String(p[0]).slice(0, 10), z = String(p[1]).slice(0, 10) > isoOfDay(D.dmax) ? isoOfDay(D.dmax) : String(p[1]).slice(0, 10);
       this.perL.textContent = ` ${L.periodRead} ${a} – ${z}`;
+      // the run read one period: header, Überblick panel and timeline name that one, not the brushed whole weeks
+      // (until a person brushes other weeks)
+      this.board.fixedPer = [dayNum(a), dayNum(z)];
       const wa = Math.max(0, Math.floor((dayNum(a) - D.w0) / 7)), wz = Math.min(D.nWeeks - 1, Math.floor((dayNum(z) - D.w0) / 7));
       if (wz >= wa) { this.board.S.brush = [wa, wz]; this.board.refresh(); }
     };

@@ -28,26 +28,24 @@ export class Atlas {
     const keys = Object.keys(D.geo.cantons), ki = new Map(keys.map((k, j) => [k, j])); ki.set('CHE', keys.length);
     const nK = keys.length + 1;
     const stat = tps.map(() => ({ n: new Int32Array(nK), hit: new Int32Array(nK) }));
-    let scoredAny = 0;
     for (let i = 0; i < D.n; i++) {
-      if (c.day[i] < D.dmin) continue; // the main slice only
-      const k = ki.get(c.body[i]); const sc = c.ch[i] >= 0 || !Number.isNaN(c.dp[i]); if (sc) scoredAny++;
+      if (c.day[i] < D.dmin || c.day[i] > D.dmax) continue; // the main period only (as D.tally)
+      const k = ki.get(c.body[i]);
       if (k == null) continue;
       tps.forEach((tp, j) => { if (tp.scored(i)) { stat[j].n[k]++; if (tp.hit(i)) stat[j].hit[k]++; } });
     }
     // one fixed, doubling ramp for every small map, so the maps compare at a glance
     const brk = [0.000001, 0.025, 0.05, 0.1, 0.2];
-    // share of scored APS rows that go to a person (lane please check), main slice
-    let nS = 0, nC = 0;
-    for (let i = 0; i < D.n; i++) if (c.ch[i] >= 0 && c.day[i] >= D.dmin) { nS++; if (c.lane[i] === 1) nC++; }
+    // share of scored APS rows that go to a person (lane please check), main period: D.tally, the fact line's numbers
+    const nS = D.tally.aps, nC = D.tally.check;
     // big numbers; the lane leads with what needs no check, the rest is a person's weekly load (red tick: «wartet auf eine Person»)
     const weeks = Math.floor((D.dmax - D.dmin) / 7) + 1;
     const nP = nS - nC;
     const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nP)} ${L.of} ${num(nS)}` }, h('b', {}, pct(nS ? nP / nS : NaN, 0).replace(/\s/g, '\u2009')),
-      h('span', {}, L.bigPass), h('span', { class: 'bn-sub', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('i', { class: 'rtick' }),
+      h('span', {}, `${L.bigPass} · ${L.bigPassOf}`), h('span', { class: 'bn-sub', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('i', { class: 'rtick' }),
         ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.round(nC / weeks)))}`));
     const big = h('div', { class: 'big' },
-      bigN(num(scoredAny), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
+      bigN(num(nS), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
       bigShare);
     const lede = h('p', { class: 'lede' }, L.lede(num(m.parliaments ?? D.bodies.length)));
     // shared defs: every canton path once, used by every small map
@@ -92,7 +90,7 @@ export class Atlas {
     for (let i = 0; i < D.n; i++) if (c.week[i] === w && c.day[i] <= D.dmax) { if (c.lvl[i] < 3) lv[c.lvl[i]]++; rows.push(i); }
     const [y, k] = isoWeek(D.w0 + w * 7), mx = Math.max(1, ...lv);
     const box = h('aside', { class: 'atl-week' }, h('h2', {}, L.thisWeek),
-      h('p', { class: 'tm mono dim' }, `${L.week} ${k} ${y} · ${isoOfDay(D.w0 + w * 7).slice(5).split('-').reverse().join('.')}.–${isoOfDay(D.w0 + w * 7 + 6).slice(5).split('-').reverse().join('.')}. · ${num(rows.length)} ${L.affairs}`),
+      h('p', { class: 'tm mono dim' }, `${L.week} ${k} ${y} · ${isoOfDay(D.w0 + w * 7).slice(5).split('-').reverse().join('.')}.–${isoOfDay(Math.min(D.dmax, D.w0 + w * 7 + 6)).slice(5).split('-').reverse().join('.')}. · ${num(rows.length)} ${L.affairs}`),
       rankList([L.federal, L.cantonal, L.communal].map((lab, l) => ({ label: lab, v: lv[l] / mx, tone: 'ink', value: num(lv[l]) }))));
     // notable: a chapter present on ≥ 2 levels this week → its best affair per level; then the highest-p hits
     const P = i => Math.max(Number.isNaN(c.chp[i]) ? 0 : c.chp[i], c.df[i] ? c.dp[i] : 0);

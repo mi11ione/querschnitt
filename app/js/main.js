@@ -1,6 +1,6 @@
 // Shell: one bar (wordmark, three views with counts, DE/FR, build), one mono fact line, the view, provenance footer.
 import { D, SRC, API, load, probeApi, TOPIC_BY_ID, findTopic, syncDecisions } from './data.js';
-import { $, h, t, UI, num, pct } from './util.js';
+import { $, h, t, UI, num } from './util.js';
 import { Board } from './board.js';
 import { Neu, loadSaved } from './neu.js';
 import { renderPruef, testCount } from './pruef.js';
@@ -24,7 +24,7 @@ function setLang(l) {
 function renderShell() {
   const L = t(), m = D.meta;
   // bar
-  const counts = { anb: '', ueber: num(atlas ? atlas.topics().length : 0), karte: num(D.n), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
+  const counts = { anb: '', ueber: num(atlas ? atlas.topics().length : 0), karte: num(D.tally.affairs), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
   for (const v of VIEWS) {
     const b = $(`#t-${v}`); b.replaceChildren(L[v], h('span', { class: 'c' }, counts[v]));
     b.setAttribute('aria-selected', String(v === view));
@@ -39,12 +39,14 @@ function renderShell() {
   // last night in affairs (new in OPD's export, scored that night), not topic rows
   const ng = m.nightly || null, nNew = ng ? (ng.new_affairs ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
   const night = nNew ? [`${num(nNew)} ${ng ? L.newAff : L.newW}${ng && ng.scored != null ? ` · ${num(ng.scored)} ${L.scored}` : ''}`, `${L.night}:`, true] : null;
+  // the counts of D.tally: the same numbers as the Überblick and the Karte (docs/APP.md «Zählweisen»)
+  const T = D.tally, dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
   const items = [
-    [num(m.affairs ?? D.n), L.affairs],
+    [num(T.affairs), L.affairs],
     [num(m.parliaments ?? D.bodies.length), L.parls],
-    [num(m.please_check ?? 0), L.pendingAll],
-    [pct(m.scored_share), `${L.scored} (APS)`],
-    m.dig_scored != null ? [num(m.dig_scored), `${L.scored} (${(TOPIC_BY_ID.get('adhoc/digitalisierung') || { names: { de: 'Digitalisierung', fr: 'numérique' } }).names[UI.lang]})`] : null,
+    [num(T.aps), L.scoredAps],
+    T.dig && dig ? [num(T.dig), L.scoredTopic(dig.names[UI.lang] || dig.names.de)] : null,
+    [num(T.check), L.pendingAll],
     night,
   ].filter(Boolean);
   $('#facts').replaceChildren(...items.map(([v, k, pre]) => h('span', {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));
@@ -73,7 +75,7 @@ function show(v) {
   if (v === 'ueber') atlas.render();
   if (v === 'anb') renderAnb($('#v-anb'));
   if (v === 'neu' && !neu) neu = new Neu($('#v-neu'));
-  if (v === 'neu' && neu) neu.board.refresh();
+  if (v === 'neu' && neu) { neu.board.refresh(); neu.shown(); }
   writeHash();
 }
 const board = () => (view === 'karte' ? karte : view === 'neu' && neu ? neu.board : null);
@@ -92,6 +94,7 @@ function writeHash() {
     if (karte.mapMode === 'matrix') p.set('v', 'matrix');
     s += `?${p}`;
   }
+  if (view === 'neu' && neu && neu.limit) s += `?limit=${neu.limit}`; // a capped live run keeps its cap in the link
   history.replaceState(null, '', s);
 }
 function readHash() {

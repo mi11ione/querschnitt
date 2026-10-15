@@ -71,7 +71,7 @@ class H(http.server.SimpleHTTPRequestHandler):
             if body.get("terms"):
                 words = [w.strip() for w in re.split(r"[,·:]", body["terms"]) if len(w.strip()) >= 4 and w.strip() not in ("de", "fr", "it")]
             slug = re.sub(r"[^a-z0-9]+", "-", norm(s))[:40].strip("-") or "thema"
-            TOPICS[slug] = {"words": [norm(w)[:7] for w in words]}
+            TOPICS[slug] = {"words": [norm(w)[:7] for w in words], "limit": int(body["limit"]) if body.get("limit") else None}
             ids = last_week_ids()
             per = [C["date"][ids[-1][0]], C["date"][ids[0][0]]] if ids else None
             TOPICS[slug]["period"] = per
@@ -100,6 +100,8 @@ class H(http.server.SimpleHTTPRequestHandler):
         self.send_response(200); self.send_header("content-type", "text/event-stream"); self.send_header("cache-control", "no-cache")
         self.send_header("access-control-allow-origin", "*"); self.end_headers()
         ids = last_week_ids(); t0 = time.time()
+        if TOPICS.get(slug, {}).get("limit"):
+            ids = sorted(ids, key=lambda x: (C["date"][x[0]], x[1]), reverse=True)[:TOPICS[slug]["limit"]]  # as the API: newest first, capped
         cap = int(__import__("os").environ.get("MOCK_CAP", "0")) or None
         per = TOPICS.get(slug, {}).get("period") or [C["date"][ids[-1][0]] if ids else "", C["date"][ids[0][0]] if ids else ""]
         try:

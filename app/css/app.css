@@ -433,3 +433,18 @@ body.v-ueber .ctxw{display:none}
 .nt-feed .v.sig{color:var(--sig)}
 .nt-feed .t{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:400 var(--f2)/1.35 var(--sans)}
 .nt-feed .m{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--ink2);font:400 var(--f1)/1.5 var(--mono)}
+/* Prüfstand lead: three to four results in plain words above the full tables (pruef.js) */
+.pl{margin:0 0 32px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.pl-in{margin:0 0 12px;max-width:62ch;font:400 var(--f3)/1.45 var(--sans);color:var(--ink)}
+.pl-l{list-style:none;margin:0;padding:0}
+.pl-l li{display:grid;grid-template-columns:168px minmax(0,1fr);gap:0 24px;align-items:baseline;padding:16px 0;border-top:1px solid var(--hair)}
+.pl-n{font:500 44px/1 var(--sans);letter-spacing:-.02em;color:var(--ink);font-feature-settings:"tnum";white-space:nowrap}
+.pl-t{margin:0;max-width:62ch;font:400 var(--f3)/1.45 var(--sans);color:var(--ink)}
+.pl-t .rtick{margin:0 2px 0 0}
+.pl-s{margin:6px 0 0;font:400 var(--f1)/1.5 var(--mono);color:var(--ink2)}
+.pl-note{margin:12px 0 0;max-width:80ch;font:400 var(--f1)/1.5 var(--mono);color:var(--ink2)}
+.pl-h{margin:0 0 8px;font:500 var(--f3)/1.4 var(--sans);color:var(--ink)}
+.pl-gl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:2px 16px;margin:0 0 32px;font:400 var(--f1)/1.5 var(--mono);color:var(--ink2)}
+.pl-gl dt{color:var(--ink)}.pl-gl dd{margin:0}
+.pr td[data-tip],.pr h3[data-tip]{cursor:help}
+@media (max-width:599px){.pl-l li{grid-template-columns:minmax(0,1fr);gap:6px 0}.pl-n{font-size:36px}.pl-gl{grid-template-columns:minmax(0,1fr);gap:0}.pl-gl dd{margin-bottom:6px}}

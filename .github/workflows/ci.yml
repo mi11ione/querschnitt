@@ -154,30 +154,20 @@ jobs:
             -p QS_TOPICS_FILE="$RUNNER_TEMP/topics.changed.jsonl.gz" 2>&1 | tee "$RUNNER_TEMP/load3.log"
           if grep -n "ERROR" "$RUNNER_TEMP/load3.log"; then exit 1; fi
           psql -v ON_ERROR_STOP=1 -f upstream/hop/ci/assert_changed.sql
+      - name: every code of every scheme file is in the seed and loads (a scheme file without a seed id fails here)
+        run: |
+          python upstream/hop/ci/every_code.py --out "$RUNNER_TEMP/every_code.jsonl.gz"
+          psql -v ON_ERROR_STOP=1 -q -c "CREATE TABLE ci.every_code (scheme_key text, code text)"
+          gzip -dc "$RUNNER_TEMP/every_code.jsonl.gz" | jq -r '[.scheme, .code] | @tsv' | psql -v ON_ERROR_STOP=1 -c "COPY ci.every_code FROM STDIN"
+          psql -v ON_ERROR_STOP=1 -f upstream/hop/ci/assert_seeded.sql
+          upstream/hop/ci/load_full.sh "$RUNNER_TEMP/every_code.jsonl.gz" every-code
+      - name: a slice of the app's current export (ci/topics.app-slice.jsonl.gz, ci/make_slice.py; Ticino rows of every code) loaded in full
+        run: upstream/hop/ci/load_full.sh upstream/hop/ci/topics.app-slice.jsonl.gz app-slice
       - name: the released topics file (make data, data-latest) loaded in full into an empty table, checked against to_opd.py
         run: |
           curl -fsSL https://github.com/mi11ione/querschnitt/releases/download/data-latest/querschnitt-data.tar.gz \
             | tar -xzf - -C "$RUNNER_TEMP" data/topics.jsonl.gz
-          full="$RUNNER_TEMP/data/topics.jsonl.gz"
-          # stand-in rows for the file's affairs and bodies (bodies not in opd_stand_in.sql get ids from 100001)
-          psql -v ON_ERROR_STOP=1 -q -c "DELETE FROM topics" -c "CREATE TABLE ci.file_affairs (affair_id integer, body_key text)"
-          gzip -dc "$full" | jq -r '[.affair_id, .body_key] | @tsv' | sort -u | psql -v ON_ERROR_STOP=1 -c "COPY ci.file_affairs FROM STDIN"
-          psql -v ON_ERROR_STOP=1 -q \
-            -c "INSERT INTO bodies (id, body_key) SELECT 100000 + row_number() OVER (ORDER BY body_key), body_key
-                FROM (SELECT DISTINCT body_key FROM ci.file_affairs WHERE body_key NOT IN (SELECT body_key FROM bodies)) b" \
-            -c "INSERT INTO affairs (id, body_key, body_id) SELECT DISTINCT ON (f.affair_id) f.affair_id, f.body_key, b.id
-                FROM ci.file_affairs f JOIN bodies b USING (body_key) ON CONFLICT (id) DO NOTHING"
-          psql -At -c "SELECT row_to_json(b) FROM bodies b" | gzip -n > "$RUNNER_TEMP/bodies.ndjson.gz"
-          python upstream/opd/export/to_opd.py --topics "$full" --bodies "$RUNNER_TEMP/bodies.ndjson.gz" \
-            --out "$RUNNER_TEMP/expected-full" --with-subtopics
-          psql -v ON_ERROR_STOP=1 -q -c "TRUNCATE ci.expected"
-          gzip -dc "$RUNNER_TEMP/expected-full/topics.ndjson.gz" \
-            | psql -v ON_ERROR_STOP=1 -c "COPY ci.expected (doc) FROM STDIN WITH (FORMAT csv, QUOTE E'\x01', DELIMITER E'\x02')"
-          "$HOP_DIR/hop-run.sh" -j querschnitt-opd -e opd -r local -f '${PROJECT_HOME}/load_topics.hwf' \
-            -p QS_TOPICS_FILE="$full" 2>&1 | tee "$RUNNER_TEMP/load4-full.log"
-          if grep -n "ERROR" "$RUNNER_TEMP/load4-full.log"; then exit 1; fi
-          psql -v ON_ERROR_STOP=1 -v n="$(gzip -dc "$full" | jq -c 'select(.provenance == "inferred")' | wc -l)" -v fixture=0 \
-            -f upstream/hop/ci/assert_load.sql
+          upstream/hop/ci/load_full.sh "$RUNNER_TEMP/data/topics.jsonl.gz" release
       - name: API router (upstream/opd/api/router.py) on the loaded rows; each test in a transaction that is rolled back
         env: {OPD_TEST_DSN: "postgresql://opd:opd@localhost:5432/openparldata"}
         run: |

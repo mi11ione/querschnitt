@@ -325,5 +325,18 @@ INSERT INTO topic_codes (scheme_id, scheme_key, code, level, parent_code, positi
   (7, 'bs-themen', 'bs:none', 1, NULL, 47, NULL, 'Keines dieser Themen', NULL, NULL, NULL)
 ON CONFLICT (scheme_id, code) DO NOTHING;
 
+INSERT INTO topic_schemes (id, scheme_key, version, type, levels, name_de, name_fr, name_it, name_rm, name_en, question_de, question_fr, question_it, body_id, body_key, licence, source_name, source_url, notes, code_count, active)
+VALUES (8, 'ti-dipartimenti', '1ec685c2', 'body', 1, 'Kanton Tessin: zuständiges Departement (Grosser Rat)', NULL, 'Cantone Ticino: dipartimento competente (Gran Consiglio)', NULL, 'Canton of Ticino: lead department (Grand Council)', NULL, NULL, NULL, (SELECT id FROM bodies WHERE body_key = 'TI'), 'TI', NULL, 'Repubblica e Cantone Ticino (department names); per-affair lead department as published in the OpenParlData contributors export (role leading_department)', 'https://www.ti.ch', 'Unit names verbatim (Italian) from the Ticino Gran Consiglio''s own lead-department entries as published in the OpenParlData contributors export (role leading_department, «Federführung», position 1; values 2023-2026); alphabetical order; no descriptions added. The canton publishes no German names, so the `de` slots that the named prompt reads hold the Italian frame and names verbatim (no translation). S29 (eval/PREREG-BUILD.md). Licence of the labels unconfirmed: OPD''s export index states none, and the canton''s object pages were not opened (robots.txt). To be agreed with OPD / the Canton of Ticino.', 7, true)
+ON CONFLICT (scheme_key, version) DO NOTHING;
+INSERT INTO topic_codes (scheme_id, scheme_key, code, level, parent_code, position, external_id, label_de, label_fr, label_it, label_rm) VALUES
+  (8, 'ti-dipartimenti', 'ti:CAN', 1, NULL, 1, NULL, 'Cancelleria dello Stato', NULL, 'Cancelleria dello Stato', NULL),
+  (8, 'ti-dipartimenti', 'ti:DT', 1, NULL, 2, NULL, 'Dipartimento del territorio', NULL, 'Dipartimento del territorio', NULL),
+  (8, 'ti-dipartimenti', 'ti:DECS', 1, NULL, 3, NULL, 'Dipartimento dell''educazione, della cultura e dello sport', NULL, 'Dipartimento dell''educazione, della cultura e dello sport', NULL),
+  (8, 'ti-dipartimenti', 'ti:DSS', 1, NULL, 4, NULL, 'Dipartimento della sanità e della socialità', NULL, 'Dipartimento della sanità e della socialità', NULL),
+  (8, 'ti-dipartimenti', 'ti:DFE', 1, NULL, 5, NULL, 'Dipartimento delle finanze e dell''economia', NULL, 'Dipartimento delle finanze e dell''economia', NULL),
+  (8, 'ti-dipartimenti', 'ti:DI', 1, NULL, 6, NULL, 'Dipartimento delle istituzioni', NULL, 'Dipartimento delle istituzioni', NULL),
+  (8, 'ti-dipartimenti', 'ti:none', 1, NULL, 7, NULL, 'Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)', NULL, 'Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)', NULL)
+ON CONFLICT (scheme_id, code) DO NOTHING;
+
 SELECT setval(pg_get_serial_sequence('topic_schemes', 'id'), (SELECT max(id) FROM topic_schemes));
 COMMIT;

@@ -95,12 +95,14 @@ every column except `id`, `created_at`, `updated_at` and `content_hash`.
 | 1 | `ci/topics.ci.jsonl`: 19 rows of the shipped file (the 12 of `../opd/export/sample/`, three more of one affair incl. a subtopic, two text quotes, a `bs-themen` row) plus one decision row | the 18 machine rows inserted, the decision row skipped; equal to `to_opd.py`; text quote `text:226062` → `evidence_text_id`, document quote `doc:927452` → `evidence_doc_id` with `evidence_field = 'doc'`, title quote without ids; `body_id`, `scheme_id`, labels, subtopic parent; `updated_at` and `created_at` both UTC |
 | 2 | the same file again | nothing written: every column of every row as after step 1 |
 | 3 | the same file with two rows changed by the job | `p` changed at the same `valid_from`: updated in place, `updated_at` later, `created_at` kept; code changed with a later `valid_from`: inserted, the old row closed at the new `valid_from`; the other 16 rows untouched |
-| 4 | the released topics file (`make data`, release `data-latest`), into an empty table, stand-in rows added for its affairs and bodies | row count = machine rows of the file; every row equal to `to_opd.py` |
-| – | the rows of step 4 | `../opd/tests/test_router.py`: the API router (`../opd/api/router.py`) against these rows, each test in a transaction that is rolled back (`../opd/api/topics.md`, "Implementation") |
-| 5 | migrations down 0003 → 0002 → 0001 with the rows of step 4 in place | 0002 down leaves no topic rows or schemes; 0001 down leaves no `topic*` relation |
+| 4 | one row per code of every scheme file in `src/querschnitt/schemes/` (`ci/every_code.py`, read from the YAML files, not through `gen_seed.py`), each on its own stand-in affair | first `ci/assert_seeded.sql`: every code is in the active seed version of its scheme, else the job fails naming the scheme (a scheme file added without an id in `gen_seed.SCHEME_IDS` fails CI on that push, before any topics file carries its rows); then loaded like step 5 |
+| 4b | `ci/topics.app-slice.jsonl.gz`: every row of 2,097 affairs of the app's export of 15 Oct (`ci/make_slice.py`: each code on at least 3 affairs, each code of a parliament's own scheme on 25, each body on 4; 7,398 rows, 89 bodies, all 8 schemes incl. `ti-dipartimenti`), for rows a release does not carry yet | as step 5 |
+| 5 | the released topics file (`make data`, release `data-latest`), into an empty table, stand-in rows added for its affairs and bodies (`ci/load_full.sh`) | row count = machine rows of the file; every row equal to `to_opd.py`; `body_id` and `scheme_id` set on every row |
+| – | the rows of step 5 | `../opd/tests/test_router.py`: the API router (`../opd/api/router.py`) against these rows, each test in a transaction that is rolled back (`../opd/api/topics.md`, "Implementation") |
+| 6 | migrations down 0003 → 0002 → 0001 with the rows of step 5 in place | 0002 down leaves no topic rows or schemes; 0001 down leaves no `topic*` relation |
 
-The [run of 15 Oct](https://github.com/mi11ione/querschnitt/actions/runs/38744888546) (PostgreSQL 16.15): step 4
-loaded the release of that day, 159,834 rows in 142 s (12,763 document quotes, 7,008 text quotes); the job took
+The [run of 15 Oct](https://github.com/mi11ione/querschnitt/actions/runs/38744888546) (PostgreSQL 16.15), before step 4
+existed: the release step loaded the release of that day, 159,834 rows in 142 s (12,763 document quotes, 7,008 text quotes); the job took
 3 min 39 s.
 
 Before CI, on 14 Oct, by hand (Hop 2.19.0, OpenJDK 21, PostgreSQL 16.2, stub tables from the 6 Oct OPD export, the

@@ -1,6 +1,10 @@
 name: ci
 on: [push, pull_request]
 permissions: {contents: read}
+# bash -eo pipefail for every step: a failing command piped into tee (the Hop loads) fails its step
+defaults:
+  run:
+    shell: bash
 jobs:
   test:
     runs-on: ubuntu-latest

@@ -72,7 +72,8 @@ for o in ids: by_lang[langs[o]].append(o)
 R["by_lang"] = {l: share(sum(D[o]["ch"] == gold[o] for o in v), len(v)) for l, v in sorted(by_lang.items())}
 R["by_design"] = {k: share(sum(D[o]["ch"] == gold[o] for o in v), len(v)) for k, v in
                   (("D4 (German text: five examples)", [o for o in ids if D[o].get("examples")]),
-                   ("D1 (French/Italian text: no examples)", [o for o in ids if not D[o].get("examples")]))}
+                   ("D1 (no examples: no APS-labelled neighbour for one-word procedural titles such as «Vereidigung», or a French text)",
+                    [o for o in ids if not D[o].get("examples")]))}
 R["curia_year"] = dict(sorted(collections.Counter(("19" if items[o]["curia_number"][:2] >= "50" else "20") + items[o]["curia_number"][:2] for o in ids).items()))
 R["gold_chapters"] = {APS.names["de"][c]: n for c, n in collections.Counter(gold[o] for o in ids).most_common()}
 with open(HERE / "decisions.jsonl", "w") as f:   # one line per affair: what shipped vs the editors' chapter (app: Prüfstand)

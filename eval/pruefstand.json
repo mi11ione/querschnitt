@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-14T23:52:45Z",
+ "generated_utc": "2026-10-15T00:35:33Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -993,7 +993,7 @@
    "title_de": "APS-Kapitel gegen APS-Redaktion, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
    "title_fr": "Chapitre APS contre la rédaction APS, 927 nouveaux objets fédéraux (hors échantillon) : design livré, pipeline de production inchangé (S25)",
    "n": 927,
-   "design": "Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: D4 (fünf BM25-nächste APS-gelabelte Beispiele aus dem S5+S9-Pool + zweite Lesart ohne Beispiele, Kapitel aus dem Unterthema zurückgelesen), D1 (ohne Beispiele) für die 10 Geschäfte mit französischem/italienischem Text; Lane: rekalibriertes p ≥ 0.7 → durchgelassen, Kalibrierkarte nur auf S16 angepasst; Entscheide komponiert wie im Export (compose.decide)",
+   "design": "Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: D4 (fünf BM25-nächste APS-gelabelte Beispiele aus dem S5+S9-Pool + zweite Lesart ohne Beispiele, Kapitel aus dem Unterthema zurückgelesen), D1 (ohne Beispiele) für die 10 Geschäfte ohne passendes APS-Beispiel (9 einwortige Verfahrenstitel wie «Vereidigung», «Nachruf», «Ordnungsantrag» ohne BM25-Nachbarn im Pool; 1 französischer Text); Lane: rekalibriertes p ≥ 0.7 → durchgelassen, Kalibrierkarte nur auf S16 angepasst; Entscheide komponiert wie im Export (compose.decide)",
    "result": {
     "metric": "chapter top-1 vs APS editors (the production pipeline as shipped, held out)",
     "value": 0.6968,
@@ -1112,6 +1112,40 @@
     }
    ],
    "baselines": [
+    {
+     "metric": "chapter top-1, plain list prompting (S9 D0: two code orders, no examples, geometric mean; S25b)",
+     "value": 0.6546,
+     "ci95": [
+      0.623,
+      0.685
+     ],
+     "k": 601,
+     "n": 918,
+     "kn": "601/918",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25b/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s25b/results.json",
+      "key": "D0_top1"
+     },
+     "name": "plain list prompting (S9 D0), same build and input, on 918 of the 927 affairs (S25b, pre-registered)",
+     "prereg": {
+      "file": "eval/PREREG-BUILD.md",
+      "anchor": "— S25b plain list prompting on the S25 items",
+      "line": 138
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.65"
+      ],
+      "ci95": [
+       "0.6",
+       "0.62",
+       "0.69",
+       "0.7"
+      ]
+     }
+    },
     {
      "metric": "keyword top-1",
      "value": 0.1866,
@@ -1493,7 +1527,7 @@
        }
       },
       {
-       "metric": "chapter top-1, D1 (French/Italian text: no examples)",
+       "metric": "chapter top-1, D1 (no examples: no APS-labelled neighbour for one-word procedural titles such as «Vereidigung», or a French text)",
        "value": 0.8,
        "ci95": [
         0.49,
@@ -1505,7 +1539,7 @@
        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)",
        "at": {
         "file": "eval/s25/results.json",
-        "key": "by_design > D1 (French/Italian text: no examples)"
+        "key": "by_design > D1 (no examples: no APS-labelled neighbour for one-word procedural titles such as «Vereidigung», or a French text)"
        },
        "cell": "D1",
        "small": true,
@@ -1678,6 +1712,119 @@
       "file": "eval/s25/results.json",
       "key": "scored"
      }
+    },
+    "list_prompting_s25b": {
+     "D0": {
+      "metric": "chapter top-1, plain list prompting (S9 D0: two code orders, no examples, geometric mean; S25b)",
+      "value": 0.6546,
+      "ci95": [
+       0.623,
+       0.685
+      ],
+      "k": 601,
+      "n": 918,
+      "kn": "601/918",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25b/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s25b/results.json",
+       "key": "D0_top1"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.65"
+       ],
+       "ci95": [
+        "0.6",
+        "0.62",
+        "0.69",
+        "0.7"
+       ]
+      }
+     },
+     "shipped_same_affairs": {
+      "metric": "chapter top-1 of the shipped pipeline on the same affairs as D0 (S25b)",
+      "value": 0.696,
+      "ci95": [
+       0.665,
+       0.725
+      ],
+      "k": 639,
+      "n": 918,
+      "kn": "639/918",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25b/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s25b/results.json",
+       "key": "shipped_top1"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.69"
+       ],
+       "ci95": [
+        "0.6",
+        "0.66",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "paired_shipped_minus_D0": {
+      "metric": "paired Δ top-1 shipped − D0 (same affairs)",
+      "value": 0.0414,
+      "ci95": [
+       0.016,
+       0.067
+      ],
+      "n": 918,
+      "method": "paired bootstrap 2,000 over affairs, percentile, bounds rounded outward (eval/s25b/analyze.py)",
+      "value_note": "the file stores the difference rounded to 4 decimals; shown truncated at 3",
+      "at": {
+       "file": "eval/s25b/results.json",
+       "key": "shipped_minus_D0"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.04"
+       ],
+       "ci95": [
+        "0.0",
+        "0.01",
+        "0.07",
+        "0.1"
+       ]
+      }
+     },
+     "not_scored": {
+      "value": 9,
+      "why": "no d0b: one-word procedural affairs (Vereidigung, Nachruf, Ordnungsantrag) with no APS-labelled neighbour are read without examples, and their first reading was p >= 0.9, so the production run asked no second reading (engine.need_ch2); D0 needs both",
+      "at": {
+       "file": "eval/s25b/results.json",
+       "key": "not_scored"
+      }
+     },
+     "d0a_asked": {
+      "value": 927,
+      "at": {
+       "file": "eval/s25b/results.json",
+       "key": "d0a_asked"
+      }
+     },
+     "prereg": {
+      "file": "eval/PREREG-BUILD.md",
+      "anchor": "— S25b plain list prompting on the S25 items",
+      "line": 138
+     },
+     "sources": [
+      "eval/s25b/results.json",
+      "eval/s25b/analyze.py",
+      "eval/s25b/run.py",
+      "eval/s25b/raw.jsonl",
+      "eval/s25b/ledger.jsonl"
+     ],
+     "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s25)"
     }
    },
    "pre_fix_note": "results_more[1:]: two compositions of the finished run seen with the old example retrieval (set order, randomised per process) before the determinism fix; reported as such next to the final score (amendment)",
@@ -1691,6 +1838,11 @@
     "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 amendment: a determinism fix before the final score",
     "line": 127
+   },
+   "prereg_baseline": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S25b plain list prompting on the S25 items",
+    "line": 138
    },
    "sources": [
     "eval/s25/results.json",
@@ -1706,29 +1858,29 @@
    "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s25)",
    "model": "swiss-ai/apertus-v1.5-8b",
    "date": "2026-10-15",
-   "shipped": "federal affairs: the production design as shipped (D4; D1 where the text is French or Italian)",
+   "shipped": "federal affairs: the production design as shipped (D4; D1 where no APS-labelled example is found: a text that is not German, or a title with no BM25 neighbour in the pool)",
    "test": "APS-Kapitel gegen APS-Redaktion, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
    "interval": [
     0.666,
     0.726
    ],
    "baseline": {
-    "name": "keyword (S9 frozen rule: APS subtopic words, ties by the S9 majority order), same input",
-    "value": 0.1866,
+    "name": "plain list prompting (S9 D0), same build and input, on 918 of the 927 affairs (S25b, pre-registered)",
+    "value": 0.6546,
     "ci95": [
-     0.162,
-     0.213
+     0.623,
+     0.685
     ],
     "shown": {
      "value": [
-      "0.1",
-      "0.18"
+      "0.6",
+      "0.65"
      ],
      "ci95": [
-      "0.1",
-      "0.16",
-      "0.22",
-      "0.3"
+      "0.6",
+      "0.62",
+      "0.69",
+      "0.7"
      ]
     }
    },
@@ -4682,12 +4834,16 @@
      }
     }
    },
-   "split": "S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items (it combines D1 and D3), so not a held-out result; the held-out test S25 scores the chapter only (aps_chapter_heldout_s25)",
+   "split": "S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items (it combines D1 and D3), so not a held-out result; the same metrics on the held-out S25 items, also computed after the fact (not pre-registered): aps_hierarchical_heldout_s25",
    "prereg": null,
    "prereg_more": {
     "file": "eval/PREREG-BUILD.md",
     "anchor": "— S25 fresh APS-labelled federal affairs",
     "line": 85
+   },
+   "heldout_test": {
+    "id": "aps_hierarchical_heldout_s25",
+    "what": "the same metrics of the shipped design on the S25 items (held out for the design; computed after the S25 result, not pre-registered)"
    },
    "sources": [
     "eval/s16/hierarchical.json",
@@ -4733,6 +4889,239 @@
      "0.6",
      "0.61",
      "0.66"
+    ]
+   }
+  },
+  {
+   "id": "aps_hierarchical_heldout_s25",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Unterthema und Hierarchie, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen berechnet, nicht vorregistriert)",
+   "title_fr": "Sous-thème APS et hiérarchie, 927 nouveaux objets fédéraux (hors échantillon) : design livré (calculé après S25 à partir de ses lignes, non préenregistré)",
+   "n": 891,
+   "design": "die S25-Geschäfte mit Hauptunterthema unter den 190 Namen (891 von 927); Entscheide der Produktionspipeline wie in S25 (Unterthema-Rangliste neu komponiert, keine neuen Aufrufe); Definitionen wie eval/s16/hierarchical.py: hierarchisches P/R/F1 nach Kiritchenko (Mengen um Vorfahren ergänzt; Ebenen Kapitel + Unterthema; mikro); Kapitel-F1 je Kapitel, Makro über alle 927 Geschäfte",
+   "result": {
+    "metric": "hierarchical F1 (shipped, held out, chapter + subtopic, micro)",
+    "value": 0.6044,
+    "ci95": [
+     0.575,
+     0.633
+    ],
+    "ci_method": "percentile bootstrap 2,000, bounds rounded outward (eval/s25/hierarchical.py)",
+    "at": {
+     "file": "eval/s25/hierarchical.json",
+     "key": "hierarchical > hF1"
+    },
+    "shown": {
+     "value": [
+      "0.6",
+      "0.60"
+     ],
+     "ci95": [
+      "0.5",
+      "0.57",
+      "0.64",
+      "0.7"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "subtopic top-1 end to end (shipped, held out)",
+     "value": 0.4971,
+     "ci95": [
+      0.464,
+      0.53
+     ],
+     "k": 443,
+     "n": 891,
+     "kn": "443/891",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/hierarchical.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s25/hierarchical.json",
+      "key": "subtopic_top1"
+     },
+     "shown": {
+      "value": [
+       "0.4",
+       "0.49"
+      ],
+      "ci95": [
+       "0.4",
+       "0.46",
+       "0.6"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-3 end to end (shipped, held out)",
+     "value": 0.6509,
+     "ci95": [
+      0.619,
+      0.682
+     ],
+     "k": 580,
+     "n": 891,
+     "kn": "580/891",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/hierarchical.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s25/hierarchical.json",
+      "key": "subtopic_top3"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.65"
+      ],
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.69",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "subtopic top-1 given the chapter is right (shipped, held out)",
+     "value": 0.7088,
+     "ci95": [
+      0.671,
+      0.744
+     ],
+     "k": 443,
+     "n": 625,
+     "kn": "443/625",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/hierarchical.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s25/hierarchical.json",
+      "key": "subtopic_top1_given_chapter_right"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.70"
+      ],
+      "ci95": [
+       "0.6",
+       "0.67",
+       "0.75",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "hierarchical precision (shipped, held out)",
+     "value": 0.6095,
+     "ci95": [
+      0.58,
+      0.638
+     ],
+     "ci_method": "percentile bootstrap 2,000, bounds rounded outward (eval/s25/hierarchical.py)",
+     "at": {
+      "file": "eval/s25/hierarchical.json",
+      "key": "hierarchical > hP"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.60"
+      ],
+      "ci95": [
+       "0.5",
+       "0.64",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "hierarchical recall (shipped, held out)",
+     "value": 0.5993,
+     "ci95": [
+      0.57,
+      0.628
+     ],
+     "ci_method": "percentile bootstrap 2,000, bounds rounded outward (eval/s25/hierarchical.py)",
+     "at": {
+      "file": "eval/s25/hierarchical.json",
+      "key": "hierarchical > hR"
+     },
+     "shown": {
+      "value": [
+       "0.5",
+       "0.59"
+      ],
+      "ci95": [
+       "0.5",
+       "0.63",
+       "0.7"
+      ]
+     }
+    },
+    {
+     "metric": "per-chapter F1, macro over the chapters present (shipped, held out)",
+     "value": 0.647,
+     "ci95": [
+      0.611,
+      0.681
+     ],
+     "ci_method": "percentile bootstrap 2,000, bounds rounded outward (eval/s25/hierarchical.py)",
+     "at": {
+      "file": "eval/s25/hierarchical.json",
+      "key": "chapter_macro_f1"
+     },
+     "n": 927,
+     "chapters": 22,
+     "shown": {
+      "value": [
+       "0.6",
+       "0.64"
+      ],
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.69",
+       "0.7"
+      ]
+     }
+    }
+   ],
+   "baselines": [],
+   "reference": {
+    "id": "aps_hierarchical_d4",
+    "what": "the same metrics of D4 on the design set (S9 items, S16 rows; not held out)"
+   },
+   "split": "S25 items (held out for the design: none used while designing); computed after the S25 result from its rows (not pre-registered; no new calls); same definitions as eval/s16/hierarchical.py; noted as not pre-registered in the S25b entry",
+   "prereg": null,
+   "prereg_more": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S25b plain list prompting on the S25 items",
+    "line": 138
+   },
+   "sources": [
+    "eval/s25/hierarchical.json",
+    "eval/s25/hierarchical.py",
+    "eval/s16/hierarchical.py",
+    "eval/s25/decisions.jsonl",
+    "eval/s25/items.jsonl"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s25)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-15",
+   "shipped": "ranked subtopic suggestions (federal affairs)",
+   "test": "APS-Unterthema und Hierarchie, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen berechnet, nicht vorregistriert)",
+   "interval": [
+    0.575,
+    0.633
+   ],
+   "baseline": null,
+   "file": "eval/s25/hierarchical.json",
+   "key": "hierarchical > hF1",
+   "shown": {
+    "interval": [
+     "0.5",
+     "0.57",
+     "0.6",
+     "0.63"
     ]
    }
   },

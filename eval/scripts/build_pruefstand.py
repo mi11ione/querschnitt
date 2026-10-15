@@ -602,19 +602,24 @@ s25 = g(S25R); N25 = s25["scored"]
 assert s25["items"] == N25 and s25["missing"] == 0, (s25["items"], N25, s25["missing"])
 
 
-def s25p(*keys, metric):
-    """a {k, n, value, ci} block of eval/s25/results.json: value = k / n truncated to 4 decimals and ci = Wilson 95% with bounds
-    rounded outward at 3 decimals, both by eval/s25/analyze.py; re-checked here from k and n (asserts)."""
-    b = g(S25R, *keys); k, n = b["k"], b["n"]
-    assert b["value"] == math.floor(k / n * 10 ** 4) / 10 ** 4, (keys, b)
+def knblock(rel, *keys, metric, ci_key="ci", script="eval/s25/analyze.py"):
+    """a {k, n, value, ci} block of an S25-family result file: value = k / n truncated to 4 decimals and ci = Wilson 95% with bounds
+    rounded outward at 3 decimals, both by the analysis script; re-checked here from k and n (asserts)."""
+    b = g(rel, *keys); k, n = b["k"], b["n"]
+    assert b["value"] == math.floor(k / n * 10 ** 4) / 10 ** 4, (rel, keys, b)
     lo_, hi_ = wilson_exact(k, n)
-    assert list(b["ci"]) == [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))], (keys, b, lo_, hi_)
-    out = {"metric": metric, "value": b["value"], "ci95": list(b["ci"]), "k": k, "n": n, "kn": f"{k}/{n}",
-           "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s25/analyze.py; re-checked by build_pruefstand.py)"}
+    assert list(b[ci_key]) == [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))], (rel, keys, b, lo_, hi_)
+    out = {"metric": metric, "value": b["value"], "ci95": list(b[ci_key]), "k": k, "n": n, "kn": f"{k}/{n}",
+           "ci_method": f"Wilson 95% from k and n, bounds rounded outward ({script}; re-checked by build_pruefstand.py)"}
     for x in ("share", "coverage"):
         if x in b: out[x] = b[x]
-    out["at"] = loc(S25R, *keys)
+    out["at"] = loc(rel, *keys)
     return out
+
+
+def s25p(*keys, metric):
+    """a {k, n, value, ci} block of eval/s25/results.json (see knblock)."""
+    return knblock(S25R, *keys, metric=metric)
 
 
 def s25prefix(k, n, stored, needle, metric):
@@ -771,8 +776,11 @@ tests.append(dict(
                 "all_items_hF": hblk("D4", "hierarchical", "all_items", "hF",
                                      metric="hierarchical F1 on all 1,357 items (gold depth 1 where the main subtopic is not among the 190)")},
     split="S9 items; computed after S16 from its rows (not pre-registered; no new calls); D4 was chosen after S9 on the same items "
-          "(it combines D1 and D3), so not a held-out result; the held-out test S25 scores the chapter only (aps_chapter_heldout_s25)",
+          "(it combines D1 and D3), so not a held-out result; the same metrics on the held-out S25 items, also computed after the fact "
+          "(not pre-registered): aps_hierarchical_heldout_s25",
     prereg=None, prereg_more=pre25,
+    heldout_test={"id": "aps_hierarchical_heldout_s25", "what": "the same metrics of the shipped design on the S25 items (held out for "
+                  "the design; computed after the S25 result, not pre-registered)"},
     sources=[HR, f"{QE}/s16/hierarchical.py", f"{QE}/s16/raw.jsonl", f"{I2}/s9-aps/raw/", f"{I2}/s9-aps/data/items.json"],
     build=B16, model=MODEL, date="2026-10-14", shipped="ranked subtopic suggestions (federal affairs, D4)"))
 
@@ -785,13 +793,37 @@ cy25 = g(S25R, "curia_year")
 cy25_before = sum(v for y_, v in cy25.items() if int(y_) < 2015); cy25_from = sum(v for y_, v in cy25.items() if int(y_) >= 2015)
 assert cy25_before + cy25_from == N25, (cy25_before, cy25_from, N25)
 gc25 = g(S25R, "gold_chapters"); assert sum(gc25.values()) == N25
-DES25 = {"D4 (German text: five examples)": "D4", "D1 (French/Italian text: no examples)": "D1"}
+# D1 = read without examples: no APS-labelled BM25 neighbour (one-word procedural titles such as «Vereidigung») or a text that is
+# not German (engine.ch1_prompt asks for examples only for federal affairs in German)
+K25_D4 = "D4 (German text: five examples)"
+K25_D1 = "D1 (no examples: no APS-labelled neighbour for one-word procedural titles such as «Vereidigung», or a French text)"
+DES25 = {K25_D4: "D4", K25_D1: "D1"}
 bd25 = g(S25R, "by_design"); assert set(bd25) == set(DES25) and sum(v["n"] for v in bd25.values()) == N25
-assert g(S25R, "with_examples") == bd25["D4 (German text: five examples)"]["n"]
+assert g(S25R, "with_examples") == bd25[K25_D4]["n"]
+bl25 = g(S25R, "by_lang"); assert set(bl25) == {"de", "fr"}, set(bl25)
+N25_D1_FR = bl25["fr"]["n"]; N25_D1_DE = bd25[K25_D1]["n"] - N25_D1_FR     # every non-German affair is D1
+assert bl25["de"]["n"] == bd25[K25_D4]["n"] + N25_D1_DE, (bl25, bd25)
 pf25 = [s25prefix(636, 904, 0.7035, "904 affairs scored, top-1 0.7035 (636/904)",
                   "pre-fix reading 1 (old, non-deterministic example retrieval; seen before the fix): chapter top-1"),
         s25prefix(633, 905, 0.6994, "905 scored, 0.6994 (633/905)",
                   "pre-fix reading 2 (old, non-deterministic example retrieval; seen before the fix): chapter top-1")]
+# S25b (pre-registered after the S25 result, before any S25b call): plain list prompting (S9 D0) on the S25 items, paired with the shipped
+S25BR = f"{QE}/s25b/results.json"
+pre25b = pre(PB, "— S25b plain list prompting on the S25 items")
+s25b = g(S25BR)
+d025 = knblock(S25BR, "D0_top1", ci_key="ci95", script="eval/s25b/analyze.py",
+               metric="chapter top-1, plain list prompting (S9 D0: two code orders, no examples, geometric mean; S25b)")
+sh25b = knblock(S25BR, "shipped_top1", ci_key="ci95", script="eval/s25b/analyze.py",
+                metric="chapter top-1 of the shipped pipeline on the same affairs as D0 (S25b)")
+N25B = s25b["n"]
+assert d025["n"] == sh25b["n"] == N25B and N25B + s25b["not_scored"]["n"] == N25, (N25B, s25b["not_scored"], N25)
+df25b = g(S25BR, "shipped_minus_D0")
+assert abs(df25b["value"] - (sh25b["k"] - d025["k"]) / N25B) < 5e-5, df25b
+assert df25b["ci95"][0] <= df25b["value"] <= df25b["ci95"][1], df25b
+dif25b = {"metric": "paired Δ top-1 shipped − D0 (same affairs)", "value": df25b["value"], "ci95": list(df25b["ci95"]), "n": N25B,
+          "method": "paired bootstrap 2,000 over affairs, percentile, bounds rounded outward (eval/s25b/analyze.py)",
+          "value_note": "the file stores the difference rounded to 4 decimals; shown truncated at 3",
+          "at": loc(S25BR, "shipped_minus_D0")}
 tests.append(dict(
     id="aps_chapter_heldout_s25", gold="human", subject="Apertus",
     title_de=f"APS-Kapitel gegen APS-Redaktion, {N25} neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
@@ -800,11 +832,14 @@ tests.append(dict(
     n=N25, design=f"Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den "
     "S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: "
     "D4 (fünf BM25-nächste APS-gelabelte Beispiele aus dem S5+S9-Pool + zweite Lesart ohne Beispiele, Kapitel aus dem Unterthema zurückgelesen), "
-    f"D1 (ohne Beispiele) für die {bd25['D1 (French/Italian text: no examples)']['n']} Geschäfte mit französischem/italienischem Text; "
+    f"D1 (ohne Beispiele) für die {bd25[K25_D1]['n']} Geschäfte ohne passendes APS-Beispiel ({N25_D1_DE} einwortige Verfahrenstitel wie "
+    f"«Vereidigung», «Nachruf», «Ordnungsantrag» ohne BM25-Nachbarn im Pool; {N25_D1_FR} französischer Text); "
     "Lane: rekalibriertes p ≥ 0.7 → durchgelassen, Kalibrierkarte nur auf S16 angepasst; Entscheide komponiert wie im Export (compose.decide)",
     result=dict(t25, display=f"{F.t(t25['value'])} [{F.lo(t25['ci95'][0])}, {F.hi(t25['ci95'][1])}]"),
     results_more=[s25p("top3", metric="chapter top-3")] + pf25,
-    baselines=[dict(s25p("keyword_top1", metric="keyword top-1"),
+    baselines=[dict(d025, name=f"plain list prompting (S9 D0), same build and input, on {N25B} of the {N25} affairs (S25b, pre-registered)",
+                    prereg=pre25b),
+               dict(s25p("keyword_top1", metric="keyword top-1"),
                     name="keyword (S9 frozen rule: APS subtopic words, ties by the S9 majority order), same input")],
     breakdowns={
         "lanes": {k_: dict(s25p("lanes", k_, metric=f"precision, {L25[k_]}"), cell=k_) for k_ in ("pass", "please_check", "readings_agree", "readings_disagree")}
@@ -824,17 +859,70 @@ tests.append(dict(
                        "derived": "years from the Curia number (analyze.py), summed here", "at": loc(S25R, "curia_year")},
         "gold_chapters": {"chapters": len(gc25), "counts": gc25, "at": loc(S25R, "gold_chapters")},
         "with_examples": {"value": g(S25R, "with_examples"), "at": loc(S25R, "with_examples")},
-        "scored": {"in_set": g(S25R, "items"), "scored": N25, "missing": g(S25R, "missing"), "at": loc(S25R, "scored")}},
+        "scored": {"in_set": g(S25R, "items"), "scored": N25, "missing": g(S25R, "missing"), "at": loc(S25R, "scored")},
+        "list_prompting_s25b": {"D0": d025, "shipped_same_affairs": sh25b, "paired_shipped_minus_D0": dif25b,
+                                "not_scored": {"value": s25b["not_scored"]["n"], "why": s25b["not_scored"]["why"], "at": loc(S25BR, "not_scored")},
+                                "d0a_asked": {"value": s25b["d0a_asked"], "at": loc(S25BR, "d0a_asked")},
+                                "prereg": pre25b, "sources": [S25BR, f"{QE}/s25b/analyze.py", f"{QE}/s25b/run.py", f"{QE}/s25b/raw.jsonl",
+                                                               f"{QE}/s25b/ledger.jsonl"],
+                                "build": s25b["build"] + " (run runs/s25)"}},
     pre_fix_note="results_more[1:]: two compositions of the finished run seen with the old example retrieval (set order, randomised per "
                  "process) before the determinism fix; reported as such next to the final score (amendment)",
     split="held out, pre-registered (S25): fresh items never used while designing (none in S5, S9 or the example pool); nothing tuned on "
           "them; calibration map fitted on S16 only; the example retrieval was made deterministic before the final score (amendment, a bug "
           "fix, not a design change), and the two readings seen before the fix are reported",
-    prereg=pre25, prereg_more=pre25a,
+    prereg=pre25, prereg_more=pre25a, prereg_baseline=pre25b,
     sources=[S25R, f"{QE}/s25/analyze.py", f"{QE}/s25/decisions.jsonl", f"{QE}/s25/items.jsonl", f"{QE}/s25/FETCH.md", "src/querschnitt/compose.py",
              "src/querschnitt/examples.py", f"{QE}/calibration.json", PB],
     build=s25["build"] + " (run runs/s25)", model=MODEL, date="2026-10-15",
-    shipped="federal affairs: the production design as shipped (D4; D1 where the text is French or Italian)"))
+    shipped="federal affairs: the production design as shipped (D4; D1 where no APS-labelled example is found: a text that is not "
+            "German, or a title with no BM25 neighbour in the pool)"))
+
+# S25 subtopic / hierarchy (computed after the S25 result from its rows; NOT pre-registered; eval/s16/hierarchical.py definitions)
+HR25 = f"{QE}/s25/hierarchical.json"
+h25 = g(HR25)
+assert h25["prereg"].startswith("not pre-registered") and h25["items"] == N25, (h25["prereg"], h25["items"])
+NH25 = h25["subtopic_gold_items"]
+H25M = "percentile bootstrap 2,000, bounds rounded outward (eval/s25/hierarchical.py)"
+
+
+def h25k(key, metric):
+    return knblock(HR25, key, ci_key="ci95", script="eval/s25/hierarchical.py", metric=metric)
+
+
+def h25b(*keys, metric):
+    b = g(HR25, *keys)
+    assert b["ci95"][0] <= b["value"] <= b["ci95"][1], (keys, b)
+    return {"metric": metric, "value": b["value"], "ci95": list(b["ci95"]), "ci_method": H25M, "at": loc(HR25, *keys)}
+
+
+st25 = [h25k("subtopic_top1", "subtopic top-1 end to end (shipped, held out)"),
+        h25k("subtopic_top3", "subtopic top-3 end to end (shipped, held out)"),
+        h25k("subtopic_top1_given_chapter_right", "subtopic top-1 given the chapter is right (shipped, held out)")]
+assert st25[0]["n"] == st25[1]["n"] == NH25
+mf25 = dict(h25b("chapter_macro_f1", metric="per-chapter F1, macro over the chapters present (shipped, held out)"),
+            n=N25, chapters=g(HR25, "chapter_macro_f1", "chapters"))
+assert mf25["chapters"] == len(gc25), (mf25["chapters"], len(gc25))
+tests.append(dict(
+    id="aps_hierarchical_heldout_s25", gold="human", subject="Apertus",
+    title_de=f"APS-Unterthema und Hierarchie, {N25} neue Bundesgeschäfte (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen "
+             "berechnet, nicht vorregistriert)",
+    title_fr=f"Sous-thème APS et hiérarchie, {N25} nouveaux objets fédéraux (hors échantillon) : design livré (calculé après S25 à partir de "
+             "ses lignes, non préenregistré)",
+    n=NH25, design=f"die S25-Geschäfte mit Hauptunterthema unter den 190 Namen ({NH25} von {N25}); Entscheide der Produktionspipeline wie in S25 "
+    "(Unterthema-Rangliste neu komponiert, keine neuen Aufrufe); Definitionen wie eval/s16/hierarchical.py: hierarchisches P/R/F1 nach "
+    "Kiritchenko (Mengen um Vorfahren ergänzt; Ebenen Kapitel + Unterthema; mikro); Kapitel-F1 je Kapitel, Makro über alle "
+    f"{N25} Geschäfte",
+    result=h25b("hierarchical", "hF1", metric="hierarchical F1 (shipped, held out, chapter + subtopic, micro)"),
+    results_more=st25 + [h25b("hierarchical", "hP", metric="hierarchical precision (shipped, held out)"),
+                         h25b("hierarchical", "hR", metric="hierarchical recall (shipped, held out)"), mf25],
+    baselines=[],
+    reference={"id": "aps_hierarchical_d4", "what": "the same metrics of D4 on the design set (S9 items, S16 rows; not held out)"},
+    split="S25 items (held out for the design: none used while designing); computed after the S25 result from its rows (not "
+          "pre-registered; no new calls); same definitions as eval/s16/hierarchical.py; noted as not pre-registered in the S25b entry",
+    prereg=None, prereg_more=pre25b,
+    sources=[HR25, f"{QE}/s25/hierarchical.py", f"{QE}/s16/hierarchical.py", f"{QE}/s25/decisions.jsonl", f"{QE}/s25/items.jsonl"],
+    build=h25["build"] + " (run runs/s25)", model=MODEL, date="2026-10-15", shipped="ranked subtopic suggestions (federal affairs)"))
 
 s18 = g(S18R)
 tests.append(dict(
@@ -1261,7 +1349,7 @@ for t_ in tests:
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
 ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
-         "aps_hierarchical_d4",
+         "aps_hierarchical_d4", "aps_hierarchical_heldout_s25",
          "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
          "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
          "free_generation",
@@ -1397,7 +1485,7 @@ for blk, key in ((_tx["result"], "title_text"), (_tx["baselines"][0], "title_onl
 for t_ in tests: t_["interval"] = t_["result"].get("ci95")
 print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
-assert not [x for x in WILSON_LOG if x[0].split(".")[0] == "aps_chapter_heldout_s25"]   # S25 intervals are already outward
+assert not [x for x in WILSON_LOG if x[0].split(".")[0] in ("aps_chapter_heldout_s25", "aps_hierarchical_heldout_s25")]   # S25 intervals are already outward
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
 BOUND = re.compile(r"(^|_)ci(95)?(_w)?$")
@@ -1542,16 +1630,20 @@ row(*APS, "human", "D4, hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 m
     fr(f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · mots-clés {p3(hf_b['kw'])}"), *SPLIT_H, TH["file"],
     result_fr=fr(f"hF {p3(TH['result']['value'])} · F1 macro {p3(mf['value'])} (les {F.t(mf['n'], sep=' ')})"))
 # S25: the held-out test of the shipped design (its own table, right after the design set above)
-T25 = TD["aps_chapter_heldout_s25"]; m25 = T25["results_more"]; b25 = T25["breakdowns"]; l25 = b25["lanes"]; kw25 = T25["baselines"][0]
+T25 = TD["aps_chapter_heldout_s25"]; m25 = T25["results_more"]; b25 = T25["breakdowns"]; l25 = b25["lanes"]
+d0b25, kw25 = T25["baselines"][0], T25["baselines"][1]
 APS25 = (f"APS-Kapitel vs. APS-Redaktion, {p3(N25)} neue Bundesgeschäfte (hold-out, S25)",
          f"Chapitre APS vs rédaction APS, {F.t(N25, sep=' ')} nouveaux objets fédéraux (hors échantillon, S25)")
 SPLIT_S25 = ("held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
              "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement")
 dd25 = {c["cell"]: c for c in b25["by_design"]["cells"]}
-row(*APS25, "human", f"Produktionspipeline wie ausgeliefert (D4; D1 bei FR/IT-Text, {dd25['D1']['n']} Geschäfte)",
-    f"pipeline de production tel que livré (D4 ; D1 si texte FR/IT, {dd25['D1']['n']} objets)", N25,
+row(*APS25, "human", f"Produktionspipeline wie ausgeliefert (D4; D1 ohne Beispiele: {dd25['D1']['n']} Geschäfte ohne passendes "
+    "APS-Beispiel, einwortige Titel wie «Vereidigung»)",
+    f"pipeline de production tel que livré (D4 ; D1 sans exemples : {dd25['D1']['n']} objets sans exemple APS adéquat, titres d'un mot "
+    "comme « Vereidigung »)", N25,
     f"top-1 {p3(T25['result']['value'])} · top-3 {p3(m25[0]['value'])}", iv(T25["result"]["ci95"]),
-    f"Stichwort {p3(kw25['value'])} {civ(kw25['ci95'])}", fr(f"mots-clés {p3(kw25['value'])} {civ(kw25['ci95'])}"), *SPLIT_S25, T25["file"])
+    f"Listen-Prompt {p3(d0b25['value'])} (n {p3(d0b25['n'])}) · Stichwort {p3(kw25['value'])}",
+    fr(f"liste {p3(d0b25['value'])} (n {F.t(d0b25['n'], sep=' ')}) · mots-clés {p3(kw25['value'])}"), *SPLIT_S25, T25["file"])
 lp25, lc25, la25, ld25 = (l25[k] for k in ("pass", "please_check", "readings_agree", "readings_disagree"))
 row(*APS25, "human", f"ausgeliefert: rekalibriertes p ≥ 0.7 ({F.pct(lp25['share'])} der Geschäfte)",
     fr(f"livré : p recalibré ≥ 0.7 ({F.pct(lp25['share'])} des objets)"), lp25["n"], p3(lp25["value"]), iv(lp25["ci95"]),
@@ -1561,6 +1653,23 @@ row(*APS25, "human", f"Lesarten einig (bisherige Regel; {F.pct(la25['share'])} d
     f"lectures concordantes (règle précédente ; {fr(F.pct(la25['share']))} des objets)", la25["n"], p3(la25["value"]), iv(la25["ci95"]),
     f"uneinig: {p3(ld25['value'])} {civ(ld25['ci95'])} (n {ld25['n']})", fr(f"discordantes : {p3(ld25['value'])} {civ(ld25['ci95'])} (n {ld25['n']})"),
     *SPLIT_S25, T25["file"], result_fr=fr(p3(la25["value"])))
+# S25 subtopic / hierarchy (not pre-registered; the same two rows as the design set's, with the design set's D4 figures for reference)
+TH25 = TD["aps_hierarchical_heldout_s25"]; mh25 = {x["metric"]: x for x in TH25["results_more"]}
+s1h, s3h, sgh = (mh25[f"subtopic {k} (shipped, held out)"] for k in ("top-1 end to end", "top-3 end to end", "top-1 given the chapter is right"))
+mfh = mh25["per-chapter F1, macro over the chapters present (shipped, held out)"]
+NPR = ("nicht vorregistriert, nach S25 berechnet", "non préenregistré, calculé après S25")
+row(*APS25, "human", f"Unterthema, durchgehend, ausgeliefertes Design ({NPR[0]})", f"sous-thème, de bout en bout, design livré ({NPR[1]})", TH25["n"],
+    f"top-1 {p3(s1h['value'])} · top-3 {p3(s3h['value'])} · bei richtigem Kapitel {p3(sgh['value'])}", iv(s1h["ci95"]),
+    f"Design-Set (D4, zum Vergleich) {p3(s1['value'])}", fr(f"jeu de conception (D4, pour comparaison) {p3(s1['value'])}"),
+    "nach S25 aus seinen Zeilen berechnet, nicht vorregistriert", "calculé après S25 à partir de ses lignes, non préenregistré", TH25["file"],
+    result_fr=fr(f"top-1 {p3(s1h['value'])} · top-3 {p3(s3h['value'])} · si chapitre juste {p3(sgh['value'])}"))
+row(*APS25, "human", f"hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 makro ({NPR[0]})",
+    f"F1 hiérarchique (chapitre + sous-thème) · F1 macro par chapitre ({NPR[1]})",
+    TH25["n"], f"hF {p3(TH25['result']['value'])} · Makro-F1 {p3(mfh['value'])} (alle {p3(mfh['n'])})", iv(TH25["result"]["ci95"]),
+    f"Design-Set (D4, zum Vergleich) hF {p3(TH['result']['value'])} · Makro-F1 {p3(mf['value'])}",
+    fr(f"jeu de conception (D4, pour comparaison) hF {p3(TH['result']['value'])} · F1 macro {p3(mf['value'])}"),
+    "nach S25 aus seinen Zeilen berechnet, nicht vorregistriert", "calculé après S25 à partir de ses lignes, non préenregistré", TH25["file"],
+    result_fr=fr(f"hF {p3(TH25['result']['value'])} · F1 macro {p3(mfh['value'])} (les {F.t(mfh['n'], sep=' ')})"))
 pa25, pb25 = m25[1], m25[2]
 row(*APS25, "human", "vor dem Determinismus-Fix gesehen (alter Beispielabruf, zwei Auswertungen)",
     "vu avant la correction du déterminisme (ancienne recherche d'exemples, deux compositions)", None,

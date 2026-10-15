@@ -182,6 +182,9 @@ w("")
 # ------------------------------------------------------------------ S25: the shipped design held out
 m25 = h25["results_more"]; b25 = h25["breakdowns"]; l25 = b25["lanes"]; t25, pa25, pb25 = m25[0], m25[1], m25[2]
 dd25 = {c["cell"]: c for c in b25["by_design"]["cells"]}
+bl25 = {c["cell"]: c for c in b25["by_lang"]["cells"]}
+d1_fr = bl25["fr"]["n"]; d1_de = dd25["D1"]["n"] - d1_fr          # every non-German affair is read without examples (D1)
+lp25 = b25["list_prompting_s25b"]; d0_25, kw_25 = h25["baselines"][0], h25["baselines"][1]
 w(f"### 1b · APS chapter held out — {num(h25['n'], 0)} fresh federal affairs, the shipped design as in production (S25, pre-registered)")
 w("")
 w(f"The held-out test of the shipped federal design. §1's {num(d4['n'], 0)} items are the set the design was chosen on; none of these "
@@ -189,8 +192,10 @@ w(f"The held-out test of the shipped federal design. §1's {num(d4['n'], 0)} ite
   "anneepolitique.swiss process pages, none in the S5 or S9 sets or in the example pool (the analysis asserts it), parsed with the S9 rules "
   f"([`eval/s25/FETCH.md`](../eval/s25/FETCH.md)). The production pipeline as shipped, unchanged: D4 (the five BM25-nearest APS-labelled "
   "examples from the S5+S9 pool + a second reading without examples, chapter read back from the subtopic) for the "
-  f"{L(num(dd25['D4']['n']), dd25['D4']['at'])} affairs with German text, D1 (no examples) for the {L(num(dd25['D1']['n']), dd25['D1']['at'])} "
-  "whose text is French or Italian; lanes by the recalibrated p with the calibration map fitted on S16 only; decisions composed exactly as "
+  f"{L(num(dd25['D4']['n']), dd25['D4']['at'])} affairs with German text and APS-labelled neighbours, D1 (no examples) for the "
+  f"{L(num(dd25['D1']['n']), dd25['D1']['at'])} with no APS-labelled example: one-word procedural titles such as «Vereidigung» (also «Nachruf», "
+  f"«Ordnungsantrag») have no BM25 neighbour in the pool ({num(d1_de)}), and one text is French ({L(num(d1_fr), bl25['fr']['at'])}); "
+  "lanes by the recalibrated p with the calibration map fitted on S16 only; decisions composed exactly as "
   "the export composes them ([`eval/s25/analyze.py`](../eval/s25/analyze.py) → [`eval/s25/results.json`](../eval/s25/results.json); "
   f"one line per affair in [`eval/s25/decisions.jsonl`](../eval/s25/decisions.jsonl)). Pre-registration: {L('PREREG-BUILD.md § S25', h25['prereg'])} "
   f"and {L('its amendment', h25['prereg_more'])} (a determinism fix before the final score).")
@@ -198,8 +203,19 @@ w("")
 w(f"| n = {num(h25['n'], 0)}, gold = APS editors' chapter | top-1 | top-3 |")
 w("|---|---|---|")
 w(f"| **production pipeline as shipped, held out** | **{r(h25['result'])}** ({L(h25['result']['kn'], h25['result']['at'])}) | {r(t25)} |")
-w(f"| keyword (S9 frozen rule, same input) | {r(h25['baselines'][0])} | — |")
+w(f"| plain list prompting (S9 D0; S25b, pre-registered; {num(d0_25['n'], 0)} of the {num(h25['n'], 0)} affairs) | {r(d0_25)} "
+  f"({L(d0_25['kn'], d0_25['at'])}) | — |")
+w(f"| keyword (S9 frozen rule, same input) | {r(kw_25)} | — |")
 w(f"| for reference: D4 on the design set (§1, other items, not held out) | {r(d4['result'])} | {r(m4[0])} |")
+w("")
+sh_, df_, ns_ = lp25["shipped_same_affairs"], lp25["paired_shipped_minus_D0"], lp25["not_scored"]
+w(f"**Plain list prompting on the same affairs** ({L('PREREG-BUILD.md § S25b', lp25['prereg'])}, pre-registered after the S25 result, before "
+  "any S25b call; [`eval/s25b/analyze.py`](../eval/s25b/analyze.py) → [`eval/s25b/results.json`](../eval/s25b/results.json)): S9's D0 — the "
+  "chapter prompt without examples in two code orders, chapter = top of the geometric mean — on the same build and input. On the "
+  f"{L(num(d0_25['n'], 0), d0_25['at'])} affairs where both readings exist, D0 reaches {r(d0_25)} ({L(d0_25['kn'], d0_25['at'])}) and the "
+  f"shipped pipeline {r(sh_)} ({L(sh_['kn'], sh_['at'])}); paired, shipped − D0 = {r(df_, signed=True)} (paired bootstrap 2,000 over "
+  f"affairs, bounds outward). Not scored: {L(num(ns_['value']), ns_['at'])} one-word procedural affairs read without examples whose first "
+  "reading had p ≥ 0.9, so the production run asked no second reading, which D0 needs.")
 w("")
 w(f"**Before the fix** ({L('amendment', h25['prereg_more'])}): the BM25 example retrieval summed over a Python set, whose order is "
   "randomised per process, so a restarted run could ask different examples for the same affair. Two compositions of the finished run "
@@ -233,10 +249,46 @@ w("| precision | " + " | ".join(r(x) for x in rp) + " |")
 w("| n | " + " | ".join(L(num(x["n"]), x["at"]) for x in rp) + " |")
 w("")
 cy = b25["curia_year"]; gc = b25["gold_chapters"]
-w(f"By design: D4 (German text, five examples) {r(dd25['D4'])}, n {num(dd25['D4']['n'])}; D1 (French or Italian text, no examples) "
-  f"{L(dd25['D1']['kn'], dd25['D1']['at'])}{ci(dd25['D1']['ci95'])} (small). By Curia year: {L(num(cy['before_2015']), cy['at'])} affairs "
+w(f"By design: D4 (German text, five examples) {r(dd25['D4'])}, n {num(dd25['D4']['n'])}; D1 (no examples: no APS-labelled neighbour "
+  f"for one-word procedural titles such as «Vereidigung», or a French text) {L(dd25['D1']['kn'], dd25['D1']['at'])}{ci(dd25['D1']['ci95'])} "
+  f"(small). By Curia year: {L(num(cy['before_2015']), cy['at'])} affairs "
   f"submitted before 2015, {L(num(cy['from_2015']), cy['at'])} from 2015 on. Gold chapters ({L(str(gc['chapters']), gc['at'])} present): "
   + " · ".join(f"{c_} {L(str(v_), gc['at'])}" for c_, v_ in gc["counts"].items()) + ".")
+w("")
+
+th, t25h = T["aps_hierarchical_d4"], T["aps_hierarchical_heldout_s25"]
+hm = {x["metric"]: x for x in th["results_more"]}; hb = {x["name"]: x for x in th["baselines"]}
+hm25 = {x["metric"]: x for x in t25h["results_more"]}
+MF4, MF25 = "per-chapter F1, macro over the chapters present (D4)", "per-chapter F1, macro over the chapters present (shipped, held out)"
+
+
+def hrow25(name, bold=False):
+    g_ = hm25["subtopic top-1 given the chapter is right (shipped, held out)"]
+    s1_ = r(hm25["subtopic top-1 end to end (shipped, held out)"]); hf_ = r(t25h["result"])
+    return (f"| {name} | {f'**{s1_}**' if bold else s1_} | {r(hm25['subtopic top-3 end to end (shipped, held out)'])} | {r(g_)} (n {num(g_['n'])}) | "
+            f"{r(hm25['hierarchical precision (shipped, held out)'])} | {r(hm25['hierarchical recall (shipped, held out)'])} | "
+            f"{f'**{hf_}**' if bold else hf_} | {r(hm25[MF25])} |")
+
+
+def hrow4(name, bold=False):
+    g4_ = hm["subtopic top-1 given the chapter is right (D4)"]
+    s1_ = r(hm["subtopic top-1 end to end (D4)"]); hf_ = r(th["result"])
+    return (f"| {name} | {f'**{s1_}**' if bold else s1_} | {r(hm['subtopic top-3 end to end (D4)'])} | {r(g4_)} (n {num(g4_['n'])}) | "
+            f"{r(hm['hierarchical precision (D4)'])} | {r(hm['hierarchical recall (D4)'])} | {f'**{hf_}**' if bold else hf_} | {r(hm[MF4])} |")
+
+
+HHEAD = ("| Design | subtopic top-1 | subtopic top-3 | subtopic top-1 when the chapter is right | hP | hR | hF | per-chapter macro-F1 |",
+         "|---|---|---|---|---|---|---|---|")
+w(f"**Subtopic and hierarchy, held out** — computed after the S25 result from its rows (not pre-registered; no new calls) by "
+  f"[`eval/s25/hierarchical.py`](../eval/s25/hierarchical.py) → [`eval/s25/hierarchical.json`](../eval/s25/hierarchical.json), with the "
+  f"definitions of [`eval/s16/hierarchical.py`](../eval/s16/hierarchical.py) (§2): the {num(t25h['n'], 0)} S25 affairs whose main subtopic "
+  f"is among the 190 for the subtopic and hierarchical figures, per-chapter macro-F1 over the {L(str(hm25[MF25]['chapters']), hm25[MF25]['at'])} "
+  f"chapters present on all {num(hm25[MF25]['n'], 0)} affairs. Wilson for the subtopic rates, percentile bootstrap 2,000 for hP/hR/hF and "
+  f"macro-F1, bounds outward. The {L('S25b entry', t25h['prereg_more'])} notes these figures as not pre-registered.")
+w("")
+w(HHEAD[0]); w(HHEAD[1])
+w(hrow25("**shipped, held out (S25; not pre-registered)**", bold=True))
+w(hrow4("for reference: D4 on the design set (§2, other items, not held out)"))
 w("")
 
 sub = T["aps_subtopic"]
@@ -248,9 +300,7 @@ w(f"| {num(sub['n'], 0)} | {r(sub['result'])} | {r(sub['results_more'][0])} | {r
 w("")
 w("Subtopics ship as ranked suggestions, not as a lane.")
 w("")
-th = T["aps_hierarchical_d4"]
 N_ALL = th["results_more"][-1]["n"]
-hm = {x["metric"]: x for x in th["results_more"]}; hb = {x["name"]: x for x in th["baselines"]}
 w(f"**Hierarchical metrics of the shipped design D4** — computed after S16 from its rows (not pre-registered; no new calls) by "
   f"[`eval/s16/hierarchical.py`](../eval/s16/hierarchical.py). Same {num(th['n'], 0)} items as above (chapter + subtopic gold); "
   "hierarchical precision / recall / F1 after Kiritchenko et al. (predicted and gold sets augmented with their ancestors, levels "
@@ -259,12 +309,8 @@ w(f"**Hierarchical metrics of the shipped design D4** — computed after S16 fro
   f"chapters present, on all {num(hm['per-chapter F1, macro over the chapters present (D4)']['n'], 0)} items. Intervals: Wilson for the subtopic "
   "rates, percentile bootstrap 2,000 for hP/hR/hF and macro-F1 (stratified by gold chapter), bounds rounded outward.")
 w("")
-w("| Design | subtopic top-1 | subtopic top-3 | subtopic top-1 when the chapter is right | hP | hR | hF | per-chapter macro-F1 |")
-w("|---|---|---|---|---|---|---|---|")
-g4 = hm["subtopic top-1 given the chapter is right (D4)"]
-w(f"| **D4 shipped** | **{r(hm['subtopic top-1 end to end (D4)'])}** | {r(hm['subtopic top-3 end to end (D4)'])} | {r(g4)} (n {num(g4['n'])}) | "
-  f"{r(hm['hierarchical precision (D4)'])} | {r(hm['hierarchical recall (D4)'])} | **{r(th['result'])}** | "
-  f"{r(hm['per-chapter F1, macro over the chapters present (D4)'])} |")
+w(HHEAD[0]); w(HHEAD[1])
+w(hrow4("**D4 shipped**", bold=True))
 HN = {"D1": "D1 read back from the subtopic, no examples (same items)", "D0": "D0 plain list prompting, best subtopic within its chapter (same items)",
       "keyword": "keyword (APS subtopic words, frozen; chapter only)"}
 for d, nm in (("D1", "D1 read-back, no examples"), ("D0", "D0 list prompting → best subtopic in its chapter"), ("keyword", "keyword (chapter only)")):
@@ -280,6 +326,12 @@ w(f"D4 and D1 always name one chapter and one subtopic, so hP = hR = hF for them
   f"D0 predicts the chapter only when its chapter is not in the subtopic shortlist, the keyword baseline always. "
   f"The conditional rate is over each design's own correct-chapter items, so it is not a paired comparison. "
   f"On all {num(N_ALL, 0)} items (gold depth 1 where the main subtopic is not among the 190): D4 hF {r(ah)}.")
+w("")
+w("For reference, the same metrics of the shipped design on the held-out S25 affairs (§1b; other items, computed after the S25 result, "
+  "not pre-registered):")
+w("")
+w(HHEAD[0]); w(HHEAD[1])
+w(hrow25(f"shipped, held out (S25, n {num(t25h['n'], 0)}; not pre-registered)"))
 w("")
 
 dv = T["dvs_human30"]
@@ -711,8 +763,10 @@ w(f"- Where no official labels exist, the gold is the AI judge. It matches APS e
   "27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.")
 w(f"- New topics defined in one sentence are measured against the AI judge only. They flag every judge-relevant affair in S19 but over-flag "
   f"narrow topics: precision of flags {rk(p19['wolf']['precision'])} for wolf, {rk(p19['ki-schule']['precision'])} for AI in schools (§15).")
-w(f"- The held-out test (S25, §1b) scores the chapter and its lanes; subtopic and hierarchical figures of the shipped design (§2) are on the "
-  f"design set only. Its D1 cell (French or Italian text) holds {num(dd25['D1']['n'])} affairs.")
+w(f"- The held-out test (S25, §1b) pre-registered the chapter, its lanes and plain list prompting (S25b); its subtopic and hierarchical "
+  f"figures (subtopic top-1 {r(hm25['subtopic top-1 end to end (shipped, held out)'])}, hF {r(t25h['result'])}) were computed after the "
+  f"result and are not pre-registered. Its D1 cell (no APS-labelled example: one-word procedural titles such as «Vereidigung», or a French "
+  f"text) holds {num(dd25['D1']['n'])} affairs, too few to measure D1 held out.")
 w("- All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.")
 w("")
 w("## To measure")

@@ -4,8 +4,8 @@
    "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
    "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
    "gold": "human",
-   "design": "Produktionspipeline wie ausgeliefert (D4; D1 bei FR/IT-Text, 10 Geschäfte)",
-   "design_fr": "pipeline de production tel que livré (D4 ; D1 si texte FR/IT, 10 objets)",
+   "design": "Produktionspipeline wie ausgeliefert (D4; D1 ohne Beispiele: 10 Geschäfte ohne passendes APS-Beispiel, einwortige Titel wie «Vereidigung»)",
+   "design_fr": "pipeline de production tel que livré (D4 ; D1 sans exemples : 10 objets sans exemple APS adéquat, titres d'un mot comme « Vereidigung »)",
    "n": 927,
    "result": "top-1 0.696 · top-3 0.839",
    "result_fr": "top-1 0,696 · top-3 0,839",
@@ -13,8 +13,8 @@
     0.666,
     0.726
    ],
-   "baseline": "Stichwort 0.186 [0.162, 0.213]",
-   "baseline_fr": "mots-clés 0,186 [0,162, 0,213]",
+   "baseline": "Listen-Prompt 0.654 (n 918) · Stichwort 0.186",
+   "baseline_fr": "liste 0,654 (n 918) · mots-clés 0,186",
    "split": "held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
    "split_fr": "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement",
    "file": "eval/s25/results.json"
@@ -56,6 +56,44 @@
    "split": "held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
    "split_fr": "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement",
    "file": "eval/s25/results.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "gold": "human",
+   "design": "Unterthema, durchgehend, ausgeliefertes Design (nicht vorregistriert, nach S25 berechnet)",
+   "design_fr": "sous-thème, de bout en bout, design livré (non préenregistré, calculé après S25)",
+   "n": 891,
+   "result": "top-1 0.497 · top-3 0.650 · bei richtigem Kapitel 0.708",
+   "result_fr": "top-1 0,497 · top-3 0,650 · si chapitre juste 0,708",
+   "interval": [
+    0.464,
+    0.53
+   ],
+   "baseline": "Design-Set (D4, zum Vergleich) 0.538",
+   "baseline_fr": "jeu de conception (D4, pour comparaison) 0,538",
+   "split": "nach S25 aus seinen Zeilen berechnet, nicht vorregistriert",
+   "split_fr": "calculé après S25 à partir de ses lignes, non préenregistré",
+   "file": "eval/s25/hierarchical.json"
+  },
+  {
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "gold": "human",
+   "design": "hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 makro (nicht vorregistriert, nach S25 berechnet)",
+   "design_fr": "F1 hiérarchique (chapitre + sous-thème) · F1 macro par chapitre (non préenregistré, calculé après S25)",
+   "n": 891,
+   "result": "hF 0.604 · Makro-F1 0.647 (alle 927)",
+   "result_fr": "hF 0,604 · F1 macro 0,647 (les 927)",
+   "interval": [
+    0.575,
+    0.633
+   ],
+   "baseline": "Design-Set (D4, zum Vergleich) hF 0.640 · Makro-F1 0.705",
+   "baseline_fr": "jeu de conception (D4, pour comparaison) hF 0,640 · F1 macro 0,705",
+   "split": "nach S25 aus seinen Zeilen berechnet, nicht vorregistriert",
+   "split_fr": "calculé après S25 à partir de ses lignes, non préenregistré",
+   "file": "eval/s25/hierarchical.json"
   },
   {
    "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",

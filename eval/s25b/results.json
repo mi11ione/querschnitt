@@ -1,0 +1,35 @@
+{
+ "prereg": "eval/PREREG-BUILD.md S25b",
+ "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "n": 918,
+ "d0a_asked": 927,
+ "not_scored": {
+  "n": 9,
+  "why": "no d0b: one-word procedural affairs (Vereidigung, Nachruf, Ordnungsantrag) with no APS-labelled neighbour are read without examples, and their first reading was p >= 0.9, so the production run asked no second reading (engine.need_ch2); D0 needs both"
+ },
+ "D0_top1": {
+  "k": 601,
+  "n": 918,
+  "value": 0.6546,
+  "ci95": [
+   0.623,
+   0.685
+  ]
+ },
+ "shipped_top1": {
+  "k": 639,
+  "n": 918,
+  "value": 0.696,
+  "ci95": [
+   0.665,
+   0.725
+  ]
+ },
+ "shipped_minus_D0": {
+  "value": 0.0414,
+  "ci95": [
+   0.016,
+   0.067
+  ]
+ }
+}

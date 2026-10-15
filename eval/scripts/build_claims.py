@@ -409,7 +409,9 @@ def adhoc_rows():
 def s25_rows():
     """S25, the shipped federal design held out on fresh APS-labelled affairs (gold = APS editors' chapter): every k/n block of
     eval/pruefstand.json > aps_chapter_heldout_s25 → the share (truncated, never rounded up), its Wilson bounds (outward, as stored by
-    eval/s25/analyze.py and re-checked by build_pruefstand.py), k/n, n, and the lane shares as percentages (truncated)."""
+    eval/s25/analyze.py and re-checked by build_pruefstand.py), k/n, n, and the lane shares as percentages (truncated); the S25b plain list
+    prompting baseline and its paired difference (eval/s25b/results.json); and the S25 subtopic / hierarchical figures
+    (aps_hierarchical_heldout_s25, computed after the result, not pre-registered)."""
     P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
     t = next(x for x in P["tests"] if x["id"] == "aps_chapter_heldout_s25")
     rows = []
@@ -431,6 +433,15 @@ def s25_rows():
             if x in b:
                 r(f"{ctx} {x}", NF.pct(b[x]), b[x], at["file"], f"{key} > {x}", "share of the scored affairs as a percentage, truncated")
 
+    def point(ctx, b, signed=False):
+        """a value + bootstrap interval without k/n (point truncated, bounds outward as stored)."""
+        at = b["at"]; ctx = ctx + (f" ({b['metric']})" if b.get("metric") else "")
+        sg = NF.signed if signed else (lambda x: x)
+        r(ctx, sg(NF.t(b["value"])), b["value"], at["file"], at["key"], "truncated, never rounded up")
+        for i, (fn, side) in enumerate(((NF.lo, "floored"), (NF.hi, "ceiled"))):
+            r(f"{ctx} ci95[{i}]", sg(fn(b["ci95"][i])), b["ci95"][i], at["file"], f"{at['key']}: bootstrap bound, rounded outward at 3 decimals ({side})",
+              b.get("ci_method") or b.get("method") or "")
+
     sc = t["breakdowns"]["scored"]
     r("affairs scored (fresh APS-labelled federal affairs, none missing)", NF.t(t["n"]), t["n"], sc["at"]["file"], sc["at"]["key"], "count")
     block("chapter top-1, held out", t["result"])
@@ -441,7 +452,8 @@ def s25_rows():
         r(f"pre-fix reading {i} (amendment) as written there", NF.t(b["value"], 4), b["value"], b["at"]["file"],
           f"line {b['at']['line']}: {b['at']['text']}",
           "4 decimals as written in the amendment (truncated)")
-    block("keyword baseline (S9 frozen rule)", t["baselines"][0])
+    block("plain list prompting D0 (S25b)", t["baselines"][0])
+    block("keyword baseline (S9 frozen rule)", t["baselines"][1])
     bd = t["breakdowns"]
     for k, b in bd["lanes"].items():
         if isinstance(b, dict): block(f"lane {k}", b)
@@ -456,6 +468,25 @@ def s25_rows():
     r("gold chapters present", str(gc["chapters"]), gc["chapters"], gc["at"]["file"], gc["at"]["key"], "count")
     we = bd["with_examples"]
     r("affairs with examples (D4)", NF.t(we["value"]), we["value"], we["at"]["file"], we["at"]["key"], "count")
+    lp = bd["list_prompting_s25b"]
+    block("S25b shipped on the same affairs as D0", lp["shipped_same_affairs"])
+    point("S25b paired shipped − D0", lp["paired_shipped_minus_D0"], signed=True)
+    ns = lp["not_scored"]
+    r("S25b affairs not scored (no second reading)", NF.t(ns["value"]), ns["value"], ns["at"]["file"], ns["at"]["key"], "count")
+    # subtopic / hierarchy on the S25 items: computed after the result, NOT pre-registered (eval/s25/hierarchical.json)
+    h = next(x for x in P["tests"] if x["id"] == "aps_hierarchical_heldout_s25")
+    r("hierarchical: affairs with a subtopic gold among the 190 (not pre-registered)", NF.t(h["n"]), h["n"], h["result"]["at"]["file"],
+      "subtopic_gold_items", "count")
+    point("hierarchical, not pre-registered", h["result"])
+    for b in h["results_more"]:
+        if "kn" in b:
+            block("hierarchical, not pre-registered", b)
+        else:
+            point("hierarchical, not pre-registered", b)
+            if "chapters" in b:
+                r("hierarchical, not pre-registered: chapters present (macro-F1)", str(b["chapters"]), b["chapters"], b["at"]["file"],
+                  f"{b['at']['key']} > chapters", "count")
+                r("hierarchical, not pre-registered: affairs in the macro-F1", NF.t(b["n"]), b["n"], h["sources"][0], "items", "count")
     return rows
 
 

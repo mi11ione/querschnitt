@@ -1,7 +1,8 @@
 # Querschnitt — evaluation report
 
 One topic field for every Swiss parliament in OpenParlData: an Année Politique Suisse (APS) chapter with ranked subtopics,
-ad-hoc topics defined in one sentence, a lane that says when a person should check, and a quoted sentence from the affair.
+ad-hoc topics defined in one sentence, a lane that says when a person should check, and — where the affair has a text and the evidence step has run — a
+quoted sentence from the affair.
 Every topic decision is made by Apertus (`swiss-ai/apertus-v1.5-8b` on Public AI, build `…dd237840` on every call reported
 here). Full tables with intervals, baselines and source files: [PRUEFSTAND.md](PRUEFSTAND.md); every number in this report
 is in [`eval/claims.tsv`](../eval/claims.tsv).
@@ -82,7 +83,32 @@ night (15 Oct) ran into a Public AI outage: the cut pass queued 49 affairs (33 n
 endpoint answered with the same build the drain scored all 49 in 9.6 min for USD 0.0215; 0 were left
 ([`eval/nightly/2026-10-15.json`](../eval/nightly/2026-10-15.json)).
 
-## 6. Limits
+## 6. Model roles
+- **Apertus** (`swiss-ai/apertus-v1.5-8b` on Public AI) makes every topic decision that ships: chapter, subtopic, yes/no
+  for an ad-hoc topic, the evidence sentence, and the topic name and search terms Neues Thema generates from one
+  sentence. Every call is a user message (no system message); closed choices are read from next-token probabilities.
+- **No other model decides anything in the product.** Example retrieval is BM25 in code; recalibration is isotonic
+  regression fitted per build.
+- **In the evaluation only**, where no human labels exist, blind Claude runs (two independent annotators and a
+  tie-break) serve as the judge, cross-checked by the open-weights Qwen-SEA-LION; every figure measured against them is labelled as
+  agreement with that judge (§3), and the judge itself was checked against APS editors (0.790 of chapters).
+- The code was written with Claude Code.
+
+## 7. Path to production at OpenParlData
+- **Data model:** one `topics` table in OPD's naming, with migrations up and down, a seed for every scheme file, and an
+  optional per-parliament switch for the public feed (`upstream/opd/migrations/`). Inferred and confirmed rows stay
+  apart: a confirmation or rejection is a new row with who and when; nothing is overwritten.
+- **Load:** an Apache Hop pipeline loads the bulk topics file; CI runs it on every push against Postgres, loading the
+  full released file and comparing every row with the reference converter (`upstream/hop/`).
+- **Read API:** a drop-in FastAPI router implements the specified endpoints against the migrated tables, tested in CI
+  (`upstream/opd/api/router.py`).
+- **Nightly:** reads OPD's published export, queues new and changed affairs, scores the queue, and drains it when the
+  endpoint answers again with the same build; editors' decisions become examples for their topics (§5).
+- **Model build changes:** a run locks the build it starts with; the recalibration applies only to rows of the build it
+  was fitted on; a new build means a refit and the Prüfstand re-run (`upstream/eval-task/`) before its rows ship.
+- The merge-request draft with day-1 steps and rollback is `upstream/MERGE_REQUEST.md`.
+
+## 8. Limits
 - On fresh federal affairs the chapter is right in 0.696 and the pass lane in 0.812, below the 0.740 and 0.864 of the design
   set; the recalibration map was fitted on the design set and is refitted per build.
 - Subtopics are suggestions (0.520 top-1), never a lane of their own.

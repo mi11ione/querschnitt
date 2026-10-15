@@ -1,6 +1,6 @@
--- SQLite equivalent of sql/topics.sql (the default local store, QS_DB). Timestamps are ISO 8601 UTC text
+-- SQLite equivalent of sql/qs_topics.sql (the default local store, QS_DB). Timestamps are ISO 8601 UTC text
 -- (YYYY-MM-DDTHH:MM:SS.ffffff+00:00, so text order = time order); evidence is JSON text.
-CREATE TABLE IF NOT EXISTS topics (
+CREATE TABLE IF NOT EXISTS qs_topics (
   row_id        INTEGER PRIMARY KEY AUTOINCREMENT,
   affair_id     INTEGER NOT NULL,
   body_key      TEXT,
@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS topics (
   closed_by     TEXT,
   CHECK (provenance = 'inferred' OR (confirmed_by IS NOT NULL AND confirmed_at IS NOT NULL))
 );
-CREATE INDEX IF NOT EXISTS topics_current_affair ON topics (affair_id) WHERE valid_to IS NULL;
-CREATE INDEX IF NOT EXISTS topics_current_code ON topics (scheme, code) WHERE valid_to IS NULL;
-CREATE INDEX IF NOT EXISTS topics_key ON topics (affair_id, scheme, level, rank, provenance);
-CREATE INDEX IF NOT EXISTS topics_valid_from ON topics (valid_from);
-CREATE INDEX IF NOT EXISTS topics_valid_to ON topics (valid_to);
-CREATE VIEW IF NOT EXISTS topics_current AS SELECT * FROM topics WHERE valid_to IS NULL;
+CREATE INDEX IF NOT EXISTS qs_topics_current_affair ON qs_topics (affair_id) WHERE valid_to IS NULL;
+CREATE INDEX IF NOT EXISTS qs_topics_current_code ON qs_topics (scheme, code) WHERE valid_to IS NULL;
+CREATE INDEX IF NOT EXISTS qs_topics_key ON qs_topics (affair_id, scheme, level, rank, provenance);
+CREATE INDEX IF NOT EXISTS qs_topics_valid_from ON qs_topics (valid_from);
+CREATE INDEX IF NOT EXISTS qs_topics_valid_to ON qs_topics (valid_to);
+CREATE VIEW IF NOT EXISTS qs_topics_current AS SELECT * FROM qs_topics WHERE valid_to IS NULL;
 
 CREATE TABLE IF NOT EXISTS qs_affairs (
   id INTEGER PRIMARY KEY, body_key TEXT, level TEXT, canton TEXT, parl TEXT, parl_fr TEXT, lang TEXT, date TEXT,

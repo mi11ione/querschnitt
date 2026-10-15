@@ -24,7 +24,7 @@ def store(tmp_path):
     """SQLite per test; with QS_TEST_ALL_PG=1 and QS_TEST_PG_DSN, the same tests on Postgres (tables emptied first)."""
     if os.environ.get("QS_TEST_ALL_PG") and os.environ.get("QS_TEST_PG_DSN"):
         s = Store(dsn=os.environ["QS_TEST_PG_DSN"])
-        s.ex("TRUNCATE topics, qs_affairs, qs_runs RESTART IDENTITY"); s.commit()
+        s.ex("TRUNCATE qs_topics, qs_affairs, qs_runs RESTART IDENTITY"); s.commit()
     else:
         s = Store(path=str(tmp_path / "t.sqlite"), dsn="")
     s.load_affairs(FIX / "inputs_sample.jsonl")

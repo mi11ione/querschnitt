@@ -1,6 +1,6 @@
 # Service layer: store, API, Neues Thema, nightly delta, eval
 
-Everything around the engine: the versioned `topics` store (SQLite or Postgres), the HTTP API of docs/CONTRACT.md §2
+Everything around the engine: the versioned store (table `qs_topics`, SQLite or Postgres), the HTTP API of docs/CONTRACT.md §2
 with the app at `/`, the Neues-Thema backend (a topic in one sentence, streamed decisions), the nightly export delta,
 `make eval GOLD=…`, packaging (Makefile, Dockerfile, compose profiles, CI) and the tests. Model calls in tests go to a
 fake OpenAI-compatible endpoint only.
@@ -10,7 +10,7 @@ fake OpenAI-compatible endpoint only.
 ```sh
 make install                         # uv venv .venv (Python 3.12) + editable install with dev and Postgres extras
 make run                             # API + app on SQLite with the shipped data -> http://127.0.0.1:8000
-make test                            # unit, API, delta and export tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint
+make test                            # unit, API, delta and export tests (+ the Postgres tests when QS_TEST_PG_DSN is set), fake endpoint
 make eval GOLD=data/eval/gold_dvs30.csv          # recall + misses by level for a positives list
 make eval GOLD=data/eval/gold_aps_s9.csv         # APS editors' chapters (multi-class)
 make delta                           # nightly: fresh OPD export -> new/changed affairs -> batch -> rows (SINCE=yesterday)
@@ -18,7 +18,7 @@ make delta-plan                      # robots.txt + export index only: what woul
 make data-release                    # dist/querschnitt-data.tar.gz from the current export (checks it; does not publish)
 make smoke                           # load, start, /health + /metrics, stop (CI)
 docker compose --profile full up -d  # Postgres + API + app + nightly
-QS_PG_DSN=postgresql://… docker compose --profile lite up -d   # nightly chapter + subtopic delta into an existing Postgres
+QS_PG_DSN=postgresql://… docker compose --profile lite up -d   # nightly chapter + subtopic delta, store in an existing Postgres
 ```
 
 `make run` loads, once (`--if-empty`), the first of: `data/inputs.jsonl.gz` + `data/topics.jsonl.gz`; the app's static
@@ -86,9 +86,9 @@ existing `data/querschnitt.sqlite`: `make clean-db` first to load a newer releas
 
 | File | |
 |---|---|
-| `sql/topics.sql` | Postgres DDL, ready to propose upstream: `topics` (CONTRACT §1, checks on lane/status/provenance, partial indexes on current rows, `topics_current` view) + `qs_affairs`, `qs_runs` (prefixed so they never collide with OPD tables in a shared database) |
-| `sql/topics.sqlite.sql` | the SQLite equivalent (ISO-8601 UTC text timestamps, JSON text evidence) |
-| `src/querschnitt/store.py` | `Store` (one class, both dialects), `load_topics` (jsonl, jsonl.gz, parquet), `load_affairs` (inputs), `load_affairs_export` (static export), reads, `decide`, `changes`, `coverage`, `pending`, `metrics`, run log |
+| `sql/qs_topics.sql` | the store's Postgres DDL: `qs_topics` (CONTRACT §1, checks on lane/status/provenance, partial indexes on current rows, `qs_topics_current` view) + `qs_affairs`, `qs_bodies`, `qs_queue`, `qs_runs`. Every object is prefixed `qs_`, so the store can share a database with OPD's tables, `topics` included. Not the upstream proposal: that is `upstream/opd/migrations/` |
+| `sql/qs_topics.sqlite.sql` | the SQLite equivalent (ISO-8601 UTC text timestamps, JSON text evidence) |
+| `src/querschnitt/store.py` | `Store` (one class, both dialects), `load_topics` (jsonl, jsonl.gz, parquet), `load_affairs` (inputs), `load_affairs_export` (static export), reads, `decide`, `changes`, `coverage`, `pending`, `metrics`, run log, `write_topics_file` (the topics file for the Hop loader). A store from before the `qs_` prefix (rows in `topics`) is renamed to `qs_topics` when opened, only if that `topics` has the store's own columns (`row_id`, `scheme`); OPD's `topics` is never touched |
 | `src/querschnitt/api.py` | FastAPI: every CONTRACT §2 endpoint + `/schemes`, `/adhoc/{slug}` (state), `/adhoc/{slug}/stop`, `PUT /adhoc/{slug}/terms`, `POST /adhoc/{slug}/save`; bearer token on writes (`QS_WRITE_TOKEN`); CORS for localhost; app at `/` |
 | `src/querschnitt/adhoc.py` | Neues Thema |
 | `src/querschnitt/evaluate.py` | `querschnitt eval` / `make eval` |
@@ -222,6 +222,9 @@ not scored), top 3 0.860 ([`eval/results/eval-gold_aps_s9.json`](../eval/results
    readings of bilingual parliaments (their lane) and the evidence quote, so nightly rows carry what the export's rows
    carry; lite `ch sub` — the chapter as measured, without ad-hoc topics, bilingual lane or quote.
 5. Rows: `compose.decide` + `compose.topic_rows` with `eval/calibration.json` (the export's rule) → `load_topics`.
+   With `--topics-out FILE` or `QS_TOPICS_OUT` (lite: on by default, `out/topics.jsonl.gz`; the lite compose service
+   writes `/app/out/topics.jsonl.gz` in volume `topics_out`), every current machine row of the store is then written to
+   the topics file (`Store.write_topics_file`, also `querschnitt topics-file --out FILE`): the hand-off to OpenParlData.
 6. One `qs_runs` line and the printed line: `affairs N · wall S s · list-price USD X · pending P · unscored in scope U ·
    rows R · queue before → after · drain M min`. `pending` = the queue (new/changed since the previous nightly, not yet
    scored); `unscored_in_scope` = every affair in scope without rows (the corpus run's backlog). `--last FILE` writes
@@ -253,7 +256,7 @@ all 326,123 input hashes identical to the full build (0 to re-score); the full r
 | Queries (326k affairs) | `/topics/…/affairs` 5–12 ms; `pending` 30–50 ms; coverage 0.6 s Postgres / 3–4 s SQLite, then cached |
 
 `lite` on OPD's ~20 GB VPS: about 0.95 GB of files (exports 370 MB, docs 335 MB, inputs 174 MB, chapter step rows
-≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (≈ 45 MB for 2025–26 with chapter rows); these estimates
+≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the store's `qs_topics` table (≈ 45 MB for 2025–26 with chapter rows); these estimates
 are for the chapter steps alone, and the subtopic step lite now runs adds step rows and subtopic rows not measured here.
 `full` adds the API, the app and a Postgres volume.
 
@@ -261,6 +264,17 @@ What is measured: lite's `ch sub` is the shipped chapter design (chapter read ba
 `eval/calibration.json`), the design the held-out S25 score and the lane figures in PRUEFSTAND.md were measured on. A
 chapter-only run (`QS_STEPS=ch`) is not measured: its `p` would go through a map fitted on read-back confidences. Full's
 `bi` and `ev` add the bilingual lane and the quote.
+
+**Lite in OpenParlData's Postgres.** `QS_PG_DSN` may name OPD's own database: the store creates only `qs_*` tables,
+indexes and a `qs_topics_current` view there, and never reads or writes OPD's `topics` (`upstream/opd/migrations/`, OPD's
+column names). Rows reach OPD's `topics` only through Apache Hop loading a topics file: the lite nightly writes that file
+(CONTRACT §1 rows, the store's current machine rows) at the end of every delta, and OPD's Hop job loads it
+(`upstream/hop/README.md`, "Run"), scheduled after `QS_NIGHTLY_AT`. The file is replaced atomically and the loader skips
+rows it already holds, so a load that runs twice on one file writes nothing the second time. The file is in the
+container's volume `topics_out`: copy it out with `docker compose cp nightly-lite:/app/out/topics.jsonl.gz <dir>/`, or
+mount that volume where Hop runs. CI checks this path in job `hop`: the store loaded into the same Postgres as OPD's
+migrated tables, OPD's `topics` unchanged by it, then the store's topics file loaded by Hop and compared row by row with
+`to_opd.py`.
 
 Outside this Mac: `ops/nightly.sh` takes `QS_DATA_DIR` and `PY` and uses `caffeinate` only where it exists, but
 `ops/nightly-loop.sh` (BSD `date -j`) and `ops/watchdog.sh` (BSD `stat -f`) are macOS scripts for the author's machine,

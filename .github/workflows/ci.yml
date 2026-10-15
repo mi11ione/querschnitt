@@ -176,6 +176,19 @@ jobs:
           python -m pytest -p no:cacheprovider -v -rs upstream/opd/tests/test_router.py | tee "$RUNNER_TEMP/router.log"
           if grep -n "SKIPPED" "$RUNNER_TEMP/router.log"; then exit 1; fi
           test "$(psql -At -c 'SELECT count(*) FROM topic_feed_bodies') $(psql -At -c 'SELECT count(*) FROM topics WHERE provenance = $$confirmed$$')" = "0 0"
+      - name: lite path - Querschnitt's store (qs_* tables) in the same database leaves OPD's topics alone; its topics file loaded by Hop
+        env: {QS_PG_DSN: "postgresql://opd:opd@localhost:5432/openparldata"}
+        run: |
+          pip install -q -e ".[pg]"
+          snap() { psql -At -c "SELECT count(*) || ' ' || coalesce(md5(string_agg(t::text, '|' ORDER BY id)), '-') FROM topics t"; }
+          before=$(snap)
+          python -m querschnitt load --topics upstream/hop/ci/topics.app-slice.jsonl.gz
+          test "$(snap)" = "$before"
+          test "$(psql -At -c "SELECT count(*) FROM qs_topics")" -gt 0
+          test "$(psql -At -c "SELECT string_agg(relname, ',' ORDER BY relname) FROM pg_class WHERE relname IN ('topics', 'topics_current', 'qs_topics', 'qs_topics_current')")" = "qs_topics,qs_topics_current,topics,topics_current"
+          python -m querschnitt topics-file --out "$RUNNER_TEMP/lite/topics.jsonl.gz"
+          upstream/hop/ci/load_full.sh "$RUNNER_TEMP/lite/topics.jsonl.gz" lite-store
+          test "$(psql -At -c "SELECT count(*) FROM topics")" = "$(gzip -dc "$RUNNER_TEMP/lite/topics.jsonl.gz" | wc -l)"
       - name: migrations down 0003, 0002, 0001 with the loaded rows in place
         run: |
           psql -v ON_ERROR_STOP=1 -q -c "DROP SCHEMA ci CASCADE"

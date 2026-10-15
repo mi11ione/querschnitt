@@ -51,10 +51,10 @@ def test_delta_end_to_end(tmp_path, fake, monkeypatch, capsys):
     line = capsys.readouterr().out.strip().splitlines()[-1]
     assert line.startswith("affairs 3 · wall ") and "list-price USD" in line and "pending 0" in line
     st = Store()
-    t = {r["affair_id"]: r for r in st.all("SELECT * FROM topics WHERE scheme = 'adhoc/digitalisierung'")}
+    t = {r["affair_id"]: r for r in st.all("SELECT * FROM qs_topics WHERE scheme = 'adhoc/digitalisierung'")}
     assert t[1001]["code"].endswith(":yes") and t[1003]["code"].endswith(":no")
-    assert st.all("SELECT COUNT(*) AS n FROM topics WHERE scheme = 'aps' AND level = 1 AND rank = 1")[0]["n"] == 3
-    assert all(r["build"] == "fp_fake_1" for r in st.all("SELECT build FROM topics"))
+    assert st.all("SELECT COUNT(*) AS n FROM qs_topics WHERE scheme = 'aps' AND level = 1 AND rank = 1")[0]["n"] == 3
+    assert all(r["build"] == "fp_fake_1" for r in st.all("SELECT build FROM qs_topics"))
     assert t[1001]["evidence"] and t[1003]["evidence"] is None          # the ev step ran: the flag quotes its title
     assert not any(m["role"] == "system" for b in fake.requests for m in b["messages"])
     n_req = len(fake.requests)
@@ -65,9 +65,9 @@ def test_delta_end_to_end(tmp_path, fake, monkeypatch, capsys):
     export(tmp_path / "opd", title3="Velowege und digitale Verkehrsdaten im Kanton Bern")
     log3 = delta(args(tmp_path))
     assert log3["todo"] == 1
-    cur = st.all("SELECT code FROM topics WHERE affair_id = 1003 AND scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")
+    cur = st.all("SELECT code FROM qs_topics WHERE affair_id = 1003 AND scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")
     assert [r["code"] for r in cur] == ["adhoc/digitalisierung:yes"]
-    assert st.all("SELECT COUNT(*) AS n FROM topics WHERE affair_id = 1003 AND valid_to IS NOT NULL")[0]["n"] > 0
+    assert st.all("SELECT COUNT(*) AS n FROM qs_topics WHERE affair_id = 1003 AND valid_to IS NOT NULL")[0]["n"] > 0
     runs = st.runs("delta")
     assert len(runs) == 3 and runs[0]["affairs"] == 1 and runs[0]["usd"] > 0
 
@@ -80,12 +80,33 @@ def test_delta_lite_chapter_and_subtopic(tmp_path, fake, monkeypatch):
     for k, v in dict(QS_DB=str(tmp_path / "s.sqlite"), QS_BASE_URL=fake.url, QS_API_KEY="test", QS_KEY_FILE=str(tmp_path / "nokey")).items():
         monkeypatch.setenv(k, v)
     monkeypatch.setenv("QS_PROFILE", "lite")
+    monkeypatch.setenv("QS_TOPICS_OUT", str(tmp_path / "out" / "topics.jsonl.gz"))
     export(tmp_path / "opd")
     log = delta(args(tmp_path))
     st = Store()
     assert log["steps"] == ["ch", "sub"]
-    assert {r["scheme"] for r in st.all("SELECT scheme FROM topics")} == {"aps"}
-    assert st.all("SELECT COUNT(*) AS n FROM topics WHERE level = 2")[0]["n"] > 0
+    assert {r["scheme"] for r in st.all("SELECT scheme FROM qs_topics")} == {"aps"}
+    assert st.all("SELECT COUNT(*) AS n FROM qs_topics WHERE level = 2")[0]["n"] > 0
+    # the night ends with the topics file for OPD's Hop loader: every current machine row of the store
+    f = log["topics_file"]
+    assert f["path"] == str(tmp_path / "out" / "topics.jsonl.gz")
+    with gzip.open(f["path"], "rt") as fh:
+        rows = [json.loads(l) for l in fh]
+    assert f["rows"] == len(rows) == st.one("SELECT COUNT(*) AS n FROM qs_topics WHERE valid_to IS NULL")["n"] > 0
+    assert {r["affair_id"] for r in rows} == {1001, 1002, 1003} and all(r["valid_from"].endswith("Z") for r in rows)
+
+
+def test_delta_full_writes_no_topics_file_unless_asked(tmp_path, fake, monkeypatch):
+    from querschnitt.cli import delta
+    monkeypatch.setattr(C.Guard.__init__, "__defaults__", (50.0, 0.15))
+    for k, v in dict(QS_DB=str(tmp_path / "s.sqlite"), QS_BASE_URL=fake.url, QS_API_KEY="test", QS_KEY_FILE=str(tmp_path / "nokey")).items():
+        monkeypatch.setenv(k, v)
+    for k in ("QS_PROFILE", "QS_TOPICS_OUT", "QS_EXPORT_DIR", "QS_INPUTS", "QS_RUN_DIR"):
+        monkeypatch.delenv(k, raising=False)
+    export(tmp_path / "opd")
+    assert "topics_file" not in delta(args(tmp_path, model=False))
+    out = tmp_path / "asked.jsonl.gz"
+    assert delta(args(tmp_path, model=False, topics_out=str(out)))["topics_file"]["path"] == str(out) and out.exists()
 
 
 def add_affairs(d, extra, title3=None):
@@ -133,7 +154,7 @@ def test_cut_then_drain(tmp_path, fake, monkeypatch, capsys):
     assert drain["scored"] == 3 and len(fake.requests) > n0
     m = st.metrics()
     assert m["pending"] == 0 and st.all("SELECT COUNT(*) AS n FROM qs_queue")[0]["n"] == 0
-    cur = {r["affair_id"]: r["code"] for r in st.all("SELECT affair_id, code FROM topics WHERE scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")}
+    cur = {r["affair_id"]: r["code"] for r in st.all("SELECT affair_id, code FROM qs_topics WHERE scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")}
     assert cur[1010].endswith(":yes") and cur[1011].endswith(":no") and cur[1003].endswith(":yes")
     L = json.loads(last.read_text())
     assert L["date"] and L["opd_export_generated"] == "2026-10-14T06:35:00Z" and L["new_affairs"] == 2

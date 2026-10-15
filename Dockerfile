@@ -14,8 +14,8 @@ print('\n'.join(p['dependencies'] + p['optional-dependencies']['pg']))" > /tmp/r
  && pip install -r /tmp/req.txt && rm /tmp/req.txt \
  && useradd --create-home --uid 10001 app
 COPY --chown=app:app . /app
-RUN mkdir -p /app/state /app/data /app/runs \
- && chown -R app:app /app/state /app/data /app/runs /app/src/querschnitt/schemes/adhoc
+RUN mkdir -p /app/state /app/data /app/runs /app/out \
+ && chown -R app:app /app/state /app/data /app/runs /app/out /app/src/querschnitt/schemes/adhoc
 USER app
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s \

@@ -11,3 +11,4 @@ node_modules
 data/opd
 data/inputs.jsonl.gz
 .ruff_cache
+out

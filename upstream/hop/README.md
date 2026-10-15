@@ -76,7 +76,10 @@ export HOP_OPTIONS="-Xmx2g -Duser.timezone=UTC"         # timestamps are UTC end
 ```
 
 Exit code 0 means the load and the closing step both succeeded. For a nightly run, call the same command after
-`querschnitt delta` has written a new topics file. `-Duser.timezone=UTC` matters: the columns are `timestamp` without
+`querschnitt delta` has written a new topics file: the `lite` compose profile writes it at the end of every night
+(`/app/out/topics.jsonl.gz`, volume `topics_out`; `docs/SERVICE.md`, "Lite in OpenParlData's Postgres"), and
+`querschnitt topics-file --out FILE` writes it from Querschnitt's store at any time. That store's own tables are named
+`qs_*`, so it can live in OPD's database without touching `topics`. `-Duser.timezone=UTC` matters: the columns are `timestamp` without
 time zone holding UTC, and the JDBC driver writes dates in the JVM's zone. The connection also sends
 `SET TIME ZONE 'UTC'` on connect.
 
@@ -99,7 +102,8 @@ every column except `id`, `created_at`, `updated_at` and `content_hash`.
 | 4b | `ci/topics.app-slice.jsonl.gz`: every row of 2,097 affairs of the app's export of 15 Oct (`ci/make_slice.py`: each code on at least 3 affairs, each code of a parliament's own scheme on 25, each body on 4; 7,398 rows, 89 bodies, all 8 schemes incl. `ti-dipartimenti`), for rows a release does not carry yet | as step 5 |
 | 5 | the released topics file (`make data`, release `data-latest`), into an empty table, stand-in rows added for its affairs and bodies (`ci/load_full.sh`) | row count = machine rows of the file; every row equal to `to_opd.py`; `body_id` and `scheme_id` set on every row |
 | – | the rows of step 5 | `../opd/tests/test_router.py`: the API router (`../opd/api/router.py`) against these rows, each test in a transaction that is rolled back (`../opd/api/topics.md`, "Implementation") |
-| 6 | migrations down 0003 → 0002 → 0001 with the rows of step 5 in place | 0002 down leaves no topic rows or schemes; 0001 down leaves no `topic*` relation |
+| 5b | Querschnitt's own store in the same database (`QS_PG_DSN`): `ci/topics.app-slice.jsonl.gz` loaded with `querschnitt load`, then the store's topics file written with `querschnitt topics-file` (what the `lite` nightly writes) | the store's tables are `qs_*` and OPD's `topics` is unchanged by the store (rows and their checksum); the store's file loaded like step 5, every row equal to `to_opd.py` |
+| 6 | migrations down 0003 → 0002 → 0001 with the rows of step 5b in place | 0002 down leaves no topic rows or schemes; 0001 down leaves no `topic*` relation |
 
 The [run of 15 Oct](https://github.com/mi11ione/querschnitt/actions/runs/38744888546) (PostgreSQL 16.15), before step 4
 existed: the release step loaded the release of that day, 159,834 rows in 142 s (12,763 document quotes, 7,008 text quotes); the job took

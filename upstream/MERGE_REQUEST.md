@@ -157,7 +157,7 @@ build is published (Querschnitt `docs/ONSITE.md`, gate thresholds there). Two th
    (credentials outside the repo), then run `load_topics.hwf` once against the topics file (`hop/README.md`, "Run").
    Check: `SELECT scheme_key, count(*) FROM topics GROUP BY 1`.
 6. Schedule the same command after each new topics file. Where that file comes from: "Who runs the nightly, and what a
-   night costs" below; where OPD fetches it is an open question.
+   night costs" below (with the `lite` container on OPD's server, its volume `topics_out`).
 7. API: mount `opd/api/router.py` in OPD's application with its connection (`opd/api/topics.md`, "Implementation"),
    and call `topics_for_affairs` / `affairs_topic_filter` from the affairs list for `expand=topics` and `topic=`.
    Export: add the three tables to the bulk export job (`opd/export/EXPORT.md`; leave out `content_hash`; APS level 2
@@ -170,9 +170,15 @@ build is published (Querschnitt `docs/ONSITE.md`, gate thresholds there). Two th
   file OPD would load is published by hand as a release asset (`tools/make_data_release.sh` builds it; publishing is a
   separate step). Not a service OPD can rely on.
 - **For OPD: the same job as a container, already in the repo.** `docker-compose.yml` profile `lite` (service
-  `nightly-lite`: chapters and subtopics into an existing Postgres named by `QS_PG_DSN`, sized for OPD's VPS) or profile
-  `full` (service `nightly`, with its own Postgres, API and app). Both run `querschnitt nightly`: `delta --since yesterday`
-  once a day at `QS_NIGHTLY_AT` (default 02:30); a failed night is logged and the next night retries. Without containers, a
+  `nightly-lite`: chapters and subtopics, sized for OPD's VPS) or profile `full` (service `nightly`, with its own
+  Postgres, API and app). Both run `querschnitt nightly`: `delta --since yesterday` once a day at `QS_NIGHTLY_AT`
+  (default 02:30); a failed night is logged and the next night retries. Lite keeps Querschnitt's working store in the
+  Postgres named by `QS_PG_DSN`, which may be OPD's own: its tables are all `qs_*` (`qs_topics`, `qs_affairs`, ...) and
+  it never touches this MR's `topics`. The hand-off into `topics` is the Hop load: every lite night ends by writing the
+  topics file (the store's current machine rows, the format of `hop/README.md`) to `/app/out/topics.jsonl.gz` in volume
+  `topics_out`, and step 6 of "Day 1" loads it. CI runs that path (job `hop`, after the release load): Querschnitt's
+  store in the same database as the migrated tables, `topics` unchanged by it, its file loaded by Hop and checked row
+  by row against `opd/export/to_opd.py`. Without containers, a
   scheduled job (cron or a CI schedule) can run `querschnitt delta --since yesterday` once a day. The endpoint and its key
   come from the environment (`QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY`); whoever holds the key pays for the calls. Open: who
   at OPD owns the job and the key.

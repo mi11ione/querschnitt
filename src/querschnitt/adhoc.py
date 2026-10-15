@@ -420,7 +420,7 @@ class Adhoc:
             if getattr(job, "terms_thread", None):
                 job.terms_thread.join(timeout=120)                  # candidates need the corpus-checked terms
             subs, meta = self.propose_subtopics(job.topic, job) if self.store.one(
-                "SELECT 1 AS x FROM topics WHERE scheme = 'aps' AND level = 2 LIMIT 1") else ([], {})
+                "SELECT 1 AS x FROM qs_topics WHERE scheme = 'aps' AND level = 2 LIMIT 1") else ([], {})
             job.topic["subtopics"] = subs
             terms = [x["term"].lower() for l in LANGS for x in job.terms.get(l, []) if not x.get("broad")]
             hit = {r["id"] for r in before if any(w in (r["title"] + " " + (r["title_long"] or "")).lower() for w in terms)}
@@ -429,7 +429,7 @@ class Adhoc:
                 ids = [r["id"] for r in before]
                 for i in range(0, len(ids), 900):
                     part = ids[i:i + 900]
-                    q = (f"SELECT DISTINCT affair_id FROM topics WHERE valid_to IS NULL AND scheme = 'aps' AND level = 2 AND rank <= 3 "
+                    q = (f"SELECT DISTINCT affair_id FROM qs_topics WHERE valid_to IS NULL AND scheme = 'aps' AND level = 2 AND rank <= 3 "
                          f"AND code IN ({', '.join('?' * len(subs))}) AND affair_id IN ({', '.join('?' * len(part))})")
                     hit |= {r["affair_id"] for r in self.store.all(q, subs + part)}
             cand = [dict(r, sample="candidate") for r in before if r["id"] in hit]

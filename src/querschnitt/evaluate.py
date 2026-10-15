@@ -93,7 +93,7 @@ def predictions(store: Store, scheme: str, level: int, ids: list[int], ranks: in
     out: dict[int, dict[int, dict]] = collections.defaultdict(dict)
     for i in range(0, len(ids), 900):
         part = ids[i:i + 900]
-        q = (f"SELECT affair_id, code, rank, p, p_raw, lane, valid_to, row_id FROM topics WHERE provenance = 'inferred' "
+        q = (f"SELECT affair_id, code, rank, p, p_raw, lane, valid_to, row_id FROM qs_topics WHERE provenance = 'inferred' "
              f"AND scheme = ? AND level = ? AND rank <= ? AND affair_id IN ({', '.join('?' * len(part))})")
         for r in store.all(q, [scheme, level, ranks] + part):
             cur = out[r["affair_id"]].get(r["rank"])

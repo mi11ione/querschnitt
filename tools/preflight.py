@@ -111,9 +111,11 @@ def store():
                    "make demo loads it on first start (about a minute)")
     try:
         c = sqlite3.connect(f"file:{p}?mode=ro", uri=True, timeout=5)
-        n = c.execute("SELECT COUNT(*) FROM topics").fetchone()[0]
+        # read-only: a store not yet opened by this version still has its rows in `topics` (the store renames it on open)
+        t = "qs_topics" if c.execute("SELECT 1 FROM sqlite_master WHERE name = 'qs_topics'").fetchone() else "topics"
+        n = c.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
         a = c.execute("SELECT COUNT(*) FROM qs_affairs WHERE id = ?", (DEMO_ID,)).fetchone()[0]
-        dec = c.execute("SELECT COUNT(*) FROM topics WHERE affair_id = ? AND valid_to IS NULL AND status IN ('confirmed', 'rejected')",
+        dec = c.execute(f"SELECT COUNT(*) FROM {t} WHERE affair_id = ? AND valid_to IS NULL AND status IN ('confirmed', 'rejected')",
                         (DEMO_ID,)).fetchone()[0]
         c.close()
     except Exception as e:  # noqa: BLE001

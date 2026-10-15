@@ -161,6 +161,8 @@ jobs:
           gzip -dc "$RUNNER_TEMP/every_code.jsonl.gz" | jq -r '[.scheme, .code] | @tsv' | psql -v ON_ERROR_STOP=1 -c "COPY ci.every_code FROM STDIN"
           psql -v ON_ERROR_STOP=1 -f upstream/hop/ci/assert_seeded.sql
           upstream/hop/ci/load_full.sh "$RUNNER_TEMP/every_code.jsonl.gz" every-code
+      - name: a slice of the app's current export (ci/topics.app-slice.jsonl.gz, ci/make_slice.py; Ticino rows of every code) loaded in full
+        run: upstream/hop/ci/load_full.sh upstream/hop/ci/topics.app-slice.jsonl.gz app-slice
       - name: the released topics file (make data, data-latest) loaded in full into an empty table, checked against to_opd.py
         run: |
           curl -fsSL https://github.com/mi11ione/querschnitt/releases/download/data-latest/querschnitt-data.tar.gz \

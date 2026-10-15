@@ -38,7 +38,7 @@ in the console); without it the review desk and Neues Thema expect a token-less 
 | `QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY` (or `QS_KEY_FILE`) | Public AI, `swiss-ai/apertus-v1.5-8b` | endpoint (client.Endpoint.from_env) |
 | `QS_MAX_RATE` | 1.6 (nightly 1.0) | requests/s ceiling of this process |
 | `QS_WRITE_TOKEN` | – | bearer token for every write (above); unset = open, warned at startup |
-| `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 2, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits (`QS_ADHOC_CAP`: the ledger's total) |
+| `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 50, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits (`QS_ADHOC_CAP`: the ledger's lifetime total, a safety net; the working cap is `QS_ADHOC_DAILY_USD`) |
 | `QS_ADHOC_DAILY_USD` | USD 2 | Neues Thema list-price spend per local day, summed from the ledger; 0 = off |
 | `QS_SCORED_SINCE` | 2025-01-01 | Neues Thema reads every affair from here on; before it, the candidate step |
 | `QS_SCOPE_SINCE` | 2025-01-01 | `pending` and the nightly's scope for new affairs |

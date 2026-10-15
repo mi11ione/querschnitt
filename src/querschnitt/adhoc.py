@@ -189,7 +189,7 @@ class Adhoc:
             led = Path(os.environ.get("QS_ADHOC_LEDGER") or self.out / "ledger.jsonl")
             led.parent.mkdir(parents=True, exist_ok=True)
             self._client = Client(ep, ledger=str(led),
-                                  cap_usd=float(os.environ.get("QS_ADHOC_CAP", "2.0")), tag="adhoc")
+                                  cap_usd=float(os.environ.get("QS_ADHOC_CAP", "50.0")), tag="adhoc")   # lifetime safety net; QS_ADHOC_DAILY_USD is the working cap
         return self._client
 
     def spent_today(self) -> float:

@@ -10,7 +10,9 @@ D="${QS_DATA_DIR:-../data}"; case "$D" in /*) ;; *) D="$PWD/$D" ;; esac
 export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$D/inputs.jsonl.gz" QS_EXPORT_DIR="$D/opd-new"
 L="runs/nightly/$(date +%F).log"; PY="${PY:-.venv/bin/python}"
 CAF=""; command -v caffeinate > /dev/null 2>&1 && CAF="caffeinate -i"
+mkdir -p runs/nightly
 day=$(date +%d); cut=${QS_NIGHTLY_CUT:-$(( ${day#0} % 2 == 0 ))}
+case "$cut" in 1|true|yes) cut=1 ;; *) cut=0 ;; esac
 # the new export is fetched by the first pass: the cut pass on even days, else the model pass itself
 FETCH="--no-fetch"; [ "$cut" = 1 ] || FETCH=""
 {

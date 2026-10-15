@@ -1,0 +1,893 @@
+{
+ "test": "S29",
+ "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "model": "swiss-ai/apertus-v1.5-8b",
+ "scheme": "ti-dipartimenti",
+ "options": 7,
+ "n_items": 2274,
+ "n_scored": 2274,
+ "missing": 0,
+ "other_build": 0,
+ "n_primary_items": 1685,
+ "primary": {
+  "n": 1685,
+  "top1": {
+   "k": 1091,
+   "n": 1685,
+   "acc": 0.6474,
+   "ci": [
+    0.6243,
+    0.67
+   ]
+  },
+  "top2": {
+   "k": 1361,
+   "n": 1685,
+   "acc": 0.8077,
+   "ci": [
+    0.7882,
+    0.8259
+   ]
+  },
+  "top3": {
+   "k": 1480,
+   "n": 1685,
+   "acc": 0.8783,
+   "ci": [
+    0.8618,
+    0.8931
+   ]
+  },
+  "majority": {
+   "label": "Dipartimento della sanità e della socialità",
+   "k": 328,
+   "n": 1685,
+   "acc": 0.1946,
+   "ci": [
+    0.1764,
+    0.2143
+   ]
+  },
+  "keyword": {
+   "k": 370,
+   "n": 1685,
+   "acc": 0.2195,
+   "ci": [
+    0.2004,
+    0.24
+   ]
+  },
+  "gold_dist": {
+   "Dipartimento della sanità e della socialità": 328,
+   "Dipartimento delle finanze e dell'economia": 286,
+   "Dipartimento del territorio": 262,
+   "Dipartimento delle istituzioni": 258,
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 236,
+   "Dipartimento dell'educazione, della cultura e dello sport": 225,
+   "Cancelleria dello Stato": 90
+  },
+  "pred_dist": {
+   "Dipartimento della sanità e della socialità": 434,
+   "Dipartimento delle istituzioni": 329,
+   "Dipartimento del territorio": 309,
+   "Dipartimento delle finanze e dell'economia": 267,
+   "Dipartimento dell'educazione, della cultura e dello sport": 198,
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 109,
+   "Cancelleria dello Stato": 39
+  },
+  "minus_keyword": {
+   "diff": 0.4278,
+   "ci": [
+    0.4005,
+    0.4535
+   ],
+   "note": "paired bootstrap 2,000, percentile, random.Random(2026); bounds rounded outward"
+  },
+  "lane_readings_agree": {
+   "share": 0.8338,
+   "k": 981,
+   "n": 1405,
+   "acc": 0.6982,
+   "ci": [
+    0.6737,
+    0.7217
+   ]
+  },
+  "lane_please_check": {
+   "share": 0.1661,
+   "k": 110,
+   "n": 280,
+   "acc": 0.3928,
+   "ci": [
+    0.3374,
+    0.4512
+   ]
+  },
+  "by_type": {
+   "Interrogazione": {
+    "k": 532,
+    "n": 761,
+    "acc": 0.699,
+    "ci": [
+     0.6655,
+     0.7307
+    ]
+   },
+   "Interpellanza": {
+    "k": 186,
+    "n": 295,
+    "acc": 0.6305,
+    "ci": [
+     0.574,
+     0.6836
+    ]
+   },
+   "Mozione": {
+    "k": 169,
+    "n": 256,
+    "acc": 0.6601,
+    "ci": [
+     0.6001,
+     0.7155
+    ]
+   },
+   "Iniziativa parlamentare elaborata": {
+    "k": 109,
+    "n": 172,
+    "acc": 0.6337,
+    "ci": [
+     0.5595,
+     0.7021
+    ]
+   },
+   "Rapporti vari": {
+    "k": 36,
+    "n": 69,
+    "acc": 0.5217,
+    "ci": [
+     0.4058,
+     0.6354
+    ]
+   },
+   "Iniziativa parlamentare generica": {
+    "k": 38,
+    "n": 64,
+    "acc": 0.5937,
+    "ci": [
+     0.4714,
+     0.7055
+    ]
+   },
+   "Iniziativa cantonale": {
+    "k": 8,
+    "n": 27,
+    "acc": 0.2962,
+    "ci": [
+     0.1585,
+     0.4849
+    ]
+   },
+   "Messaggio": {
+    "k": 5,
+    "n": 25,
+    "acc": 0.2,
+    "ci": [
+     0.0886,
+     0.3914
+    ]
+   },
+   "Risoluzioni generali / messaggio al paese": {
+    "k": 8,
+    "n": 16,
+    "acc": 0.5,
+    "ci": [
+     0.2799,
+     0.7201
+    ]
+   }
+  },
+  "by_gold": {
+   "Dipartimento della sanità e della socialità": {
+    "k": 294,
+    "n": 328,
+    "acc": 0.8963,
+    "ci": [
+     0.8586,
+     0.9249
+    ]
+   },
+   "Dipartimento delle finanze e dell'economia": {
+    "k": 169,
+    "n": 286,
+    "acc": 0.5909,
+    "ci": [
+     0.533,
+     0.6464
+    ]
+   },
+   "Dipartimento del territorio": {
+    "k": 208,
+    "n": 262,
+    "acc": 0.7938,
+    "ci": [
+     0.7408,
+     0.8385
+    ]
+   },
+   "Dipartimento delle istituzioni": {
+    "k": 161,
+    "n": 258,
+    "acc": 0.624,
+    "ci": [
+     0.5635,
+     0.681
+    ]
+   },
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": {
+    "k": 63,
+    "n": 236,
+    "acc": 0.2669,
+    "ci": [
+     0.2145,
+     0.3268
+    ]
+   },
+   "Dipartimento dell'educazione, della cultura e dello sport": {
+    "k": 179,
+    "n": 225,
+    "acc": 0.7955,
+    "ci": [
+     0.7381,
+     0.8431
+    ]
+   },
+   "Cancelleria dello Stato": {
+    "k": 17,
+    "n": 90,
+    "acc": 0.1888,
+    "ci": [
+     0.1214,
+     0.2819
+    ]
+   }
+  },
+  "confusion_gold_to_pred": {
+   "Dipartimento dell'educazione, della cultura e dello sport": {
+    "Dipartimento dell'educazione, della cultura e dello sport": 179,
+    "Dipartimento della sanità e della socialità": 19,
+    "Dipartimento delle istituzioni": 11,
+    "Dipartimento delle finanze e dell'economia": 7,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 6,
+    "Dipartimento del territorio": 3
+   },
+   "Dipartimento della sanità e della socialità": {
+    "Dipartimento della sanità e della socialità": 294,
+    "Dipartimento delle istituzioni": 15,
+    "Dipartimento dell'educazione, della cultura e dello sport": 6,
+    "Dipartimento delle finanze e dell'economia": 5,
+    "Dipartimento del territorio": 4,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 4
+   },
+   "Dipartimento delle finanze e dell'economia": {
+    "Dipartimento delle finanze e dell'economia": 169,
+    "Dipartimento del territorio": 42,
+    "Dipartimento della sanità e della socialità": 29,
+    "Dipartimento delle istituzioni": 25,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+    "Dipartimento dell'educazione, della cultura e dello sport": 9,
+    "Cancelleria dello Stato": 3
+   },
+   "Dipartimento delle istituzioni": {
+    "Dipartimento delle istituzioni": 161,
+    "Dipartimento della sanità e della socialità": 43,
+    "Dipartimento del territorio": 30,
+    "Dipartimento delle finanze e dell'economia": 13,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+    "Cancelleria dello Stato": 1,
+    "Dipartimento dell'educazione, della cultura e dello sport": 1
+   },
+   "Dipartimento del territorio": {
+    "Dipartimento del territorio": 208,
+    "Dipartimento delle finanze e dell'economia": 29,
+    "Dipartimento della sanità e della socialità": 17,
+    "Dipartimento delle istituzioni": 3,
+    "Dipartimento dell'educazione, della cultura e dello sport": 2,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 2,
+    "Cancelleria dello Stato": 1
+   },
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": {
+    "Dipartimento delle istituzioni": 75,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 63,
+    "Dipartimento delle finanze e dell'economia": 37,
+    "Dipartimento della sanità e della socialità": 26,
+    "Dipartimento del territorio": 18,
+    "Cancelleria dello Stato": 17
+   },
+   "Cancelleria dello Stato": {
+    "Dipartimento delle istituzioni": 39,
+    "Cancelleria dello Stato": 17,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 16,
+    "Dipartimento delle finanze e dell'economia": 7,
+    "Dipartimento della sanità e della socialità": 6,
+    "Dipartimento del territorio": 4,
+    "Dipartimento dell'educazione, della cultura e dello sport": 1
+   }
+  }
+ },
+ "secondary_all_items": {
+  "n": 2274,
+  "top1": {
+   "k": 1644,
+   "n": 2274,
+   "acc": 0.7229,
+   "ci": [
+    0.7041,
+    0.741
+   ]
+  },
+  "top2": {
+   "k": 1930,
+   "n": 2274,
+   "acc": 0.8487,
+   "ci": [
+    0.8334,
+    0.8629
+   ]
+  },
+  "top3": {
+   "k": 2058,
+   "n": 2274,
+   "acc": 0.905,
+   "ci": [
+    0.8922,
+    0.9164
+   ]
+  },
+  "majority": {
+   "label": "Dipartimento del territorio",
+   "k": 429,
+   "n": 2274,
+   "acc": 0.1886,
+   "ci": [
+    0.1731,
+    0.2053
+   ]
+  },
+  "keyword": {
+   "k": 529,
+   "n": 2274,
+   "acc": 0.2326,
+   "ci": [
+    0.2157,
+    0.2505
+   ]
+  },
+  "gold_dist": {
+   "Dipartimento del territorio": 429,
+   "Dipartimento della sanità e della socialità": 407,
+   "Dipartimento delle finanze e dell'economia": 404,
+   "Dipartimento delle istituzioni": 363,
+   "Dipartimento dell'educazione, della cultura e dello sport": 305,
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 248,
+   "Cancelleria dello Stato": 118
+  },
+  "pred_dist": {
+   "Dipartimento della sanità e della socialità": 515,
+   "Dipartimento del territorio": 480,
+   "Dipartimento delle istituzioni": 446,
+   "Dipartimento delle finanze e dell'economia": 381,
+   "Dipartimento dell'educazione, della cultura e dello sport": 282,
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 109,
+   "Cancelleria dello Stato": 61
+  },
+  "minus_keyword": {
+   "diff": 0.4903,
+   "ci": [
+    0.4665,
+    0.5132
+   ],
+   "note": "paired bootstrap 2,000, percentile, random.Random(2026); bounds rounded outward"
+  },
+  "lane_readings_agree": {
+   "share": 0.8751,
+   "k": 1533,
+   "n": 1990,
+   "acc": 0.7703,
+   "ci": [
+    0.7513,
+    0.7884
+   ]
+  },
+  "lane_please_check": {
+   "share": 0.1248,
+   "k": 111,
+   "n": 284,
+   "acc": 0.3908,
+   "ci": [
+    0.3359,
+    0.4487
+   ]
+  },
+  "by_type": {
+   "Interrogazione": {
+    "k": 577,
+    "n": 815,
+    "acc": 0.7079,
+    "ci": [
+     0.6758,
+     0.7382
+    ]
+   },
+   "Messaggio": {
+    "k": 482,
+    "n": 512,
+    "acc": 0.9414,
+    "ci": [
+     0.9175,
+     0.9587
+    ]
+   },
+   "Interpellanza": {
+    "k": 197,
+    "n": 316,
+    "acc": 0.6234,
+    "ci": [
+     0.5688,
+     0.6751
+    ]
+   },
+   "Mozione": {
+    "k": 174,
+    "n": 263,
+    "acc": 0.6615,
+    "ci": [
+     0.6024,
+     0.7161
+    ]
+   },
+   "Iniziativa parlamentare elaborata": {
+    "k": 111,
+    "n": 176,
+    "acc": 0.6306,
+    "ci": [
+     0.5572,
+     0.6985
+    ]
+   },
+   "Rapporti vari": {
+    "k": 42,
+    "n": 75,
+    "acc": 0.56,
+    "ci": [
+     0.4474,
+     0.6667
+    ]
+   },
+   "Iniziativa parlamentare generica": {
+    "k": 42,
+    "n": 68,
+    "acc": 0.6176,
+    "ci": [
+     0.4988,
+     0.724
+    ]
+   },
+   "Iniziativa cantonale": {
+    "k": 8,
+    "n": 28,
+    "acc": 0.2857,
+    "ci": [
+     0.1525,
+     0.4706
+    ]
+   },
+   "Risoluzioni generali / messaggio al paese": {
+    "k": 8,
+    "n": 16,
+    "acc": 0.5,
+    "ci": [
+     0.2799,
+     0.7201
+    ]
+   },
+   "Iniziativa popolare": {
+    "k": 2,
+    "n": 4,
+    "acc": 0.5,
+    "ci": [
+     0.15,
+     0.85
+    ]
+   },
+   "Ricorso": {
+    "k": 1,
+    "n": 1,
+    "acc": 1.0,
+    "ci": [
+     0.2065,
+     1.0
+    ]
+   }
+  },
+  "by_gold": {
+   "Dipartimento del territorio": {
+    "k": 373,
+    "n": 429,
+    "acc": 0.8694,
+    "ci": [
+     0.8342,
+     0.8981
+    ]
+   },
+   "Dipartimento della sanità e della socialità": {
+    "k": 370,
+    "n": 407,
+    "acc": 0.909,
+    "ci": [
+     0.8772,
+     0.9334
+    ]
+   },
+   "Dipartimento delle finanze e dell'economia": {
+    "k": 278,
+    "n": 404,
+    "acc": 0.6881,
+    "ci": [
+     0.6413,
+     0.7314
+    ]
+   },
+   "Dipartimento delle istituzioni": {
+    "k": 263,
+    "n": 363,
+    "acc": 0.7245,
+    "ci": [
+     0.6763,
+     0.768
+    ]
+   },
+   "Dipartimento dell'educazione, della cultura e dello sport": {
+    "k": 258,
+    "n": 305,
+    "acc": 0.8459,
+    "ci": [
+     0.8011,
+     0.8821
+    ]
+   },
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": {
+    "k": 63,
+    "n": 248,
+    "acc": 0.254,
+    "ci": [
+     0.2038,
+     0.3117
+    ]
+   },
+   "Cancelleria dello Stato": {
+    "k": 39,
+    "n": 118,
+    "acc": 0.3305,
+    "ci": [
+     0.2521,
+     0.4196
+    ]
+   }
+  },
+  "confusion_gold_to_pred": {
+   "Dipartimento dell'educazione, della cultura e dello sport": {
+    "Dipartimento dell'educazione, della cultura e dello sport": 258,
+    "Dipartimento della sanità e della socialità": 19,
+    "Dipartimento delle istituzioni": 11,
+    "Dipartimento delle finanze e dell'economia": 8,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 6,
+    "Dipartimento del territorio": 3
+   },
+   "Dipartimento della sanità e della socialità": {
+    "Dipartimento della sanità e della socialità": 370,
+    "Dipartimento delle istituzioni": 17,
+    "Dipartimento dell'educazione, della cultura e dello sport": 6,
+    "Dipartimento del territorio": 5,
+    "Dipartimento delle finanze e dell'economia": 5,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 4
+   },
+   "Dipartimento delle finanze e dell'economia": {
+    "Dipartimento delle finanze e dell'economia": 278,
+    "Dipartimento del territorio": 45,
+    "Dipartimento della sanità e della socialità": 30,
+    "Dipartimento delle istituzioni": 26,
+    "Dipartimento dell'educazione, della cultura e dello sport": 13,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+    "Cancelleria dello Stato": 3
+   },
+   "Dipartimento delle istituzioni": {
+    "Dipartimento delle istituzioni": 263,
+    "Dipartimento della sanità e della socialità": 44,
+    "Dipartimento del territorio": 31,
+    "Dipartimento delle finanze e dell'economia": 14,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+    "Cancelleria dello Stato": 1,
+    "Dipartimento dell'educazione, della cultura e dello sport": 1
+   },
+   "Dipartimento del territorio": {
+    "Dipartimento del territorio": 373,
+    "Dipartimento delle finanze e dell'economia": 31,
+    "Dipartimento della sanità e della socialità": 17,
+    "Dipartimento delle istituzioni": 3,
+    "Dipartimento dell'educazione, della cultura e dello sport": 2,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 2,
+    "Cancelleria dello Stato": 1
+   },
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": {
+    "Dipartimento delle istituzioni": 84,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 63,
+    "Dipartimento delle finanze e dell'economia": 37,
+    "Dipartimento della sanità e della socialità": 28,
+    "Dipartimento del territorio": 18,
+    "Cancelleria dello Stato": 17,
+    "Dipartimento dell'educazione, della cultura e dello sport": 1
+   },
+   "Cancelleria dello Stato": {
+    "Dipartimento delle istituzioni": 42,
+    "Cancelleria dello Stato": 39,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 16,
+    "Dipartimento delle finanze e dell'economia": 8,
+    "Dipartimento della sanità e della socialità": 7,
+    "Dipartimento del territorio": 5,
+    "Dipartimento dell'educazione, della cultura e dello sport": 1
+   }
+  }
+ },
+ "secondary_gold_in_5_departments": {
+  "n": 1359,
+  "top1": {
+   "k": 1011,
+   "n": 1359,
+   "acc": 0.7439,
+   "ci": [
+    0.72,
+    0.7665
+   ]
+  },
+  "top2": {
+   "k": 1190,
+   "n": 1359,
+   "acc": 0.8756,
+   "ci": [
+    0.857,
+    0.8922
+   ]
+  },
+  "top3": {
+   "k": 1240,
+   "n": 1359,
+   "acc": 0.9124,
+   "ci": [
+    0.8962,
+    0.9264
+   ]
+  },
+  "majority": {
+   "label": "Dipartimento della sanità e della socialità",
+   "k": 328,
+   "n": 1359,
+   "acc": 0.2413,
+   "ci": [
+    0.2193,
+    0.2649
+   ]
+  },
+  "keyword": {
+   "k": 338,
+   "n": 1359,
+   "acc": 0.2487,
+   "ci": [
+    0.2264,
+    0.2724
+   ]
+  },
+  "gold_dist": {
+   "Dipartimento della sanità e della socialità": 328,
+   "Dipartimento delle finanze e dell'economia": 286,
+   "Dipartimento del territorio": 262,
+   "Dipartimento delle istituzioni": 258,
+   "Dipartimento dell'educazione, della cultura e dello sport": 225
+  },
+  "pred_dist": {
+   "Dipartimento della sanità e della socialità": 402,
+   "Dipartimento del territorio": 287,
+   "Dipartimento delle finanze e dell'economia": 223,
+   "Dipartimento delle istituzioni": 215,
+   "Dipartimento dell'educazione, della cultura e dello sport": 197,
+   "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 30,
+   "Cancelleria dello Stato": 5
+  },
+  "minus_keyword": {
+   "diff": 0.4952,
+   "ci": [
+    0.4657,
+    0.5254
+   ],
+   "note": "paired bootstrap 2,000, percentile, random.Random(2026); bounds rounded outward"
+  },
+  "lane_readings_agree": {
+   "share": 0.8785,
+   "k": 943,
+   "n": 1194,
+   "acc": 0.7897,
+   "ci": [
+    0.7657,
+    0.812
+   ]
+  },
+  "lane_please_check": {
+   "share": 0.1214,
+   "k": 68,
+   "n": 165,
+   "acc": 0.4121,
+   "ci": [
+    0.3398,
+    0.4884
+   ]
+  },
+  "by_type": {
+   "Interrogazione": {
+    "k": 524,
+    "n": 700,
+    "acc": 0.7485,
+    "ci": [
+     0.7151,
+     0.7793
+    ]
+   },
+   "Interpellanza": {
+    "k": 182,
+    "n": 249,
+    "acc": 0.7309,
+    "ci": [
+     0.6726,
+     0.7822
+    ]
+   },
+   "Mozione": {
+    "k": 165,
+    "n": 232,
+    "acc": 0.7112,
+    "ci": [
+     0.6498,
+     0.7658
+    ]
+   },
+   "Iniziativa parlamentare elaborata": {
+    "k": 95,
+    "n": 115,
+    "acc": 0.826,
+    "ci": [
+     0.7465,
+     0.8846
+    ]
+   },
+   "Iniziativa parlamentare generica": {
+    "k": 37,
+    "n": 53,
+    "acc": 0.6981,
+    "ci": [
+     0.5646,
+     0.8049
+    ]
+   },
+   "Messaggio": {
+    "k": 5,
+    "n": 7,
+    "acc": 0.7142,
+    "ci": [
+     0.3589,
+     0.9178
+    ]
+   },
+   "Rapporti vari": {
+    "k": 3,
+    "n": 3,
+    "acc": 1.0,
+    "ci": [
+     0.4384,
+     1.0
+    ]
+   }
+  },
+  "by_gold": {
+   "Dipartimento della sanità e della socialità": {
+    "k": 294,
+    "n": 328,
+    "acc": 0.8963,
+    "ci": [
+     0.8586,
+     0.9249
+    ]
+   },
+   "Dipartimento delle finanze e dell'economia": {
+    "k": 169,
+    "n": 286,
+    "acc": 0.5909,
+    "ci": [
+     0.533,
+     0.6464
+    ]
+   },
+   "Dipartimento del territorio": {
+    "k": 208,
+    "n": 262,
+    "acc": 0.7938,
+    "ci": [
+     0.7408,
+     0.8385
+    ]
+   },
+   "Dipartimento delle istituzioni": {
+    "k": 161,
+    "n": 258,
+    "acc": 0.624,
+    "ci": [
+     0.5635,
+     0.681
+    ]
+   },
+   "Dipartimento dell'educazione, della cultura e dello sport": {
+    "k": 179,
+    "n": 225,
+    "acc": 0.7955,
+    "ci": [
+     0.7381,
+     0.8431
+    ]
+   }
+  },
+  "confusion_gold_to_pred": {
+   "Dipartimento dell'educazione, della cultura e dello sport": {
+    "Dipartimento dell'educazione, della cultura e dello sport": 179,
+    "Dipartimento della sanità e della socialità": 19,
+    "Dipartimento delle istituzioni": 11,
+    "Dipartimento delle finanze e dell'economia": 7,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 6,
+    "Dipartimento del territorio": 3
+   },
+   "Dipartimento della sanità e della socialità": {
+    "Dipartimento della sanità e della socialità": 294,
+    "Dipartimento delle istituzioni": 15,
+    "Dipartimento dell'educazione, della cultura e dello sport": 6,
+    "Dipartimento delle finanze e dell'economia": 5,
+    "Dipartimento del territorio": 4,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 4
+   },
+   "Dipartimento delle finanze e dell'economia": {
+    "Dipartimento delle finanze e dell'economia": 169,
+    "Dipartimento del territorio": 42,
+    "Dipartimento della sanità e della socialità": 29,
+    "Dipartimento delle istituzioni": 25,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+    "Dipartimento dell'educazione, della cultura e dello sport": 9,
+    "Cancelleria dello Stato": 3
+   },
+   "Dipartimento delle istituzioni": {
+    "Dipartimento delle istituzioni": 161,
+    "Dipartimento della sanità e della socialità": 43,
+    "Dipartimento del territorio": 30,
+    "Dipartimento delle finanze e dell'economia": 13,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+    "Cancelleria dello Stato": 1,
+    "Dipartimento dell'educazione, della cultura e dello sport": 1
+   },
+   "Dipartimento del territorio": {
+    "Dipartimento del territorio": 208,
+    "Dipartimento delle finanze e dell'economia": 29,
+    "Dipartimento della sanità e della socialità": 17,
+    "Dipartimento delle istituzioni": 3,
+    "Dipartimento dell'educazione, della cultura e dello sport": 2,
+    "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 2,
+    "Cancelleria dello Stato": 1
+   }
+  }
+ },
+ "second_order_share": 0.2695,
+ "note": "primary = items whose input block names none of the six units (eval/s29/items.py); point values truncated, Wilson 95% bounds rounded outward, 4 decimals"
+}

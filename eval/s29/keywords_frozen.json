@@ -1,0 +1,28 @@
+{
+ "note": "S29 keyword baseline, frozen 2026-10-15 16:44 CEST before any S29 call. Stems derived mechanically from the scheme's unit names as in S20: first 5 letters of every word of 4+ letters, leaving out 'Dipartimento' (in every name) and articulated prepositions (dello, della, delle, dell'). Prediction: the unit with the most stem hits in the title (case-insensitive substring); ties and no hit -> the label listed first among the tied in the frequency order of the gold label on the scored items (computed at scoring; the none option has no stems).",
+ "stems": {
+  "Cancelleria dello Stato": [
+   "cance",
+   "stato"
+  ],
+  "Dipartimento del territorio": [
+   "terri"
+  ],
+  "Dipartimento dell'educazione, della cultura e dello sport": [
+   "cultu",
+   "educa",
+   "sport"
+  ],
+  "Dipartimento della sanità e della socialità": [
+   "sanit",
+   "socia"
+  ],
+  "Dipartimento delle finanze e dell'economia": [
+   "econo",
+   "finan"
+  ],
+  "Dipartimento delle istituzioni": [
+   "istit"
+  ]
+ }
+}

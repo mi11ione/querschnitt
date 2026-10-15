@@ -1,0 +1,53 @@
+id: ti-dipartimenti
+kind: named
+title:
+  it: 'Cantone Ticino: dipartimento competente (Gran Consiglio)'
+  de: 'Kanton Tessin: zuständiges Departement (Grosser Rat)'
+source: >-
+  Unit names verbatim (Italian) from the Ticino Gran Consiglio's own lead-department entries as published in the
+  OpenParlData contributors export (role leading_department, «Federführung», position 1; values 2023-2026); alphabetical
+  order; no descriptions added. The canton publishes no German names, so the `de` slots that the named prompt reads hold
+  the Italian frame and names verbatim (no translation). S29 (eval/PREREG-BUILD.md).
+gold: OPD contributors role leading_department, position 1 (Consiglio di Stato del Ticino and Gran Consiglio (Ticino) -> none)
+frame:
+  it:
+    ask: Indica quale dipartimento del Cantone Ticino è competente per il seguente oggetto del Gran Consiglio (una sola scelta).
+    head: Dipartimenti
+    key: dipartimento
+    fmt: 'Rispondi solo con la lettera del dipartimento in JSON: {"dipartimento": "<lettera>"}'
+  de:
+    ask: Indica quale dipartimento del Cantone Ticino è competente per il seguente oggetto del Gran Consiglio (una sola scelta).
+    head: Dipartimenti
+    key: dipartimento
+    fmt: 'Rispondi solo con la lettera del dipartimento in JSON: {"dipartimento": "<lettera>"}'
+options:
+- code: ti:CAN
+  name:
+    it: Cancelleria dello Stato
+    de: Cancelleria dello Stato
+- code: ti:DT
+  name:
+    it: Dipartimento del territorio
+    de: Dipartimento del territorio
+- code: ti:DECS
+  name:
+    it: Dipartimento dell'educazione, della cultura e dello sport
+    de: Dipartimento dell'educazione, della cultura e dello sport
+- code: ti:DSS
+  name:
+    it: Dipartimento della sanità e della socialità
+    de: Dipartimento della sanità e della socialità
+- code: ti:DFE
+  name:
+    it: Dipartimento delle finanze e dell'economia
+    de: Dipartimento delle finanze e dell'economia
+- code: ti:DI
+  name:
+    it: Dipartimento delle istituzioni
+    de: Dipartimento delle istituzioni
+none:
+  code: ti:none
+  name:
+    it: Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)
+    de: Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)
+body: TI

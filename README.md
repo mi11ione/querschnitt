@@ -14,7 +14,7 @@ Live (static, read-only): https://querschnitt.mi11ion.io
 ## Measured
 Human labels first. Each test was written down and hashed before its result ([eval/PREREG-BUILD.md](eval/PREREG-BUILD.md));
 choices made after a result — the 0.7 lane threshold, the hierarchical metrics — are labelled so, and the lane was then
-tested on the held-out set. Full tables with intervals, baselines, per-language and
+tested on the held-out set. S25's amendment records the two readings seen before a determinism fix, next to the final one. Full tables with intervals, baselines, per-language and
 per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) · short report: [docs/REPORT.md](docs/REPORT.md).
 
 | Test | n | Querschnitt | Baseline on the same items |
@@ -27,8 +27,8 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 | Basel-Stadt's own 46 themes as a scheme file (names only) vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
 | — with five of Basel's own labelled affairs as examples (other half of the data; no training) | 2,437 | 0.526 [0.506, 0.547], +0.028 [+0.014, +0.043] paired; top 3: 0.711; where the two readings agree (54.9%): 0.651 | names only: 0.498 |
 | Evidence on production rows: the stored quote supports the topic (blind AI judge, κ 0.92) | 200 | 0.815 [0.755, 0.863]; exact substring at the stored offsets 198/198 | — |
-| Three new topics, each defined in one sentence (wolves · heat protection · AI in schools), Aug–Oct 2026, blind AI judge | 774 | every affair the judge marks relevant is flagged; precision of flags 0.225 · 0.670 · 0.136; with a verification question on the flags 0.444 · 0.770 · 0.250 (keeping 0.444 · 0.969 · 1.000 of the relevant ones) — unverified flags go to «please check» | keywords 0.500 · 0.900 · 0.750 |
-| "Digitalisierung" in every Swiss parliament, 2026: full census of the flags vs a blind AI judge (pre-registered) | 651 flags | precision of flags 0.905 [0.865, 0.945]; recall estimated at 0.659 [0.491, 0.900] | keywords: precision 0.756 |
+| Three new topics, each defined in one sentence (wolves · heat protection · AI in schools), Aug–Oct 2026, blind AI judge | 774 | precision of flags 0.225 · 0.670 · 0.136; with a verification question on the flags 0.444 · 0.770 · 0.250 (keeping 0.444 · 0.969 · 1.000 of the relevant ones) — unverified flags go to «please check»; recall outside the checked affairs is not measured (no judge positive among 120 random unflagged affairs per topic) | keywords 0.500 · 0.900 · 0.750 |
+| "Digitalisierung" in every Swiss parliament, 2026: all 14,512 affairs decided (651 flagged); a stratified sample judged blind by an AI judge and weighted back (pre-registered) | 453 judged (180 flags) | precision of flags 0.905 [0.865, 0.945]; recall estimated at 0.659 [0.491, 0.900] | keywords: precision 0.756 |
 | "Digitalisierung": the 30 affairs DVS curated by hand (the question and its 0.5 cut-off were written with these items in view) | 30 | 27 recognised | keywords 21 |
 
 ## Quick start
@@ -92,7 +92,8 @@ prefill, served build, throughput, replay of stored prompts) before a run.
 Apertus makes every topic decision, through Public AI's route `swiss-ai/apertus-v1.5-8b` (served build `…dd237840` on
 every call reported here; measured behaviour of this route: [upstream/APERTUS-NOTES.md](upstream/APERTUS-NOTES.md)). Retrieval of examples is BM25 in code. In the evaluation only,
 blind Claude runs and the open-weights Qwen-SEA-LION serve as annotators where no human labels exist; every figure measured
-against them is labelled as agreement with that judge. The code was written with Claude Code.
+against them is labelled as agreement with that judge. The code was written with Claude Code. The route name does not fix the model's size: on the same 250 MMLU questions the model behind it scored 211/250
+against 177/250 for `apertus-8b-instruct` (v1 8B); read every figure as "the model behind that route and build".
 
 ## Licences
 Code Apache-2.0 ([LICENSE](LICENSE)); documentation CC BY 4.0; the topics file CDLA-Permissive-2.0. Source data:

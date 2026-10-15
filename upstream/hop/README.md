@@ -1,34 +1,43 @@
 # Apache Hop: load Querschnitt topics into OpenParlData
 
 An Apache Hop 2.x project that loads Querschnitt's `topics.jsonl.gz` (rows of `docs/CONTRACT.md` §1) into OPD's `topics`
-table (`../opd/migrations/0001_topics.up.sql`). Run with Hop 2.19.0 against PostgreSQL 16.2; details under "Tested".
+table (`../opd/migrations/0001_topics.up.sql`). CI runs it on every push with Hop 2.19.0 against PostgreSQL 16 (job `hop`,
+details under "Tested").
 
 | File | |
 |---|---|
 | `load_topics.hwf` | workflow: run the pipeline, then close superseded machine rows (one SQL action); abort without closing anything if the pipeline fails |
-| `load_topics.hpl` | pipeline: read → parse → keep machine rows → rename to OPD columns → content hash → compare with the latest machine row → look up `body_id`, `scheme_id`, labels → insert / update |
+| `load_topics.hpl` | pipeline: read → parse → keep machine rows → evidence source → rename to OPD columns → content hash → compare with the latest machine row → look up `body_id`, `scheme_id`, labels → load time → insert / update |
 | `metadata/rdbms/opd.json` | the `opd` PostgreSQL connection, from variables only (no values in the repo) |
 | `metadata/*-run-configuration/local.json` | local run configurations |
 | `project-config.json` | Hop project file |
 | `env/opd-example.json` | environment file to copy and fill (`OPD_DB_HOST`, `OPD_DB_PORT`, `OPD_DB_NAME`, `OPD_DB_USER`, `OPD_DB_PASSWORD`) |
+| `ci/` | what the CI job `hop` loads and checks: stand-in `affairs` / `bodies`, a fixture from the shipped file, assertions |
 
 ## Pipeline
 
 ```
-read topics.jsonl.gz ─ parse JSON row ─ machine rows only ─ to OPD columns ─ content hash ─ latest machine row ─ unchanged?
-   (text file, gzip)     (JSON input)    provenance=inferred   rename + dates    SHA-256       DB lookup on topics   equal → skip
-                                         else → skip                                                                 │ new or changed
-                         topics (insert / update) ─ labels (topic_codes) ─ scheme_id (topic_schemes) ─ body_id (bodies)
-                         key: affair_id, scheme_key, level, rank, valid_from
+read topics.jsonl.gz ─ parse JSON row ─ machine rows only ─ evidence source ─ evidence field ─ to OPD columns ─ content hash ─┐
+   (text file, gzip)     (JSON input)    provenance=inferred   text:<id>, doc:<id>  doc:<id> → doc   rename + dates   SHA-256 │
+                                         else → skip           → text / doc id      else as given                             │
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+└ latest machine row ─ unchanged? ─ body_id ─ scheme_id ─ labels ─ load time ─ topics (insert / update)
+  DB lookup on topics  equal → skip  (bodies)  (topic_     (topic_   updated_at   key: affair_id, scheme_key, level, rank,
+                                               schemes)    codes)                 valid_from
 ```
 
 - **Input:** one JSON object per line, gzip-compressed. `valid_from` / `valid_to` as `2026-10-13T23:57:18Z` (what
-  `querschnitt export --topics-file` writes); evidence as `{field, start, end, quote}`.
+  `querschnitt export --topics-file` writes); evidence as `{source, field, start, end, quote}`.
 - **Renames:** `scheme` → `scheme_key`, `build` → `model_build`, `version` → `engine_version`, `evidence.*` →
   `evidence_field`, `evidence_char_start`, `evidence_char_end`, `evidence_quote`.
-- **Unchanged rows are skipped:** the content hash (SHA-256 over code, probabilities, lane, evidence, model, build,
-  prompt ids, input hash, version) is compared with the latest machine row of the same affair, scheme, level and rank,
-  closed or not. A reload of the same file writes nothing, and a machine row closed by a published decision is not
+- **Evidence source** (as `../opd/export/to_opd.py`): `evidence.source` `text:<id>` → `evidence_text_id`; `doc:<id>` →
+  `evidence_doc_id` and `evidence_field = 'doc'` (the quote is from a document, whatever `evidence.field` says);
+  `title`, `title_long` and no evidence leave both ids null.
+- **`updated_at`** is the start time of the load on every inserted or updated row, so `?since=` sees both; `created_at` is
+  the database default.
+- **Unchanged rows are skipped:** the content hash (SHA-256 over code, probabilities, lane, evidence with its text or
+  document id, model, build, prompt ids, input hash, version) is compared with the latest machine row of the same
+  affair, scheme, level and rank, closed or not. A reload of the same file writes nothing, and a machine row closed by a published decision is not
   brought back by an identical reload.
 - **Lookups:** `bodies.body_key` → `body_id`; the active `topic_schemes` version → `scheme_id`; `topic_codes` →
   `label_de/fr/it/rm`, `parent_code`. A scheme missing from `topic_schemes` stops the load (`scheme_id` is NOT NULL);
@@ -73,33 +82,33 @@ time zone holding UTC, and the JDBC driver writes dates in the JVM's zone. The c
 
 ## Tested
 
-On 14 Oct 2026, with the Apache Hop 2.19.0 client (official zip from downloads.apache.org, SHA-512 checked) on OpenJDK 21,
-against PostgreSQL 16.2 with migrations 0001–0003 applied over stub `affairs` and `bodies` tables filled from the 6 Oct OPD
-bulk export (326,124 affairs, 2,411 bodies):
+In CI on every push and pull request: job `hop` in `.github/workflows/ci.yml`, about four minutes. Apache Hop 2.19.0
+client (official zip from downloads.apache.org, archive.apache.org once 2.19.0 leaves the mirror; SHA-512 checked against
+the `.sha512` file at the same location; cached), Temurin JDK 21, the `postgres:16` service image, migrations 0001–0003 up
+over stand-in `affairs` / `bodies` tables (`ci/opd_stand_in.sql`: id and `body_key` only, ids from OPD's export), then
+`../opd/tests/smoke.sql`. Every load is the command under "Run" (`hop-run.sh … load_topics.hwf`), and the expected rows
+come from `../opd/export/to_opd.py --with-subtopics` on the same file: each loaded row must equal its converted row in
+every column except `id`, `created_at`, `updated_at` and `content_hash`.
 
-| Run | Input | Result |
+| Step | Input | Checked |
 |---|---|---|
-| 1 | `app/data/topics.jsonl.gz`, 15,386 rows | 15,386 inserted in 4.1 s; every row with `body_id`, `scheme_id` and labels; `valid_from` kept as `2026-10-13 23:57:18` |
-| 2 | the same file again | 15,386 skipped as unchanged, 0 written |
-| 3 | a new export (`valid_from` two days later, one row with a changed code) after a published rejection of another affair's chapter | 1 inserted, 1 closed at the new `valid_from`; the 15,385 equal rows skipped; the rejection stayed current and its machine row stayed closed |
+| 1 | `ci/topics.ci.jsonl`: 19 rows of the shipped file (the 12 of `../opd/export/sample/`, three more of one affair incl. a subtopic, two text quotes, a `bs-themen` row) plus one decision row | the 18 machine rows inserted, the decision row skipped; equal to `to_opd.py`; text quote `text:226062` → `evidence_text_id`, document quote `doc:927452` → `evidence_doc_id` with `evidence_field = 'doc'`, title quote without ids; `body_id`, `scheme_id`, labels, subtopic parent; `updated_at` and `created_at` both UTC |
+| 2 | the same file again | nothing written: every column of every row as after step 1 |
+| 3 | the same file with two rows changed by the job | `p` changed at the same `valid_from`: updated in place, `updated_at` later, `created_at` kept; code changed with a later `valid_from`: inserted, the old row closed at the new `valid_from`; the other 16 rows untouched |
+| 4 | the released topics file (`make data`, release `data-latest`), into an empty table, stand-in rows added for its affairs and bodies | row count = machine rows of the file; every row equal to `to_opd.py` |
+| 5 | migrations down 0003 → 0002 → 0001 with the rows of step 4 in place | 0002 down leaves no topic rows or schemes; 0001 down leaves no `topic*` relation |
 
-Both files are well-formed XML (`xmllint --noout`). That test predates three changes, so it has to be repeated before
-the merge: the shipped topics file now carries seven schemes, four of which the old seed lacked (a load of it stopped at
-the first such row), and evidence quotes from documents; migration 0002 became `0002_topic_schemes_seed.up.sql` with a
-`.down.sql` and seeds all seven; 0001 lost the redundant `topics_machine_key` index (the lookup uses
-`topics_version_key`). The migrations themselves were re-checked on 15 Oct on PostgreSQL 16.2 without Hop (up, re-run,
-reverse rollback 0003 → 0002 → 0001 with data, re-up; the shipped file converted by `../opd/export/to_opd.py
---with-subtopics` loads with every constraint and foreign key satisfied).
+The [run of 15 Oct](https://github.com/mi11ione/querschnitt/actions/runs/38744888546) (PostgreSQL 16.15): step 4
+loaded the release of that day, 159,834 rows in 142 s (12,763 document quotes, 7,008 text quotes); the job took
+3 min 39 s.
 
-Known gaps of the loader (not fixed, because they need a Hop run to verify):
-- **Evidence source.** The pipeline reads `evidence.field/start/end/quote` but not `evidence.source` (`text:<id>`,
-  `doc:<id>`), so `evidence_text_id` / `evidence_doc_id` stay null and a quote taken from a document is stored with
-  `evidence_field = 'text'`. `../opd/export/to_opd.py` maps it correctly (`doc` + `evidence_doc_id`); the pipeline needs
-  the same: one more JSON field (`$.evidence.source`) and a split on `:`.
-- **`updated_at` on update.** When the insert / update transform updates an existing key (same `valid_from`, changed
-  content), `updated_at` is not set, so `?since=` misses that change. Querschnitt never re-sends a changed row with the
-  same `valid_from`, so this does not happen with its files; add `updated_at` to the update fields if OPD writes rows
-  another way.
+Before CI, on 14 Oct, by hand (Hop 2.19.0, OpenJDK 21, PostgreSQL 16.2, stub tables from the 6 Oct OPD export, the
+migrations and topics file of that day, before the evidence mapping): 15,386 rows inserted in 4.1 s; the same file again
+skipped all; a new export with one changed code after a published rejection of another affair's chapter inserted 1 row,
+closed 1, and left the rejection current and its machine row closed. CI does not repeat that last case (a decision row
+already in the table).
+
+Known gap of the loader:
 - **Vanished keys.** A key that disappears from a re-scored affair (e.g. an affair that loses its third subtopic) keeps
   its last machine row current; Querschnitt's own store closes such keys, and the same rule can be added to the SQL
   action if OPD wants it.

@@ -1,0 +1,84 @@
+/* Querschnitt report, print. Same register as the app (app/css/app.css): black on white, Swiss red only as a signal,
+   Public Sans for text, Fragment Mono for numbers, codes and labels, hairlines, square corners. A4, page numbers.
+   {{FONTS}} is replaced by render.py with the relative path to app/fonts. */
+@font-face{font-family:"Public Sans";font-style:normal;font-weight:100 900;src:url({{FONTS}}/public-sans-latin-wght.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Public Sans";font-style:normal;font-weight:100 900;src:url({{FONTS}}/public-sans-latin-ext-wght.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Fragment Mono";font-style:normal;font-weight:400;src:url({{FONTS}}/fragment-mono-latin-400.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Fragment Mono";font-style:normal;font-weight:400;src:url({{FONTS}}/fragment-mono-latin-ext-400.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+:root{--ink:#111;--ink2:#5e5e5e;--hair:#c9c9c9;--sig:#dc0018;
+  --sans:"Public Sans","Helvetica Neue",Arial,sans-serif;--mono:"Fragment Mono",Menlo,monospace;
+  --ind:33mm}  /* the left column: section numbers, figure labels; text runs from --ind to the right margin */
+
+@page{size:A4;margin:17mm 18mm 19mm 18mm;
+  @bottom-left{font:7pt/1 var(--mono);color:var(--ink2);vertical-align:top;padding-top:5mm}
+  @bottom-right{content:counter(page) " / " counter(pages);font:7pt/1 var(--mono);color:var(--ink2);vertical-align:top;padding-top:5mm}}
+
+*{box-sizing:border-box;border-radius:0}
+html{font:400 9.4pt/1.47 var(--sans);color:var(--ink);background:#fff;font-variant-numeric:proportional-nums lining-nums;font-synthesis:none;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;text-rendering:optimizeLegibility}
+body{margin:0}
+a{color:inherit;text-decoration:underline;text-decoration-thickness:.4pt;text-underline-offset:1.6pt;text-decoration-color:#8a8a8a}
+code{font-family:var(--mono);font-size:.88em;letter-spacing:-.01em;hyphens:none}
+.m{font-family:var(--mono);font-size:.88em;letter-spacing:-.015em;white-space:nowrap}
+.ci{color:var(--ink2)}
+strong{font-weight:620}
+
+/* title block: no cover page, the report starts at once */
+header.title{border-bottom:1pt solid var(--ink);padding-bottom:3.2mm;margin-bottom:6mm}
+h1{font-size:21pt;line-height:1.15;font-weight:620;letter-spacing:-.012em;margin:0 0 4.5mm}
+dl.meta{display:grid;grid-template-columns:var(--ind) 1fr 1fr 1fr;gap:0;margin:0;border-top:.4pt solid var(--hair);padding-top:2mm}
+dl.meta>div{padding-right:4mm}
+dl.meta>div:last-child{grid-column:2 / 5;margin-top:2mm}
+dt{font:7pt/1.4 var(--mono);color:var(--ink2);margin:0 0 .6mm}
+dd{margin:0;font-size:8.6pt;line-height:1.35}
+dl.meta>div:last-child dd{font:7.6pt/1.4 var(--mono);color:var(--ink2)}
+dl.meta>div:last-child{display:flex;gap:3mm;align-items:baseline}
+dl.meta>div:last-child dt{margin:0}
+p.event{margin:2.4mm 0 0 var(--ind);font-size:8.6pt;color:var(--ink2)}
+
+/* text column */
+main>*{margin-left:var(--ind)}
+main>p{margin-top:0;margin-bottom:2.4mm;hyphens:auto;orphans:3;widows:3}
+main>p.lead{margin-left:0;max-width:150mm;font-size:11pt;line-height:1.42;letter-spacing:-.003em;margin-bottom:3mm}
+main>p.lead .m,main>p.lead code{font-size:.84em}
+
+h2{position:relative;margin:7.5mm 0 3mm 0;padding:2.4mm 0 0 var(--ind);border-top:1pt solid var(--ink);
+  font-size:12.5pt;line-height:1.25;font-weight:620;letter-spacing:-.005em;break-after:avoid;page-break-after:avoid}
+h2 .no{position:absolute;left:0;top:2.75mm;font:400 10pt/1.25 var(--mono)}
+h2+*{break-before:avoid}
+h3{font-size:10pt;font-weight:620;margin:5mm 0 1.5mm var(--ind);break-after:avoid}
+
+ul,ol{padding:0;margin-top:0;margin-bottom:2.6mm}
+ul{list-style:none}
+li{position:relative;padding-left:4.2mm;margin:0 0 1.5mm;hyphens:auto;orphans:3;widows:3}
+ul>li::before{content:"–";position:absolute;left:0;color:var(--ink2)}
+ol{padding-left:5mm}
+ol>li{padding-left:0}
+
+/* the please-check lane, as in the app: a red tick, the one signal colour */
+code.lane{border-left:1.6pt solid var(--sig);padding-left:1.1mm}
+
+/* tables use the full width; numbers in Fragment Mono, numeric columns flush right */
+main>table{margin:4mm 0 5mm;width:100%;border-collapse:collapse;font-size:7.9pt;line-height:1.38;font-variant-numeric:tabular-nums}
+table .m{font-size:.9em}
+thead{display:table-header-group}
+th{text-align:left;font-weight:620;vertical-align:bottom;padding:0 3mm 1.6mm 0;border-bottom:1pt solid var(--ink)}
+td{vertical-align:top;padding:1.7mm 3mm 1.8mm 0;border-bottom:.4pt solid var(--hair);hyphens:manual}
+th:last-child,td:last-child{padding-right:0}
+tr{break-inside:avoid}
+td.r,th.r{text-align:right;white-space:nowrap;width:1%;padding-right:4mm}
+td:first-child{width:28%}
+tr.sub td:first-child{padding-left:3.5mm}
+tr.sub td{border-top:none}
+
+/* figures: full width, hairline frame, a one-line caption on the text column with its label in the left column */
+figure.fig{margin:4.5mm 0 6mm;break-inside:avoid}
+figure.fig img{display:block;width:100%;height:auto;border:.4pt solid var(--hair)}
+figcaption{display:grid;grid-template-columns:var(--ind) 1fr;margin-top:2mm;font-size:8pt;line-height:1.4;color:var(--ink2)}
+/* a narrow figure sits on the text column with its caption beside it, at the foot of the image */
+figure.fig.narrow{display:grid;grid-template-columns:var(--ind) 82mm 1fr;align-items:end}
+figure.fig.narrow img{grid-column:2;grid-row:1}
+figure.fig.narrow figcaption{display:block;grid-column:3;grid-row:1;margin:0 0 0 5mm}
+figure.fig.narrow .fno{display:block;margin-bottom:1mm}
+.fno{font:7pt/1.6 var(--mono);color:var(--ink2)}

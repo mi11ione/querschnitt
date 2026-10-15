@@ -144,3 +144,101 @@ hold it as their first reading), same build, same inputs, `runs/s25`. Primary: D
 outward) and the paired difference shipped − D0 (bootstrap 2,000 over items). Reported as measured. Also reported, not
 pre-registered: subtopic and hierarchical metrics on S25 with the eval/s16/hierarchical.py definitions
 (eval/s25/hierarchical.py, already computed from the S25 rows, no calls).
+
+## 2026-10-15 16:36 CEST — S28 no-prefill mode on the S25 held-out items (before any S28 call)
+Why: the CSCS endpoint on 18 Oct may not continue an assistant message; the labelled fallback `QS_PREFILL=0` (one user
+message: the measured prompt plus a line asking the answer to begin with the JSON opening; the code read from the first
+token after that opening, from its `top_logprobs`, else from the generated text) has never run against a real model.
+S28 measures what it costs against the shipped prefill design on the same held-out items.
+Items: the 927 S25 affairs (eval/s25/items.jsonl, ids eval/s25/ids.txt), APS editors' chapter as gold, inputs from
+`../data/inputs.jsonl.gz`, unchanged. Design: the shipped pipeline unchanged (D4 for federal German affairs with
+neighbours: five BM25-nearest S5+S9 pool examples, two code orders, read-back over the subtopics of the top 2–3 chapters;
+D1 otherwise), with `QS_PREFILL=0` in the environment, via `ops/run-start.sh runs/s28 --inputs ../data/inputs.jsonl.gz
+--ids eval/s25/ids.txt --steps ch sub --conc 2 --max-rate 0.5 --cap 3`, into a new run dir `runs/s28` whose lock is
+written before the first call with the S25 build (vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840, mode no-prefill),
+so a call on any other build stops the run. Model `swiss-ai/apertus-v1.5-8b`, no system message. First a 20-item smoke
+run (`--limit 20`, the same command); its calls are part of the measurement if the code is unchanged afterwards, else an
+amendment is appended here before continuing. Calls that fail are retried by resuming the same run dir; affairs that never
+complete are reported as missing. Decisions are composed with `compose.decide` in no-prefill mode (no calibration: the
+lane is the readings rule only, pass = the two code orders agree, or one reading with top p ≥ 0.9).
+Primary: no-prefill chapter top-1 vs APS editors (Wilson 95%, outward) and the paired difference shipped prefill (S25
+final, eval/s25/decisions.jsonl) − no-prefill on the same affairs (bootstrap 2,000 over items, seed 2026, bounds outward).
+Secondary: top-3 (and its paired difference); the readings lane: pass share and precision (Wilson), next to S25's
+readings lane and calibrated lane; chapter agreement prefill vs no-prefill; per step row, how the code was read:
+`logprobs` (codes from top_logprobs), `text` (a single code at log-probability exactly 0.0, the engine's text fallback;
+an upper bound, since a logprob read could in principle look the same), `unparseable` (no listed code; such a row is
+composed as the shipped code would compose it, and the affairs it touches are counted); list-price USD and calls per
+affair vs S25. Reported as measured.
+
+## 2026-10-15 16:40 CEST — S28 amendment: a read fix after the smoke run (before any further S28 call)
+Found by the 20-item smoke run (stopped after 28 calls, 9 affairs complete; S25 build, no-prefill): every row's mass in
+the listed codes was 0.0 (best code log-probability -14 to -26). Apertus writes the JSON opening's quote as its own token
+(` "`); `client.read_codes_after` already read that token once the text ended with `{"kapitel":`, so it returned the
+quote token's rare merged alternatives (` "B`), not the code distribution, which is on the next token. Fix (a bug fix,
+not a design change; prompts and prompt ids unchanged): before the quote, a token is read only when the generated token
+itself carries quote and code (` "B`); test `test_no_prefill_reads_the_code_token_not_the_quote`. The fake endpoint sent
+the whole opening as one token, so the tests had not seen this. The smoke rows are kept apart in `runs/s28-smoke1` and
+never scored (their codes were read wrongly; the ids would otherwise be reused as cached). Then: a new `runs/s28` (same
+pre-written S25 lock), a second 20-item smoke run with the fixed code, whose calls count in the measurement if the code
+is unchanged after it, then the full run. Design, items, gold and metrics as pre-registered. The 28 smoke calls are
+reported in the cost.
+
+## 2026-10-15 16:47 CEST — S29 Ticino Gran Consiglio own scheme in Italian (before any S29 call)
+Question: does a parliament's own scheme handed over as a file work for an Italian-speaking parliament, measured against that
+parliament's own labels? (All earlier human-labelled tests were German, plus Bern's French titles.) Sources searched:
+`eval/s29/SOURCES.md`.
+Items (`eval/s29/items.py`, data only, run before this entry): every Ticino Gran Consiglio affair (OPD body TI) in
+`../data/inputs.jsonl.gz` begun 1 Jan 2023–11 Oct 2026 with a lead-department entry in OPD's contributors export (role
+`leading_department`, position 1): 2,274 affairs, joined by OPD affair id, 2,267 with text. Gold = that entry. The six named
+units map to the option of the same name; «Consiglio di Stato del Ticino» and «Gran Consiglio (Ticino)» map to the none option.
+Scheme: `schemes/ti-dipartimenti.yaml` (kind named): the 6 unit names verbatim in Italian, alphabetical, codes A–F, then
+G = "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)". No descriptions, nothing tuned. The frame
+is Italian. `named_prompt` reads the file's `de` slots, which hold the Italian text verbatim. The fixed block labels in code
+("Geschäft:", "Titel:", "Text (Auszug):") stay German as shipped. Input: the production input block (title, long title, first
+1,500 characters of the text chosen by `data.py`).
+Readings as shipped (S20/compose.py): identity order; the second code order (random.Random(7) permutation) when the first top
+probability is below 0.9; decision = top of the mean.
+Primary: top-1 = gold (Wilson 95%; point value truncated, bounds rounded outward) on the 1,685 items whose input block names
+none of the six units (lower case, typographic apostrophes folded). A Messaggio's header prints the competent department
+(«competenza»): 589 of the 2,274 inputs name a unit, 487 of them Messaggi. This was measured on the inputs before any call.
+Baselines on the same items: the majority gold label (computed at scoring) and the frozen keyword stems
+(`eval/s29/keywords_frozen.json`, title only). Paired difference Apertus − keyword: paired bootstrap, 2,000 resamples,
+random.Random(2026).
+Secondary: the same on all 2,274 items as fed; items whose gold is one of the 5 Dipartimenti; top-2 and top-3 contain gold;
+lanes (orders agree / disagree) with accuracy each; by affair type; confusion matrix. S18 (Bern) and S20 (Basel-Stadt) are
+reported beside the result but not compared with it: the schemes differ and so do the chance rates. No examples arm in S29 (an
+S21-style arm would need its own entry first).
+Run: batch runner into `runs/s29` (`--ids runs/s29/ids.txt --topics --steps --named ti-dipartimenti --conc 2 --max-rate 0.5
+--cap 3`), `swiss-ai/apertus-v1.5-8b`. The build is locked before the first call to fingerprint
+vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840: a call reporting another fingerprint stops the run, and no row of another
+build is used. Never a system message. Reported as measured.
+
+## 2026-10-15 17:59 CEST — S30 narrow one-sentence topics: a generated scope as a third check on flags, held out (before any S30 test call)
+Question: does a generated inclusion/exclusion scope, asked as a third closed question on flags, raise the precision of
+narrow one-sentence topics over the shipped design (yes/no + S27 check) on fresh data, without losing recall?
+Dev (done, tuning allowed, 4 variants; `eval/s30/dev_*`, the S19 packets with the S19 judge gold, S19/S27 rows; dev
+USD 0.0343): scope = one plain generation request per topic, user message only (`eval/s30/common.py` SCOPE_PROMPT:
+include ≤ 8 / exclude ≤ 6 keywords per language, JSON); scope question = «Gehört das folgende parlamentarische Geschäft zum
+Thema «{name}»?» + «Dazu gehört: …» + «Nicht dazu gehört: …, Geschäfte, deren Titel das Thema nicht erkennen lässt.», A/B,
+two-order rule (`common.scope_prompt`). Dev precision / recall of flags (wolf · AI in schools · heat): shipped 0.444/0.444 ·
+0.250/1.000 · 0.771/0.970; V1 yes/no + scope question 0.348/0.889 · 0.333/0.667 · 0.836/0.901; V2 yes/no + contrast
+question (topic vs its generated neighbours) 0.241/0.778 · 0.176/1.000 · 0.830/0.966; V3 scope question alone = V1 (on
+all 774 dev items its flags are a subset of the yes/no flags); V4 scope question + S27 check 0.667/0.444 · 1.000/0.667 ·
+0.919/0.879. Chosen after seeing dev (highest mean F1, 0.74 vs shipped 0.56): V4, asked on the yes/no flags (identical
+decisions to V4 on all dev items, and its test cost is the shipped cost plus one call per flag).
+Test (held out, no tuning; frozen code `eval/s30/{common,run_common,run,flags,build_packet,analyze}.py`):
+Topics (one German sentence each, `eval/s30/sentences.json`): «Lichtverschmutzung …», «Drohnen …», «Pestizide und
+Pflanzenschutzmittel …»; never used before. Population: every affair with a title begun 16–31 Mar 2026 in
+`../data/inputs.jsonl.gz` (1,316; S19 used Aug–Oct). Per topic, one shipped topic generation (adhoc.TOPIC_PROMPT →
+adhoc.build_topic, as Neues Thema) and one scope generation, frozen in `eval/s30/topics.json` before scoring.
+Arms: shipped = yes/no flag (mean p ≥ 0.5) kept by the S27 check (mean p ≥ 0.5) (the product's verified flags);
+variant = shipped ∧ scope question (mean p ≥ 0.5); keywords frozen in `eval/s30/keywords_frozen.json`. Secondary: the
+yes/no step alone; yes/no + scope question without S27. Build vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 pinned,
+max rate 0.5/s, 2 workers, cap USD 2.
+Gold sample per topic: every affair flagged by any arm (all yes/no flags) or by keywords, plus 120 random others
+(random.Random(20261030) over the id-sorted list). Packet: parliament, level, type, date, title, long title (300), text
+excerpt (300), the topic sentence; no model output; blind Claude subagents A (shuffled) and B (reverse order), Y/N; a third
+subagent C on A≠B. Outcomes per topic and pooled: precision of flags (Wilson 95%), weighted recall (stratified bootstrap
+2,000), paired differences variant − shipped in precision and recall (same bootstrap). Points truncated, intervals outward.
+Product rule: the variant goes into the product only if the pooled precision difference interval lies above 0 and no
+recall-difference interval (pooled or per topic) lies below 0; otherwise the product stays as it is. Reported as measured.

@@ -222,3 +222,21 @@ def test_probe_reports_prefill_and_settings(tmp_path, mode, prefill, env, measur
         assert k not in R["env"]
     assert "QS_MAX_RATE" in R["env"] and R["batch_args"].startswith("--conc ")
     assert R["verdict"] == pr.MEASURED if measured else R["verdict"].startswith(pr.UNMEASURED)
+
+
+def _tok(token, lp, alts):
+    return dict(token=token, logprob=lp, top_logprobs=[dict(token=k, logprob=v) for k, v in alts.items()])
+
+
+def test_no_prefill_reads_the_code_token_not_the_quote():
+    """S28 smoke run: Apertus writes the opening quote as its own token (` "`), whose alternatives include rare merged
+    tokens (` "B` at -15); the code distribution is on the next token. A merged ` "B` token is read where it is generated."""
+    pre = '{"kapitel": "'
+    split = dict(logprobs=dict(content=[_tok('{"', -0.01, {'{"': -0.01}), _tok("kap", 0, {"kap": 0}), _tok("itel", 0, {"itel": 0}),
+                                        _tok('":', 0, {'":': 0}), _tok(' "', 0, {' "': 0, ' "B': -15.5, ' "C': -25.9}),
+                                        _tok("B", -0.1, {"B": -0.1, "C": -2.4, "x": -9}), _tok('"}', 0, {'"}': 0})]))
+    d = C.read_codes_after(split, P.CODES, pre)
+    assert d == {"B": -0.1, "C": -2.4}
+    merged = dict(logprobs=dict(content=[_tok('{"kapitel":', -0.01, {}), _tok(' "C', -0.2, {' "C': -0.2, ' "B': -1.7, ' "': -3}),
+                                         _tok('"}', 0, {})]))
+    assert C.read_codes_after(merged, P.CODES, pre) == {"C": -0.2, "B": -1.7}

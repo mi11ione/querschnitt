@@ -708,6 +708,12 @@ NIGHTLY	-	49	15 Oct night: affairs queued by the cut pass (endpoint down) and sc
 NIGHTLY	-	9.6	15 Oct night: minutes to drain the queue once the endpoint answered with the locked build	9.6	eval/nightly/2026-10-15.json	drain_minutes	OK		
 NIGHTLY	-	0.0215	15 Oct night: list-price USD of the drain	0.021546	eval/nightly/2026-10-15.json	usd	OK		truncated
 NIGHTLY	-	0	15 Oct night: rows left in the queue after the drain	0	eval/nightly/2026-10-15.json	pending_after_drain	OK		
+HOP	99	0002	migration id 0002 (seed)	0002	upstream/opd/migrations/	0002_topic_schemes_seed.up.sql / .down.sql	OK		file name
+HOP	101	16.15	PostgreSQL version of the CI job hop (postgres:16 image)	16.15	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step migrations up: SELECT current_setting('server_version') -> 16.15 (Debian 16.15-1.pgdg13+2)	OK		run of 15 Oct
+HOP	101	159,834	rows of the released topics file loaded in full by CI job hop	159834	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: topics (insert / update) Finished processing (I=159834, O=159834); NOTICE load: ok (159834 rows)	OK		release data-latest of 15 Oct
+HOP	101	142	Hop pipeline duration of the full load (s)	141.933	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: Pipeline duration : 141.933 seconds	ROUNDED		rounded
+HOP	101	12,763	document quotes in the full load (evidence_field doc, evidence_doc_id set)	12763	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: evidence as loaded: doc 12763 rows, 12763 with_doc_id	OK		
+HOP	102	7,008	text quotes in the full load (evidence_field text, evidence_text_id set)	7008	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: evidence as loaded: text 7008 rows, 7008 with_text_id	OK		
 S19-27	-	4,305	adhoc_new_topics population (affairs with a title begun 1 Aug–6 Oct 2026)	4305	eval/s19/results.json	<topic> > strata > N, summed (equal for the three topics)	OK		count
 S19-27	-	774	adhoc_new_topics affairs checked by the judge (three packets)	774	eval/s19/results.json	<topic> > n_packet, summed	OK		count
 S19-27	-	0.963	adhoc_new_topics judge run A = run B	0.9638	eval/s19/results.json	agree_AB	OK		truncated, never rounded up
@@ -1011,9 +1017,35 @@ S25	-	0.611	S25 hierarchical, not pre-registered (per-chapter F1, macro over the
 S25	-	0.681	S25 hierarchical, not pre-registered (per-chapter F1, macro over the chapters present (shipped, held out)) ci95[1]	0.681	eval/s25/hierarchical.json	chapter_macro_f1: bootstrap bound, rounded outward at 3 decimals (ceiled)	OK		percentile bootstrap 2,000, bounds rounded outward (eval/s25/hierarchical.py)
 S25	-	22	S25 hierarchical, not pre-registered: chapters present (macro-F1)	22	eval/s25/hierarchical.json	chapter_macro_f1 > chapters	OK		count
 S25	-	927	S25 hierarchical, not pre-registered: affairs in the macro-F1	927	eval/s25/hierarchical.json	items	OK		count
-HOP	99	0002	migration id 0002 (seed)	0002	upstream/opd/migrations/	0002_topic_schemes_seed.up.sql / .down.sql	OK		file name
-HOP	101	16.15	PostgreSQL version of the CI job hop (postgres:16 image)	16.15	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step migrations up: SELECT current_setting('server_version') -> 16.15 (Debian 16.15-1.pgdg13+2)	OK		run of 15 Oct
-HOP	101	159,834	rows of the released topics file loaded in full by CI job hop	159834	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: topics (insert / update) Finished processing (I=159834, O=159834); NOTICE load: ok (159834 rows)	OK		release data-latest of 15 Oct
-HOP	101	142	Hop pipeline duration of the full load (s)	141.933	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: Pipeline duration : 141.933 seconds	ROUNDED		rounded
-HOP	101	12,763	document quotes in the full load (evidence_field doc, evidence_doc_id set)	12763	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: evidence as loaded: doc 12763 rows, 12763 with_doc_id	OK		
-HOP	102	7,008	text quotes in the full load (evidence_field text, evidence_text_id set)	7008	https://github.com/mi11ione/querschnitt/actions/runs/38744888546	job hop, step 13: evidence as loaded: text 7008 rows, 7008 with_text_id	OK		
+S28	64	927	SERVICE.md: S28: held-out S25 affairs scored without prefill	927	eval/s28/results.json	scored	OK		count
+S28	65	0.705	SERVICE.md: S28 no-prefill chapter top-1	0.7055	eval/s28/results.json	no_prefill_top1 > value	OK		truncated, never rounded up
+S28	65	654/927	SERVICE.md: S28 no-prefill chapter top-1 k/n	654/927	eval/s28/results.json	no_prefill_top1 > k, n	OK		count
+S28	65	0.675	SERVICE.md: S28 no-prefill top-1 ci95[0]	0.675	eval/s28/results.json	no_prefill_top1 > ci[0]	OK		Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py)
+S28	65	0.734	SERVICE.md: S28 no-prefill top-1 ci95[1]	0.734	eval/s28/results.json	no_prefill_top1 > ci[1]	OK		Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py)
+S28	66	0.696	SERVICE.md: S28: shipped prefill top-1 on the same items (S25 final)	0.6968	eval/s28/results.json	prefill_top1_same_items > value	OK		truncated, never rounded up
+S28	66	646/927	SERVICE.md: S28: shipped prefill top-1 k/n (S25 final)	646/927	eval/s28/results.json	prefill_top1_same_items > k, n	OK		count
+S28	66	−0.008	SERVICE.md: S28 paired difference prefill − no-prefill, top-1	-0.0086	eval/s28/results.json	prefill_minus_no_prefill_top1 > value	OK		truncated toward zero, magnitude never rounded up
+S28	67	−0.022	SERVICE.md: S28 paired difference top-1 ci95[0]	-0.022	eval/s28/results.json	prefill_minus_no_prefill_top1 > ci95[0]	OK		paired percentile bootstrap 2,000 (seed 2026), bounds rounded outward (eval/s28/analyze.py)
+S28	67	0.004	SERVICE.md: S28 paired difference top-1 ci95[1]	0.004	eval/s28/results.json	prefill_minus_no_prefill_top1 > ci95[1]	OK		paired percentile bootstrap 2,000 (seed 2026), bounds rounded outward (eval/s28/analyze.py)
+S28	67	0.839	SERVICE.md: S28 top-3, no-prefill and prefill	0.8392	eval/s28/results.json	no_prefill_top3 > value; prefill_top3_same_items > value	OK		truncated, never rounded up
+S28	67	876	SERVICE.md: S28 affairs with the same chapter in both modes	876	eval/s28/results.json	same_chapter_as_prefill > k	OK		count
+S28	68	0.642	SERVICE.md: S28 no-prefill readings lane: pass share	0.6429	eval/s28/results.json	lanes_no_prefill > pass > share	OK		truncated, never rounded up
+S28	68	0.805	SERVICE.md: S28 no-prefill readings lane: pass precision	0.8053	eval/s28/results.json	lanes_no_prefill > pass > value	OK		truncated, never rounded up
+S28	69	0.771	SERVICE.md: S28 no-prefill pass precision ci95[0]	0.771	eval/s28/results.json	lanes_no_prefill > pass > ci[0]	OK		Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py)
+S28	69	0.836	SERVICE.md: S28 no-prefill pass precision ci95[1]	0.836	eval/s28/results.json	lanes_no_prefill > pass > ci[1]	OK		Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py)
+S28	69	0.673	SERVICE.md: S25 shipped calibrated lane: pass share	0.6731	eval/s28/results.json	lanes_prefill_s25 > pass > share	OK		truncated, never rounded up
+S28	69	0.812	SERVICE.md: S25 shipped calibrated lane: pass precision	0.8125	eval/s28/results.json	lanes_prefill_s25 > pass > value	OK		truncated, never rounded up
+S28	69	0	SERVICE.md: S28 rows whose code was read from text / unparseable	0	eval/s28/results.json	read_path_all_rows (logprobs 2723, no text, no unparseable); affairs_with_a_text_read; affairs_with_an_unparseable_row	OK		count
+S28	70	0.345	SERVICE.md: S28 list-price USD of the measurement run (incl. the counted smoke run)	0.345779	eval/s28/results.json	cost > no_prefill > usd	OK		truncated, never rounded up; the discarded first smoke run adds 0.003764 (cost > smoke1_discarded)
+S28	70	2,725	SERVICE.md: S28 calls of the measurement run (60 smoke + 2,665)	2725	eval/s28/results.json	cost > no_prefill > calls	OK		count; + 28 discarded smoke calls = 2,753 (cost > s28_total)
+S28	71	20	SERVICE.md: S28 smoke run items	20	runs/s28/run.log	first session: items 20; counts calls 60	OK		count
+S28	46	927	ONSITE.md: S28 held-out affairs	927	eval/s28/results.json	scored	OK		count
+S28	46	0.705	ONSITE.md: S28 no-prefill top-1	0.7055	eval/s28/results.json	no_prefill_top1 > value	OK		truncated, never rounded up
+S28	46	0.696	ONSITE.md: S28 prefill top-1 same items	0.6968	eval/s28/results.json	prefill_top1_same_items > value	OK		truncated, never rounded up
+S28	46	−0.008	ONSITE.md: S28 paired difference top-1	-0.0086	eval/s28/results.json	prefill_minus_no_prefill_top1 > value	OK		truncated toward zero
+S28	47	−0.022	ONSITE.md: S28 paired difference ci95[0]	-0.022	eval/s28/results.json	prefill_minus_no_prefill_top1 > ci95[0]	OK		paired percentile bootstrap 2,000 (seed 2026), bounds rounded outward (eval/s28/analyze.py)
+S28	47	0.004	ONSITE.md: S28 paired difference ci95[1]	0.004	eval/s28/results.json	prefill_minus_no_prefill_top1 > ci95[1]	OK		paired percentile bootstrap 2,000 (seed 2026), bounds rounded outward (eval/s28/analyze.py)
+S28	47	0.642	ONSITE.md: S28 readings lane pass share	0.6429	eval/s28/results.json	lanes_no_prefill > pass > share	OK		truncated, never rounded up
+S28	47	0.805	ONSITE.md: S28 readings lane pass precision	0.8053	eval/s28/results.json	lanes_no_prefill > pass > value	OK		truncated, never rounded up
+S28	47	0.673	ONSITE.md: S25 calibrated lane pass share	0.6731	eval/s28/results.json	lanes_prefill_s25 > pass > share	OK		truncated, never rounded up
+S28	48	0.812	ONSITE.md: S25 calibrated lane pass precision	0.8125	eval/s28/results.json	lanes_prefill_s25 > pass > value	OK		truncated, never rounded up

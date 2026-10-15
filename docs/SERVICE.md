@@ -61,6 +61,17 @@ from the text. That mode is not measured: its prompt ids differ, so its rows nev
 calibration applies (`p` null); a run dir or compose in the other mode is refused; the build lock applies as before. Refit
 and pass the quality gate (`make eval GOLD=…`) before showing any of its numbers.
 
+**Measured cost of the fallback (S28, pre-registered; `eval/s28/results.json`).** On the 927 held-out S25 affairs, on the
+same Public AI build as S25, `QS_PREFILL=0` scored chapter top-1 0.705 (654/927, Wilson 95% 0.675–0.734) against
+0.696 (646/927) for the shipped prefill design. The paired difference prefill − no-prefill is −0.008 (bootstrap 95%
+−0.022 to 0.004), so no loss is measurable on these items. Top-3 is 0.839 in both modes, and 876 of 927 affairs get the
+same chapter. With no calibration, only the readings rule sets the lane: 0.642 of affairs pass, at precision 0.805
+(0.771–0.836), against the shipped calibrated lane's 0.673 pass at 0.812. Every code came from `top_logprobs` (0 read
+from text, 0 unparseable), and the cost is the same as with prefill: USD 0.345 list price for 2,725 calls.
+The 20-item smoke run first found a read bug, now fixed. Apertus writes the opening quote as its own token, and
+`read_codes_after` was reading that token's alternatives (see the S28 amendment). This holds only with logprobs and only
+on this build. On another endpoint, the probe's replay check still decides.
+
 ### From a fresh clone
 `make data` → `make run` → `make test` → `make eval GOLD=data/eval/gold_aps_s9.csv` → `make claims`; no model calls, no key.
 The first target that runs Python creates `.venv` (`make install`: uv, else any `python >= 3.11` with venv + pip);

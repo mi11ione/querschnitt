@@ -43,6 +43,9 @@ Per outcome (`prefill` · `logprobs` in the probe's summary line):
   CSCS only as a footprint, or run with `export QS_PREFILL=0` (verdict "runs in an unmeasured mode — refit + quality gate
   before use"): a fresh run dir, `make eval GOLD=data/eval/gold_aps_s9.csv` on its rows, cut-offs refitted, and every
   number from it labelled no-prefill. `noprefill_ok` false → do not use the endpoint.
+  Measured cost on Public AI (S28, 927 held-out affairs): top-1 0.705 without prefill vs 0.696 with it, difference −0.008
+  (−0.022 to 0.004), so none is measurable. The lane is the readings rule only (0.642 pass at 0.805 precision, vs 0.673 at
+  0.812 calibrated). Same price.
 - `absent` or `rejected` logprobs → `export QS_NO_LOGPROBS=1`: also unmeasured; lanes still run on generated codes (two
   readings), no chapter probabilities from that endpoint (they stay from Public AI rows).
 - Use the printed `QS_MAX_RATE` and batch `--conc … --max-rate …` (`0.8 ×` the best rate without a `429`).

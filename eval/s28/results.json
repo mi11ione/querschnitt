@@ -1,0 +1,251 @@
+{
+ "prereg": "eval/PREREG-BUILD.md S28",
+ "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "mode": "no-prefill",
+ "items": 927,
+ "scored": 927,
+ "missing": 0,
+ "no_prefill_top1": {
+  "k": 654,
+  "n": 927,
+  "value": 0.7055,
+  "ci": [
+   0.675,
+   0.734
+  ]
+ },
+ "no_prefill_top3": {
+  "k": 778,
+  "n": 927,
+  "value": 0.8392,
+  "ci": [
+   0.814,
+   0.862
+  ]
+ },
+ "prefill_top1_same_items": {
+  "k": 646,
+  "n": 927,
+  "value": 0.6968,
+  "ci": [
+   0.666,
+   0.726
+  ]
+ },
+ "prefill_top3_same_items": {
+  "k": 778,
+  "n": 927,
+  "value": 0.8392,
+  "ci": [
+   0.814,
+   0.862
+  ]
+ },
+ "prefill_minus_no_prefill_top1": {
+  "value": -0.0086,
+  "ci95": [
+   -0.022,
+   0.004
+  ],
+  "prefill_only_right": 14,
+  "no_prefill_only_right": 22
+ },
+ "prefill_minus_no_prefill_top3": {
+  "value": 0.0,
+  "ci95": [
+   -0.011,
+   0.011
+  ],
+  "prefill_only_right": 12,
+  "no_prefill_only_right": 12
+ },
+ "same_chapter_as_prefill": {
+  "k": 876,
+  "n": 927,
+  "value": 0.9449,
+  "ci": [
+   0.928,
+   0.958
+  ]
+ },
+ "lanes_no_prefill": {
+  "pass": {
+   "share": 0.6429,
+   "k": 480,
+   "n": 596,
+   "value": 0.8053,
+   "ci": [
+    0.771,
+    0.836
+   ]
+  },
+  "please_check": {
+   "share": 0.357,
+   "k": 174,
+   "n": 331,
+   "value": 0.5256,
+   "ci": [
+    0.471,
+    0.579
+   ]
+  }
+ },
+ "lanes_prefill_s25": {
+  "pass": {
+   "share": 0.6731,
+   "k": 507,
+   "n": 624,
+   "value": 0.8125,
+   "ci": [
+    0.779,
+    0.842
+   ]
+  },
+  "please_check": {
+   "share": 0.3268,
+   "k": 139,
+   "n": 303,
+   "value": 0.4587,
+   "ci": [
+    0.403,
+    0.516
+   ]
+  },
+  "readings_agree": {
+   "share": 0.6515,
+   "k": 475,
+   "n": 604,
+   "value": 0.7864,
+   "ci": [
+    0.751,
+    0.818
+   ]
+  },
+  "readings_disagree": {
+   "share": 0.3484,
+   "k": 171,
+   "n": 323,
+   "value": 0.5294,
+   "ci": [
+    0.474,
+    0.584
+   ]
+  }
+ },
+ "by_design": {
+  "D4 (German text: five examples)": {
+   "no_prefill": {
+    "k": 646,
+    "n": 917,
+    "value": 0.7044,
+    "ci": [
+     0.674,
+     0.734
+    ]
+   },
+   "prefill": {
+    "k": 638,
+    "n": 917,
+    "value": 0.6957,
+    "ci": [
+     0.665,
+     0.725
+    ]
+   }
+  },
+  "D1 (no examples)": {
+   "no_prefill": {
+    "k": 8,
+    "n": 10,
+    "value": 0.8,
+    "ci": [
+     0.49,
+     0.944
+    ]
+   },
+   "prefill": {
+    "k": 8,
+    "n": 10,
+    "value": 0.8,
+    "ci": [
+     0.49,
+     0.944
+    ]
+   }
+  }
+ },
+ "read_path_rows_used": {
+  "ch1": {
+   "logprobs": 927
+  },
+  "ch2": {
+   "logprobs": 918
+  },
+  "sub": {
+   "logprobs": 927
+  },
+  "all": {
+   "logprobs": 2772
+  }
+ },
+ "read_path_note": "rows_used: per affair, the rows its decision uses (a row shared by affairs with identical prompts counts once per affair); all_rows: every row of runs/s28 once",
+ "read_path_all_rows": {
+  "logprobs": 2723
+ },
+ "affairs_with_a_text_read": 0,
+ "affairs_with_an_unparseable_row": 0,
+ "readings_per_affair": {
+  "2": 918,
+  "1": 9
+ },
+ "mass_in_listed_codes_ch1_mean": 0.9999,
+ "cost": {
+  "no_prefill": {
+   "calls": 2725,
+   "usd": 0.345779,
+   "prompt_tokens": 3412370,
+   "completion_tokens": 22710,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ],
+   "models": [
+    "swiss-ai/apertus-v1.5-8b"
+   ],
+   "calls_per_affair": 2.939
+  },
+  "prefill_s25": {
+   "calls": 2772,
+   "usd": 0.344147,
+   "prompt_tokens": 3435929,
+   "completion_tokens": 2772,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ],
+   "models": [
+    "swiss-ai/apertus-v1.5-8b"
+   ]
+  },
+  "note": "list price (client.PRICES); the S25 ledger also holds its pre-fix re-asks (eval/PREREG-BUILD.md S25 amendment)",
+  "smoke1_discarded": {
+   "calls": 28,
+   "usd": 0.003764,
+   "prompt_tokens": 37179,
+   "completion_tokens": 233,
+   "fps": [
+    "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+   ],
+   "models": [
+    "swiss-ai/apertus-v1.5-8b"
+   ]
+  },
+  "s28_total": {
+   "calls": 2753,
+   "usd": 0.349543
+  }
+ },
+ "errors_logged": 0,
+ "sessions": [
+  "{'calls': 60, 'ch1': 20, 'ch2': 20, 'sub': 20, 'affairs': 20}",
+  "{'cached': 107, 'affairs': 927, 'calls': 2665, 'ch1': 890, 'ch2': 885, 'sub': 890}"
+ ]
+}

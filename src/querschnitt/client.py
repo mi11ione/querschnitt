@@ -282,13 +282,18 @@ def _compact(s: str) -> str:
 def read_codes_after(choice: dict, codes: list[str], prefix: str) -> dict[str, float]:
     """No-prefill mode: the top log-probabilities of the first generated token after the answer has spelled out `prefix`
     (e.g. `{"kapitel": "`; whitespace ignored, a code token that carries its opening quote counts), restricted to
-    `codes`. Empty when the answer never reaches the prefix or there are no log-probabilities."""
+    `codes`. Empty when the answer never reaches the prefix or there are no log-probabilities.
+    Before the opening quote only a generated token that carries the quote and the code together (` "B`) is read: when
+    the model generates the quote alone (` "`, Apertus's usual tokenisation, S28), that token's alternatives are rare
+    merged tokens (log-probabilities near -15), not the code distribution, which is on the next token."""
     lp = (choice.get("logprobs") or {}).get("content") or []
     want = _compact(prefix)
     core = want.rstrip('"')
     seen = ""
     for t in lp:
-        if seen.endswith(want) or seen.endswith(core):
+        tok = (t.get("token") or "").strip()
+        merged = tok.startswith('"') and tok.strip('"').strip() in codes
+        if seen.endswith(want) or (seen.endswith(core) and merged):
             out: dict[str, float] = {}
             for x in t.get("top_logprobs") or []:
                 s = x["token"].strip().strip('"').strip()

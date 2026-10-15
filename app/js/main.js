@@ -6,9 +6,10 @@ import { Neu, loadSaved } from './neu.js';
 import { renderPruef, testCount } from './pruef.js';
 import { Atlas } from './atlas.js';
 import { renderAnb } from './anb.js';
+import { Woche } from './woche.js';
 
-const VIEWS = ['ueber', 'karte', 'neu', 'pruef', 'anb'];
-let view = 'ueber', karte = null, neu = null, atlas = null;
+const VIEWS = ['woche', 'ueber', 'karte', 'neu', 'pruef', 'anb'];
+let view = 'woche', karte = null, neu = null, atlas = null, woche = null;
 
 function setLang(l) {
   UI.lang = l; document.documentElement.lang = l;
@@ -18,6 +19,7 @@ function setLang(l) {
   if (neu) neu.relang();
   if (view === 'pruef') renderPruef($('#v-pruef'));
   if (view === 'ueber') atlas.render();
+  if (view === 'woche') woche.render();
   if (view === 'anb') renderAnb($('#v-anb'));
 }
 
@@ -69,10 +71,11 @@ addEventListener('resize', () => fitFacts());
 
 function show(v) {
   view = v;
-  document.body.classList.toggle('v-ueber', v === 'ueber');
+  document.body.classList.toggle('v-ueber', v === 'ueber' || v === 'woche');
   for (const x of VIEWS) { $(`#v-${x}`).hidden = x !== v; $(`#t-${x}`).setAttribute('aria-selected', String(x === v)); }
   if (v === 'pruef') renderPruef($('#v-pruef'));
   if (v === 'ueber') atlas.render();
+  if (v === 'woche') woche.render();
   if (v === 'anb') renderAnb($('#v-anb'));
   if (v === 'neu' && !neu) neu = new Neu($('#v-neu'));
   if (v === 'neu' && neu) { neu.board.refresh(); neu.shown(); }
@@ -94,13 +97,14 @@ function writeHash() {
     if (karte.mapMode === 'matrix') p.set('v', 'matrix');
     s += `?${p}`;
   }
+  if (view === 'woche' && woche && woche.hashQ()) s += `?${woche.hashQ()}`;
   if (view === 'neu' && neu && neu.limit) s += `?limit=${neu.limit}`; // a capped live run keeps its cap in the link
   history.replaceState(null, '', s);
 }
 function readHash() {
   const [v, q] = location.hash.slice(1).split('?');
   const p = new URLSearchParams(q || '');
-  return { view: VIEWS.includes(v) ? v : 'ueber', p };
+  return { view: VIEWS.includes(v) ? v : 'woche', p };
 }
 
 // ---------------------------------------------------------------- keyboard
@@ -112,6 +116,7 @@ function keys(e) {
   if (k === 'd' || k === 'f') { setLang(k === 'd' ? 'de' : 'fr'); e.preventDefault(); return; }
   if (k === 'm') { show('karte'); return; }
   if (k === 'a') { show('ueber'); return; }
+  if (k === 'w') { show('woche'); return; }
   if (k === 'i') { show('anb'); return; }
   if (k === 'n') { show('neu'); return; }
   if (k === 'b') { show('pruef'); return; }
@@ -154,6 +159,10 @@ async function boot() {
   atlas = new Atlas($('#v-ueber'), {
     openTopic: x => { karte.S.brush = null; karte.S.mode = 'list'; show('karte'); karte.setTopic(x); },
     openAffair: i => { const c = D.c; const x = c.df[i] ? TOPIC_BY_ID.get('adhoc/digitalisierung') : (c.ch[i] >= 0 ? TOPIC_BY_ID.get(D.scheme.chapters[c.ch[i]].code) : karte.tp); karte.S.brush = null; show('karte'); karte.setTopic(x); karte.select(c.id[i]); } });
+  // Diese Woche → the Karte on that topic, brushed to that week
+  const toWeek = (x, w) => { karte.S.mode = 'list'; show('karte'); karte.setTopic(x); karte.S.brush = [w, w]; karte.refresh(); };
+  woche = new Woche($('#v-woche'), { openTopic: toWeek, openAffair: (i, x, w) => { toWeek(x, w); karte.select(D.c.id[i]); } });
+  if (v0 === 'woche') woche.setDate(p.get('d'));
   if (p.get('p')) karte.S.body = p.get('p');
   if (p.get('w')) { const [a, b] = p.get('w').split('-').map(Number); if (b >= a) karte.S.brush = [a, b]; }
   else if (tp.scoredDays) karte.S.brush = [Math.floor((tp.scoredDays[0] - D.w0) / 7), Math.floor((tp.scoredDays[1] - D.w0) / 7)];

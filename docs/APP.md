@@ -210,3 +210,22 @@ not use them for counts. Labels name what they count:
   ohne Prüfung.»; DE/FR parliaments «Auf Deutsch und auf Französisch gefragt …»); the bars stay for experts.
 - Neues Thema live cap: `#neu?limit=25` or the select beside the period sends `limit` with `POST /adhoc` (newest
   affairs first); default no cap; hidden in static mode.
+
+## Diese Woche (15 Oct)
+- New first view and default route «Diese Woche» / «Cette semaine» (`#woche`, `#woche?d=<Monday ISO>` for an older
+  week, key `w`; `js/woche.js`). Überblick stays at `#ueber` (key `a`). Default week = the newest complete Monday–Sunday
+  week whose Sunday is ≤ `meta.until`; `‹ ›`, `[`/`]` or ←/→ step back to `meta.since`.
+- One computed sentence («Woche 41: 111 Geschäfte aus 27 Parlamenten. Am meisten: …» = the 3 largest topics), the week
+  by level (hairline bars) and by language, then the 6 topics with the most affairs that week (24 APS chapters without
+  «Kein Sachthema», Digitalisierung, saved ad-hoc topics; hit = rank-1 chapter / flag, as in the Karte): count, bars per
+  level on one scale across rows, and up to 3 examples (phones: 2).
+- Examples: only rows whose detail carries the topic's own evidence (chapter → `aps.evidence`, Digitalisierung →
+  `dig.evidence`, saved topic → `adhoc[slug].evidence` once exported). Picked for a new parliament each, then a new
+  language and level; clean quoted sentences first (form fields, letterheads and mid-sentence fragments rank below a
+  title that is itself the evidence, which is then marked and labelled «Beleg: der Titel»). The quote is the most
+  prose-like sentence of the evidence span, cut at a word boundary (≤ 160 chars, «…»). Title in the UI language where
+  the parliament publishes it (`title_alt`), else the original with a language tag. Red tick = the topic's please-check
+  lane. Click an affair → `#karte?t=<topic>&a=<id>&w=<week>-<week>`; click a topic → its Karte brushed to that week.
+- Detail buckets (1000 ids, ~2.4 MB): only the buckets holding ≥ 10 % of the week's candidates (at least the largest)
+  are fetched, more only while a topic lacks two examples (≤ 3 rounds of ≤ 2 buckets).
+- Shots: `woche-1440`, `woche-fr-1440`, `woche-375`, `woche-prev-1440`, `woche-open-1440` in `dev/shoot.mjs`.

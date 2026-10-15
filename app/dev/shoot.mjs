@@ -15,8 +15,13 @@ const PORT = 9333 + Math.floor(Math.random() * 500);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const SCEN = [
-  { name: 'ueber-1440', w: 1440, h: 900, url: '' },
-  { name: 'ueber-375', w: 375, h: 812, mobile: true, url: '', full: true },
+  { name: 'woche-1440', w: 1440, h: 900, url: '', steps: [`window.__wocheReady`], print: `[...document.querySelectorAll('.wo-a')].map(e=>e.querySelector('.m').textContent+' | '+e.querySelector('.q').textContent).join(String.fromCharCode(10))` },
+  { name: 'woche-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#woche', steps: [`window.__wocheReady`] },
+  { name: 'woche-375', w: 375, h: 812, mobile: true, url: '#woche', full: true, steps: [`window.__wocheReady`] },
+  { name: 'woche-prev-1440', w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'['}))`, `window.__wocheReady`], print: `location.hash` },
+  { name: 'woche-open-1440', w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, `document.querySelector('.wo-a').click()`, 800], print: `location.hash` },
+  { name: 'ueber-1440', w: 1440, h: 900, url: '#ueber' },
+  { name: 'ueber-375', w: 375, h: 812, mobile: true, url: '#ueber', full: true },
   { name: 'ueber-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#ueber' },
   { name: 'karte-1440', w: 1440, h: 900, url: '#karte' },
   { name: 'karte-detail-1440', w: 1440, h: 900, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },

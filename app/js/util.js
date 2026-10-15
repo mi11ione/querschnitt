@@ -60,6 +60,11 @@ export const MONTHS = {
 export const T = {
   de: {
     anb: 'Anbindung', anbTable: 'Tabelle topics in OpenParlData', anbCols: 'Spalten', anbMachine: 'Maschine (inferred)', anbDecision: 'Entscheid (confirmed)', anbHop: 'Laden mit Apache Hop', anbSample: 'Beispiel', anbNew: 'neue Geschäfte', anbQueue: 'Warteschlange', anbDrain: 'abgebaut in', anbCut: 'Modell-Endpunkt war unterbrochen: die Warteschlange hielt die Geschäfte, bis derselbe Build wieder antwortete.', anbFoot: 'Speicher im Betrieb (docker stats, CI)',
+    woche: 'Diese Woche', affair1: 'Geschäft', wkPrev: 'vorherige Woche', wkNext: 'nächste Woche', wkNewest: 'neueste vollständige Woche',
+    wkLine: (k, n, p, pn, names) => `Woche ${k}: ${n} Geschäfte aus ${p} ${pn === 1 ? 'Parlament' : 'Parlamenten'}. Am meisten: ${names.join('; ')}.`,
+    wkNone: k => `Woche ${k}: keine Geschäfte im Export.`, wkIn: { de: 'auf Deutsch', fr: 'auf Französisch', it: 'auf Italienisch', rm: 'auf Rätoromanisch' },
+    wkCheck: 'eine Person soll prüfen', wkMap: 'Karte dieses Themas, diese Woche', wkMore: 'Weitere Themen', wkNoQuote: 'kein Zitat in dieser Woche', wkOnTitle: 'Beleg: der Titel',
+    wkNote: 'Thema: Apertus ordnet jedes Geschäft einem der 24 APS-Kapitel zu, dazu Digitalisierung und gespeicherte Themen. Beispiele nur mit Zitat: der Satz aus Titel oder Text, der das Thema belegt. Klick auf ein Geschäft öffnet es in der Karte, auf ein Thema dessen Karte dieser Woche.',
     ueber: 'Überblick', karte: 'Karte', neu: 'Neues Thema', pruef: 'Prüfstand',
     bigScored: 'Geschäfte bewertet (APS-Kapitel)', bigPassOf: 'aller bewerteten Geschäfte, alle Ebenen', scoredAps: 'bewertet (APS-Kapitel)', scoredTopic: n => `bewertet (${n})`, scoredBoard: 'für dieses Thema bewertet', bigWeeks: 'Wochen', bigWaiting: 'warten auf eine Person', thisWeek: 'Diese Woche', atlasLeg: 'Anteil an den bewerteten Geschäften des Kantons',
     affairs: 'Geschäfte', parls: 'Parlamente', scored: 'bewertet', of: 'von', build: 'Build', night: 'letzte Nacht', pending: 'zu prüfen',
@@ -102,6 +107,11 @@ export const T = {
   },
   fr: {
     anb: 'Intégration', anbTable: 'Table topics dans OpenParlData', anbCols: 'colonnes', anbMachine: 'machine (inferred)', anbDecision: 'décision (confirmed)', anbHop: 'Chargement avec Apache Hop', anbSample: 'exemple', anbNew: 'nouveaux objets', anbQueue: 'file', anbDrain: 'résorbée en', anbCut: 'Le point d\u2019accès du modèle était interrompu : la file a gardé les objets jusqu\u2019à ce que le même build réponde à nouveau.', anbFoot: 'Mémoire en service (docker stats, CI)',
+    woche: 'Cette semaine', affair1: 'objet', wkPrev: 'semaine précédente', wkNext: 'semaine suivante', wkNewest: 'dernière semaine complète',
+    wkLine: (k, n, p, pn, names) => `Semaine ${k}\u202f: ${n} objets de ${p} ${pn === 1 ? 'parlement' : 'parlements'}. Les plus fréquents\u202f: ${names.join('\u202f; ')}.`,
+    wkNone: k => `Semaine ${k}\u202f: aucun objet dans l\u2019export.`, wkIn: { de: 'en allemand', fr: 'en français', it: 'en italien', rm: 'en romanche' },
+    wkCheck: 'une personne doit vérifier', wkMap: 'carte de ce thème, cette semaine', wkMore: 'Autres thèmes', wkNoQuote: 'aucune citation cette semaine', wkOnTitle: 'Extrait\u202f: le titre',
+    wkNote: 'Thème\u202f: Apertus classe chaque objet dans l\u2019un des 24 chapitres APS, plus le numérique et les thèmes enregistrés. Exemples seulement avec citation\u202f: la phrase du titre ou du texte qui justifie le thème. Un clic sur un objet l\u2019ouvre dans la carte\u202f; sur un thème, sa carte de cette semaine.',
     ueber: 'Aperçu', karte: 'Carte', neu: 'Nouveau thème', pruef: 'Banc d’essai',
     bigScored: 'objets évalués (chapitres APS)', bigPassOf: 'de tous les objets évalués, tous niveaux', scoredAps: 'évalués (chapitres APS)', scoredTopic: n => `évalués (${n})`, scoredBoard: 'évalués pour ce thème', bigWeeks: 'semaines', bigWaiting: 'attendent une personne', thisWeek: 'Cette semaine', atlasLeg: 'part des objets évalués du canton',
     affairs: 'objets', parls: 'parlements', scored: 'évalués', of: 'sur', build: 'Build', night: 'la nuit dernière', pending: 'à vérifier',

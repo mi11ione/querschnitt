@@ -61,3 +61,105 @@ jobs:
           docker stats --no-stream --format "| {{.Name}} | {{.MemUsage}} |" | grep lite | tee -a "$GITHUB_STEP_SUMMARY"
       - if: always()
         run: docker compose --profile full --profile lite down -v
+  hop:
+    # Apache Hop loader (upstream/hop) against PostgreSQL 16 with OPD migrations 0001-0003 over stand-in affairs/bodies
+    # tables (upstream/hop/ci/opd_stand_in.sql). Reference mapping: upstream/opd/export/to_opd.py on the same file.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: opd, POSTGRES_PASSWORD: opd, POSTGRES_DB: openparldata}
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U opd" --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      HOP_VERSION: "2.19.0"
+      HOP_DIR: ${{ github.workspace }}/../hop
+      HOP_OPTIONS: -Xmx1g -Duser.timezone=UTC
+      PGHOST: localhost
+      PGUSER: opd
+      PGPASSWORD: opd
+      PGDATABASE: openparldata
+      FIXTURE: upstream/hop/ci/topics.ci.jsonl
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: "21"}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - uses: actions/cache@v4
+        with: {path: ~/.cache/apache-hop, key: "apache-hop-client-2.19.0"}
+      - name: Apache Hop 2.19.0 client (official zip; SHA-512 checked against the .sha512 at the same location)
+        run: |
+          mkdir -p ~/.cache/apache-hop && cd ~/.cache/apache-hop
+          zip=apache-hop-client-$HOP_VERSION.zip
+          if [ ! -f "$zip" ] || [ ! -f "$zip.sha512" ]; then
+            rm -f "$zip" "$zip.sha512"
+            # downloads.apache.org keeps the current release only; archive.apache.org keeps every release
+            for base in https://downloads.apache.org/hop/$HOP_VERSION https://archive.apache.org/dist/hop/$HOP_VERSION; do
+              curl -fsSL --retry 3 -o "$zip.sha512" "$base/$zip.sha512" && curl -fsSL --retry 3 -o "$zip" "$base/$zip" && echo "from $base" && break
+              rm -f "$zip" "$zip.sha512"
+            done
+          fi
+          sha512sum -c "$zip.sha512"
+          unzip -q "$zip" -d "$(dirname "$HOP_DIR")"
+          "$HOP_DIR/hop-conf.sh" -pc -p querschnitt-opd -ph "$GITHUB_WORKSPACE/upstream/hop"
+          cat > "$RUNNER_TEMP/opd-ci.json" <<JSON
+          {"variables": [{"name": "OPD_DB_HOST", "value": "localhost"}, {"name": "OPD_DB_PORT", "value": "5432"},
+                         {"name": "OPD_DB_NAME", "value": "openparldata"}, {"name": "OPD_DB_USER", "value": "opd"},
+                         {"name": "OPD_DB_PASSWORD", "value": "opd"}]}
+          JSON
+          "$HOP_DIR/hop-conf.sh" -ec -e opd -ep querschnitt-opd -eu development -eg "$RUNNER_TEMP/opd-ci.json"
+      - name: stand-in affairs/bodies, migrations 0001-0003 up, smoke test
+        run: |
+          psql -v ON_ERROR_STOP=1 -q -f upstream/hop/ci/opd_stand_in.sql
+          for m in 0001_topics 0002_topic_schemes_seed 0003_topic_feed_bodies; do psql -v ON_ERROR_STOP=1 -q -f upstream/opd/migrations/$m.up.sql; done
+          psql -v ON_ERROR_STOP=1 -q -f upstream/opd/tests/smoke.sql
+      - name: inputs (fixture gzipped; to_opd.py's mapping of it as the expected rows; a copy with two rows changed)
+        run: |
+          gzip -nc "$FIXTURE" > "$RUNNER_TEMP/topics.jsonl.gz"
+          pip install -q pyyaml
+          psql -At -c "SELECT row_to_json(b) FROM bodies b" | gzip -n > "$RUNNER_TEMP/bodies.ndjson.gz"
+          python upstream/opd/export/to_opd.py --topics "$RUNNER_TEMP/topics.jsonl.gz" --bodies "$RUNNER_TEMP/bodies.ndjson.gz" \
+            --out "$RUNNER_TEMP/expected" --with-subtopics
+          psql -v ON_ERROR_STOP=1 -q -c "CREATE SCHEMA ci" -c "CREATE TABLE ci.expected (doc jsonb)"
+          gzip -dc "$RUNNER_TEMP/expected/topics.ndjson.gz" \
+            | psql -v ON_ERROR_STOP=1 -c "COPY ci.expected (doc) FROM STDIN WITH (FORMAT csv, QUOTE E'\x01', DELIMITER E'\x02')"
+          jq -c 'if .affair_id == 341432 and .scheme == "aps" and .level == 1 and .rank == 1 and .provenance == "inferred"
+                   then .p = 0.5 | .p_raw = 0.5
+                 elif .affair_id == 341467 and .scheme == "aps" and .level == 1 and .rank == 2
+                   then .code = "aps:1.7.1." | .valid_from = "2026-10-16T13:05:09Z"
+                 else . end' "$FIXTURE" | gzip -n > "$RUNNER_TEMP/topics.changed.jsonl.gz"
+          echo "N_MACHINE=$(jq -c 'select(.provenance == "inferred")' "$FIXTURE" | wc -l)" >> "$GITHUB_ENV"
+      - name: load 1 (workflow as in upstream/hop/README.md) and check every row against to_opd.py
+        run: |
+          "$HOP_DIR/hop-run.sh" -j querschnitt-opd -e opd -r local -f '${PROJECT_HOME}/load_topics.hwf' \
+            -p QS_TOPICS_FILE="$RUNNER_TEMP/topics.jsonl.gz" 2>&1 | tee "$RUNNER_TEMP/load1.log"
+          if grep -n "ERROR" "$RUNNER_TEMP/load1.log"; then exit 1; fi
+          psql -v ON_ERROR_STOP=1 -v n="$N_MACHINE" -f upstream/hop/ci/assert_load.sql
+      - name: load 2, same file (writes nothing)
+        run: |
+          "$HOP_DIR/hop-run.sh" -j querschnitt-opd -e opd -r local -f '${PROJECT_HOME}/load_topics.hwf' \
+            -p QS_TOPICS_FILE="$RUNNER_TEMP/topics.jsonl.gz" 2>&1 | tee "$RUNNER_TEMP/load2.log"
+          if grep -n "ERROR" "$RUNNER_TEMP/load2.log"; then exit 1; fi
+          psql -v ON_ERROR_STOP=1 -f upstream/hop/ci/assert_unchanged.sql
+      - name: load 3, two rows changed (update in place sets updated_at; a newer row closes the old one)
+        run: |
+          "$HOP_DIR/hop-run.sh" -j querschnitt-opd -e opd -r local -f '${PROJECT_HOME}/load_topics.hwf' \
+            -p QS_TOPICS_FILE="$RUNNER_TEMP/topics.changed.jsonl.gz" 2>&1 | tee "$RUNNER_TEMP/load3.log"
+          if grep -n "ERROR" "$RUNNER_TEMP/load3.log"; then exit 1; fi
+          psql -v ON_ERROR_STOP=1 -f upstream/hop/ci/assert_changed.sql
+      - name: migrations down 0003, 0002, 0001 with the loaded rows in place
+        run: |
+          psql -v ON_ERROR_STOP=1 -q -c "DROP SCHEMA ci CASCADE"
+          psql -v ON_ERROR_STOP=1 -q -f upstream/opd/migrations/0003_topic_feed_bodies.down.sql
+          psql -v ON_ERROR_STOP=1 -q -f upstream/opd/migrations/0002_topic_schemes_seed.down.sql
+          test "$(psql -At -c 'SELECT count(*) FROM topics') $(psql -At -c 'SELECT count(*) FROM topic_schemes')" = "0 0"
+          psql -v ON_ERROR_STOP=1 -q -f upstream/opd/migrations/0001_topics.down.sql
+          test "$(psql -At -c "SELECT count(*) FROM pg_class WHERE relname LIKE 'topic%'")" = 0
+      - if: always()
+        name: Hop transform counts
+        run: |
+          for f in "$RUNNER_TEMP"/load*.log; do [ -f "$f" ] || continue
+            echo "### $(basename "$f")"; grep -E "Finished processing|ended successfully|ERROR" "$f" | sed -E 's/^[0-9/: .]+- //' || true
+          done | tee -a "$GITHUB_STEP_SUMMARY"

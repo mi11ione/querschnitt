@@ -5,12 +5,15 @@ score(subtopic) = p(subtopic) × P(its chapter); the shipped chapter is the chap
 confidence is that chapter's share of the scored mass. When P's top chapter is "no policy topic", that is shipped.
 Lane: `please_check` when the two code orders disagree on the top chapter; one reading with top p ≥ 0.9 counts as agree.
 Ad-hoc yes/no (S8): p = mean of order a and, where run, order b; flag at p ≥ cut-off (0.5);
-`please_check` when the orders disagree or 0.3 ≤ p < 0.7."""
+`please_check` when the orders disagree or 0.3 ≤ p < 0.7.
+Recalibration (eval/calibration.json) applies only to rows of the build it was fitted on; rows of another build get p
+null and the chapter lane by the readings until it is refitted."""
 from __future__ import annotations
 
 import collections
 import gzip
 import json
+import logging
 import math
 from pathlib import Path
 
@@ -20,6 +23,7 @@ from .examples import topic_examples
 from .scheme import APS, adhoc, flat, named_schemes
 
 VERSION = "0.6.0"
+log = logging.getLogger("querschnitt.compose")
 
 
 def geo(a, b):
@@ -140,18 +144,19 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
         d["lane"] = "please_check" if (low or (bi and bi["lane"] == "please_check") or (cal is None and d["readings"] == "disagree")) else "pass"
     if a["body"] == "BE" and a["lang"] in ("de", "fr"):
         sch = flat("be-directorates")
-        reads = {}
+        reads, pids = {}, []
         for t, l in ((a["title"], a["lang"]), (a.get("title_alt"), a.get("alt_lang"))):
             if t and l in ("de", "fr"):
                 r = rows.get(P.pid(*P.flat_prompt(sch, t, l)[:2]))
                 if r:
                     i = argmax(r["p"])
                     reads[l] = ((sch["options"][i]["code"] if i < len(sch["options"]) else sch["none"]["code"]), r["p"][i])
+                    pids.append(r["pid"])
         if a["lang"] in reads:
             code, p = reads[a["lang"]]
             other = next((v for l, v in reads.items() if l != a["lang"]), None)
             out["be-directorates"] = dict(code=code, p=p, gold=a.get("dept") or None, readings={l: v[0] for l, v in reads.items()},
-                                          lane="please_check" if (other and other[0] != code) else "readings_agree")
+                                          lane="please_check" if (other and other[0] != code) else "readings_agree", pids=pids)
     for sch in named_schemes():   # a parliament's own scheme file (e.g. Basel-Stadt's themes): two code orders, lane
         if sch.get("body") != a["body"]:
             continue
@@ -170,17 +175,30 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
 
 LANE_TAU = 0.7
 _CAL = []
+_WARNED: set = set()
+
+
+def calibration_for(calib, fp: str | None):
+    """`calib` (calibrate.Calibration) when it was fitted on build `fp`, else None: a row of another build gets p null
+    and the readings lane until the calibration is refitted on its build. Warns once per (calibration, row) build pair."""
+    if calib is None or calib.build == fp:
+        return calib
+    if (calib.build, fp) not in _WARNED:
+        _WARNED.add((calib.build, fp))
+        log.warning("eval/calibration.json was fitted on build %s, not on %s: rows of that build get p = null and the "
+                    "readings lane until the calibration is refitted on it (eval/s16/analyze.py)", calib.build, fp)
+    return None
 
 
 def calibrated(d: dict):
     """Recalibrated chapter confidence (eval/calibration.json, fitted per build): `aps-fed` for the federal design with
-    examples, else `aps`. None without a calibration file."""
+    examples, else `aps`. None without a calibration file or when the chapter reading is of another build."""
     if not _CAL:
         from .calibrate import Calibration
         f = Path(__file__).resolve().parents[2] / "eval/calibration.json"
         _CAL.append(Calibration.load(f) if f.exists() else None)
-    c = _CAL[0]
-    return c.apply("aps-fed" if d.get("examples") else "aps", d["conf"]) if c else None
+    c = calibration_for(_CAL[0], (d.get("meta") or {}).get("fp"))
+    return c.apply(calib_key(d), d["conf"]) if c else None
 
 
 BILINGUAL = {"BE", "FR", "VS"}   # fallback for inputs built before the `bilingual` field (OPD body languages)
@@ -234,28 +252,31 @@ def calib_key(d: dict) -> str:
 
 
 def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "") -> list[dict]:
-    """Decisions → CONTRACT §1 rows (chapter rank 1–3, subtopic rank 1–3, one row per ad-hoc topic). `calib(key, p)` is
-    the recalibration (Calibration.apply); the rank-1 chapter row's `p` is the one shipped value of confidence, which the
-    export's `ch_p` and detail panel copy from these rows."""
+    """Decisions → CONTRACT §1 rows (chapter rank 1–3, subtopic rank 1–3, one row per ad-hoc topic, Bern directorate
+    and parliament scheme). `calib` is the recalibration (calibrate.Calibration), applied only when it was fitted on the
+    run's locked build; `cutoffs_id` names the calibration's build (null when none applies). The rank-1 chapter row's
+    `p` is the one shipped value of confidence, which the export's `ch_p` and detail panel copy from these rows."""
     base = dict(affair_id=a["id"], body_key=a["body"], status="suggested", provenance="inferred", model=lock["model"],
                 build=lock["fp"], input_hash=a["input_hash"], valid_from=valid_from, valid_to=None, version=VERSION)
     out = []
+    calib = calibration_for(calib, lock["fp"])
+    cut = f"aps@{calib.build[-8:]}" if calib else None
     d = dec.get("aps")
     if d:
-        cal = calib(calib_key(d), d["conf"]) if calib else None
+        cal = calib.apply(calib_key(d), d["conf"]) if calib else None
         for k, c in enumerate(d["rank"][:3], 1):
             pr = d["conf"] if k == 1 else d["P"][c]
             out.append(dict(base, scheme="aps", level=1, code=APS.codes[c], rank=k, p_raw=round(pr, 4),
                             p=round(cal, 4) if (k == 1 and cal is not None) else None, lane=d["lane"] if k == 1 else None,
-                            cutoffs_id=f"aps@{lock['fp'][-8:]}", prompt_id=",".join(d["pids"]), evidence=d.get("evidence")))
+                            cutoffs_id=cut, prompt_id=",".join(d["pids"]), evidence=d.get("evidence")))
         for k, (code, pr) in enumerate(d["subs"], 1):
             out.append(dict(base, scheme="aps", level=2, code=code, rank=k, p_raw=round(pr, 4), p=None, lane=None,
-                            cutoffs_id=f"aps@{lock['fp'][-8:]}", prompt_id=d["pids"][-1], evidence=None))
-    named_ids = {sch["id"] for sch in named_schemes()}
+                            cutoffs_id=cut, prompt_id=d["pids"][-1], evidence=None))
+    named_ids = {sch["id"] for sch in named_schemes()} | {"be-directorates"}
     for key, v in dec.items():
-        if key in named_ids:   # a parliament's own scheme file
+        if key in named_ids:   # a parliament's own scheme file; Bern's directorates (flat, decided for body BE)
             out.append(dict(base, scheme=key, level=1, code=v["code"], rank=1, p_raw=round(v["p"], 4), p=None, lane=v["lane"],
-                            cutoffs_id=None, prompt_id=None, evidence=None))
+                            cutoffs_id=None, prompt_id=",".join(v.get("pids") or []) or None, evidence=None))
         if key.startswith("adhoc/"):
             out.append(dict(base, scheme=key, level=1, code=f"{key}:{'yes' if v['flag'] else 'no'}", rank=1, p_raw=round(v["p"], 4),
                             p=round(v["p"], 4), lane=v["lane"], cutoffs_id=f"{key}@0.5", prompt_id=",".join(v.get("pids") or []) or None, evidence=v.get("evidence")))

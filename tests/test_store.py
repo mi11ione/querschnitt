@@ -1,9 +1,12 @@
 """Store versioning: reloads are idempotent, a changed row is a new version, vanished keys close, editor decisions add
 rows and never bring back or overwrite machine rows."""
 import json
+import sqlite3
 import time
 
-from querschnitt.store import Store, read_rows
+import pytest
+
+from querschnitt.store import SQL, Store, read_rows
 from conftest import FIX
 
 AID = 341382
@@ -131,3 +134,15 @@ def test_load_affairs_from_static_export(tmp_path):
     assert s.affair(5002)["level"] == "communal" and s.affair(5002)["has_text"] is False
     assert s.unscored("2000-01-01") == 0                   # no input hash: never counted as unscored
     s.close()
+
+
+def test_old_lane_check_stops_at_open(tmp_path):
+    """A SQLite store made before the `pass` lane (two-value check) would refuse today's rows: opening it says what to do."""
+    ddl = (SQL / "topics.sqlite.sql").read_text()
+    assert "lane IN ('pass', 'please_check', 'readings_agree')" in ddl
+    db = tmp_path / "old.sqlite"
+    with sqlite3.connect(db) as c:
+        c.executescript(ddl.replace("lane IN ('pass', 'please_check', 'readings_agree')", "lane IN ('please_check', 'readings_agree')"))
+    with pytest.raises(RuntimeError, match="make clean-db"):
+        Store(path=str(db), dsn="")
+    Store(path=str(tmp_path / "new.sqlite"), dsn="").close()                 # a current store opens

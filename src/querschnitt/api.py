@@ -31,7 +31,7 @@ from .compose import VERSION
 from .scheme import APS
 from .store import ROOT, Store, metrics_line
 
-STATIC_SCHEMES = ("aps", "curia28", "be-directorates")
+STATIC_SCHEMES = tuple(sorted(f.stem for f in S.HERE.glob("*.yaml")))   # the scheme files (aps, be-directorates, …)
 log = logging.getLogger("querschnitt.api")
 
 

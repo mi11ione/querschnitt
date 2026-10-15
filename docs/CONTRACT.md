@@ -16,7 +16,7 @@
 | provenance | text | `inferred` · `confirmed` |
 | evidence | jsonb | `{"source": "text:7100" \| "doc:4711" \| "title", "field": "title\|title_long\|text", "char_start": 212, "char_end": 318, "quote": "…"}` |
 | model, build | text | served model, `system_fingerprint` |
-| cutoffs_id | text | `aps@dd237840` |
+| cutoffs_id | text | `aps@dd237840`: the build the recalibration was fitted on; null when none applies |
 | prompt_id | text | sha256[:12] of the exact prompt |
 | input_hash | text | sha256[:16] of lang + title + long title + text |
 | valid_from, valid_to | timestamptz | versioning; `valid_to` null = current |
@@ -26,6 +26,8 @@
 | closed_by | text | who closed the row, when a person did (a decision or an undo) |
 
 Generated and confirmed content are always distinguishable (`provenance`). A rejection keeps the inferred row (with `valid_to`) and adds a `rejected` row.
+
+`p` is recalibrated per build: `eval/calibration.json` records the build it was fitted on (`build`) and is applied only to rows of that build. A row from another build has `p` null, no `cutoffs_id`, and the APS chapter lane by the readings (`please_check` when they disagree, else `pass`) until the calibration is refitted on that build (`eval/s16/analyze.py`); composing such rows (export, delta) logs one warning per build.
 
 ## 2. API (FastAPI; same JSON shapes in the static export)
 - `GET /affairs/{id}/topics` → `{affair, topics: [row…]}`

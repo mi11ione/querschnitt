@@ -19,6 +19,7 @@ import datetime as dt
 import gzip
 import json
 import os
+import re
 import sqlite3
 import threading
 from pathlib import Path
@@ -37,6 +38,7 @@ AFF_COLS = ["id", "body_key", "level", "canton", "parl", "parl_fr", "lang", "dat
 TS_COLS = ("valid_from", "valid_to", "confirmed_at", "ts")
 EVIDENCE_KEYS = ("source", "field", "char_start", "char_end", "quote")
 KINDS = {"all": None, "decisions": "confirmed", "machine": "inferred"}
+LANES = ("pass", "please_check", "readings_agree")       # the lane check of sql/topics*.sql
 
 
 def norm_evidence(ev, text_src: str | None = None):
@@ -200,10 +202,12 @@ class Store:
         with self.lock:
             if self.pg:
                 self.conn.execute(ddl)
+                self._check_lanes()
                 for c, ty in (("seq", "bigint"), ("closed_by", "text")):
                     self.conn.execute(f"ALTER TABLE topics ADD COLUMN IF NOT EXISTS {c} {ty}")
             else:
                 self.conn.executescript(ddl)
+                self._check_lanes()
                 have = {r[1] for r in self.conn.execute("PRAGMA table_info(topics)")}
                 for c, ty in (("seq", "INTEGER"), ("closed_by", "TEXT")):
                     if c not in have:
@@ -211,6 +215,26 @@ class Store:
             self.conn.execute("UPDATE topics SET seq = row_id WHERE seq IS NULL")       # databases from before seq
             self.conn.execute("CREATE INDEX IF NOT EXISTS topics_seq ON topics (seq)")
             self.conn.commit()
+
+    def _check_lanes(self):
+        """CREATE TABLE IF NOT EXISTS keeps an older table as it is: one whose lane check predates `pass` (14 Oct) would
+        refuse today's chapter rows at the first load, so the store stops at open with what to do instead."""
+        if self.pg:
+            bad = [r[0] for r in self.conn.execute(
+                "SELECT conname, pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid = 'topics'::regclass AND contype = 'c'")
+                if "lane" in r[1] and "please_check" in r[1] and "'pass'" not in r[1]]
+            if bad:
+                self.conn.rollback()
+                raise RuntimeError(
+                    f"topics: the lane check {bad[0]} predates the 'pass' lane, so today's rows would be refused. Migrate: "
+                    f"ALTER TABLE topics DROP CONSTRAINT {bad[0]}, ADD CONSTRAINT topics_lane_check CHECK (lane IN "
+                    f"({', '.join(repr(l) for l in LANES)}));")
+            return
+        ddl = (self.conn.execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'topics'").fetchone() or [""])[0]
+        m = re.search(r"lane\s+IN\s*\(([^)]*)\)", ddl, re.I)
+        if m and "'pass'" not in m.group(1):
+            raise RuntimeError(f"{self.path}: the topics table's lane check predates the 'pass' lane, so today's rows would be "
+                               f"refused. Run `make clean-db` (or delete this file when QS_DB points elsewhere) and load again.")
 
     def close(self):
         with self.lock:

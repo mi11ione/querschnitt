@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS topics (
   row_id        bigserial PRIMARY KEY,
   affair_id     bigint      NOT NULL,             -- OPD affairs.id
   body_key      text,                             -- OPD body key: CHE, BE, 351, ...
-  scheme        text        NOT NULL,             -- aps, curia28, be-directorates, adhoc/<slug>
+  scheme        text        NOT NULL,             -- aps, be-directorates, bs-themen, adhoc/<slug>
   level         smallint    NOT NULL,             -- 1 = chapter / yes-no, 2 = subtopic
   code          text        NOT NULL,             -- aps:1.7.2., aps:kw:1374918, aps:none, adhoc/<slug>:yes
   rank          smallint    NOT NULL DEFAULT 1,   -- 1 = shipped label; 2-3 = ranked suggestions

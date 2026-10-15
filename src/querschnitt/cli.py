@@ -35,7 +35,7 @@ def env_path(key: str, default: str) -> Path:
 # ---------------------------------------------------------------- compose (lead's module; file writer if it has one)
 def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str]) -> list[dict]:
     """Topic rows for `ids` from the run's step rows: compose.decide + compose.topic_rows with eval/calibration.json
-    where it exists (topic_rows picks the map, so these rows equal the export's)."""
+    where it exists and was fitted on the run's build (topic_rows picks the map, so these rows equal the export's)."""
     from . import compose as C
     from .engine import Engine
     from .examples import ExamplePool
@@ -57,7 +57,7 @@ def compose_rows(run: Path, inputs: Path, ids: set[int] | None, topics: list[str
             dec = C.decide(a, rows, eng.ch1_prompt, T)
             if len(dec) <= 1:
                 continue
-            out += C.topic_rows(a, dec, lock, calib.apply if calib else None)
+            out += C.topic_rows(a, dec, lock, calib)
     return out
 
 

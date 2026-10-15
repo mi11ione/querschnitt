@@ -10,6 +10,7 @@ Columns are those of the `topics` table (../migrations/0001_topics.up.sql) minus
 null here because OPD's own export dumps the table and carries the table id. Timestamps: naive ISO 8601 in UTC, as in
 OPD's exports. APS level-2 rows and codes (subtopics) are left out unless --with-subtopics (to be agreed with APS;
 ../../MERGE_REQUEST.md, open questions).
+Inputs may be gzipped (.gz) or plain JSON lines (.jsonl / .ndjson).
 Needs PyYAML (scheme labels come from the same files as the seed migration)."""
 from __future__ import annotations
 
@@ -41,6 +42,11 @@ def ts(v: str | None) -> str | None:
     if t.tzinfo:
         t = t.astimezone(dt.timezone.utc).replace(tzinfo=None)
     return t.replace(microsecond=0).isoformat()
+
+
+def open_lines(path: str):
+    """A JSON-lines file, gzipped (.gz) or plain."""
+    return gzip.open(path, "rt", encoding="utf-8") if str(path).endswith(".gz") else open(path, encoding="utf-8")
 
 
 def human(n: int) -> str:
@@ -103,8 +109,8 @@ def entry(entity: str, path: Path, out: Path, n: int, base: str) -> dict:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--topics", required=True, help="Querschnitt topics.jsonl.gz")
-    ap.add_argument("--bodies", help="OPD bodies.ndjson.gz (for body_id); without it body_id is null")
+    ap.add_argument("--topics", required=True, help="Querschnitt topics.jsonl.gz (or plain .jsonl)")
+    ap.add_argument("--bodies", help="OPD bodies.ndjson.gz or .ndjson (for body_id); without it body_id is null")
     ap.add_argument("--out", required=True)
     ap.add_argument("--split", action="store_true", help="per-body files topics/topics_<body_key>.ndjson.gz (OPD's docs/texts pattern)")
     ap.add_argument("--with-subtopics", action="store_true", help="include APS level-2 rows")
@@ -120,13 +126,13 @@ def main(argv=None) -> int:
             codes[(s["scheme_key"], c["code"])] = c
     bodies = {}
     if a.bodies:
-        with gzip.open(a.bodies, "rt") as f:
+        with open_lines(a.bodies) as f:
             for line in f:
                 b = json.loads(line); bodies[b["body_key"]] = b["id"]
 
     by_body: dict[str, list] = collections.defaultdict(list)
     skipped = collections.Counter(); n_in = 0
-    with gzip.open(a.topics, "rt") as f:
+    with open_lines(a.topics) as f:
         for line in f:
             if not line.strip():
                 continue

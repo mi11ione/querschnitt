@@ -11,8 +11,16 @@ from pathlib import Path
 import pytest
 
 from querschnitt import client as C
+from querschnitt.fake_endpoint import FakeEndpoint
 from querschnitt.store import ROOT
 from test_delta import args, export
+
+
+@pytest.fixture
+def fake():
+    """The fake endpoint serves the build eval/calibration.json was fitted on (the calibration applies to its rows only)."""
+    with FakeEndpoint(fingerprint=json.loads((ROOT / "eval/calibration.json").read_text())["build"]) as f:
+        yield f
 
 
 @pytest.fixture
@@ -70,7 +78,7 @@ def test_one_p_and_equal_totals(exported, tmp_path):
             assert det[aid]["aps"]["p"][0] == r1["p"]                         # app detail value == API row
             assert [det[aid]["aps"]["p_raw"][k] for k in range(len(rows))] == [r["p_raw"] for r in sorted(rows, key=lambda r: r["rank"])]
             key = "aps-fed" if det[aid]["aps"]["examples"] else "aps"
-            assert r1["p"] == round(cal.apply(key, r1["p_raw"]), 4)
+            assert r1["p"] == round(cal.apply(key, r1["p_raw"]), 4) and r1["cutoffs_id"] == f"aps@{cal.build[-8:]}"
         assert any(det[a]["aps"] and det[a]["aps"]["examples"] for a in det)   # the federal map is exercised
 
 

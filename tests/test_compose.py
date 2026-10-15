@@ -90,3 +90,70 @@ def test_verify_rows_in_compose_match_batch_and_adhoc():
     del rows[vb["pid"]]                                                       # stopped between the two verify readings
     d = decide(a, rows, lambda a: ("", "", None), [t])[t["id"]]
     assert "verified" not in d and d["lane"] == "readings_agree" and d["pids"] == [ya["pid"]]
+
+
+def chapter_affair(fp):
+    """A federal affair with one confident chapter reading of build `fp` (no subtopic row yet)."""
+    a = dict(id=8, body="CHE", lang="de", title="Bahnausbau", title_long="", text="", input_hash="h")
+    u, p = "kapitel", "{"
+    rows = {P.pid(u, p): dict(pid=P.pid(u, p), p=vec(9, 0.95), meta={"fp": fp})}
+    return a, rows, lambda a: (u, p, None)
+
+
+def test_calibration_only_for_its_build(monkeypatch, caplog):
+    """eval/calibration.json is applied only to rows of the build it was fitted on; `cutoffs_id` names that build. Rows of
+    another build: p null, the readings lane, no cutoffs_id, and one warning however many rows."""
+    from querschnitt import compose as C
+    from querschnitt.calibrate import Calibration
+    from querschnitt.store import ROOT
+    cal = Calibration.load(ROOT / "eval/calibration.json")
+    assert cal.build == "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+    monkeypatch.setattr(C, "_WARNED", set())
+    a, rows, ch1 = chapter_affair(cal.build)
+    d = C.decide(a, rows, ch1, [])
+    pc = cal.apply("aps", 0.95)
+    assert d["aps"]["p_cal"] == pc and d["aps"]["lane"] == ("please_check" if pc < C.LANE_TAU else "pass")
+    r1 = C.topic_rows(a, d, dict(model="m", fp=cal.build), cal)[0]
+    assert r1["p"] == round(pc, 4) and r1["p_raw"] == 0.95 and r1["cutoffs_id"] == "aps@dd237840"
+    caplog.set_level("WARNING", logger="querschnitt.compose")
+    a, rows, ch1 = chapter_affair("vllm-other-build-12345678")
+    for _ in range(2):
+        d = C.decide(a, rows, ch1, [])
+        assert d["aps"]["p_cal"] is None and d["aps"]["lane"] == "pass"           # readings agree → pass, as without a file
+        r1 = C.topic_rows(a, d, dict(model="m", fp="vllm-other-build-12345678"), cal)[0]
+        assert r1["p"] is None and r1["p_raw"] == 0.95 and r1["cutoffs_id"] is None and r1["lane"] == "pass"
+    warned = [r for r in caplog.records if r.name == "querschnitt.compose"]
+    assert len(warned) == 1 and "dd237840" in warned[0].getMessage() and "12345678" in warned[0].getMessage()
+
+
+def test_be_directorates_rows():
+    """Bern's directorates (flat scheme, decided for body BE) are written as topic rows: one level-1, rank-1 row per
+    affair with the code of the reading in the affair's language, raw p, the readings lane and both prompt ids; every
+    code is one the OPD seed carries (upstream/opd/tools/gen_seed.py seeds every scheme file)."""
+    import importlib.util
+    from querschnitt.compose import decide, topic_rows
+    from querschnitt.scheme import flat
+    from querschnitt.store import ROOT
+    sch = flat("be-directorates"); n = len(sch["options"]) + 1
+    a = dict(id=9, body="BE", lang="de", title="Steuergesetz Revision", title_long="", text="", input_hash="h",
+             title_alt="Révision de la loi sur les impôts", alt_lang="fr", bilingual=True)
+
+    def reading(title, lang, top, p):
+        u, pr = P.flat_prompt(sch, title, lang)[:2]
+        v = [(1 - p) / (n - 1)] * n; v[top] = p
+        return dict(pid=P.pid(u, pr), p=v, meta={"fp": "x"})
+
+    de = reading(a["title"], "de", 3, 0.8)
+    lock = dict(model="m", fp="x")
+    for fr_top, lane in ((3, "readings_agree"), (1, "please_check")):
+        fr = reading(a["title_alt"], "fr", fr_top, 0.6)
+        d = decide(a, {de["pid"]: de, fr["pid"]: fr}, lambda a: ("", "", None), [])
+        rs = [r for r in topic_rows(a, d, lock, None, "2026-10-15T00:00:00Z") if r["scheme"] == "be-directorates"]
+        assert len(rs) == 1
+        r = rs[0]
+        assert (r["level"], r["rank"], r["code"], r["p_raw"], r["p"], r["lane"]) == (1, 1, sch["options"][3]["code"], 0.8, None, lane)
+        assert r["prompt_id"] == f"{de['pid']},{fr['pid']}" and r["valid_from"] == "2026-10-15T00:00:00Z" and r["body_key"] == "BE"
+    spec = importlib.util.spec_from_file_location("gen_seed", ROOT / "upstream/opd/tools/gen_seed.py")
+    gs = importlib.util.module_from_spec(spec); spec.loader.exec_module(gs)
+    seeded = {c["code"] for s, cs in gs.schemes(strict=False) if s["scheme_key"] == "be-directorates" for c in cs}
+    assert {o["code"] for o in sch["options"]} | {sch["none"]["code"]} <= seeded

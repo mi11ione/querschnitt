@@ -22,6 +22,6 @@ with gzip.open(ROOT.parent / "data/inputs.jsonl.gz", "rt") as f, gzip.open(HERE 
             continue
         n += 1; oi.write(line)
         d = decide(x, rows, eng.ch1_prompt, [])
-        for r in topic_rows(x, d, lock, lambda s, v, d=d: cal.apply("aps-fed" if d.get("aps", {}).get("examples") else "aps", v), now):
+        for r in topic_rows(x, d, lock, cal, now):   # topic_rows picks the map (aps-fed with examples), as the export
             o.write(json.dumps(r, ensure_ascii=False) + "\n"); k += 1
 print("affairs", n, "rows", k)

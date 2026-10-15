@@ -1,6 +1,7 @@
 """Recalibration of the engine's raw confidence: isotonic regression (pool-adjacent-violators), fitted per served build on
 a fixed calibration set with human labels (the S9 APS items), 2-fold cross-fitted for the reported ECE (S9c method).
-Keys: `aps` (chapter read back from the subtopic, no examples), `aps-fed` (federal design with APS-labelled examples)."""
+Keys: `aps` (chapter read back from the subtopic, no examples), `aps-fed` (federal design with APS-labelled examples).
+The file records the build it was fitted on (`build`); compose applies it only to rows of that build."""
 from __future__ import annotations
 
 import json
@@ -46,6 +47,7 @@ def crossfit(ps: list[float], ys: list[int], seed: int = 3) -> dict:
 class Calibration:
     def __init__(self, maps: dict, meta: dict):
         self.maps, self.meta = maps, meta
+        self.build = meta.get("build")   # the served build the maps were fitted on (system_fingerprint)
 
     @classmethod
     def load(cls, p: str | Path) -> "Calibration":

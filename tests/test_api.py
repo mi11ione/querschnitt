@@ -60,6 +60,8 @@ def test_coverage_schemes_root(api):
     assert c["bodies"] and {"body_key", "affairs", "scored", "scored_share", "title_only_share", "covered_from"} <= set(c["bodies"][0])
     s = api.get("/schemes").json()
     assert len(s["aps"]["chapters"]) == 25 and "adhoc/digitalisierung" in s["schemes"]
+    from querschnitt.scheme import HERE
+    assert {f.stem for f in HERE.glob("*.yaml")} <= set(s["schemes"]) and "curia28" not in s["schemes"]   # the scheme files
     assert api.get("/").json()["name"] == "Querschnitt"
 
 

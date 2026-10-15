@@ -18,7 +18,7 @@ from pathlib import Path
 
 from . import prompts as P
 from .calibrate import Calibration
-from .compose import VERSION, decide, read_run, topic_rows
+from .compose import VERSION, calibration_for, decide, read_run, topic_rows
 from .data import load_bodies, level, parl_name
 from .engine import Engine
 from .examples import ExamplePool
@@ -92,7 +92,7 @@ def run(args):
         if in_slice:
             months[x["body"]][x["date"][:7]] += 1
             n_dec["aps"] += bool(a); n_dec["dig"] += bool(g)
-        trows = topic_rows(x, d, lock, calib.apply if calib else None, now)
+        trows = topic_rows(x, d, lock, calib, now)
         ar = sorted((r for r in trows if r["scheme"] == "aps" and r["level"] == 1), key=lambda r: r["rank"])
         ch_p = (ar[0]["p"] if ar[0]["p"] is not None else ar[0]["p_raw"]) if ar else None   # the API row's p, nothing else
         for k, v in (("id", x["id"]), ("body", x["body"]), ("date", x["date"]), ("type_h", x["type_h"] or x["type"]), ("type", x["type"]), ("type_h_fr", x.get("type_h_fr") or ""),
@@ -164,7 +164,7 @@ def run(args):
                 since=args.since, until=min(X[0]["date"], time.strftime("%Y-%m-%d")) if X else None,
                 n_future_dated=sum(1 for x in X if x["date"] > time.strftime("%Y-%m-%d")), affairs=tot, parliaments=len(cov),
                 scored=n_dec["aps"], scored_share=round(n_dec["aps"] / tot, 4) if tot else 0, dig_scored=n_dec["dig"],
-                please_check=sum(c["check"] for c in cov.values()), calibration=bool(calib),
+                please_check=sum(c["check"] for c in cov.values()), calibration=bool(calibration_for(calib, lock["fp"])),
                 extra=dict(ranges=args.extra, affairs=n_extra))
     nl = ROOT / "runs/nightly/last.json"
     if nl.exists():

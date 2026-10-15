@@ -347,9 +347,10 @@ def classify(tok, written_norm, f, line, approx):
 
 
 # ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
-# are; the S19 / S26 / S27 and S25 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
+# are; the S19 / S26 / S27, S25, S28 (section S28-pruefstand; the hand rows of section S28 stay) and S29 rows are generated from
+# eval/pruefstand.json (run build_pruefstand.py first).
 ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
-GEN_SECTIONS = {"S19-27", "S25"}
+GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29"}
 
 
 def adhoc_rows():
@@ -490,6 +491,117 @@ def s25_rows():
     return rows
 
 
+def _gen(section, prefix):
+    """row writers shared by the S28 / S29 generators: r (one row), block (a k/n share with its Wilson bounds, k/n, n and shares),
+    point (a value + bootstrap interval)."""
+    rows = []
+
+    def r(ctx, written, src, file, key, note):
+        rows.append(dict(section=section, line="-", written=written, context=f"{prefix} {ctx}".replace("\t", " "), source_value=str(src),
+                         file=file, key=key, status="OK", correct="", note=note))
+
+    def block(ctx, b, whole_pct=False):
+        at = b["at"]; ctx = ctx + (f" ({b['metric']})" if b.get("metric") else "")
+        key = at.get("key") or f"line {at['line']}: {at['text']}"
+        r(ctx, NF.t(b["value"]), b["value"], at["file"], key, "truncated, never rounded up")
+        src_ci = b.get("ci95_source")
+        for i, (fn, side) in enumerate(((NF.lo, "floored"), (NF.hi, "ceiled"))):
+            note = b.get("ci_method", "") + (f"; file stores {src_ci[i]} (outward at 4 decimals)" if src_ci else "")
+            r(f"{ctx} ci95[{i}]", fn(b["ci95"][i]), b["ci95"][i], at["file"],
+              f"{key}: k = {b['k']}, n {b['n']} → Wilson 95%, bounds rounded outward at 3 decimals ({side})", note)
+        r(f"{ctx} k/n", b["kn"], b["kn"], at["file"], key, "count")
+        r(f"{ctx} n", NF.t(b["n"]), b["n"], at["file"], key, "count")
+        for x in ("share", "coverage"):
+            if x in b:
+                r(f"{ctx} {x}", NF.pct(b[x]), b[x], at["file"], f"{key} > {x}", "share as a percentage, truncated")
+                if whole_pct:
+                    r(f"{ctx} {x} (whole percent)", NF.pct(b[x], 0), b[x], at["file"], f"{key} > {x}", "share as a whole percentage, truncated")
+
+    def point(ctx, b, signed=False):
+        at = b["at"]; ctx = ctx + (f" ({b['metric']})" if b.get("metric") else "")
+        sg = NF.signed if signed else (lambda x: x)
+        r(ctx, sg(NF.t(b["value"])), b["value"], at["file"], at["key"], "truncated toward zero, never rounded up in magnitude")
+        for i, (fn, side) in enumerate(((NF.lo, "floored"), (NF.hi, "ceiled"))):
+            r(f"{ctx} ci95[{i}]", sg(fn(b["ci95"][i])), b["ci95"][i], at["file"], f"{at['key']}: bootstrap bound, rounded outward at 3 decimals ({side})",
+              b.get("ci_method") or b.get("method") or "")
+
+    return rows, r, block, point
+
+
+def s28_rows():
+    """S28, the shipped pipeline in no-prefill mode (QS_PREFILL=0) on the S25 held-out items, paired against the shipped prefill design:
+    every block of eval/pruefstand.json > aps_chapter_heldout_s28_no_prefill (read from eval/s28/results.json). The hand-written S28 rows
+    (section S28: SERVICE.md / ONSITE.md lines) are kept as they are."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "aps_chapter_heldout_s28_no_prefill")
+    rows, r, block, point = _gen("S28-pruefstand", "S28")
+    sc = t["breakdowns"]["scored"]
+    r("affairs scored without prefill (the S25 held-out affairs, none missing)", NF.t(t["n"]), t["n"], sc["at"]["file"], sc["at"]["key"], "count")
+    block("chapter top-1, no prefill", t["result"])
+    rm = t["results_more"]
+    block("chapter top-3, no prefill", rm[0])
+    point("paired prefill − no prefill, top-1", rm[1], signed=True)
+    point("paired prefill − no prefill, top-3", rm[2], signed=True)
+    for i in (1, 2):
+        for k in ("prefill_only_right", "no_prefill_only_right"):
+            r(f"{rm[i]['metric']}: {k}", NF.t(rm[i][k]), rm[i][k], rm[i]["at"]["file"], f"{rm[i]['at']['key']} > {k}", "count")
+    block("same chapter as prefill", rm[3])
+    for b in t["baselines"]:
+        block("shipped prefill (S25 final), same affairs", b)
+    bd = t["breakdowns"]
+    for grp in ("lanes_no_prefill", "lanes_prefill_s25"):
+        for k, b in bd[grp].items():
+            if isinstance(b, dict): block(f"{grp} {k}", b, whole_pct=True)
+    for c in bd["by_design"]["cells"]:
+        block(f"by design {c['cell']}", c)
+    rp = bd["read_path"]
+    r("step rows, every code read from the logprobs", NF.t(rp["all_rows_logprobs"]), rp["all_rows_logprobs"], rp["at"]["file"], rp["at"]["key"], "count")
+    r("share of step rows whose code was read from the logprobs", "100%", f"{rp['all_rows_logprobs']}/{rp['all_rows_logprobs']}", rp["at"]["file"],
+      f"{rp['at']['key']} (logprobs only; no text, no unparseable row)", "every row")
+    for k in ("affairs_with_a_text_read", "affairs_with_an_unparseable_row"):
+        r(k.replace("_", " "), str(rp[k]), rp[k], rp["at"]["file"], k, "count")
+    for k, v in rp["rows_used"].items():
+        r(f"rows used by the decisions, step {k}, read from the logprobs", NF.t(v), v, rp["at"]["file"], f"read_path_rows_used > {k} > logprobs", "count")
+    return rows
+
+
+def s29_rows():
+    """S29, Ticino Gran Consiglio, the canton's own lead department, Italian: every block of eval/pruefstand.json > ticino_departments
+    (read from eval/s29/results.json; shares truncated, Wilson bounds re-rounded outward at 3 decimals from k and n; the file stores them
+    outward at 4), for the primary population (inputs that name no unit) and both secondary populations."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "ticino_departments")
+    rows, r, block, point = _gen("S29", "S29")
+    bd = t["breakdowns"]; x = bd["excluded_from_primary"]
+    r("primary items: inputs that name none of the six units", NF.t(t["n"]), t["n"], t["result"]["at"]["file"], "n_primary_items", "count")
+    r("all items (Gran Consiglio affairs with a lead department, begun 1 Jan 2023–11 Oct 2026)", NF.t(x["of"]), x["of"],
+      t["result"]["at"]["file"], "n_items", "count")
+    r("inputs that name a unit (excluded from the primary)", NF.t(x["value"]), x["value"], x["at"]["file"], f"line {x['at']['line']}: {x['at']['text']}",
+      "count; = n_items − n_primary_items")
+    m = x["messaggi"]
+    for k in ("value", "of"):
+        r(f"Messaggi among the inputs that name a unit ({k})", NF.t(m[k]), m[k], m["at"]["file"], f"line {m['at']['line']}: {m['at']['text']}", "count")
+    for name, pop in (("primary", None), ("all inputs", bd["secondary_all_items"]), ("gold in the 5 Dipartimenti", bd["secondary_gold_in_5_departments"])):
+        if pop is None:
+            blocks = [("top-1", t["result"]), ("top-2", t["results_more"][0]), ("top-3", t["results_more"][1]),
+                      ("keyword", t["baselines"][0]), ("majority", t["baselines"][1]),
+                      ("lane orders agree", bd["lane_readings_agree"]), ("lane orders disagree", bd["lane_please_check"])]
+            diff = t["results_more"][2]; cells = (bd["by_type"], bd["by_gold"])
+        else:
+            blocks = [(k, pop[k]) for k in ("top1", "top2", "top3", "keyword", "majority", "lane_readings_agree", "lane_please_check")]
+            diff = pop["minus_keyword"]; cells = (pop["by_type"], pop["by_gold"])
+            r(f"{name}: n", NF.t(pop["n"]), pop["n"], pop["top1"]["at"]["file"], pop["top1"]["at"]["key"].rsplit(" > ", 1)[0] + " > n", "count")
+        for k, b in blocks:
+            block(f"{name}: {k}", b, whole_pct=True)
+        point(f"{name}: paired Apertus − keyword", diff, signed=True)
+        for cl in cells:
+            for c in cl["cells"]:
+                block(f"{name}: {c['cell']}", c)
+    so = bd["second_order_share"]
+    r("share of primary items that asked the second code order", NF.t(so["value"]), so["value"], so["at"]["file"], so["at"]["key"], "truncated")
+    return rows
+
+
 # old workspace-relative paths (hackapertus root) -> repository-relative; applied to the file column of the kept rows (idempotent)
 WS_MAP = (("bern/querschnitt/", ""), ("bern/ideation2/spikes/", "eval/spikes/"), ("bern/ideation/spikes/", "eval/spikes/"),
           ("bern/ideation2/PREREG", "eval/spikes/PREREG"), ("bern/ideation2/census_counts.json", "eval/spikes/census_counts.json"),
@@ -548,7 +660,7 @@ def main():
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
         kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
-    gen = adhoc_rows() + s25_rows()
+    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
@@ -557,7 +669,7 @@ def main():
     from collections import Counter
     c = Counter(r["status"] for r in rows + gen)
     c.update(l.split("\t")[7] for l in kept)
-    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 generated {len(gen)})")
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

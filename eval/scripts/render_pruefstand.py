@@ -291,6 +291,37 @@ w(hrow25("**shipped, held out (S25; not pre-registered)**", bold=True))
 w(hrow4("for reference: D4 on the design set (§2, other items, not held out)"))
 w("")
 
+# ------------------------------------------------------------------ S28: the same held-out affairs without prefill (endpoint fallback)
+t28 = T["aps_chapter_heldout_s28_no_prefill"]; m28 = t28["results_more"]; b28 = t28["breakdowns"]
+pf28, pf28t3 = t28["baselines"][0], t28["baselines"][1]
+t28t3, d28, d28t3, same28 = m28[0], m28[1], m28[2], m28[3]
+w(f"### 1c · Without prefill (endpoint fallback): the same {num(t28['n'], 0)} held-out affairs (S28, pre-registered)")
+w("")
+w("An endpoint-capability check, not a new design: what the labelled fallback costs if the serving endpoint cannot continue an assistant "
+  "message (the shipped design pre-fills the JSON opening and reads the code from the next token). With `QS_PREFILL=0` the pipeline sends one "
+  "user message, the measured prompt plus a line asking the answer to begin with the JSON opening, and reads the code from the "
+  "`top_logprobs` of the first token after that opening. Everything else as shipped (D4 / D1 as in §1b), on the same build; no calibration "
+  "map exists for this mode, so its lane is the readings rule (pass when the two code orders agree or one reading has top p ≥ 0.9). Paired "
+  f"against the S25 final decisions on the same affairs ([`eval/s28/analyze.py`](../eval/s28/analyze.py) → "
+  f"[`eval/s28/results.json`](../eval/s28/results.json)). Pre-registration: {L('PREREG-BUILD.md § S28', t28['prereg'])} and "
+  f"{L('its amendment', t28['prereg_more'])} (a read fix after the first 20-item smoke run, whose 28 calls were never scored).")
+w("")
+w(f"| n = {num(t28['n'], 0)}, gold = APS editors' chapter | top-1 | top-3 |")
+w("|---|---|---|")
+w(f"| **no prefill (`QS_PREFILL=0`), otherwise as shipped** | **{r(t28['result'])}** ({L(t28['result']['kn'], t28['result']['at'])}) | {r(t28t3)} |")
+w(f"| shipped prefill design (S25 final, §1b), same affairs | {r(pf28)} ({L(pf28['kn'], pf28['at'])}) | {r(pf28t3)} |")
+w(f"| paired, prefill − no prefill (bootstrap 2,000, bounds outward) | {r(d28, signed=True)} | {r(d28t3, signed=True)} |")
+w("")
+lp28, lc28 = b28["lanes_no_prefill"]["pass"], b28["lanes_no_prefill"]["please_check"]
+rp = b28["read_path"]
+w(f"The two modes give the same chapter on {L(num(same28['k']), same28['at'])} of {num(same28['n'], 0)} affairs ({r(same28)}). "
+  f"Lane without prefill (readings rule): {L(F.pct(lp28['share']), lp28['at'])} pass ({L(num(lp28['n']), lp28['at'])}), precision {r(lp28)}; "
+  f"`please check` {L(num(lc28['n']), lc28['at'])}, precision {r(lc28)}. With prefill the shipped lane is the recalibrated p "
+  f"(§1b: {L(F.pct(l25['pass']['share']), l25['pass']['at'])} pass, precision {r(l25['pass'])}). Read path: every step row's code came from "
+  f"the logprobs ({L(num(rp['all_rows_logprobs']), rp['at'])} rows; {L(str(rp['affairs_with_a_text_read']), rp['at'])} affairs with a code "
+  f"read from the generated text, {L(str(rp['affairs_with_an_unparseable_row']), rp['at'])} with an unparseable row).")
+w("")
+
 sub = T["aps_subtopic"]
 w(f"### 2 · APS subtopic vs APS editors, end to end (S9)")
 w("")
@@ -404,6 +435,60 @@ w("")
 bt = bs0["breakdowns"]["by_type"]
 w("S20 by affair type: " + " · ".join(f"{c['cell']} {L(num(c['value']) + ci(c['ci95']) + ', n ' + str(c['n']), bt['at'])}"
                                       for c in bt["cells"] if not c.get("small")) + " (types with n < 20 not shown).")
+w("")
+
+ti = T["ticino_departments"]; bt9 = ti["breakdowns"]; mt9 = ti["results_more"]
+a9, f9, x9 = bt9["secondary_all_items"], bt9["secondary_gold_in_5_departments"], bt9["excluded_from_primary"]
+w(f"### 6b · Ticino: the lead department vs the canton's own assignment, Gran Consiglio 2023–26, in Italian (S29, pre-registered)")
+w("")
+w(f"The first human-labelled test on an Italian-speaking parliament's own scheme. Gold: the lead department OPD carries for every Gran "
+  "Consiglio affair (contributors, role `leading_department`, position 1), assigned by the cantonal administration; affairs begun "
+  f"1 Jan 2023–11 Oct 2026, {num(a9['n'])} in all ([`eval/s29/SOURCES.md`](../eval/s29/SOURCES.md), "
+  "[`eval/s29/items.py`](../eval/s29/items.py)). Scheme file [`ti-dipartimenti.yaml`](../src/querschnitt/schemes/ti-dipartimenti.yaml): "
+  "the six unit names verbatim in Italian (five Dipartimenti and the Cancelleria dello Stato) plus «Nessuno di questi» for the Consiglio di "
+  "Stato as a whole or the Gran Consiglio itself; no descriptions, nothing tuned. The prompt frame is Italian; the three fixed block labels "
+  "in code («Geschäft:», «Titel:», «Text (Auszug):») stay German as shipped. Production input, second code order when p < 0.9 "
+  f"([`eval/s29/analyze.py`](../eval/s29/analyze.py) → [`eval/s29/results.json`](../eval/s29/results.json); "
+  f"{L('pre-registered', ti['prereg'])}).")
+w("")
+w(f"**Why the primary population excludes {L(num(x9['value']), x9['at'])} items.** A Messaggio (the government's message to the parliament) "
+  "prints the competent department in its header («competenza»), so on those inputs the answer is in the text. "
+  f"{L(num(x9['value']), x9['at'])} of the {num(a9['n'])} inputs name one of the six units ({L(str(x9['messaggi']['value']) + ' of ' + str(x9['messaggi']['of']) + ' Messaggi', x9['messaggi']['at'])}); "
+  f"this was measured on the inputs before any call, and the primary result is on the {num(ti['n'])} that name none.")
+w("")
+w("| Population | n | top-1 = lead department | top-2 | top-3 | keyword stems (frozen, title only) | majority | Apertus − keyword, paired |")
+w("|---|---|---|---|---|---|---|---|")
+w(f"| **primary: input names no unit** | {num(ti['n'])} | **{r(ti['result'])}** | {r(mt9[0])} | {r(mt9[1])} | {r(ti['baselines'][0])} | "
+  f"{r(ti['baselines'][1])} | {r(mt9[2], signed=True)} |")
+w(f"| secondary: all inputs as fed | {num(a9['n'])} | {r(a9['top1'])} | {r(a9['top2'])} | {r(a9['top3'])} | {r(a9['keyword'])} | "
+  f"{r(a9['majority'])} | {r(a9['minus_keyword'], signed=True)} |")
+w(f"| secondary: gold one of the 5 Dipartimenti (all inputs) | {num(f9['n'])} | {r(f9['top1'])} | {r(f9['top2'])} | {r(f9['top3'])} | "
+  f"{r(f9['keyword'])} | {r(f9['majority'])} | {r(f9['minus_keyword'], signed=True)} |")
+w("")
+la9, lc9 = bt9["lane_readings_agree"], bt9["lane_please_check"]
+w(f"Majority = {ti['baselines'][1]['label']} (primary). Lanes (primary): the two code orders agree on {L(F.pct(la9['share']), la9['at'])} of "
+  f"affairs ({L(num(la9['n']), la9['at'])}), precision {r(la9)}; they disagree on {L(num(lc9['n']), lc9['at'])}, precision {r(lc9)} "
+  "(`please check`).")
+w("")
+EN9 = {"Dipartimento della sanità e della socialità": "health and social affairs (DSS)",
+       "Dipartimento delle finanze e dell'economia": "finance and economy (DFE)", "Dipartimento del territorio": "territory (DT)",
+       "Dipartimento delle istituzioni": "institutions (DI)", "Dipartimento dell'educazione, della cultura e dello sport": "education, culture and sport (DECS)",
+       "Cancelleria dello Stato": "State Chancellery",
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": "none of these (Consiglio di Stato as a whole or the Gran Consiglio)"}
+bg9 = bt9["by_gold"]
+w("Per lead department (primary; share of its affairs that Apertus assigns to it): " + " · ".join(
+    f"{EN9.get(c['cell'], c['cell'])} {L(num(c['value']) + ci(c['ci95']) + ', n ' + str(c['n']), bg9['at'])}" for c in bg9["cells"]) + ".")
+cf9 = bt9["confusion_gold_to_pred"]; NONE9 = "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)"
+w(f"The weak spots are the two non-department classes: of the {num(sum(v for k, v in cf9[NONE9].items() if k != 'at'))} «none of these» "
+  f"affairs, {L(str(cf9[NONE9]['Dipartimento delle istituzioni']), cf9['at'])} go to the Dipartimento delle istituzioni; of the "
+  f"{num(sum(v for k, v in cf9['Cancelleria dello Stato'].items() if k != 'at'))} State Chancellery affairs, "
+  f"{L(str(cf9['Cancelleria dello Stato']['Dipartimento delle istituzioni']), cf9['at'])} go there too.")
+by9 = bt9["by_type"]
+w("By affair type (primary): " + " · ".join(f"{c['cell']} {L(num(c['value']) + ci(c['ci95']) + ', n ' + str(c['n']), by9['at'])}"
+                                            for c in by9["cells"] if not c.get("small")) + " (types with n < 20 not shown).")
+w("")
+w(f"Bern (§5, S18) and Basel-Stadt (§6, S20) are reported beside this result, not compared with it: the schemes differ, and so do the "
+  "chance rates (majority and keyword rows above).")
 w("")
 
 an, jd = T["judge_anchor_aps"], T["judge_dvs_human"]
@@ -767,6 +852,14 @@ w(f"- The held-out test (S25, §1b) pre-registered the chapter, its lanes and pl
   f"figures (subtopic top-1 {r(hm25['subtopic top-1 end to end (shipped, held out)'])}, hF {r(t25h['result'])}) were computed after the "
   f"result and are not pre-registered. Its D1 cell (no APS-labelled example: one-word procedural titles such as «Vereidigung», or a French "
   f"text) holds {num(dd25['D1']['n'])} affairs, too few to measure D1 held out.")
+w(f"- Without prefill (the endpoint fallback `QS_PREFILL=0`, §1c) the chapter top-1 on the held-out affairs is {r(t28['result'])}, paired "
+  f"prefill − no prefill {r(d28, signed=True)}; no calibration map exists for that mode, so its lane is the readings rule, not the "
+  "recalibrated p. Measured on one build; another endpoint may tokenise the JSON opening differently (the S28 amendment).")
+w(f"- Ticino (§6b, Italian, the canton's own lead department) is measured on the inputs that do not name the unit ({num(ti['n'])} of "
+  f"{num(a9['n'])}). The State Chancellery and «none of these» are weak "
+  f"({num(next(c for c in bg9['cells'] if c['cell'] == 'Cancelleria dello Stato')['value'])} and "
+  f"{num(next(c for c in bg9['cells'] if c['cell'] == NONE9)['value'])}); the gold is OPD's lead-department field, and its licence is "
+  "unconfirmed (SOURCES.md). No French-speaking parliament's own scheme is measured yet (Bern's French titles, §5, are the closest).")
 w("- All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.")
 w("")
 w("## To measure")

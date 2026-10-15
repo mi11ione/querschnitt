@@ -96,6 +96,44 @@
    "file": "eval/s25/hierarchical.json"
   },
   {
+   "test": "APS-Kapitel, dieselben 927 Bundesgeschäfte (hold-out): ohne Prefill, Endpunkt-Fallback (S28)",
+   "test_fr": "Chapitre APS, les mêmes 927 objets fédéraux (hors échantillon) : sans prefill, repli pour l'endpoint (S28)",
+   "gold": "human",
+   "design": "ohne Prefill (QS_PREFILL=0), sonst Produktionspipeline wie ausgeliefert; Codes zu 100 % aus den Logprobs gelesen",
+   "design_fr": "sans prefill (QS_PREFILL=0), sinon pipeline de production tel que livré ; codes lus à 100 % dans les logprobs",
+   "n": 927,
+   "result": "top-1 0.705 · top-3 0.839",
+   "result_fr": "top-1 0,705 · top-3 0,839",
+   "interval": [
+    0.675,
+    0.734
+   ],
+   "baseline": "mit Prefill (ausgeliefert, S25) 0.696 · Δ mit − ohne −0.008 [−0.022, +0.004]",
+   "baseline_fr": "avec prefill (livré, S25) 0,696 · Δ avec − sans −0,008 [−0,022, +0,004]",
+   "split": "held-out (S25-Geschäfte), vorregistriert (S28); prüft die Endpunkt-Fähigkeit, kein neues Design; ausgeliefert bleibt Prefill",
+   "split_fr": "hors échantillon (objets S25), préenregistré (S28) ; teste la capacité de l'endpoint, pas un nouveau design ; le prefill reste livré",
+   "file": "eval/s28/results.json"
+  },
+  {
+   "test": "APS-Kapitel, dieselben 927 Bundesgeschäfte (hold-out): ohne Prefill, Endpunkt-Fallback (S28)",
+   "test_fr": "Chapitre APS, les mêmes 927 objets fédéraux (hors échantillon) : sans prefill, repli pour l'endpoint (S28)",
+   "gold": "human",
+   "design": "ohne Prefill: Lesarten-Regel, keine Kalibrierung (64.2% durchgelassen)",
+   "design_fr": "sans prefill : règle des lectures, sans calibration (64,2% passent)",
+   "n": 596,
+   "result": "0.805",
+   "result_fr": "0,805",
+   "interval": [
+    0.771,
+    0.836
+   ],
+   "baseline": "bitte prüfen: 0.525 [0.471, 0.579] (n 331) · mit Prefill, rekalibriertes p ≥ 0.7: 0.812",
+   "baseline_fr": "à vérifier : 0,525 [0,471, 0,579] (n 331) · avec prefill, p recalibré ≥ 0,7 : 0,812",
+   "split": "held-out (S25-Geschäfte), vorregistriert (S28); prüft die Endpunkt-Fähigkeit, kein neues Design; ausgeliefert bleibt Prefill",
+   "split_fr": "hors échantillon (objets S25), préenregistré (S28) ; teste la capacité de l'endpoint, pas un nouveau design ; le prefill reste livré",
+   "file": "eval/s28/results.json"
+  },
+  {
    "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
    "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
@@ -395,6 +433,82 @@
    "split": "2 Hälften, vorregistriert (S21)",
    "split_fr": "2 moitiés, préenregistré (S21)",
    "file": "eval/s21/results.json"
+  },
+  {
+   "test": "Tessin, federführende Stelle (6), Gran Consiglio 2023–26, italienisch",
+   "test_fr": "Tessin, unité compétente (6), Gran Consiglio 2023–26, en italien",
+   "gold": "human",
+   "design": "Schema-Datei: 6 Namen italienisch + «keine davon», nichts abgestimmt; Input nennt keine Stelle",
+   "design_fr": "fichier de schéma : 6 noms en italien + « aucune », rien d'ajusté ; l'entrée ne nomme aucune unité",
+   "n": 1685,
+   "result": "top-1 0.647 · top-2 0.807 · top-3 0.878",
+   "result_fr": "top-1 0,647 · top-2 0,807 · top-3 0,878",
+   "interval": [
+    0.624,
+    0.67
+   ],
+   "baseline": "Stichwort 0.219 · Mehrheit 0.194 · Δ − Stichwort +0.427 [+0.400, +0.454]",
+   "baseline_fr": "mots-clés 0,219 · majorité 0,194 · Δ − mots-clés +0,427 [+0,400, +0,454]",
+   "split": "vorregistriert (S29), nichts abgestimmt; primär: die 1'685 Geschäfte, deren Input keine Stelle nennt (589 Inputs nennen sie, v. a. Messaggi mit «competenza»)",
+   "split_fr": "préenregistré (S29), rien d'ajusté ; principal : les 1 685 objets dont l'entrée ne nomme aucune unité (589 entrées la nomment, surtout des Messaggi avec « competenza »)",
+   "file": "eval/s29/results.json"
+  },
+  {
+   "test": "Tessin, federführende Stelle (6), Gran Consiglio 2023–26, italienisch",
+   "test_fr": "Tessin, unité compétente (6), Gran Consiglio 2023–26, en italien",
+   "gold": "human",
+   "design": "Lesarten einig (83.3% der Geschäfte)",
+   "design_fr": "lectures concordantes (83,3% des objets)",
+   "n": 1405,
+   "result": "0.698",
+   "result_fr": "0,698",
+   "interval": [
+    0.673,
+    0.722
+   ],
+   "baseline": "uneinig → bitte prüfen: 0.392 [0.337, 0.452] (n 280)",
+   "baseline_fr": "discordantes → à vérifier : 0,392 [0,337, 0,452] (n 280)",
+   "split": "vorregistriert (S29), nichts abgestimmt; primär: die 1'685 Geschäfte, deren Input keine Stelle nennt (589 Inputs nennen sie, v. a. Messaggi mit «competenza»)",
+   "split_fr": "préenregistré (S29), rien d'ajusté ; principal : les 1 685 objets dont l'entrée ne nomme aucune unité (589 entrées la nomment, surtout des Messaggi avec « competenza »)",
+   "file": "eval/s29/results.json"
+  },
+  {
+   "test": "Tessin, federführende Stelle (6), Gran Consiglio 2023–26, italienisch",
+   "test_fr": "Tessin, unité compétente (6), Gran Consiglio 2023–26, en italien",
+   "gold": "human",
+   "design": "alle 2'274 Geschäfte wie eingegeben (sekundär; 589 Inputs nennen die Stelle)",
+   "design_fr": "les 2 274 objets tels quels (secondaire ; 589 entrées nomment l'unité)",
+   "n": 2274,
+   "result": "top-1 0.722 · top-2 0.848 · top-3 0.905",
+   "result_fr": "top-1 0,722 · top-2 0,848 · top-3 0,905",
+   "interval": [
+    0.704,
+    0.741
+   ],
+   "baseline": "Stichwort 0.232 · Mehrheit 0.188",
+   "baseline_fr": "mots-clés 0,232 · majorité 0,188",
+   "split": "vorregistriert (S29), nichts abgestimmt; primär: die 1'685 Geschäfte, deren Input keine Stelle nennt (589 Inputs nennen sie, v. a. Messaggi mit «competenza»)",
+   "split_fr": "préenregistré (S29), rien d'ajusté ; principal : les 1 685 objets dont l'entrée ne nomme aucune unité (589 entrées la nomment, surtout des Messaggi avec « competenza »)",
+   "file": "eval/s29/results.json"
+  },
+  {
+   "test": "Tessin, federführende Stelle (6), Gran Consiglio 2023–26, italienisch",
+   "test_fr": "Tessin, unité compétente (6), Gran Consiglio 2023–26, en italien",
+   "gold": "human",
+   "design": "Gold eines der 5 Departemente (sekundär, alle Inputs)",
+   "design_fr": "l'or est l'un des 5 départements (secondaire, toutes les entrées)",
+   "n": 1359,
+   "result": "top-1 0.743 · top-3 0.912",
+   "result_fr": "top-1 0,743 · top-3 0,912",
+   "interval": [
+    0.72,
+    0.767
+   ],
+   "baseline": "Stichwort 0.248 · Mehrheit 0.241",
+   "baseline_fr": "mots-clés 0,248 · majorité 0,241",
+   "split": "vorregistriert (S29), nichts abgestimmt; primär: die 1'685 Geschäfte, deren Input keine Stelle nennt (589 Inputs nennen sie, v. a. Messaggi mit «competenza»)",
+   "split_fr": "préenregistré (S29), rien d'ajusté ; principal : les 1 685 objets dont l'entrée ne nomme aucune unité (589 entrées la nomment, surtout des Messaggi avec « competenza »)",
+   "file": "eval/s29/results.json"
   },
   {
    "test": "Bern, Leitdirektion (8), Grossratsgeschäfte 2025–26, Produktionslauf",

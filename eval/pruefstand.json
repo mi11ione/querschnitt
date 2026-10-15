@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-15T13:19:23Z",
+ "generated_utc": "2026-10-15T18:00:03Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -11,7 +11,7 @@
   "ci95": "Wilson for proportions; paired bootstrap 2,000 (percentile) for differences; stratified bootstrap for S8 population estimates",
   "value": "as stored in the source file (JSON keeps 4 decimals where the source does)",
   "display": "shown values are truncated toward zero, never rounded up; interval bounds are rounded outward, never inward (eval/scripts/numfmt.py); `shown` lists those display forms next to the stored value",
-  "gold": "human = labels made by people (APS editors, Curia tags, DVS list, Grand Council field, Basel-Stadt themes); ai-judge = blind Claude runs (+ Qwen cross-check)"
+  "gold": "human = labels made by people (APS editors, Curia tags, DVS list, Grand Council field, Basel-Stadt themes, Ticino lead department); ai-judge = blind Claude runs (+ Qwen cross-check)"
  },
  "tests": [
   {
@@ -1892,6 +1892,676 @@
      "0.66",
      "0.7",
      "0.72"
+    ]
+   }
+  },
+  {
+   "id": "aps_chapter_heldout_s28_no_prefill",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): ohne Prefill (Endpunkt-Fallback QS_PREFILL=0) gegen das ausgelieferte Prefill (S28)",
+   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 nouveaux objets fédéraux (hors échantillon) : sans prefill (repli pour l'endpoint, QS_PREFILL=0) contre le prefill livré (S28)",
+   "n": 927,
+   "design": "eine Prüfung der Endpunkt-Fähigkeit, kein neues Design: Produktionspipeline wie ausgeliefert (D4 / D1 wie S25), aber mit QS_PREFILL=0: eine Nutzernachricht = der gemessene Prompt + eine Zeile, die Antwort mit der JSON-Öffnung zu beginnen; Code aus den top_logprobs des ersten Tokens nach der Öffnung (sonst aus dem Text); ohne Kalibrierung: Lane = Lesarten-Regel (durchgelassen, wenn die zwei Code-Reihenfolgen übereinstimmen oder eine Lesart mit p ≥ 0.9); gepaart gegen die S25-Entscheide (Prefill) auf denselben Geschäften",
+   "result": {
+    "metric": "chapter top-1 vs APS editors, no-prefill mode (QS_PREFILL=0), otherwise the pipeline as shipped",
+    "value": 0.7055,
+    "ci95": [
+     0.675,
+     0.734
+    ],
+    "k": 654,
+    "n": 927,
+    "kn": "654/927",
+    "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+    "at": {
+     "file": "eval/s28/results.json",
+     "key": "no_prefill_top1"
+    },
+    "display": "0.705 [0.675, 0.734]",
+    "shown": {
+     "value": [
+      "0.7",
+      "0.70"
+     ],
+     "ci95": [
+      "0.6",
+      "0.67",
+      "0.74",
+      "0.8"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3, no-prefill",
+     "value": 0.8392,
+     "ci95": [
+      0.814,
+      0.862
+     ],
+     "k": 778,
+     "n": 927,
+     "kn": "778/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "no_prefill_top3"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.83"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ top-1, shipped prefill − no-prefill (same affairs)",
+     "value": -0.0086,
+     "ci95": [
+      -0.022,
+      0.004
+     ],
+     "n": 927,
+     "prefill_only_right": 14,
+     "no_prefill_only_right": 22,
+     "method": "paired bootstrap 2,000 over affairs, percentile, seed 2026, bounds rounded outward (eval/s28/analyze.py)",
+     "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "prefill_minus_no_prefill_top1"
+     },
+     "shown": {
+      "value": [
+       "0.0",
+       "0.00"
+      ],
+      "ci95": [
+       "-0.03",
+       "-0.1",
+       "0.01",
+       "0.1"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ top-3, shipped prefill − no-prefill (same affairs)",
+     "value": 0.0,
+     "ci95": [
+      -0.011,
+      0.011
+     ],
+     "n": 927,
+     "prefill_only_right": 12,
+     "no_prefill_only_right": 12,
+     "method": "paired bootstrap 2,000 over affairs, percentile, seed 2026, bounds rounded outward (eval/s28/analyze.py)",
+     "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "prefill_minus_no_prefill_top3"
+     },
+     "shown": {
+      "ci95": [
+       "-0.02",
+       "-0.1",
+       "0.02",
+       "0.1"
+      ]
+     }
+    },
+    {
+     "metric": "same chapter as the shipped prefill decision",
+     "value": 0.9449,
+     "ci95": [
+      0.928,
+      0.958
+     ],
+     "k": 876,
+     "n": 927,
+     "kn": "876/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "same_chapter_as_prefill"
+     },
+     "shown": {
+      "value": [
+       "0.9",
+       "0.94"
+      ],
+      "ci95": [
+       "0.9",
+       "0.92",
+       "0.96",
+       "1.0"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1 of the shipped prefill design on the same affairs (S25 final)",
+     "value": 0.6968,
+     "ci95": [
+      0.666,
+      0.726
+     ],
+     "k": 646,
+     "n": 927,
+     "kn": "646/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "prefill_top1_same_items"
+     },
+     "name": "shipped prefill design (S25 final), same 927 affairs",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69"
+      ],
+      "ci95": [
+       "0.6",
+       "0.66",
+       "0.73",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "chapter top-3 of the shipped prefill design (S25 final)",
+     "value": 0.8392,
+     "ci95": [
+      0.814,
+      0.862
+     ],
+     "k": 778,
+     "n": 927,
+     "kn": "778/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "prefill_top3_same_items"
+     },
+     "name": "shipped prefill design, top-3",
+     "shown": {
+      "value": [
+       "0.8",
+       "0.83"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "lanes_no_prefill": {
+     "pass": {
+      "metric": "precision, no-prefill readings lane: pass",
+      "value": 0.8053,
+      "ci95": [
+       0.771,
+       0.836
+      ],
+      "k": 480,
+      "n": 596,
+      "kn": "480/596",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.6429,
+      "at": {
+       "file": "eval/s28/results.json",
+       "key": "lanes_no_prefill > pass"
+      },
+      "cell": "pass",
+      "shown": {
+       "value": [
+        "0.8",
+        "0.80"
+       ],
+       "ci95": [
+        "0.7",
+        "0.77",
+        "0.84",
+        "0.9"
+       ],
+       "share": [
+        "0.6",
+        "0.64"
+       ]
+      }
+     },
+     "please_check": {
+      "metric": "precision, no-prefill readings lane: please_check",
+      "value": 0.5256,
+      "ci95": [
+       0.471,
+       0.579
+      ],
+      "k": 174,
+      "n": 331,
+      "kn": "174/331",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.357,
+      "at": {
+       "file": "eval/s28/results.json",
+       "key": "lanes_no_prefill > please_check"
+      },
+      "cell": "please_check",
+      "shown": {
+       "value": [
+        "0.5",
+        "0.52"
+       ],
+       "ci95": [
+        "0.4",
+        "0.47",
+        "0.58",
+        "0.6"
+       ],
+       "share": [
+        "0.3",
+        "0.35"
+       ]
+      }
+     },
+     "rule": "no calibration in no-prefill mode: pass when the two code orders agree or one reading has top p ≥ 0.9, else please check (compose.decide)",
+     "share_note": "share = share of the scored affairs (truncated)"
+    },
+    "lanes_prefill_s25": {
+     "pass": {
+      "metric": "precision, shipped prefill lane (S25): pass",
+      "value": 0.8125,
+      "ci95": [
+       0.779,
+       0.842
+      ],
+      "k": 507,
+      "n": 624,
+      "kn": "507/624",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.6731,
+      "at": {
+       "file": "eval/s28/results.json",
+       "key": "lanes_prefill_s25 > pass"
+      },
+      "cell": "pass",
+      "shown": {
+       "value": [
+        "0.8",
+        "0.81"
+       ],
+       "ci95": [
+        "0.7",
+        "0.77",
+        "0.85",
+        "0.9"
+       ],
+       "share": [
+        "0.6",
+        "0.67"
+       ]
+      }
+     },
+     "please_check": {
+      "metric": "precision, shipped prefill lane (S25): please_check",
+      "value": 0.4587,
+      "ci95": [
+       0.403,
+       0.516
+      ],
+      "k": 139,
+      "n": 303,
+      "kn": "139/303",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.3268,
+      "at": {
+       "file": "eval/s28/results.json",
+       "key": "lanes_prefill_s25 > please_check"
+      },
+      "cell": "please_check",
+      "shown": {
+       "value": [
+        "0.4",
+        "0.45"
+       ],
+       "ci95": [
+        "0.4",
+        "0.40",
+        "0.52",
+        "0.6"
+       ],
+       "share": [
+        "0.3",
+        "0.32"
+       ]
+      }
+     },
+     "readings_agree": {
+      "metric": "precision, shipped prefill lane (S25): readings_agree",
+      "value": 0.7864,
+      "ci95": [
+       0.751,
+       0.818
+      ],
+      "k": 475,
+      "n": 604,
+      "kn": "475/604",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.6515,
+      "at": {
+       "file": "eval/s28/results.json",
+       "key": "lanes_prefill_s25 > readings_agree"
+      },
+      "cell": "readings_agree",
+      "shown": {
+       "value": [
+        "0.7",
+        "0.78"
+       ],
+       "ci95": [
+        "0.7",
+        "0.75",
+        "0.82",
+        "0.9"
+       ],
+       "share": [
+        "0.6",
+        "0.65"
+       ]
+      }
+     },
+     "readings_disagree": {
+      "metric": "precision, shipped prefill lane (S25): readings_disagree",
+      "value": 0.5294,
+      "ci95": [
+       0.474,
+       0.584
+      ],
+      "k": 171,
+      "n": 323,
+      "kn": "171/323",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.3484,
+      "at": {
+       "file": "eval/s28/results.json",
+       "key": "lanes_prefill_s25 > readings_disagree"
+      },
+      "cell": "readings_disagree",
+      "shown": {
+       "value": [
+        "0.5",
+        "0.52"
+       ],
+       "ci95": [
+        "0.4",
+        "0.47",
+        "0.59",
+        "0.6"
+       ],
+       "share": [
+        "0.3",
+        "0.34"
+       ]
+      }
+     }
+    },
+    "by_design": {
+     "cells": [
+      {
+       "metric": "chapter top-1, D4 (German text: five examples), no_prefill",
+       "value": 0.7044,
+       "ci95": [
+        0.674,
+        0.734
+       ],
+       "k": 646,
+       "n": 917,
+       "kn": "646/917",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s28/results.json",
+        "key": "by_design > D4 (German text: five examples) > no_prefill"
+       },
+       "cell": "D4 no_prefill",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.70"
+        ],
+        "ci95": [
+         "0.6",
+         "0.67",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, D4 (German text: five examples), prefill",
+       "value": 0.6957,
+       "ci95": [
+        0.665,
+        0.725
+       ],
+       "k": 638,
+       "n": 917,
+       "kn": "638/917",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s28/results.json",
+        "key": "by_design > D4 (German text: five examples) > prefill"
+       },
+       "cell": "D4 prefill",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.66",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, D1 (no examples), no_prefill",
+       "value": 0.8,
+       "ci95": [
+        0.49,
+        0.944
+       ],
+       "k": 8,
+       "n": 10,
+       "kn": "8/10",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s28/results.json",
+        "key": "by_design > D1 (no examples) > no_prefill"
+       },
+       "cell": "D1 no_prefill",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.4",
+         "0.95",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, D1 (no examples), prefill",
+       "value": 0.8,
+       "ci95": [
+        0.49,
+        0.944
+       ],
+       "k": 8,
+       "n": 10,
+       "kn": "8/10",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s28/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s28/results.json",
+        "key": "by_design > D1 (no examples) > prefill"
+       },
+       "cell": "D1 prefill",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.4",
+         "0.95",
+         "1.0"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "by_design"
+     }
+    },
+    "read_path": {
+     "rows_used": {
+      "ch1": 927,
+      "ch2": 918,
+      "sub": 927,
+      "all": 2772
+     },
+     "all_rows_logprobs": 2723,
+     "affairs_with_a_text_read": 0,
+     "affairs_with_an_unparseable_row": 0,
+     "share_from_logprobs": "every row (100%): no code read from the generated text, none unparseable",
+     "mass_in_listed_codes_ch1_mean": 0.9999,
+     "note": "rows_used: per affair, the rows its decision uses (a row shared by affairs with identical prompts counts once per affair); all_rows: every row of runs/s28 once",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "read_path_all_rows"
+     },
+     "shown": {
+      "mass_in_listed_codes_ch1_mean": [
+       "0.9",
+       "0.99"
+      ]
+     }
+    },
+    "cost": {
+     "no_prefill_calls": 2725,
+     "no_prefill_usd": 0.345779,
+     "calls_per_affair": 2.939,
+     "prefill_s25_calls": 2772,
+     "prefill_s25_usd": 0.344147,
+     "smoke1_discarded_calls": 28,
+     "s28_total_calls": 2753,
+     "s28_total_usd": 0.349543,
+     "note": "list price (client.PRICES); the S25 ledger also holds its pre-fix re-asks (eval/PREREG-BUILD.md S25 amendment)",
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "cost"
+     },
+     "shown": {
+      "no_prefill_usd": [
+       "0.3",
+       "0.34",
+       "0.3457"
+      ],
+      "calls_per_affair": [
+       "2.9",
+       "2.93"
+      ],
+      "prefill_s25_usd": [
+       "0.3",
+       "0.34",
+       "0.3441"
+      ],
+      "s28_total_usd": [
+       "0.3",
+       "0.34",
+       "0.3495"
+      ]
+     }
+    },
+    "scored": {
+     "in_set": 927,
+     "scored": 927,
+     "missing": 0,
+     "at": {
+      "file": "eval/s28/results.json",
+      "key": "scored"
+     }
+    }
+   },
+   "split": "the 927 S25 held-out affairs (none used while designing), pre-registered (S28) before any S28 call; a read fix after the first smoke run (amendment, a bug fix, not a design change; the 28 smoke calls were never scored); nothing tuned",
+   "prereg": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S28 no-prefill mode on the S25 held-out items",
+    "line": 148
+   },
+   "prereg_more": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S28 amendment: a read fix after the smoke run",
+    "line": 173
+   },
+   "reference": {
+    "id": "aps_chapter_heldout_s25",
+    "what": "the shipped prefill design on the same affairs (S25)"
+   },
+   "sources": [
+    "eval/s28/results.json",
+    "eval/s28/analyze.py",
+    "eval/s25/decisions.jsonl",
+    "eval/s25/items.jsonl",
+    "src/querschnitt/client.py",
+    "src/querschnitt/compose.py",
+    "eval/PREREG-BUILD.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s28, mode no-prefill)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-15",
+   "shipped": "labelled fallback only (QS_PREFILL=0) for an endpoint that cannot continue an assistant message; the default ships prefill",
+   "test": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): ohne Prefill (Endpunkt-Fallback QS_PREFILL=0) gegen das ausgelieferte Prefill (S28)",
+   "interval": [
+    0.675,
+    0.734
+   ],
+   "baseline": {
+    "name": "shipped prefill design (S25 final), same 927 affairs",
+    "value": 0.6968,
+    "ci95": [
+     0.666,
+     0.726
+    ],
+    "shown": {
+     "value": [
+      "0.6",
+      "0.69"
+     ],
+     "ci95": [
+      "0.6",
+      "0.66",
+      "0.73",
+      "0.8"
+     ]
+    }
+   },
+   "file": "eval/s28/results.json",
+   "key": "no_prefill_top1",
+   "shown": {
+    "interval": [
+     "0.6",
+     "0.67",
+     "0.7",
+     "0.73"
     ]
    }
   },
@@ -7560,6 +8230,3214 @@
      "0.5",
      "0.50",
      "0.54"
+    ]
+   }
+  },
+  {
+   "id": "ticino_departments",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Tessin: federführende Stelle (5 Departemente + Staatskanzlei, «keine davon») gegen das OPD-Feld leading_department, Gran Consiglio 2023–26, italienisch, 1'685 Geschäfte, deren Input die Stelle nicht nennt (S29)",
+   "title_fr": "Tessin : unité compétente (5 départements + Chancellerie, « aucune ») contre le champ OPD leading_department, Gran Consiglio 2023–26, en italien, 1 685 objets dont l'entrée ne nomme pas l'unité (S29)",
+   "n": 1685,
+   "design": "Schema-Datei schemes/ti-dipartimenti.yaml: die 6 Namen wörtlich auf Italienisch (5 Dipartimenti, Cancelleria dello Stato), alphabetisch, Codes A–F, dazu G = «Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)»; keine Beschreibungen, nichts abgestimmt; Rahmen italienisch, nur die drei festen Blockbezeichnungen im Code bleiben deutsch («Geschäft:», «Titel:», «Text (Auszug):»); Produktions-Input (Titel, Langtitel, 1'500 Zeichen Text); zweite Reihenfolge bei p < 0.9, Entscheid = Spitze des Mittels; Gold = erste federführende Stelle im OPD-Export (contributors, role leading_department), «Consiglio di Stato» und «Gran Consiglio» → keine davon",
+   "result": {
+    "metric": "top-1 = lead department (primary, the 1,685 inputs that name no unit)",
+    "value": 0.6474,
+    "ci95": [
+     0.624,
+     0.67
+    ],
+    "ci95_source": [
+     0.6243,
+     0.67
+    ],
+    "k": 1091,
+    "n": 1685,
+    "kn": "1091/1685",
+    "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+    "at": {
+     "file": "eval/s29/results.json",
+     "key": "primary > top1"
+    },
+    "display": "0.647 [0.624, 0.670]",
+    "shown": {
+     "value": [
+      "0.6",
+      "0.64"
+     ],
+     "ci95": [
+      "0.6",
+      "0.62",
+      "0.7"
+     ],
+     "ci95_source": [
+      "0.6",
+      "0.62"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "top-2 contains the lead department (primary, the 1,685 inputs that name no unit)",
+     "value": 0.8077,
+     "ci95": [
+      0.788,
+      0.826
+     ],
+     "ci95_source": [
+      0.7882,
+      0.8259
+     ],
+     "k": 1361,
+     "n": 1685,
+     "kn": "1361/1685",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > top2"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.80"
+      ],
+      "ci95": [
+       "0.7",
+       "0.78",
+       "0.83",
+       "0.9"
+      ],
+      "ci95_source": [
+       "0.7",
+       "0.78",
+       "0.8",
+       "0.82"
+      ]
+     }
+    },
+    {
+     "metric": "top-3 contains the lead department (primary, the 1,685 inputs that name no unit)",
+     "value": 0.8783,
+     "ci95": [
+      0.861,
+      0.894
+     ],
+     "ci95_source": [
+      0.8618,
+      0.8931
+     ],
+     "k": 1480,
+     "n": 1685,
+     "kn": "1480/1685",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > top3"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.87"
+      ],
+      "ci95": [
+       "0.8",
+       "0.86",
+       "0.9",
+       "0.90"
+      ],
+      "ci95_source": [
+       "0.8",
+       "0.86",
+       "0.89"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ top-1 Apertus − keyword (primary, the 1,685 inputs that name no unit)",
+     "value": 0.4278,
+     "ci95": [
+      0.4005,
+      0.4535
+     ],
+     "method": "paired bootstrap 2,000, percentile, random.Random(2026), bounds rounded outward (eval/s29/analyze.py)",
+     "value_note": "the file stores the difference truncated at 4 decimals; shown truncated at 3",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > minus_keyword"
+     },
+     "shown": {
+      "value": [
+       "0.4",
+       "0.42"
+      ],
+      "ci95": [
+       "0.4",
+       "0.40",
+       "0.454",
+       "0.46",
+       "0.5"
+      ]
+     }
+    },
+    {
+     "metric": "top-1 = lead department (secondary, all 2,274 inputs as fed)",
+     "value": 0.7229,
+     "ci95": [
+      0.704,
+      0.741
+     ],
+     "ci95_source": [
+      0.7041,
+      0.741
+     ],
+     "k": 1644,
+     "n": 2274,
+     "kn": "1644/2274",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "secondary_all_items > top1"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.72"
+      ],
+      "ci95": [
+       "0.7",
+       "0.70",
+       "0.75",
+       "0.8"
+      ],
+      "ci95_source": [
+       "0.7",
+       "0.70",
+       "0.74"
+      ]
+     }
+    },
+    {
+     "metric": "top-2 contains the lead department (secondary, all 2,274 inputs as fed)",
+     "value": 0.8487,
+     "ci95": [
+      0.833,
+      0.863
+     ],
+     "ci95_source": [
+      0.8334,
+      0.8629
+     ],
+     "k": 1930,
+     "n": 2274,
+     "kn": "1930/2274",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "secondary_all_items > top2"
+     },
+     "shown": {
+      "value": [
+       "0.8",
+       "0.84"
+      ],
+      "ci95": [
+       "0.8",
+       "0.83",
+       "0.87",
+       "0.9"
+      ],
+      "ci95_source": [
+       "0.8",
+       "0.83",
+       "0.86"
+      ]
+     }
+    },
+    {
+     "metric": "top-3 contains the lead department (secondary, all 2,274 inputs as fed)",
+     "value": 0.905,
+     "ci95": [
+      0.892,
+      0.917
+     ],
+     "ci95_source": [
+      0.8922,
+      0.9164
+     ],
+     "k": 2058,
+     "n": 2274,
+     "kn": "2058/2274",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "secondary_all_items > top3"
+     },
+     "shown": {
+      "value": [
+       "0.9",
+       "0.90"
+      ],
+      "ci95": [
+       "0.8",
+       "0.89",
+       "0.92",
+       "1.0"
+      ],
+      "ci95_source": [
+       "0.8",
+       "0.89",
+       "0.9",
+       "0.91"
+      ]
+     }
+    },
+    {
+     "metric": "top-1 = lead department (secondary, gold one of the 5 Dipartimenti)",
+     "value": 0.7439,
+     "ci95": [
+      0.72,
+      0.767
+     ],
+     "ci95_source": [
+      0.72,
+      0.7665
+     ],
+     "k": 1011,
+     "n": 1359,
+     "kn": "1011/1359",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "secondary_gold_in_5_departments > top1"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.74"
+      ],
+      "ci95": [
+       "0.7",
+       "0.77",
+       "0.8"
+      ],
+      "ci95_source": [
+       "0.7",
+       "0.76"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "frozen keyword stems, title only (primary, the 1,685 inputs that name no unit)",
+     "value": 0.2195,
+     "ci95": [
+      0.2,
+      0.24
+     ],
+     "ci95_source": [
+      0.2004,
+      0.24
+     ],
+     "k": 370,
+     "n": 1685,
+     "kn": "370/1685",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > keyword"
+     },
+     "name": "frozen keyword stems, title only (eval/s29/keywords_frozen.json), same items",
+     "shown": {
+      "value": [
+       "0.2",
+       "0.21"
+      ],
+      "ci95": [
+       "0.3"
+      ],
+      "ci95_source": [
+       "0.2",
+       "0.20"
+      ]
+     }
+    },
+    {
+     "metric": "majority lead department (primary, the 1,685 inputs that name no unit)",
+     "value": 0.1946,
+     "ci95": [
+      0.176,
+      0.215
+     ],
+     "ci95_source": [
+      0.1764,
+      0.2143
+     ],
+     "k": 328,
+     "n": 1685,
+     "kn": "328/1685",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "label": "Dipartimento della sanità e della socialità",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > majority"
+     },
+     "name": "majority lead department (Dipartimento della sanità e della socialità)",
+     "shown": {
+      "value": [
+       "0.1",
+       "0.19"
+      ],
+      "ci95": [
+       "0.1",
+       "0.17",
+       "0.22",
+       "0.3"
+      ],
+      "ci95_source": [
+       "0.1",
+       "0.17",
+       "0.2",
+       "0.21"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "lane_readings_agree": {
+     "metric": "precision, the two code orders agree (primary, the 1,685 inputs that name no unit)",
+     "value": 0.6982,
+     "ci95": [
+      0.673,
+      0.722
+     ],
+     "ci95_source": [
+      0.6737,
+      0.7217
+     ],
+     "k": 981,
+     "n": 1405,
+     "kn": "981/1405",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "share": 0.8338,
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > lane_readings_agree"
+     },
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69"
+      ],
+      "ci95": [
+       "0.6",
+       "0.67",
+       "0.73",
+       "0.8"
+      ],
+      "ci95_source": [
+       "0.6",
+       "0.67",
+       "0.7",
+       "0.72"
+      ],
+      "share": [
+       "0.8",
+       "0.83"
+      ]
+     }
+    },
+    "lane_please_check": {
+     "metric": "precision, the orders disagree → please check (primary, the 1,685 inputs that name no unit)",
+     "value": 0.3928,
+     "ci95": [
+      0.337,
+      0.452
+     ],
+     "ci95_source": [
+      0.3374,
+      0.4512
+     ],
+     "k": 110,
+     "n": 280,
+     "kn": "110/280",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+     "share": 0.1661,
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > lane_please_check"
+     },
+     "shown": {
+      "value": [
+       "0.3",
+       "0.39"
+      ],
+      "ci95": [
+       "0.3",
+       "0.33",
+       "0.46",
+       "0.5"
+      ],
+      "ci95_source": [
+       "0.3",
+       "0.33",
+       "0.4",
+       "0.45"
+      ],
+      "share": [
+       "0.1",
+       "0.16"
+      ]
+     }
+    },
+    "by_type": {
+     "cells": [
+      {
+       "metric": "top-1, affair type Interrogazione (primary, the 1,685 inputs that name no unit)",
+       "value": 0.699,
+       "ci95": [
+        0.665,
+        0.731
+       ],
+       "ci95_source": [
+        0.6655,
+        0.7307
+       ],
+       "k": 532,
+       "n": 761,
+       "kn": "532/761",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Interrogazione"
+       },
+       "cell": "Interrogazione",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.66",
+         "0.74",
+         "0.8"
+        ],
+        "ci95_source": [
+         "0.6",
+         "0.66",
+         "0.7",
+         "0.73"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Interpellanza (primary, the 1,685 inputs that name no unit)",
+       "value": 0.6305,
+       "ci95": [
+        0.574,
+        0.684
+       ],
+       "ci95_source": [
+        0.574,
+        0.6836
+       ],
+       "k": 186,
+       "n": 295,
+       "kn": "186/295",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Interpellanza"
+       },
+       "cell": "Interpellanza",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.63"
+        ],
+        "ci95": [
+         "0.5",
+         "0.57",
+         "0.69",
+         "0.7"
+        ],
+        "ci95_source": [
+         "0.5",
+         "0.57",
+         "0.6",
+         "0.68"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Mozione (primary, the 1,685 inputs that name no unit)",
+       "value": 0.6601,
+       "ci95": [
+        0.6,
+        0.716
+       ],
+       "ci95_source": [
+        0.6001,
+        0.7155
+       ],
+       "k": 169,
+       "n": 256,
+       "kn": "169/256",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Mozione"
+       },
+       "cell": "Mozione",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.72",
+         "0.8"
+        ],
+        "ci95_source": [
+         "0.6",
+         "0.60",
+         "0.7",
+         "0.71"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Iniziativa parlamentare elaborata (primary, the 1,685 inputs that name no unit)",
+       "value": 0.6337,
+       "ci95": [
+        0.559,
+        0.703
+       ],
+       "ci95_source": [
+        0.5595,
+        0.7021
+       ],
+       "k": 109,
+       "n": 172,
+       "kn": "109/172",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Iniziativa parlamentare elaborata"
+       },
+       "cell": "Iniziativa parlamentare elaborata",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.63"
+        ],
+        "ci95": [
+         "0.5",
+         "0.55",
+         "0.71",
+         "0.8"
+        ],
+        "ci95_source": [
+         "0.5",
+         "0.55",
+         "0.7",
+         "0.70"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Rapporti vari (primary, the 1,685 inputs that name no unit)",
+       "value": 0.5217,
+       "ci95": [
+        0.405,
+        0.636
+       ],
+       "ci95_source": [
+        0.4058,
+        0.6354
+       ],
+       "k": 36,
+       "n": 69,
+       "kn": "36/69",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Rapporti vari"
+       },
+       "cell": "Rapporti vari",
+       "shown": {
+        "value": [
+         "0.5",
+         "0.52"
+        ],
+        "ci95": [
+         "0.4",
+         "0.40",
+         "0.64",
+         "0.7"
+        ],
+        "ci95_source": [
+         "0.4",
+         "0.40",
+         "0.6",
+         "0.63"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Iniziativa parlamentare generica (primary, the 1,685 inputs that name no unit)",
+       "value": 0.5937,
+       "ci95": [
+        0.471,
+        0.706
+       ],
+       "ci95_source": [
+        0.4714,
+        0.7055
+       ],
+       "k": 38,
+       "n": 64,
+       "kn": "38/64",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Iniziativa parlamentare generica"
+       },
+       "cell": "Iniziativa parlamentare generica",
+       "shown": {
+        "value": [
+         "0.5",
+         "0.59"
+        ],
+        "ci95": [
+         "0.4",
+         "0.47",
+         "0.71",
+         "0.8"
+        ],
+        "ci95_source": [
+         "0.4",
+         "0.47",
+         "0.7",
+         "0.70"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Iniziativa cantonale (primary, the 1,685 inputs that name no unit)",
+       "value": 0.2962,
+       "ci95": [
+        0.158,
+        0.485
+       ],
+       "ci95_source": [
+        0.1585,
+        0.4849
+       ],
+       "k": 8,
+       "n": 27,
+       "kn": "8/27",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Iniziativa cantonale"
+       },
+       "cell": "Iniziativa cantonale",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.29"
+        ],
+        "ci95": [
+         "0.1",
+         "0.15",
+         "0.49",
+         "0.5"
+        ],
+        "ci95_source": [
+         "0.1",
+         "0.15",
+         "0.4",
+         "0.48"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Messaggio (primary, the 1,685 inputs that name no unit)",
+       "value": 0.2,
+       "ci95": [
+        0.088,
+        0.392
+       ],
+       "ci95_source": [
+        0.0886,
+        0.3914
+       ],
+       "k": 5,
+       "n": 25,
+       "kn": "5/25",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Messaggio"
+       },
+       "cell": "Messaggio",
+       "shown": {
+        "ci95": [
+         "0.0",
+         "0.08",
+         "0.4",
+         "0.40"
+        ],
+        "ci95_source": [
+         "0.0",
+         "0.08",
+         "0.3",
+         "0.39"
+        ]
+       }
+      },
+      {
+       "metric": "top-1, affair type Risoluzioni generali / messaggio al paese (primary, the 1,685 inputs that name no unit)",
+       "value": 0.5,
+       "ci95": [
+        0.279,
+        0.721
+       ],
+       "ci95_source": [
+        0.2799,
+        0.7201
+       ],
+       "k": 8,
+       "n": 16,
+       "kn": "8/16",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_type > Risoluzioni generali / messaggio al paese"
+       },
+       "cell": "Risoluzioni generali / messaggio al paese",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.27",
+         "0.73",
+         "0.8"
+        ],
+        "ci95_source": [
+         "0.2",
+         "0.27",
+         "0.7",
+         "0.72"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > by_type"
+     }
+    },
+    "by_gold": {
+     "cells": [
+      {
+       "metric": "recall of the lead department Dipartimento della sanità e della socialità (primary, the 1,685 inputs that name no unit)",
+       "value": 0.8963,
+       "ci95": [
+        0.858,
+        0.925
+       ],
+       "ci95_source": [
+        0.8586,
+        0.9249
+       ],
+       "k": 294,
+       "n": 328,
+       "kn": "294/328",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Dipartimento della sanità e della socialità"
+       },
+       "cell": "Dipartimento della sanità e della socialità",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.89"
+        ],
+        "ci95": [
+         "0.8",
+         "0.85",
+         "0.93",
+         "1.0"
+        ],
+        "ci95_source": [
+         "0.8",
+         "0.85",
+         "0.9",
+         "0.92"
+        ]
+       }
+      },
+      {
+       "metric": "recall of the lead department Dipartimento delle finanze e dell'economia (primary, the 1,685 inputs that name no unit)",
+       "value": 0.5909,
+       "ci95": [
+        0.533,
+        0.647
+       ],
+       "ci95_source": [
+        0.533,
+        0.6464
+       ],
+       "k": 169,
+       "n": 286,
+       "kn": "169/286",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Dipartimento delle finanze e dell'economia"
+       },
+       "cell": "Dipartimento delle finanze e dell'economia",
+       "shown": {
+        "value": [
+         "0.5",
+         "0.59"
+        ],
+        "ci95": [
+         "0.5",
+         "0.53",
+         "0.65",
+         "0.7"
+        ],
+        "ci95_source": [
+         "0.5",
+         "0.53",
+         "0.6",
+         "0.64"
+        ]
+       }
+      },
+      {
+       "metric": "recall of the lead department Dipartimento del territorio (primary, the 1,685 inputs that name no unit)",
+       "value": 0.7938,
+       "ci95": [
+        0.74,
+        0.839
+       ],
+       "ci95_source": [
+        0.7408,
+        0.8385
+       ],
+       "k": 208,
+       "n": 262,
+       "kn": "208/262",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Dipartimento del territorio"
+       },
+       "cell": "Dipartimento del territorio",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79"
+        ],
+        "ci95": [
+         "0.7",
+         "0.84",
+         "0.9"
+        ],
+        "ci95_source": [
+         "0.7",
+         "0.74",
+         "0.8",
+         "0.83"
+        ]
+       }
+      },
+      {
+       "metric": "recall of the lead department Dipartimento delle istituzioni (primary, the 1,685 inputs that name no unit)",
+       "value": 0.624,
+       "ci95": [
+        0.563,
+        0.681
+       ],
+       "ci95_source": [
+        0.5635,
+        0.681
+       ],
+       "k": 161,
+       "n": 258,
+       "kn": "161/258",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Dipartimento delle istituzioni"
+       },
+       "cell": "Dipartimento delle istituzioni",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.62"
+        ],
+        "ci95": [
+         "0.5",
+         "0.56",
+         "0.69",
+         "0.7"
+        ],
+        "ci95_source": [
+         "0.5",
+         "0.56",
+         "0.6",
+         "0.68"
+        ]
+       }
+      },
+      {
+       "metric": "recall of the lead department Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso) (primary, the 1,685 inputs that name no unit)",
+       "value": 0.2669,
+       "ci95": [
+        0.214,
+        0.327
+       ],
+       "ci95_source": [
+        0.2145,
+        0.3268
+       ],
+       "k": 63,
+       "n": 236,
+       "kn": "63/236",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)"
+       },
+       "cell": "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.26"
+        ],
+        "ci95": [
+         "0.2",
+         "0.21",
+         "0.33",
+         "0.4"
+        ],
+        "ci95_source": [
+         "0.2",
+         "0.21",
+         "0.3",
+         "0.32"
+        ]
+       }
+      },
+      {
+       "metric": "recall of the lead department Dipartimento dell'educazione, della cultura e dello sport (primary, the 1,685 inputs that name no unit)",
+       "value": 0.7955,
+       "ci95": [
+        0.738,
+        0.844
+       ],
+       "ci95_source": [
+        0.7381,
+        0.8431
+       ],
+       "k": 179,
+       "n": 225,
+       "kn": "179/225",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Dipartimento dell'educazione, della cultura e dello sport"
+       },
+       "cell": "Dipartimento dell'educazione, della cultura e dello sport",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79"
+        ],
+        "ci95": [
+         "0.7",
+         "0.73",
+         "0.85",
+         "0.9"
+        ],
+        "ci95_source": [
+         "0.7",
+         "0.73",
+         "0.8",
+         "0.84"
+        ]
+       }
+      },
+      {
+       "metric": "recall of the lead department Cancelleria dello Stato (primary, the 1,685 inputs that name no unit)",
+       "value": 0.1888,
+       "ci95": [
+        0.121,
+        0.282
+       ],
+       "ci95_source": [
+        0.1214,
+        0.2819
+       ],
+       "k": 17,
+       "n": 90,
+       "kn": "17/90",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s29/results.json",
+        "key": "primary > by_gold > Cancelleria dello Stato"
+       },
+       "cell": "Cancelleria dello Stato",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.18"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.29",
+         "0.3"
+        ],
+        "ci95_source": [
+         "0.1",
+         "0.12",
+         "0.2",
+         "0.28"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > by_gold"
+     }
+    },
+    "gold_dist": {
+     "Dipartimento della sanità e della socialità": 328,
+     "Dipartimento delle finanze e dell'economia": 286,
+     "Dipartimento del territorio": 262,
+     "Dipartimento delle istituzioni": 258,
+     "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 236,
+     "Dipartimento dell'educazione, della cultura e dello sport": 225,
+     "Cancelleria dello Stato": 90,
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > gold_dist"
+     }
+    },
+    "pred_dist": {
+     "Dipartimento della sanità e della socialità": 434,
+     "Dipartimento delle istituzioni": 329,
+     "Dipartimento del territorio": 309,
+     "Dipartimento delle finanze e dell'economia": 267,
+     "Dipartimento dell'educazione, della cultura e dello sport": 198,
+     "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 109,
+     "Cancelleria dello Stato": 39,
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > pred_dist"
+     }
+    },
+    "confusion_gold_to_pred": {
+     "Dipartimento dell'educazione, della cultura e dello sport": {
+      "Dipartimento dell'educazione, della cultura e dello sport": 179,
+      "Dipartimento della sanità e della socialità": 19,
+      "Dipartimento delle istituzioni": 11,
+      "Dipartimento delle finanze e dell'economia": 7,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 6,
+      "Dipartimento del territorio": 3
+     },
+     "Dipartimento della sanità e della socialità": {
+      "Dipartimento della sanità e della socialità": 294,
+      "Dipartimento delle istituzioni": 15,
+      "Dipartimento dell'educazione, della cultura e dello sport": 6,
+      "Dipartimento delle finanze e dell'economia": 5,
+      "Dipartimento del territorio": 4,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 4
+     },
+     "Dipartimento delle finanze e dell'economia": {
+      "Dipartimento delle finanze e dell'economia": 169,
+      "Dipartimento del territorio": 42,
+      "Dipartimento della sanità e della socialità": 29,
+      "Dipartimento delle istituzioni": 25,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+      "Dipartimento dell'educazione, della cultura e dello sport": 9,
+      "Cancelleria dello Stato": 3
+     },
+     "Dipartimento delle istituzioni": {
+      "Dipartimento delle istituzioni": 161,
+      "Dipartimento della sanità e della socialità": 43,
+      "Dipartimento del territorio": 30,
+      "Dipartimento delle finanze e dell'economia": 13,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+      "Cancelleria dello Stato": 1,
+      "Dipartimento dell'educazione, della cultura e dello sport": 1
+     },
+     "Dipartimento del territorio": {
+      "Dipartimento del territorio": 208,
+      "Dipartimento delle finanze e dell'economia": 29,
+      "Dipartimento della sanità e della socialità": 17,
+      "Dipartimento delle istituzioni": 3,
+      "Dipartimento dell'educazione, della cultura e dello sport": 2,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 2,
+      "Cancelleria dello Stato": 1
+     },
+     "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": {
+      "Dipartimento delle istituzioni": 75,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 63,
+      "Dipartimento delle finanze e dell'economia": 37,
+      "Dipartimento della sanità e della socialità": 26,
+      "Dipartimento del territorio": 18,
+      "Cancelleria dello Stato": 17
+     },
+     "Cancelleria dello Stato": {
+      "Dipartimento delle istituzioni": 39,
+      "Cancelleria dello Stato": 17,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 16,
+      "Dipartimento delle finanze e dell'economia": 7,
+      "Dipartimento della sanità e della socialità": 6,
+      "Dipartimento del territorio": 4,
+      "Dipartimento dell'educazione, della cultura e dello sport": 1
+     },
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "primary > confusion_gold_to_pred"
+     }
+    },
+    "excluded_from_primary": {
+     "value": 589,
+     "of": 2274,
+     "derived": "n_items − n_primary_items (eval/s29/results.json)",
+     "why": "the input names one of the six units: a Messaggio's header prints the competent department («competenza»); measured on the inputs before any call",
+     "messaggi": {
+      "value": 487,
+      "of": 512,
+      "at": {
+       "file": "eval/s29/SOURCES.md",
+       "line": 45,
+       "text": "589 of 2,274 inputs name one of the six units (487 of 512 Messaggi)"
+      }
+     },
+     "at": {
+      "file": "eval/s29/SOURCES.md",
+      "line": 45,
+      "text": "589 of 2,274 inputs name one of the six units"
+     }
+    },
+    "secondary_all_items": {
+     "n": 2274,
+     "label": "secondary, all 2,274 inputs as fed",
+     "top1": {
+      "metric": "top-1 = lead department (secondary, all 2,274 inputs as fed)",
+      "value": 0.7229,
+      "ci95": [
+       0.704,
+       0.741
+      ],
+      "ci95_source": [
+       0.7041,
+       0.741
+      ],
+      "k": 1644,
+      "n": 2274,
+      "kn": "1644/2274",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > top1"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.72"
+       ],
+       "ci95": [
+        "0.7",
+        "0.70",
+        "0.75",
+        "0.8"
+       ],
+       "ci95_source": [
+        "0.7",
+        "0.70",
+        "0.74"
+       ]
+      }
+     },
+     "top2": {
+      "metric": "top-2 contains the lead department (secondary, all 2,274 inputs as fed)",
+      "value": 0.8487,
+      "ci95": [
+       0.833,
+       0.863
+      ],
+      "ci95_source": [
+       0.8334,
+       0.8629
+      ],
+      "k": 1930,
+      "n": 2274,
+      "kn": "1930/2274",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > top2"
+      },
+      "shown": {
+       "value": [
+        "0.8",
+        "0.84"
+       ],
+       "ci95": [
+        "0.8",
+        "0.83",
+        "0.87",
+        "0.9"
+       ],
+       "ci95_source": [
+        "0.8",
+        "0.83",
+        "0.86"
+       ]
+      }
+     },
+     "top3": {
+      "metric": "top-3 contains the lead department (secondary, all 2,274 inputs as fed)",
+      "value": 0.905,
+      "ci95": [
+       0.892,
+       0.917
+      ],
+      "ci95_source": [
+       0.8922,
+       0.9164
+      ],
+      "k": 2058,
+      "n": 2274,
+      "kn": "2058/2274",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > top3"
+      },
+      "shown": {
+       "value": [
+        "0.9",
+        "0.90"
+       ],
+       "ci95": [
+        "0.8",
+        "0.89",
+        "0.92",
+        "1.0"
+       ],
+       "ci95_source": [
+        "0.8",
+        "0.89",
+        "0.9",
+        "0.91"
+       ]
+      }
+     },
+     "keyword": {
+      "metric": "frozen keyword stems, title only (secondary, all 2,274 inputs as fed)",
+      "value": 0.2326,
+      "ci95": [
+       0.215,
+       0.251
+      ],
+      "ci95_source": [
+       0.2157,
+       0.2505
+      ],
+      "k": 529,
+      "n": 2274,
+      "kn": "529/2274",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > keyword"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.23"
+       ],
+       "ci95": [
+        "0.2",
+        "0.21",
+        "0.26",
+        "0.3"
+       ],
+       "ci95_source": [
+        "0.2",
+        "0.21",
+        "0.25"
+       ]
+      }
+     },
+     "majority": {
+      "metric": "majority lead department (secondary, all 2,274 inputs as fed)",
+      "value": 0.1886,
+      "ci95": [
+       0.173,
+       0.206
+      ],
+      "ci95_source": [
+       0.1731,
+       0.2053
+      ],
+      "k": 429,
+      "n": 2274,
+      "kn": "429/2274",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "label": "Dipartimento del territorio",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > majority"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.18"
+       ],
+       "ci95": [
+        "0.1",
+        "0.17",
+        "0.21",
+        "0.3"
+       ],
+       "ci95_source": [
+        "0.1",
+        "0.17",
+        "0.2",
+        "0.20"
+       ]
+      }
+     },
+     "minus_keyword": {
+      "metric": "paired Δ top-1 Apertus − keyword (secondary, all 2,274 inputs as fed)",
+      "value": 0.4903,
+      "ci95": [
+       0.4665,
+       0.5132
+      ],
+      "method": "paired bootstrap 2,000, percentile, random.Random(2026), bounds rounded outward (eval/s29/analyze.py)",
+      "value_note": "the file stores the difference truncated at 4 decimals; shown truncated at 3",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > minus_keyword"
+      },
+      "shown": {
+       "value": [
+        "0.4",
+        "0.49"
+       ],
+       "ci95": [
+        "0.4",
+        "0.46",
+        "0.514",
+        "0.52",
+        "0.6"
+       ]
+      }
+     },
+     "lane_readings_agree": {
+      "metric": "precision, the two code orders agree (secondary, all 2,274 inputs as fed)",
+      "value": 0.7703,
+      "ci95": [
+       0.751,
+       0.789
+      ],
+      "ci95_source": [
+       0.7513,
+       0.7884
+      ],
+      "k": 1533,
+      "n": 1990,
+      "kn": "1533/1990",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "share": 0.8751,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > lane_readings_agree"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.77"
+       ],
+       "ci95": [
+        "0.7",
+        "0.75",
+        "0.79",
+        "0.8"
+       ],
+       "ci95_source": [
+        "0.7",
+        "0.75",
+        "0.78"
+       ],
+       "share": [
+        "0.8",
+        "0.87"
+       ]
+      }
+     },
+     "lane_please_check": {
+      "metric": "precision, the orders disagree → please check (secondary, all 2,274 inputs as fed)",
+      "value": 0.3908,
+      "ci95": [
+       0.335,
+       0.449
+      ],
+      "ci95_source": [
+       0.3359,
+       0.4487
+      ],
+      "k": 111,
+      "n": 284,
+      "kn": "111/284",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "share": 0.1248,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > lane_please_check"
+      },
+      "shown": {
+       "value": [
+        "0.3",
+        "0.39"
+       ],
+       "ci95": [
+        "0.3",
+        "0.33",
+        "0.45",
+        "0.5"
+       ],
+       "ci95_source": [
+        "0.3",
+        "0.33",
+        "0.4",
+        "0.44"
+       ],
+       "share": [
+        "0.1",
+        "0.12"
+       ]
+      }
+     },
+     "by_type": {
+      "cells": [
+       {
+        "metric": "top-1, affair type Interrogazione (secondary, all 2,274 inputs as fed)",
+        "value": 0.7079,
+        "ci95": [
+         0.675,
+         0.739
+        ],
+        "ci95_source": [
+         0.6758,
+         0.7382
+        ],
+        "k": 577,
+        "n": 815,
+        "kn": "577/815",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Interrogazione"
+        },
+        "cell": "Interrogazione",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.70"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.74",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.6",
+          "0.67",
+          "0.7",
+          "0.73"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Messaggio (secondary, all 2,274 inputs as fed)",
+        "value": 0.9414,
+        "ci95": [
+         0.917,
+         0.959
+        ],
+        "ci95_source": [
+         0.9175,
+         0.9587
+        ],
+        "k": 482,
+        "n": 512,
+        "kn": "482/512",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Messaggio"
+        },
+        "cell": "Messaggio",
+        "shown": {
+         "value": [
+          "0.9",
+          "0.94"
+         ],
+         "ci95": [
+          "0.9",
+          "0.91",
+          "0.96",
+          "1.0"
+         ],
+         "ci95_source": [
+          "0.9",
+          "0.91",
+          "0.95"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Interpellanza (secondary, all 2,274 inputs as fed)",
+        "value": 0.6234,
+        "ci95": [
+         0.568,
+         0.676
+        ],
+        "ci95_source": [
+         0.5688,
+         0.6751
+        ],
+        "k": 197,
+        "n": 316,
+        "kn": "197/316",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Interpellanza"
+        },
+        "cell": "Interpellanza",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.62"
+         ],
+         "ci95": [
+          "0.5",
+          "0.56",
+          "0.68",
+          "0.7"
+         ],
+         "ci95_source": [
+          "0.5",
+          "0.56",
+          "0.6",
+          "0.67"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Mozione (secondary, all 2,274 inputs as fed)",
+        "value": 0.6615,
+        "ci95": [
+         0.602,
+         0.717
+        ],
+        "ci95_source": [
+         0.6024,
+         0.7161
+        ],
+        "k": 174,
+        "n": 263,
+        "kn": "174/263",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Mozione"
+        },
+        "cell": "Mozione",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.66"
+         ],
+         "ci95": [
+          "0.6",
+          "0.60",
+          "0.72",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.6",
+          "0.60",
+          "0.7",
+          "0.71"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Iniziativa parlamentare elaborata (secondary, all 2,274 inputs as fed)",
+        "value": 0.6306,
+        "ci95": [
+         0.557,
+         0.699
+        ],
+        "ci95_source": [
+         0.5572,
+         0.6985
+        ],
+        "k": 111,
+        "n": 176,
+        "kn": "111/176",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Iniziativa parlamentare elaborata"
+        },
+        "cell": "Iniziativa parlamentare elaborata",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.63"
+         ],
+         "ci95": [
+          "0.5",
+          "0.55",
+          "0.7",
+          "0.70"
+         ],
+         "ci95_source": [
+          "0.5",
+          "0.55",
+          "0.6",
+          "0.69"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Rapporti vari (secondary, all 2,274 inputs as fed)",
+        "value": 0.56,
+        "ci95": [
+         0.447,
+         0.667
+        ],
+        "ci95_source": [
+         0.4474,
+         0.6667
+        ],
+        "k": 42,
+        "n": 75,
+        "kn": "42/75",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Rapporti vari"
+        },
+        "cell": "Rapporti vari",
+        "shown": {
+         "value": [
+          "0.5"
+         ],
+         "ci95": [
+          "0.4",
+          "0.44",
+          "0.67",
+          "0.7"
+         ],
+         "ci95_source": [
+          "0.4",
+          "0.44",
+          "0.6",
+          "0.66"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Iniziativa parlamentare generica (secondary, all 2,274 inputs as fed)",
+        "value": 0.6176,
+        "ci95": [
+         0.498,
+         0.724
+        ],
+        "ci95_source": [
+         0.4988,
+         0.724
+        ],
+        "k": 42,
+        "n": 68,
+        "kn": "42/68",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Iniziativa parlamentare generica"
+        },
+        "cell": "Iniziativa parlamentare generica",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.61"
+         ],
+         "ci95": [
+          "0.4",
+          "0.49",
+          "0.73",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.4",
+          "0.49",
+          "0.7",
+          "0.72"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Iniziativa cantonale (secondary, all 2,274 inputs as fed)",
+        "value": 0.2857,
+        "ci95": [
+         0.152,
+         0.471
+        ],
+        "ci95_source": [
+         0.1525,
+         0.4706
+        ],
+        "k": 8,
+        "n": 28,
+        "kn": "8/28",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Iniziativa cantonale"
+        },
+        "cell": "Iniziativa cantonale",
+        "shown": {
+         "value": [
+          "0.2",
+          "0.28"
+         ],
+         "ci95": [
+          "0.1",
+          "0.15",
+          "0.48",
+          "0.5"
+         ],
+         "ci95_source": [
+          "0.1",
+          "0.15",
+          "0.4",
+          "0.47"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Risoluzioni generali / messaggio al paese (secondary, all 2,274 inputs as fed)",
+        "value": 0.5,
+        "ci95": [
+         0.279,
+         0.721
+        ],
+        "ci95_source": [
+         0.2799,
+         0.7201
+        ],
+        "k": 8,
+        "n": 16,
+        "kn": "8/16",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Risoluzioni generali / messaggio al paese"
+        },
+        "cell": "Risoluzioni generali / messaggio al paese",
+        "small": true,
+        "shown": {
+         "ci95": [
+          "0.2",
+          "0.27",
+          "0.73",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.2",
+          "0.27",
+          "0.7",
+          "0.72"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Iniziativa popolare (secondary, all 2,274 inputs as fed)",
+        "value": 0.5,
+        "ci95": [
+         0.15,
+         0.85
+        ],
+        "ci95_source": [
+         0.15,
+         0.85
+        ],
+        "k": 2,
+        "n": 4,
+        "kn": "2/4",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Iniziativa popolare"
+        },
+        "cell": "Iniziativa popolare",
+        "small": true,
+        "shown": {
+         "ci95": [
+          "0.1",
+          "0.9"
+         ],
+         "ci95_source": [
+          "0.1",
+          "0.8"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Ricorso (secondary, all 2,274 inputs as fed)",
+        "value": 1.0,
+        "ci95": [
+         0.206,
+         1.0
+        ],
+        "ci95_source": [
+         0.2065,
+         1.0
+        ],
+        "k": 1,
+        "n": 1,
+        "kn": "1/1",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_type > Ricorso"
+        },
+        "cell": "Ricorso",
+        "small": true,
+        "shown": {
+         "ci95": [
+          "0.2",
+          "0.20"
+         ],
+         "ci95_source": [
+          "0.2",
+          "0.20"
+         ]
+        }
+       }
+      ],
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > by_type"
+      }
+     },
+     "by_gold": {
+      "cells": [
+       {
+        "metric": "recall of the lead department Dipartimento del territorio (secondary, all 2,274 inputs as fed)",
+        "value": 0.8694,
+        "ci95": [
+         0.834,
+         0.899
+        ],
+        "ci95_source": [
+         0.8342,
+         0.8981
+        ],
+        "k": 373,
+        "n": 429,
+        "kn": "373/429",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Dipartimento del territorio"
+        },
+        "cell": "Dipartimento del territorio",
+        "shown": {
+         "value": [
+          "0.8",
+          "0.86"
+         ],
+         "ci95": [
+          "0.8",
+          "0.83",
+          "0.9",
+          "0.90"
+         ],
+         "ci95_source": [
+          "0.8",
+          "0.83",
+          "0.89"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento della sanità e della socialità (secondary, all 2,274 inputs as fed)",
+        "value": 0.909,
+        "ci95": [
+         0.877,
+         0.934
+        ],
+        "ci95_source": [
+         0.8772,
+         0.9334
+        ],
+        "k": 370,
+        "n": 407,
+        "kn": "370/407",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Dipartimento della sanità e della socialità"
+        },
+        "cell": "Dipartimento della sanità e della socialità",
+        "shown": {
+         "value": [
+          "0.9",
+          "0.90"
+         ],
+         "ci95": [
+          "0.8",
+          "0.87",
+          "0.94",
+          "1.0"
+         ],
+         "ci95_source": [
+          "0.8",
+          "0.87",
+          "0.9",
+          "0.93"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento delle finanze e dell'economia (secondary, all 2,274 inputs as fed)",
+        "value": 0.6881,
+        "ci95": [
+         0.641,
+         0.732
+        ],
+        "ci95_source": [
+         0.6413,
+         0.7314
+        ],
+        "k": 278,
+        "n": 404,
+        "kn": "278/404",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Dipartimento delle finanze e dell'economia"
+        },
+        "cell": "Dipartimento delle finanze e dell'economia",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.68"
+         ],
+         "ci95": [
+          "0.6",
+          "0.64",
+          "0.74",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.6",
+          "0.64",
+          "0.7",
+          "0.73"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento delle istituzioni (secondary, all 2,274 inputs as fed)",
+        "value": 0.7245,
+        "ci95": [
+         0.676,
+         0.768
+        ],
+        "ci95_source": [
+         0.6763,
+         0.768
+        ],
+        "k": 263,
+        "n": 363,
+        "kn": "263/363",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Dipartimento delle istituzioni"
+        },
+        "cell": "Dipartimento delle istituzioni",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.72"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.77",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.6",
+          "0.67",
+          "0.7",
+          "0.76"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento dell'educazione, della cultura e dello sport (secondary, all 2,274 inputs as fed)",
+        "value": 0.8459,
+        "ci95": [
+         0.801,
+         0.883
+        ],
+        "ci95_source": [
+         0.8011,
+         0.8821
+        ],
+        "k": 258,
+        "n": 305,
+        "kn": "258/305",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Dipartimento dell'educazione, della cultura e dello sport"
+        },
+        "cell": "Dipartimento dell'educazione, della cultura e dello sport",
+        "shown": {
+         "value": [
+          "0.8",
+          "0.84"
+         ],
+         "ci95": [
+          "0.8",
+          "0.80",
+          "0.89",
+          "0.9"
+         ],
+         "ci95_source": [
+          "0.8",
+          "0.80",
+          "0.88"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso) (secondary, all 2,274 inputs as fed)",
+        "value": 0.254,
+        "ci95": [
+         0.203,
+         0.312
+        ],
+        "ci95_source": [
+         0.2038,
+         0.3117
+        ],
+        "k": 63,
+        "n": 248,
+        "kn": "63/248",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)"
+        },
+        "cell": "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)",
+        "shown": {
+         "value": [
+          "0.2",
+          "0.25"
+         ],
+         "ci95": [
+          "0.2",
+          "0.20",
+          "0.32",
+          "0.4"
+         ],
+         "ci95_source": [
+          "0.2",
+          "0.20",
+          "0.3",
+          "0.31"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Cancelleria dello Stato (secondary, all 2,274 inputs as fed)",
+        "value": 0.3305,
+        "ci95": [
+         0.252,
+         0.42
+        ],
+        "ci95_source": [
+         0.2521,
+         0.4196
+        ],
+        "k": 39,
+        "n": 118,
+        "kn": "39/118",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_all_items > by_gold > Cancelleria dello Stato"
+        },
+        "cell": "Cancelleria dello Stato",
+        "shown": {
+         "value": [
+          "0.3",
+          "0.33"
+         ],
+         "ci95": [
+          "0.2",
+          "0.25",
+          "0.5"
+         ],
+         "ci95_source": [
+          "0.2",
+          "0.25",
+          "0.4",
+          "0.41"
+         ]
+        }
+       }
+      ],
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > by_gold"
+      }
+     },
+     "gold_dist": {
+      "Dipartimento del territorio": 429,
+      "Dipartimento della sanità e della socialità": 407,
+      "Dipartimento delle finanze e dell'economia": 404,
+      "Dipartimento delle istituzioni": 363,
+      "Dipartimento dell'educazione, della cultura e dello sport": 305,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 248,
+      "Cancelleria dello Stato": 118,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > gold_dist"
+      }
+     },
+     "pred_dist": {
+      "Dipartimento della sanità e della socialità": 515,
+      "Dipartimento del territorio": 480,
+      "Dipartimento delle istituzioni": 446,
+      "Dipartimento delle finanze e dell'economia": 381,
+      "Dipartimento dell'educazione, della cultura e dello sport": 282,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 109,
+      "Cancelleria dello Stato": 61,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > pred_dist"
+      }
+     },
+     "confusion_gold_to_pred": {
+      "Dipartimento dell'educazione, della cultura e dello sport": {
+       "Dipartimento dell'educazione, della cultura e dello sport": 258,
+       "Dipartimento della sanità e della socialità": 19,
+       "Dipartimento delle istituzioni": 11,
+       "Dipartimento delle finanze e dell'economia": 8,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 6,
+       "Dipartimento del territorio": 3
+      },
+      "Dipartimento della sanità e della socialità": {
+       "Dipartimento della sanità e della socialità": 370,
+       "Dipartimento delle istituzioni": 17,
+       "Dipartimento dell'educazione, della cultura e dello sport": 6,
+       "Dipartimento del territorio": 5,
+       "Dipartimento delle finanze e dell'economia": 5,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 4
+      },
+      "Dipartimento delle finanze e dell'economia": {
+       "Dipartimento delle finanze e dell'economia": 278,
+       "Dipartimento del territorio": 45,
+       "Dipartimento della sanità e della socialità": 30,
+       "Dipartimento delle istituzioni": 26,
+       "Dipartimento dell'educazione, della cultura e dello sport": 13,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+       "Cancelleria dello Stato": 3
+      },
+      "Dipartimento delle istituzioni": {
+       "Dipartimento delle istituzioni": 263,
+       "Dipartimento della sanità e della socialità": 44,
+       "Dipartimento del territorio": 31,
+       "Dipartimento delle finanze e dell'economia": 14,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+       "Cancelleria dello Stato": 1,
+       "Dipartimento dell'educazione, della cultura e dello sport": 1
+      },
+      "Dipartimento del territorio": {
+       "Dipartimento del territorio": 373,
+       "Dipartimento delle finanze e dell'economia": 31,
+       "Dipartimento della sanità e della socialità": 17,
+       "Dipartimento delle istituzioni": 3,
+       "Dipartimento dell'educazione, della cultura e dello sport": 2,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 2,
+       "Cancelleria dello Stato": 1
+      },
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": {
+       "Dipartimento delle istituzioni": 84,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 63,
+       "Dipartimento delle finanze e dell'economia": 37,
+       "Dipartimento della sanità e della socialità": 28,
+       "Dipartimento del territorio": 18,
+       "Cancelleria dello Stato": 17,
+       "Dipartimento dell'educazione, della cultura e dello sport": 1
+      },
+      "Cancelleria dello Stato": {
+       "Dipartimento delle istituzioni": 42,
+       "Cancelleria dello Stato": 39,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 16,
+       "Dipartimento delle finanze e dell'economia": 8,
+       "Dipartimento della sanità e della socialità": 7,
+       "Dipartimento del territorio": 5,
+       "Dipartimento dell'educazione, della cultura e dello sport": 1
+      },
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_all_items > confusion_gold_to_pred"
+      }
+     }
+    },
+    "secondary_gold_in_5_departments": {
+     "n": 1359,
+     "label": "secondary, gold one of the 5 Dipartimenti",
+     "top1": {
+      "metric": "top-1 = lead department (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.7439,
+      "ci95": [
+       0.72,
+       0.767
+      ],
+      "ci95_source": [
+       0.72,
+       0.7665
+      ],
+      "k": 1011,
+      "n": 1359,
+      "kn": "1011/1359",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > top1"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.74"
+       ],
+       "ci95": [
+        "0.7",
+        "0.77",
+        "0.8"
+       ],
+       "ci95_source": [
+        "0.7",
+        "0.76"
+       ]
+      }
+     },
+     "top2": {
+      "metric": "top-2 contains the lead department (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.8756,
+      "ci95": [
+       0.857,
+       0.893
+      ],
+      "ci95_source": [
+       0.857,
+       0.8922
+      ],
+      "k": 1190,
+      "n": 1359,
+      "kn": "1190/1359",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > top2"
+      },
+      "shown": {
+       "value": [
+        "0.8",
+        "0.87"
+       ],
+       "ci95": [
+        "0.8",
+        "0.85",
+        "0.9",
+        "0.90"
+       ],
+       "ci95_source": [
+        "0.8",
+        "0.85",
+        "0.89"
+       ]
+      }
+     },
+     "top3": {
+      "metric": "top-3 contains the lead department (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.9124,
+      "ci95": [
+       0.896,
+       0.927
+      ],
+      "ci95_source": [
+       0.8962,
+       0.9264
+      ],
+      "k": 1240,
+      "n": 1359,
+      "kn": "1240/1359",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > top3"
+      },
+      "shown": {
+       "value": [
+        "0.9",
+        "0.91"
+       ],
+       "ci95": [
+        "0.8",
+        "0.89",
+        "0.93",
+        "1.0"
+       ],
+       "ci95_source": [
+        "0.8",
+        "0.89",
+        "0.9",
+        "0.92"
+       ]
+      }
+     },
+     "keyword": {
+      "metric": "frozen keyword stems, title only (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.2487,
+      "ci95": [
+       0.226,
+       0.273
+      ],
+      "ci95_source": [
+       0.2264,
+       0.2724
+      ],
+      "k": 338,
+      "n": 1359,
+      "kn": "338/1359",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > keyword"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.24"
+       ],
+       "ci95": [
+        "0.2",
+        "0.22",
+        "0.28",
+        "0.3"
+       ],
+       "ci95_source": [
+        "0.2",
+        "0.22",
+        "0.27"
+       ]
+      }
+     },
+     "majority": {
+      "metric": "majority lead department (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.2413,
+      "ci95": [
+       0.219,
+       0.265
+      ],
+      "ci95_source": [
+       0.2193,
+       0.2649
+      ],
+      "k": 328,
+      "n": 1359,
+      "kn": "328/1359",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "label": "Dipartimento della sanità e della socialità",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > majority"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.24"
+       ],
+       "ci95": [
+        "0.2",
+        "0.21",
+        "0.27",
+        "0.3"
+       ],
+       "ci95_source": [
+        "0.2",
+        "0.21",
+        "0.26"
+       ]
+      }
+     },
+     "minus_keyword": {
+      "metric": "paired Δ top-1 Apertus − keyword (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.4952,
+      "ci95": [
+       0.4657,
+       0.5254
+      ],
+      "method": "paired bootstrap 2,000, percentile, random.Random(2026), bounds rounded outward (eval/s29/analyze.py)",
+      "value_note": "the file stores the difference truncated at 4 decimals; shown truncated at 3",
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > minus_keyword"
+      },
+      "shown": {
+       "value": [
+        "0.4",
+        "0.49"
+       ],
+       "ci95": [
+        "0.4",
+        "0.46",
+        "0.526",
+        "0.53",
+        "0.6"
+       ]
+      }
+     },
+     "lane_readings_agree": {
+      "metric": "precision, the two code orders agree (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.7897,
+      "ci95": [
+       0.765,
+       0.812
+      ],
+      "ci95_source": [
+       0.7657,
+       0.812
+      ],
+      "k": 943,
+      "n": 1194,
+      "kn": "943/1194",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "share": 0.8785,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > lane_readings_agree"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.78"
+       ],
+       "ci95": [
+        "0.7",
+        "0.76",
+        "0.82",
+        "0.9"
+       ],
+       "ci95_source": [
+        "0.7",
+        "0.76",
+        "0.8",
+        "0.81"
+       ],
+       "share": [
+        "0.8",
+        "0.87"
+       ]
+      }
+     },
+     "lane_please_check": {
+      "metric": "precision, the orders disagree → please check (secondary, gold one of the 5 Dipartimenti)",
+      "value": 0.4121,
+      "ci95": [
+       0.339,
+       0.489
+      ],
+      "ci95_source": [
+       0.3398,
+       0.4884
+      ],
+      "k": 68,
+      "n": 165,
+      "kn": "68/165",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+      "share": 0.1214,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > lane_please_check"
+      },
+      "shown": {
+       "value": [
+        "0.4",
+        "0.41"
+       ],
+       "ci95": [
+        "0.3",
+        "0.33",
+        "0.49",
+        "0.5"
+       ],
+       "ci95_source": [
+        "0.3",
+        "0.33",
+        "0.4",
+        "0.48"
+       ],
+       "share": [
+        "0.1",
+        "0.12"
+       ]
+      }
+     },
+     "by_type": {
+      "cells": [
+       {
+        "metric": "top-1, affair type Interrogazione (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.7485,
+        "ci95": [
+         0.715,
+         0.78
+        ],
+        "ci95_source": [
+         0.7151,
+         0.7793
+        ],
+        "k": 524,
+        "n": 700,
+        "kn": "524/700",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Interrogazione"
+        },
+        "cell": "Interrogazione",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.74"
+         ],
+         "ci95": [
+          "0.7",
+          "0.71",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.7",
+          "0.71",
+          "0.77"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Interpellanza (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.7309,
+        "ci95": [
+         0.672,
+         0.783
+        ],
+        "ci95_source": [
+         0.6726,
+         0.7822
+        ],
+        "k": 182,
+        "n": 249,
+        "kn": "182/249",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Interpellanza"
+        },
+        "cell": "Interpellanza",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.73"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.79",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.6",
+          "0.67",
+          "0.7",
+          "0.78"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Mozione (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.7112,
+        "ci95": [
+         0.649,
+         0.766
+        ],
+        "ci95_source": [
+         0.6498,
+         0.7658
+        ],
+        "k": 165,
+        "n": 232,
+        "kn": "165/232",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Mozione"
+        },
+        "cell": "Mozione",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.71"
+         ],
+         "ci95": [
+          "0.6",
+          "0.64",
+          "0.77",
+          "0.8"
+         ],
+         "ci95_source": [
+          "0.6",
+          "0.64",
+          "0.7",
+          "0.76"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Iniziativa parlamentare elaborata (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.826,
+        "ci95": [
+         0.746,
+         0.885
+        ],
+        "ci95_source": [
+         0.7465,
+         0.8846
+        ],
+        "k": 95,
+        "n": 115,
+        "kn": "95/115",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Iniziativa parlamentare elaborata"
+        },
+        "cell": "Iniziativa parlamentare elaborata",
+        "shown": {
+         "value": [
+          "0.8",
+          "0.82"
+         ],
+         "ci95": [
+          "0.7",
+          "0.74",
+          "0.89",
+          "0.9"
+         ],
+         "ci95_source": [
+          "0.7",
+          "0.74",
+          "0.8",
+          "0.88"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Iniziativa parlamentare generica (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.6981,
+        "ci95": [
+         0.564,
+         0.805
+        ],
+        "ci95_source": [
+         0.5646,
+         0.8049
+        ],
+        "k": 37,
+        "n": 53,
+        "kn": "37/53",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Iniziativa parlamentare generica"
+        },
+        "cell": "Iniziativa parlamentare generica",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.69"
+         ],
+         "ci95": [
+          "0.5",
+          "0.56",
+          "0.81",
+          "0.9"
+         ],
+         "ci95_source": [
+          "0.5",
+          "0.56",
+          "0.8",
+          "0.80"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Messaggio (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.7142,
+        "ci95": [
+         0.358,
+         0.918
+        ],
+        "ci95_source": [
+         0.3589,
+         0.9178
+        ],
+        "k": 5,
+        "n": 7,
+        "kn": "5/7",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Messaggio"
+        },
+        "cell": "Messaggio",
+        "small": true,
+        "shown": {
+         "value": [
+          "0.7",
+          "0.71"
+         ],
+         "ci95": [
+          "0.3",
+          "0.35",
+          "0.92",
+          "1.0"
+         ],
+         "ci95_source": [
+          "0.3",
+          "0.35",
+          "0.9",
+          "0.91"
+         ]
+        }
+       },
+       {
+        "metric": "top-1, affair type Rapporti vari (secondary, gold one of the 5 Dipartimenti)",
+        "value": 1.0,
+        "ci95": [
+         0.438,
+         1.0
+        ],
+        "ci95_source": [
+         0.4384,
+         1.0
+        ],
+        "k": 3,
+        "n": 3,
+        "kn": "3/3",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_type > Rapporti vari"
+        },
+        "cell": "Rapporti vari",
+        "small": true,
+        "shown": {
+         "ci95": [
+          "0.4",
+          "0.43"
+         ],
+         "ci95_source": [
+          "0.4",
+          "0.43"
+         ]
+        }
+       }
+      ],
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > by_type"
+      }
+     },
+     "by_gold": {
+      "cells": [
+       {
+        "metric": "recall of the lead department Dipartimento della sanità e della socialità (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.8963,
+        "ci95": [
+         0.858,
+         0.925
+        ],
+        "ci95_source": [
+         0.8586,
+         0.9249
+        ],
+        "k": 294,
+        "n": 328,
+        "kn": "294/328",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_gold > Dipartimento della sanità e della socialità"
+        },
+        "cell": "Dipartimento della sanità e della socialità",
+        "shown": {
+         "value": [
+          "0.8",
+          "0.89"
+         ],
+         "ci95": [
+          "0.8",
+          "0.85",
+          "0.93",
+          "1.0"
+         ],
+         "ci95_source": [
+          "0.8",
+          "0.85",
+          "0.9",
+          "0.92"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento delle finanze e dell'economia (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.5909,
+        "ci95": [
+         0.533,
+         0.647
+        ],
+        "ci95_source": [
+         0.533,
+         0.6464
+        ],
+        "k": 169,
+        "n": 286,
+        "kn": "169/286",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_gold > Dipartimento delle finanze e dell'economia"
+        },
+        "cell": "Dipartimento delle finanze e dell'economia",
+        "shown": {
+         "value": [
+          "0.5",
+          "0.59"
+         ],
+         "ci95": [
+          "0.5",
+          "0.53",
+          "0.65",
+          "0.7"
+         ],
+         "ci95_source": [
+          "0.5",
+          "0.53",
+          "0.6",
+          "0.64"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento del territorio (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.7938,
+        "ci95": [
+         0.74,
+         0.839
+        ],
+        "ci95_source": [
+         0.7408,
+         0.8385
+        ],
+        "k": 208,
+        "n": 262,
+        "kn": "208/262",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_gold > Dipartimento del territorio"
+        },
+        "cell": "Dipartimento del territorio",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.79"
+         ],
+         "ci95": [
+          "0.7",
+          "0.84",
+          "0.9"
+         ],
+         "ci95_source": [
+          "0.7",
+          "0.74",
+          "0.8",
+          "0.83"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento delle istituzioni (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.624,
+        "ci95": [
+         0.563,
+         0.681
+        ],
+        "ci95_source": [
+         0.5635,
+         0.681
+        ],
+        "k": 161,
+        "n": 258,
+        "kn": "161/258",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_gold > Dipartimento delle istituzioni"
+        },
+        "cell": "Dipartimento delle istituzioni",
+        "shown": {
+         "value": [
+          "0.6",
+          "0.62"
+         ],
+         "ci95": [
+          "0.5",
+          "0.56",
+          "0.69",
+          "0.7"
+         ],
+         "ci95_source": [
+          "0.5",
+          "0.56",
+          "0.6",
+          "0.68"
+         ]
+        }
+       },
+       {
+        "metric": "recall of the lead department Dipartimento dell'educazione, della cultura e dello sport (secondary, gold one of the 5 Dipartimenti)",
+        "value": 0.7955,
+        "ci95": [
+         0.738,
+         0.844
+        ],
+        "ci95_source": [
+         0.7381,
+         0.8431
+        ],
+        "k": 179,
+        "n": 225,
+        "kn": "179/225",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s29/results.json",
+         "key": "secondary_gold_in_5_departments > by_gold > Dipartimento dell'educazione, della cultura e dello sport"
+        },
+        "cell": "Dipartimento dell'educazione, della cultura e dello sport",
+        "shown": {
+         "value": [
+          "0.7",
+          "0.79"
+         ],
+         "ci95": [
+          "0.7",
+          "0.73",
+          "0.85",
+          "0.9"
+         ],
+         "ci95_source": [
+          "0.7",
+          "0.73",
+          "0.8",
+          "0.84"
+         ]
+        }
+       }
+      ],
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > by_gold"
+      }
+     },
+     "gold_dist": {
+      "Dipartimento della sanità e della socialità": 328,
+      "Dipartimento delle finanze e dell'economia": 286,
+      "Dipartimento del territorio": 262,
+      "Dipartimento delle istituzioni": 258,
+      "Dipartimento dell'educazione, della cultura e dello sport": 225,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > gold_dist"
+      }
+     },
+     "pred_dist": {
+      "Dipartimento della sanità e della socialità": 402,
+      "Dipartimento del territorio": 287,
+      "Dipartimento delle finanze e dell'economia": 223,
+      "Dipartimento delle istituzioni": 215,
+      "Dipartimento dell'educazione, della cultura e dello sport": 197,
+      "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 30,
+      "Cancelleria dello Stato": 5,
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > pred_dist"
+      }
+     },
+     "confusion_gold_to_pred": {
+      "Dipartimento dell'educazione, della cultura e dello sport": {
+       "Dipartimento dell'educazione, della cultura e dello sport": 179,
+       "Dipartimento della sanità e della socialità": 19,
+       "Dipartimento delle istituzioni": 11,
+       "Dipartimento delle finanze e dell'economia": 7,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 6,
+       "Dipartimento del territorio": 3
+      },
+      "Dipartimento della sanità e della socialità": {
+       "Dipartimento della sanità e della socialità": 294,
+       "Dipartimento delle istituzioni": 15,
+       "Dipartimento dell'educazione, della cultura e dello sport": 6,
+       "Dipartimento delle finanze e dell'economia": 5,
+       "Dipartimento del territorio": 4,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 4
+      },
+      "Dipartimento delle finanze e dell'economia": {
+       "Dipartimento delle finanze e dell'economia": 169,
+       "Dipartimento del territorio": 42,
+       "Dipartimento della sanità e della socialità": 29,
+       "Dipartimento delle istituzioni": 25,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+       "Dipartimento dell'educazione, della cultura e dello sport": 9,
+       "Cancelleria dello Stato": 3
+      },
+      "Dipartimento delle istituzioni": {
+       "Dipartimento delle istituzioni": 161,
+       "Dipartimento della sanità e della socialità": 43,
+       "Dipartimento del territorio": 30,
+       "Dipartimento delle finanze e dell'economia": 13,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 9,
+       "Cancelleria dello Stato": 1,
+       "Dipartimento dell'educazione, della cultura e dello sport": 1
+      },
+      "Dipartimento del territorio": {
+       "Dipartimento del territorio": 208,
+       "Dipartimento delle finanze e dell'economia": 29,
+       "Dipartimento della sanità e della socialità": 17,
+       "Dipartimento delle istituzioni": 3,
+       "Dipartimento dell'educazione, della cultura e dello sport": 2,
+       "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)": 2,
+       "Cancelleria dello Stato": 1
+      },
+      "at": {
+       "file": "eval/s29/results.json",
+       "key": "secondary_gold_in_5_departments > confusion_gold_to_pred"
+      }
+     }
+    },
+    "second_order_share": {
+     "value": 0.2695,
+     "note": "share of the primary items that asked the second code order (first top p < 0.9)",
+     "at": {
+      "file": "eval/s29/results.json",
+      "key": "second_order_share"
+     },
+     "shown": {
+      "value": [
+       "0.2",
+       "0.26"
+      ]
+     }
+    },
+    "beside": "S18 (Bern) and S20 (Basel-Stadt) are reported beside this result, not compared with it: schemes and chance rates differ"
+   },
+   "split": "every Gran Consiglio affair begun 1 Jan 2023–11 Oct 2026 with a lead department in OPD (2,274); primary = the 1,685 whose input names none of the six units (589 inputs name one, mostly Messaggi, which print the competent department); pre-registered (S29); nothing tuned",
+   "prereg": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S29 Ticino Gran Consiglio own scheme in Italian",
+    "line": 186
+   },
+   "sources": [
+    "eval/s29/results.json",
+    "eval/s29/analyze.py",
+    "eval/s29/items.py",
+    "eval/s29/keywords_frozen.json",
+    "eval/s29/SOURCES.md",
+    "src/querschnitt/schemes/ti-dipartimenti.yaml",
+    "eval/PREREG-BUILD.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s29)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-15",
+   "test": "Tessin: federführende Stelle (5 Departemente + Staatskanzlei, «keine davon») gegen das OPD-Feld leading_department, Gran Consiglio 2023–26, italienisch, 1'685 Geschäfte, deren Input die Stelle nicht nennt (S29)",
+   "interval": [
+    0.624,
+    0.67
+   ],
+   "baseline": {
+    "name": "frozen keyword stems, title only (eval/s29/keywords_frozen.json), same items",
+    "value": 0.2195,
+    "ci95": [
+     0.2,
+     0.24
+    ],
+    "shown": {
+     "value": [
+      "0.2",
+      "0.21"
+     ],
+     "ci95": [
+      "0.3"
+     ]
+    }
+   },
+   "file": "eval/s29/results.json",
+   "key": "primary > top1",
+   "shown": {
+    "interval": [
+     "0.6",
+     "0.62"
     ]
    }
   },
@@ -23402,6 +27280,8 @@
   "recalibration refit on the build that serves at the event",
   "ECE intervals (bootstrap)",
   "judge precision on human negatives",
+  "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
+  "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
   "Romansh"
  ]
 }

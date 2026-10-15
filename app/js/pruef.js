@@ -23,6 +23,8 @@ const LS = {
     beSub: (a, b) => `Stichwortsuche ${pct(a)} / ${pct(b)}`,
     bs: (n, k) => `der ${n} Basler Grossratsgeschäfte bekommen dasselbe der ${k} Themen wie bei der Kantons- und Stadtentwicklung, allein aus der Liste der Themennamen, ohne jede Anpassung.`,
     bsSub: (ex, kw) => [ex != null ? `mit fünf Basler Beispielen ${pct(ex)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
+    ti: (n, k) => `der ${n} Geschäfte des Tessiner Grossen Rates landen auf Italienisch bei der federführenden von ${k} Stellen (fünf Departemente und Staatskanzlei), allein aus der Liste der Namen, ohne jede Anpassung; gezählt sind die Geschäfte, deren Text die Stelle nicht selbst nennt.`,
+    tiSub: (kw, mj) => [kw != null ? `Stichwortsuche ${pct(kw)}` : '', mj != null ? `häufigste Stelle ${pct(mj)}` : ''].filter(Boolean).join(' · '),
     note: 'Darunter alle Tests, auch die schwächeren: jede Zahl mit Stichprobe (n), 95-%-Intervall, Vergleich auf denselben Geschäften und Quelldatei. Vorab registriert ist ein Test nur, wo «vorregistriert» steht.',
     all: 'Alle Tests',
     gloss: [['top-1 / top-3', 'das erste Thema stimmt / das richtige ist unter den ersten drei'],
@@ -48,6 +50,8 @@ const LS = {
     beSub: (a, b) => `mots-clés ${pct(a)} / ${pct(b)}`,
     bs: (n, k) => `des ${n} objets du Grand Conseil bâlois reçoivent le même des ${k} thèmes que chez Kantons- und Stadtentwicklung, à partir des seuls noms des thèmes, sans aucun ajustement.`,
     bsSub: (ex, kw) => [ex != null ? `avec cinq exemples bâlois ${pct(ex)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
+    ti: (n, k) => `des ${n} objets du Grand Conseil tessinois arrivent, en italien, à l’unité compétente parmi ${k} (cinq départements et la Chancellerie), à partir de la seule liste des noms, sans aucun ajustement ; comptés : les objets dont le texte ne nomme pas lui-même l’unité.`,
+    tiSub: (kw, mj) => [kw != null ? `mots-clés ${pct(kw)}` : '', mj != null ? `unité la plus fréquente ${pct(mj)}` : ''].filter(Boolean).join(' · '),
     note: 'Ci-dessous tous les tests, y compris les moins bons : chaque chiffre avec échantillon (n), intervalle 95 %, référence sur les mêmes objets et fichier source. Un test n’est préenregistré que là où « préenregistré » est indiqué.',
     all: 'Tous les tests',
     gloss: [['top-1 / top-3', 'le premier thème est juste / le bon est parmi les trois premiers'],
@@ -92,7 +96,7 @@ function plain(str) {
 
 const num1 = (str, re) => { const m = re.exec(str || ''); return m ? parseFloat(m[1]) : null; };
 
-// The lead: three to four results in plain words, each read from the rows (pruefstand.json) or the held-out decisions
+// The lead: three to five results in plain words, each read from the rows (pruefstand.json) or the held-out decisions
 // (pruef_confusion.json). A line whose source row is missing is left out.
 function lead(rows) {
   const S = ls(), fr = UI.lang === 'fr', out = [];
@@ -128,6 +132,14 @@ function lead(rows) {
     if (top1 != null) {
       const sub = S.bsSub(bs2 ? num1(bs2.result, /top-1 ([\d.]+)/) : null, num1(bs.baseline, /Stichwort ([\d.]+)/));
       out.push(item(pct(top1), S.bs(num(bs.n), k != null ? num(k) : '–'), `top-1 ${p3(top1)}${ci(bs)}${sub ? ` · ${sub}` : ''}`, bs.file));
+    }
+  }
+  const ti = byFile('eval/s29/results.json');   // first S29 row = the primary population (inputs that name no unit)
+  if (ti) {
+    const top1 = num1(ti.result, /top-1 ([\d.]+)/), k = num1(ti.test, /\((\d+)\)/);
+    if (top1 != null) {
+      const sub = S.tiSub(num1(ti.baseline, /Stichwort ([\d.]+)/), num1(ti.baseline, /Mehrheit ([\d.]+)/));
+      out.push(item(pct(top1), S.ti(num(ti.n), k != null ? num(k) : '–'), `top-1 ${p3(top1)}${ci(ti)}${sub ? ` · ${sub}` : ''}`, ti.file));
     }
   }
   if (!out.length) return null;

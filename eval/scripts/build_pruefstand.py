@@ -924,6 +924,92 @@ tests.append(dict(
     sources=[HR25, f"{QE}/s25/hierarchical.py", f"{QE}/s16/hierarchical.py", f"{QE}/s25/decisions.jsonl", f"{QE}/s25/items.jsonl"],
     build=h25["build"] + " (run runs/s25)", model=MODEL, date="2026-10-15", shipped="ranked subtopic suggestions (federal affairs)"))
 
+# ---------------------------------------------------------------- S28: the shipped pipeline in no-prefill mode (QS_PREFILL=0) on the S25 items
+# An endpoint-capability check: what the labelled fallback for an endpoint that cannot continue an assistant message costs, paired
+# against the shipped prefill design (S25 final) on the same 927 held-out affairs.
+S28R = f"{QE}/s28/results.json"
+pre28 = pre(PB, "— S28 no-prefill mode on the S25 held-out items")
+pre28a = pre(PB, "— S28 amendment: a read fix after the smoke run")
+s28 = g(S28R)
+assert s28["items"] == s28["scored"] == N25 and s28["missing"] == 0 and s28["mode"] == "no-prefill", (s28["items"], s28["scored"], s28["mode"])
+assert s28["build"] == s25["build"], (s28["build"], s25["build"])
+
+
+def s28k(*keys, metric):
+    """a {k, n, value, ci} block of eval/s28/results.json (see knblock)."""
+    return knblock(S28R, *keys, metric=metric, script="eval/s28/analyze.py")
+
+
+def s28d(key, metric):
+    """a paired difference prefill − no-prefill of eval/s28/results.json (mean of per-affair differences truncated toward zero at 4
+    decimals; percentile bootstrap 2,000, seed 2026, bounds rounded outward at 3 decimals, by eval/s28/analyze.py)."""
+    b = g(S28R, key)
+    assert b["ci95"][0] <= b["value"] <= b["ci95"][1], (key, b)
+    return {"metric": metric, "value": b["value"], "ci95": list(b["ci95"]), "n": N25,
+            "prefill_only_right": b["prefill_only_right"], "no_prefill_only_right": b["no_prefill_only_right"],
+            "method": "paired bootstrap 2,000 over affairs, percentile, seed 2026, bounds rounded outward (eval/s28/analyze.py)",
+            "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3", "at": loc(S28R, key)}
+
+
+t28 = s28k("no_prefill_top1", metric="chapter top-1 vs APS editors, no-prefill mode (QS_PREFILL=0), otherwise the pipeline as shipped")
+pf28 = s28k("prefill_top1_same_items", metric="chapter top-1 of the shipped prefill design on the same affairs (S25 final)")
+assert (pf28["k"], pf28["n"]) == (t25["k"], t25["n"]), (pf28["kn"], t25["kn"])   # the S25 final decisions, re-read by eval/s28/analyze.py
+df28 = s28d("prefill_minus_no_prefill_top1", "paired Δ top-1, shipped prefill − no-prefill (same affairs)")
+assert abs(df28["value"] - (pf28["k"] - t28["k"]) / N25) < 1e-4, df28
+rp28 = g(S28R, "read_path_rows_used"); ra28 = g(S28R, "read_path_all_rows")
+assert set(ra28) == {"logprobs"} and all(set(v) == {"logprobs"} for v in rp28.values()), (ra28, rp28)
+assert g(S28R, "affairs_with_a_text_read") == 0 and g(S28R, "affairs_with_an_unparseable_row") == 0
+c28 = g(S28R, "cost")
+D28 = {"D4 (German text: five examples)": "D4", "D1 (no examples)": "D1"}
+assert set(g(S28R, "by_design")) == set(D28), set(g(S28R, "by_design"))
+tests.append(dict(
+    id="aps_chapter_heldout_s28_no_prefill", gold="human", subject="Apertus",
+    title_de=f"APS-Kapitel gegen APS-Redaktion, dieselben {N25} neuen Bundesgeschäfte (hold-out): ohne Prefill (Endpunkt-Fallback "
+             "QS_PREFILL=0) gegen das ausgelieferte Prefill (S28)",
+    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} nouveaux objets fédéraux (hors échantillon) : sans prefill (repli pour "
+             "l'endpoint, QS_PREFILL=0) contre le prefill livré (S28)",
+    n=N25, design="eine Prüfung der Endpunkt-Fähigkeit, kein neues Design: Produktionspipeline wie ausgeliefert (D4 / D1 wie S25), aber mit "
+    "QS_PREFILL=0: eine Nutzernachricht = der gemessene Prompt + eine Zeile, die Antwort mit der JSON-Öffnung zu beginnen; Code aus den "
+    "top_logprobs des ersten Tokens nach der Öffnung (sonst aus dem Text); ohne Kalibrierung: Lane = Lesarten-Regel (durchgelassen, wenn "
+    "die zwei Code-Reihenfolgen übereinstimmen oder eine Lesart mit p ≥ 0.9); gepaart gegen die S25-Entscheide (Prefill) auf denselben Geschäften",
+    result=dict(t28, display=f"{F.t(t28['value'])} [{F.lo(t28['ci95'][0])}, {F.hi(t28['ci95'][1])}]"),
+    results_more=[s28k("no_prefill_top3", metric="chapter top-3, no-prefill"), df28,
+                  s28d("prefill_minus_no_prefill_top3", "paired Δ top-3, shipped prefill − no-prefill (same affairs)"),
+                  s28k("same_chapter_as_prefill", metric="same chapter as the shipped prefill decision")],
+    baselines=[dict(pf28, name=f"shipped prefill design (S25 final), same {N25} affairs"),
+               dict(s28k("prefill_top3_same_items", metric="chapter top-3 of the shipped prefill design (S25 final)"),
+                    name="shipped prefill design, top-3")],
+    breakdowns={
+        "lanes_no_prefill": {k_: dict(s28k("lanes_no_prefill", k_, metric=f"precision, no-prefill readings lane: {k_}"), cell=k_)
+                             for k_ in ("pass", "please_check")}
+        | {"rule": "no calibration in no-prefill mode: pass when the two code orders agree or one reading has top p ≥ 0.9, else please check "
+                   "(compose.decide)", "share_note": "share = share of the scored affairs (truncated)"},
+        "lanes_prefill_s25": {k_: dict(s28k("lanes_prefill_s25", k_, metric=f"precision, shipped prefill lane (S25): {k_}"), cell=k_)
+                              for k_ in ("pass", "please_check", "readings_agree", "readings_disagree")},
+        "by_design": {"cells": [dict(s28k("by_design", k_, mode_, metric=f"chapter top-1, {k_}, {mode_}"), cell=f"{D28[k_]} {mode_}",
+                                     **({"small": True} if g(S28R, "by_design", k_, mode_)["n"] < 20 else {}))
+                                for k_ in D28 for mode_ in ("no_prefill", "prefill")], "at": loc(S28R, "by_design")},
+        "read_path": {"rows_used": {k_: v_["logprobs"] for k_, v_ in rp28.items()}, "all_rows_logprobs": ra28["logprobs"],
+                      "affairs_with_a_text_read": g(S28R, "affairs_with_a_text_read"),
+                      "affairs_with_an_unparseable_row": g(S28R, "affairs_with_an_unparseable_row"),
+                      "share_from_logprobs": "every row (100%): no code read from the generated text, none unparseable",
+                      "mass_in_listed_codes_ch1_mean": g(S28R, "mass_in_listed_codes_ch1_mean"),
+                      "note": g(S28R, "read_path_note"), "at": loc(S28R, "read_path_all_rows")},
+        "cost": {"no_prefill_calls": c28["no_prefill"]["calls"], "no_prefill_usd": c28["no_prefill"]["usd"],
+                 "calls_per_affair": c28["no_prefill"]["calls_per_affair"], "prefill_s25_calls": c28["prefill_s25"]["calls"],
+                 "prefill_s25_usd": c28["prefill_s25"]["usd"], "smoke1_discarded_calls": c28["smoke1_discarded"]["calls"],
+                 "s28_total_calls": c28["s28_total"]["calls"], "s28_total_usd": c28["s28_total"]["usd"], "note": c28["note"],
+                 "at": loc(S28R, "cost")},
+        "scored": {"in_set": s28["items"], "scored": s28["scored"], "missing": s28["missing"], "at": loc(S28R, "scored")}},
+    split=f"the {N25} S25 held-out affairs (none used while designing), pre-registered (S28) before any S28 call; a read fix after the "
+          "first smoke run (amendment, a bug fix, not a design change; the 28 smoke calls were never scored); nothing tuned",
+    prereg=pre28, prereg_more=pre28a,
+    reference={"id": "aps_chapter_heldout_s25", "what": "the shipped prefill design on the same affairs (S25)"},
+    sources=[S28R, f"{QE}/s28/analyze.py", f"{QE}/s25/decisions.jsonl", f"{QE}/s25/items.jsonl", "src/querschnitt/client.py",
+             "src/querschnitt/compose.py", PB],
+    build=s28["build"] + " (run runs/s28, mode no-prefill)", model=MODEL, date="2026-10-15",
+    shipped="labelled fallback only (QS_PREFILL=0) for an endpoint that cannot continue an assistant message; the default ships prefill"))
+
 s18 = g(S18R)
 tests.append(dict(
     id="bern_directorates_production", gold="human", subject="Apertus",
@@ -982,6 +1068,109 @@ tests.append(dict(
     split="2 folds by affair-id parity (examples always from the other fold), pre-registered",
     prereg=pre(PB, "— S21 Basel-Stadt with the canton's own labels"),
     sources=[S21R, f"{QE}/s21/analyze.py", f"{QE}/s21/raw.jsonl"], build=s21["builds"][0], model=MODEL, date="2026-10-14"))
+
+# ---------------------------------------------------------------- S29: Ticino Gran Consiglio, the canton's own lead department, Italian
+S29R, S29S = f"{QE}/s29/results.json", f"{QE}/s29/SOURCES.md"
+s29 = g(S29R)
+assert s29["test"] == "S29" and s29["build"] == BUILD and s29["missing"] == 0 and s29["other_build"] == 0, s29["build"]
+assert s29["n_scored"] == s29["n_items"] and s29["primary"]["n"] == s29["n_primary_items"], (s29["n_scored"], s29["n_items"])
+N29, N29A = s29["n_primary_items"], s29["n_items"]
+N29X = N29A - N29   # inputs that name one of the six units (mostly Messaggi, whose header prints the competent department)
+TI_NONE = "Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)"
+
+
+def s29k(*keys, metric):
+    """a {k, n, acc, ci} block of eval/s29/results.json: acc = k / n truncated at 4 decimals and ci = Wilson 95% rounded outward at 4
+    decimals (eval/s29/analyze.py), both re-checked here from k and n; the interval is re-rounded outward at 3 decimals."""
+    b = g(S29R, *keys); k, n = b["k"], b["n"]
+    assert b["acc"] == math.floor(k / n * 10 ** 4) / 10 ** 4, (keys, b)
+    lo_, hi_ = wilson_exact(k, n)
+    assert list(b["ci"]) == [float(F.q(max(lo_, 0.0), 4, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 4, F.ROUND_CEILING))], (keys, b, lo_, hi_)
+    out = {"metric": metric, "value": b["acc"], "ci95": [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))],
+           "ci95_source": list(b["ci"]), "k": k, "n": n, "kn": f"{k}/{n}",
+           "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (eval/s29/analyze.py stores them outward at 4; "
+                        "re-checked by build_pruefstand.py)"}
+    if "share" in b: out["share"] = b["share"]
+    if "label" in b: out["label"] = b["label"]
+    out["at"] = loc(S29R, *keys)
+    return out
+
+
+def s29d(*keys, metric):
+    b = g(S29R, *keys)
+    assert b["ci"][0] <= b["diff"] <= b["ci"][1], (keys, b)
+    return {"metric": metric, "value": b["diff"], "ci95": list(b["ci"]),
+            "method": "paired bootstrap 2,000, percentile, random.Random(2026), bounds rounded outward (eval/s29/analyze.py)",
+            "value_note": "the file stores the difference truncated at 4 decimals; shown truncated at 3", "at": loc(S29R, *keys)}
+
+
+def s29set(sub, label):
+    """the full block of one population of eval/s29/results.json (primary, secondary_all_items, secondary_gold_in_5_departments)."""
+    d_ = g(S29R, sub); n_ = d_["n"]
+    assert sum(d_["gold_dist"].values()) == n_ == sum(d_["pred_dist"].values()), (sub, n_)
+    assert d_["lane_readings_agree"]["n"] + d_["lane_please_check"]["n"] == n_, sub
+    o = {"n": n_, "label": label,
+         "top1": s29k(sub, "top1", metric=f"top-1 = lead department ({label})"),
+         "top2": s29k(sub, "top2", metric=f"top-2 contains the lead department ({label})"),
+         "top3": s29k(sub, "top3", metric=f"top-3 contains the lead department ({label})"),
+         "keyword": s29k(sub, "keyword", metric=f"frozen keyword stems, title only ({label})"),
+         "majority": s29k(sub, "majority", metric=f"majority lead department ({label})"),
+         "minus_keyword": s29d(sub, "minus_keyword", metric=f"paired Δ top-1 Apertus − keyword ({label})"),
+         "lane_readings_agree": s29k(sub, "lane_readings_agree", metric=f"precision, the two code orders agree ({label})"),
+         "lane_please_check": s29k(sub, "lane_please_check", metric=f"precision, the orders disagree → please check ({label})"),
+         "by_type": {"cells": [dict(s29k(sub, "by_type", k_, metric=f"top-1, affair type {k_} ({label})"), cell=k_,
+                                    **({"small": True} if v_["n"] < 20 else {})) for k_, v_ in d_["by_type"].items()],
+                     "at": loc(S29R, sub, "by_type")},
+         "by_gold": {"cells": [dict(s29k(sub, "by_gold", k_, metric=f"recall of the lead department {k_} ({label})"), cell=k_,
+                                    **({"small": True} if v_["n"] < 20 else {})) for k_, v_ in d_["by_gold"].items()],
+                     "at": loc(S29R, sub, "by_gold")},
+         "gold_dist": dict(d_["gold_dist"], at=loc(S29R, sub, "gold_dist")), "pred_dist": dict(d_["pred_dist"], at=loc(S29R, sub, "pred_dist"))}
+    if "confusion_gold_to_pred" in d_:
+        o["confusion_gold_to_pred"] = dict(d_["confusion_gold_to_pred"], at=loc(S29R, sub, "confusion_gold_to_pred"))
+    return o
+
+
+p29 = s29set("primary", f"primary, the {N29:,} inputs that name no unit")
+a29 = s29set("secondary_all_items", f"secondary, all {N29A:,} inputs as fed")
+f29 = s29set("secondary_gold_in_5_departments", "secondary, gold one of the 5 Dipartimenti")
+assert len(p29["gold_dist"]) - 1 == g(S29R, "options") == 7 and TI_NONE in p29["gold_dist"], p29["gold_dist"]
+tests.append(dict(
+    id="ticino_departments", gold="human", subject="Apertus",
+    title_de=f"Tessin: federführende Stelle (5 Departemente + Staatskanzlei, «keine davon») gegen das OPD-Feld leading_department, "
+             f"Gran Consiglio 2023–26, italienisch, {F.t(N29, sep=chr(39))} Geschäfte, deren Input die Stelle nicht nennt (S29)",
+    title_fr=f"Tessin : unité compétente (5 départements + Chancellerie, « aucune ») contre le champ OPD leading_department, Gran Consiglio "
+             f"2023–26, en italien, {F.t(N29, sep=' ')} objets dont l'entrée ne nomme pas l'unité (S29)",
+    n=N29, design="Schema-Datei schemes/ti-dipartimenti.yaml: die 6 Namen wörtlich auf Italienisch (5 Dipartimenti, Cancelleria dello Stato), "
+    "alphabetisch, Codes A–F, dazu G = «Nessuno di questi (Consiglio di Stato nel suo insieme o Gran Consiglio stesso)»; keine "
+    "Beschreibungen, nichts abgestimmt; Rahmen italienisch, nur die drei festen Blockbezeichnungen im Code bleiben deutsch («Geschäft:», "
+    "«Titel:», «Text (Auszug):»); Produktions-Input (Titel, Langtitel, 1'500 Zeichen Text); zweite Reihenfolge bei p < 0.9, Entscheid = "
+    "Spitze des Mittels; Gold = erste federführende Stelle im OPD-Export (contributors, role leading_department), «Consiglio di Stato» und "
+    "«Gran Consiglio» → keine davon",
+    result=dict(p29["top1"], display=f"{F.t(p29['top1']['value'])} [{F.lo(p29['top1']['ci95'][0])}, {F.hi(p29['top1']['ci95'][1])}]"),
+    results_more=[p29["top2"], p29["top3"], p29["minus_keyword"], a29["top1"], a29["top2"], a29["top3"], f29["top1"]],
+    baselines=[dict(p29["keyword"], name="frozen keyword stems, title only (eval/s29/keywords_frozen.json), same items"),
+               dict(p29["majority"], name=f"majority lead department ({p29['majority']['label']})")],
+    breakdowns={
+        "lane_readings_agree": p29["lane_readings_agree"], "lane_please_check": p29["lane_please_check"],
+        "by_type": p29["by_type"], "by_gold": p29["by_gold"], "gold_dist": p29["gold_dist"], "pred_dist": p29["pred_dist"],
+        "confusion_gold_to_pred": p29["confusion_gold_to_pred"],
+        "excluded_from_primary": {"value": N29X, "of": N29A, "derived": "n_items − n_primary_items (eval/s29/results.json)",
+                                  "why": "the input names one of the six units: a Messaggio's header prints the competent department "
+                                         "(«competenza»); measured on the inputs before any call",
+                                  "messaggi": {"value": 487, "of": 512, "at": md(S29S, "589 of 2,274 inputs name one of the six units (487 of 512 Messaggi)")},
+                                  "at": md(S29S, "589 of 2,274 inputs name one of the six units")},
+        "secondary_all_items": a29, "secondary_gold_in_5_departments": f29,
+        "second_order_share": {"value": g(S29R, "second_order_share"), "note": "share of the primary items that asked the second code order "
+                               "(first top p < 0.9)", "at": loc(S29R, "second_order_share")},
+        "beside": "S18 (Bern) and S20 (Basel-Stadt) are reported beside this result, not compared with it: schemes and chance rates differ"},
+    split=f"every Gran Consiglio affair begun 1 Jan 2023–11 Oct 2026 with a lead department in OPD ({N29A:,}); primary = the {N29:,} whose "
+          f"input names none of the six units ({N29X} inputs name one, mostly Messaggi, which print the competent department); "
+          "pre-registered (S29); nothing tuned",
+    prereg=pre(PB, "— S29 Ticino Gran Consiglio own scheme in Italian"),
+    sources=[S29R, f"{QE}/s29/analyze.py", f"{QE}/s29/items.py", f"{QE}/s29/keywords_frozen.json", S29S,
+             "src/querschnitt/schemes/ti-dipartimenti.yaml", PB],
+    build=s29["build"] + " (run runs/s29)", model=s29["model"], date="2026-10-15"))
+assert MODEL == s29["model"]
 
 s17 = g(S17R)
 tests.append(dict(
@@ -1348,10 +1537,10 @@ for t_ in tests:
         t_["title_de"] += " (S8-Momentaufnahme, ersetzt durch die volle Erhebung)"
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
-ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
+ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
          "aps_hierarchical_d4", "aps_hierarchical_heldout_s25",
          "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
-         "basel_themes_names", "basel_themes_examples", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
+         "basel_themes_names", "basel_themes_examples", "ticino_departments", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
          "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
          "evidence_support_production", "aps_cantonal_communal", "aps_bilingual", "adhoc_new_topics", "adhoc_editor_examples",
@@ -1485,7 +1674,8 @@ for blk, key in ((_tx["result"], "title_text"), (_tx["baselines"][0], "title_onl
 for t_ in tests: t_["interval"] = t_["result"].get("ci95")
 print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
-assert not [x for x in WILSON_LOG if x[0].split(".")[0] in ("aps_chapter_heldout_s25", "aps_hierarchical_heldout_s25")]   # S25 intervals are already outward
+assert not [x for x in WILSON_LOG if x[0].split(".")[0] in ("aps_chapter_heldout_s25", "aps_hierarchical_heldout_s25", "aps_chapter_heldout_s28_no_prefill",
+                                                            "ticino_departments")]   # S25 / S28 / S29 intervals are already outward
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
 BOUND = re.compile(r"(^|_)ci(95)?(_w)?$")
@@ -1529,7 +1719,7 @@ out = {
                     "value": "as stored in the source file (JSON keeps 4 decimals where the source does)",
                     "display": "shown values are truncated toward zero, never rounded up; interval bounds are rounded outward, never inward "
                                "(eval/scripts/numfmt.py); `shown` lists those display forms next to the stored value",
-                    "gold": "human = labels made by people (APS editors, Curia tags, DVS list, Grand Council field, Basel-Stadt themes); "
+                    "gold": "human = labels made by people (APS editors, Curia tags, DVS list, Grand Council field, Basel-Stadt themes, Ticino lead department); "
                             "ai-judge = blind Claude runs (+ Qwen cross-check)"},
     "tests": tests,
     "curves": {k: cur[k] for k in ("aps_d4", "aps_d3", "aps_d1")},
@@ -1538,6 +1728,8 @@ out = {
         "recalibration refit on the build that serves at the event",
         "ECE intervals (bootstrap)",
         "judge precision on human negatives",
+        "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
+        "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
         "Romansh"],
 }
 shown_pass(out["tests"]); shown_pass(out["curves"])
@@ -1676,6 +1868,24 @@ row(*APS25, "human", "vor dem Determinismus-Fix gesehen (alter Beispielabruf, zw
     f"top-1 {F.t(pa25['value'], 4)} ({pa25['kn']}) · {F.t(pb25['value'], 4)} ({pb25['kn']})", None,
     f"final {p3(T25['result']['value'])} ({T25['result']['kn']})", fr(f"final {p3(T25['result']['value'])} ({T25['result']['kn']})"),
     "Änderung vor dem finalen Score (vorregistriert)", "amendement avant le score final (préenregistré)", PB)
+# S28: the same held-out affairs in no-prefill mode (an endpoint-capability check; its own small table right after S25's)
+T28 = TD["aps_chapter_heldout_s28_no_prefill"]; m28 = T28["results_more"]; pf28_, d28_ = T28["baselines"][0], m28[1]
+lp28, lc28 = (T28["breakdowns"]["lanes_no_prefill"][k] for k in ("pass", "please_check"))
+APS28 = (f"APS-Kapitel, dieselben {p3(N25)} Bundesgeschäfte (hold-out): ohne Prefill, Endpunkt-Fallback (S28)",
+         f"Chapitre APS, les mêmes {F.t(N25, sep=' ')} objets fédéraux (hors échantillon) : sans prefill, repli pour l'endpoint (S28)")
+SPLIT_S28 = ("held-out (S25-Geschäfte), vorregistriert (S28); prüft die Endpunkt-Fähigkeit, kein neues Design; ausgeliefert bleibt Prefill",
+             "hors échantillon (objets S25), préenregistré (S28) ; teste la capacité de l'endpoint, pas un nouveau design ; le prefill reste livré")
+row(*APS28, "human", "ohne Prefill (QS_PREFILL=0), sonst Produktionspipeline wie ausgeliefert; Codes zu 100 % aus den Logprobs gelesen",
+    "sans prefill (QS_PREFILL=0), sinon pipeline de production tel que livré ; codes lus à 100 % dans les logprobs", N25,
+    f"top-1 {p3(T28['result']['value'])} · top-3 {p3(m28[0]['value'])}", iv(T28["result"]["ci95"]),
+    f"mit Prefill (ausgeliefert, S25) {p3(pf28_['value'])} · Δ mit − ohne {F.signed(p3(d28_['value']))} {sciv(d28_['ci95'])}",
+    fr(f"avec prefill (livré, S25) {p3(pf28_['value'])} · Δ avec − sans {F.signed(p3(d28_['value']))} {sciv(d28_['ci95'])}"),
+    *SPLIT_S28, T28["file"])
+row(*APS28, "human", f"ohne Prefill: Lesarten-Regel, keine Kalibrierung ({F.pct(lp28['share'])} durchgelassen)",
+    fr(f"sans prefill : règle des lectures, sans calibration ({F.pct(lp28['share'])} passent)"), lp28["n"], p3(lp28["value"]), iv(lp28["ci95"]),
+    f"bitte prüfen: {p3(lc28['value'])} {civ(lc28['ci95'])} (n {lc28['n']}) · mit Prefill, rekalibriertes p ≥ 0.7: {p3(lp25['value'])}",
+    fr(f"à vérifier : {p3(lc28['value'])} {civ(lc28['ci95'])} (n {lc28['n']}) · avec prefill, p recalibré ≥ 0.7 : {p3(lp25['value'])}"),
+    *SPLIT_S28, T28["file"], result_fr=fr(p3(lp28["value"])))
 
 dv = TD["dvs_human30"]
 row("«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)", "« numérique » : 30 objets DVS choisis à la main (rappel)", "human",
@@ -1706,6 +1916,38 @@ row(*BS, "human", "+ fünf Basler Beispiele mit ihrem Thema (andere Hälfte), zw
     fr(f"noms seulement {p3(b21['baselines'][0]['value'])} : Δ {F.signed(p3(m21[0]['value']))} {sciv(m21[0]['ci95'])}"),
     "2 Hälften, vorregistriert (S21)", "2 moitiés, préenregistré (S21)", b21["file"],
     result_fr=fr(f"top-1 {p3(b21['result']['value'])} · thème 1 ou 2 {p3(m21[1]['value'])} · top-3 {p3(m21[2]['value'])}"))
+# S29: Ticino, the canton's own lead department, Italian (its own table after Basel)
+T29 = TD["ticino_departments"]; b29 = T29["breakdowns"]; m29 = {x["metric"]: x for x in T29["results_more"]}
+k29, j29 = T29["baselines"][0], T29["baselines"][1]
+TI = ("Tessin, federführende Stelle (6), Gran Consiglio 2023–26, italienisch",
+      "Tessin, unité compétente (6), Gran Consiglio 2023–26, en italien")
+SPLIT_S29 = (f"vorregistriert (S29), nichts abgestimmt; primär: die {p3(T29['n'])} Geschäfte, deren Input keine Stelle nennt "
+             f"({b29['excluded_from_primary']['value']} Inputs nennen sie, v. a. Messaggi mit «competenza»)",
+             f"préenregistré (S29), rien d'ajusté ; principal : les {F.t(T29['n'], sep=' ')} objets dont l'entrée ne nomme aucune unité "
+             f"({b29['excluded_from_primary']['value']} entrées la nomment, surtout des Messaggi avec « competenza »)")
+t2_, t3_ = T29["results_more"][0], T29["results_more"][1]; dk29 = T29["results_more"][2]
+row(*TI, "human", "Schema-Datei: 6 Namen italienisch + «keine davon», nichts abgestimmt; Input nennt keine Stelle",
+    "fichier de schéma : 6 noms en italien + « aucune », rien d'ajusté ; l'entrée ne nomme aucune unité", T29["n"],
+    f"top-1 {p3(T29['result']['value'])} · top-2 {p3(t2_['value'])} · top-3 {p3(t3_['value'])}", iv(T29["result"]["ci95"]),
+    f"Stichwort {p3(k29['value'])} · Mehrheit {p3(j29['value'])} · Δ − Stichwort {F.signed(p3(dk29['value']))} {sciv(dk29['ci95'])}",
+    fr(f"mots-clés {p3(k29['value'])} · majorité {p3(j29['value'])} · Δ − mots-clés {F.signed(p3(dk29['value']))} {sciv(dk29['ci95'])}"),
+    *SPLIT_S29, T29["file"])
+la29, lc29 = b29["lane_readings_agree"], b29["lane_please_check"]
+row(*TI, "human", f"Lesarten einig ({F.pct(la29['share'])} der Geschäfte)", fr(f"lectures concordantes ({F.pct(la29['share'])} des objets)"),
+    la29["n"], p3(la29["value"]), iv(la29["ci95"]), f"uneinig → bitte prüfen: {p3(lc29['value'])} {civ(lc29['ci95'])} (n {lc29['n']})",
+    fr(f"discordantes → à vérifier : {p3(lc29['value'])} {civ(lc29['ci95'])} (n {lc29['n']})"), *SPLIT_S29, T29["file"],
+    result_fr=fr(p3(la29["value"])))
+a29_ = b29["secondary_all_items"]
+row(*TI, "human", f"alle {p3(a29_['n'])} Geschäfte wie eingegeben (sekundär; {b29['excluded_from_primary']['value']} Inputs nennen die Stelle)",
+    f"les {F.t(a29_['n'], sep=' ')} objets tels quels (secondaire ; {b29['excluded_from_primary']['value']} entrées nomment l'unité)", a29_["n"],
+    f"top-1 {p3(a29_['top1']['value'])} · top-2 {p3(a29_['top2']['value'])} · top-3 {p3(a29_['top3']['value'])}", iv(a29_["top1"]["ci95"]),
+    f"Stichwort {p3(a29_['keyword']['value'])} · Mehrheit {p3(a29_['majority']['value'])}",
+    fr(f"mots-clés {p3(a29_['keyword']['value'])} · majorité {p3(a29_['majority']['value'])}"), *SPLIT_S29, T29["file"])
+f29_ = b29["secondary_gold_in_5_departments"]
+row(*TI, "human", "Gold eines der 5 Departemente (sekundär, alle Inputs)", "l'or est l'un des 5 départements (secondaire, toutes les entrées)",
+    f29_["n"], f"top-1 {p3(f29_['top1']['value'])} · top-3 {p3(f29_['top3']['value'])}", iv(f29_["top1"]["ci95"]),
+    f"Stichwort {p3(f29_['keyword']['value'])} · Mehrheit {p3(f29_['majority']['value'])}",
+    fr(f"mots-clés {p3(f29_['keyword']['value'])} · majorité {p3(f29_['majority']['value'])}"), *SPLIT_S29, T29["file"])
 b18 = TD["bern_directorates_production"]; m18 = b18["results_more"]; k18 = b18["baselines"]
 res18 = f"DE {p3(b18['result']['value'])} · FR {p3(m18[0]['value'])} · DE − FR {F.signed(p3(m18[1]['value']))} {sciv(m18[1]['ci95'])}"
 row("Bern, Leitdirektion (8), Grossratsgeschäfte 2025–26, Produktionslauf", "Berne, direction compétente (8), objets du Grand Conseil 2025–26, production",
@@ -1818,7 +2060,9 @@ for s_ in TOPICS19:
         *SP27, T27["file"])
 
 # the held-out test (S25) leads: its rows open the app's first human-label table (the highlighted, shipped row)
-rows = [r for r in rows if r["file"].startswith("eval/s25/")] + [r for r in rows if not r["file"].startswith("eval/s25/")]
+# S28 (the same held-out affairs without prefill) follows right after S25's table
+LEAD = ("eval/s25/", "eval/s28/")
+rows = [r for r in rows if r["file"].startswith(LEAD)] + [r for r in rows if not r["file"].startswith(LEAD)]
 # the pre-fix S25 readings stay in docs/PRUEFSTAND.md (with the amendment); the app's lead table shows what ships
 rows = [r for r in rows if not r["design"].startswith("vor dem Determinismus-Fix")]
 app = {"rows": rows,

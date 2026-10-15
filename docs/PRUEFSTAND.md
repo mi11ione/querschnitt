@@ -98,6 +98,18 @@ By design: D4 (German text, five examples) [0.695 [0.665, 0.725]](../eval/s25/re
 | **shipped, held out (S25; not pre-registered)** | **[0.497 [0.464, 0.530]](../eval/s25/hierarchical.json)** | [0.650 [0.619, 0.682]](../eval/s25/hierarchical.json) | [0.708 [0.671, 0.744]](../eval/s25/hierarchical.json) (n 625) | [0.609 [0.580, 0.638]](../eval/s25/hierarchical.json) | [0.599 [0.570, 0.628]](../eval/s25/hierarchical.json) | **[0.604 [0.575, 0.633]](../eval/s25/hierarchical.json)** | [0.647 [0.611, 0.681]](../eval/s25/hierarchical.json) |
 | for reference: D4 on the design set (§2, other items, not held out) | [0.538 [0.510, 0.567]](../eval/s16/hierarchical.json) | [0.699 [0.673, 0.725]](../eval/s16/hierarchical.json) | [0.727 [0.697, 0.756]](../eval/s16/hierarchical.json) (n 905) | [0.640 [0.616, 0.663]](../eval/s16/hierarchical.json) | [0.640 [0.616, 0.663]](../eval/s16/hierarchical.json) | [0.640 [0.616, 0.663]](../eval/s16/hierarchical.json) | [0.705 [0.680, 0.729]](../eval/s16/hierarchical.json) |
 
+### 1c · Without prefill (endpoint fallback): the same 927 held-out affairs (S28, pre-registered)
+
+An endpoint-capability check, not a new design: what the labelled fallback costs if the serving endpoint cannot continue an assistant message (the shipped design pre-fills the JSON opening and reads the code from the next token). With `QS_PREFILL=0` the pipeline sends one user message, the measured prompt plus a line asking the answer to begin with the JSON opening, and reads the code from the `top_logprobs` of the first token after that opening. Everything else as shipped (D4 / D1 as in §1b), on the same build; no calibration map exists for this mode, so its lane is the readings rule (pass when the two code orders agree or one reading has top p ≥ 0.9). Paired against the S25 final decisions on the same affairs ([`eval/s28/analyze.py`](../eval/s28/analyze.py) → [`eval/s28/results.json`](../eval/s28/results.json)). Pre-registration: [PREREG-BUILD.md § S28](../eval/PREREG-BUILD.md#L148) and [its amendment](../eval/PREREG-BUILD.md#L173) (a read fix after the first 20-item smoke run, whose 28 calls were never scored).
+
+| n = 927, gold = APS editors' chapter | top-1 | top-3 |
+|---|---|---|
+| **no prefill (`QS_PREFILL=0`), otherwise as shipped** | **[0.705 [0.675, 0.734]](../eval/s28/results.json)** ([654/927](../eval/s28/results.json)) | [0.839 [0.814, 0.862]](../eval/s28/results.json) |
+| shipped prefill design (S25 final, §1b), same affairs | [0.696 [0.666, 0.726]](../eval/s28/results.json) ([646/927](../eval/s28/results.json)) | [0.839 [0.814, 0.862]](../eval/s28/results.json) |
+| paired, prefill − no prefill (bootstrap 2,000, bounds outward) | [−0.008 [−0.022, +0.004]](../eval/s28/results.json) | [0.000 [−0.011, +0.011]](../eval/s28/results.json) |
+
+The two modes give the same chapter on [876](../eval/s28/results.json) of 927 affairs ([0.944 [0.928, 0.958]](../eval/s28/results.json)). Lane without prefill (readings rule): [64.2%](../eval/s28/results.json) pass ([596](../eval/s28/results.json)), precision [0.805 [0.771, 0.836]](../eval/s28/results.json); `please check` [331](../eval/s28/results.json), precision [0.525 [0.471, 0.579]](../eval/s28/results.json). With prefill the shipped lane is the recalibrated p (§1b: [67.3%](../eval/s25/results.json) pass, precision [0.812 [0.779, 0.842]](../eval/s25/results.json)). Read path: every step row's code came from the logprobs ([2,723](../eval/s28/results.json) rows; [0](../eval/s28/results.json) affairs with a code read from the generated text, [0](../eval/s28/results.json) with an unparseable row).
+
 ### 2 · APS subtopic vs APS editors, end to end (S9)
 
 | n | top-1 | top-3 | gold chapter in the shortlist | baseline: D0 chapter → best subtopic |
@@ -167,6 +179,26 @@ Gold: the themes the canton's Kantons- und Stadtentwicklung assigned by hand (OG
 S21 − S20, paired: [+0.028 [+0.014, +0.043]](../eval/s21/results.json). S20 − keyword, paired: [+0.316 [+0.293, +0.340]](../eval/s20/results.json).
 
 S20 by affair type: Interpellation [0.501 [0.467, 0.536], n 822](../eval/s20/results.json) · Schriftliche Anfrage [0.465 [0.430, 0.501], n 789](../eval/s20/results.json) · Anzug [0.546 [0.504, 0.588], n 549](../eval/s20/results.json) · Motion [0.517 [0.435, 0.599], n 141](../eval/s20/results.json) · Petition [0.419 [0.318, 0.529], n 81](../eval/s20/results.json) · Budgetpostulat [0.400 [0.218, 0.614], n 20](../eval/s20/results.json) (types with n < 20 not shown).
+
+### 6b · Ticino: the lead department vs the canton's own assignment, Gran Consiglio 2023–26, in Italian (S29, pre-registered)
+
+The first human-labelled test on an Italian-speaking parliament's own scheme. Gold: the lead department OPD carries for every Gran Consiglio affair (contributors, role `leading_department`, position 1), assigned by the cantonal administration; affairs begun 1 Jan 2023–11 Oct 2026, 2,274 in all ([`eval/s29/SOURCES.md`](../eval/s29/SOURCES.md), [`eval/s29/items.py`](../eval/s29/items.py)). Scheme file [`ti-dipartimenti.yaml`](../src/querschnitt/schemes/ti-dipartimenti.yaml): the six unit names verbatim in Italian (five Dipartimenti and the Cancelleria dello Stato) plus «Nessuno di questi» for the Consiglio di Stato as a whole or the Gran Consiglio itself; no descriptions, nothing tuned. The prompt frame is Italian; the three fixed block labels in code («Geschäft:», «Titel:», «Text (Auszug):») stay German as shipped. Production input, second code order when p < 0.9 ([`eval/s29/analyze.py`](../eval/s29/analyze.py) → [`eval/s29/results.json`](../eval/s29/results.json); [pre-registered](../eval/PREREG-BUILD.md#L186)).
+
+**Why the primary population excludes [589](../eval/s29/SOURCES.md#L45) items.** A Messaggio (the government's message to the parliament) prints the competent department in its header («competenza»), so on those inputs the answer is in the text. [589](../eval/s29/SOURCES.md#L45) of the 2,274 inputs name one of the six units ([487 of 512 Messaggi](../eval/s29/SOURCES.md#L45)); this was measured on the inputs before any call, and the primary result is on the 1,685 that name none.
+
+| Population | n | top-1 = lead department | top-2 | top-3 | keyword stems (frozen, title only) | majority | Apertus − keyword, paired |
+|---|---|---|---|---|---|---|---|
+| **primary: input names no unit** | 1,685 | **[0.647 [0.624, 0.670]](../eval/s29/results.json)** | [0.807 [0.788, 0.826]](../eval/s29/results.json) | [0.878 [0.861, 0.894]](../eval/s29/results.json) | [0.219 [0.200, 0.240]](../eval/s29/results.json) | [0.194 [0.176, 0.215]](../eval/s29/results.json) | [+0.427 [+0.400, +0.454]](../eval/s29/results.json) |
+| secondary: all inputs as fed | 2,274 | [0.722 [0.704, 0.741]](../eval/s29/results.json) | [0.848 [0.833, 0.863]](../eval/s29/results.json) | [0.905 [0.892, 0.917]](../eval/s29/results.json) | [0.232 [0.215, 0.251]](../eval/s29/results.json) | [0.188 [0.173, 0.206]](../eval/s29/results.json) | [+0.490 [+0.466, +0.514]](../eval/s29/results.json) |
+| secondary: gold one of the 5 Dipartimenti (all inputs) | 1,359 | [0.743 [0.720, 0.767]](../eval/s29/results.json) | [0.875 [0.857, 0.893]](../eval/s29/results.json) | [0.912 [0.896, 0.927]](../eval/s29/results.json) | [0.248 [0.226, 0.273]](../eval/s29/results.json) | [0.241 [0.219, 0.265]](../eval/s29/results.json) | [+0.495 [+0.465, +0.526]](../eval/s29/results.json) |
+
+Majority = Dipartimento della sanità e della socialità (primary). Lanes (primary): the two code orders agree on [83.3%](../eval/s29/results.json) of affairs ([1,405](../eval/s29/results.json)), precision [0.698 [0.673, 0.722]](../eval/s29/results.json); they disagree on [280](../eval/s29/results.json), precision [0.392 [0.337, 0.452]](../eval/s29/results.json) (`please check`).
+
+Per lead department (primary; share of its affairs that Apertus assigns to it): health and social affairs (DSS) [0.896 [0.858, 0.925], n 328](../eval/s29/results.json) · finance and economy (DFE) [0.590 [0.533, 0.647], n 286](../eval/s29/results.json) · territory (DT) [0.793 [0.740, 0.839], n 262](../eval/s29/results.json) · institutions (DI) [0.624 [0.563, 0.681], n 258](../eval/s29/results.json) · none of these (Consiglio di Stato as a whole or the Gran Consiglio) [0.266 [0.214, 0.327], n 236](../eval/s29/results.json) · education, culture and sport (DECS) [0.795 [0.738, 0.844], n 225](../eval/s29/results.json) · State Chancellery [0.188 [0.121, 0.282], n 90](../eval/s29/results.json).
+The weak spots are the two non-department classes: of the 236 «none of these» affairs, [75](../eval/s29/results.json) go to the Dipartimento delle istituzioni; of the 90 State Chancellery affairs, [39](../eval/s29/results.json) go there too.
+By affair type (primary): Interrogazione [0.699 [0.665, 0.731], n 761](../eval/s29/results.json) · Interpellanza [0.630 [0.574, 0.684], n 295](../eval/s29/results.json) · Mozione [0.660 [0.600, 0.716], n 256](../eval/s29/results.json) · Iniziativa parlamentare elaborata [0.633 [0.559, 0.703], n 172](../eval/s29/results.json) · Rapporti vari [0.521 [0.405, 0.636], n 69](../eval/s29/results.json) · Iniziativa parlamentare generica [0.593 [0.471, 0.706], n 64](../eval/s29/results.json) · Iniziativa cantonale [0.296 [0.158, 0.485], n 27](../eval/s29/results.json) · Messaggio [0.200 [0.088, 0.392], n 25](../eval/s29/results.json) (types with n < 20 not shown).
+
+Bern (§5, S18) and Basel-Stadt (§6, S20) are reported beside this result, not compared with it: the schemes differ, and so do the chance rates (majority and keyword rows above).
 
 ### 7 · The AI judge itself against human labels
 
@@ -422,6 +454,8 @@ Reading: one sentence casts a wide net on narrow topics: every judge-relevant af
 - Where no official labels exist, the gold is the AI judge. It matches APS editors on [0.790 [0.728, 0.841]](../eval/spikes/s11-anchor/anchor.json) of chapters and says yes to 27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.
 - New topics defined in one sentence are measured against the AI judge only. They flag every judge-relevant affair in S19 but over-flag narrow topics: precision of flags [0.225 [0.123, 0.376] (9/40)](../eval/s19/results.json) for wolf, [0.136 [0.047, 0.334] (3/22)](../eval/s19/results.json) for AI in schools (§15).
 - The held-out test (S25, §1b) pre-registered the chapter, its lanes and plain list prompting (S25b); its subtopic and hierarchical figures (subtopic top-1 [0.497 [0.464, 0.530]](../eval/s25/hierarchical.json), hF [0.604 [0.575, 0.633]](../eval/s25/hierarchical.json)) were computed after the result and are not pre-registered. Its D1 cell (no APS-labelled example: one-word procedural titles such as «Vereidigung», or a French text) holds 10 affairs, too few to measure D1 held out.
+- Without prefill (the endpoint fallback `QS_PREFILL=0`, §1c) the chapter top-1 on the held-out affairs is [0.705 [0.675, 0.734]](../eval/s28/results.json), paired prefill − no prefill [−0.008 [−0.022, +0.004]](../eval/s28/results.json); no calibration map exists for that mode, so its lane is the readings rule, not the recalibrated p. Measured on one build; another endpoint may tokenise the JSON opening differently (the S28 amendment).
+- Ticino (§6b, Italian, the canton's own lead department) is measured on the inputs that do not name the unit (1,685 of 2,274). The State Chancellery and «none of these» are weak (0.188 and 0.266); the gold is OPD's lead-department field, and its licence is unconfirmed (SOURCES.md). No French-speaking parliament's own scheme is measured yet (Bern's French titles, §5, are the closest).
 - All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.
 
 ## To measure
@@ -430,4 +464,6 @@ Reading: one sentence casts a wide net on narrow topics: every judge-relevant af
 - recalibration refit on the build that serves at the event
 - ECE intervals (bootstrap)
 - judge precision on human negatives
+- a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)
+- a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)
 - Romansh

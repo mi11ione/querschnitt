@@ -10,7 +10,9 @@ D="${QS_DATA_DIR:-../data}"; case "$D" in /*) ;; *) D="$PWD/$D" ;; esac
 export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$D/inputs.jsonl.gz" QS_EXPORT_DIR="$D/opd-new"
 L="runs/nightly/$(date +%F).log"; PY="${PY:-.venv/bin/python}"
 CAF=""; command -v caffeinate > /dev/null 2>&1 && CAF="caffeinate -i"
-day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
+day=$(date +%d); cut=${QS_NIGHTLY_CUT:-$(( ${day#0} % 2 == 0 ))}
+# the new export is fetched by the first pass: the cut pass on even days, else the model pass itself
+FETCH="--no-fetch"; [ "$cut" = 1 ] || FETCH=""
 {
   echo "== $(date '+%F %T') nightly start (endpoint cut for first pass: $cut)"
   t0=$(date +%s)
@@ -22,8 +24,9 @@ day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
     echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics
     t1=$(date +%s)
   fi
-  # the model pass scores the queue (everything pass 1 or an earlier night left unscored), whatever --since says
-  $CAF $PY -m querschnitt delta --since yesterday --no-fetch --max-rate 1.0 --last runs/nightly/last.json
+  # the model pass scores the queue (everything pass 1 or an earlier night left unscored), whatever --since says;
+  # on a day without a cut pass it also fetches the new export
+  $CAF $PY -m querschnitt delta --since yesterday $FETCH --max-rate 1.0 --last runs/nightly/last.json
   t2=$(date +%s)
   echo "-- $(date '+%F %T') after model pass:"; $PY -m querschnitt metrics
   echo "== $(date '+%F %T') nightly end, wall $(( (t2 - t0) / 60 )) min"

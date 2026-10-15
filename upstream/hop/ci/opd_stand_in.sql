@@ -1,9 +1,12 @@
 -- Stand-in for the two OPD tables that migrations 0001-0003 reference, for the `hop` CI job (.github/workflows/ci.yml).
--- Not part of the merge request: OPD has these tables. Only the columns the migrations and the Hop pipeline use:
+-- Not part of the merge request: OPD has these tables. Only the columns the migrations, the Hop pipeline and the API router use:
 --   bodies.id, bodies.body_key   foreign keys topics.body_id, topics.confirmed_by_body_id, topic_schemes.body_id,
 --                                topic_feed_bodies.body_id; the seed (0002) looks up BE and BS; the pipeline looks up
 --                                body_id by body_key
 --   affairs.id                   foreign key topics.affair_id
+--   affairs.language, begin_date the filters affair_lang, date_from, date_to of the API router (../../opd/api/router.py);
+--                                empty here, the router tests (../../opd/tests/test_router.py) set them in a rolled-back
+--                                transaction
 -- Rows: the bodies and affairs of ci/topics.ci.jsonl, ids as in the 6 Oct OPD bulk export (bodies.ndjson.gz).
 BEGIN;
 
@@ -15,7 +18,9 @@ CREATE TABLE bodies (
 CREATE TABLE affairs (
   id        integer PRIMARY KEY,
   body_id   integer REFERENCES bodies (id),
-  body_key  text
+  body_key  text,
+  language  text,
+  begin_date timestamp
 );
 
 INSERT INTO bodies (id, body_key) VALUES

@@ -132,3 +132,31 @@ class TopicSchemeList(BaseModel):
 class TopicCodeList(BaseModel):
     data: list[TopicCode]
     meta: Meta
+
+
+class TopicCodeCount(BaseModel):
+    """`GET /v1/topics/group_by/code`: one code with its counts for the filters given."""
+    scheme_key: str
+    code: str
+    level: Literal[1, 2]
+    label: Union[Labels, str, None] = None
+    count: int = Field(..., ge=0, description="rows matched (with the default filters one per affair and scheme)")
+    affair_count: int = Field(..., ge=0, description="distinct affairs")
+
+
+class TopicBodyCount(BaseModel):
+    """`GET /v1/topics/group_by/body_key`: one parliament with its counts for the filters given."""
+    body_key: Optional[str] = None
+    body_id: Optional[int] = None
+    count: int = Field(..., ge=0)
+    affair_count: int = Field(..., ge=0)
+
+
+class TopicCodeCountList(BaseModel):
+    data: list[TopicCodeCount]
+    meta: Meta
+
+
+class TopicBodyCountList(BaseModel):
+    data: list[TopicBodyCount]
+    meta: Meta

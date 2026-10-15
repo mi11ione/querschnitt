@@ -174,6 +174,13 @@ jobs:
           if grep -n "ERROR" "$RUNNER_TEMP/load4-full.log"; then exit 1; fi
           psql -v ON_ERROR_STOP=1 -v n="$(gzip -dc "$full" | jq -c 'select(.provenance == "inferred")' | wc -l)" -v fixture=0 \
             -f upstream/hop/ci/assert_load.sql
+      - name: API router (upstream/opd/api/router.py) on the loaded rows; each test in a transaction that is rolled back
+        env: {OPD_TEST_DSN: "postgresql://opd:opd@localhost:5432/openparldata"}
+        run: |
+          pip install -q "fastapi>=0.115" "httpx>=0.27" "pytest>=8" "psycopg[binary]>=3.2"
+          python -m pytest -p no:cacheprovider -v -rs upstream/opd/tests/test_router.py | tee "$RUNNER_TEMP/router.log"
+          if grep -n "SKIPPED" "$RUNNER_TEMP/router.log"; then exit 1; fi
+          test "$(psql -At -c 'SELECT count(*) FROM topic_feed_bodies') $(psql -At -c 'SELECT count(*) FROM topics WHERE provenance = $$confirmed$$')" = "0 0"
       - name: migrations down 0003, 0002, 0001 with the loaded rows in place
         run: |
           psql -v ON_ERROR_STOP=1 -q -c "DROP SCHEMA ci CASCADE"

@@ -42,7 +42,7 @@ with gzip.open(f"{app}/topics.jsonl.gz", "rt") as f:
 if ch != aps:
     sys.exit(f"topics.jsonl.gz is not from the export that wrote affairs.json ({len(ch - aps)} chapters without rows, "
              f"{len(aps - ch)} rows without a chapter); rerun: querschnitt export --topics-file")
-if n != len(ids) or n != meta["affairs"]:
+if n != len(ids) or n != meta["affairs"] + (meta.get("extra") or {}).get("affairs", 0):   # slice + extra ranges (--extra)
     sys.exit(f"inputs hold {n} of the export's {len(ids)} affairs (meta: {meta['affairs']}); rebuild the export from these inputs")
 print(f"affairs {n} (= meta.json) · build {meta.get('build_short') or meta.get('build')} · generated {meta.get('generated_at')}")
 PYEOF

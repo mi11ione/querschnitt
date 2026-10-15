@@ -45,7 +45,7 @@ export class Atlas {
     const nP = nS - nC;
     const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nP)} ${L.of} ${num(nS)}` }, h('b', {}, pct(nS ? nP / nS : NaN, 0).replace(/\s/g, '\u2009')),
       h('span', {}, L.bigPass), h('span', { class: 'bn-sub', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('i', { class: 'rtick' }),
-        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.perWeek(num(Math.round(nC / weeks)))}`));
+        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.round(nC / weeks)))}`));
     const big = h('div', { class: 'big' },
       bigN(num(scoredAny), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
       bigShare);

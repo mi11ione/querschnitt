@@ -85,7 +85,8 @@ w(f"Wayback process pages not used before; German title + submitted text. "
   "D0–D3 are held out on these items (S9, nothing tuned on them). D4 is pre-registered (S16) and measured on the same S9 items, but its "
   f"design was chosen after S9 on those items (D4 combines D1 and D3): these {num(d4['n'], 0)} items are the set the shipped design was "
   f"chosen on, so its row is not a held-out result. The held-out test of the shipped design is §1b: S25, {num(h25['n'], 0)} fresh "
-  f"federal affairs ({L('PREREG-BUILD.md § S25', d4['prereg_more'])}).")
+  f"federal affairs ({L('PREREG-BUILD.md § S25', d4['prereg_more'])}). A later search of five design variants on these items (S31, §1d; "
+  "dev only, not pre-registered) found none that beats D4.")
 w("")
 w("| Design | top-1 | top-3 | Δ top-1, paired | |")
 w("|---|---|---|---|---|")
@@ -320,6 +321,53 @@ w(f"The two modes give the same chapter on {L(num(same28['k']), same28['at'])} o
   f"(§1b: {L(F.pct(l25['pass']['share']), l25['pass']['at'])} pass, precision {r(l25['pass'])}). Read path: every step row's code came from "
   f"the logprobs ({L(num(rp['all_rows_logprobs']), rp['at'])} rows; {L(str(rp['affairs_with_a_text_read']), rp['at'])} affairs with a code "
   f"read from the generated text, {L(str(rp['affairs_with_an_unparseable_row']), rp['at'])} with an unparseable row).")
+w("")
+
+# ------------------------------------------------------------------ S31: a design search on the design set (dev only, not pre-registered)
+t31 = T["aps_design_search_s31"]; b31 = t31["breakdowns"]; g31 = b31["gate"]; fi31 = b31["fresh_items"]; c31 = b31["calls"]
+s1_31, s2_31, r9_31 = b31["stage1_sub400"], b31["stage2_all"], b31["stage2_rest957"]
+n1_31, n9_31 = s1_31["n"], r9_31["n"]
+w(f"### 1d · Design search on the design set: five variants against D4, none better (S31, dev only, not pre-registered)")
+w("")
+w(f"A documented search for a better federal design on §1's {num(t31['n'], 0)} items, the set D4 was chosen on. This is dev, not a test: "
+  "it has no pre-registration entry and nothing in it is held out; it documents that the shipped design was not beaten there. Same input as "
+  "S16; examples leave-one-out (every item's example list excludes the item itself); one decision rule for every design "
+  "(`compose.chapter_decision` generalised to n readings). The gate was fixed before any S31 call: a paired difference vs D4 of at least "
+  f"{L(sgn(g31['threshold'], 2), g31['threshold_at'])} on all {num(t31['n'], 0)} items, with the 95% interval above 0. Stage 1 scored the five "
+  f"variants on a fixed random {L(num(n1_31['value']), n1_31['at'])} items (V5 was added after V1–V4 had been seen there, as their "
+  f"combination); the best two went to all {num(t31['n'], 0)} ([`eval/s31/DEV.md`](../eval/s31/DEV.md); "
+  "[`eval/s31/analyze.py`](../eval/s31/analyze.py) → [`eval/s31/results.json`](../eval/s31/results.json)). Gold: APS editors' chapter. "
+  "Top-1 with Wilson 95% (bounds outward); Δ paired bootstrap 2,000 over items, bounds outward at 4 decimals.")
+w("")
+w(f"| Variant (what changes vs D4) | stage 1, {num(n1_31['value'])} items: top-1 | Δ vs D4, paired | all {num(t31['n'], 0)} items: top-1 | top-3 | "
+  "Δ vs D4, paired | gate (≥ +0.02, interval above 0) |")
+w("|---|---|---|---|---|---|---|")
+st2_31 = {c_["design"]: c_ for c_ in s2_31["designs"]}
+for c_ in s1_31["designs"]:
+    d_ = c_["design"]; c2_ = st2_31.get(d_)
+    name_ = "**D4 (shipped)**" if d_ == "D4" else f"{d_} {c_['what']}"
+    d1_ = r(c_["minus_D4"], d=4, signed=True) if "minus_D4" in c_ else "—"
+    if c2_:
+        top2_, t3_ = r(c2_["top1"]), r(c2_["top3"])
+        d2_ = r(c2_["minus_D4"], d=4, signed=True) if "minus_D4" in c2_ else "—"
+        gate_ = "—" if d_ == "D4" else ("passes" if g31["finalists"][d_]["passes"] else "no")
+    else:
+        top2_, t3_, d2_, gate_ = "—", "—", "—", "not taken to stage 2"
+    w(f"| {name_} | {r(c_['top1'])} | {d1_} | {top2_} | {t3_} | {d2_} | {gate_} |")
+w("")
+rest_ = {c_["design"]: c_ for c_ in r9_31["designs"]}
+dn_ = b31["decision_rule_note"]; best_ = t31["result"]
+w(f"Outcome: no variant cleared the gate. The closest, V3 (the five examples in both code orders), is {r(best_, d=4, signed=True)} on all "
+  f"{num(t31['n'], 0)} items; on the {L(num(n9_31['value']), n9_31['at'])} items stage 1 did not see, V1 {r(rest_['V1']['minus_D4'], d=4, signed=True)} "
+  f"and V3 {r(rest_['V3']['minus_D4'], d=4, signed=True)}, both smaller than in stage 1. V3 also lowers top-3. So no test was run and D4 stays; "
+  f"the {num(h25['n'], 0)} S25 held-out affairs (§1b) were not used by any S31 call and stay unspent for one later pre-registered look at a "
+  f"single winner. Under the common rule D4 scores {r(t31['baselines'][0])}; §1 reports {r(d4['result'])} with the S16 rule, which has no "
+  f"«no policy topic» check ({L(str(dn_['items_differ']), dn_['at'])} items differ). Fresh items for a new test: a Wayback listing of APS process "
+  f"pages from 11 Oct 2026 on found {L(str(fi31['new_process_ids_with_200_capture']['value']), fi31['new_process_ids_with_200_capture']['at'])} new "
+  f"pages; of the {L(str(fi31['unjoined_s25_numbers']), fi31['also_at'])} unjoined S25 numbers, {L(str(fi31['match_newer_opd']), fi31['also_at'])} "
+  f"match a newer OPD snapshot and {L(str(fi31['with_production_input']), fi31['also_at'])} of those has a production input "
+  f"([`eval/s31/cdx_check/`](../eval/s31/cdx_check/)). Calls: {L(num(c31['calls']), c31['at'])} on the locked build, USD "
+  f"{L(num(c31['usd_list_price'], 4), c31['at'])} at list price.")
 w("")
 
 sub = T["aps_subtopic"]
@@ -762,7 +810,8 @@ def nm(block):
 
 
 j19 = a19["judge"]; neither = {s_: next(c for c in p19[s_]["strata"]["cells"] if c["cell"] == "neither") for s_ in TOP}
-w("### 15 · Three new topics defined in one sentence: wolf, heat protection, AI in schools (S19, S26, S27, pre-registered)")
+w("### 15 · New topics defined in one sentence: wolf, heat protection, AI in schools; held out: light pollution, drones, pesticides "
+  "(S19, S26, S27, S30, pre-registered)")
 w("")
 w(f"The three S13 topics never used in any tuning, each a one-sentence question "
   f"([`src/querschnitt/schemes/adhoc/`](../src/querschnitt/schemes/adhoc/)): «{p19['wolf']['name_de']}», «{p19['hitze']['name_de']}», "
@@ -828,6 +877,64 @@ w(f"Reading: one sentence casts a wide net on narrow topics: every judge-relevan
   "In the product, flags the second question does not confirm go to `please check`, not away.")
 w("")
 
+# S30: three further narrow topics held out; a generated scope as a third question on the confirmed flags
+a30 = T["adhoc_scope_check"]; p30 = a30["breakdowns"]["per_topic"]; TOP30 = a30["topics"]; j30 = a30["judge"]
+rule30, dev30 = a30["breakdowns"]["product_rule"], a30["breakdowns"]["dev"]
+nb30 = {s_: next(c for c in p30[s_]["strata"]["cells"] if c["cell"] == "neither") for s_ in TOP30}
+pp = p30["pooled"]
+w(f"**A generated scope as a third question on the flags (S30, held out, pre-registered).** Dev on the S19 packets above (four variants, "
+  "tuning allowed; not held out) picked the variant: V4, chosen after its dev results were seen, as the pre-registration states "
+  f"({L('PREREG-BUILD.md § S30', a30['prereg'])}, {L('dev choice', dev30['chosen_at'])}). One more plain generation request per topic writes "
+  "an include and an exclude list in de/fr/it from the user's sentence, and every confirmed flag is asked «Gehört das folgende "
+  "parlamentarische Geschäft zum Thema «…»?» with those lists (plus «affairs whose title does not show the topic» as an exclusion); a flag "
+  "stays confirmed only if the S27 question and this one both say yes. Test: three new one-sentence topics, never used before "
+  f"(«{p30['licht']['name_de']}», «{p30['drohnen']['name_de']}», «{p30['pestizide']['name_de']}» as generated from the sentences in "
+  f"[`eval/s30/sentences.json`](../eval/s30/sentences.json)), every affair with a title begun 16–31 Mar 2026 "
+  f"({L(num(a30['n']), p30['licht']['strata']['at'])}); generated topics and keyword lists frozen before any test call "
+  "([`eval/s30/topics.json`](../eval/s30/topics.json), [`eval/s30/keywords_frozen.json`](../eval/s30/keywords_frozen.json)). Checked: every "
+  f"affair any arm or keyword list flagged plus {L(str(nb30['licht']['n']), p30['licht']['strata']['at'])} random others per topic "
+  f"({L(num(j30['items']), pp['items_checked']['at'])} in all), shown with title, long title and the start of the text. Judge: blind Claude "
+  f"runs A (shuffled) and B (reversed) agree on every item (run A = run B {L(num(j30['agree_AB']), j30['at'])}, "
+  f"{L(str(j30['tie_break_C']), j30['tie_break_at'])} tie-breaks); judge positives among the random others: "
+  + ", ".join(f"{L(nb30[s_]['kn'], p30[s_]['strata']['at'])} ({p30[s_]['name_en']})" for s_ in TOP30) +
+  ". Shipped = the product before S30 (yes/no flag kept by the S27 question). Precision of flags: Wilson 95% from k and n, bounds outward; "
+  "recall weighted to the population and differences paired on the same resamples (stratified bootstrap 2,000) "
+  "([`eval/s30/analyze.py`](../eval/s30/analyze.py) → [`eval/s30/results.json`](../eval/s30/results.json)).")
+w("")
+w("| S30, agreement with the AI judge, held out | judge positives (checked) | flags shipped / with scope check | precision shipped | "
+  "precision with scope check | Δ precision, paired | recall shipped | recall with scope check | Δ recall, paired | "
+  "keyword list: precision / recall |")
+w("|---|---|---|---|---|---|---|---|---|---|")
+for s_ in TOP30 + ["pooled"]:
+    b_ = p30[s_]; sh_, va_, kw_ = b_["shipped"], b_["variant"], b_["kw"]
+    nm_ = f"**{b_['name_en']}**" if s_ == "pooled" else b_["name_en"]
+    w(f"| {nm_} | {cnt(b_['judge_positives'])} ({cnt(b_['items_checked'])}) | {cnt(sh_['flags'])} / {cnt(va_['flags'])} | {rk(sh_['precision'])} | "
+      f"**{rk(va_['precision'])}** | {r(b_['precision_diff'], signed=True)} | {r(sh_['recall'])} | {r(va_['recall'])} | "
+      f"{r(b_['recall_diff'], signed=True)} | {rk(kw_['precision'])} / {r(kw_['recall'])} |")
+w("")
+yn_, ys_ = pp["shipped_yn"], pp["yn_sc"]
+w(f"Secondary arms (pre-registered), pooled: the yes/no step alone {rk(yn_['precision'])}, recall {r(yn_['recall'])}; yes/no + scope question "
+  f"without the S27 question {rk(ys_['precision'])}, recall {r(ys_['recall'])}.")
+w("")
+pe_ = p30["pestizide"]
+w(f"Reading, all against the AI judge: pooled over the three topics the scope check raises the precision of confirmed flags from "
+  f"{L(num(pp['shipped']['precision']['value']), pp['shipped']['precision']['at'])} to {L(num(pp['variant']['precision']['value']), pp['variant']['precision']['at'])} "
+  f"({r(pp['precision_diff'], signed=True)}) and costs recall ({L(num(pp['shipped']['recall']['value']), pp['shipped']['recall']['at'])} → "
+  f"{L(num(pp['variant']['recall']['value']), pp['variant']['recall']['at'])}, {r(pp['recall_diff'], signed=True)}): it drops "
+  f"{L(str(pp['lost_judge_positives']['value']), pp['lost_judge_positives']['at'])} judge positives, both pesticides affairs (veterinary insecticides; "
+  "pests and plant diseases). It asks only on flags the shipped design already confirms, so recall can only fall. "
+  f"{L('The pre-registered product rule', rule30['at'])} (pooled precision interval above 0, no recall interval below 0) is met, narrowly: the "
+  f"precision interval starts at {L(sgn(rule30['pooled_precision_diff_ci_lo']), pp['precision_diff']['ci_at'])}, and the pooled and pesticides "
+  f"recall intervals end at {L(num(rule30['recall_diff_ci_hi']['pooled']), pp['recall_diff']['ci_at'])}. So the product asks it for new topics "
+  "with a scope (`prompts.scope_check_prompt`, `adhoc.SCOPE_PROMPT`); flags it does not confirm go to `please check`, not away; topic files "
+  "without the lists (Digitalisierung, the S19 topics) are unchanged. The frozen keyword lists beat both arms on precision here: pooled "
+  f"{rk(pp['kw']['precision'])} against {L(num(pp['variant']['precision']['value']), pp['variant']['precision']['at'])} with the scope check and "
+  f"{L(num(pp['shipped']['precision']['value']), pp['shipped']['precision']['at'])} without (Wilson intervals overlap; not a paired test), at recall "
+  f"{r(pp['kw']['recall'])}. Judge positives per topic are "
+  + " / ".join(f"{cnt(p30[s_]['judge_positives'])}" for s_ in TOP30) +
+  f" ({', '.join(p30[s_]['name_en'] for s_ in TOP30)}): too few to read any topic on its own; the rule and this reading rest on the pooled figures.")
+w("")
+
 # ------------------------------------------------------------------ limits
 w("## Limits")
 w("")
@@ -847,7 +954,14 @@ w("- On the Federal Parliament's own multi-tag task the trained BFH model is ahe
 w(f"- Where no official labels exist, the gold is the AI judge. It matches APS editors on {r(T['judge_anchor_aps']['result'])} of chapters and says yes to "
   "27/30 DVS items; its two Claude runs are close to one judge (0.99 agreement), and its precision on human negatives is not measured.")
 w(f"- New topics defined in one sentence are measured against the AI judge only. They flag every judge-relevant affair in S19 but over-flag "
-  f"narrow topics: precision of flags {rk(p19['wolf']['precision'])} for wolf, {rk(p19['ki-schule']['precision'])} for AI in schools (§15).")
+  f"narrow topics: precision of flags {rk(p19['wolf']['precision'])} for wolf, {rk(p19['ki-schule']['precision'])} for AI in schools (§15). "
+  f"On three further narrow topics held out (S30), the scope check (now asked for new topics with a scope) raises pooled precision from "
+  f"{L(num(pp['shipped']['precision']['value']), pp['shipped']['precision']['at'])} to {L(num(pp['variant']['precision']['value']), pp['variant']['precision']['at'])} "
+  f"({r(pp['precision_diff'], signed=True)}) at a recall cost ({r(pp['recall_diff'], signed=True)}), on {cnt(pp['judge_positives'])} judge positives "
+  f"in all; the frozen keyword lists were more precise still ({L(num(pp['kw']['precision']['value']), pp['kw']['precision']['at'])}).")
+w(f"- The federal design was chosen on the design set (§1). A search of five variants there (S31, §1d; dev only, not pre-registered) found none "
+  f"that clears the gate (best {r(t31['result'], d=4, signed=True)}); the S25 held-out items stay unspent for one pre-registered look at a single "
+  f"winner, and no fresh APS-labelled items were available (§1d).")
 w(f"- The held-out test (S25, §1b) pre-registered the chapter, its lanes and plain list prompting (S25b); its subtopic and hierarchical "
   f"figures (subtopic top-1 {r(hm25['subtopic top-1 end to end (shipped, held out)'])}, hF {r(t25h['result'])}) were computed after the "
   f"result and are not pre-registered. Its D1 cell (no APS-labelled example: one-word procedural titles such as «Vereidigung», or a French "

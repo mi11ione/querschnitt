@@ -1010,6 +1010,114 @@ tests.append(dict(
     build=s28["build"] + " (run runs/s28, mode no-prefill)", model=MODEL, date="2026-10-15",
     shipped="labelled fallback only (QS_PREFILL=0) for an endpoint that cannot continue an assistant message; the default ships prefill"))
 
+# ---------------------------------------------------------------- S31: a documented design search on the design set (dev only, not pre-registered)
+# Five variants of the federal design against D4 on the S9/S16 design set, leave-one-out examples, a gate fixed before any S31 call
+# (paired Δ vs D4 ≥ +0.02 on all 1,357 with the 95% interval above 0). No variant cleared it, so no test was run: the S25 held-out
+# items were not touched (unspent). Documents that the shipped design was not beaten on the set it was chosen on.
+S31R, S31M = f"{QE}/s31/results.json", f"{QE}/s31/DEV.md"
+s31 = g(S31R); d31 = s31["dev"]; x31 = s31["test"]
+assert d31["winner"] is None and x31["run"] is False, (d31["winner"], x31["run"])
+assert d31["stage2_all"]["n_items"] == d31["stage2_all"]["n_scored_all"] == N16, d31["stage2_all"]["n_items"]
+assert d31["stage1_sub400"]["n_items"] == d31["stage1_sub400"]["n_scored_all"]
+assert d31["stage2_rest957"]["n_items"] + d31["stage1_sub400"]["n_items"] == N16
+assert d31["calls"]["builds"] == [BUILD], d31["calls"]["builds"]
+V31 = {"D4": ("shipped D4: reading 1 with the five nearest APS-labelled examples + reading 2 (other code order) without, chapter read back "
+              "from the subtopic", None),
+       "V1": ("k10: reading 1 shows the 10 nearest examples (frozen 5 + next 5)", "| V1 | k10 |"),
+       "V2": ("subn: reading 1's five examples also name the editors' main subtopic", "| V2 | subn |"),
+       "V3": ("ex2: reading 2 (S1 code order) also shows the five examples", "| V3 | ex2 |"),
+       "V4": ("third: when readings 1 and 2 disagree, a third reading (five examples, a third code order)", "| V4 | third |"),
+       "V5": ("ex2+third: V3, plus V4's third reading when V3's two readings disagree (fixed after V1–V4 were seen on the 400)", "| V5 | ex2+third |")}
+STAGE31 = {"stage1_sub400": "stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+           "stage2_all": "stage 2, all design-set items", "stage2_rest957": "stage 2, the design-set items stage 1 did not see"}
+
+
+def s31k(stage, d_, metric):
+    """chapter top-1 of one design in eval/s31/results.json: top1 = k1 / n truncated at 4 decimals (asserted); Wilson 95% recomputed
+    exactly from k and n, bounds rounded outward at 3 decimals (the stored interval is kept as ci95_source when it differs)."""
+    b = g(S31R, "dev", stage, "designs", d_); k, n = b["k1"], g(S31R, "dev", stage, "n_items")
+    assert b["top1"] == math.floor(k / n * 10 ** 4) / 10 ** 4 and b["n_missing"] == 0, (stage, d_, b)
+    lo_, hi_ = wilson_exact(k, n)
+    ci_ = [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))]
+    out = {"metric": metric, "value": b["top1"], "k": k, "n": n, "kn": f"{k}/{n}", "ci95": ci_,
+           "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)"}
+    if list(b["top1_ci"]) != ci_: out["ci95_source"] = list(b["top1_ci"])
+    out["at"] = loc(S31R, "dev", stage, "designs", d_, "top1")
+    return out
+
+
+def s31d(stage, d_, metric):
+    """paired Δ top-1 design − D4 (mean of per-item differences, stored truncated at 4 decimals; percentile bootstrap 2,000 over items,
+    seed 2026, bounds rounded outward at 4 decimals, eval/s31/analyze.py)."""
+    b = g(S31R, "dev", stage, "designs", d_, "minus_D4")
+    return {"metric": metric, "value": b["diff"], "ci95": list(b["ci"]),
+            "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+            "n": g(S31R, "dev", stage, "n_items"), "at": loc(S31R, "dev", stage, "designs", d_, "minus_D4", "diff"),
+            "ci_at": loc(S31R, "dev", stage, "designs", d_, "minus_D4", "ci")}
+
+
+st31 = {}
+for stage_, lab_ in STAGE31.items():
+    n_ = d31[stage_]["n_items"]; cells_ = []
+    for d_ in d31[stage_]["designs"]:
+        c_ = {"design": d_, "what": V31[d_][0], "top1": s31k(stage_, d_, f"chapter top-1, {d_}, {lab_} (n {n_})"),
+              "top3": {"metric": f"chapter top-3, {d_}, {lab_}", "value": g(S31R, "dev", stage_, "designs", d_, "top3"),
+                       "at": loc(S31R, "dev", stage_, "designs", d_, "top3")}}
+        if d_ != "D4": c_["minus_D4"] = s31d(stage_, d_, f"paired Δ top-1, {d_} − D4, {lab_}")
+        if V31[d_][1]: c_["described_at"] = md(S31M, V31[d_][1])
+        cells_.append(c_)
+    st31[stage_] = {"what": lab_, "n": {"value": n_, "at": loc(S31R, "dev", stage_, "n_items")}, "designs": cells_}
+gate31 = g(S31R, "dev", "gate")
+assert set(gate31) == {"V1", "V3"} and not any(v_["passes"] for v_ in gate31.values())
+GATE31 = 0.02
+for d_, v_ in gate31.items():   # the gate as written: Δ ≥ +0.02 and the interval above 0; neither holds for either finalist
+    assert not (v_["diff"] >= GATE31 and v_["ci"][0] > 0) and v_["diff"] == g(S31R, "dev", "stage2_all", "designs", d_, "minus_D4", "diff")
+m31 = re.search(r"S16 reported (0\.\d+) with the S16 rule.*\((\d+) items differ\)", d31["note"])
+assert m31 and float(m31.group(1)) == next(t_ for t_ in tests if t_["id"] == "aps_chapter_shipped_d4")["result"]["value"], d31["note"]
+m31b = re.search(r"\((\d+) numbers\).*?: (\d+) match, (\d+) have a production input", x31["fresh_items"]["also"])
+assert m31b, x31["fresh_items"]["also"]
+best31 = max(gate31, key=lambda d_: gate31[d_]["diff"]); assert best31 == "V3"
+tests.append(dict(
+    id="aps_design_search_s31", gold="human", subject="Apertus",
+    title_de=f"APS-Kapitel, Design-Set ({F.t(N16, sep=chr(39))} Bundesgeschäfte): fünf Varianten gegen D4, keine besser (S31, nur Dev, nicht vorregistriert)",
+    title_fr=f"Chapitre APS, jeu de conception ({F.t(N16, sep=' ')} objets fédéraux) : cinq variantes contre D4, aucune meilleure (S31, dev seulement, "
+             "non préenregistré)",
+    n=N16, design="die S9/S16-Geschäfte (Design-Set, Gold = APS-Redaktion), gleicher Input wie S16; Beispiele leave-one-out (die eingefrorenen "
+    "S9-Nachbarn, jedes Geschäft ohne sich selbst); fünf Varianten von D4 (V1 10 Beispiele, V2 Beispiele mit Unterthema, V3 Beispiele in "
+    "beiden Code-Reihenfolgen, V4 dritte Lesart bei Uneinigkeit, V5 V3 + V4); Stufe 1 auf 400 zufälligen Geschäften, die zwei besten auf allen; "
+    "eine Entscheidregel für alle (compose.chapter_decision auf n Lesarten verallgemeinert); Schwelle vor jedem S31-Aufruf: Δ gegen D4 ≥ +0.02 "
+    "auf allen mit 95%-Intervall über 0",
+    result=s31d("stage2_all", best31, f"paired Δ chapter top-1, best variant ({best31}: examples in both code orders) − D4, all {N16} design-set items"),
+    results_more=[s31d("stage2_all", "V1", f"paired Δ chapter top-1, V1 − D4, all {N16} design-set items"),
+                  s31k("stage2_all", best31, f"chapter top-1, {best31}, all {N16} design-set items"),
+                  s31d("stage2_rest957", best31, f"paired Δ chapter top-1, {best31} − D4, the {d31['stage2_rest957']['n_items']} items stage 1 did not see")],
+    baselines=[dict(s31k("stage2_all", "D4", f"chapter top-1, D4 (shipped), production decision rule, all {N16} design-set items"),
+                    name="D4 (shipped), same items, production decision rule (compose.chapter_decision)")],
+    breakdowns={**st31,
+                "gate": {"rule": "paired Δ top-1 vs D4 on all design-set items ≥ +0.02, with the 95% interval above 0 (fixed before any S31 call)",
+                         "threshold": GATE31, "threshold_at": md(S31M, "+0.02 on all 1,357 items"),
+                         "finalists": {d_: {"value": v_["diff"], "ci95": list(v_["ci"]), "passes": v_["passes"], "at": loc(S31R, "dev", "gate", d_)}
+                                       for d_, v_ in gate31.items()},
+                         "winner": None, "at": loc(S31R, "dev", "winner")},
+                "decision_rule_note": {"text": d31["note"], "s16_reported": float(m31.group(1)), "items_differ": int(m31.group(2)),
+                                       "at": loc(S31R, "dev", "note")},
+                "heldout_unspent": {"test_run": False, "reason": x31["reason"], "at": loc(S31R, "test", "reason"),
+                                    "what": f"the {N25} S25 held-out affairs were not used by any S31 model call; they stay unspent for a later "
+                                            "single pre-registered look at one winner (eval/s31/run.py, not run)"},
+                "fresh_items": {"searched": x31["fresh_items"]["searched"],
+                                "new_process_ids_with_200_capture": {"value": x31["fresh_items"]["new_process_ids_with_200_capture"],
+                                                                     "at": loc(S31R, "test", "fresh_items", "new_process_ids_with_200_capture")},
+                                "unjoined_s25_numbers": int(m31b.group(1)), "match_newer_opd": int(m31b.group(2)),
+                                "with_production_input": int(m31b.group(3)), "also_at": loc(S31R, "test", "fresh_items", "also"),
+                                "files": x31["fresh_items"]["files"]},
+                "calls": {"calls": d31["calls"]["calls"], "usd_list_price": d31["calls"]["usd_list_price"], "at": loc(S31R, "dev", "calls")}},
+    split="design set (the S9 items D4 was chosen on), leave-one-out examples; dev only: not pre-registered as a test and not held out; "
+          "no variant cleared the gate, so no test was run and the S25 held-out items stay unspent",
+    prereg=None, not_preregistered="dev only (eval/s31/DEV.md); the gate was written before any S31 call, but no pre-registration entry exists",
+    sources=[S31R, S31M, f"{QE}/s31/analyze.py", f"{QE}/s31/dev.py", f"{QE}/s31/dev_raw.jsonl", f"{QE}/s31/ledger.jsonl",
+             f"{QE}/s31/cdx_check/", f"{QE}/s31/run.py"],
+    build=BUILD, model=MODEL, date="2026-10-15", shipped="no change: D4 stays the federal design (no variant cleared the gate)"))
+
 s18 = g(S18R)
 tests.append(dict(
     id="bern_directorates_production", gold="human", subject="Apertus",
@@ -1526,6 +1634,139 @@ tests.append(dict(
     prereg=pre(PB, "— S27 a second, stricter check"), prereg_more=pre(PB, "Amendment 2026-10-14 23:10 CEST (before any S27 call)"),
     sources=[S27R, f"{QE}/s27/analyze.py", f"{QE}/s27/run.py", f"{QE}/s27/raw.jsonl", f"{QE}/s27/ledger.jsonl", "src/querschnitt/prompts.py", S19R],
     build=BUILD, model=MODEL, judge_build="Claude (blind agent runs, S19 gold)", date="2026-10-14"))
+
+# S30: three further narrow one-sentence topics, held out; a generated scope as a third question on the confirmed flags (variant) vs the
+# product before S30 (shipped = yes/no flag kept by the S27 question), against a fresh blind AI judge. The variant (V4) was chosen after
+# seeing dev on the S19 packets (stated in the pre-registration).
+S30R, S30D, S30T, S30S = (f"{QE}/s30/results.json", f"{QE}/s30/dev_results.json", f"{QE}/s30/topics.json", f"{QE}/s30/sentences.json")
+TOPICS30 = ("licht", "drohnen", "pestizide")
+EN30 = {"licht": "light pollution", "drohnen": "drones", "pestizide": "pesticides", "pooled": "all three"}
+s30 = g(S30R)
+N30 = {s_: sum(v_["N"] for v_ in s30[s_]["strata"].values()) for s_ in TOPICS30}
+assert len(set(N30.values())) == 1 and sum(v_["N"] for v_ in s30["pooled"]["strata"].values()) == 3 * N30["licht"], N30
+N30 = N30["licht"]
+assert s30["pooled"]["n_items"] == sum(s30[s_]["n_items"] for s_ in TOPICS30)
+BOOT30 = "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)"
+BOOT30P = ("paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at "
+           "3 decimals (eval/s30/analyze.py)")
+ARMS30 = {"shipped": "shipped before S30 (yes/no flag kept by the S27 question)",
+          "variant": "with the scope check (S27 question and scope question both yes)",
+          "kw": "frozen keyword list (eval/s30/keywords_frozen.json)",
+          "shipped_yn": "the yes/no step alone (secondary)",
+          "yn_sc": "yes/no + scope question without the S27 question (secondary)"}
+
+
+def s30k(*keys, metric):
+    """precision {k, n, value, ci} of eval/s30/results.json: value = k / n truncated at 3 decimals (asserted, as analyze.py writes it);
+    Wilson 95% recomputed exactly from k and n, bounds rounded outward at 3 decimals (the stored interval is kept as ci95_source when it
+    differs)."""
+    b = g(S30R, *keys); k, n = b["k"], b["n"]
+    assert b["value"] == math.trunc(k / n * 1000) / 1000, (keys, b)
+    lo_, hi_ = wilson_exact(k, n)
+    ci_ = [float(F.q(max(lo_, 0.0), 3, F.ROUND_FLOOR)), float(F.q(min(hi_, 1.0), 3, F.ROUND_CEILING))]
+    out = {"metric": metric, "value": b["value"], "k": k, "n": n, "kn": f"{k}/{n}", "ci95": ci_,
+           "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)"}
+    if list(b["ci"]) != ci_: out["ci95_source"] = list(b["ci"])
+    out["at"] = loc(S30R, *keys)
+    return out
+
+
+def s30b(*keys, metric, method=BOOT30):
+    b = g(S30R, *keys)
+    out = {"metric": metric, "value": b["value"], "ci95": list(b["ci"]), "ci_method": method, "at": loc(S30R, *keys, "value"),
+           "ci_at": loc(S30R, *keys, "ci")}
+    if "n_boot" in b:
+        out["n_boot"] = b["n_boot"]
+        if b["n_boot"] < 2000: out["n_boot_note"] = "resamples where both arms flag at least one affair (the rest have no precision)"
+    return out
+
+
+pt30 = {}
+for s_ in TOPICS30 + ("pooled",):
+    x_ = s30[s_]
+    assert x_["judge_pos_items"] == sum(v_["judge_Y"] for v_ in x_["strata"].values()), s_
+    blk = {"topic": s_, "name_en": EN30[s_],
+           "items_checked": {"metric": "affairs the judge checked", "value": x_["n_items"], "at": loc(S30R, s_, "n_items")},
+           "judge_positives": {"metric": f"affairs relevant per the AI judge among the checked ({AJ})", "value": x_["judge_pos_items"],
+                               "at": loc(S30R, s_, "judge_pos_items")},
+           "relevant_est": s30b(s_, "relevant_est", metric="estimated affairs relevant per the AI judge (population)"),
+           "strata": {"cells": [{"cell": h_, "N": v_["N"], "n": v_["n"], "judge_Y": v_["judge_Y"], "kn": f"{v_['judge_Y']}/{v_['n']}"}
+                                for h_, v_ in x_["strata"].items()],
+                      "note": "'any' = flagged by any arm or the keyword list (every such affair checked, n = N); 'neither' = a random sample",
+                      "at": loc(S30R, s_, "strata")}}
+    if s_ != "pooled":
+        nm_ = g(S30T, s_, "shipped", "names")
+        blk.update(name_de=nm_["de"], name_fr=nm_["fr"], topic_id=g(S30T, s_, "shipped", "id"), sentence=g(S30S, s_),
+                   sentence_at=loc(S30S, s_))
+    for arm_, lab_ in ARMS30.items():
+        blk[arm_] = {"flags": {"metric": f"flags, {lab_} (counted)", "value": x_[arm_]["flags"], "at": loc(S30R, s_, arm_, "flags")},
+                     "precision": s30k(s_, arm_, "precision", metric=f"precision of flags, {lab_}, {AJ}"),
+                     "recall": s30b(s_, arm_, "recall_weighted", metric=f"recall, {lab_}, {AJ} (weighted to the population)")}
+        assert blk[arm_]["precision"]["n"] == blk[arm_]["flags"]["value"], (s_, arm_)
+    blk["precision_diff"] = s30b(s_, "diff_variant_minus_shipped_P", method=BOOT30P,
+                                 metric=f"paired Δ precision of the confirmed flags, with − without the scope check, {AJ}")
+    blk["recall_diff"] = s30b(s_, "diff_variant_minus_shipped_R", method=BOOT30P,
+                              metric=f"paired Δ recall (weighted), with − without the scope check, {AJ}")
+    blk["lost_judge_positives"] = {"metric": "judge positives the shipped design confirms and the scope check does not",
+                                   "value": blk["shipped"]["precision"]["k"] - blk["variant"]["precision"]["k"], "at": loc(S30R, s_, "shipped", "precision", "k")}
+    pt30[s_] = blk
+# the scope check asks only on flags the shipped design confirms: its flags are a subset, so it can lose but never add a positive
+assert all(pt30[s_]["variant"]["flags"]["value"] <= pt30[s_]["shipped"]["flags"]["value"] for s_ in pt30)
+assert sum(pt30[s_]["judge_positives"]["value"] for s_ in TOPICS30) == pt30["pooled"]["judge_positives"]["value"]
+# the pre-registered product rule: pooled precision-difference interval above 0, and no recall-difference interval (pooled or per topic) below 0
+pdl30 = pt30["pooled"]["precision_diff"]["ci95"][0]
+rdh30 = {s_: pt30[s_]["recall_diff"]["ci95"][1] for s_ in pt30}
+RULE30 = {"text": "the variant goes into the product only if the pooled precision-difference interval lies above 0 and no recall-difference "
+                  "interval (pooled or per topic) lies below 0; otherwise the product stays as it is",
+          "pooled_precision_diff_ci_lo": pdl30, "recall_diff_ci_hi": rdh30, "met": pdl30 > 0 and all(v_ >= 0 for v_ in rdh30.values()),
+          "narrowly": "the pooled precision interval starts just above 0 and the pooled and pesticides recall intervals end at 0",
+          "at": md(PB, "Product rule: the variant goes into the product only if the pooled precision difference interval lies above 0")}
+assert RULE30["met"] and pdl30 < 0.01 and min(rdh30.values()) == 0.0, RULE30   # met, narrowly (the text says so)
+dev30 = g(S30D)
+DEV30 = {"chosen": "V4_scope+S27", "chosen_at": md(PB, "Chosen after seeing dev (highest mean F1"),
+         "note": "dev on the S19 packets with the S19 judge gold (not held out; four variants, tuning allowed); V4 = scope question + the S27 "
+                 "question, chosen after seeing dev, as the pre-registration states",
+         "topics": {t_: {a_: {"precision": v_["precision"], "recall": v_["recall"], "flags": v_["flags"], "tp": v_["tp"],
+                              "at": loc(S30D, t_, a_)} for a_, v_ in dev30[t_].items()} for t_ in dev30}}
+assert set(DEV30["topics"]) == set(TOPICS19) and all(DEV30["chosen"] in v_ for v_ in DEV30["topics"].values())
+pp30 = pt30["pooled"]
+tests.append(dict(
+    id="adhoc_scope_check", gold="ai-judge", subject="Apertus",
+    title_de="Neue Themen aus einem Satz, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den "
+             "Markierungen, gegen den KI-Richter (S30)",
+    title_fr="Nouveaux thèmes en une phrase, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième "
+             "question sur les signalements, contre le juge IA (S30)",
+    n=N30, n_checked=pp30["items_checked"]["value"], topics=list(TOPICS30),
+    design="drei neue Themen, je ein deutscher Satz (eval/s30/sentences.json), nie zuvor benutzt; Thema wie «Neues Thema» erzeugt "
+    "(adhoc.TOPIC_PROMPT) und eine Generierung von Ein- und Ausschlusslisten de/fr/it (Umfang), beide vor dem Scoring eingefroren "
+    "(eval/s30/topics.json); ausgeliefert = Ja/Nein-Flag (mittleres p ≥ 0.5), von der S27-Frage bestätigt; Variante = zusätzlich «Gehört das "
+    "folgende parlamentarische Geschäft zum Thema «…»?» mit den Listen (mittleres p ≥ 0.5), nach Dev auf den S19-Paketen gewählt (V4); "
+    "Population: jedes Geschäft mit Titel, begonnen 16.–31.3.2026; geprüft: jedes von einem Arm oder den eingefrorenen Stichwörtern "
+    "markierte Geschäft + 120 zufällige übrige je Thema; Richter: zwei blinde Claude-Läufe (A gemischt, B umgekehrt), Stichentscheid C bei "
+    "A ≠ B; Recall auf die Population zurückgewichtet (Schicht-Bootstrap 2'000)",
+    result=dict(pp30["precision_diff"], metric=f"paired Δ precision of the confirmed flags, with − without the scope check, pooled over the "
+                                               f"three topics, {AJ}"),
+    results_more=[dict(pp30["variant"]["precision"], metric=f"precision of flags with the scope check, pooled, {AJ}"),
+                  dict(pp30["recall_diff"], metric=f"paired Δ recall (weighted), with − without the scope check, pooled, {AJ}"),
+                  dict(pp30["variant"]["recall"], metric=f"recall with the scope check, pooled, {AJ} (weighted)")],
+    baselines=[dict(pp30["shipped"]["precision"], name="the product before S30 (yes/no flag kept by the S27 question), same affairs, pooled"),
+               dict(pp30["kw"]["precision"], name="frozen keyword list (eval/s30/keywords_frozen.json), same affairs, pooled")],
+    judge={"runs": "Claude A (shuffled) / B (reverse); tie-break C on A ≠ B", "agree_AB": s30["agree_AB"], "tie_break_C": s30["n_C"],
+           "items": pp30["items_checked"]["value"], "at": loc(S30R, "agree_AB"), "tie_break_at": loc(S30R, "n_C")},
+    breakdowns={"per_topic": pt30, "product_rule": RULE30, "dev": DEV30,
+                "keyword_note": "the frozen keyword lists are more precise than both arms on these topics (pooled and per topic)",
+                "lost_positives_note": "the two judge positives the scope check drops are pesticides affairs (P041 veterinary insecticides, "
+                                       "P050 pests and plant diseases; eval/s30/key.jsonl, eval/s30/packet_A/pestizide/items.tsv)"},
+    split="held out: three topics never used before, affairs begun 16–31 Mar 2026 (S19 used Aug–Oct), keyword lists and generated topics "
+          "frozen before any test call; the variant (V4) was chosen after seeing dev on the S19 packets, as the pre-registration states; "
+          "pre-registered (S30) before any test call; nothing tuned on the test",
+    prereg=pre(PB, "— S30 narrow one-sentence topics"), prereg_more=RULE30["at"],
+    sources=[S30R, f"{QE}/s30/analyze.py", f"{QE}/s30/run.py", f"{QE}/s30/run_common.py", f"{QE}/s30/common.py", f"{QE}/s30/flags.py",
+             f"{QE}/s30/build_packet.py", f"{QE}/s30/key.jsonl", S30T, S30S, f"{QE}/s30/keywords_frozen.json", f"{QE}/s30/ann/",
+             S30D, f"{QE}/s30/raw.jsonl", f"{QE}/s30/ledger.jsonl", "src/querschnitt/prompts.py", "src/querschnitt/adhoc.py"],
+    build=BUILD, model=MODEL, judge_build="Claude (blind agent runs)", date="2026-10-15",
+    shipped="new one-sentence topics with a scope ask the scope question on their confirmed flags (prompts.scope_check_prompt, "
+            "adhoc.SCOPE_PROMPT); flags it does not confirm go to 'please check', not away; existing topics unchanged"))
 NEW_ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
 for t_ in tests:
     if t_["id"] == "evidence_support":
@@ -1538,13 +1779,13 @@ for t_ in tests:
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
 ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
-         "aps_hierarchical_d4", "aps_hierarchical_heldout_s25",
+         "aps_hierarchical_d4", "aps_hierarchical_heldout_s25", "aps_design_search_s31",
          "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
          "basel_themes_names", "basel_themes_examples", "ticino_departments", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
          "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
          "evidence_support_production", "aps_cantonal_communal", "aps_bilingual", "adhoc_new_topics", "adhoc_editor_examples",
-         "adhoc_verification", "neutrality_judge_sets"]
+         "adhoc_verification", "adhoc_scope_check", "neutrality_judge_sets"]
 assert sorted(ORDER) == sorted(t_["id"] for t_ in tests), set(ORDER) ^ {t_["id"] for t_ in tests}
 tests.sort(key=lambda t_: ORDER.index(t_["id"]))
 for t_ in tests:
@@ -1675,7 +1916,8 @@ for t_ in tests: t_["interval"] = t_["result"].get("ci95")
 print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in ("aps_chapter_heldout_s25", "aps_hierarchical_heldout_s25", "aps_chapter_heldout_s28_no_prefill",
-                                                            "ticino_departments")]   # S25 / S28 / S29 intervals are already outward
+                                                            "ticino_departments", "adhoc_scope_check", "aps_design_search_s31")]
+# S25 / S28 / S29 / S30 / S31 intervals are already outward (recomputed exactly from k and n above)
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
 BOUND = re.compile(r"(^|_)ci(95)?(_w)?$")
@@ -1730,6 +1972,9 @@ out = {
         "judge precision on human negatives",
         "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
         "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
+        f"one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely "
+        f"inconclusive at n = {N25}, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
+        "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
         "Romansh"],
 }
 shown_pass(out["tests"]); shown_pass(out["curves"])
@@ -1821,6 +2066,19 @@ row(*APS, "human", "D4, hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 m
     f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · Stichwort {p3(hf_b['kw'])}",
     fr(f"hF D1 {p3(hf_b['D1'])} · D0 {p3(hf_b['D0'])} · mots-clés {p3(hf_b['kw'])}"), *SPLIT_H, TH["file"],
     result_fr=fr(f"hF {p3(TH['result']['value'])} · F1 macro {p3(mf['value'])} (les {F.t(mf['n'], sep=' ')})"))
+# S31: the design search on the design set (dev only, not pre-registered): one row in the design-set table
+T31 = TD["aps_design_search_s31"]; r31 = T31["result"]; v131 = T31["results_more"][0]; d431 = T31["baselines"][0]
+s4 = lambda v: F.signed(F.t(v, 4))
+row(*APS, "human", "Design-Suche (S31): 5 Varianten gegen D4, keine besser; bestes V3 (Beispiele in beiden Code-Reihenfolgen)",
+    "recherche de design (S31) : 5 variantes contre D4, aucune meilleure ; la meilleure, V3 (exemples dans les deux ordres de codes)", T31["n"],
+    f"Δ top-1 V3 − D4 {s4(r31['value'])} {sciv(r31['ci95'], 4)}", iv(r31["ci95"]),
+    f"Schwelle ≥ +0.02 mit Intervall über 0: von keiner erreicht · V1 {s4(v131['value'])} {sciv(v131['ci95'], 4)} · D4 mit derselben Regel "
+    f"{p3(d431['value'])} (S16-Regel {p3(T4['result']['value'])})",
+    fr(f"seuil ≥ +0.02 avec intervalle au-dessus de 0 : atteint par aucune · V1 {s4(v131['value'])} {sciv(v131['ci95'], 4)} · D4 avec la même "
+       f"règle {p3(d431['value'])} (règle S16 {p3(T4['result']['value'])})"),
+    "nur Dev auf dem Design-Set, Beispiele leave-one-out, nicht vorregistriert; kein Test gelaufen, die S25-Geschäfte bleiben unbenutzt",
+    "dev seulement sur le jeu de conception, exemples leave-one-out, non préenregistré ; aucun test lancé, les objets S25 restent inutilisés",
+    T31["file"], result_fr=fr(f"Δ top-1 V3 − D4 {s4(r31['value'])} {sciv(r31['ci95'], 4)}"))
 # S25: the held-out test of the shipped design (its own table, right after the design set above)
 T25 = TD["aps_chapter_heldout_s25"]; m25 = T25["results_more"]; b25 = T25["breakdowns"]; l25 = b25["lanes"]
 d0b25, kw25 = T25["baselines"][0], T25["baselines"][1]
@@ -2058,6 +2316,32 @@ for s_ in TOPICS19:
         f"{TNAME[s_][1]} : précision / rappel avec seconde question, concordance avec le juge", P_["n"], res_, iv(P_["ci95"]),
         f"ohne zweite Frage (S19) {p3(P0_['value'])} ({P0_['kn']})", fr(f"sans seconde question (S19) {p3(P0_['value'])} ({P0_['kn']})"),
         *SP27, T27["file"])
+# S30: three further narrow topics held out, the generated scope check on the confirmed flags; one row per topic and one pooled
+# (every figure is agreement with the AI judge; the S30 topics are not saved topics of the app, so no `topic` field)
+T30 = TD["adhoc_scope_check"]; p30_ = T30["breakdowns"]["per_topic"]
+NT30 = ("Neue Themen, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen vs. KI-Richter",
+        "Nouveaux thèmes, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième question sur les "
+        "signalements vs juge IA")
+SP30 = (f"Geschäfte 16.–31.3.2026: alle {p3(T30['n'])}, {T30['n_checked']} geprüft, Recall gewichtet; hold-out, vorregistriert (S30); "
+        "Variante nach Dev auf den S19-Paketen gewählt",
+        f"objets du 16 au 31.3.2026 : les {F.t(T30['n'], sep=' ')}, {T30['n_checked']} vérifiés, rappel pondéré ; hors échantillon, préenregistré "
+        "(S30) ; variante choisie après le dev sur les paquets S19")
+DE30 = {"licht": ("Lichtverschmutzung", "pollution lumineuse"), "drohnen": ("Drohnen", "drones"), "pestizide": ("Pestizide", "pesticides"),
+        "pooled": ("alle drei zusammen", "les trois ensemble")}
+for s_ in TOPICS30 + ("pooled",):
+    b_ = p30_[s_]; P_, P0_, R_, R0_ = b_["variant"]["precision"], b_["shipped"]["precision"], b_["variant"]["recall"], b_["shipped"]["recall"]
+    dP_, dR_, kP_, kR_ = b_["precision_diff"], b_["recall_diff"], b_["kw"]["precision"], b_["kw"]["recall"]
+    npos_ = b_["judge_positives"]["value"]
+    dd_ = (f"Δ Präzision {F.signed(p3(dP_['value']))} {sciv(dP_['ci95'])} · Δ Recall {F.signed(p3(dR_['value']))} {sciv(dR_['ci95'])}",
+           f"Δ précision {F.signed(p3(dP_['value']))} {sciv(dP_['ci95'])} · Δ rappel {F.signed(p3(dR_['value']))} {sciv(dR_['ci95'])}")
+    row(*NT30, "ai-judge", f"{DE30[s_][0]}: Präzision / Recall mit Umfangsprüfung, Übereinstimmung mit dem Richter ({npos_} Richter-Positive)",
+        f"{DE30[s_][1]} : précision / rappel avec contrôle du périmètre, concordance avec le juge ({npos_} positifs du juge)", P_["n"],
+        f"{p3(P_['value'])} ({P_['kn']}) / {p3(R_['value'])} · {dd_[0]}", iv(P_["ci95"]),
+        f"ohne Umfangsprüfung (ausgeliefert vor S30) {p3(P0_['value'])} ({P0_['kn']}) / {p3(R0_['value'])} · Stichwort {p3(kP_['value'])} "
+        f"({kP_['kn']}) / {p3(kR_['value'])}",
+        fr(f"sans contrôle du périmètre (livré avant S30) {p3(P0_['value'])} ({P0_['kn']}) / {p3(R0_['value'])} · mots-clés {p3(kP_['value'])} "
+           f"({kP_['kn']}) / {p3(kR_['value'])}"), *SP30, T30["file"],
+        result_fr=fr(f"{p3(P_['value'])} ({P_['kn']}) / {p3(R_['value'])} · {dd_[1]}"))
 
 # the held-out test (S25) leads: its rows open the app's first human-label table (the highlighted, shipped row)
 # S28 (the same held-out affairs without prefill) follows right after S25's table

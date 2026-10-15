@@ -359,6 +359,25 @@
    "file": "eval/s16/hierarchical.json"
   },
   {
+   "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
+   "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
+   "gold": "human",
+   "design": "Design-Suche (S31): 5 Varianten gegen D4, keine besser; bestes V3 (Beispiele in beiden Code-Reihenfolgen)",
+   "design_fr": "recherche de design (S31) : 5 variantes contre D4, aucune meilleure ; la meilleure, V3 (exemples dans les deux ordres de codes)",
+   "n": 1357,
+   "result": "Δ top-1 V3 − D4 +0.0117 [−0.0008, +0.0244]",
+   "result_fr": "Δ top-1 V3 − D4 +0,0117 [−0,0008, +0,0244]",
+   "interval": [
+    -0.001,
+    0.025
+   ],
+   "baseline": "Schwelle ≥ +0.02 mit Intervall über 0: von keiner erreicht · V1 +0.0073 [−0.0030, +0.0170] · D4 mit derselben Regel 0.737 (S16-Regel 0.740)",
+   "baseline_fr": "seuil ≥ +0,02 avec intervalle au-dessus de 0 : atteint par aucune · V1 +0,0073 [−0,0030, +0,0170] · D4 avec la même règle 0,737 (règle S16 0,740)",
+   "split": "nur Dev auf dem Design-Set, Beispiele leave-one-out, nicht vorregistriert; kein Test gelaufen, die S25-Geschäfte bleiben unbenutzt",
+   "split_fr": "dev seulement sur le jeu de conception, exemples leave-one-out, non préenregistré ; aucun test lancé, les objets S25 restent inutilisés",
+   "file": "eval/s31/results.json"
+  },
+  {
    "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",
    "test_fr": "« numérique » : 30 objets DVS choisis à la main (rappel)",
    "gold": "human",
@@ -927,6 +946,82 @@
    "split": "S19-Pakete, eine Formulierung, nicht abgestimmt; vorregistriert (S27)",
    "split_fr": "paquets S19, une formulation, rien d'ajusté ; préenregistré (S27)",
    "file": "eval/s27/results.json"
+  },
+  {
+   "test": "Neue Themen, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième question sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "Lichtverschmutzung: Präzision / Recall mit Umfangsprüfung, Übereinstimmung mit dem Richter (4 Richter-Positive)",
+   "design_fr": "pollution lumineuse : précision / rappel avec contrôle du périmètre, concordance avec le juge (4 positifs du juge)",
+   "n": 3,
+   "result": "0.666 (2/3) / 0.500 · Δ Präzision 0.000 [0.000, 0.000] · Δ Recall 0.000 [0.000, 0.000]",
+   "result_fr": "0,666 (2/3) / 0,500 · Δ précision 0,000 [0,000, 0,000] · Δ rappel 0,000 [0,000, 0,000]",
+   "interval": [
+    0.207,
+    0.939
+   ],
+   "baseline": "ohne Umfangsprüfung (ausgeliefert vor S30) 0.666 (2/3) / 0.500 · Stichwort 1.000 (4/4) / 1.000",
+   "baseline_fr": "sans contrôle du périmètre (livré avant S30) 0,666 (2/3) / 0,500 · mots-clés 1,000 (4/4) / 1,000",
+   "split": "Geschäfte 16.–31.3.2026: alle 1'316, 399 geprüft, Recall gewichtet; hold-out, vorregistriert (S30); Variante nach Dev auf den S19-Paketen gewählt",
+   "split_fr": "objets du 16 au 31.3.2026 : les 1 316, 399 vérifiés, rappel pondéré ; hors échantillon, préenregistré (S30) ; variante choisie après le dev sur les paquets S19",
+   "file": "eval/s30/results.json"
+  },
+  {
+   "test": "Neue Themen, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième question sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "Drohnen: Präzision / Recall mit Umfangsprüfung, Übereinstimmung mit dem Richter (2 Richter-Positive)",
+   "design_fr": "drones : précision / rappel avec contrôle du périmètre, concordance avec le juge (2 positifs du juge)",
+   "n": 3,
+   "result": "0.666 (2/3) / 1.000 · Δ Präzision +0.166 [0.000, +0.667] · Δ Recall 0.000 [0.000, 0.000]",
+   "result_fr": "0,666 (2/3) / 1,000 · Δ précision +0,166 [0,000, +0,667] · Δ rappel 0,000 [0,000, 0,000]",
+   "interval": [
+    0.207,
+    0.939
+   ],
+   "baseline": "ohne Umfangsprüfung (ausgeliefert vor S30) 0.500 (2/4) / 1.000 · Stichwort 0.666 (2/3) / 1.000",
+   "baseline_fr": "sans contrôle du périmètre (livré avant S30) 0,500 (2/4) / 1,000 · mots-clés 0,666 (2/3) / 1,000",
+   "split": "Geschäfte 16.–31.3.2026: alle 1'316, 399 geprüft, Recall gewichtet; hold-out, vorregistriert (S30); Variante nach Dev auf den S19-Paketen gewählt",
+   "split_fr": "objets du 16 au 31.3.2026 : les 1 316, 399 vérifiés, rappel pondéré ; hors échantillon, préenregistré (S30) ; variante choisie après le dev sur les paquets S19",
+   "file": "eval/s30/results.json"
+  },
+  {
+   "test": "Neue Themen, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième question sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "Pestizide: Präzision / Recall mit Umfangsprüfung, Übereinstimmung mit dem Richter (14 Richter-Positive)",
+   "design_fr": "pesticides : précision / rappel avec contrôle du périmètre, concordance avec le juge (14 positifs du juge)",
+   "n": 15,
+   "result": "0.800 (12/15) / 0.857 · Δ Präzision +0.133 [−0.008, +0.301] · Δ Recall −0.142 [−0.334, 0.000]",
+   "result_fr": "0,800 (12/15) / 0,857 · Δ précision +0,133 [−0,008, +0,301] · Δ rappel −0,142 [−0,334, 0,000]",
+   "interval": [
+    0.548,
+    0.93
+   ],
+   "baseline": "ohne Umfangsprüfung (ausgeliefert vor S30) 0.666 (14/21) / 1.000 · Stichwort 1.000 (11/11) / 0.785",
+   "baseline_fr": "sans contrôle du périmètre (livré avant S30) 0,666 (14/21) / 1,000 · mots-clés 1,000 (11/11) / 0,785",
+   "split": "Geschäfte 16.–31.3.2026: alle 1'316, 399 geprüft, Recall gewichtet; hold-out, vorregistriert (S30); Variante nach Dev auf den S19-Paketen gewählt",
+   "split_fr": "objets du 16 au 31.3.2026 : les 1 316, 399 vérifiés, rappel pondéré ; hors échantillon, préenregistré (S30) ; variante choisie après le dev sur les paquets S19",
+   "file": "eval/s30/results.json"
+  },
+  {
+   "test": "Neue Themen, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen vs. KI-Richter",
+   "test_fr": "Nouveaux thèmes, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième question sur les signalements vs juge IA",
+   "gold": "judge",
+   "design": "alle drei zusammen: Präzision / Recall mit Umfangsprüfung, Übereinstimmung mit dem Richter (20 Richter-Positive)",
+   "design_fr": "les trois ensemble : précision / rappel avec contrôle du périmètre, concordance avec le juge (20 positifs du juge)",
+   "n": 21,
+   "result": "0.761 (16/21) / 0.800 · Δ Präzision +0.119 [+0.005, +0.260] · Δ Recall −0.099 [−0.250, 0.000]",
+   "result_fr": "0,761 (16/21) / 0,800 · Δ précision +0,119 [+0,005, +0,260] · Δ rappel −0,099 [−0,250, 0,000]",
+   "interval": [
+    0.549,
+    0.894
+   ],
+   "baseline": "ohne Umfangsprüfung (ausgeliefert vor S30) 0.642 (18/28) / 0.900 · Stichwort 0.944 (17/18) / 0.850",
+   "baseline_fr": "sans contrôle du périmètre (livré avant S30) 0,642 (18/28) / 0,900 · mots-clés 0,944 (17/18) / 0,850",
+   "split": "Geschäfte 16.–31.3.2026: alle 1'316, 399 geprüft, Recall gewichtet; hold-out, vorregistriert (S30); Variante nach Dev auf den S19-Paketen gewählt",
+   "split_fr": "objets du 16 au 31.3.2026 : les 1 316, 399 vérifiés, rappel pondéré ; hors échantillon, préenregistré (S30) ; variante choisie après le dev sur les paquets S19",
+   "file": "eval/s30/results.json"
   }
  ],
  "curve": {

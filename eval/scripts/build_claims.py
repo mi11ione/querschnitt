@@ -347,10 +347,10 @@ def classify(tok, written_norm, f, line, approx):
 
 
 # ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
-# are; the S19 / S26 / S27, S25, S28 (section S28-pruefstand; the hand rows of section S28 stay) and S29 rows are generated from
-# eval/pruefstand.json (run build_pruefstand.py first).
+# are; the S19 / S26 / S27, S25, S28 (section S28-pruefstand; the hand rows of section S28 stay), S29, S30 (section S30-pruefstand; the
+# hand rows of section S30 stay) and S31 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
 ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
-GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29"}
+GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31"}
 
 
 def adhoc_rows():
@@ -602,6 +602,86 @@ def s29_rows():
     return rows
 
 
+def s30_rows():
+    """S30, three narrow one-sentence topics held out, a generated scope check on the confirmed flags vs the product before S30, against
+    the blind AI judge: every block of eval/pruefstand.json > adhoc_scope_check (read from eval/s30/results.json) per topic and pooled —
+    precision of flags (k/n, Wilson bounds outward), weighted recall and the paired differences (bootstrap bounds outward), counts. The
+    hand-written S30 rows (section S30) are kept as they are; these are section S30-pruefstand."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "adhoc_scope_check")
+    rows, r, block, point = _gen("S30-pruefstand", "S30")
+    f0 = t["result"]["at"]["file"]
+    r("population (affairs with a title begun 16–31 Mar 2026, each topic)", NF.t(t["n"]), t["n"], f0, "<topic> > strata > N, summed (equal for the "
+      "three topics)", "count")
+    r("affairs checked by the judge (three packets)", NF.t(t["n_checked"]), t["n_checked"], f0, "pooled > n_items", "count")
+    j = t["judge"]
+    r("judge run A = run B (agreement with the AI judge's two blind runs)", NF.t(j["agree_AB"]), j["agree_AB"], j["at"]["file"], j["at"]["key"],
+      "truncated, never rounded up")
+    r("judge tie-breaks (A ≠ B)", str(j["tie_break_C"]), j["tie_break_C"], j["tie_break_at"]["file"], j["tie_break_at"]["key"], "count")
+    for topic, b in t["breakdowns"]["per_topic"].items():
+        name = f"{topic} ({b['name_en']})"
+        for k in ("items_checked", "judge_positives", "lost_judge_positives"):
+            x = b[k]; r(f"{name} {k.replace('_', ' ')}", NF.t(x["value"]), x["value"], x["at"]["file"], x["at"]["key"], "count")
+        for c in b["strata"]["cells"]:
+            for k in ("N", "n", "judge_Y"):
+                r(f"{name} stratum {c['cell']} {k}", NF.t(c[k]), c[k], b["strata"]["at"]["file"], f"{b['strata']['at']['key']} > {c['cell']} > {k}", "count")
+        for arm in ("shipped", "variant", "kw", "shipped_yn", "yn_sc"):
+            a = b[arm]
+            r(f"{name} {arm} flags", NF.t(a["flags"]["value"]), a["flags"]["value"], a["flags"]["at"]["file"], a["flags"]["at"]["key"], "count")
+            block(f"{name} {arm}", a["precision"])
+            point(f"{name} {arm}", a["recall"])
+        point(f"{name} Δ precision", b["precision_diff"], signed=True)
+        point(f"{name} Δ recall", b["recall_diff"], signed=True)
+    ru = t["breakdowns"]["product_rule"]
+    r("product rule met (pre-registered; pooled precision-difference interval above 0, no recall-difference interval below 0)", "met",
+      str(ru["met"]), ru["at"]["file"], f"line {ru['at']['line']}: {ru['at']['text']}", "computed by build_pruefstand.py from the intervals (asserted)")
+    return rows
+
+
+def s31_rows():
+    """S31, a documented design search on the design set (dev only, not pre-registered): every block of eval/pruefstand.json >
+    aps_design_search_s31 (read from eval/s31/results.json) — chapter top-1 per design and stage (k/n, Wilson bounds outward), top-3, the
+    paired differences vs D4 at 4 decimals as stored (bootstrap bounds outward at 4 decimals) and at 3, the gate, counts and cost."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "aps_design_search_s31")
+    rows, r, block, point = _gen("S31", "S31 (dev only, not pre-registered)")
+
+    def diff4(ctx, b):
+        at, cat = b["at"], b["ci_at"]; ctx = ctx + (f" ({b['metric']})" if b.get("metric") else "")
+        r(ctx, NF.signed(NF.t(b["value"], 4)), b["value"], at["file"], at["key"], "4 decimals as stored (truncated toward zero)")
+        for i, (fn, side) in enumerate(((NF.lo, "floored"), (NF.hi, "ceiled"))):
+            r(f"{ctx} ci95[{i}]", NF.signed(fn(b["ci95"][i], 4)), b["ci95"][i], cat["file"], f"{cat['key']} [{i}]: bootstrap bound, rounded outward at "
+              f"4 decimals ({side})", b.get("ci_method", ""))
+        point(ctx + " at 3 decimals", b, signed=True)
+
+    bd = t["breakdowns"]
+    r("design-set items", NF.t(t["n"]), t["n"], t["result"]["at"]["file"], "dev > stage2_all > n_items", "count")
+    for stage in ("stage1_sub400", "stage2_all", "stage2_rest957"):
+        st = bd[stage]
+        r(f"{stage} items", NF.t(st["n"]["value"]), st["n"]["value"], st["n"]["at"]["file"], st["n"]["at"]["key"], "count")
+        for c in st["designs"]:
+            block(f"{stage} {c['design']}", c["top1"])
+            x = c["top3"]; r(f"{stage} {c['design']} top-3", NF.t(x["value"]), x["value"], x["at"]["file"], x["at"]["key"], "truncated, never rounded up")
+            if "minus_D4" in c: diff4(f"{stage} {c['design']} − D4", c["minus_D4"])
+    g_ = bd["gate"]
+    r("gate: paired Δ vs D4 at least (with the 95% interval above 0)", "+0.02", g_["threshold"], g_["threshold_at"]["file"],
+      f"line {g_['threshold_at']['line']}: {g_['threshold_at']['text']}", "fixed before any S31 call")
+    for d, v in g_["finalists"].items():
+        r(f"gate {d} passes", "no", str(v["passes"]), v["at"]["file"], v["at"]["key"], "as stored")
+    dn = bd["decision_rule_note"]
+    r("S16 rule: D4 top-1 as reported by S16", NF.t(dn["s16_reported"], 4), dn["s16_reported"], dn["at"]["file"], dn["at"]["key"], "as written in the note")
+    r("items whose chapter differs between the S16 rule and the common rule", str(dn["items_differ"]), dn["items_differ"], dn["at"]["file"],
+      dn["at"]["key"], "count")
+    fi = bd["fresh_items"]; x = fi["new_process_ids_with_200_capture"]
+    r("fresh items: new APS process ids with a 200 capture since 11 Oct 2026", str(x["value"]), x["value"], x["at"]["file"], x["at"]["key"], "count")
+    for k in ("unjoined_s25_numbers", "match_newer_opd", "with_production_input"):
+        r(f"fresh items: {k.replace('_', ' ')}", str(fi[k]), fi[k], fi["also_at"]["file"], fi["also_at"]["key"], "count, read from the sentence")
+    c = bd["calls"]
+    r("calls (dev)", NF.t(c["calls"]), c["calls"], c["at"]["file"], f"{c['at']['key']} > calls", "count")
+    r("USD at list price (dev)", NF.t(c["usd_list_price"], 4), c["usd_list_price"], c["at"]["file"], f"{c['at']['key']} > usd_list_price", "as stored")
+    return rows
+
+
 # old workspace-relative paths (hackapertus root) -> repository-relative; applied to the file column of the kept rows (idempotent)
 WS_MAP = (("bern/querschnitt/", ""), ("bern/ideation2/spikes/", "eval/spikes/"), ("bern/ideation/spikes/", "eval/spikes/"),
           ("bern/ideation2/PREREG", "eval/spikes/PREREG"), ("bern/ideation2/census_counts.json", "eval/spikes/census_counts.json"),
@@ -660,7 +740,7 @@ def main():
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
         kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
-    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows()
+    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
@@ -669,7 +749,7 @@ def main():
     from collections import Counter
     c = Counter(r["status"] for r in rows + gen)
     c.update(l.split("\t")[7] for l in kept)
-    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 generated {len(gen)})")
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-15T18:00:03Z",
+ "generated_utc": "2026-10-15T20:09:20Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -5792,6 +5792,1248 @@
      "0.57",
      "0.6",
      "0.63"
+    ]
+   }
+  },
+  {
+   "id": "aps_design_search_s31",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel, Design-Set (1'357 Bundesgeschäfte): fünf Varianten gegen D4, keine besser (S31, nur Dev, nicht vorregistriert)",
+   "title_fr": "Chapitre APS, jeu de conception (1 357 objets fédéraux) : cinq variantes contre D4, aucune meilleure (S31, dev seulement, non préenregistré)",
+   "n": 1357,
+   "design": "die S9/S16-Geschäfte (Design-Set, Gold = APS-Redaktion), gleicher Input wie S16; Beispiele leave-one-out (die eingefrorenen S9-Nachbarn, jedes Geschäft ohne sich selbst); fünf Varianten von D4 (V1 10 Beispiele, V2 Beispiele mit Unterthema, V3 Beispiele in beiden Code-Reihenfolgen, V4 dritte Lesart bei Uneinigkeit, V5 V3 + V4); Stufe 1 auf 400 zufälligen Geschäften, die zwei besten auf allen; eine Entscheidregel für alle (compose.chapter_decision auf n Lesarten verallgemeinert); Schwelle vor jedem S31-Aufruf: Δ gegen D4 ≥ +0.02 auf allen mit 95%-Intervall über 0",
+   "result": {
+    "metric": "paired Δ chapter top-1, best variant (V3: examples in both code orders) − D4, all 1357 design-set items",
+    "value": 0.0117,
+    "ci95": [
+     -0.0008,
+     0.0244
+    ],
+    "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+    "n": 1357,
+    "at": {
+     "file": "eval/s31/results.json",
+     "key": "dev > stage2_all > designs > V3 > minus_D4 > diff"
+    },
+    "ci_at": {
+     "file": "eval/s31/results.json",
+     "key": "dev > stage2_all > designs > V3 > minus_D4 > ci"
+    },
+    "shown": {
+     "value": [
+      "0.0",
+      "0.01"
+     ],
+     "ci95": [
+      "-0.001",
+      "-0.01",
+      "-0.1",
+      "0.025",
+      "0.03",
+      "0.1"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "paired Δ chapter top-1, V1 − D4, all 1357 design-set items",
+     "value": 0.0073,
+     "ci95": [
+      -0.003,
+      0.017
+     ],
+     "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+     "n": 1357,
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > stage2_all > designs > V1 > minus_D4 > diff"
+     },
+     "ci_at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > stage2_all > designs > V1 > minus_D4 > ci"
+     },
+     "shown": {
+      "value": [
+       "0.0",
+       "0.00"
+      ],
+      "ci95": [
+       "-0.01",
+       "-0.1",
+       "0.02",
+       "0.1"
+      ]
+     }
+    },
+    {
+     "metric": "chapter top-1, V3, all 1357 design-set items",
+     "value": 0.7494,
+     "k": 1017,
+     "n": 1357,
+     "kn": "1017/1357",
+     "ci95": [
+      0.725,
+      0.772
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > stage2_all > designs > V3 > top1"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.74"
+      ],
+      "ci95": [
+       "0.7",
+       "0.72",
+       "0.78",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ chapter top-1, V3 − D4, the 957 items stage 1 did not see",
+     "value": 0.0114,
+     "ci95": [
+      -0.0032,
+      0.0262
+     ],
+     "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+     "n": 957,
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > stage2_rest957 > designs > V3 > minus_D4 > diff"
+     },
+     "ci_at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > stage2_rest957 > designs > V3 > minus_D4 > ci"
+     },
+     "shown": {
+      "value": [
+       "0.0",
+       "0.01"
+      ],
+      "ci95": [
+       "-0.004",
+       "-0.01",
+       "-0.1",
+       "0.027",
+       "0.03",
+       "0.1"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1, D4 (shipped), production decision rule, all 1357 design-set items",
+     "value": 0.7376,
+     "k": 1001,
+     "n": 1357,
+     "kn": "1001/1357",
+     "ci95": [
+      0.713,
+      0.761
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > stage2_all > designs > D4 > top1"
+     },
+     "name": "D4 (shipped), same items, production decision rule (compose.chapter_decision)",
+     "shown": {
+      "value": [
+       "0.7",
+       "0.73"
+      ],
+      "ci95": [
+       "0.7",
+       "0.71",
+       "0.77",
+       "0.8"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "stage1_sub400": {
+     "what": "stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+     "n": {
+      "value": 400,
+      "at": {
+       "file": "eval/s31/results.json",
+       "key": "dev > stage1_sub400 > n_items"
+      }
+     },
+     "designs": [
+      {
+       "design": "D4",
+       "what": "shipped D4: reading 1 with the five nearest APS-labelled examples + reading 2 (other code order) without, chapter read back from the subtopic",
+       "top1": {
+        "metric": "chapter top-1, D4, stage 1, a fixed random subset of the design set (random.Random(31).sample) (n 400)",
+        "value": 0.7075,
+        "k": 283,
+        "n": 400,
+        "kn": "283/400",
+        "ci95": [
+         0.661,
+         0.75
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > D4 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.70"
+         ],
+         "ci95": [
+          "0.6",
+          "0.66",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, D4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.8575,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > D4 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.85"
+         ]
+        }
+       }
+      },
+      {
+       "design": "V1",
+       "what": "k10: reading 1 shows the 10 nearest examples (frozen 5 + next 5)",
+       "top1": {
+        "metric": "chapter top-1, V1, stage 1, a fixed random subset of the design set (random.Random(31).sample) (n 400)",
+        "value": 0.72,
+        "k": 288,
+        "n": 400,
+        "kn": "288/400",
+        "ci95": [
+         0.674,
+         0.762
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V1 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.77",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V1, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.8625,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V1 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.86"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V1 − D4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.0125,
+        "ci95": [
+         -0.005,
+         0.03
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 400,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V1 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V1 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.01"
+         ],
+         "ci95": [
+          "-0.01",
+          "-0.1",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 44,
+        "text": "| V1 | k10 |"
+       }
+      },
+      {
+       "design": "V2",
+       "what": "subn: reading 1's five examples also name the editors' main subtopic",
+       "top1": {
+        "metric": "chapter top-1, V2, stage 1, a fixed random subset of the design set (random.Random(31).sample) (n 400)",
+        "value": 0.7,
+        "k": 280,
+        "n": 400,
+        "kn": "280/400",
+        "ci95": [
+         0.653,
+         0.743
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V2 > top1"
+        },
+        "shown": {
+         "ci95": [
+          "0.6",
+          "0.65",
+          "0.75",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V2, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.8575,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V2 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.85"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V2 − D4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": -0.0075,
+        "ci95": [
+         -0.0176,
+         0.0025
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 400,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V2 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V2 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.00"
+         ],
+         "ci95": [
+          "-0.018",
+          "-0.02",
+          "-0.1",
+          "0.003",
+          "0.01",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 45,
+        "text": "| V2 | subn |"
+       }
+      },
+      {
+       "design": "V3",
+       "what": "ex2: reading 2 (S1 code order) also shows the five examples",
+       "top1": {
+        "metric": "chapter top-1, V3, stage 1, a fixed random subset of the design set (random.Random(31).sample) (n 400)",
+        "value": 0.72,
+        "k": 288,
+        "n": 400,
+        "kn": "288/400",
+        "ci95": [
+         0.674,
+         0.762
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V3 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.77",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V3, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.8475,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V3 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.84"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V3 − D4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.0125,
+        "ci95": [
+         -0.01,
+         0.0375
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 400,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V3 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V3 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.01"
+         ],
+         "ci95": [
+          "-0.1",
+          "0.038",
+          "0.04",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 46,
+        "text": "| V3 | ex2 |"
+       }
+      },
+      {
+       "design": "V4",
+       "what": "third: when readings 1 and 2 disagree, a third reading (five examples, a third code order)",
+       "top1": {
+        "metric": "chapter top-1, V4, stage 1, a fixed random subset of the design set (random.Random(31).sample) (n 400)",
+        "value": 0.7175,
+        "k": 287,
+        "n": 400,
+        "kn": "287/400",
+        "ci95": [
+         0.671,
+         0.76
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V4 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.71"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.855,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V4 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.85"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V4 − D4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.01,
+        "ci95": [
+         0.0,
+         0.0225
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 400,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V4 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V4 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0"
+         ],
+         "ci95": [
+          "0.023",
+          "0.03",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 47,
+        "text": "| V4 | third |"
+       }
+      },
+      {
+       "design": "V5",
+       "what": "ex2+third: V3, plus V4's third reading when V3's two readings disagree (fixed after V1–V4 were seen on the 400)",
+       "top1": {
+        "metric": "chapter top-1, V5, stage 1, a fixed random subset of the design set (random.Random(31).sample) (n 400)",
+        "value": 0.7175,
+        "k": 287,
+        "n": 400,
+        "kn": "287/400",
+        "ci95": [
+         0.671,
+         0.76
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V5 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.71"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V5, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.8525,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V5 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.85"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V5 − D4, stage 1, a fixed random subset of the design set (random.Random(31).sample)",
+        "value": 0.01,
+        "ci95": [
+         -0.01,
+         0.0325
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 400,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V5 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage1_sub400 > designs > V5 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0"
+         ],
+         "ci95": [
+          "-0.1",
+          "0.033",
+          "0.04",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 48,
+        "text": "| V5 | ex2+third |"
+       }
+      }
+     ]
+    },
+    "stage2_all": {
+     "what": "stage 2, all design-set items",
+     "n": {
+      "value": 1357,
+      "at": {
+       "file": "eval/s31/results.json",
+       "key": "dev > stage2_all > n_items"
+      }
+     },
+     "designs": [
+      {
+       "design": "D4",
+       "what": "shipped D4: reading 1 with the five nearest APS-labelled examples + reading 2 (other code order) without, chapter read back from the subtopic",
+       "top1": {
+        "metric": "chapter top-1, D4, stage 2, all design-set items (n 1357)",
+        "value": 0.7376,
+        "k": 1001,
+        "n": 1357,
+        "kn": "1001/1357",
+        "ci95": [
+         0.713,
+         0.761
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > D4 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.73"
+         ],
+         "ci95": [
+          "0.7",
+          "0.71",
+          "0.77",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, D4, stage 2, all design-set items",
+        "value": 0.8835,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > D4 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.88"
+         ]
+        }
+       }
+      },
+      {
+       "design": "V1",
+       "what": "k10: reading 1 shows the 10 nearest examples (frozen 5 + next 5)",
+       "top1": {
+        "metric": "chapter top-1, V1, stage 2, all design-set items (n 1357)",
+        "value": 0.745,
+        "k": 1011,
+        "n": 1357,
+        "kn": "1011/1357",
+        "ci95": [
+         0.721,
+         0.768
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V1 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.74"
+         ],
+         "ci95": [
+          "0.7",
+          "0.72",
+          "0.77",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V1, stage 2, all design-set items",
+        "value": 0.8901,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V1 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.89"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V1 − D4, stage 2, all design-set items",
+        "value": 0.0073,
+        "ci95": [
+         -0.003,
+         0.017
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 1357,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V1 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V1 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.00"
+         ],
+         "ci95": [
+          "-0.01",
+          "-0.1",
+          "0.02",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 44,
+        "text": "| V1 | k10 |"
+       }
+      },
+      {
+       "design": "V3",
+       "what": "ex2: reading 2 (S1 code order) also shows the five examples",
+       "top1": {
+        "metric": "chapter top-1, V3, stage 2, all design-set items (n 1357)",
+        "value": 0.7494,
+        "k": 1017,
+        "n": 1357,
+        "kn": "1017/1357",
+        "ci95": [
+         0.725,
+         0.772
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V3 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.74"
+         ],
+         "ci95": [
+          "0.7",
+          "0.72",
+          "0.78",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V3, stage 2, all design-set items",
+        "value": 0.8739,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V3 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.87"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V3 − D4, stage 2, all design-set items",
+        "value": 0.0117,
+        "ci95": [
+         -0.0008,
+         0.0244
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 1357,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V3 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_all > designs > V3 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.01"
+         ],
+         "ci95": [
+          "-0.001",
+          "-0.01",
+          "-0.1",
+          "0.025",
+          "0.03",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 46,
+        "text": "| V3 | ex2 |"
+       }
+      }
+     ]
+    },
+    "stage2_rest957": {
+     "what": "stage 2, the design-set items stage 1 did not see",
+     "n": {
+      "value": 957,
+      "at": {
+       "file": "eval/s31/results.json",
+       "key": "dev > stage2_rest957 > n_items"
+      }
+     },
+     "designs": [
+      {
+       "design": "D4",
+       "what": "shipped D4: reading 1 with the five nearest APS-labelled examples + reading 2 (other code order) without, chapter read back from the subtopic",
+       "top1": {
+        "metric": "chapter top-1, D4, stage 2, the design-set items stage 1 did not see (n 957)",
+        "value": 0.7502,
+        "k": 718,
+        "n": 957,
+        "kn": "718/957",
+        "ci95": [
+         0.721,
+         0.777
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > D4 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.75"
+         ],
+         "ci95": [
+          "0.7",
+          "0.72",
+          "0.78",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, D4, stage 2, the design-set items stage 1 did not see",
+        "value": 0.8944,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > D4 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.89"
+         ]
+        }
+       }
+      },
+      {
+       "design": "V1",
+       "what": "k10: reading 1 shows the 10 nearest examples (frozen 5 + next 5)",
+       "top1": {
+        "metric": "chapter top-1, V1, stage 2, the design-set items stage 1 did not see (n 957)",
+        "value": 0.7554,
+        "k": 723,
+        "n": 957,
+        "kn": "723/957",
+        "ci95": [
+         0.727,
+         0.782
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V1 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.75"
+         ],
+         "ci95": [
+          "0.7",
+          "0.72",
+          "0.79",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V1, stage 2, the design-set items stage 1 did not see",
+        "value": 0.9017,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V1 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.9",
+          "0.90"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V1 − D4, stage 2, the design-set items stage 1 did not see",
+        "value": 0.0052,
+        "ci95": [
+         -0.0074,
+         0.0178
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 957,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V1 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V1 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.00"
+         ],
+         "ci95": [
+          "-0.008",
+          "-0.01",
+          "-0.1",
+          "0.018",
+          "0.02",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 44,
+        "text": "| V1 | k10 |"
+       }
+      },
+      {
+       "design": "V3",
+       "what": "ex2: reading 2 (S1 code order) also shows the five examples",
+       "top1": {
+        "metric": "chapter top-1, V3, stage 2, the design-set items stage 1 did not see (n 957)",
+        "value": 0.7617,
+        "k": 729,
+        "n": 957,
+        "kn": "729/957",
+        "ci95": [
+         0.733,
+         0.788
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward at 3 decimals (re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V3 > top1"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.76"
+         ],
+         "ci95": [
+          "0.7",
+          "0.73",
+          "0.79",
+          "0.8"
+         ]
+        }
+       },
+       "top3": {
+        "metric": "chapter top-3, V3, stage 2, the design-set items stage 1 did not see",
+        "value": 0.885,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V3 > top3"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.88"
+         ]
+        }
+       },
+       "minus_D4": {
+        "metric": "paired Δ top-1, V3 − D4, stage 2, the design-set items stage 1 did not see",
+        "value": 0.0114,
+        "ci95": [
+         -0.0032,
+         0.0262
+        ],
+        "ci_method": "paired bootstrap 2,000 over items (percentile, seed 2026), bounds rounded outward at 4 decimals (eval/s31/analyze.py)",
+        "n": 957,
+        "at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V3 > minus_D4 > diff"
+        },
+        "ci_at": {
+         "file": "eval/s31/results.json",
+         "key": "dev > stage2_rest957 > designs > V3 > minus_D4 > ci"
+        },
+        "shown": {
+         "value": [
+          "0.0",
+          "0.01"
+         ],
+         "ci95": [
+          "-0.004",
+          "-0.01",
+          "-0.1",
+          "0.027",
+          "0.03",
+          "0.1"
+         ]
+        }
+       },
+       "described_at": {
+        "file": "eval/s31/DEV.md",
+        "line": 46,
+        "text": "| V3 | ex2 |"
+       }
+      }
+     ]
+    },
+    "gate": {
+     "rule": "paired Δ top-1 vs D4 on all design-set items ≥ +0.02, with the 95% interval above 0 (fixed before any S31 call)",
+     "threshold": 0.02,
+     "threshold_at": {
+      "file": "eval/s31/DEV.md",
+      "line": 4,
+      "text": "+0.02 on all 1,357 items"
+     },
+     "finalists": {
+      "V1": {
+       "value": 0.0073,
+       "ci95": [
+        -0.003,
+        0.017
+       ],
+       "passes": false,
+       "at": {
+        "file": "eval/s31/results.json",
+        "key": "dev > gate > V1"
+       },
+       "shown": {
+        "value": [
+         "0.0",
+         "0.00"
+        ],
+        "ci95": [
+         "-0.01",
+         "-0.1",
+         "0.02",
+         "0.1"
+        ]
+       }
+      },
+      "V3": {
+       "value": 0.0117,
+       "ci95": [
+        -0.0008,
+        0.0244
+       ],
+       "passes": false,
+       "at": {
+        "file": "eval/s31/results.json",
+        "key": "dev > gate > V3"
+       },
+       "shown": {
+        "value": [
+         "0.0",
+         "0.01"
+        ],
+        "ci95": [
+         "-0.001",
+         "-0.01",
+         "-0.1",
+         "0.025",
+         "0.03",
+         "0.1"
+        ]
+       }
+      }
+     },
+     "winner": null,
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > winner"
+     },
+     "shown": {
+      "threshold": [
+       "0.0"
+      ]
+     }
+    },
+    "decision_rule_note": {
+     "text": "D4 is scored with the production decision rule (no policy topic read from the geometric mean of the readings, compose.chapter_decision): 0.7376 on all 1,357; S16 reported 0.7406 with the S16 rule, which has no such check (4 items differ).",
+     "s16_reported": 0.7406,
+     "items_differ": 4,
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > note"
+     },
+     "shown": {
+      "s16_reported": [
+       "0.7",
+       "0.74"
+      ]
+     }
+    },
+    "heldout_unspent": {
+     "test_run": false,
+     "reason": "no dev winner: neither V1 nor V3 reached the gate (paired difference vs D4 on all 1,357 >= +0.02 with its 95% interval above 0); the S25 items were not used and stay unspent for a later single winner; nothing pre-registered",
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "test > reason"
+     },
+     "what": "the 927 S25 held-out affairs were not used by any S31 model call; they stay unspent for a later single pre-registered look at one winner (eval/s31/run.py, not run)"
+    },
+    "fresh_items": {
+     "searched": "Wayback CDX prefix listings anneepolitique.swiss/prozesse/ and /fr/prozesse/ with from=20261011 (the S25 listings end at captures of 2026-10-11), via polite.py (RFC 9309 robots checked: web.archive.org robots.txt 404 = allow all)",
+     "new_process_ids_with_200_capture": {
+      "value": 0,
+      "at": {
+       "file": "eval/s31/results.json",
+       "key": "test > fresh_items > new_process_ids_with_200_capture"
+      }
+     },
+     "unjoined_s25_numbers": 61,
+     "match_newer_opd": 4,
+     "with_production_input": 0,
+     "also_at": {
+      "file": "eval/s31/results.json",
+      "key": "test > fresh_items > also"
+     },
+     "files": "eval/s31/cdx_check/"
+    },
+    "calls": {
+     "calls": 4272,
+     "usd_list_price": 0.6822,
+     "at": {
+      "file": "eval/s31/results.json",
+      "key": "dev > calls"
+     },
+     "shown": {
+      "usd_list_price": [
+       "0.6",
+       "0.68"
+      ]
+     }
+    }
+   },
+   "split": "design set (the S9 items D4 was chosen on), leave-one-out examples; dev only: not pre-registered as a test and not held out; no variant cleared the gate, so no test was run and the S25 held-out items stay unspent",
+   "prereg": null,
+   "not_preregistered": "dev only (eval/s31/DEV.md); the gate was written before any S31 call, but no pre-registration entry exists",
+   "sources": [
+    "eval/s31/results.json",
+    "eval/s31/DEV.md",
+    "eval/s31/analyze.py",
+    "eval/s31/dev.py",
+    "eval/s31/dev_raw.jsonl",
+    "eval/s31/ledger.jsonl",
+    "eval/s31/cdx_check/",
+    "eval/s31/run.py"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-15",
+   "shipped": "no change: D4 stays the federal design (no variant cleared the gate)",
+   "test": "APS-Kapitel, Design-Set (1'357 Bundesgeschäfte): fünf Varianten gegen D4, keine besser (S31, nur Dev, nicht vorregistriert)",
+   "interval": [
+    -0.0008,
+    0.0244
+   ],
+   "baseline": {
+    "name": "D4 (shipped), same items, production decision rule (compose.chapter_decision)",
+    "value": 0.7376,
+    "ci95": [
+     0.713,
+     0.761
+    ],
+    "shown": {
+     "value": [
+      "0.7",
+      "0.73"
+     ],
+     "ci95": [
+      "0.7",
+      "0.71",
+      "0.77",
+      "0.8"
+     ]
+    }
+   },
+   "file": "eval/s31/results.json",
+   "key": "dev > stage2_all > designs > V3 > minus_D4 > diff",
+   "shown": {
+    "interval": [
+     "0.0",
+     "0.00",
+     "0.02"
     ]
    }
   },
@@ -24906,6 +26148,2357 @@
    }
   },
   {
+   "id": "adhoc_scope_check",
+   "gold": "ai-judge",
+   "subject": "Apertus",
+   "title_de": "Neue Themen aus einem Satz, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen, gegen den KI-Richter (S30)",
+   "title_fr": "Nouveaux thèmes en une phrase, hors échantillon (pollution lumineuse, drones, pesticides) : périmètre généré comme troisième question sur les signalements, contre le juge IA (S30)",
+   "n": 1316,
+   "n_checked": 399,
+   "topics": [
+    "licht",
+    "drohnen",
+    "pestizide"
+   ],
+   "design": "drei neue Themen, je ein deutscher Satz (eval/s30/sentences.json), nie zuvor benutzt; Thema wie «Neues Thema» erzeugt (adhoc.TOPIC_PROMPT) und eine Generierung von Ein- und Ausschlusslisten de/fr/it (Umfang), beide vor dem Scoring eingefroren (eval/s30/topics.json); ausgeliefert = Ja/Nein-Flag (mittleres p ≥ 0.5), von der S27-Frage bestätigt; Variante = zusätzlich «Gehört das folgende parlamentarische Geschäft zum Thema «…»?» mit den Listen (mittleres p ≥ 0.5), nach Dev auf den S19-Paketen gewählt (V4); Population: jedes Geschäft mit Titel, begonnen 16.–31.3.2026; geprüft: jedes von einem Arm oder den eingefrorenen Stichwörtern markierte Geschäft + 120 zufällige übrige je Thema; Richter: zwei blinde Claude-Läufe (A gemischt, B umgekehrt), Stichentscheid C bei A ≠ B; Recall auf die Population zurückgewichtet (Schicht-Bootstrap 2'000)",
+   "result": {
+    "metric": "paired Δ precision of the confirmed flags, with − without the scope check, pooled over the three topics, agreement with the AI judge",
+    "value": 0.119,
+    "ci95": [
+     0.005,
+     0.26
+    ],
+    "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+    "at": {
+     "file": "eval/s30/results.json",
+     "key": "pooled > diff_variant_minus_shipped_P > value"
+    },
+    "ci_at": {
+     "file": "eval/s30/results.json",
+     "key": "pooled > diff_variant_minus_shipped_P > ci"
+    },
+    "n_boot": 2000,
+    "shown": {
+     "value": [
+      "0.1",
+      "0.11"
+     ],
+     "ci95": [
+      "0.0",
+      "0.00",
+      "0.3"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "precision of flags with the scope check, pooled, agreement with the AI judge",
+     "value": 0.761,
+     "k": 16,
+     "n": 21,
+     "kn": "16/21",
+     "ci95": [
+      0.549,
+      0.894
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > variant > precision"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.76"
+      ],
+      "ci95": [
+       "0.5",
+       "0.54",
+       "0.9",
+       "0.90"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ recall (weighted), with − without the scope check, pooled, agreement with the AI judge",
+     "value": -0.099,
+     "ci95": [
+      -0.25,
+      0.0
+     ],
+     "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+     "at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > diff_variant_minus_shipped_R > value"
+     },
+     "ci_at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > diff_variant_minus_shipped_R > ci"
+     },
+     "n_boot": 2000,
+     "shown": {
+      "value": [
+       "-0.09",
+       "0.0"
+      ],
+      "ci95": [
+       "-0.3"
+      ]
+     }
+    },
+    {
+     "metric": "recall with the scope check, pooled, agreement with the AI judge (weighted)",
+     "value": 0.8,
+     "ci95": [
+      0.619,
+      0.953
+     ],
+     "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+     "at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > variant > recall_weighted > value"
+     },
+     "ci_at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > variant > recall_weighted > ci"
+     },
+     "shown": {
+      "ci95": [
+       "0.6",
+       "0.61",
+       "0.96",
+       "1.0"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "precision of flags, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge",
+     "value": 0.642,
+     "k": 18,
+     "n": 28,
+     "kn": "18/28",
+     "ci95": [
+      0.458,
+      0.793
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > shipped > precision"
+     },
+     "name": "the product before S30 (yes/no flag kept by the S27 question), same affairs, pooled",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.64"
+      ],
+      "ci95": [
+       "0.4",
+       "0.45",
+       "0.8",
+       "0.80"
+      ]
+     }
+    },
+    {
+     "metric": "precision of flags, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge",
+     "value": 0.944,
+     "k": 17,
+     "n": 18,
+     "kn": "17/18",
+     "ci95": [
+      0.742,
+      0.991
+     ],
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s30/results.json",
+      "key": "pooled > kw > precision"
+     },
+     "name": "frozen keyword list (eval/s30/keywords_frozen.json), same affairs, pooled",
+     "shown": {
+      "value": [
+       "0.9",
+       "0.94"
+      ],
+      "ci95": [
+       "0.7",
+       "0.74",
+       "1.0",
+       "1.00"
+      ]
+     }
+    }
+   ],
+   "judge": {
+    "runs": "Claude A (shuffled) / B (reverse); tie-break C on A ≠ B",
+    "agree_AB": 1.0,
+    "tie_break_C": 0,
+    "items": 399,
+    "at": {
+     "file": "eval/s30/results.json",
+     "key": "agree_AB"
+    },
+    "tie_break_at": {
+     "file": "eval/s30/results.json",
+     "key": "n_C"
+    }
+   },
+   "breakdowns": {
+    "per_topic": {
+     "licht": {
+      "topic": "licht",
+      "name_en": "light pollution",
+      "items_checked": {
+       "metric": "affairs the judge checked",
+       "value": 127,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > n_items"
+       }
+      },
+      "judge_positives": {
+       "metric": "affairs relevant per the AI judge among the checked (agreement with the AI judge)",
+       "value": 4,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > judge_pos_items"
+       }
+      },
+      "relevant_est": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 4.0,
+       "ci95": [
+        2.0,
+        6.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > relevant_est > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > relevant_est > ci"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "neither",
+         "N": 1309,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "any",
+         "N": 7,
+         "n": 7,
+         "judge_Y": 4,
+         "kn": "4/7"
+        }
+       ],
+       "note": "'any' = flagged by any arm or the keyword list (every such affair checked, n = N); 'neither' = a random sample",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > strata"
+       }
+      },
+      "name_de": "Lichtverschmutzung",
+      "name_fr": "Pollution lumineuse",
+      "topic_id": "adhoc/s30-licht",
+      "sentence": "Lichtverschmutzung: zu viel künstliches Licht in der Nacht, etwa durch Strassenbeleuchtung, beleuchtete Gebäude und Leuchtreklamen, und Massnahmen dagegen",
+      "sentence_at": {
+       "file": "eval/s30/sentences.json",
+       "key": "licht"
+      },
+      "shipped": {
+       "flags": {
+        "metric": "flags, shipped before S30 (yes/no flag kept by the S27 question) (counted)",
+        "value": 3,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge",
+        "value": 0.666,
+        "k": 2,
+        "n": 3,
+        "kn": "2/3",
+        "ci95": [
+         0.207,
+         0.939
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.66"
+         ],
+         "ci95": [
+          "0.2",
+          "0.20",
+          "0.94",
+          "1.0"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge (weighted to the population)",
+        "value": 0.5,
+        "ci95": [
+         0.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped > recall_weighted > ci"
+        }
+       }
+      },
+      "variant": {
+       "flags": {
+        "metric": "flags, with the scope check (S27 question and scope question both yes) (counted)",
+        "value": 3,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > variant > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, with the scope check (S27 question and scope question both yes), agreement with the AI judge",
+        "value": 0.666,
+        "k": 2,
+        "n": 3,
+        "kn": "2/3",
+        "ci95": [
+         0.207,
+         0.939
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > variant > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.66"
+         ],
+         "ci95": [
+          "0.2",
+          "0.20",
+          "0.94",
+          "1.0"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, with the scope check (S27 question and scope question both yes), agreement with the AI judge (weighted to the population)",
+        "value": 0.5,
+        "ci95": [
+         0.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > variant > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > variant > recall_weighted > ci"
+        }
+       }
+      },
+      "kw": {
+       "flags": {
+        "metric": "flags, frozen keyword list (eval/s30/keywords_frozen.json) (counted)",
+        "value": 4,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > kw > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge",
+        "value": 1.0,
+        "k": 4,
+        "n": 4,
+        "kn": "4/4",
+        "ci95": [
+         0.51,
+         1.0
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > kw > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.5"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > kw > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > kw > recall_weighted > ci"
+        }
+       }
+      },
+      "shipped_yn": {
+       "flags": {
+        "metric": "flags, the yes/no step alone (secondary) (counted)",
+        "value": 7,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped_yn > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, the yes/no step alone (secondary), agreement with the AI judge",
+        "value": 0.571,
+        "k": 4,
+        "n": 7,
+        "kn": "4/7",
+        "ci95": [
+         0.25,
+         0.842
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped_yn > precision"
+        },
+        "shown": {
+         "value": [
+          "0.5",
+          "0.57"
+         ],
+         "ci95": [
+          "0.2",
+          "0.85",
+          "0.9"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, the yes/no step alone (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped_yn > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > shipped_yn > recall_weighted > ci"
+        }
+       }
+      },
+      "yn_sc": {
+       "flags": {
+        "metric": "flags, yes/no + scope question without the S27 question (secondary) (counted)",
+        "value": 5,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > yn_sc > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, yes/no + scope question without the S27 question (secondary), agreement with the AI judge",
+        "value": 0.8,
+        "k": 4,
+        "n": 5,
+        "kn": "4/5",
+        "ci95": [
+         0.375,
+         0.964
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > yn_sc > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.3",
+          "0.37",
+          "0.97",
+          "1.0"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, yes/no + scope question without the S27 question (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > yn_sc > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "licht > yn_sc > recall_weighted > ci"
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of the confirmed flags, with − without the scope check, agreement with the AI judge",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > diff_variant_minus_shipped_P > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > diff_variant_minus_shipped_P > ci"
+       },
+       "n_boot": 1954,
+       "n_boot_note": "resamples where both arms flag at least one affair (the rest have no precision)"
+      },
+      "recall_diff": {
+       "metric": "paired Δ recall (weighted), with − without the scope check, agreement with the AI judge",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > diff_variant_minus_shipped_R > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > diff_variant_minus_shipped_R > ci"
+       },
+       "n_boot": 1998,
+       "n_boot_note": "resamples where both arms flag at least one affair (the rest have no precision)"
+      },
+      "lost_judge_positives": {
+       "metric": "judge positives the shipped design confirms and the scope check does not",
+       "value": 0,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "licht > shipped > precision > k"
+       }
+      }
+     },
+     "drohnen": {
+      "topic": "drohnen",
+      "name_en": "drones",
+      "items_checked": {
+       "metric": "affairs the judge checked",
+       "value": 128,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > n_items"
+       }
+      },
+      "judge_positives": {
+       "metric": "affairs relevant per the AI judge among the checked (agreement with the AI judge)",
+       "value": 2,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > judge_pos_items"
+       }
+      },
+      "relevant_est": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 2.0,
+       "ci95": [
+        0.0,
+        5.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > relevant_est > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > relevant_est > ci"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "neither",
+         "N": 1308,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "any",
+         "N": 8,
+         "n": 8,
+         "judge_Y": 2,
+         "kn": "2/8"
+        }
+       ],
+       "note": "'any' = flagged by any arm or the keyword list (every such affair checked, n = N); 'neither' = a random sample",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > strata"
+       }
+      },
+      "name_de": "Drohnen-Einsatz",
+      "name_fr": "Utilisation des drones",
+      "topic_id": "adhoc/s30-drohnen",
+      "sentence": "Drohnen: ihr Einsatz durch Polizei, Armee und Behörden, Regeln für private Drohnen und die Abwehr von Drohnen",
+      "sentence_at": {
+       "file": "eval/s30/sentences.json",
+       "key": "drohnen"
+      },
+      "shipped": {
+       "flags": {
+        "metric": "flags, shipped before S30 (yes/no flag kept by the S27 question) (counted)",
+        "value": 4,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge",
+        "value": 0.5,
+        "k": 2,
+        "n": 4,
+        "kn": "2/4",
+        "ci95": [
+         0.15,
+         0.85
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.1",
+          "0.9"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped > recall_weighted > ci"
+        }
+       }
+      },
+      "variant": {
+       "flags": {
+        "metric": "flags, with the scope check (S27 question and scope question both yes) (counted)",
+        "value": 3,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > variant > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, with the scope check (S27 question and scope question both yes), agreement with the AI judge",
+        "value": 0.666,
+        "k": 2,
+        "n": 3,
+        "kn": "2/3",
+        "ci95": [
+         0.207,
+         0.939
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > variant > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.66"
+         ],
+         "ci95": [
+          "0.2",
+          "0.20",
+          "0.94",
+          "1.0"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, with the scope check (S27 question and scope question both yes), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > variant > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > variant > recall_weighted > ci"
+        }
+       }
+      },
+      "kw": {
+       "flags": {
+        "metric": "flags, frozen keyword list (eval/s30/keywords_frozen.json) (counted)",
+        "value": 3,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > kw > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge",
+        "value": 0.666,
+        "k": 2,
+        "n": 3,
+        "kn": "2/3",
+        "ci95": [
+         0.207,
+         0.939
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > kw > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.66"
+         ],
+         "ci95": [
+          "0.2",
+          "0.20",
+          "0.94",
+          "1.0"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > kw > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > kw > recall_weighted > ci"
+        }
+       }
+      },
+      "shipped_yn": {
+       "flags": {
+        "metric": "flags, the yes/no step alone (secondary) (counted)",
+        "value": 8,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped_yn > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, the yes/no step alone (secondary), agreement with the AI judge",
+        "value": 0.25,
+        "k": 2,
+        "n": 8,
+        "kn": "2/8",
+        "ci95": [
+         0.071,
+         0.591
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped_yn > precision"
+        },
+        "shown": {
+         "value": [
+          "0.2"
+         ],
+         "ci95": [
+          "0.0",
+          "0.07",
+          "0.6",
+          "0.60"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, the yes/no step alone (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped_yn > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > shipped_yn > recall_weighted > ci"
+        }
+       }
+      },
+      "yn_sc": {
+       "flags": {
+        "metric": "flags, yes/no + scope question without the S27 question (secondary) (counted)",
+        "value": 6,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > yn_sc > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, yes/no + scope question without the S27 question (secondary), agreement with the AI judge",
+        "value": 0.333,
+        "k": 2,
+        "n": 6,
+        "kn": "2/6",
+        "ci95": [
+         0.096,
+         0.701
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > yn_sc > precision"
+        },
+        "shown": {
+         "value": [
+          "0.3",
+          "0.33"
+         ],
+         "ci95": [
+          "0.0",
+          "0.09",
+          "0.71",
+          "0.8"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, yes/no + scope question without the S27 question (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > yn_sc > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "drohnen > yn_sc > recall_weighted > ci"
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of the confirmed flags, with − without the scope check, agreement with the AI judge",
+       "value": 0.166,
+       "ci95": [
+        0.0,
+        0.667
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > diff_variant_minus_shipped_P > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > diff_variant_minus_shipped_P > ci"
+       },
+       "n_boot": 1960,
+       "n_boot_note": "resamples where both arms flag at least one affair (the rest have no precision)",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.16"
+        ],
+        "ci95": [
+         "0.67",
+         "0.7"
+        ]
+       }
+      },
+      "recall_diff": {
+       "metric": "paired Δ recall (weighted), with − without the scope check, agreement with the AI judge",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > diff_variant_minus_shipped_R > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > diff_variant_minus_shipped_R > ci"
+       },
+       "n_boot": 1791,
+       "n_boot_note": "resamples where both arms flag at least one affair (the rest have no precision)"
+      },
+      "lost_judge_positives": {
+       "metric": "judge positives the shipped design confirms and the scope check does not",
+       "value": 0,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "drohnen > shipped > precision > k"
+       }
+      }
+     },
+     "pestizide": {
+      "topic": "pestizide",
+      "name_en": "pesticides",
+      "items_checked": {
+       "metric": "affairs the judge checked",
+       "value": 144,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > n_items"
+       }
+      },
+      "judge_positives": {
+       "metric": "affairs relevant per the AI judge among the checked (agreement with the AI judge)",
+       "value": 14,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > judge_pos_items"
+       }
+      },
+      "relevant_est": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 14.0,
+       "ci95": [
+        9.0,
+        19.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > relevant_est > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > relevant_est > ci"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "neither",
+         "N": 1292,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "any",
+         "N": 24,
+         "n": 24,
+         "judge_Y": 14,
+         "kn": "14/24"
+        }
+       ],
+       "note": "'any' = flagged by any arm or the keyword list (every such affair checked, n = N); 'neither' = a random sample",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > strata"
+       }
+      },
+      "name_de": "Pestizide & Rückstände",
+      "name_fr": "Pesticides & Résidus",
+      "topic_id": "adhoc/s30-pestizide",
+      "sentence": "Pestizide und Pflanzenschutzmittel: Zulassung, Rückstände in Gewässern und Lebensmitteln, Verbote und Reduktion",
+      "sentence_at": {
+       "file": "eval/s30/sentences.json",
+       "key": "pestizide"
+      },
+      "shipped": {
+       "flags": {
+        "metric": "flags, shipped before S30 (yes/no flag kept by the S27 question) (counted)",
+        "value": 21,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge",
+        "value": 0.666,
+        "k": 14,
+        "n": 21,
+        "kn": "14/21",
+        "ci95": [
+         0.453,
+         0.829
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.66"
+         ],
+         "ci95": [
+          "0.4",
+          "0.45",
+          "0.83",
+          "0.9"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped > recall_weighted > ci"
+        }
+       }
+      },
+      "variant": {
+       "flags": {
+        "metric": "flags, with the scope check (S27 question and scope question both yes) (counted)",
+        "value": 15,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > variant > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, with the scope check (S27 question and scope question both yes), agreement with the AI judge",
+        "value": 0.8,
+        "k": 12,
+        "n": 15,
+        "kn": "12/15",
+        "ci95": [
+         0.548,
+         0.93
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > variant > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.5",
+          "0.54",
+          "1.0"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, with the scope check (S27 question and scope question both yes), agreement with the AI judge (weighted to the population)",
+        "value": 0.857,
+        "ci95": [
+         0.666,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > variant > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > variant > recall_weighted > ci"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.85"
+         ],
+         "ci95": [
+          "0.6",
+          "0.66"
+         ]
+        }
+       }
+      },
+      "kw": {
+       "flags": {
+        "metric": "flags, frozen keyword list (eval/s30/keywords_frozen.json) (counted)",
+        "value": 11,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > kw > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge",
+        "value": 1.0,
+        "k": 11,
+        "n": 11,
+        "kn": "11/11",
+        "ci95": [
+         0.741,
+         1.0
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > kw > precision"
+        },
+        "shown": {
+         "ci95": [
+          "0.7",
+          "0.74"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge (weighted to the population)",
+        "value": 0.785,
+        "ci95": [
+         0.545,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > kw > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > kw > recall_weighted > ci"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.78"
+         ],
+         "ci95": [
+          "0.5",
+          "0.54"
+         ]
+        }
+       }
+      },
+      "shipped_yn": {
+       "flags": {
+        "metric": "flags, the yes/no step alone (secondary) (counted)",
+        "value": 24,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped_yn > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, the yes/no step alone (secondary), agreement with the AI judge",
+        "value": 0.583,
+        "k": 14,
+        "n": 24,
+        "kn": "14/24",
+        "ci95": [
+         0.388,
+         0.756
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped_yn > precision"
+        },
+        "shown": {
+         "value": [
+          "0.5",
+          "0.58"
+         ],
+         "ci95": [
+          "0.3",
+          "0.38",
+          "0.76",
+          "0.8"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, the yes/no step alone (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped_yn > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > shipped_yn > recall_weighted > ci"
+        }
+       }
+      },
+      "yn_sc": {
+       "flags": {
+        "metric": "flags, yes/no + scope question without the S27 question (secondary) (counted)",
+        "value": 17,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > yn_sc > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, yes/no + scope question without the S27 question (secondary), agreement with the AI judge",
+        "value": 0.705,
+        "k": 12,
+        "n": 17,
+        "kn": "12/17",
+        "ci95": [
+         0.468,
+         0.868
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > yn_sc > precision"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.70"
+         ],
+         "ci95": [
+          "0.4",
+          "0.46",
+          "0.87",
+          "0.9"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, yes/no + scope question without the S27 question (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 0.857,
+        "ci95": [
+         0.666,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > yn_sc > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pestizide > yn_sc > recall_weighted > ci"
+        },
+        "shown": {
+         "value": [
+          "0.8",
+          "0.85"
+         ],
+         "ci95": [
+          "0.6",
+          "0.66"
+         ]
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of the confirmed flags, with − without the scope check, agreement with the AI judge",
+       "value": 0.133,
+       "ci95": [
+        -0.008,
+        0.301
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > diff_variant_minus_shipped_P > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > diff_variant_minus_shipped_P > ci"
+       },
+       "n_boot": 2000,
+       "shown": {
+        "value": [
+         "0.1",
+         "0.13"
+        ],
+        "ci95": [
+         "-0.01",
+         "-0.1",
+         "0.31",
+         "0.4"
+        ]
+       }
+      },
+      "recall_diff": {
+       "metric": "paired Δ recall (weighted), with − without the scope check, agreement with the AI judge",
+       "value": -0.142,
+       "ci95": [
+        -0.334,
+        0.0
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > diff_variant_minus_shipped_R > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > diff_variant_minus_shipped_R > ci"
+       },
+       "n_boot": 2000,
+       "shown": {
+        "value": [
+         "-0.1",
+         "-0.14"
+        ],
+        "ci95": [
+         "-0.34",
+         "-0.4"
+        ]
+       }
+      },
+      "lost_judge_positives": {
+       "metric": "judge positives the shipped design confirms and the scope check does not",
+       "value": 2,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pestizide > shipped > precision > k"
+       }
+      }
+     },
+     "pooled": {
+      "topic": "pooled",
+      "name_en": "all three",
+      "items_checked": {
+       "metric": "affairs the judge checked",
+       "value": 399,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > n_items"
+       }
+      },
+      "judge_positives": {
+       "metric": "affairs relevant per the AI judge among the checked (agreement with the AI judge)",
+       "value": 20,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > judge_pos_items"
+       }
+      },
+      "relevant_est": {
+       "metric": "estimated affairs relevant per the AI judge (population)",
+       "value": 20.0,
+       "ci95": [
+        14.0,
+        26.0
+       ],
+       "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > relevant_est > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > relevant_est > ci"
+       }
+      },
+      "strata": {
+       "cells": [
+        {
+         "cell": "licht/neither",
+         "N": 1309,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "licht/any",
+         "N": 7,
+         "n": 7,
+         "judge_Y": 4,
+         "kn": "4/7"
+        },
+        {
+         "cell": "drohnen/neither",
+         "N": 1308,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "drohnen/any",
+         "N": 8,
+         "n": 8,
+         "judge_Y": 2,
+         "kn": "2/8"
+        },
+        {
+         "cell": "pestizide/neither",
+         "N": 1292,
+         "n": 120,
+         "judge_Y": 0,
+         "kn": "0/120"
+        },
+        {
+         "cell": "pestizide/any",
+         "N": 24,
+         "n": 24,
+         "judge_Y": 14,
+         "kn": "14/24"
+        }
+       ],
+       "note": "'any' = flagged by any arm or the keyword list (every such affair checked, n = N); 'neither' = a random sample",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > strata"
+       }
+      },
+      "shipped": {
+       "flags": {
+        "metric": "flags, shipped before S30 (yes/no flag kept by the S27 question) (counted)",
+        "value": 28,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge",
+        "value": 0.642,
+        "k": 18,
+        "n": 28,
+        "kn": "18/28",
+        "ci95": [
+         0.458,
+         0.793
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.64"
+         ],
+         "ci95": [
+          "0.4",
+          "0.45",
+          "0.8",
+          "0.80"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, shipped before S30 (yes/no flag kept by the S27 question), agreement with the AI judge (weighted to the population)",
+        "value": 0.9,
+        "ci95": [
+         0.772,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped > recall_weighted > ci"
+        },
+        "shown": {
+         "ci95": [
+          "0.7",
+          "0.77"
+         ]
+        }
+       }
+      },
+      "variant": {
+       "flags": {
+        "metric": "flags, with the scope check (S27 question and scope question both yes) (counted)",
+        "value": 21,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > variant > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, with the scope check (S27 question and scope question both yes), agreement with the AI judge",
+        "value": 0.761,
+        "k": 16,
+        "n": 21,
+        "kn": "16/21",
+        "ci95": [
+         0.549,
+         0.894
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > variant > precision"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.76"
+         ],
+         "ci95": [
+          "0.5",
+          "0.54",
+          "0.9",
+          "0.90"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, with the scope check (S27 question and scope question both yes), agreement with the AI judge (weighted to the population)",
+        "value": 0.8,
+        "ci95": [
+         0.619,
+         0.953
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > variant > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > variant > recall_weighted > ci"
+        },
+        "shown": {
+         "ci95": [
+          "0.6",
+          "0.61",
+          "0.96",
+          "1.0"
+         ]
+        }
+       }
+      },
+      "kw": {
+       "flags": {
+        "metric": "flags, frozen keyword list (eval/s30/keywords_frozen.json) (counted)",
+        "value": 18,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > kw > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge",
+        "value": 0.944,
+        "k": 17,
+        "n": 18,
+        "kn": "17/18",
+        "ci95": [
+         0.742,
+         0.991
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > kw > precision"
+        },
+        "shown": {
+         "value": [
+          "0.9",
+          "0.94"
+         ],
+         "ci95": [
+          "0.7",
+          "0.74",
+          "1.0",
+          "1.00"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, frozen keyword list (eval/s30/keywords_frozen.json), agreement with the AI judge (weighted to the population)",
+        "value": 0.85,
+        "ci95": [
+         0.681,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > kw > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > kw > recall_weighted > ci"
+        },
+        "shown": {
+         "value": [
+          "0.8"
+         ],
+         "ci95": [
+          "0.6",
+          "0.68"
+         ]
+        }
+       }
+      },
+      "shipped_yn": {
+       "flags": {
+        "metric": "flags, the yes/no step alone (secondary) (counted)",
+        "value": 39,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped_yn > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, the yes/no step alone (secondary), agreement with the AI judge",
+        "value": 0.512,
+        "k": 20,
+        "n": 39,
+        "kn": "20/39",
+        "ci95": [
+         0.361,
+         0.662
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped_yn > precision"
+        },
+        "shown": {
+         "value": [
+          "0.5",
+          "0.51"
+         ],
+         "ci95": [
+          "0.3",
+          "0.36",
+          "0.67",
+          "0.7"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, the yes/no step alone (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 1.0,
+        "ci95": [
+         1.0,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped_yn > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > shipped_yn > recall_weighted > ci"
+        }
+       }
+      },
+      "yn_sc": {
+       "flags": {
+        "metric": "flags, yes/no + scope question without the S27 question (secondary) (counted)",
+        "value": 28,
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > yn_sc > flags"
+        }
+       },
+       "precision": {
+        "metric": "precision of flags, yes/no + scope question without the S27 question (secondary), agreement with the AI judge",
+        "value": 0.642,
+        "k": 18,
+        "n": 28,
+        "kn": "18/28",
+        "ci95": [
+         0.458,
+         0.793
+        ],
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s30/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > yn_sc > precision"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.64"
+         ],
+         "ci95": [
+          "0.4",
+          "0.45",
+          "0.8",
+          "0.80"
+         ]
+        }
+       },
+       "recall": {
+        "metric": "recall, yes/no + scope question without the S27 question (secondary), agreement with the AI judge (weighted to the population)",
+        "value": 0.9,
+        "ci95": [
+         0.75,
+         1.0
+        ],
+        "ci_method": "stratified bootstrap 2,000 (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+        "at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > yn_sc > recall_weighted > value"
+        },
+        "ci_at": {
+         "file": "eval/s30/results.json",
+         "key": "pooled > yn_sc > recall_weighted > ci"
+        },
+        "shown": {
+         "ci95": [
+          "0.7"
+         ]
+        }
+       }
+      },
+      "precision_diff": {
+       "metric": "paired Δ precision of the confirmed flags, with − without the scope check, agreement with the AI judge",
+       "value": 0.119,
+       "ci95": [
+        0.005,
+        0.26
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > diff_variant_minus_shipped_P > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > diff_variant_minus_shipped_P > ci"
+       },
+       "n_boot": 2000,
+       "shown": {
+        "value": [
+         "0.1",
+         "0.11"
+        ],
+        "ci95": [
+         "0.0",
+         "0.00",
+         "0.3"
+        ]
+       }
+      },
+      "recall_diff": {
+       "metric": "paired Δ recall (weighted), with − without the scope check, agreement with the AI judge",
+       "value": -0.099,
+       "ci95": [
+        -0.25,
+        0.0
+       ],
+       "ci_method": "paired: both arms on the same stratified bootstrap 2,000 resamples (percentile, random.Random(30)), bounds rounded outward at 3 decimals (eval/s30/analyze.py)",
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > diff_variant_minus_shipped_R > value"
+       },
+       "ci_at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > diff_variant_minus_shipped_R > ci"
+       },
+       "n_boot": 2000,
+       "shown": {
+        "value": [
+         "-0.09",
+         "0.0"
+        ],
+        "ci95": [
+         "-0.3"
+        ]
+       }
+      },
+      "lost_judge_positives": {
+       "metric": "judge positives the shipped design confirms and the scope check does not",
+       "value": 2,
+       "at": {
+        "file": "eval/s30/results.json",
+        "key": "pooled > shipped > precision > k"
+       }
+      }
+     }
+    },
+    "product_rule": {
+     "text": "the variant goes into the product only if the pooled precision-difference interval lies above 0 and no recall-difference interval (pooled or per topic) lies below 0; otherwise the product stays as it is",
+     "pooled_precision_diff_ci_lo": 0.005,
+     "recall_diff_ci_hi": {
+      "licht": 0.0,
+      "drohnen": 0.0,
+      "pestizide": 0.0,
+      "pooled": 0.0
+     },
+     "met": true,
+     "narrowly": "the pooled precision interval starts just above 0 and the pooled and pesticides recall intervals end at 0",
+     "at": {
+      "file": "eval/PREREG-BUILD.md",
+      "line": 243,
+      "text": "Product rule: the variant goes into the product only if the pooled precision difference interval lies above 0"
+     },
+     "shown": {
+      "pooled_precision_diff_ci_lo": [
+       "0.0",
+       "0.00"
+      ]
+     }
+    },
+    "dev": {
+     "chosen": "V4_scope+S27",
+     "chosen_at": {
+      "file": "eval/PREREG-BUILD.md",
+      "line": 227,
+      "text": "Chosen after seeing dev (highest mean F1"
+     },
+     "note": "dev on the S19 packets with the S19 judge gold (not held out; four variants, tuning allowed); V4 = scope question + the S27 question, chosen after seeing dev, as the pre-registration states",
+     "topics": {
+      "wolf": {
+       "s19_yn": {
+        "precision": 0.225,
+        "recall": 1.0,
+        "flags": 40,
+        "tp": 9,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > s19_yn"
+        },
+        "shown": {
+         "precision": [
+          "0.2",
+          "0.22"
+         ]
+        }
+       },
+       "shipped": {
+        "precision": 0.444,
+        "recall": 0.444,
+        "flags": 9,
+        "tp": 4,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > shipped"
+        },
+        "shown": {
+         "precision": [
+          "0.4",
+          "0.44"
+         ],
+         "recall": [
+          "0.4",
+          "0.44"
+         ]
+        }
+       },
+       "V1_yn+scope": {
+        "precision": 0.348,
+        "recall": 0.889,
+        "flags": 23,
+        "tp": 8,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > V1_yn+scope"
+        },
+        "shown": {
+         "precision": [
+          "0.3",
+          "0.34"
+         ],
+         "recall": [
+          "0.8",
+          "0.88"
+         ]
+        }
+       },
+       "V2_yn+contrast": {
+        "precision": 0.241,
+        "recall": 0.778,
+        "flags": 29,
+        "tp": 7,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > V2_yn+contrast"
+        },
+        "shown": {
+         "precision": [
+          "0.2",
+          "0.24"
+         ],
+         "recall": [
+          "0.7",
+          "0.77"
+         ]
+        }
+       },
+       "V3_scope": {
+        "precision": 0.348,
+        "recall": 0.889,
+        "flags": 23,
+        "tp": 8,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > V3_scope"
+        },
+        "shown": {
+         "precision": [
+          "0.3",
+          "0.34"
+         ],
+         "recall": [
+          "0.8",
+          "0.88"
+         ]
+        }
+       },
+       "V4_scope+S27": {
+        "precision": 0.667,
+        "recall": 0.444,
+        "flags": 6,
+        "tp": 4,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > V4_scope+S27"
+        },
+        "shown": {
+         "precision": [
+          "0.6",
+          "0.66"
+         ],
+         "recall": [
+          "0.4",
+          "0.44"
+         ]
+        }
+       },
+       "kw": {
+        "precision": 0.5,
+        "recall": 0.556,
+        "flags": 10,
+        "tp": 5,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "wolf > kw"
+        },
+        "shown": {
+         "recall": [
+          "0.5",
+          "0.55"
+         ]
+        }
+       }
+      },
+      "ki-schule": {
+       "s19_yn": {
+        "precision": 0.136,
+        "recall": 1.0,
+        "flags": 22,
+        "tp": 3,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > s19_yn"
+        },
+        "shown": {
+         "precision": [
+          "0.1",
+          "0.13"
+         ]
+        }
+       },
+       "shipped": {
+        "precision": 0.25,
+        "recall": 1.0,
+        "flags": 12,
+        "tp": 3,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > shipped"
+        },
+        "shown": {
+         "precision": [
+          "0.2"
+         ]
+        }
+       },
+       "V1_yn+scope": {
+        "precision": 0.333,
+        "recall": 0.667,
+        "flags": 6,
+        "tp": 2,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > V1_yn+scope"
+        },
+        "shown": {
+         "precision": [
+          "0.3",
+          "0.33"
+         ],
+         "recall": [
+          "0.6",
+          "0.66"
+         ]
+        }
+       },
+       "V2_yn+contrast": {
+        "precision": 0.176,
+        "recall": 1.0,
+        "flags": 17,
+        "tp": 3,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > V2_yn+contrast"
+        },
+        "shown": {
+         "precision": [
+          "0.1",
+          "0.17"
+         ]
+        }
+       },
+       "V3_scope": {
+        "precision": 0.333,
+        "recall": 0.667,
+        "flags": 6,
+        "tp": 2,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > V3_scope"
+        },
+        "shown": {
+         "precision": [
+          "0.3",
+          "0.33"
+         ],
+         "recall": [
+          "0.6",
+          "0.66"
+         ]
+        }
+       },
+       "V4_scope+S27": {
+        "precision": 1.0,
+        "recall": 0.667,
+        "flags": 2,
+        "tp": 2,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > V4_scope+S27"
+        },
+        "shown": {
+         "recall": [
+          "0.6",
+          "0.66"
+         ]
+        }
+       },
+       "kw": {
+        "precision": 0.75,
+        "recall": 1.0,
+        "flags": 4,
+        "tp": 3,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "ki-schule > kw"
+        },
+        "shown": {
+         "precision": [
+          "0.7"
+         ]
+        }
+       }
+      },
+      "hitze": {
+       "s19_yn": {
+        "precision": 0.671,
+        "recall": 1.0,
+        "flags": 346,
+        "tp": 232,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > s19_yn"
+        },
+        "shown": {
+         "precision": [
+          "0.6",
+          "0.67"
+         ]
+        }
+       },
+       "shipped": {
+        "precision": 0.771,
+        "recall": 0.97,
+        "flags": 292,
+        "tp": 225,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > shipped"
+        },
+        "shown": {
+         "precision": [
+          "0.7",
+          "0.77"
+         ],
+         "recall": [
+          "0.9"
+         ]
+        }
+       },
+       "V1_yn+scope": {
+        "precision": 0.836,
+        "recall": 0.901,
+        "flags": 250,
+        "tp": 209,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > V1_yn+scope"
+        },
+        "shown": {
+         "precision": [
+          "0.8",
+          "0.83"
+         ],
+         "recall": [
+          "0.9",
+          "0.90"
+         ]
+        }
+       },
+       "V2_yn+contrast": {
+        "precision": 0.83,
+        "recall": 0.966,
+        "flags": 270,
+        "tp": 224,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > V2_yn+contrast"
+        },
+        "shown": {
+         "precision": [
+          "0.8"
+         ],
+         "recall": [
+          "0.9",
+          "0.96"
+         ]
+        }
+       },
+       "V3_scope": {
+        "precision": 0.836,
+        "recall": 0.901,
+        "flags": 250,
+        "tp": 209,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > V3_scope"
+        },
+        "shown": {
+         "precision": [
+          "0.8",
+          "0.83"
+         ],
+         "recall": [
+          "0.9",
+          "0.90"
+         ]
+        }
+       },
+       "V4_scope+S27": {
+        "precision": 0.919,
+        "recall": 0.879,
+        "flags": 222,
+        "tp": 204,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > V4_scope+S27"
+        },
+        "shown": {
+         "precision": [
+          "0.9",
+          "0.91"
+         ],
+         "recall": [
+          "0.8",
+          "0.87"
+         ]
+        }
+       },
+       "kw": {
+        "precision": 0.901,
+        "recall": 0.741,
+        "flags": 191,
+        "tp": 172,
+        "at": {
+         "file": "eval/s30/dev_results.json",
+         "key": "hitze > kw"
+        },
+        "shown": {
+         "precision": [
+          "0.9",
+          "0.90"
+         ],
+         "recall": [
+          "0.7",
+          "0.74"
+         ]
+        }
+       }
+      }
+     }
+    },
+    "keyword_note": "the frozen keyword lists are more precise than both arms on these topics (pooled and per topic)",
+    "lost_positives_note": "the two judge positives the scope check drops are pesticides affairs (P041 veterinary insecticides, P050 pests and plant diseases; eval/s30/key.jsonl, eval/s30/packet_A/pestizide/items.tsv)"
+   },
+   "split": "held out: three topics never used before, affairs begun 16–31 Mar 2026 (S19 used Aug–Oct), keyword lists and generated topics frozen before any test call; the variant (V4) was chosen after seeing dev on the S19 packets, as the pre-registration states; pre-registered (S30) before any test call; nothing tuned on the test",
+   "prereg": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S30 narrow one-sentence topics",
+    "line": 216
+   },
+   "prereg_more": {
+    "file": "eval/PREREG-BUILD.md",
+    "line": 243,
+    "text": "Product rule: the variant goes into the product only if the pooled precision difference interval lies above 0"
+   },
+   "sources": [
+    "eval/s30/results.json",
+    "eval/s30/analyze.py",
+    "eval/s30/run.py",
+    "eval/s30/run_common.py",
+    "eval/s30/common.py",
+    "eval/s30/flags.py",
+    "eval/s30/build_packet.py",
+    "eval/s30/key.jsonl",
+    "eval/s30/topics.json",
+    "eval/s30/sentences.json",
+    "eval/s30/keywords_frozen.json",
+    "eval/s30/ann/",
+    "eval/s30/dev_results.json",
+    "eval/s30/raw.jsonl",
+    "eval/s30/ledger.jsonl",
+    "src/querschnitt/prompts.py",
+    "src/querschnitt/adhoc.py"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "judge_build": "Claude (blind agent runs)",
+   "date": "2026-10-15",
+   "shipped": "new one-sentence topics with a scope ask the scope question on their confirmed flags (prompts.scope_check_prompt, adhoc.SCOPE_PROMPT); flags it does not confirm go to 'please check', not away; existing topics unchanged",
+   "test": "Neue Themen aus einem Satz, hold-out (Lichtverschmutzung, Drohnen, Pestizide): generierter Umfang als dritte Frage auf den Markierungen, gegen den KI-Richter (S30)",
+   "interval": [
+    0.005,
+    0.26
+   ],
+   "baseline": {
+    "name": "the product before S30 (yes/no flag kept by the S27 question), same affairs, pooled",
+    "value": 0.642,
+    "ci95": [
+     0.458,
+     0.793
+    ],
+    "shown": {
+     "value": [
+      "0.6",
+      "0.64"
+     ],
+     "ci95": [
+      "0.4",
+      "0.45",
+      "0.8",
+      "0.80"
+     ]
+    }
+   },
+   "file": "eval/s30/results.json",
+   "key": "pooled > diff_variant_minus_shipped_P > value",
+   "shown": {
+    "interval": [
+     "0.0",
+     "0.00",
+     "0.2"
+    ]
+   }
+  },
+  {
    "id": "neutrality_judge_sets",
    "gold": "ai-judge",
    "subject": "Apertus",
@@ -27282,6 +30875,8 @@
   "judge precision on human negatives",
   "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
   "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
+  "one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely inconclusive at n = 927, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
+  "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
   "Romansh"
  ]
 }

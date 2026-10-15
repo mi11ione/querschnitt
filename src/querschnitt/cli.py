@@ -356,8 +356,8 @@ def examples_cmd(argv):
     a = ap.parse_args(argv)
     if a.all:
         st = Store()
-        topics = sorted({r["scheme"].split("/", 1)[1] for r in st.all(
-            "SELECT DISTINCT scheme FROM topics WHERE scheme LIKE 'adhoc/%' AND provenance = 'confirmed' AND valid_to IS NULL")})
+        topics = sorted({r["scheme"].split("/", 1)[1] for r in st.all(   # the pattern as a parameter: '%' is psycopg's placeholder
+            "SELECT DISTINCT scheme FROM topics WHERE scheme LIKE ? AND provenance = 'confirmed' AND valid_to IS NULL", ("adhoc/%",))})
         for t in topics:
             if (adhoc_dir() / f"{t}.yaml").exists():
                 examples_cmd(["--topic", t] + (["--dry-run"] if a.dry_run else []))

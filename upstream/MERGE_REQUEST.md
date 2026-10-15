@@ -72,8 +72,9 @@ Measured, with sources in Querschnitt's `eval/` (every figure is a row in `eval/
 ## Loading and versioning
 
 The Hop workflow reads `topics.jsonl.gz`, keeps machine rows only, compares each row's content hash with the latest
-machine row of its key and skips equal rows, looks up `body_id`, `scheme_id` and the labels, and inserts by
-`(affair_id, scheme_key, level, rank, valid_from)`. It then closes machine rows that a newer machine row supersedes.
+machine row of its key and skips equal rows, maps the evidence source to `evidence_text_id` / `evidence_doc_id` as the
+converter does, looks up `body_id`, `scheme_id` and the labels, and inserts by `(affair_id, scheme_key, level, rank,
+valid_from)` with `updated_at` = the load time. It then closes machine rows that a newer machine row supersedes.
 Decision rows are never touched by the loader; a machine row closed by a decision does not come back on a reload.
 
 ## Changing a scheme, adding an ad-hoc topic
@@ -171,15 +172,16 @@ build is published (Querschnitt `docs/ONSITE.md`, gate thresholds there). Two th
   `opd/export/to_opd.py --with-subtopics`, loaded with every check constraint and foreign key satisfied; the loader's
   closing SQL and the rejection transaction above run as described; `opd/tests/smoke.sql` passes; a `--scheme`
   migration up, re-run and down.
-- 14 Oct, Apache Hop 2.19.0: first load, identical reload (all skipped), a changed row (one new version, one closed), a
-  published rejection left in place (`hop/README.md`, "Tested"). That run used the topics file and seed of that day; it
-  has to be repeated with the current file and migrations before the merge.
+- On every push to Querschnitt's repository, CI job `hop` (`hop/README.md`, "Tested"): Apache Hop 2.19.0 (official zip, SHA-512 checked) against the
+  `postgres:16` image with 0001–0003 up over stand-in `affairs` / `bodies`. A fixture from the shipped file loads with
+  every row equal to the `to_opd.py` conversion, text and document quotes with their ids; an identical reload writes
+  nothing; a row changed at the same `valid_from` is updated in place with a new `updated_at`, a newer row closes the old
+  one; the released topics file loads in full, every row equal to the conversion; then the down migrations in reverse
+  order with the rows in place.
+- 14 Oct, Apache Hop 2.19.0, by hand: a published rejection left in place by a later load (`hop/README.md`, "Tested").
 
 ## Known gaps before a merge
 
-- The Hop pipeline does not read `evidence.source`, so `evidence_text_id` / `evidence_doc_id` stay null and a quote from a
-  document is stored with `evidence_field = 'text'` (the converter maps it correctly). Fix in the pipeline, then repeat
-  the Hop test.
 - API endpoints are specified, not implemented.
 - `ON DELETE CASCADE` from `affairs`: if OPD's ETL deletes and re-inserts affairs (or truncates the table), the topic rows
   of those affairs go with them. OPD to confirm how affairs are updated; otherwise drop the cascade.

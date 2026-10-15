@@ -16,10 +16,11 @@ request and publishing anything are Roman's decisions; nothing here has been sen
 - Migrations 0001–0003 (as they are now) on PostgreSQL 16.2, 15 Oct, over stub `affairs` / `bodies` from OPD's export of
   that day: up, up again (no-op), reverse rollback with data, up again; the shipped topics file converted by
   `to_opd.py --with-subtopics` loads with every constraint and foreign key satisfied; `upstream/opd/tests/smoke.sql` passes.
-- The Hop workflow ran on 14 Oct with Hop 2.19.0 against the migrations and topics file of that day: first load,
-  identical reload (all skipped), a changed row (one new version, one closed), a published rejection left in place
-  (`upstream/hop/README.md`, "Tested"). Since then the file carries four more schemes and the migrations changed, so
-  that run has to be repeated; the pipeline also still drops `evidence.source` (`upstream/hop/README.md`, known gaps).
+- The Hop workflow runs in CI on every push (job `hop`, Hop 2.19.0, `postgres:16`; `upstream/hop/README.md`, "Tested"):
+  migrations 0001–0003 up, a fixture from the shipped file and then the released topics file loaded with every row
+  equal to the `to_opd.py` conversion (evidence text and document ids included), an identical reload that writes
+  nothing, a changed row updated in place with a new `updated_at`, a newer row closing the old one, the down migrations
+  with the rows in place. A published rejection left in place by a later load was checked by hand on 14 Oct.
 - `eval-task/run.py --score-only` on the stored S9/S16/S8 rows reproduces the published results; a smoke run against the
   repo's fake endpoint checked the call path and resume. No model was called while building the pack.
 - `python3 tools/claims_check.py upstream/APERTUS-NOTES.md` passes; its sources are rows in `eval/claims.tsv`.
@@ -31,7 +32,7 @@ request and publishing anything are Roman's decisions; nothing here has been sen
    (APS subtopic labels, `consultation_topics` vocabulary, which ad-hoc topics, single or split export, the feed switch,
    licence statement, who runs the nightly).
 2. Fork, branch, copy `upstream/opd/` and `upstream/hop/` to the agreed paths, and use `upstream/MERGE_REQUEST.md` as the
-   description (its known gaps first: the Hop evidence mapping and a Hop re-run).
+   description (its known gaps first).
 3. Before pushing: `python3 upstream/opd/tools/gen_seed.py` (regenerates the seed; it stops on a scheme file without a
    fixed id) and the checks under "State".
 

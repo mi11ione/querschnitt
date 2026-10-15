@@ -33,10 +33,13 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 
 ## Quick start
 ```sh
-make data                   # the scored data (GitHub release `data-latest`): app export, inputs, topic rows
+make install                # .venv with Python 3.12 (uv, else python3.11+ venv); the first target that needs it runs it too
+make data                   # the scored data (GitHub release `data-latest`): app export, inputs, topic rows (~30 s)
 make run                    # API + app at http://127.0.0.1:8000 (SQLite; no model calls)
-make test
+make test                   # ~1 min; a fake model endpoint, no network
+make eval GOLD=data/eval/gold_aps_s9.csv   # APS editors' chapters on their production rows → 0.718 [0.693, 0.743], 963/1340
 make eval GOLD=my.csv       # score any labelled CSV (affair_id,label) against the stored topic rows
+make claims                 # every number in README and docs backed by eval/claims.tsv or eval/pruefstand.json
 ```
 Model calls need an OpenAI-compatible endpoint serving Apertus (`QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY`); Public AI's
 `swiss-ai/apertus-v1.5-8b` route is the default. `python tools/probe_endpoint.py` checks any endpoint (log-probabilities,

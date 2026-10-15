@@ -40,9 +40,19 @@ def wilson(k: int, n: int, z: float = 1.959964) -> tuple[float, float] | tuple[N
     return max(0.0, c - h), min(1.0, c + h)
 
 
+def _down(v: float, d: int) -> float:
+    return math.floor(v * 10 ** d + 1e-9) / 10 ** d
+
+
+def _up(v: float, d: int) -> float:
+    return math.ceil(v * 10 ** d - 1e-9) / 10 ** d
+
+
 def prop(k: int, n: int) -> dict:
+    """Point truncated, interval rounded outward (never rounded up / inward): the docs' rule, so `make eval` prints what
+    the README says."""
     lo, hi = wilson(k, n)
-    return dict(k=k, n=n, value=round(k / n, 4) if n else None, ci=[round(lo, 4), round(hi, 4)] if n else None)
+    return dict(k=k, n=n, value=_down(k / n, 4) if n else None, ci=[_down(lo, 4), _up(hi, 4)] if n else None)
 
 
 def read_gold(path: str | Path) -> tuple[list[str], list[dict]]:
@@ -102,7 +112,7 @@ def f1_boot(items: list[tuple[bool, bool]], n: int = 1000, seed: int = 7) -> lis
         tp = sum(g and p for g, p in s); fp = sum(p and not g for g, p in s); fn = sum(g and not p for g, p in s)
         vals.append(2 * tp / (2 * tp + fp + fn) if (2 * tp + fp + fn) else 0.0)
     vals.sort()
-    return [round(vals[int(0.025 * n)], 4), round(vals[int(0.975 * n) - 1], 4)]
+    return [_down(vals[int(0.025 * n)], 4), _up(vals[int(0.975 * n) - 1], 4)]
 
 
 def binary(items: list[tuple[bool, bool]], has_neg: bool) -> dict:
@@ -112,7 +122,7 @@ def binary(items: list[tuple[bool, bool]], has_neg: bool) -> dict:
     if has_neg:
         f1 = 2 * tp / (2 * tp + fp + fn) if (2 * tp + fp + fn) else None
         out.update(accuracy=prop(tp + tn, len(items)), precision=prop(tp, tp + fp),
-                   f1=dict(value=round(f1, 4) if f1 is not None else None, ci=f1_boot(items)))
+                   f1=dict(value=_down(f1, 4) if f1 is not None else None, ci=f1_boot(items)))
     return out
 
 
@@ -128,11 +138,11 @@ def multiclass(items: list[tuple[str, str, list[str]]]) -> dict:
         fn = sum(g == c and p != c for g, p, _ in items)
         pr = tp / (tp + fp) if tp + fp else None; rc = tp / (tp + fn) if tp + fn else None
         f1 = 2 * tp / (2 * tp + fp + fn) if (2 * tp + fp + fn) else None
-        per[c] = dict(support=tp + fn, precision=pr and round(pr, 4), recall=rc and round(rc, 4), f1=f1 and round(f1, 4),
-                      precision_ci=[round(x, 4) for x in wilson(tp, tp + fp)] if tp + fp else None,
-                      recall_ci=[round(x, 4) for x in wilson(tp, tp + fn)] if tp + fn else None)
+        per[c] = dict(support=tp + fn, precision=pr and _down(pr, 4), recall=rc and _down(rc, 4), f1=f1 and _down(f1, 4),
+                      precision_ci=(lambda w: [_down(w[0], 4), _up(w[1], 4)])(wilson(tp, tp + fp)) if tp + fp else None,
+                      recall_ci=(lambda w: [_down(w[0], 4), _up(w[1], 4)])(wilson(tp, tp + fn)) if tp + fn else None)
     sup = [c for c in classes if per[c]["support"]]
-    macro = lambda k: round(sum(per[c][k] or 0 for c in sup) / len(sup), 4) if sup else None
+    macro = lambda k: _down(sum(per[c][k] or 0 for c in sup) / len(sup), 4) if sup else None
     return dict(n=n, accuracy=prop(ok, n), top3=prop(top3, n), macro_precision=macro("precision"),
                 macro_recall=macro("recall"), macro_f1=macro("f1"), per_class=per)
 
@@ -197,7 +207,7 @@ def evaluate(gold: str | Path, store: Store, scheme: str | None = None, max_miss
 def fmt_p(d: dict | None) -> str:
     if not d or d.get("value") is None:
         return "–"
-    return f"{d['value']:.3f} [{d['ci'][0]:.3f}, {d['ci'][1]:.3f}] ({d['k']}/{d['n']})"
+    return f"{_down(d['value'], 3):.3f} [{_down(d['ci'][0], 3):.3f}, {_up(d['ci'][1], 3):.3f}] ({d['k']}/{d['n']})"
 
 
 def report(res: dict) -> str:

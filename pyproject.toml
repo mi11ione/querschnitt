@@ -28,3 +28,5 @@ packages = ["src/querschnitt"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# newer Starlette deprecates httpx under its TestClient; the API tests use it on purpose (fake endpoint, no network)
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient` is deprecated"]

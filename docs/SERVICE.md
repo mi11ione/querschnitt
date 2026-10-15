@@ -47,6 +47,16 @@ in the console); without it the review desk and Neues Thema expect a token-less 
 | `QS_DATA_DIR`, `PY` | `../data`, `.venv/bin/python` | `ops/nightly.sh` only: inputs and OPD export (`opd-new/`), interpreter |
 | `QS_NIGHTLY_AT` | 02:30 | `querschnitt nightly` |
 
+### From a fresh clone
+`make data` → `make run` → `make test` → `make eval GOLD=data/eval/gold_aps_s9.csv` → `make claims`; no model calls, no key.
+The first target that runs Python creates `.venv` (`make install`: uv, else any `python >= 3.11` with venv + pip);
+`PY=…` picks another interpreter, which must import fastapi, uvicorn and yaml. The S9 gold is mostly older than the app's
+slice, so `make eval` scores it on its production rows: `eval/prod_gold/{inputs,topics}.jsonl.gz` (from
+`eval/prod_gold/rows.py`) in their own store `runs/eval-prodgold.sqlite`, which reproduces
+`eval/results/eval-gold_aps_s9.json` byte for byte (CI checks it; `EVAL_DB=` scores the app's store instead, into
+`…-appstore.json`). Any other `GOLD` is scored on the app's store, loaded first when empty. `make data` never replaces an
+existing `data/querschnitt.sqlite`: `make clean-db` first to load a newer release.
+
 ## What exists
 
 | File | |

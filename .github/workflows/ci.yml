@@ -21,8 +21,10 @@ jobs:
       - name: the store, API, eval and Neues-Thema tests again on Postgres
         run: python -m pytest -q tests/test_store.py tests/test_api.py tests/test_eval.py tests/test_adhoc.py
         env: {QS_TEST_PG_DSN: "postgresql://qs:qs@localhost:5432/qs", QS_TEST_ALL_PG: "1"}
-      - name: make run smoke (load shipped data, /health, /metrics)
-        run: make smoke PY=python
+      - name: the README path from a fresh clone (make data, then make run's load on the release data, /health, /metrics)
+        run: make data && make smoke PY=python
+      - name: make eval on the S9 production rows reproduces the stored result (README, docs/SERVICE.md)
+        run: make eval GOLD=data/eval/gold_aps_s9.csv PY=python && git diff --exit-code eval/results/eval-gold_aps_s9.json
       - name: every number in README and docs is backed by eval/claims.tsv or eval/pruefstand.json
         run: make claims PY=python
   docker:

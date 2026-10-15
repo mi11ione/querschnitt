@@ -26,6 +26,9 @@ def alive(run):
         return False
 
 
+STRIKES, LEDGER_AT = {}, {}   # Errors resumes per run without a successful call between them
+
+
 def log(*a):
     print(time.strftime("%Y-%m-%d %H:%M:%S"), *a, flush=True)
 
@@ -48,7 +51,15 @@ for name, run, args in PHASES:
         if shutil.disk_usage(ROOT).free > 3e9:   # space came back: resume by itself
             (ROOT / run / "STOP.md").rename(ROOT / run / f"STOP-{time.strftime('%Y%m%d-%H%M%S')}.md"); break
         time.sleep(300)
-    while (ROOT / run / "STOP.md").exists() and (ROOT / run / "STOP.md").read_text().startswith("# Errors"):
+    errors_stop = lambda: (ROOT / run / "STOP.md").exists() and (ROOT / run / "STOP.md").read_text().startswith("# Errors")
+    if errors_stop():
+        # once per stop: a run that made no successful call since its last resume is a strike (errors that are not an
+        # outage, e.g. a bug); three strikes leave it stopped for a person instead of resuming it again
+        led = ROOT / run / "ledger.jsonl"; n = sum(1 for _ in open(led)) if led.exists() else 0
+        STRIKES[run] = STRIKES.get(run, 0) + 1 if n == LEDGER_AT.get(run) else 0; LEDGER_AT[run] = n
+        if STRIKES[run] >= 3:
+            log("three resumes without a successful call in", run, "- left stopped for a person")
+    while errors_stop() and STRIKES.get(run, 0) < 3:
         # an endpoint outage: resume once the endpoint answers with the build this run locked
         if subprocess.call([str(ROOT / ".venv/bin/python"), str(ROOT / "ops/endpoint_ok.py"), run], cwd=ROOT) == 0:
             (ROOT / run / "STOP.md").rename(ROOT / run / f"STOP-{time.strftime('%Y%m%d-%H%M%S')}.md"); log("endpoint back", run); break

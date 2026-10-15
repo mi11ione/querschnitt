@@ -13,6 +13,7 @@ import gzip
 import json
 import os
 import re
+import sys
 import time
 from pathlib import Path
 
@@ -187,6 +188,16 @@ def run(args):
         if tfile:
             for r in trows:
                 tfile.write(json.dumps(r, ensure_ascii=False) + "\n")
+    # coverage guard: a re-score in progress (e.g. inputs rebuilt, rows not yet re-asked) must not replace a fuller export;
+    # fewer APS-scored affairs than 95 % of the previous export of the same period → nothing written, exit 3 (--force writes)
+    prev = out / "meta.json"
+    if prev.exists() and not args.force:
+        pm = json.loads(prev.read_text())
+        if pm.get("since") == args.since and n_dec["aps"] < 0.95 * (pm.get("scored") or 0):
+            if tfile:
+                tfile.close(); ttmp.unlink(missing_ok=True)
+            sys.exit(f"export not written: {n_dec['aps']:,} APS-scored affairs against {pm['scored']:,} in the export of "
+                     f"{pm.get('generated_at')} (a re-score in progress?); the previous export stays. --force writes anyway.")
     if tfile:
         tfile.close()
         ttmp.rename(out / "topics.jsonl.gz")
@@ -240,6 +251,7 @@ def main(argv=None):
     ap.add_argument("--out", default=str(ROOT / "app/data"))
     ap.add_argument("--since", default="2025-01-01")
     ap.add_argument("--until", default="9999")
+    ap.add_argument("--force", action="store_true", help="write even if fewer affairs are scored than in the previous export")
     ap.add_argument("--extra", nargs="*", default=["BS:2019-01-01:2024-12-31", "TI:2023-01-01:2024-12-31"],
                     help="BODY:FROM:TO ranges added to the slice, only affairs scored with the parliament's own scheme "
                          "(Basel-Stadt's labelled years, S20/S21; Ticino's lead departments before the slice, S29)")

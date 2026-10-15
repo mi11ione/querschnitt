@@ -37,6 +37,7 @@ in the console); without it the review desk and Neues Thema expect a token-less 
 | `QS_DB` / `QS_PG_DSN` | `data/querschnitt.sqlite` / – | store; Postgres when the DSN is set |
 | `QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY` (or `QS_KEY_FILE`) | Public AI, `swiss-ai/apertus-v1.5-8b` | endpoint (client.Endpoint.from_env) |
 | `QS_MAX_RATE` | 1.6 (nightly 1.0) | requests/s ceiling of this process |
+| `QS_PREFILL`, `QS_NO_LOGPROBS` | prefill on, logprobs on | endpoint capabilities (below); `QS_PREFILL=0` = the unmeasured no-prefill mode, `QS_NO_LOGPROBS=1` = codes from the generated text |
 | `QS_WRITE_TOKEN` | – | bearer token for every write (above); unset = open, warned at startup |
 | `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 50, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits (`QS_ADHOC_CAP`: the ledger's lifetime total, a safety net; the working cap is `QS_ADHOC_DAILY_USD`) |
 | `QS_ADHOC_DAILY_USD` | USD 2 | Neues Thema list-price spend per local day, summed from the ledger; 0 = off |
@@ -46,6 +47,18 @@ in the console); without it the review desk and Neues Thema expect a token-less 
 | `QS_PROFILE`, `QS_STEPS` | full, `ch sub yn bi ev` | `lite` = `ch sub`; `QS_STEPS` overrides the full profile's steps |
 | `QS_DATA_DIR`, `PY` | `../data`, `.venv/bin/python` | `ops/nightly.sh` only: inputs and OPD export (`opd-new/`), interpreter |
 | `QS_NIGHTLY_AT` | 02:30 | `querschnitt nightly` |
+### Endpoint capabilities
+The client speaks OpenAI chat completions, but the measured design (every Prüfstand number) also needs two things not
+every server offers: assistant prefill (vLLM's `continue_final_message` / `add_generation_prompt` with a final assistant
+message) and next-token `top_logprobs`. `tools/probe_endpoint.py` tests both and prints the env for that endpoint and a
+verdict. An endpoint that refuses prefill (a 4xx naming those fields), or accepts the request and starts a new answer,
+raises `CapabilityError` naming the capability and `QS_PREFILL=0`; the batch stops with `# Endpoint capability` in
+`STOP.md` and nothing is retried in another mode. `QS_PREFILL=0` sends one user message (the measured prompt plus a line
+asking the answer to begin with the JSON opening) and reads the code after it, from the token's `top_logprobs` or else
+from the text. That mode is not measured: its prompt ids differ, so its rows never mix with measured ones; step rows carry
+`meta.mode`, the run lock `mode` (own build dir), topic rows `build = <fingerprint>+no-prefill`, export `meta.mode`; no
+calibration applies (`p` null); a run dir or compose in the other mode is refused; the build lock applies as before. Refit
+and pass the quality gate (`make eval GOLD=…`) before showing any of its numbers.
 
 ### From a fresh clone
 `make data` → `make run` → `make test` → `make eval GOLD=data/eval/gold_aps_s9.csv` → `make claims`; no model calls, no key.
@@ -69,11 +82,11 @@ existing `data/querschnitt.sqlite`: `make clean-db` first to load a newer releas
 | `src/querschnitt/evaluate.py` | `querschnitt eval` / `make eval` |
 | `src/querschnitt/cli.py` | `querschnitt build-inputs · run · load · serve · delta · nightly · eval · metrics · export` (`run` = `batch`, `export` = the lead's `export.main`) |
 | `src/querschnitt/net.py` | downloads: published export files only, RFC 9309 robots check (ported from gegenprobe), fail closed |
-| `src/querschnitt/fake_endpoint.py` | fake OpenAI-compatible endpoint (A/B top_logprobs by yes words, peaked codes for chapter/subtopic/evidence, topic JSON for generation; refuses a system message) |
+| `src/querschnitt/fake_endpoint.py` | fake OpenAI-compatible endpoint (A/B top_logprobs by yes words, peaked codes for chapter/subtopic/evidence, topic JSON for generation; refuses a system message; modes `noprefill` (refuses the prefill fields as OpenAI does) and `ignoreprefill` (drops them), and answers the no-prefill prompts) |
 | `tools/gold_csv.py` | `data/eval/gold_aps_s9.csv` (1,357 APS editors' chapters, S9) and `data/eval/gold_dvs30.csv` (the 30 public DVS items, S15) |
 | `tools/adhoc_live_check.py` | Neues Thema end to end against a running API (POST + SSE), timeline per topic |
 | `Makefile`, `Dockerfile`, `.dockerignore`, `docker-compose.yml`, `.github/workflows/ci.yml` | packaging |
-| `tests/test_*.py` (store, API, sync, eval, Neues Thema, net, delta, compose, prompts, export end to end, doc links), `tests/conftest.py`, `tests/fixtures/{inputs,topics}_sample.jsonl` | tests |
+| `tests/test_*.py` (store, API, sync, eval, Neues Thema, net, delta, compose, prompts, endpoint modes, export end to end, doc links), `tests/conftest.py`, `tests/fixtures/{inputs,topics}_sample.jsonl` | tests |
 
 ## API
 

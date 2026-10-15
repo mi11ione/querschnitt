@@ -19,15 +19,24 @@ Map it onto the variants below; pick the lead screen; note what the partner asks
 
 ## 11:30–13:00 — endpoint hour
 ```sh
-# capabilities of the CSCS endpoint (logprobs, prefill, served model, fingerprint, throughput, replay vs Public AI rows)
+# capabilities of the CSCS endpoint (logprobs, prefill, served model, fingerprint, throughput, replay vs Public AI rows);
+# the probe ignores QS_PREFILL / QS_NO_LOGPROBS and ends with the `export` lines to use and a one-line verdict
 QS_NAME=cscs QS_BASE_URL=<url> QS_MODEL=<model> QS_API_KEY=<key> .venv/bin/python tools/probe_endpoint.py --n 60 --conc 1,4,8,16
 # validated on Public AI 14 Oct: logprobs true, prefill_ok true, deterministic, replay 6/6 (eval/probe-publicai-*.json)
 ```
-- `logprobs` true + `prefill_ok` true → CSCS can take the corpus run: refit cut-offs on the CSCS build (S16 analysis on the
-  S9 items: `QS_*=… python eval/s16/run.py` into a fresh dir, then `eval/s16/analyze.py`), start a new run dir (a new build is
-  never mixed into `runs/main`), point `ops/pipeline.py` at it.
-- `logprobs` false → lanes still run on generated codes (two readings); chapter probabilities stay from Public AI rows.
-- Replay `top1_agree` < 0.95 or `mean_abs_dp` > 0.05 → refit before any number from the new build is shown.
+Per outcome (`prefill` · `logprobs` in the probe's summary line):
+- `honoured` · `honoured`, verdict "measured design runs as measured" → CSCS can take the corpus run: refit cut-offs on
+  the CSCS build (S16 analysis on the S9 items: `QS_*=… python eval/s16/run.py` into a fresh dir, then
+  `eval/s16/analyze.py`), start a new run dir (a new build is never mixed into `runs/main`), point `ops/pipeline.py` at it.
+  Replay `top1_agree` < 0.95 or `mean_abs_dp` > 0.05 → refit before any number from the new build is shown.
+- `rejected` or `ignored` prefill → the measured design cannot run there. Either keep Public AI for the corpus and show
+  CSCS only as a footprint, or run with `export QS_PREFILL=0` (verdict "runs in an unmeasured mode — refit + quality gate
+  before use"): a fresh run dir, `make eval GOLD=data/eval/gold_aps_s9.csv` on its rows, cut-offs refitted, and every
+  number from it labelled no-prefill. `noprefill_ok` false → do not use the endpoint.
+- `absent` or `rejected` logprobs → `export QS_NO_LOGPROBS=1`: also unmeasured; lanes still run on generated codes (two
+  readings), no chapter probabilities from that endpoint (they stay from Public AI rows).
+- Use the printed `QS_MAX_RATE` and batch `--conc … --max-rate …` (`0.8 ×` the best rate without a `429`).
+- A batch that stops with `# Endpoint capability` in `STOP.md` is never resumed automatically: re-probe, decide as above.
 
 ## Variants
 | Variant | Lead screen | What changes | Rework | Commands |

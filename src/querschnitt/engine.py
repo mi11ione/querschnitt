@@ -9,14 +9,19 @@ Steps per affair (all measured in the spikes; S-numbers name the evaluation):
   yn:<topic>  ad-hoc yes/no (S3 E6 frame), order a (A = yes); order b when 0.1 < p < 0.9 (S8)
   ev    evidence: one numbered sentence of the input, checked as an exact substring (S12)
 A step's row stores the raw code log-probabilities, the served model and fingerprint, and the prompt id; `compose`
-turns rows into topic rows."""
+turns rows into topic rows.
+
+With QS_PREFILL=0 (an endpoint without assistant prefill) every step sends one user message instead
+(prompts.no_prefill_user), reads the code after the JSON opening (first such token's top_logprobs, else the generated
+text) and marks `meta.mode = "no-prefill"`. That mode is unmeasured; its prompt ids differ from the measured ones."""
 from __future__ import annotations
 
 import math
 import threading
 
 from . import prompts as P
-from .client import Client, generated_code, read_codes
+from .client import CapabilityError, Client, capability_message, code_after, generated_code, prefill_ignored, read_codes, \
+    read_codes_after
 from .scheme import APS
 
 
@@ -31,16 +36,43 @@ def probs(d: dict[str, float], codes: list[str], perm: list[int] | None = None) 
     return [v / s for v in pv] if s else pv
 
 
+NOPRE_TOKENS = 12   # no-prefill mode: room for the JSON opening (and a code fence) before the code
+
+
 class Engine:
     def __init__(self, client: Client, examples=None, stop: threading.Event | None = None):
         self.client, self.examples, self.stop = client, examples, stop
+        if client is not None:
+            self._prefill()
+
+    def _prefill(self) -> bool:
+        """The mode of this call: QS_PREFILL decides the prompts and ids, so the endpoint must be configured alike."""
+        on = P.prefill_on()
+        if self.client is not None and getattr(self.client.endpoint, "prefill", True) != on:
+            raise ValueError(f"QS_PREFILL says prefill={on} but endpoint '{self.client.endpoint.name}' has prefill="
+                             f"{self.client.endpoint.prefill}; build the endpoint with Endpoint.from_env()")
+        return on
+
+    def _call(self, user: str, prefill: str, codes: list[str], max_tokens: int) -> tuple[dict, dict, dict]:
+        """One closed choice -> (choice, meta, code log-probabilities). Prefill mode is the measured request, unchanged."""
+        if self._prefill():
+            ch, meta = self.client.chat([{"role": "user", "content": user}, {"role": "assistant", "content": prefill}],
+                                        max_tokens=max_tokens, stop=self.stop)
+            d = read_codes(ch, codes)
+            if not d and prefill_ignored(ch, prefill):
+                raise CapabilityError("prefill", capability_message(
+                    "prefill", self.client.endpoint.name, "accepted the prefill request but started a new answer instead of "
+                    f"continuing it ({((ch.get('message') or {}).get('content') or '')[:80]!r})"))
+            return ch, meta, d
+        ch, meta = self.client.chat([{"role": "user", "content": P.no_prefill_user(user, prefill)}],
+                                    max_tokens=max_tokens + NOPRE_TOKENS, stop=self.stop)
+        meta["mode"] = P.NO_PREFILL
+        return ch, meta, read_codes_after(ch, codes, prefill)
 
     def _ask(self, user: str, prefill: str, codes: list[str], max_tokens: int = 1) -> tuple[dict, dict]:
-        ch, meta = self.client.chat([{"role": "user", "content": user}, {"role": "assistant", "content": prefill}],
-                                    max_tokens=max_tokens, stop=self.stop)
-        d = read_codes(ch, codes)
+        ch, meta, d = self._call(user, prefill, codes, max_tokens)
         if not d:  # endpoint without log-probabilities: the generated code, checked against the list
-            g = generated_code(ch, codes)
+            g = generated_code(ch, codes) if meta.get("mode") is None else code_after(ch, codes, prefill)
             d = {g: 0.0} if g else {}
         meta["mass"] = round(sum(math.exp(v) for v in d.values()), 5)
         return d, meta
@@ -110,14 +142,14 @@ class Engine:
             return None
         u, p = P.evidence_prompt([s for _, s in sents], name)
         codes = [str(i) for i in range(1, len(sents) + 1)]
-        ch, meta = self.client.chat([{"role": "user", "content": u}, {"role": "assistant", "content": p}], max_tokens=3,
-                                    stop=self.stop)
-        d = read_codes(ch, codes)
+        ch, meta, d = self._call(u, p, codes, 3)
         if d:
             k = max(d, key=d.get)
-        else:
+        elif meta.get("mode") is None:
             raw = ((ch.get("message") or {}).get("content") or "").strip().strip('"').split('"')[0].strip()
             k = raw if raw in codes else None
+        else:
+            k = code_after(ch, codes, p)
         if not k:
             return dict(step="ev", pid=P.pid(u, p), ok=False, meta=meta)
         src, s = sents[int(k) - 1]

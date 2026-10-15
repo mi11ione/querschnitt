@@ -7,7 +7,8 @@ Lane: `please_check` when the two code orders disagree on the top chapter; one r
 Ad-hoc yes/no (S8): p = mean of order a and, where run, order b; flag at p ≥ cut-off (0.5);
 `please_check` when the orders disagree or 0.3 ≤ p < 0.7.
 Recalibration (eval/calibration.json) applies only to rows of the build it was fitted on; rows of another build get p
-null and the chapter lane by the readings until it is refitted."""
+null and the chapter lane by the readings until it is refitted. Rows of the unmeasured no-prefill mode (QS_PREFILL=0) are
+never recalibrated, and their topic rows carry `build` = "<fingerprint>+no-prefill"."""
 from __future__ import annotations
 
 import collections
@@ -43,6 +44,9 @@ def read_run(*runs: Path) -> tuple[dict, dict]:
         st = json.loads((Path(run) / "state.json").read_text())
         if lock and st["lock"]["fp"] != lock["fp"]:
             raise ValueError(f"{run}: build {st['lock']['fp']} != {lock['fp']}")
+        if st["lock"].get("mode") != P.mode():   # its prompt ids would not be found: say so instead of composing nothing
+            raise ValueError(f"{run}: rows made in mode {st['lock'].get('mode') or 'prefill (measured)'}, composing in "
+                             f"{P.mode() or 'prefill (measured)'} mode; set QS_PREFILL to match")
         lock = lock or st["lock"]
         for p in sorted((Path(run) / st["lock"]["key"]).glob("*.jsonl")):
             for line in open(p):
@@ -178,9 +182,17 @@ _CAL = []
 _WARNED: set = set()
 
 
-def calibration_for(calib, fp: str | None):
+def run_build(lock: dict) -> str:
+    """The `build` written to topic rows: the fingerprint, labelled "+no-prefill" for the unmeasured mode."""
+    return lock["fp"] + ("+" + lock["mode"] if lock.get("mode") else "")
+
+
+def calibration_for(calib, fp: str | None, mode: str | None = None):
     """`calib` (calibrate.Calibration) when it was fitted on build `fp`, else None: a row of another build gets p null
-    and the readings lane until the calibration is refitted on its build. Warns once per (calibration, row) build pair."""
+    and the readings lane until the calibration is refitted on its build. Warns once per (calibration, row) build pair.
+    Rows of the no-prefill mode (`mode`) never get it: the calibration was fitted on the prefill design."""
+    if mode:
+        return None
     if calib is None or calib.build == fp:
         return calib
     if (calib.build, fp) not in _WARNED:
@@ -197,7 +209,7 @@ def calibrated(d: dict):
         from .calibrate import Calibration
         f = Path(__file__).resolve().parents[2] / "eval/calibration.json"
         _CAL.append(Calibration.load(f) if f.exists() else None)
-    c = calibration_for(_CAL[0], (d.get("meta") or {}).get("fp"))
+    c = calibration_for(_CAL[0], (d.get("meta") or {}).get("fp"), (d.get("meta") or {}).get("mode"))
     return c.apply(calib_key(d), d["conf"]) if c else None
 
 
@@ -257,9 +269,9 @@ def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "")
     run's locked build; `cutoffs_id` names the calibration's build (null when none applies). The rank-1 chapter row's
     `p` is the one shipped value of confidence, which the export's `ch_p` and detail panel copy from these rows."""
     base = dict(affair_id=a["id"], body_key=a["body"], status="suggested", provenance="inferred", model=lock["model"],
-                build=lock["fp"], input_hash=a["input_hash"], valid_from=valid_from, valid_to=None, version=VERSION)
+                build=run_build(lock), input_hash=a["input_hash"], valid_from=valid_from, valid_to=None, version=VERSION)
     out = []
-    calib = calibration_for(calib, lock["fp"])
+    calib = calibration_for(calib, lock["fp"], lock.get("mode"))
     cut = f"aps@{calib.build[-8:]}" if calib else None
     d = dec.get("aps")
     if d:

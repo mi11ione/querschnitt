@@ -41,9 +41,11 @@ make eval GOLD=data/eval/gold_aps_s9.csv   # APS editors' chapters on their prod
 make eval GOLD=my.csv       # score any labelled CSV (affair_id,label) against the stored topic rows
 make claims                 # every number in README and docs backed by eval/claims.tsv or eval/pruefstand.json
 ```
-Model calls need an OpenAI-compatible endpoint serving Apertus (`QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY`); Public AI's
-`swiss-ai/apertus-v1.5-8b` route is the default. `python tools/probe_endpoint.py` checks any endpoint (log-probabilities,
-prefill, served build, throughput, replay of stored prompts) before a run.
+Model calls need an OpenAI-compatible chat endpoint serving Apertus (`QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY`) that also
+supports assistant prefill (vLLM's `continue_final_message`) and `top_logprobs`, the two capabilities every measured
+number depends on; Public AI's `swiss-ai/apertus-v1.5-8b` route has both and is the default. `python tools/probe_endpoint.py`
+checks an endpoint (prefill, log-probabilities, served build, throughput, replay of stored prompts) and prints the settings
+to use; without prefill, `QS_PREFILL=0` runs an unmeasured mode with its own prompt ids ([docs/SERVICE.md](docs/SERVICE.md)).
 
 ## How it works
 - **Closed choices only.** Chapter, subtopic, yes/no for an ad-hoc topic, evidence sentence: each is a choice among listed

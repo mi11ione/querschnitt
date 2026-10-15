@@ -33,7 +33,7 @@ import yaml
 
 from . import scheme as S
 from .client import BuildChanged, Client, Endpoint
-from .compose import VERSION, yn_decision
+from .compose import VERSION, run_build, yn_decision
 from .engine import Engine, need_yn_b
 from .evaluate import wilson
 from .examples import topic_examples
@@ -526,7 +526,8 @@ class Adhoc:
                        p_verify=None if pv is None else round(pv, 4), lane=d["lane"], t=round(time.time() - job.t0, 2),
                        sample=a["sample"], title=a["title"], body=a["body_key"], parl=a.get("parl"), level=a.get("level"),
                        lang=a["lang"], date=a["date"], p_a=round(d["p_a"], 4), p_b=None if d["p_b"] is None else round(d["p_b"], 4),
-                       model=ra["meta"].get("model"), build=ra["meta"].get("fp"), prompt_id=",".join([ra["pid"]] + ([rb["pid"]] if rb else []) + vids),
+                       model=ra["meta"].get("model"), build=run_build(dict(fp=ra["meta"].get("fp") or "", mode=ra["meta"].get("mode"))) or None,
+                       prompt_id=",".join([ra["pid"]] + ([rb["pid"]] if rb else []) + vids),
                        usd=round(ra["meta"].get("usd", 0) + (rb["meta"].get("usd", 0) if rb else 0) + vusd, 7))
             with wlock:
                 job.decisions[a["id"]] = rec

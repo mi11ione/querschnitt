@@ -1,6 +1,6 @@
 """A fake OpenAI-compatible chat endpoint for tests and CI. No model is called; nothing leaves the machine.
 
-    python -m querschnitt.fake_endpoint --port 8099 [--mode logprobs|nologprobs|error|429]
+    python -m querschnitt.fake_endpoint --port 8099 [--mode logprobs|nologprobs|noprefill|ignoreprefill|error|bad|429]
     QS_BASE_URL=http://127.0.0.1:8099/v1 QS_API_KEY=x querschnitt serve
 
 Answers by request shape, the way the engine reads Apertus:
@@ -8,9 +8,13 @@ Answers by request shape, the way the engine reads Apertus:
                                       (--yes, default: digital, numérique, digitale, wolf, loup, lupo), 0.6 for a maybe
                                       word ("eventuell"), else 0.04; A = yes in order a, B = yes in order b
   chapter / subtopic / evidence       top_logprobs with one peaked code (deterministic from the prompt)
+  no prefill, the no-prefill line      (QS_PREFILL=0 prompts) the answer `{"kapitel": "X"}`: the same choice as with prefill,
+                                      its top_logprobs on the token after the JSON opening
   no prefill, `"terms"` in the prompt the ad-hoc topic JSON (names, scope, terms)
   no prefill, `"subtopics"`            {"subtopics": [10, 11]}
-A system message is refused with HTTP 400 (the engine never sends one). Requests are kept in `.requests`.
+A system message is refused with HTTP 400 (the engine never sends one). Mode `noprefill` refuses the vLLM prefill fields
+the way OpenAI's API does (HTTP 400 "Unrecognized request argument supplied: continue_final_message"); mode
+`ignoreprefill` accepts them and starts a new answer (a server that drops unknown fields). Requests are kept in `.requests`.
 In-process: `with FakeEndpoint() as f: Endpoint(base_url=f.url, ...)`."""
 from __future__ import annotations
 
@@ -28,6 +32,8 @@ YES_WORDS = ["digital", "numérique", "digitale", "wolf", "loup", "lupo"]
 NO_ANSWERS = ("Nein, anderes Thema", "Non, autre thème", "No, altro tema")
 VERIFY_Q = re.compile(r"zentrales Thema|thème central|tema centrale")
 ITEM = re.compile(r"\n(?:Geschäft|Objet|Oggetto):\n(.*?)\n\n", re.S)
+NOPRE_LINE = re.compile(r"\n\n(?:Beginne deine Antwort genau mit|Commence ta réponse exactement par|Inizia la risposta "
+                        r"esattamente con) `(.+?)` [^\n]*$", re.S)
 
 
 def _lp(p: float) -> float:
@@ -88,6 +94,10 @@ class FakeEndpoint:
                 msgs = body.get("messages") or []
                 if any(m.get("role") == "system" for m in msgs):
                     return self._send(400, {"error": "fake: system message refused"})
+                if fake.mode == "noprefill" and ("continue_final_message" in body or "add_generation_prompt" in body):
+                    f = "continue_final_message" if "continue_final_message" in body else "add_generation_prompt"
+                    return self._send(400, {"error": dict(message=f"Unrecognized request argument supplied: {f}",
+                                                          type="invalid_request_error", param=None, code=None)})
                 self._send(200, fake.answer(body))
 
         self.srv = ThreadingHTTPServer((host, port), H)
@@ -105,6 +115,11 @@ class FakeEndpoint:
         msgs = body["messages"]
         user = next((m["content"] for m in reversed(msgs) if m["role"] == "user"), "")
         prefill = msgs[-1]["content"] if msgs[-1]["role"] == "assistant" else None
+        opening = None                                   # no-prefill mode: the answer spells out the prefill first
+        if prefill is None and (m := NOPRE_LINE.search(user)):
+            opening, prefill, user = m.group(1), m.group(1), user[:m.start()]
+        elif self.mode == "ignoreprefill" and prefill is not None:
+            opening = prefill                            # the prefill is dropped; a new answer repeats its opening
         dist: dict[str, float] | None = None
         if prefill is not None:
             if any(k in prefill for k in ('"antwort"', '"reponse"', '"risposta"')):
@@ -137,8 +152,13 @@ class FakeEndpoint:
         else:
             content = "ok"
         lp = self.mode != "nologprobs" and body.get("logprobs") and dist is not None
+        toks = [dict(token=content, logprob=_lp(dist[content]), top_logprobs=_top(dist))] if lp else None
+        if opening is not None and dist is not None:
+            toks = [dict(token=opening, logprob=-0.01, top_logprobs=[dict(token=opening, logprob=-0.01, bytes=None)])] + \
+                (toks or []) + [dict(token='"}', logprob=-0.01, top_logprobs=[dict(token='"}', logprob=-0.01, bytes=None)])]
+            content = opening + content + '"}'
         choice = dict(index=0, message=dict(role="assistant", content=content), finish_reason="stop",
-                      logprobs=dict(content=[dict(token=content, logprob=_lp(dist[content]), top_logprobs=_top(dist))]) if lp else None)
+                      logprobs=dict(content=toks) if lp else None)
         return dict(id="fake-" + str(len(self.requests)), object="chat.completion", created=int(time.time()), model=self.model,
                     system_fingerprint=self.fp, choices=[choice],
                     usage=dict(prompt_tokens=len(user) // 4, completion_tokens=max(1, len(content) // 4)))
@@ -155,7 +175,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog="python -m querschnitt.fake_endpoint")
     ap.add_argument("--port", type=int, default=8099)
     ap.add_argument("--host", default="127.0.0.1")
-    ap.add_argument("--mode", default="logprobs", choices=["logprobs", "nologprobs", "error", "bad", "429"])
+    ap.add_argument("--mode", default="logprobs", choices=["logprobs", "nologprobs", "noprefill", "ignoreprefill", "error", "bad", "429"])
     ap.add_argument("--yes", nargs="*", help="yes words (lower case substrings of the item)")
     ap.add_argument("--latency", type=float, default=0.0)
     a = ap.parse_args(argv)

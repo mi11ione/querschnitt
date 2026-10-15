@@ -5,7 +5,9 @@
 
 Rows are appended to <out>/<build>/<step>.jsonl. A step is done when its prompt id is in the current build's rows
 (identical prompts are sent once; a changed input re-runs only what changed). The first served build is locked in
-<out>/state.json; a different build stops the run (STOP.md) and nothing is mixed. Progress: <out>/PROGRESS.md."""
+<out>/state.json; a different build stops the run (STOP.md) and nothing is mixed. Progress: <out>/PROGRESS.md.
+A run made with QS_PREFILL=0 (unmeasured no-prefill mode) records `mode` in the lock and writes to its own build dir; a
+run dir is never resumed in the other mode. An endpoint that refuses prefill or logprobs stops the run (STOP.md)."""
 from __future__ import annotations
 
 import argparse
@@ -22,7 +24,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from . import prompts as P
-from .client import BuildChanged, Client, Endpoint
+from .client import BuildChanged, CapabilityError, Client, Endpoint
 from .engine import Engine, mean_p, need_ch2, need_yn_b
 from .examples import ExamplePool, topic_examples
 from .scheme import APS, adhoc, flat, named
@@ -74,12 +76,14 @@ class Store:
                 r = json.loads(line)
                 self.done[r["pid"]] = r
 
-    def lock_build(self, model: str, fp: str):
+    def lock_build(self, model: str, fp: str, mode: str | None = None):
         with self.lock:
             if "lock" in self.state:
                 return
-            key = (fp or "nofp").split("-")[-1] + "-" + time.strftime("%Y%m%d")
+            key = (fp or "nofp").split("-")[-1] + "-" + time.strftime("%Y%m%d") + ("-" + mode if mode else "")
             self.state["lock"] = dict(model=model, fp=fp, key=key, first_seen=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
+            if mode:   # unmeasured mode (QS_PREFILL=0); absent for the measured design
+                self.state["lock"]["mode"] = mode
             self.state_p.write_text(json.dumps(self.state, indent=1))
             self.build_dir().mkdir(exist_ok=True)
 
@@ -101,6 +105,9 @@ class Runner:
         self.out = Path(args.out)
         self.store = Store(self.out)
         lock = self.store.state.get("lock")
+        if lock and lock.get("mode") != P.mode():
+            sys.exit(f"{self.out} was run in mode {lock.get('mode') or 'prefill (measured)'}, this process is in "
+                     f"{P.mode() or 'prefill (measured)'} mode (QS_PREFILL); use another --out, never mix the two")
         ep = Endpoint.from_env()
         ep.max_rate, ep.conc = args.max_rate, args.conc
         self.client = Client(ep, ledger=str(self.out / "ledger.jsonl"), cap_usd=args.cap, expect_build=lock["fp"] if lock else None,
@@ -130,7 +137,7 @@ class Runner:
             self.halt("Served build changed", str(e)); raise
         m = r["meta"]
         if not self.store.state.get("lock"):
-            self.store.lock_build(m["model"], m["fp"])
+            self.store.lock_build(m["model"], m["fp"], m.get("mode"))
             self.client.expect_build = m["fp"]
         r["ts"] = round(time.time(), 2)
         self.store.write(r)
@@ -203,7 +210,9 @@ class Runner:
             self.counts["errors"] += 1
             with open(self.out / "errors.jsonl", "a") as f:
                 f.write(json.dumps(dict(ts=time.time(), aid=a["id"], err=repr(e)[:400])) + "\n")
-            if "BUDGET" in str(e):      # not an outage: ops/pipeline.py and ops/watchdog.sh resume `Errors` stops by themselves
+            if isinstance(e, CapabilityError) and e.certain:   # retrying cannot help: the endpoint lacks a capability
+                self.halt(f"Endpoint capability: {e.capability}", str(e))
+            elif "BUDGET" in str(e):      # not an outage: ops/pipeline.py and ops/watchdog.sh resume `Errors` stops by themselves
                 self.halt("Budget", repr(e)[:400])
             elif self.counts["errors"] > 200:
                 self.halt("Errors", repr(e)[:400])
@@ -247,7 +256,8 @@ class Runner:
                f" · errors {self.counts['errors']}\n"
                f"- Rate: {rate10:.2f} req/s (last 10 min) · guard {self.client.guard.rate:.2f}/s (cap {self.client.guard.max_rate}) · HTTP 429s {c['n429']:,} · transient {c['transient']}\n"
                f"- List-price estimate (ledger): USD {self.client.spent:.3f} of cap {self.args.cap}\n"
-               f"- Build: `{lock.get('model')}` · `{lock.get('fp')}`\n")
+               f"- Build: `{lock.get('model')}` · `{lock.get('fp')}`\n"
+               + (f"- Mode: **{lock['mode']}**: unmeasured; refit and pass the quality gate before use\n" if lock.get("mode") else ""))
         (self.out / "PROGRESS.md").write_text(txt)
 
     def run(self):

@@ -3,14 +3,45 @@ subtopic steps, S3 E6 / S8 yes/no, S12 evidence); tests/test_prompts.py pins the
 prompt id changes, so rows made with it are re-scored, never mixed.
 
 All classification calls end with an assistant prefill that opens a JSON value (`{"kapitel": "`), so the next token is
-the code; the engine reads that token's top log-probabilities (or, without them, the generated code)."""
+the code; the engine reads that token's top log-probabilities (or, without them, the generated code).
+
+QS_PREFILL=0 selects the no-prefill mode for endpoints that cannot continue an assistant message: one user message, the
+measured prompt plus a line asking the answer to begin with the prefill text (`no_prefill_user`). It is NOT measured; its
+prompt ids differ from every measured one (`pid` hashes the message actually sent), so its rows never mix with measured
+rows, and compose applies no calibration to them."""
 from __future__ import annotations
 
 import hashlib
 import random
 import re
 
+from .client import prefill_from_env
 from .scheme import APS
+
+NO_PREFILL = "no-prefill"
+
+
+def prefill_on() -> bool:
+    """True = the measured prefill design (default); False = the no-prefill mode (QS_PREFILL=0)."""
+    return prefill_from_env()
+
+
+def mode() -> str | None:
+    """None for the measured design, "no-prefill" otherwise (stored in row meta, the run lock and export meta)."""
+    return None if prefill_on() else NO_PREFILL
+
+
+NOPRE = {"de": "Beginne deine Antwort genau mit `{pre}` und schreibe nichts davor.",
+         "fr": "Commence ta réponse exactement par `{pre}` sans rien écrire avant.",
+         "it": "Inizia la risposta esattamente con `{pre}` senza scrivere nulla prima."}
+
+
+def no_prefill_user(user: str, prefill: str) -> str:
+    """The no-prefill mode's single user message: the measured prompt, then one line (in the language of its answer
+    format line) asking the answer to begin with the prefill text."""
+    last = user.rstrip().rsplit("\n", 1)[-1]
+    lang = "fr" if last.startswith("Réponds") else "it" if last.startswith("Rispondi") else "de"
+    return user + "\n\n" + NOPRE[lang].format(pre=prefill)
 
 CODES = [chr(ord("A") + i) for i in range(25)]                     # A..Y: 24 chapters + none
 CODES_EXT = [chr(ord("A") + i) for i in range(26)] + ["a", "b", "c", "d", "e"]
@@ -32,8 +63,12 @@ T = {
 }
 
 
-def pid(user: str, prefill: str) -> str:
-    """Prompt identity: sha256 of the exact messages (first 12 hex)."""
+def pid(user: str, prefill: str, prefill_mode: bool | None = None) -> str:
+    """Prompt identity: sha256 of the exact messages sent (first 12 hex). In the no-prefill mode (QS_PREFILL=0, or
+    `prefill_mode=False`) that is `no_prefill_user(user, prefill)` with no assistant message, so the id can never equal
+    a measured one (those always hash a non-empty prefill after the separator)."""
+    if not (prefill_on() if prefill_mode is None else prefill_mode):
+        user, prefill = no_prefill_user(user, prefill), ""
     return hashlib.sha256((user + "\x00" + prefill).encode()).hexdigest()[:12]
 
 

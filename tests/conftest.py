@@ -12,6 +12,13 @@ from querschnitt.store import Store
 FIX = pathlib.Path(__file__).parent / "fixtures"
 
 
+@pytest.fixture(autouse=True)
+def _measured_mode(monkeypatch):
+    """Every test starts in the measured design, whatever the shell exports (QS_PREFILL=0 is tested explicitly)."""
+    for k in ("QS_PREFILL", "QS_NO_LOGPROBS"):
+        monkeypatch.delenv(k, raising=False)
+
+
 @pytest.fixture
 def store(tmp_path):
     """SQLite per test; with QS_TEST_ALL_PG=1 and QS_TEST_PG_DSN, the same tests on Postgres (tables emptied first)."""

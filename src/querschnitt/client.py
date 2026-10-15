@@ -1,5 +1,11 @@
-"""One model client for every Apertus call: any OpenAI-compatible endpoint, a shared adaptive rate guard, a build
+"""One model client for every Apertus call: an OpenAI-compatible chat endpoint, a shared adaptive rate guard, a build
 guard, a list-price ledger and, per call, the served model and `system_fingerprint`.
+
+The measured design (every Prüfstand number) needs two endpoint capabilities beyond plain OpenAI chat: assistant prefill
+(vLLM's `continue_final_message` / `add_generation_prompt` with a final assistant message) and next-token
+`top_logprobs`. `Endpoint.prefill` / `Endpoint.logprobs` state them (env QS_PREFILL=0, QS_NO_LOGPROBS=1); an endpoint
+that refuses one raises `CapabilityError` naming it and its switch. Nothing is retried in another mode mid-run: the
+no-prefill mode has its own prompt ids (prompts.no_prefill_user) and is not measured.
 
 Rules it enforces: no system message, ever; no assistant prefill to a `-70b` name (that route is answered by another
 model when it gets one). The key is read from a file or env and never logged."""
@@ -28,6 +34,7 @@ class Endpoint:
     key_file: str = "~/.config/hackapertus/publicai.key"
     key_env: str = "QS_API_KEY"
     logprobs: bool = True          # the endpoint returns top_logprobs (Public AI: measured)
+    prefill: bool = True           # the endpoint continues a final assistant message (vLLM continue_final_message)
     max_rate: float = 1.6          # requests/s ceiling for this process
     conc: int = 6
 
@@ -48,7 +55,61 @@ class Endpoint:
             e.max_rate = float(os.environ["QS_MAX_RATE"])
         if os.environ.get("QS_NO_LOGPROBS"):
             e.logprobs = False
+        e.prefill = prefill_from_env()
         return e
+
+
+def prefill_from_env() -> bool:
+    """QS_PREFILL=0 (or false/no/off) selects the unmeasured no-prefill mode; unset or anything else = prefill."""
+    return os.environ.get("QS_PREFILL", "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+PREFILL_FIELDS = ("continue_final_message", "add_generation_prompt")
+
+
+class CapabilityError(RuntimeError):
+    """The endpoint lacks a capability the request needs (`capability`: "prefill" or "logprobs"). Not retried.
+    `certain`: the reply names the field (or the prefill was visibly ignored); False for a bare 400/422 to a prefill
+    request, which the batch logs as an ordinary error (it may also be a passing fault) instead of stopping on it."""
+
+    def __init__(self, capability: str, msg: str, certain: bool = True):
+        super().__init__(msg)
+        self.capability, self.certain = capability, certain
+
+
+SWITCH = {"prefill": "QS_PREFILL=0", "logprobs": "QS_NO_LOGPROBS=1"}
+
+
+def capability_message(cap: str, endpoint: str, what: str) -> str:
+    need = ("assistant prefill (a final assistant message continued via the vLLM fields continue_final_message / "
+            "add_generation_prompt)" if cap == "prefill" else "next-token top_logprobs")
+    return (f"endpoint '{endpoint}': {what}. The measured design needs {need}; nothing was retried in another mode. "
+            f"Check the endpoint with tools/probe_endpoint.py. To run without it set {SWITCH[cap]}: an unmeasured mode "
+            f"with its own prompt ids; refit and pass the quality gate before use.")
+
+
+def capability_error(code: int, text: str, payload: dict, endpoint: str) -> CapabilityError | None:
+    """A 4xx reply to a request that carried prefill or logprobs fields → the capability it most likely concerns.
+    Conservative: the reply names the field (OpenAI "Unrecognized request argument supplied: …", TGI/pydantic "unknown
+    field" / "Extra inputs are not permitted" with the field, litellm "does not support parameters: [...]", Mistral-style
+    "last role … assistant"), or it is a bare 400/422 to a prefill request that names nothing else (context length)."""
+    if code == 429 or code >= 500:
+        return None
+    low = text.lower()
+    head = f"HTTP {code} {text[:240]!r}"
+    if payload.get("logprobs") and "logprob" in low:
+        return CapabilityError("logprobs", capability_message("logprobs", endpoint, f"refused top_logprobs ({head})"))
+    if not any(f in payload for f in PREFILL_FIELDS):
+        return None
+    if any(f in low for f in PREFILL_FIELDS) or any(w in low for w in ("prefill", "final message", "last message", "last role",
+                                                                       "assistant")):
+        return CapabilityError("prefill", capability_message("prefill", endpoint, f"refused assistant prefill ({head})"))
+    other = ("context length", "context window", "maximum context", "too long", "max_tokens", "model", "api key", "auth")
+    if code in (400, 422) and not any(w in low for w in other):
+        return CapabilityError("prefill", capability_message(
+            "prefill", endpoint, f"refused a request carrying the prefill fields; the reply names no field, so prefill is the "
+                                 f"likely cause ({head})"), certain=False)
+    return None
 
 
 class Guard:
@@ -127,6 +188,9 @@ class Client:
         if "-70b" in ep.model.lower():
             assert messages[-1]["role"] == "user", "no prefill to -70b names"
             prefill = False
+        if not ep.prefill and messages[-1]["role"] == "assistant":
+            raise CapabilityError("prefill", capability_message(
+                "prefill", ep.name, "is set without prefill (QS_PREFILL=0) but the request ends with an assistant message"))
         payload = dict(model=ep.model, messages=messages, max_tokens=max_tokens, temperature=temperature, **extra)
         if prefill and messages[-1]["role"] == "assistant":
             payload.update(continue_final_message=True, add_generation_prompt=False)
@@ -161,7 +225,11 @@ class Client:
                     self.guard.release("ok")
                     with self._lock:
                         self.stats["errors"] += 1
-                    raise RuntimeError(f"HTTP {e.code}: {e.read()[:300]!r}")
+                    txt = e.read()[:600].decode("utf-8", "replace")
+                    cap = capability_error(e.code, txt, payload, ep.name)
+                    if cap:
+                        raise cap
+                    raise RuntimeError(f"HTTP {e.code}: {txt[:300].encode()!r}")
             except Exception as e:  # timeouts, resets
                 statuses.append(type(e).__name__); st = "transient"
             self.guard.release(st, ra)
@@ -205,3 +273,48 @@ def generated_code(choice: dict, codes: list[str]) -> str | None:
     """Without log-probabilities: the generated text, checked against the code list (None if it is not on it)."""
     s = ((choice.get("message") or {}).get("content") or choice.get("text") or "").strip().strip('"').strip()
     return s if s in codes else None
+
+
+def _compact(s: str) -> str:
+    return "".join(s.split())
+
+
+def read_codes_after(choice: dict, codes: list[str], prefix: str) -> dict[str, float]:
+    """No-prefill mode: the top log-probabilities of the first generated token after the answer has spelled out `prefix`
+    (e.g. `{"kapitel": "`; whitespace ignored, a code token that carries its opening quote counts), restricted to
+    `codes`. Empty when the answer never reaches the prefix or there are no log-probabilities."""
+    lp = (choice.get("logprobs") or {}).get("content") or []
+    want = _compact(prefix)
+    core = want.rstrip('"')
+    seen = ""
+    for t in lp:
+        if seen.endswith(want) or seen.endswith(core):
+            out: dict[str, float] = {}
+            for x in t.get("top_logprobs") or []:
+                s = x["token"].strip().strip('"').strip()
+                if s in codes:
+                    out[s] = max(out.get(s, -1e9), x["logprob"])
+            if out:
+                return out
+        seen += _compact(t.get("token") or "")
+    return {}
+
+
+def code_after(choice: dict, codes: list[str], prefix: str) -> str | None:
+    """No-prefill mode without log-probabilities: the code that follows `prefix` in the generated text (a bare code as
+    the whole answer also counts); None if it is not on the list."""
+    txt = _compact((choice.get("message") or {}).get("content") or choice.get("text") or "")
+    want = _compact(prefix)
+    i = txt.find(want)
+    if i >= 0:
+        s = txt[i + len(want):].split('"')[0]
+        return s if s in codes else None
+    return generated_code(choice, codes)
+
+
+def prefill_ignored(choice: dict, prefix: str) -> bool:
+    """Prefill mode: the endpoint accepted the request but started a new answer instead of continuing the prefill (the
+    text repeats the opening of `prefix`, or opens a code fence). vLLM-style servers ignore unknown fields silently."""
+    txt = _compact((choice.get("message") or {}).get("content") or choice.get("text") or "")
+    want = _compact(prefix)
+    return bool(txt) and (txt.startswith(want[:4]) or txt.startswith("```"))

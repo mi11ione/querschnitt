@@ -85,15 +85,17 @@ vs 0.696 with prefill; no calibration map yet) ([docs/SERVICE.md](docs/SERVICE.m
 ![Why this label: Bern's Grand Council, the chapter asked in German and in French, two different answers, so a person checks; the quoted sentence from the draft law](docs/img/entscheid.png)
 
 ## Integration with OpenParlData
-- **Output:** a `topics` row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); Postgres DDL in
-  [sql/topics.sql](sql/topics.sql)): code, rank, `p` (recalibrated), lane, `status` (suggested | confirmed | rejected),
+- **Output:** a topic row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); the service's own store table
+  `qs_topics`, DDL in [sql/qs_topics.sql](sql/qs_topics.sql); for OPD, the `topics` table of the
+  [migrations](upstream/opd/migrations/0001_topics.up.sql)): code, rank, `p` (recalibrated), lane, `status` (suggested | confirmed | rejected),
   `provenance` (inferred | confirmed), evidence `{source, char_start, char_end, quote}`, model, build, prompt id, input hash,
   `valid_from` / `valid_to`. Generated and confirmed content stay distinguishable; a correction adds a row, never overwrites.
 - **API:** `GET /affairs/{id}/topics`, `GET /topics/{scheme}/{code}/affairs`, `POST …/confirm|reject|undo`,
   `GET /changes?after=<seq>` (a cursor feed for re-sync), `GET /coverage`, `/metrics`, Neues Thema (`POST /adhoc`, SSE).
 - **Upstream pack** ([docs/UPSTREAM.md](docs/UPSTREAM.md)): migration files in OPD's naming, an Apache Hop pipeline that loads
   the bulk file (run with `hop-run`), the Prüfstand as an evaluation task for any Apertus build.
-- **Operations:** `docker compose --profile lite` (nightly chapter and subtopic steps into an existing Postgres) or `--profile full`
+- **Operations:** `docker compose --profile lite` (nightly chapter and subtopic steps, the store's `qs_*` tables in an existing
+  Postgres, each night ending with the topics file that the Hop job loads into OPD's `topics`) or `--profile full`
   (Postgres + API + app + nightly); footprint measured by CI on every push ([docs/SERVICE.md](docs/SERVICE.md)). The nightly
   delta reads OPD's published exports only, queues new and changed affairs and drains the queue when the endpoint is back.
 

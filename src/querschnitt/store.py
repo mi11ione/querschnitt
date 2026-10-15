@@ -1,5 +1,8 @@
-"""The `topics` store: SQLite by default (`QS_DB`, default data/querschnitt.sqlite), Postgres when `QS_PG_DSN` is set
-(psycopg 3). DDL: sql/topics.sql (Postgres, proposed upstream) and sql/topics.sqlite.sql.
+"""The service's store, table `qs_topics` (CONTRACT §1 rows): SQLite by default (`QS_DB`, default data/querschnitt.sqlite),
+Postgres when `QS_PG_DSN` is set (psycopg 3). DDL: sql/qs_topics.sql and sql/qs_topics.sqlite.sql. Every table is
+prefixed `qs_`, so the store can share a Postgres with OpenParlData's own `topics` (upstream/opd/migrations), which it
+never reads or writes; OPD's table is filled by the Hop loader from the topics file (`write_topics_file`).
+A store made by an earlier version has its rows in `topics`: `init` renames that table to `qs_topics` (`_rename_legacy`).
 
 Versioning (docs/CONTRACT.md §1): a row is never changed except to close it (`valid_to`). Loading topic rows compares
 each (affair, scheme, level, rank) with the latest machine row for that key; identical content is skipped, changed
@@ -21,6 +24,7 @@ import json
 import os
 import re
 import sqlite3
+import sys
 import threading
 from pathlib import Path
 from typing import Iterable, Iterator
@@ -38,7 +42,9 @@ AFF_COLS = ["id", "body_key", "level", "canton", "parl", "parl_fr", "lang", "dat
 TS_COLS = ("valid_from", "valid_to", "confirmed_at", "ts")
 EVIDENCE_KEYS = ("source", "field", "char_start", "char_end", "quote")
 KINDS = {"all": None, "decisions": "confirmed", "machine": "inferred"}
-LANES = ("pass", "please_check", "readings_agree")       # the lane check of sql/topics*.sql
+FILE_COLS = ["affair_id", "body_key", "scheme", "level", "code", "rank", "p", "p_raw", "lane", "status", "provenance",
+             "evidence", "model", "build", "cutoffs_id", "prompt_id", "input_hash", "valid_from", "valid_to", "version"]
+LANES = ("pass", "please_check", "readings_agree")       # the lane check of sql/qs_topics*.sql
 
 
 def norm_evidence(ev, text_src: str | None = None):
@@ -184,7 +190,7 @@ class Store:
                 self.conn.execute("BEGIN IMMEDIATE")
             self._tx_depth = 1
             try:
-                self._seq = int(self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM topics")["m"])
+                self._seq = int(self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM qs_topics")["m"])
                 yield
                 self._tx_depth = 0
                 self.conn.commit()
@@ -198,42 +204,106 @@ class Store:
         return self._seq
 
     def init(self):
-        ddl = (SQL / ("topics.sql" if self.pg else "topics.sqlite.sql")).read_text()
+        ddl = (SQL / ("qs_topics.sql" if self.pg else "qs_topics.sqlite.sql")).read_text()
         with self.lock:
             if self.pg:
+                self.conn.execute("SELECT pg_advisory_xact_lock(714002)")   # two processes opening an old store rename once
+                self._rename_legacy()
                 self.conn.execute(ddl)
                 self._check_lanes()
                 for c, ty in (("seq", "bigint"), ("closed_by", "text")):
-                    self.conn.execute(f"ALTER TABLE topics ADD COLUMN IF NOT EXISTS {c} {ty}")
+                    self.conn.execute(f"ALTER TABLE qs_topics ADD COLUMN IF NOT EXISTS {c} {ty}")
             else:
+                if self._legacy_cols() and not self._has("qs_topics"):     # checked again under the write lock
+                    self.conn.execute("BEGIN IMMEDIATE")
+                    try:
+                        self._rename_legacy()
+                        self.conn.commit()
+                    except BaseException:
+                        self.conn.rollback()
+                        raise
                 self.conn.executescript(ddl)
                 self._check_lanes()
-                have = {r[1] for r in self.conn.execute("PRAGMA table_info(topics)")}
+                have = {r[1] for r in self.conn.execute("PRAGMA table_info(qs_topics)")}
                 for c, ty in (("seq", "INTEGER"), ("closed_by", "TEXT")):
                     if c not in have:
-                        self.conn.execute(f"ALTER TABLE topics ADD COLUMN {c} {ty}")
-            self.conn.execute("UPDATE topics SET seq = row_id WHERE seq IS NULL")       # databases from before seq
-            self.conn.execute("CREATE INDEX IF NOT EXISTS topics_seq ON topics (seq)")
+                        self.conn.execute(f"ALTER TABLE qs_topics ADD COLUMN {c} {ty}")
+            self.conn.execute("UPDATE qs_topics SET seq = row_id WHERE seq IS NULL")       # databases from before seq
+            self.conn.execute("CREATE INDEX IF NOT EXISTS qs_topics_seq ON qs_topics (seq)")
             self.conn.commit()
+
+    LEGACY = "topics"          # the store table's name before the qs_ prefix
+
+    def _legacy_cols(self) -> set[str]:
+        """Columns of a table named `topics` (empty when there is none)."""
+        if self.pg:
+            return {r[0] for r in self.conn.execute(
+                "SELECT attname FROM pg_attribute WHERE attrelid = to_regclass(%s) AND attnum > 0 AND NOT attisdropped",
+                (self.LEGACY,))}
+        return {r[1] for r in self.conn.execute(f"PRAGMA table_info({self.LEGACY})")}
+
+    def _has(self, name: str) -> bool:
+        if self.pg:
+            return self.conn.execute("SELECT to_regclass(%s) IS NOT NULL", (name,)).fetchone()[0]
+        return self.conn.execute("SELECT 1 FROM sqlite_master WHERE name = ?", (name,)).fetchone() is not None
+
+    def _rename_legacy(self) -> bool:
+        """A store made before the qs_ prefix keeps its rows in `topics`. Rename it to `qs_topics`, with its indexes,
+        constraints, sequence and view, when (a) no `qs_topics` exists yet and (b) that `topics` has this store's own
+        columns (`row_id`, `scheme`; OPD's `topics` of upstream/opd/migrations has `id`, `scheme_key`, `scheme_id`).
+        Any other `topics`, OPD's above all, is never touched. Runs inside init's lock (SQLite BEGIN IMMEDIATE,
+        Postgres advisory lock), so of two processes opening an old store only one renames."""
+        cols = self._legacy_cols()
+        if not cols or self._has("qs_topics"):
+            return False
+        if not {"row_id", "scheme", "affair_id", "valid_from"} <= cols or {"scheme_id", "scheme_key"} & cols:
+            return False                                      # not ours (OPD's `topics`, or someone else's): leave it
+        if self.pg:
+            # the old view, only if it is defined on this table (OPD's `topics_current` is on OPD's table)
+            if self.conn.execute(
+                    "SELECT 1 FROM pg_depend d JOIN pg_rewrite w ON w.oid = d.objid WHERE w.ev_class = to_regclass('topics_current') "
+                    "AND d.refobjid = to_regclass('topics') LIMIT 1").fetchone():
+                self.conn.execute("DROP VIEW topics_current")
+            seq = self.conn.execute("SELECT pg_get_serial_sequence('topics', 'row_id')").fetchone()[0]
+            self.conn.execute("ALTER TABLE topics RENAME TO qs_topics")
+            for (ix,) in self.conn.execute(
+                    "SELECT c.relname FROM pg_index i JOIN pg_class c ON c.oid = i.indexrelid "
+                    "WHERE i.indrelid = 'qs_topics'::regclass AND c.relname LIKE 'topics%'").fetchall():
+                self.conn.execute(f'ALTER INDEX "{ix}" RENAME TO "qs_{ix}"')      # the pkey index renames its constraint too
+            for (cn,) in self.conn.execute(
+                    "SELECT conname FROM pg_constraint WHERE conrelid = 'qs_topics'::regclass AND conname LIKE 'topics%'").fetchall():
+                self.conn.execute(f'ALTER TABLE qs_topics RENAME CONSTRAINT "{cn}" TO "qs_{cn}"')
+            name = (seq or "").rsplit(".", 1)[-1].strip('"')
+            if name.startswith("topics"):
+                self.conn.execute(f'ALTER SEQUENCE {seq} RENAME TO "qs_{name}"')
+        else:
+            self.conn.execute("DROP VIEW IF EXISTS topics_current")      # a SQLite store is ours alone
+            self.conn.execute("ALTER TABLE topics RENAME TO qs_topics")  # sqlite_sequence follows (AUTOINCREMENT)
+            for (ix,) in self.conn.execute("SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'qs_topics' "
+                                           "AND name LIKE 'topics%'").fetchall():
+                self.conn.execute(f'DROP INDEX "{ix}"')                   # no index rename in SQLite: the DDL recreates them
+        print(f"store {self.kind}: table `topics` renamed to `qs_topics` (this store's rows; the qs_ prefix keeps it apart "
+              f"from OpenParlData's `topics`)", file=sys.stderr, flush=True)
+        return True
 
     def _check_lanes(self):
         """CREATE TABLE IF NOT EXISTS keeps an older table as it is: one whose lane check predates `pass` (14 Oct) would
         refuse today's chapter rows at the first load, so the store stops at open with what to do instead."""
         if self.pg:
             bad = [r[0] for r in self.conn.execute(
-                "SELECT conname, pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid = 'topics'::regclass AND contype = 'c'")
+                "SELECT conname, pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid = 'qs_topics'::regclass AND contype = 'c'")
                 if "lane" in r[1] and "please_check" in r[1] and "'pass'" not in r[1]]
             if bad:
                 self.conn.rollback()
                 raise RuntimeError(
-                    f"topics: the lane check {bad[0]} predates the 'pass' lane, so today's rows would be refused. Migrate: "
-                    f"ALTER TABLE topics DROP CONSTRAINT {bad[0]}, ADD CONSTRAINT topics_lane_check CHECK (lane IN "
+                    f"qs_topics: the lane check {bad[0]} predates the 'pass' lane, so today's rows would be refused. Migrate: "
+                    f"ALTER TABLE qs_topics DROP CONSTRAINT {bad[0]}, ADD CONSTRAINT qs_topics_lane_check CHECK (lane IN "
                     f"({', '.join(repr(l) for l in LANES)}));")
             return
-        ddl = (self.conn.execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'topics'").fetchone() or [""])[0]
+        ddl = (self.conn.execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'qs_topics'").fetchone() or [""])[0]
         m = re.search(r"lane\s+IN\s*\(([^)]*)\)", ddl, re.I)
         if m and "'pass'" not in m.group(1):
-            raise RuntimeError(f"{self.path}: the topics table's lane check predates the 'pass' lane, so today's rows would be "
+            raise RuntimeError(f"{self.path}: the qs_topics table's lane check predates the 'pass' lane, so today's rows would be "
                                f"refused. Run `make clean-db` (or delete this file when QS_DB points elsewhere) and load again.")
 
     def close(self):
@@ -269,12 +339,12 @@ class Store:
     def _close(self, row_ids: list[int], t: dt.datetime, by: str | None = None):
         """Close current rows (valid_to, a new seq, and who when a person closes them)."""
         if row_ids:
-            self.ex("UPDATE topics SET valid_to = ?, seq = ?, closed_by = ? WHERE row_id = ? AND valid_to IS NULL",
+            self.ex("UPDATE qs_topics SET valid_to = ?, seq = ?, closed_by = ? WHERE row_id = ? AND valid_to IS NULL",
                     [(self._ts(t), self.next_seq(), by, rid) for rid in row_ids], many=True)
 
     def _insert_sql(self) -> str:
         vals = ", ".join("CAST(? AS jsonb)" if (self.pg and c == "evidence") else "?" for c in COLS)
-        return f"INSERT INTO topics ({', '.join(COLS)}) VALUES ({vals})"
+        return f"INSERT INTO qs_topics ({', '.join(COLS)}) VALUES ({vals})"
 
     # ------------------------------------------------------------------ loading
     def load_topics(self, rows: str | Path | Iterable[dict], chunk: int = 2000) -> dict:
@@ -316,7 +386,7 @@ class Store:
         for i in range(0, len(ids), 900):
             part = ids[i:i + 900]
             q = ("SELECT row_id, affair_id, scheme, level, rank, valid_to, " + ", ".join(CONTENT) +
-                 f" FROM topics WHERE provenance = 'inferred' AND affair_id IN ({', '.join('?' * len(part))})")
+                 f" FROM qs_topics WHERE provenance = 'inferred' AND affair_id IN ({', '.join('?' * len(part))})")
             for r in self.all(q, part):
                 k = (r["affair_id"], r["scheme"], r["level"], r["rank"])
                 if k not in latest or r["row_id"] > latest[k]["row_id"]:
@@ -453,7 +523,7 @@ class Store:
         return out
 
     def topics_for(self, aid: int, scheme: str | None = None, history: bool = False) -> list[dict]:
-        q, a = "SELECT * FROM topics WHERE affair_id = ?", [aid]
+        q, a = "SELECT * FROM qs_topics WHERE affair_id = ?", [aid]
         if scheme:
             q += " AND scheme = ?"; a.append(scheme)
         if not history:
@@ -470,7 +540,7 @@ class Store:
                         ("a.lang = ?", lang), ("t.lane = ?", lane), ("t.status = ?", status), ("t.rank = ?", rank)):
             if v not in (None, ""):
                 w.append(cond); a.append(v)
-        base = f"FROM topics t LEFT JOIN qs_affairs a ON a.id = t.affair_id WHERE {' AND '.join(w)}"
+        base = f"FROM qs_topics t LEFT JOIN qs_affairs a ON a.id = t.affair_id WHERE {' AND '.join(w)}"
         total = self.one(f"SELECT COUNT(*) AS n {base}", a)["n"]
         acols = ", ".join(f"a.{c} AS a_{c}" for c in AFF_COLS)
         rows = self.all(f"SELECT t.*, {acols} {base} ORDER BY a.date DESC, t.affair_id DESC, t.row_id DESC LIMIT ? OFFSET ?",
@@ -498,12 +568,44 @@ class Store:
             if v:
                 w.append(cond); a.append(v)
         where = " AND ".join(w)
-        total = int(self.one(f"SELECT COUNT(*) AS n FROM topics WHERE {where}", a)["n"])
-        rows = self.all(f"SELECT * FROM topics WHERE {where} ORDER BY seq LIMIT ?", a + [int(limit)])
+        total = int(self.one(f"SELECT COUNT(*) AS n FROM qs_topics WHERE {where}", a)["n"])
+        rows = self.all(f"SELECT * FROM qs_topics WHERE {where} ORDER BY seq LIMIT ?", a + [int(limit)])
         return total, [self._out(r) for r in rows]
 
     def schemes(self) -> list[str]:
-        return [r["scheme"] for r in self.all("SELECT DISTINCT scheme FROM topics WHERE valid_to IS NULL ORDER BY scheme")]
+        return [r["scheme"] for r in self.all("SELECT DISTINCT scheme FROM qs_topics WHERE valid_to IS NULL ORDER BY scheme")]
+
+    def write_topics_file(self, path: str | Path, chunk: int = 20000) -> int:
+        """The topics file for OpenParlData: every current machine row (provenance `inferred`, `valid_to` null) as CONTRACT
+        §1 rows, one JSON object per line, gzip; the shape `querschnitt export --topics-file` writes and
+        upstream/hop/load_topics.hwf loads into OPD's `topics` (timestamps `YYYY-MM-DDTHH:MM:SSZ`, evidence with
+        `start`/`end` beside `char_start`/`char_end`). The loader skips rows it already holds, so writing the whole set
+        each night is safe to load again. Written to a temporary file and renamed: a reader never sees half a file."""
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+        z = lambda v: parse_ts(v).astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") if v is not None else None
+        n, last = 0, 0
+        try:
+            with gzip.open(tmp, "wt") as f:
+                while True:
+                    rows = self.all("SELECT row_id, " + ", ".join(FILE_COLS) + " FROM qs_topics WHERE provenance = 'inferred' "
+                                    "AND valid_to IS NULL AND row_id > ? ORDER BY row_id LIMIT ?", (last, chunk))
+                    for r in rows:
+                        last = r.pop("row_id")
+                        ev = norm_evidence(r["evidence"]) if r["evidence"] is not None else None
+                        if isinstance(ev, dict):
+                            ev = dict(ev, start=ev["char_start"], end=ev["char_end"])
+                        r.update(evidence=ev, valid_from=z(r["valid_from"]), valid_to=z(r["valid_to"]),
+                                 **{k: round(r[k], 4) for k in ("p", "p_raw") if isinstance(r[k], float)})
+                        f.write(json.dumps(r, ensure_ascii=False) + "\n")
+                        n += 1
+                    if len(rows) < chunk:
+                        break
+            os.replace(tmp, path)
+        finally:
+            tmp.unlink(missing_ok=True)
+        return n
 
     # ------------------------------------------------------------------ editor decisions
     def decide(self, aid: int, scheme: str, code: str, action: str, by: str, level: int | None = None) -> dict:
@@ -537,7 +639,7 @@ class Store:
                        valid_from=t, valid_to=None, confirmed_by=by, confirmed_at=t, version=src.get("version"))
             self._close([r["row_id"] for r in close], t, by)
             rid = self._insert(row, t)
-        return self._out(self.one("SELECT * FROM topics WHERE row_id = ?", (rid,)))
+        return self._out(self.one("SELECT * FROM qs_topics WHERE row_id = ?", (rid,)))
 
     def _insert(self, row: dict, t) -> int:
         c = self.ex(self._insert_sql() + (" RETURNING row_id" if self.pg else ""), self._ins_row(row, t))
@@ -554,7 +656,7 @@ class Store:
             if not dec:
                 raise LookupError(f"no current decision on {code} for affair {aid}")
             d = max(dec, key=lambda r: r["row_id"])
-            prev = self.all("SELECT * FROM topics WHERE affair_id = ? AND scheme = ? AND valid_to = ? AND row_id < ? "
+            prev = self.all("SELECT * FROM qs_topics WHERE affair_id = ? AND scheme = ? AND valid_to = ? AND row_id < ? "
                             "AND (closed_by = ? OR closed_by IS NULL)", (aid, scheme, self._ts(parse_ts(d["valid_from"])), d["row_id"], d["confirmed_by"]))
             t = now()
             self._close([d["row_id"]], t, by)
@@ -570,7 +672,7 @@ class Store:
     # ------------------------------------------------------------------ coverage, metrics, runs
     def state_key(self) -> tuple:
         """Changes whenever rows or affairs change (cache key for whole-table aggregates)."""
-        r = self.one("SELECT MAX(seq) AS m, COUNT(*) AS n FROM topics")
+        r = self.one("SELECT MAX(seq) AS m, COUNT(*) AS n FROM qs_topics")
         a = self.one("SELECT COUNT(*) AS n FROM qs_affairs")
         b = self.one("SELECT COUNT(*) AS n, MIN(covered_from) AS c FROM qs_bodies")
         return r["m"], r["n"], a["n"], b["n"], b["c"]
@@ -594,7 +696,7 @@ class Store:
             "SUBSTR(a.date, 1, 4) AS year, COUNT(*) AS n, COUNT(s.affair_id) AS scored, "
             "SUM(CASE WHEN s.affair_id IS NOT NULL AND NOT " + ("a.has_text" if self.pg else "(a.has_text = 1)") +
             " THEN 1 ELSE 0 END) AS title_only "
-            "FROM qs_affairs a LEFT JOIN (SELECT DISTINCT affair_id FROM topics WHERE valid_to IS NULL AND scheme = ?) s "
+            "FROM qs_affairs a LEFT JOIN (SELECT DISTINCT affair_id FROM qs_topics WHERE valid_to IS NULL AND scheme = ?) s "
             "ON s.affair_id = a.id WHERE a.date >= ? GROUP BY a.body_key, SUBSTR(a.date, 1, 4)", (scheme, since))
         B = {b["key"]: b for b in self.all("SELECT * FROM qs_bodies")}
         by: dict[str, dict] = {}
@@ -620,7 +722,7 @@ class Store:
         the whole backlog, including what the corpus run has not reached yet. Affairs without an input hash (loaded from
         the static export) are not counted."""
         since = self.scope(since)
-        r = self.one("SELECT COUNT(*) AS n FROM qs_affairs a WHERE a.date >= ? AND a.input_hash IS NOT NULL AND NOT EXISTS (SELECT 1 FROM topics t "
+        r = self.one("SELECT COUNT(*) AS n FROM qs_affairs a WHERE a.date >= ? AND a.input_hash IS NOT NULL AND NOT EXISTS (SELECT 1 FROM qs_topics t "
                      "WHERE t.affair_id = a.id AND t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'inferred' "
                      "AND (t.input_hash = a.input_hash OR t.input_hash IS NULL))", (since, scheme))
         return int(r["n"])
@@ -646,7 +748,7 @@ class Store:
     def queue_drain(self, scheme: str = "aps") -> int:
         """Remove the queued affairs that now carry a current machine row for their queued input; returns how many."""
         done = [r["affair_id"] for r in self.all(
-            "SELECT q.affair_id FROM qs_queue q WHERE EXISTS (SELECT 1 FROM topics t WHERE t.affair_id = q.affair_id "
+            "SELECT q.affair_id FROM qs_queue q WHERE EXISTS (SELECT 1 FROM qs_topics t WHERE t.affair_id = q.affair_id "
             "AND t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'inferred' AND t.input_hash = q.input_hash)", (scheme,))]
         if done:
             self.ex("DELETE FROM qs_queue WHERE affair_id = ?", [(a,) for a in done], many=True)
@@ -667,16 +769,16 @@ class Store:
 
     def metrics(self) -> dict:
         c = self.one("SELECT COUNT(*) AS rows, COUNT(DISTINCT affair_id) AS affairs_with_rows, "
-                     "SUM(CASE WHEN provenance = 'confirmed' THEN 1 ELSE 0 END) AS decisions FROM topics WHERE valid_to IS NULL")
+                     "SUM(CASE WHEN provenance = 'confirmed' THEN 1 ELSE 0 END) AS decisions FROM qs_topics WHERE valid_to IS NULL")
         n_all = self.one("SELECT COUNT(*) AS n FROM qs_affairs")["n"]
         n_aff = self.one("SELECT COUNT(*) AS n FROM qs_affairs WHERE date >= ?", (self.scope(),))["n"]
-        n_sc = self.one("SELECT COUNT(DISTINCT t.affair_id) AS n FROM topics t JOIN qs_affairs a ON a.id = t.affair_id "
+        n_sc = self.one("SELECT COUNT(DISTINCT t.affair_id) AS n FROM qs_topics t JOIN qs_affairs a ON a.id = t.affair_id "
                         "WHERE t.valid_to IS NULL AND t.scheme = 'aps' AND a.date >= ?", (self.scope(),))["n"]
-        tot = self.one("SELECT COUNT(*) AS n FROM topics")["n"]
+        tot = self.one("SELECT COUNT(*) AS n FROM qs_topics")["n"]
         last = self.runs("delta", 1) or self.runs(None, 1)
-        builds = [r["build"] for r in self.all("SELECT DISTINCT build FROM topics WHERE valid_to IS NULL AND build IS NOT NULL")]
+        builds = [r["build"] for r in self.all("SELECT DISTINCT build FROM qs_topics WHERE valid_to IS NULL AND build IS NOT NULL")]
         lr = last[0] if last else {}
-        seq = self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM topics")["m"]
+        seq = self.one("SELECT COALESCE(MAX(seq), 0) AS m FROM qs_topics")["m"]
         return dict(affairs=n_aff, scope_since=self.scope(), affairs_aps_scored=n_sc, affairs_loaded=n_all,
                     affairs_with_rows=c["affairs_with_rows"] or 0, rows=c["rows"] or 0, rows_all_versions=tot, seq=seq,
                     decisions=c["decisions"] or 0, pending=self.pending(), unscored_in_scope=self.unscored(), builds=builds,

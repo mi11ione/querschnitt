@@ -1,6 +1,12 @@
 # Data contract (engine → store → API → app)
 
-## 1. `topics` row (one per affair × scheme × level × version; Postgres table `topics`, Parquet/CSV bulk file)
+## 1. Topic row (one per affair × scheme × level × version)
+Where it lives: the service's store table `qs_topics` (SQLite or Postgres, `sql/qs_topics.sql`); the topics file
+(`topics.jsonl.gz`, one row per line, written by `querschnitt export --topics-file`, by `querschnitt topics-file` and by
+the lite nightly); Parquet/CSV bulk files. In OpenParlData the same rows go into OPD's own `topics` table
+(`upstream/opd/migrations/0001_topics.up.sql`, OPD's column names), loaded from the topics file by `upstream/hop`; the
+store's `qs_` prefix keeps the two apart when both are in one database.
+
 | column | type | meaning |
 |---|---|---|
 | affair_id | int | OPD affair id |

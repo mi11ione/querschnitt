@@ -393,7 +393,7 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
     @app.get("/health")
     def health():
         try:
-            n = st.one("SELECT COUNT(*) AS n FROM topics")["n"]
+            n = st.one("SELECT COUNT(*) AS n FROM qs_topics")["n"]
             return {"ok": True, "store": st.kind, "rows": n, "version": VERSION, "uptime_s": round(time.time() - app.state.t0)}
         except Exception as e:  # noqa: BLE001
             return JSONResponse({"ok": False, "store": st.kind, "error": repr(e)[:300]}, status_code=503)

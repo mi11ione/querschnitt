@@ -70,7 +70,7 @@ def test_decisions_are_idempotent(api, store):
     for _ in range(9):
         again = api.post(url, json=body).json()
         assert again["row_id"] == first["row_id"] and again["unchanged"] is True
-    n = store.one("SELECT COUNT(*) AS n FROM topics WHERE provenance = 'confirmed'")["n"]
+    n = store.one("SELECT COUNT(*) AS n FROM qs_topics WHERE provenance = 'confirmed'")["n"]
     assert n == 1
     other = api.post(url, json={"by": "DVS Redaktion", "scheme": "adhoc/digitalisierung"}).json()
     assert other["row_id"] != first["row_id"] and not other.get("unchanged")

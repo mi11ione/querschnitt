@@ -31,7 +31,7 @@ def test_multiclass():
 
 
 def _yes_no(store):
-    rows = store.all("SELECT affair_id, code FROM topics WHERE scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")
+    rows = store.all("SELECT affair_id, code FROM qs_topics WHERE scheme = 'adhoc/digitalisierung' AND valid_to IS NULL")
     return [r["affair_id"] for r in rows if r["code"].endswith(":yes")], [r["affair_id"] for r in rows if r["code"].endswith(":no")]
 
 
@@ -56,7 +56,7 @@ def test_binary_labels_semicolon(store, tmp_path):
 
 
 def test_aps_codes(store, tmp_path):
-    rows = store.all("SELECT affair_id, code FROM topics WHERE scheme = 'aps' AND level = 1 AND rank = 1 AND valid_to IS NULL ORDER BY affair_id")
+    rows = store.all("SELECT affair_id, code FROM qs_topics WHERE scheme = 'aps' AND level = 1 AND rank = 1 AND valid_to IS NULL ORDER BY affair_id")
     p = tmp_path / "aps.csv"
     lines = ["affair_id,scheme,code"] + [f"{r['affair_id']},aps,{r['code']}" for r in rows[:10]]
     lines += [f"{r['affair_id']},aps,{r['code'].replace('aps:', '')}" for r in rows[10:15]]

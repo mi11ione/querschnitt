@@ -1,5 +1,9 @@
 # Two profiles (docs/SERVICE.md, "Footprints"):
-#   lite  nightly chapter + subtopic delta (`ch sub`) into an EXISTING Postgres (OPD's ~20 GB VPS): QS_PG_DSN=postgresql://… docker compose --profile lite up -d
+#   lite  nightly chapter + subtopic delta (`ch sub`) with its store in an EXISTING Postgres (OPD's ~20 GB VPS):
+#         QS_PG_DSN=postgresql://… docker compose --profile lite up -d
+#         The store's tables are all `qs_*` (sql/qs_topics.sql), so they sit beside OPD's own `topics` without touching it.
+#         Each night ends with the topics file (CONTRACT §1 rows) at /app/out/topics.jsonl.gz in volume `topics_out`;
+#         OPD's Apache Hop job (upstream/hop/README.md) loads that file into OPD's `topics`.
 #   full  Postgres + API + app + nightly delta (`ch sub yn bi ev`, saved ad-hoc topics): docker compose --profile full up -d
 # The model endpoint and key come from the environment (QS_BASE_URL, QS_MODEL, QS_API_KEY); nothing secret is in the image.
 name: querschnitt
@@ -61,12 +65,13 @@ services:
     <<: *common
     profiles: [lite]
     # the DSN is checked here, not with ${VAR:?}: compose interpolates every service, so that would break `--profile full`
-    command: ["sh", "-c", "test -n \"$$QS_PG_DSN\" || { echo 'set QS_PG_DSN to the existing Postgres (the topics table is created if missing)'; exit 2; }; exec python -m querschnitt nightly"]
+    command: ["sh", "-c", "test -n \"$$QS_PG_DSN\" || { echo 'set QS_PG_DSN to the existing Postgres (the store creates its qs_* tables there if missing; OPD tables are never touched)'; exit 2; }; exec python -m querschnitt nightly"]
     environment:
       <<: *model-env
       QS_PG_DSN: ${QS_PG_DSN:-}
       QS_PROFILE: lite
-    volumes: [data:/app/data, runs:/app/runs]
+      QS_TOPICS_OUT: /app/out/topics.jsonl.gz          # the hand-off: upstream/hop/load_topics.hwf loads it into OPD's `topics`
+    volumes: [data:/app/data, runs:/app/runs, topics_out:/app/out]
     healthcheck: {disable: true}
 
 volumes:
@@ -74,3 +79,4 @@ volumes:
   data: {}
   runs: {}
   adhoc: {}
+  topics_out: {}

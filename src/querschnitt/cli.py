@@ -6,13 +6,17 @@
     querschnitt serve [--host 127.0.0.1] [--port 8000]
     querschnitt delta --since yesterday [--plan] [--no-fetch] [--no-model]
     querschnitt nightly --at 02:30                                                      (delta once a day, forever)
+    querschnitt topics-file --out out/topics.jsonl.gz       (the store's current machine rows, for the Hop loader)
     querschnitt eval GOLD.csv [--scheme adhoc/digitalisierung] [--out result.json]
     querschnitt metrics | export
 
 Paths default to the environment: QS_DB / QS_PG_DSN (store), QS_INPUTS (data/inputs.jsonl.gz), QS_EXPORT_DIR
-(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite), QS_STEPS (batch steps for the full profile). Nightly steps: full
+(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite), QS_STEPS (batch steps for the full profile), QS_TOPICS_OUT
+(the topics file a delta writes; lite default out/topics.jsonl.gz). Nightly steps: full
 `ch sub yn bi ev` (chapter, subtopic read-back, ad-hoc topics, the German/French readings of bilingual parliaments, evidence
-quote); lite `ch sub` (the measured chapter design: chapter read back from the subtopic; no ad-hoc topics, no quote)."""
+quote); lite `ch sub` (the measured chapter design: chapter read back from the subtopic; no ad-hoc topics, no quote).
+Lite in OpenParlData's Postgres: the store's own tables are `qs_*`, beside OPD's `topics`, which only the Hop loader
+(upstream/hop) writes, from the topics file each delta writes."""
 from __future__ import annotations
 
 import argparse
@@ -212,7 +216,7 @@ def delta(a) -> dict:
         log["build"] = data.build(export, tmp, docs_path=docs if docs.exists() else Path("/nonexistent"))
     scope = os.environ.get("QS_SCOPE_SINCE", "2025-01-01")
     rowhash = {r["affair_id"]: r["input_hash"] for r in st.all(
-        "SELECT affair_id, input_hash FROM topics WHERE provenance = 'inferred' AND valid_to IS NULL AND scheme = 'aps' AND level = 1 AND rank = 1")}
+        "SELECT affair_id, input_hash FROM qs_topics WHERE provenance = 'inferred' AND valid_to IS NULL AND scheme = 'aps' AND level = 1 AND rank = 1")}
     adds, n_new = [], 0
     with gzip.open(tmp, "rt") as fh:
         for line in fh:
@@ -276,6 +280,11 @@ def delta(a) -> dict:
     line = metrics_line(m) + f" · queue {pend_before} → {pending}" + (f" · drain {t_model / 60:.1f} min" if t_model is not None else "")
     log["line"] = line
     print(line, flush=True)
+    out = Path(a.topics_out) if getattr(a, "topics_out", None) else \
+        env_path("QS_TOPICS_OUT", "out/topics.jsonl.gz") if (lite or os.environ.get("QS_TOPICS_OUT")) else None
+    if out:                                   # the hand-off to OPD: upstream/hop/load_topics.hwf loads this file into `topics`
+        log["topics_file"] = dict(path=str(out), rows=st.write_topics_file(out))
+        print(f"topics file {out}: {log['topics_file']['rows']:,} current machine rows", flush=True)
     if a.last:
         write_last(Path(a.last), export, log, a.model, rows_in, usd, m)
     return log
@@ -357,7 +366,7 @@ def examples_cmd(argv):
     if a.all:
         st = Store()
         topics = sorted({r["scheme"].split("/", 1)[1] for r in st.all(   # the pattern as a parameter: '%' is psycopg's placeholder
-            "SELECT DISTINCT scheme FROM topics WHERE scheme LIKE ? AND provenance = 'confirmed' AND valid_to IS NULL", ("adhoc/%",))})
+            "SELECT DISTINCT scheme FROM qs_topics WHERE scheme LIKE ? AND provenance = 'confirmed' AND valid_to IS NULL", ("adhoc/%",))})
         for t in topics:
             if (adhoc_dir() / f"{t}.yaml").exists():
                 examples_cmd(["--topic", t] + (["--dry-run"] if a.dry_run else []))
@@ -365,7 +374,7 @@ def examples_cmd(argv):
             print("no confirmed decisions on ad-hoc topics")
         return
     st = Store(); sch = f"adhoc/{a.topic}"
-    rows = st.all("SELECT t.affair_id, t.code, t.status, t.confirmed_by, t.confirmed_at, a.title FROM topics t "
+    rows = st.all("SELECT t.affair_id, t.code, t.status, t.confirmed_by, t.confirmed_at, a.title FROM qs_topics t "
                   "JOIN qs_affairs a ON a.id = t.affair_id WHERE t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'confirmed'", (sch,))
     ex = {}
     for r in rows:
@@ -430,8 +439,12 @@ def main(argv=None):
         d.add_argument("--last", help="write/complete the night's summary JSON (runs/nightly/last.json)")
         d.add_argument("--conc", type=int, default=int(os.environ.get("QS_CONC", "3")))
         d.add_argument("--max-rate", type=float, default=float(os.environ.get("QS_MAX_RATE", "1.0")))
+        d.add_argument("--topics-out", help="write the topics file for the Hop loader here after the load (env QS_TOPICS_OUT; "
+                       "lite default out/topics.jsonl.gz, full: only when given)")
         if name == "nightly":
             d.add_argument("--at", default=os.environ.get("QS_NIGHTLY_AT", "02:30"))
+    tf = sub.add_parser("topics-file", help="the store's current machine rows as the topics file the Hop loader reads")
+    tf.add_argument("--out", default=str(env_path("QS_TOPICS_OUT", "out/topics.jsonl.gz")))
     sub.add_parser("metrics", help="print the /metrics line")
     sub.add_parser("export", help="static export for the app (app/data/)")
     a = ap.parse_args(argv)
@@ -442,7 +455,7 @@ def main(argv=None):
         print(json.dumps(data.build(exp, Path(a.out), docs_path=Path(a.docs) if a.docs else None), indent=1))
     elif a.cmd == "load":
         st = Store()
-        if a.if_empty and st.one("SELECT COUNT(*) AS n FROM topics")["n"]:
+        if a.if_empty and st.one("SELECT COUNT(*) AS n FROM qs_topics")["n"]:
             print(f"store {st.kind} has rows; nothing loaded (--if-empty)"); return
         t0 = time.time(); n_aff, res = 0, dict(inserted=0)
         if a.auto and not (a.inputs or a.topics):
@@ -467,6 +480,9 @@ def main(argv=None):
         nightly(a)
     elif a.cmd == "metrics":
         print(metrics_line(Store().metrics()))
+    elif a.cmd == "topics-file":
+        out = Path(a.out)
+        print(f"topics file {out}: {Store().write_topics_file(out):,} current machine rows")
     elif a.cmd == "export":
         try:
             from . import export  # the lead's module

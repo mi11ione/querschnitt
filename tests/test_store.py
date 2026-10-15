@@ -17,10 +17,10 @@ def rows_of(aid):
 
 
 def test_reload_is_idempotent(store):
-    n = store.one("SELECT COUNT(*) AS n FROM topics")["n"]
+    n = store.one("SELECT COUNT(*) AS n FROM qs_topics")["n"]
     st = store.load_topics(FIX / "topics_sample.jsonl")
     assert st["inserted"] == 0 and st["unchanged"] == st["read"]
-    assert store.one("SELECT COUNT(*) AS n FROM topics")["n"] == n
+    assert store.one("SELECT COUNT(*) AS n FROM qs_topics")["n"] == n
 
 
 def test_changed_row_is_new_version(store):
@@ -106,7 +106,7 @@ def test_postgres_if_available():
     if not dsn:
         pytest.skip("no QS_TEST_PG_DSN")
     s = Store(dsn=dsn)
-    s.ex("DELETE FROM topics"); s.ex("DELETE FROM qs_affairs"); s.commit()
+    s.ex("DELETE FROM qs_topics"); s.ex("DELETE FROM qs_affairs"); s.commit()
     s.load_affairs(FIX / "inputs_sample.jsonl")
     st = s.load_topics(FIX / "topics_sample.jsonl")
     assert st["inserted"] == 504
@@ -138,7 +138,7 @@ def test_load_affairs_from_static_export(tmp_path):
 
 def test_old_lane_check_stops_at_open(tmp_path):
     """A SQLite store made before the `pass` lane (two-value check) would refuse today's rows: opening it says what to do."""
-    ddl = (SQL / "topics.sqlite.sql").read_text()
+    ddl = (SQL / "qs_topics.sqlite.sql").read_text()
     assert "lane IN ('pass', 'please_check', 'readings_agree')" in ddl
     db = tmp_path / "old.sqlite"
     with sqlite3.connect(db) as c:

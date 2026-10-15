@@ -1,6 +1,6 @@
 # Merge request: topic tables for affairs (machine suggestions and published decisions, kept apart)
 
-Draft, not filed. Target: the OpenParlData data model and ETL (`gitlab.com/opendata.ch/openparldatach`), the
+Draft for the hackathon (shown to OPD at the event, not filed). Target: the OpenParlData data model and ETL (`gitlab.com/opendata.ch/openparldatach`), the
 "Future-Topics/Classification" item of the OPD wiki. From: Querschnitt, Hack Apertus Liebefeld 2026. Code Apache-2.0,
 documentation CC BY 4.0, topic rows CDLA-Permissive-2.0.
 

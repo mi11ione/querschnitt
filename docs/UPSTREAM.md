@@ -1,7 +1,7 @@
 # Upstream pack
 
 Files in `upstream/` that hand Querschnitt's results to the people who maintain the data and the model. Opening the merge
-request and publishing anything are Roman's decisions; nothing here has been sent anywhere.
+request is a draft for the event: shown at the deep dive and in the pitch, not sent anywhere.
 
 | Folder / file | What it is | For |
 |---|---|---|

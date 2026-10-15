@@ -305,3 +305,42 @@ def test_decision_usd_counts_every_call(api, fake):
             by_pid[P.pid(u, b["messages"][1]["content"])] = round((len(u) // 4 * 0.10 + 1 * 0.20) / 1e6, 7)
     assert len(d["prompt_id"].split(",")) >= 2
     assert abs(d["usd"] - sum(by_pid[x] for x in d["prompt_id"].split(","))) < 1e-9
+
+
+def test_dead_endpoint_refuses_in_seconds(api, monkeypatch):
+    """No connection to the endpoint (Wi-Fi off, unroutable host): POST /adhoc answers 503 within the probe timeout instead of
+    waiting out the client's retries; nothing is started and nothing is counted (the app then offers the recording)."""
+    import socket
+    s = socket.socket(); s.bind(("127.0.0.1", 0)); port = s.getsockname()[1]; s.close()     # a port nobody listens on
+    api.ah.client.endpoint.base_url = f"http://127.0.0.1:{port}/v1"
+    monkeypatch.setenv("QS_ADHOC_PROBE_S", "1")
+    t0 = time.time()
+    r = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 2})
+    assert r.status_code == 503 and "not reachable" in r.json()["detail"]
+    assert time.time() - t0 < 5 and not api.ah.jobs and api.ah.calls == 0
+
+
+def test_slow_topic_request_falls_back_on_time(api, monkeypatch):
+    """An endpoint that accepts connections but does not answer: the topic request gives up after QS_ADHOC_GEN_S and the run
+    starts on the fallback frame (the sentence in every language)."""
+    import contextlib
+    import socket
+    import threading
+    srv = socket.socket(); srv.bind(("127.0.0.1", 0)); srv.listen(8); port = srv.getsockname()[1]
+    held = []
+
+    def hold():                                   # accept and never answer
+        with contextlib.suppress(OSError):
+            while True:
+                held.append(srv.accept())
+    threading.Thread(target=hold, daemon=True).start()
+    api.ah.client.endpoint.base_url = f"http://127.0.0.1:{port}/v1"
+    monkeypatch.setenv("QS_ADHOC_GEN_S", "1")
+    t0 = time.time()
+    r = api.post("/adhoc", json={"sentence": "Wolf und Herdenschutz", "lang": "de", "limit": 1})
+    assert r.status_code == 200 and time.time() - t0 < 4
+    assert r.json()["topic"]["names"]["fr"] == "Wolf und Herdenschutz"
+    api.post(f"/adhoc/{r.json()['slug']}/stop")
+    for c, _ in held:
+        c.close()
+    srv.close()

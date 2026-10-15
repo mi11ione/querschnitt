@@ -41,6 +41,7 @@ in the console); without it the review desk and Neues Thema expect a token-less 
 | `QS_WRITE_TOKEN` | – | bearer token for every write (above); unset = open, warned at startup |
 | `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 50, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits (`QS_ADHOC_CAP`: the ledger's lifetime total, a safety net; the working cap is `QS_ADHOC_DAILY_USD`) |
 | `QS_ADHOC_DAILY_USD` | USD 2 | Neues Thema list-price spend per local day, summed from the ledger; 0 = off |
+| `QS_ADHOC_PROBE_S`, `QS_ADHOC_GEN_S` | `3`, `20` | Neues Thema on a dead endpoint: no connection within `QS_ADHOC_PROBE_S` → `503`, nothing started (0 = no check); the topic request gives up after `QS_ADHOC_GEN_S` and the run starts on the sentence verbatim |
 | `QS_SCORED_SINCE` | 2025-01-01 | Neues Thema reads every affair from here on; before it, the candidate step |
 | `QS_SCOPE_SINCE` | 2025-01-01 | `pending` and the nightly's scope for new affairs |
 | `QS_EXPORT_DIR`, `QS_INPUTS`, `QS_RUN_DIR` | `data/opd`, `data/inputs.jsonl.gz`, `runs/main` | nightly paths |

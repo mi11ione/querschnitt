@@ -1,5 +1,15 @@
 # On site: Sun 18 Oct 09:30 → Mon 19 Oct 14:30
 
+## Sun before 09:30 — preflight (laptop on the venue Wi-Fi)
+- Terminal 1: `make demo` (loads its store on the first start, then serves; it prints one link per pitch beat).
+- Terminal 2: `make preflight`: venv, `app/data`, the demo affair, the Neues-Thema recording, the demo store, assets local,
+  disk, a quick test subset, the local API, the deployed site, the model endpoint (`QS_BASE_URL` / `QS_MODEL` / `QS_API_KEY`
+  as Neues Thema uses them; one 1-token request). Green / red table, and what to do for each red.
+- Red model endpoint: the demo still runs; Neues Thema answers within seconds and offers the recording (docs/DEMO.md,
+  Offline). Red deployed site: the laptop is the demo. Warn demo store (a rehearsal decided the demo affair): `Ctrl-C`,
+  `make demo FRESH=1`.
+- Once, endpoint blocked: the rehearsal in docs/DEMO.md (Offline); look at every `app/dev/shots/rehearsal-*.png`.
+
 ## Sun 09:30–10:15 — read the case
 Map it onto the variants below; pick the lead screen; note what the partner asks to see measured.
 
@@ -70,7 +80,7 @@ both scripts against the real demo (timer on screen).
 - [ ] LICENSE (Apache-2.0 code), docs CC BY 4.0, data CDLA-Permissive-2.0 (topics file), third-party licences listed
 - [ ] `make test` green; CI green on the tag
 - [ ] claims check over README, report, pitch slides: `python tools/claims_check.py README.md docs/*.md`
-- [ ] demo URL answers; static app shows the frozen data; live API on the laptop
+- [ ] demo URL answers; static app shows the frozen data; live API on the laptop; `make preflight` has no red but the endpoint
 - [ ] backup video (≤ 2 min) uploaded next to the repo
 - [ ] report PDF/MD link; Prüfstand page link
 - [ ] sprintd form: repo URL, demo URL, video URL, team, challenge; Roman submits

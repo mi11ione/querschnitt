@@ -287,7 +287,8 @@ export async function syncDecisions() {
     const rows = Array.isArray(j) ? j : (j.rows || []);
     const machine = rows.filter(r => r.provenance === 'inferred');
     all.push(...rows.filter(r => r.provenance !== 'inferred'));
-    const next = !Array.isArray(j) && (j.next || j.next_cursor || j.cursor);
+    // our API ends a feed with next: null (its `cursor` is always set, and it pages with after=, not cursor=)
+    const next = !Array.isArray(j) && ('next' in j ? j.next : (j.next_cursor || j.cursor));
     if (next && rows.length) url = String(next).startsWith('/') ? String(next) : `/changes?kind=decisions&cursor=${encodeURIComponent(next)}&limit=5000`;
     else if (machine.length && pages === 1) {
       // a server without kind=decisions: machine rows share their load time; ask for what came after it

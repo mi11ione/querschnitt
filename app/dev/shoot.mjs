@@ -1,5 +1,5 @@
 // Headless check: opens the app in Chrome over the DevTools protocol (no npm deps), runs scripted steps, prints console
-// errors and writes screenshots to app/dev/shots/. Usage: node app/dev/shoot.mjs [base-url] [only-name]
+// errors and writes screenshots to app/dev/shots/. Usage: node app/dev/shoot.mjs [base-url|-] [only-name]
 import { spawn } from 'node:child_process';
 import { writeFileSync, mkdirSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -7,7 +7,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const BASE = process.argv[2] || 'http://127.0.0.1:8765/';
+const BASE = process.argv[2] && process.argv[2] !== '-' ? process.argv[2] : 'http://127.0.0.1:8765/';
 const LIVE = process.env.LIVE || 'http://127.0.0.1:8766/';
 const ONLY = process.argv[3] || null;
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -83,6 +83,29 @@ const SCEN = [
   { name: 'neu-replay-done-1440', w: 1440, h: 900, url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 82000] },
   { name: 'neu-replay-375', w: 375, h: 812, mobile: true, url: '#neu', full: true, steps: [`document.querySelector('.nt-play .box').click()`, 6000] },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
+  // Gate 1 rehearsal (docs/DEMO.md): one page session against `make demo` (LIVE=http://127.0.0.1:<port>/), keys as on stage,
+  // with the model endpoint blocked (QS_BASE_URL=http://10.255.255.1/v1): node app/dev/shoot.mjs - rehearsal
+  { name: 'rehearsal-00-woche', live: true, w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, 1000] },
+  { name: 'rehearsal-01-atlas', live: true, w: 1440, h: 900, url: '#ueber', steps: [`localStorage.clear()`, `localStorage.setItem('qs.who','Demo')`, 3000] },
+  { name: 'rehearsal-02-digi', live: true, keep: true, w: 1440, h: 900, steps: [`[...document.querySelectorAll('.atl-cell')].find(b=>/^Digitalisierung/.test(b.getAttribute('aria-label'))).click()`, 800], print: `location.hash` },
+  { name: 'rehearsal-03-affair', live: true, keep: true, w: 1440, h: 900, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'/'}))`, `(()=>{const q=__qs.karte.q;q.value='strebt digital';q.dispatchEvent(new Event('input'));q.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}))})()`, 400, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, 1200], print: `__qs.karte.S.sel + ' | ' + location.hash` },
+  { name: 'rehearsal-04-why', live: true, keep: true, w: 1440, h: 900, steps: [`(document.querySelector('#v-karte mark') || document.querySelector('#v-karte .dg')).scrollIntoView({ block: 'center' })`] },
+  { name: 'rehearsal-05-decide', live: true, keep: true, w: 1440, h: 900, steps: [`window.__t1=performance.now()`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'1'}))`, 1000, `__qs.karte.st.scrollIntoView({ block: 'center' })`], print: `__qs.karte.S.sel + ' | ' + __qs.karte.st.textContent` },
+  { name: 'rehearsal-06-neu-down', live: true, keep: true, w: 1440, h: 900, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'n'}))`, 600, `window.__t0=performance.now()`, `(()=>{const f=document.querySelector('.nt-field textarea');f.value='Wölfe, Grossraubtiere und Herdenschutz';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 6000],
+    print: `document.querySelector('#v-neu .runline').textContent + ' | offer shown: ' + !document.querySelector('#v-neu .runrow > button:last-child').hidden` },
+  { name: 'rehearsal-07-neu-recording', live: true, keep: true, w: 1440, h: 900, steps: [`document.querySelector('#v-neu .runrow > button:last-child').click()`, 9000], print: `document.querySelector('#v-neu .nt-rec').textContent + ' | ' + document.querySelector('#v-neu .runline').textContent` },
+  { name: 'rehearsal-08-pruef', live: true, keep: true, w: 1440, h: 900, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'b'}))`, 1200] },
+  { name: 'rehearsal-09-anb', live: true, keep: true, w: 1440, h: 900, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'i'}))`, 1500] },
+  { name: 'rehearsal-10-basel', live: true, keep: true, w: 1440, h: 900, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'m'}))`, `(()=>{const q=__qs.karte.q;q.value='';q.dispatchEvent(new Event('input'))})()`, 400, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'t'}))`, `(()=>{const i=document.querySelector('.picker input');i.value='Basel';i.dispatchEvent(new Event('input'));i.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}))})()`, 1200], print: `location.hash` },
+  { name: 'rehearsal-11-affair-url', live: true, w: 1440, h: 900, url: '#karte?a=338697', steps: [1000], print: `__qs.karte.st.textContent` },
+  { name: 'rehearsal-12-affair-fr', live: true, keep: true, w: 1440, h: 900, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'f'}))`, 800] },
+  { name: 'rehearsal-13-rec-url', live: true, w: 1440, h: 900, url: '#neu?rec=1', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'d'}))`, 8000], print: `document.querySelector('#v-neu .nt-rec').textContent` },
+  { name: 'rehearsal-15-finals-ticino', live: true, w: 1440, h: 900, url: '#karte?t=adhoc%2Fdigitalisierung', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'/'}))`, `(()=>{const q=__qs.karte.q;q.value='sovranit';q.dispatchEvent(new Event('input'));q.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}))})()`, 400, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, 1000],
+    print: `(()=>{const c=__qs.D.c,i=__qs.D.rowOf.get(__qs.karte.S.sel);return __qs.karte.S.sel+' '+c.body[i]+' '+c.title[i]})()` },
+  // an endpoint that accepts connections and never answers (LIVE = a make demo whose QS_BASE_URL points at such a port)
+  { name: 'neu-hang-1440', live: true, w: 1440, h: 900, url: '#neu', steps: [`(()=>{const f=document.querySelector('.nt-field textarea');f.value='Wölfe, Grossraubtiere und Herdenschutz';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 23000],
+    print: `document.querySelector('#v-neu .runline').textContent + ' | offer shown: ' + !document.querySelector('#v-neu .runrow > button:last-child').hidden` },
+  { name: 'rehearsal-14-neu-back', live: true, keep: true, w: 1440, h: 900, steps: [`document.querySelector('#v-neu .nt-back').click()`, 600], print: `document.querySelector('#v-neu .nt-field textarea').readOnly + ' | ' + document.querySelector('#v-neu .runline').textContent` },
 ];
 
 async function main() {
@@ -118,10 +141,12 @@ async function main() {
     if (sc.pre) await sc.pre();
     await send('Emulation.setDeviceMetricsOverride', { width: sc.w, height: sc.h, deviceScaleFactor: sc.mobile ? 2 : 1, mobile: !!sc.mobile }, S);
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: sc.dark ? 'dark' : 'light' }] }, S);
-    await send('Page.navigate', { url: 'about:blank' }, S); await sleep(100);
     const t0 = Date.now();
-    await send('Page.navigate', { url: (sc.live ? LIVE : BASE) + '?lang=' + (sc.lang || 'de') + (sc.url || '') }, S);
-    for (let i = 0; i < 100; i++) { if (await evalJs(`!!(window.__qs && !document.body.classList.contains('loading'))`)) break; await sleep(100); }
+    if (!sc.keep) { // keep: go on in the page the previous scenario left (a rehearsal walks one session)
+      await send('Page.navigate', { url: 'about:blank' }, S); await sleep(100);
+      await send('Page.navigate', { url: (sc.live ? LIVE : BASE) + '?lang=' + (sc.lang || 'de') + (sc.url || '') }, S);
+      for (let i = 0; i < 100; i++) { if (await evalJs(`!!(window.__qs && !document.body.classList.contains('loading'))`)) break; await sleep(100); }
+    }
     const ready = Date.now() - t0;
     await sleep(500);
     for (const st of sc.steps || []) { if (typeof st === 'number') await sleep(st); else { await evalJs(st); await sleep(350); } }

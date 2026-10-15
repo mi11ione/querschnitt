@@ -15,7 +15,10 @@
 4. Decisions. `engine.Engine.yn`, order a; order b when 0.1 < p < 0.9 (as in the batch); p, flag and lane by
    `compose.yn_decision` (the nightly rows' rule). 3 worker threads, newest affair first, each decision an SSE event.
 5. Save. `schemes/adhoc/<slug>.yaml` (id, names, question, answer_yes, cutoff 0.5, examples, terms, subtopics) and the
-   run's decisions as `adhoc/<slug>` topic rows; the nightly job picks up every file in schemes/adhoc/."""
+   run's decisions as `adhoc/<slug>` topic rows; the nightly job picks up every file in schemes/adhoc/.
+
+An endpoint that does not accept a connection within QS_ADHOC_PROBE_S (3 s) refuses the start (`Unreachable`, HTTP 503)
+instead of waiting out the client's retries; the topic request has QS_ADHOC_GEN_S (20 s) before the fallback frame."""
 from __future__ import annotations
 
 import datetime as dt
@@ -23,9 +26,12 @@ import json
 import os
 import random
 import re
+import socket
 import threading
 import time
 import unicodedata
+import urllib.parse
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -132,6 +138,10 @@ class DailyCap(CapReached):
     """Today's list-price ad-hoc spend (QS_ADHOC_DAILY_USD) is reached: no new run and no `continue` until tomorrow."""
 
 
+class Unreachable(Exception):
+    """The model endpoint (or the proxy in front of it) accepts no connection within QS_ADHOC_PROBE_S: nothing started."""
+
+
 class Job:
     """One Neues-Thema run: topic, terms, period, the affairs to read, and the event log the SSE stream replays."""
 
@@ -180,6 +190,7 @@ class Adhoc:
         self.calls = 0
         self.max_calls = int(os.environ.get("QS_ADHOC_MAX_CALLS", "0")) or None       # per run (start / continue)
         self.daily_usd = float(os.environ.get("QS_ADHOC_DAILY_USD", "2.0")) or None   # list-price USD per local day, 0 = off
+        self._reach_ok = 0.0                                                            # time of the last successful probe
 
     @property
     def client(self) -> Client:
@@ -232,21 +243,42 @@ class Adhoc:
                 job.calls += n
             self.calls += n
 
-    def generate(self, sentence: str, prompt: str = TOPIC_PROMPT, max_tokens: int = 200) -> tuple[dict | None, dict]:
+    def reachable(self) -> str | None:
+        """None when the model endpoint (or the proxy urllib would use for it) accepts a TCP connection within
+        QS_ADHOC_PROBE_S (default 3 s; 0 skips the check); else the reason. A success is remembered for a minute.
+        Without it a run on a dead endpoint waits out the client's retries (minutes) before it says anything."""
+        secs = float(os.environ.get("QS_ADHOC_PROBE_S", "3"))
+        if not secs or time.time() - self._reach_ok < 60:
+            return None
+        u = urllib.parse.urlsplit(self.client.endpoint.base_url)
+        proxy = urllib.request.getproxies().get(u.scheme)
+        if proxy and not urllib.request.proxy_bypass(u.hostname or ""):
+            u = urllib.parse.urlsplit(proxy if "://" in proxy else f"http://{proxy}")
+        host, port = u.hostname or "", u.port or (443 if u.scheme == "https" else 80)
+        try:
+            with socket.create_connection((host, port), timeout=secs):
+                pass
+        except OSError as e:
+            return f"model endpoint {host}:{port} not reachable ({type(e).__name__}: {e})"[:300]
+        self._reach_ok = time.time()
+        return None
+
+    def generate(self, sentence: str, prompt: str = TOPIC_PROMPT, max_tokens: int = 200, stop: threading.Event | None = None,
+                 timeout: float = 120) -> tuple[dict | None, dict]:
         """One plain generation request (user message only) → the first JSON object in the answer."""
         self._count()
         ch, meta = self.client.chat([{"role": "user", "content": prompt.format(sentence=_clean(sentence, 400))}],
-                                    max_tokens=max_tokens, logprobs=None)
+                                    max_tokens=max_tokens, logprobs=None, stop=stop, timeout=timeout)
         text = (ch.get("message") or {}).get("content") or ""
         return parse_json(text), dict(meta, raw=text[:2000])
 
-    def _terms(self, box: dict, sentence: str, given: dict | None):
+    def _terms(self, box: dict, sentence: str, given: dict | None, stop: threading.Event | None = None):
         """Search terms off the critical path: generated in parallel with the name/scope request, verified against the
         corpus once the job exists, then sent as a `terms` event."""
         meta = {}
         try:
             if given is None:
-                _, meta = self.generate(sentence, TERMS_PROMPT, 320)
+                _, meta = self.generate(sentence, TERMS_PROMPT, 320, stop=stop)
                 given = parse_terms(meta.get("raw") or "")
         except Exception as e:  # noqa: BLE001 — no terms: the candidate step uses stored subtopics only
             given, meta = {}, dict(error=repr(e)[:300])
@@ -401,16 +433,16 @@ class Adhoc:
         lang = lang if lang in LANGS else "de"
         per = self.period(period, date_from, date_to)          # a bad period fails before any model call
         day = self.check_daily()                               # so does a spent day (DailyCap)
-        box = dict(ready=threading.Event())
-        tt = threading.Thread(target=self._terms, args=(box, sentence, terms if (terms is not None or generate) else {}),
+        why = self.reachable()                                 # and a dead endpoint, in seconds (Unreachable)
+        if why:
+            raise Unreachable(why)
+        box, stop = dict(ready=threading.Event()), threading.Event()     # the job's stop also ends the terms request
+        tt = threading.Thread(target=self._terms, args=(box, sentence, terms if (terms is not None or generate) else {}, stop),
                               daemon=True, name="adhoc-terms")
         tt.start()
         gen, meta = (None, {})
-        if generate:
-            try:
-                gen, meta = self.generate(sentence)
-            except Exception as e:  # noqa: BLE001 — the fallback frame needs no model
-                meta = dict(error=repr(e)[:300])
+        if generate:                                           # the fallback frame needs no model
+            gen, meta = self._generate_by(sentence, float(os.environ.get("QS_ADHOC_GEN_S", "20")))
         base = slugify(gen["name"].get("de") or sentence) if (gen and isinstance(gen.get("name"), dict)) else slugify(sentence)
         ex = []
         for e in examples or []:
@@ -423,6 +455,7 @@ class Adhoc:
             topic = build_topic(sentence, lang, gen, slug)
             topic["verify"] = bool(verify)
             job = Job(slug, topic, {l: [] for l in LANGS}, per[:2], ex)
+            job.stop = stop
             self.jobs[slug] = job
         job.budget, job.day = self.max_calls, day
         job.info.update(period_name=per[2], estimate=self.estimate(*per[:2]))
@@ -437,6 +470,23 @@ class Adhoc:
         job.thread = threading.Thread(target=self._run, args=(job, limit), daemon=True, name=f"adhoc-{slug}")
         job.thread.start()
         return job
+
+    def _generate_by(self, sentence: str, secs: float) -> tuple[dict | None, dict]:
+        """The topic request with a deadline: past it the run starts on the fallback frame (the sentence verbatim) and the
+        request stops at its next retry, so POST /adhoc answers within about `secs`."""
+        box, stop = {}, threading.Event()
+
+        def go():
+            try:
+                box["r"] = self.generate(sentence, stop=stop, timeout=secs)
+            except Exception as e:  # noqa: BLE001
+                box["r"] = (None, dict(error=repr(e)[:300]))
+        th = threading.Thread(target=go, daemon=True, name="adhoc-topic")
+        th.start(); th.join(secs)
+        if "r" not in box:
+            stop.set()
+            return None, dict(error=f"no answer within {secs:g} s (QS_ADHOC_GEN_S); fallback frame")
+        return box["r"]
 
     def shutdown(self, timeout: float = 15.0):
         """Stop every running job (in-flight requests finish or are interrupted at the rate guard) and wait for them."""
@@ -474,6 +524,9 @@ class Adhoc:
             if not rest:
                 raise RuntimeError("nothing left to read")
             job.day = self.check_daily()
+            why = self.reachable()
+            if why:
+                raise Unreachable(why)
             job.stop.clear(); job.error = None; job.stop_reason = None; job.done = False
         job.budget = job.calls + self.max_calls if self.max_calls else None
         job.thread = threading.Thread(target=self._read, args=(job, rest), daemon=True, name=f"adhoc-{slug}-cont")

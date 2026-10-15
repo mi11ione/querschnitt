@@ -26,7 +26,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict
 
 from . import scheme as S
-from .adhoc import Adhoc, DailyCap
+from .adhoc import Adhoc, DailyCap, Unreachable
 from .compose import VERSION
 from .scheme import APS
 from .store import ROOT, Store, metrics_line
@@ -307,6 +307,8 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
                            payload.get("limit"), payload.get("generate", True), payload.get("verify", True))
         except DailyCap as e:
             raise HTTPException(429, str(e))
+        except Unreachable as e:                    # the endpoint is down: say so in seconds (the app offers the recording)
+            raise HTTPException(503, str(e))
         except ValueError as e:
             raise HTTPException(422, str(e))
         return {"slug": job.slug, "topic": job.topic, "terms": job.terms, "terms_pending": job.terms_thread.is_alive(),
@@ -370,6 +372,8 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
             job = ah.resume(slug)
         except DailyCap as e:
             raise HTTPException(429, str(e))
+        except Unreachable as e:
+            raise HTTPException(503, str(e))
         except RuntimeError as e:
             raise HTTPException(409, str(e))
         return {"slug": slug, "unread": job.summary()["unread"], "stream": f"/adhoc/{slug}/stream?from={len(job.events)}"}

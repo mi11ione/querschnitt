@@ -175,6 +175,9 @@ async function boot() {
   $('#l-de').addEventListener('click', () => setLang('de'));
   $('#l-fr').addEventListener('click', () => setLang('fr'));
   document.addEventListener('keydown', keys);
+  // a link pasted into the address bar (make demo prints one per pitch beat) changes only the hash: open it as a fresh load;
+  // the app itself writes the hash with replaceState, which fires no hashchange
+  addEventListener('hashchange', () => location.reload());
   renderShell();
   show(v0);
   document.body.classList.remove('loading');

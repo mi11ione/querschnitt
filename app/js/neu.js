@@ -2,6 +2,8 @@
 // first, with a running line (read / flagged / seconds); the map fills as rows arrive. Needs the live API (CONTRACT §2).
 // Without it (the static site) the tab replays a recorded real run (data/neu_replay.json, app/dev/make_replay.py): the
 // same POST answer and SSE events, at the recorded pace or faster, through the same code path, labelled as a recording.
+// With the API up but the model endpoint down (POST /adhoc 503 within seconds, or no decision for SLOW_S seconds) the run
+// line offers the same recording, labelled as such; #neu?rec=1 opens it directly (docs/DEMO.md, Offline).
 import { D, API, apiPost, liveTopic, registerTopic } from './data.js';
 import { h, t, UI, num, toast, isoOfDay, dayNum, fmtDate } from './util.js';
 import { Board } from './board.js';
@@ -41,9 +43,13 @@ const termsText = tr => {
 // strings of the replay (kept here: util.js holds the shared ones)
 const R = {
   de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', last: 'zuletzt gelesen, neueste zuerst',
-    line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.` },
+    line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.`,
+    down: 'Der Modell-Endpunkt antwortet nicht.', slow: s => `seit ${s} s keine Entscheidung vom Modell-Endpunkt`, fall: 'Aufzeichnung abspielen', back: 'zurück zur Eingabe',
+    fallLine: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, ${m}, Build ${b}, keine Live-Antwort: der Modell-Endpunkt antwortet gerade nicht.` },
   fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', last: 'derniers lus, le plus récent en haut',
-    line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.` },
+    line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.`,
+    down: 'Le modèle ne répond pas.', slow: s => `aucune décision du modèle depuis ${s} s`, fall: 'Rejouer l’enregistrement', back: 'retour à la saisie',
+    fallLine: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, ${m}, build ${b}, pas une réponse en direct : le modèle ne répond pas en ce moment.` },
 };
 const r = () => R[UI.lang] || R.de;
 const SPEEDS = [1, 4];
@@ -52,6 +58,9 @@ const SPEEDS = [1, 4];
 const LIMITS = [0, 25, 50];
 const hashLimit = () => { const v = +new URLSearchParams(location.hash.split('?')[1] || '').get('limit'); return v > 0 ? Math.floor(v) : 0; };
 const LIMIT0 = hashLimit(); // read at load, before the shell rewrites the hash
+const REC0 = /[?&]rec=1/.test(location.hash); // #neu?rec=1: the recording, also when the API is up
+const SLOW_S = 20, POST_S = 35; // a live run with no decision SLOW_S s after Enter (or the last one) offers the recording;
+// POST /adhoc gives up after POST_S s (the recorded run: topic 5 s, first decision 4 s later)
 let autoPlayed = false;
 const dmy = iso => `${iso.slice(8, 10)}.${iso.slice(5, 7)}.${iso.slice(0, 4)}`;
 
@@ -95,7 +104,8 @@ export class Neu {
     this.limit = LIMIT0;
     this.lim = h('select', { class: 'per', 'aria-label': 'Umfang', onchange: () => { this.limit = +this.lim.value; history.replaceState(null, '', `#neu${this.limit ? `?limit=${this.limit}` : ''}`); } });
     this.saveB = h('button', { class: 'tb mono', type: 'button', hidden: true, style: 'font-size:12px', onclick: () => this.save() });
-    this.head = h('div', { class: 'nt' }, h('div', { class: 'nt-field' }, this.field), h('p', { class: 'perrow' }, this.per, ' ', this.lim, this.perL), this.exd, this.terms, h('div', { class: 'runrow' }, this.run, this.saveB));
+    this.fallB = h('button', { class: 'tb mono', type: 'button', hidden: true, style: 'font-size:12px', onclick: () => this.fallback() });
+    this.head = h('div', { class: 'nt' }, h('div', { class: 'nt-field' }, this.field), h('p', { class: 'perrow' }, this.per, ' ', this.lim, this.perL), this.exd, this.terms, h('div', { class: 'runrow' }, this.run, this.saveB, this.fallB));
     this.field.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.start(); } });
     this.field.addEventListener('input', () => { this.field.style.height = 'auto'; this.field.style.height = `${this.field.scrollHeight}px`; });
     this.terms.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); this.start(this.terms.value); } });
@@ -105,7 +115,8 @@ export class Neu {
     this.recL = h('p', { class: 'nt-rec', hidden: true });
     this.playB = h('button', { class: 'box', type: 'button', onclick: () => this.start() });
     this.speedEl = h('span', { class: 'nt-speed' });
-    this.playRow = h('p', { class: 'nt-play', hidden: true }, this.playB, this.speedEl);
+    this.backB = h('button', { class: 'tb nt-back', type: 'button', hidden: true, onclick: () => this.back() });
+    this.playRow = h('p', { class: 'nt-play', hidden: true }, this.playB, this.speedEl, this.backB);
     this.feed = h('ol', { class: 'nt-feed', hidden: true });
     this.head.querySelector('.perrow').after(this.recL, this.playRow);
     this.board.reg.prepend(this.feed); // the list column: hits only, so the stream of every decision goes above it
@@ -114,6 +125,29 @@ export class Neu {
       if (!(rec && rec.events) || API.live) return;
       this.rec = rec; this.relang(); this.shown();
     });
+    if (API.live && REC0) this.fallback();
+  }
+  // the model endpoint is down (or silent): the run line offers the recording; one click plays it, labelled as one
+  offer() { if (API.live && !this.fall) { this.fallB.textContent = `[${r().fall}]`; this.fallB.hidden = false; } }
+  async fallback() {
+    if (this.es) { this.es.close(); this.es = null; }
+    clearInterval(this.tick);
+    if (this.slug) apiPost(`/adhoc/${encodeURIComponent(this.slug)}/stop`, {}).catch(() => { /* gone already */ });
+    if (!this.fall) this.typed = this.field.value;
+    const rec = this.rec0 || (this.rec0 = await loadReplay());
+    if (!(rec && rec.events)) { this.run.className = 'runline err'; this.run.textContent = `${r().down} (neu_replay.json –)`; return; }
+    this.fall = true; this.rec = rec; this.played = false; this.fallB.hidden = true;
+    this.relang(); this.start();
+  }
+  back() { // from the recording to the live field
+    if (this.es) { this.es.close(); this.es = null; }
+    clearInterval(this.tick); this.runId = (this.runId || 0) + 1;
+    this.fall = false; this.rec = null; this.played = false;
+    this.field.readOnly = false; this.field.value = this.typed || ''; this.exd.hidden = false;
+    this.recL.hidden = true; this.playRow.hidden = true; this.feed.hidden = true; this.perL.textContent = ''; this.board.fixedPer = null;
+    this.terms.hidden = true; this.terms.value = ''; this.tp = null; this.board.S.brush = null; // nothing of the recording stays
+    this.board.setTopic(liveTopic('neu', { de: '', fr: '' }, new Map()));
+    this.run.className = 'runline'; this.relang(); this.field.focus();
   }
   // the tab is open: in static mode the recording starts by itself, once per page load
   shown() { if (this.rec && !autoPlayed && !this.root.hidden && !this.es && !API.live) { autoPlayed = true; this.start(); } }
@@ -139,10 +173,11 @@ export class Neu {
     this.field.placeholder = L.ntPh; this.exd.querySelector('summary').textContent = L.ntEx; this.saveB.textContent = `[${L.ntSave}]`;
     const pv = this.per.value || 'week';
     this.per.replaceChildren(...Object.entries(L.periods).map(([k, v]) => h('option', { value: k, selected: k === pv }, v)));
-    this.per.disabled = !API.live;
+    this.per.disabled = !API.live || !!this.fall;
     const lv = [...new Set([...LIMITS, this.limit])].sort((a, b) => a - b);
     this.lim.replaceChildren(...lv.map(k => h('option', { value: String(k), selected: k === this.limit }, r().lim(k))));
-    this.lim.hidden = !API.live; // the cap is for a live run only
+    this.lim.hidden = !API.live || !!this.fall; // the cap is for a live run only
+    this.fallB.textContent = `[${r().fall}]`; this.backB.textContent = r().back; this.backB.hidden = !this.fall;
     this.field.disabled = !API.live && !this.rec; this.ex.disabled = !API.live;
     this.root.classList.toggle('nt-static', !API.live && !this.rec);
     this.root.classList.toggle('nt-replay', !!this.rec);
@@ -151,7 +186,7 @@ export class Neu {
       this.field.value = x.sentence || ''; this.field.readOnly = true; this.exd.hidden = true;
       this.field.style.height = 'auto'; this.field.style.height = `${this.field.scrollHeight}px`;
       this.recL.hidden = false; this.playRow.hidden = false;
-      this.recL.textContent = R0.line(dmy(x.recorded), x.model, x.build_short);
+      this.recL.textContent = (this.fall ? R0.fallLine : R0.line)(dmy(x.recorded), x.model, x.build_short);
       // the screen names one period, the recorded one, from the start (before the replayed POST answer arrives)
       const rp = (x.post && x.post.period) || (x.summary && x.summary.period);
       if (rp && rp[0] && !this.board.fixedPer) { this.board.fixedPer = [dayNum(rp[0]), dayNum(rp[1])]; this.perL.textContent = ` ${L.periodRead} ${rp[0]} – ${rp[1]}`; this.board.refresh(); }
@@ -163,7 +198,7 @@ export class Neu {
     this.board.relang && this.board.relang();
   }
   async start(terms) {
-    const L = t(), sentence = this.field.value.trim(), rec = !API.live ? this.rec : null;
+    const L = t(), sentence = this.field.value.trim(), rec = !API.live || this.fall ? this.rec : null;
     if ((!API.live && !rec) || !sentence) return;
     if (this.es) { this.es.close(); this.es = null; }
     clearInterval(this.tick); // a restart: the previous run's clock stops writing the line
@@ -184,8 +219,18 @@ export class Neu {
       await new Promise(f => setTimeout(f, (rec.post_lat || 0) * 1000 / this.speed));
       if (run !== this.runId) return;
       res = rec.post;
-    } else try { res = await apiPost('/adhoc', body); } catch (e) { this.run.className = 'runline err'; this.run.textContent = `${L.apiErr} ${e.message}`; return; }
+    } else {
+      this.fallB.hidden = true; this.tp = null; this.t0 = performance.now(); // the quiet clock starts at Enter: a slow topic request counts too
+      clearTimeout(this.watch); this.watch = setTimeout(() => { if (run === this.runId && !this.tp) this.offer(); }, SLOW_S * 1000);
+      try { res = await Promise.race([apiPost('/adhoc', body), new Promise((_, no) => setTimeout(() => no(new Error('timeout')), POST_S * 1000))]); }
+      catch (e) { // 503: the API is up, the model endpoint is not (adhoc.py answers in seconds); the recording is one click away
+        if (run !== this.runId) return;
+        this.run.className = 'runline err'; this.run.textContent = e.message === '503' || e.message === 'timeout' ? r().down : `${L.apiErr} ${e.message}`; this.offer(); return;
+      }
+      if (run !== this.runId) return;
+    }
     const slug = res.slug, topic = res.topic || {};
+    if (!rec) this.slug = slug;
     const names = topic.names || { de: sentence, fr: sentence, it: sentence };
     const tp = liveTopic(slug, names, new Map());
     this.tp = tp; this.board.setTopic(tp);
@@ -203,7 +248,7 @@ export class Neu {
       if (wz >= wa) { this.board.S.brush = [wa, wz]; this.board.refresh(); }
     };
     showPeriod(res.period);
-    const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false;
+    const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false, lastT = rec ? t0 : this.t0;
     const line = () => {
       const secs = Math.floor(rec && this.es && this.es.clock ? Math.min(this.es.clock(), rec.summary.seconds) : done && rec ? rec.summary.seconds : (performance.now() - t0) / 1000);
       this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${r().rec} ×${this.speed}` : ''}${done ? '' : ' · …'}`;
@@ -218,6 +263,7 @@ export class Neu {
         read++; const flag = d.flag != null ? !!d.flag : d.p >= 0.5; if (flag) flagged++;
         if (!D.rowOf.has(d.id)) outside++;
         tp.dec.set(d.id, rec ? { p: d.p, flag, t: d.t, rec: d } : { p: d.p, flag, t: d.t });
+        lastT = performance.now(); if (!rec) this.fallB.hidden = true;
         kick();
       }
       const pr = d.progress || (type === 'progress' ? d : null);
@@ -237,6 +283,7 @@ export class Neu {
         this.run.textContent = `${L.stopped(num(read), total != null ? num(total) : '?', String(stopWhy || '').replace(/^\w+\(['"]?|['"]?\)$/g, '').slice(0, 80))} · ${L.flagged} ${num(flagged)}`;
         this.saveB.hidden = true;
       } else this.saveB.hidden = !!rec; // a replay is not saved as a topic
+      if (early && !rec) this.offer();
     };
     es.onmessage = e => onData(e.data, 'message');
     es.addEventListener('progress', e => onData(e.data, 'progress'));
@@ -245,8 +292,13 @@ export class Neu {
     es.addEventListener('topic', e => onData(e.data, 'topic'));
     es.addEventListener('terms', e => onData(e.data, 'terms'));
     es.addEventListener('error', e => { if (e.data) onData(e.data, 'error'); });
-    es.onerror = () => { if (!done) { if (read) { stopWhy = stopWhy || L.apiErr; finish(); } else { this.run.className = 'runline err'; this.run.textContent = L.apiErr; es.close(); this.es = null; } } };
-    this.tick = setInterval(() => { if (done || !this.es) clearInterval(this.tick); else line(); }, 1000);
+    es.onerror = () => { if (!done) { if (read) { stopWhy = stopWhy || L.apiErr; finish(); } else { this.run.className = 'runline err'; this.run.textContent = L.apiErr; es.close(); this.es = null; this.offer(); } } };
+    this.tick = setInterval(() => {
+      if (done || !this.es) { clearInterval(this.tick); return; }
+      line();
+      const quiet = Math.floor((performance.now() - lastT) / 1000);
+      if (!rec && quiet >= SLOW_S) { this.offer(); this.run.append(` · ${r().slow(quiet)}`); }
+    }, 1000);
     line();
   }
   save() { if (!this.tp) return; save(this.tp); toast(t().ntSaved); this.saveB.hidden = true; }

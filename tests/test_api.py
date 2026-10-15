@@ -78,3 +78,77 @@ def test_static_app(store, tmp_path):
     with TestClient(create_app(store, app_dir=tmp_path / "app")) as c:
         assert "Querschnitt" in c.get("/").text
         assert c.get("/health").json()["ok"]
+
+
+def test_write_token(api, store, tmp_path, monkeypatch):
+    """With QS_WRITE_TOKEN set, every endpoint that writes or spends model calls needs the bearer token (401 otherwise);
+    reads stay open. Without it (every other test here), writes are open as before."""
+    import re
+    import time
+    from fastapi.routing import APIRoute
+    from fastapi.testclient import TestClient
+    from querschnitt.api import create_app
+    monkeypatch.setenv("QS_WRITE_TOKEN", "s3cret")
+    app = create_app(store, api.ah, app_dir=tmp_path / "noapp")
+    fill = {"aid": str(AID), "rest:path": "aps:1.7.2./confirm", "slug": "x"}
+    writes = [(m, re.sub(r"\{([^}]+)\}", lambda g: fill[g.group(1)], r.path)) for r in app.routes if isinstance(r, APIRoute)
+              for m in r.methods - {"GET", "HEAD"}]
+    assert {p for _, p in writes} >= {f"/affairs/{AID}/topics/aps:1.7.2./confirm", "/adhoc", "/adhoc/x/stop", "/adhoc/x/continue",
+                                      "/adhoc/x/terms", "/adhoc/x/save"}
+    ok = {"Authorization": "Bearer s3cret"}
+    with TestClient(app) as c:
+        for m, p in writes:
+            for h in ({}, {"Authorization": "Bearer wrong"}, {"Authorization": "s3cret"}, {"Authorization": "Basic s3cret"}):
+                r = c.request(m, p, json={}, headers=h)
+                assert r.status_code == 401 and r.headers["www-authenticate"] == "Bearer", (m, p, h)
+        for p in ("/health", f"/affairs/{AID}/topics", "/changes", "/coverage", "/schemes", "/metrics"):
+            assert c.get(p).status_code == 200
+        r = c.post(f"/affairs/{AID}/topics/aps:1.7.2./reject", json={"by": "dvs"}, headers=ok)
+        assert r.status_code == 200 and r.json()["status"] == "rejected"
+        assert c.post(f"/affairs/{AID}/topics/aps:1.7.2./undo", json={"by": "dvs"}, headers=ok).status_code == 200
+        r = c.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 1}, headers=ok)
+        assert r.status_code == 200
+        t = time.time()
+        while not c.get(f"/adhoc/{r.json()['slug']}").json()["done"] and time.time() - t < 20:
+            time.sleep(0.05)
+
+
+def test_adhoc_daily_cap(api):
+    """QS_ADHOC_DAILY_USD: today's list-price spend in the ad-hoc ledger caps new runs and `continue` (429) and stops a
+    running one (`stop: daily_cap`); earlier days do not count; 0 turns it off."""
+    import json
+    import pathlib
+    import time
+
+    def wait(slug):
+        t = time.time()
+        while time.time() - t < 20:
+            st = api.get(f"/adhoc/{slug}").json()
+            if st["done"]:
+                return st
+            time.sleep(0.05)
+        raise AssertionError("ad-hoc run did not finish")
+
+    ah = api.ah
+    led = pathlib.Path(ah.client.ledger)
+    led.write_text(json.dumps(dict(ts=time.time() - 2 * 86400, tag="adhoc", usd=5.0)) + "\n")      # two days ago
+    ah.daily_usd = 1.0
+    assert ah.spent_today() == 0
+    r = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 1})
+    assert r.status_code == 200 and wait(r.json()["slug"])["stop"] == "done"
+    today = ah.spent_today()
+    assert today > 0                                     # the fake endpoint reports usage; the ledger prices it
+    ah.daily_usd = today + 1e-9                          # room for nothing beyond the topic's own generation request
+    r = api.post("/adhoc", json={"sentence": "Digitale Verwaltung", "lang": "de", "period": "2026-09-01..2026-10-31"})
+    assert r.status_code == 200
+    st = wait(r.json()["slug"])
+    assert st["stop"] == "daily_cap" and st["summary"]["read"] == 0 and st["summary"]["unread"] > 0 and st["error"] is None
+    c = api.post(f"/adhoc/{r.json()['slug']}/continue")
+    assert c.status_code == 429 and "QS_ADHOC_DAILY_USD" in c.json()["detail"]
+    n = len(ah.jobs)
+    r = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 1})
+    assert r.status_code == 429 and "QS_ADHOC_DAILY_USD" in r.json()["detail"] and len(ah.jobs) == n    # refused before any call
+    ah.daily_usd = None                                  # QS_ADHOC_DAILY_USD=0
+    r = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 1})
+    assert r.status_code == 200
+    wait(r.json()["slug"])

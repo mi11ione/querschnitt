@@ -127,6 +127,10 @@ class CapReached(RuntimeError):
     """The run's call budget (QS_ADHOC_MAX_CALLS) is spent; `continue` reads on with a fresh budget."""
 
 
+class DailyCap(CapReached):
+    """Today's list-price ad-hoc spend (QS_ADHOC_DAILY_USD) is reached: no new run and no `continue` until tomorrow."""
+
+
 class Job:
     """One Neues-Thema run: topic, terms, period, the affairs to read, and the event log the SSE stream replays."""
 
@@ -140,6 +144,7 @@ class Job:
         self.info: dict = {}
         self.items: list[dict] = []
         self.calls, self.budget, self.stop_reason = 0, None, None
+        self.day: tuple[float, float] | None = None       # (today's ledger USD, client spend) when the run (re)started
 
     def emit(self, kind: str, data: dict):
         with self.cv:
@@ -173,6 +178,7 @@ class Adhoc:
         self.lock = threading.Lock()
         self.calls = 0
         self.max_calls = int(os.environ.get("QS_ADHOC_MAX_CALLS", "0")) or None       # per run (start / continue)
+        self.daily_usd = float(os.environ.get("QS_ADHOC_DAILY_USD", "2.0")) or None   # list-price USD per local day, 0 = off
 
     @property
     def client(self) -> Client:
@@ -185,11 +191,42 @@ class Adhoc:
                                   cap_usd=float(os.environ.get("QS_ADHOC_CAP", "2.0")), tag="adhoc")
         return self._client
 
+    def spent_today(self) -> float:
+        """List-price USD in the ad-hoc ledger since local midnight (every process that writes to that ledger)."""
+        led = Path(self.client.ledger) if self.client.ledger else None
+        t0 = time.mktime(dt.date.today().timetuple())
+        usd = 0.0
+        if led and led.exists():
+            with led.open() as f:
+                for line in f:
+                    try:
+                        r = json.loads(line)
+                        if r.get("ts", 0) >= t0:
+                            usd += r.get("usd", 0)
+                    except ValueError:
+                        pass
+        return usd
+
+    def check_daily(self) -> tuple[float, float] | None:
+        """Refuse a start or `continue` once today's spend reached QS_ADHOC_DAILY_USD. Returns the run's baseline
+        (today's ledger USD, this process's client spend): its calls are counted on top of it in `_count`."""
+        if not self.daily_usd:
+            return None
+        usd = self.spent_today()
+        if usd >= self.daily_usd:
+            raise DailyCap(f"today's Neues-Thema spend is USD {usd:.4f} at list price; the daily cap QS_ADHOC_DAILY_USD is "
+                           f"{self.daily_usd:g}; try again tomorrow")
+        return usd, self.client.spent
+
     def _count(self, job: "Job | None" = None, n: int = 1):
-        """Count a model call: per run against its budget (QS_ADHOC_MAX_CALLS, per start and per continue), and per process."""
+        """Count a model call: per run against its budget (QS_ADHOC_MAX_CALLS, per start and per continue), against
+        today's spend (QS_ADHOC_DAILY_USD), and per process."""
         with self.lock:
             if job is not None and job.budget is not None and job.calls + n > job.budget:
                 raise CapReached(f"call budget {job.budget} of this run spent")
+            if job is not None and self.daily_usd and job.day is not None \
+                    and job.day[0] + self.client.spent - job.day[1] >= self.daily_usd:
+                raise DailyCap(f"daily cap QS_ADHOC_DAILY_USD {self.daily_usd:g} reached")
             if job is not None:
                 job.calls += n
             self.calls += n
@@ -362,6 +399,7 @@ class Adhoc:
             raise ValueError("sentence is required")
         lang = lang if lang in LANGS else "de"
         per = self.period(period, date_from, date_to)          # a bad period fails before any model call
+        day = self.check_daily()                               # so does a spent day (DailyCap)
         box = dict(ready=threading.Event())
         tt = threading.Thread(target=self._terms, args=(box, sentence, terms if (terms is not None or generate) else {}),
                               daemon=True, name="adhoc-terms")
@@ -383,7 +421,7 @@ class Adhoc:
                 if title:
                     ex.append((title, bool(e.get("match", e.get("yes", True)))))
         job = Job(slug, topic, {l: [] for l in LANGS}, per[:2], ex)
-        job.budget = self.max_calls
+        job.budget, job.day = self.max_calls, day
         job.info.update(period_name=per[2], estimate=self.estimate(*per[:2]))
         job.info["generation"] = {k: meta.get(k) for k in ("model", "fp", "usd", "lat", "error") if k in meta}
         job.terms_thread = tt
@@ -420,7 +458,7 @@ class Adhoc:
             job.items = self.select(job, limit)
         except Exception as e:  # noqa: BLE001
             job.error = repr(e)[:300]
-            job.stop_reason = "cap" if isinstance(e, CapReached) else f"error: {job.error}"
+            job.stop_reason = "daily_cap" if isinstance(e, DailyCap) else "cap" if isinstance(e, CapReached) else f"error: {job.error}"
             s = job.summary()
             job.emit("done", s); job.done = True; return
         self._read(job, job.items)
@@ -433,6 +471,7 @@ class Adhoc:
         rest = [a for a in job.items if a["id"] not in job.decisions]
         if not rest:
             raise RuntimeError("nothing left to read")
+        job.day = self.check_daily()
         job.stop.clear(); job.error = None; job.stop_reason = None; job.done = False
         job.budget = job.calls + self.max_calls if self.max_calls else None
         job.thread = threading.Thread(target=self._read, args=(job, rest), daemon=True, name=f"adhoc-{slug}-cont")
@@ -469,8 +508,8 @@ class Adhoc:
                     verified, vids = pv >= 0.5, [va["pid"]] + ([vb["pid"]] if vb else [])
                     if not verified:
                         d["lane"] = "please_check"                    # the flag stays; a person decides
-            except CapReached:
-                job.stop_reason = job.stop_reason or "cap"; job.stop.set(); return
+            except CapReached as e:
+                job.stop_reason = job.stop_reason or ("daily_cap" if isinstance(e, DailyCap) else "cap"); job.stop.set(); return
             except (BuildChanged, InterruptedError, RuntimeError) as e:
                 if not job.stop.is_set():
                     job.error = job.error or repr(e)[:300]

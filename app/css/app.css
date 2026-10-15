@@ -351,6 +351,8 @@ details>summary:hover{color:var(--ink)}
 .bn b{font:500 44px/1 var(--sans);letter-spacing:-.02em;color:var(--ink);font-feature-settings:"tnum"}
 .bn b.sig{color:var(--sig)}
 .bn span{font:400 var(--f1)/1.4 var(--mono);color:var(--ink2)}
+.bn .bn-sub{color:var(--ink)}.bn .bn-sub .rtick{margin:0 2px 0 0}
+.atl .lede{margin:0 0 12px;max-width:62ch;font:400 var(--f2)/1.45 var(--sans);color:var(--ink)}
 .atl-body{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0 40px;margin-top:16px}
 .atl-leg{margin:0 0 12px;color:var(--ink2);font:400 var(--f1)/1.5 var(--mono);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
 .atl-leg .sw{display:inline-block;width:14px;height:10px;border:1px solid var(--ink);border-right-width:0}.atl-leg .sw:last-child{border-right-width:1px}
@@ -417,3 +419,17 @@ body.v-ueber .ctxw{display:none}
 .anb-t td,.anb-t th{font-size:var(--f1);white-space:nowrap}
 @media (max-width:1100px){.anb{grid-template-columns:minmax(0,1fr)}.anb-col+.anb-col{margin-top:32px}}
 @media (max-width:599px){.ac{grid-template-columns:minmax(0,1fr) 70px}.ac .ao{grid-column:1/-1}.hop li{max-width:none;min-width:0;width:100%}}
+/* Neues Thema on the static site: a recorded run, replayed (neu.js) */
+.nt-rec{margin:8px 0 0;max-width:80ch;color:var(--ink2);font:400 var(--f1)/1.5 var(--mono)}
+.nt-play{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin:12px 0 0}
+.nt-speed{color:var(--ink2);font:400 var(--f1)/1.5 var(--mono)}
+.nt-replay .nt-field textarea[readonly]{cursor:default}
+.nt-replay .nt-field textarea[readonly]:focus{border-bottom-color:var(--ink)}
+.nt-feed{list-style:none;margin:0 0 12px;padding:0}
+.nt-feed .hd{padding:0 0 4px;border-bottom:1px solid var(--hair);color:var(--ink2);font:400 var(--f1)/1.5 var(--mono)}
+.nt-feed button{display:grid;grid-template-columns:10ch minmax(0,1fr);gap:0 12px;width:100%;padding:4px 0;border:0;border-bottom:1px solid var(--hair);background:none;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.nt-feed button:hover{background:var(--wash)}
+.nt-feed .v{grid-row:span 2;color:var(--ink2);font:400 var(--f1)/1.5 var(--mono);padding-top:2px}
+.nt-feed .v.sig{color:var(--sig)}
+.nt-feed .t{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:400 var(--f2)/1.35 var(--sans)}
+.nt-feed .m{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--ink2);font:400 var(--f1)/1.5 var(--mono)}

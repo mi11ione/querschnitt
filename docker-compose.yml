@@ -1,6 +1,6 @@
 # Two profiles (docs/SERVICE.md, "Footprints"):
-#   lite  nightly chapter-only delta into an EXISTING Postgres (OPD's ~20 GB VPS): QS_PG_DSN=postgresql://… docker compose --profile lite up -d
-#   full  Postgres + API + app + nightly delta (all steps, saved ad-hoc topics): docker compose --profile full up -d
+#   lite  nightly chapter + subtopic delta (`ch sub`) into an EXISTING Postgres (OPD's ~20 GB VPS): QS_PG_DSN=postgresql://… docker compose --profile lite up -d
+#   full  Postgres + API + app + nightly delta (`ch sub yn bi ev`, saved ad-hoc topics): docker compose --profile full up -d
 # The model endpoint and key come from the environment (QS_BASE_URL, QS_MODEL, QS_API_KEY); nothing secret is in the image.
 name: querschnitt
 
@@ -40,6 +40,8 @@ services:
     environment:
       <<: *model-env
       QS_PG_DSN: postgresql://querschnitt:${QS_PG_PASSWORD:-querschnitt}@db:5432/querschnitt
+      QS_WRITE_TOKEN: ${QS_WRITE_TOKEN:-}              # set it before the port is reachable from outside (docs/SERVICE.md)
+      QS_ADHOC_DAILY_USD: ${QS_ADHOC_DAILY_USD:-2.0}
     ports: ["127.0.0.1:${QS_PORT:-8000}:8000"]
     volumes: [runs:/app/runs, adhoc:/app/src/querschnitt/schemes/adhoc]
 

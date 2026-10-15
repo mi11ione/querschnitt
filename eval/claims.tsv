@@ -499,7 +499,7 @@ UPSTREAM	15	16.2	PostgreSQL version of the upstream test	16.2	~/.cache/uv/archiv
 SERVICE	11	3.12	uv venv (Python 3.12)	3.12	Makefile	line 23: uv venv -p 3.12 .venv	OK		code constant
 SERVICE	26	504	test sample: 80 OPD affairs, 504 synthetic rows	504	tests/fixtures/topics_sample.jsonl	line count (all model: fixture); load log runs/service-dev/make_run.log read 504	OK		
 SERVICE	52	9309	RFC 9309 robots check	9309	src/querschnitt/net.py	docstring lines 2-4	OK		identifier
-SERVICE	66	409	undo: 409 when there is no decision to undo	409	src/querschnitt/api.py	line 237: LookupError → HTTPException(409); store.py undo raises LookupError (line ~529)	OK		
+SERVICE	66	409	undo: 409 when there is no decision to undo	409	src/querschnitt/api.py	line 261: LookupError → HTTPException(409); store.py undo raises LookupError (line ~529)	OK		
 SERVICE	79	58,392	rows sharing one valid_from after one load	58392	runs/dogfood.sqlite	topics GROUP BY valid_from max count (2026-10-14T05:41:41); qs_runs row 1 rows=58392	OK		
 SERVICE	85	0.502	chapter step mean P for 341104	0.5023	app/data/detail/341.json	341104 > aps > p_step[0]	OK		truncated
 SERVICE	85	341104	affair id	341104	app/data/detail/341.json	id 341104	OK		identifier; note: the calibrated p written 0.284 in the same line is 0.2838 (aps > p[0]) → truncated 0.283 (not flagged, backed by another value)

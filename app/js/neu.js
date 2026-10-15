@@ -1,7 +1,9 @@
 // Neues Thema: a topic in one sentence → proposed terms (one editable mono line) → yes/no decisions stream in, newest
 // first, with a running line (read / flagged / seconds); the map fills as rows arrive. Needs the live API (CONTRACT §2).
+// Without it (the static site) the tab replays a recorded real run (data/neu_replay.json, app/dev/make_replay.py): the
+// same POST answer and SSE events, at the recorded pace or faster, through the same code path, labelled as a recording.
 import { D, API, apiPost, liveTopic, registerTopic } from './data.js';
-import { h, t, UI, num, toast, isoOfDay, dayNum } from './util.js';
+import { h, t, UI, num, toast, isoOfDay, dayNum, fmtDate } from './util.js';
 import { Board } from './board.js';
 
 const SAVED = 'qs.adhoc.v1';
@@ -31,9 +33,48 @@ const guessLang = s => {
 const termsText = tr => {
   if (!tr) return '';
   if (Array.isArray(tr)) return tr.join(', ');
-  if (typeof tr === 'object') return Object.entries(tr).map(([l, v]) => `${l}: ${(Array.isArray(v) ? v : [v]).join(', ')}`).join(' · ');
+  if (typeof tr === 'object') return Object.entries(tr).filter(([, v]) => v && (!Array.isArray(v) || v.length))
+    .map(([l, v]) => `${l}: ${(Array.isArray(v) ? v : [v]).map(x => (x && typeof x === 'object' ? x.term : x)).join(', ')}`).join(' · ');
   return String(tr);
 };
+
+// strings of the replay (kept here: util.js holds the shared ones)
+const R = {
+  de: { play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', last: 'zuletzt gelesen, neueste zuerst',
+    line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.` },
+  fr: { play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', last: 'derniers lus, le plus récent en haut',
+    line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.` },
+};
+const r = () => R[UI.lang] || R.de;
+const SPEEDS = [1, 4];
+const dmy = iso => `${iso.slice(8, 10)}.${iso.slice(5, 7)}.${iso.slice(0, 4)}`;
+
+// An EventSource stand-in that dispatches the recorded events at their recorded `t` (seconds since job start) × speed.
+class Replay {
+  constructor(events, speed) {
+    this.ev = events; this.i = 0; this.L = new Map(); this.speed = speed; this.base = 0; this.since = performance.now();
+    this.onmessage = null; this.onerror = null;
+    this.timer = setInterval(() => this.pump(), 50);
+  }
+  clock() { return this.base + (performance.now() - this.since) / 1000 * this.speed; }
+  setSpeed(s) { this.base = this.clock(); this.since = performance.now(); this.speed = s; }
+  addEventListener(type, fn) { if (!this.L.has(type)) this.L.set(type, []); this.L.get(type).push(fn); }
+  pump() {
+    const now = this.clock();
+    while (this.timer && this.i < this.ev.length && this.ev[this.i].t <= now) {
+      const e = this.ev[this.i++], msg = { type: e.event, data: JSON.stringify(e.data) };
+      for (const fn of this.L.get(e.event) || []) fn(msg);
+    }
+    if (this.i >= this.ev.length) this.close();
+  }
+  close() { clearInterval(this.timer); this.timer = null; }
+}
+async function loadReplay() {
+  for (const b of ['data/', 'data-fixture/']) {
+    try { const res = await fetch(`${b}neu_replay.json`, { cache: 'no-cache' }); if (res.ok) return await res.json(); } catch (e) { /* next */ }
+  }
+  return null;
+}
 
 export class Neu {
   constructor(root) {
@@ -51,7 +92,34 @@ export class Neu {
     this.field.addEventListener('input', () => { this.field.style.height = 'auto'; this.field.style.height = `${this.field.scrollHeight}px`; });
     this.terms.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); this.start(this.terms.value); } });
     this.board = new Board(root, { topic: liveTopic('neu', { de: '', fr: '' }, new Map()), picker: false, pult: false, order: 'arrival', head: this.head });
+    // replay (static site only): label, play button, tempo, the latest decisions
+    this.speed = 4;
+    this.recL = h('p', { class: 'nt-rec', hidden: true });
+    this.playB = h('button', { class: 'box', type: 'button', onclick: () => this.start() });
+    this.speedEl = h('span', { class: 'nt-speed' });
+    this.playRow = h('p', { class: 'nt-play', hidden: true }, this.playB, this.speedEl);
+    this.feed = h('ol', { class: 'nt-feed', hidden: true });
+    this.head.querySelector('.perrow').after(this.recL, this.playRow);
+    this.board.reg.prepend(this.feed); // the list column: hits only, so the stream of every decision goes above it
     this.relang();
+    if (!API.live) loadReplay().then(rec => { if (rec && rec.events && !API.live) { this.rec = rec; this.relang(); } });
+  }
+  renderSpeed() {
+    const R0 = r();
+    this.speedEl.replaceChildren(`${R0.speed} `, ...SPEEDS.flatMap((s, k) => [k ? ' ' : '', h('button', { class: 'tb', type: 'button', 'aria-pressed': String(s === this.speed),
+      onclick: () => { this.speed = s; if (this.es && this.es.setSpeed) this.es.setSpeed(s); this.renderSpeed(); if (this.lineNow) this.lineNow(); } }, `×${s}`)]));
+  }
+  renderFeed() {
+    const L = t(), c = D.c;
+    const last = [...this.tp.dec].slice(-6).reverse();
+    this.feed.hidden = !last.length;
+    this.feed.replaceChildren(h('li', { class: 'hd' }, r().last), ...last.map(([id, d]) => {
+      const x = d.rec || {}, i = D.rowOf.get(id);
+      const title = x.title || (i != null ? c.title[i] : String(id));
+      return h('li', {}, h('button', { type: 'button', lang: x.lang || null, onclick: () => { if (i != null) this.board.select(id); } },
+        h('span', { class: `v${d.flag ? ' sig' : ''}` }, `${d.flag ? L.yes : L.no} ${d.p.toFixed(3)}`, h('br'), `${d.t.toFixed(1)} ${L.secs}`),
+        h('span', { class: 't' }, title), h('span', { class: 'm' }, `${x.parl || x.body || ''} · ${fmtDate(x.date)}`)));
+    }));
   }
   relang() {
     const L = t();
@@ -59,16 +127,29 @@ export class Neu {
     const pv = this.per.value || 'week';
     this.per.replaceChildren(...Object.entries(L.periods).map(([k, v]) => h('option', { value: k, selected: k === pv }, v)));
     this.per.disabled = !API.live;
-    this.field.disabled = !API.live; this.ex.disabled = !API.live;
-    this.root.classList.toggle('nt-static', !API.live);
-    if (!API.live) { this.run.textContent = L.ntStatic; }
+    this.field.disabled = !API.live && !this.rec; this.ex.disabled = !API.live;
+    this.root.classList.toggle('nt-static', !API.live && !this.rec);
+    this.root.classList.toggle('nt-replay', !!this.rec);
+    if (this.rec) { // a recorded run: its sentence, read-only; the label says what it is
+      const R0 = r(), x = this.rec;
+      this.field.value = x.sentence || ''; this.field.readOnly = true; this.exd.hidden = true;
+      this.field.style.height = 'auto'; this.field.style.height = `${this.field.scrollHeight}px`;
+      this.recL.hidden = false; this.playRow.hidden = false;
+      this.recL.textContent = R0.line(dmy(x.recorded), x.model, x.build_short);
+      this.playB.textContent = this.played ? R0.again : R0.play;
+      this.renderSpeed();
+      if (!this.played) this.run.textContent = '';
+    } else if (!API.live) { this.run.textContent = L.ntStatic; }
     else if (!this.es) this.run.textContent = L.ntRun;
     this.board.relang && this.board.relang();
   }
   async start(terms) {
-    const L = t(), sentence = this.field.value.trim();
-    if (!API.live || !sentence) return;
+    const L = t(), sentence = this.field.value.trim(), rec = !API.live ? this.rec : null;
+    if ((!API.live && !rec) || !sentence) return;
     if (this.es) { this.es.close(); this.es = null; }
+    clearInterval(this.tick); // a restart: the previous run's clock stops writing the line
+    if (rec) { this.played = true; this.playB.textContent = r().again; this.feed.hidden = true; }
+    const run = this.runId = (this.runId || 0) + 1;
     const examples = this.ex.value.split('\n').map(x => x.trim()).filter(Boolean);
     const body = { sentence, lang: guessLang(sentence) };
     const pv = this.per.value || 'week';
@@ -78,7 +159,11 @@ export class Neu {
     if (terms) body.terms = terms;
     this.run.className = 'runline'; this.run.textContent = '…';
     let res;
-    try { res = await apiPost('/adhoc', body); } catch (e) { this.run.className = 'runline err'; this.run.textContent = `${L.apiErr} ${e.message}`; return; }
+    if (rec) { // the recorded POST answer, after the recorded topic generation time
+      await new Promise(f => setTimeout(f, (rec.post_lat || 0) * 1000 / this.speed));
+      if (run !== this.runId) return;
+      res = rec.post;
+    } else try { res = await apiPost('/adhoc', body); } catch (e) { this.run.className = 'runline err'; this.run.textContent = `${L.apiErr} ${e.message}`; return; }
     const slug = res.slug, topic = res.topic || {};
     const names = topic.names || { de: sentence, fr: sentence, it: sentence };
     const tp = liveTopic(slug, names, new Map());
@@ -96,18 +181,19 @@ export class Neu {
     showPeriod(res.period);
     const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false;
     const line = () => {
-      const secs = Math.floor((performance.now() - t0) / 1000);
-      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${done ? '' : ' · …'}`;
+      const secs = Math.floor(rec && this.es && this.es.clock ? Math.min(this.es.clock(), rec.summary.seconds) : done && rec ? rec.summary.seconds : (performance.now() - t0) / 1000);
+      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${r().rec} ×${this.speed}` : ''}${done ? '' : ' · …'}`;
     };
+    this.lineNow = () => { if (!done) line(); };
     let pend = false;
-    const kick = () => { if (pend) return; pend = true; setTimeout(() => { pend = false; this.board.refresh(); if (!done) line(); }, 250); };
-    const es = this.es = new EventSource(`${API.base}/adhoc/${encodeURIComponent(slug)}/stream`);
+    const kick = () => { if (pend) return; pend = true; setTimeout(() => { pend = false; this.board.refresh(); if (rec) this.renderFeed(); if (!done) line(); }, 250); };
+    const es = this.es = rec ? new Replay(rec.events, this.speed) : new EventSource(`${API.base}/adhoc/${encodeURIComponent(slug)}/stream`);
     const onData = (raw, type) => {
       let d; try { d = JSON.parse(raw); } catch (e) { return; }
       if (d.id != null && d.p != null) {
         read++; const flag = d.flag != null ? !!d.flag : d.p >= 0.5; if (flag) flagged++;
         if (!D.rowOf.has(d.id)) outside++;
-        tp.dec.set(d.id, { p: d.p, flag, t: d.t });
+        tp.dec.set(d.id, rec ? { p: d.p, flag, t: d.t, rec: d } : { p: d.p, flag, t: d.t });
         kick();
       }
       const pr = d.progress || (type === 'progress' ? d : null);
@@ -120,13 +206,13 @@ export class Neu {
     let stopWhy = null;
     const finish = () => {
       if (done) return;
-      done = true; es.close(); this.es = null; this.board.refresh(); line();
+      done = true; es.close(); this.es = null; this.board.refresh(); line(); if (rec) this.renderFeed();
       const early = stopWhy || (total != null && read < total);
       if (early) { // a run that stopped early says so and is not offered as complete
         this.run.className = 'runline err';
         this.run.textContent = `${L.stopped(num(read), total != null ? num(total) : '?', String(stopWhy || '').replace(/^\w+\(['"]?|['"]?\)$/g, '').slice(0, 80))} · ${L.flagged} ${num(flagged)}`;
         this.saveB.hidden = true;
-      } else this.saveB.hidden = false;
+      } else this.saveB.hidden = !!rec; // a replay is not saved as a topic
     };
     es.onmessage = e => onData(e.data, 'message');
     es.addEventListener('progress', e => onData(e.data, 'progress'));

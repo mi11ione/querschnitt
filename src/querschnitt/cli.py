@@ -10,8 +10,9 @@
     querschnitt metrics | export
 
 Paths default to the environment: QS_DB / QS_PG_DSN (store), QS_INPUTS (data/inputs.jsonl.gz), QS_EXPORT_DIR
-(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite: chapter step only, no subtopics, no ad-hoc topics), QS_STEPS (batch
-steps for the full profile; default: the batch's own)."""
+(data/opd), QS_RUN_DIR (runs/main), QS_PROFILE (full | lite), QS_STEPS (batch steps for the full profile). Nightly steps: full
+`ch sub yn bi ev` (chapter, subtopic read-back, ad-hoc topics, the German/French readings of bilingual parliaments, evidence
+quote); lite `ch sub` (the measured chapter design: chapter read back from the subtopic; no ad-hoc topics, no quote)."""
 from __future__ import annotations
 
 import argparse
@@ -177,6 +178,10 @@ def ledger_usd(p: Path) -> float:
     return tot
 
 
+NIGHTLY_STEPS = ("ch", "sub", "yn", "bi", "ev")   # the export's rows: lanes from bi, quotes from ev (the batch default is ch sub yn)
+LITE_STEPS = ("ch", "sub")                        # the chapter as measured (S16/S25 and eval/calibration.json read back from sub)
+
+
 def delta(a) -> dict:
     """Nightly: fresh export → inputs → new/changed affairs (input hash) → batch → topic rows → store → one line."""
     from . import data
@@ -246,9 +251,10 @@ def delta(a) -> dict:
         idf = run / f"delta-{dt.date.today().isoformat()}.ids"
         idf.write_text("\n".join(map(str, todo)) + "\n")
         from . import batch
-        steps = ["ch"] if lite else (os.environ.get("QS_STEPS") or "").split()
+        steps = list(LITE_STEPS) if lite else (os.environ.get("QS_STEPS") or "").split() or list(NIGHTLY_STEPS)
+        log["steps"] = steps
         args = ["run", "--inputs", str(inputs), "--out", str(run), "--ids", str(idf), "--conc", str(a.conc),
-                "--max-rate", str(a.max_rate), "--since", "0000", "--topics", *topics] + (["--steps", *steps] if steps else [])
+                "--max-rate", str(a.max_rate), "--since", "0000", "--topics", *topics, "--steps", *steps]
         try:
             batch.main(args)
         except SystemExit as e:

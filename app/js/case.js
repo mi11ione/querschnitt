@@ -105,10 +105,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     h2.textContent = d.title_alt; h2.lang = d.alt_lang;
     altP.hidden = false; altP.replaceChildren(h('span', { class: 'mono dim' }, `${lang} · `), h('span', { lang }, c.title[i]));
   }
-  if (ev && ev.field === 'title') {
-    const hp = highlight(c.title[i], ev, 'title', lang);
-    if (useAlt) altP.replaceChildren(h('span', { class: 'mono dim' }, `${lang} · `), ...hp.childNodes); else h2.replaceChildren(...hp.childNodes);
-  }
+  if (ev && ev.field === 'title') tsec.append(highlight(c.title[i], ev, 'title', lang));   // the quote sits under «Beleg», not only in the heading
   const evLong = ev && ev.field === 'title_long';
   const tl = useAlt && d.title_long_alt && !evLong ? d.title_long_alt : d && d.title_long;
   const tlShown = useAlt && !evLong ? d.title_alt : c.title[i];
@@ -119,8 +116,11 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const text = d && (d.text || d.text_excerpt);
   if (text) {
     tsec.append(h('div', { class: 'sl' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, `${L.text}${d.text_src ? ' · ' + d.text_src : ''}`)));
-    const long = text.length > 640 && !(ev && ev.field === 'text');
-    const p = highlight(long ? text.slice(0, 600).replace(/\s+\S*$/, '') + ' …' : text, ev, 'text', lang); p.classList.add('sm'); tsec.append(p);
+    // a document that opens with a file path or file name (a letterhead) is shown only on request, never as the first lines
+    const junk = !(ev && ev.field === 'text') && /^[\s\S]{0,200}?([A-Za-z]:\\|\\\\|\.(docx?|pdf|xlsx?)\b)/i.test(text);
+    const long = junk || (text.length > 640 && !(ev && ev.field === 'text'));
+    const p = highlight(junk ? '' : long ? text.slice(0, 600).replace(/\s+\S*$/, '') + ' …' : text, ev, 'text', lang) || h('p', { class: 'txt' });
+    p.classList.add('sm'); tsec.append(p);
     if (long) {
       const more = h('button', { class: 'tb more', type: 'button' }, `[+] ${L.fullText}`);
       more.addEventListener('click', () => { p.textContent = text; more.remove(); });
@@ -228,7 +228,9 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const pShip = aps && aps.p_cal != null ? aps.p_cal : aps && aps.p && aps.p[0] != null ? aps.p[0] : (Number.isNaN(chp) ? null : chp);
   const bil = aps && aps.bilingual && aps.bilingual.reads ? aps.bilingual : null;
   const reads = bil ? bil.reads : aps && aps.reads;
-  const rnames = bil ? (bil.langs || ['de', 'fr']).map(x => x.toUpperCase()) : [L.read1, L.read2].slice(0, (aps && aps.read_names && aps.read_names.length) || 2);
+  // what each reading is: federal affairs once with five APS-labelled examples and once without; elsewhere two code orders
+  const rnames = bil ? (bil.langs || ['de', 'fr']).map(x => x.toUpperCase())
+    : (aps && aps.examples ? [L.readEx, L.readNoEx] : [L.read1, L.read2]).slice(0, (aps && aps.read_names && aps.read_names.length) || 2);
   const nR = reads ? Math.max(...Object.values(reads).map(v => v.length)) : 0;
   const rp = (k, r) => reads && reads[k] && reads[k][r] != null ? reads[k][r] : null;
   const top = [];
@@ -239,7 +241,7 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const keys = [...rank];
   if (reads) for (const k of Object.keys(reads).sort((a, b) => Math.max(...reads[b]) - Math.max(...reads[a]))) if (!keys.includes(+k)) keys.push(+k);
   const shown = keys.slice(0, 5);
-  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim' }, reads ? `p · ${rnames.join(' / ')}` : 'p')));
+  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim', 'data-tip': reads ? L.readsTip : '' }, reads ? `p · ${rnames.join(' / ')}` : 'p')));
   for (const k of shown) {
     const ri = rank.indexOf(k), v = ri >= 0 ? praw[ri] : null, shipped = ri === 0;
     const subs = [];

@@ -134,3 +134,13 @@ terms and an index tie-break, so every process picks the same neighbours (test: 
 Final S25 (primary, reported as measured): the fixed code; the chains it asks that the run does not hold are completed in
 `runs/s25` on the same build, then all 927 affairs are scored once with `eval/s25/analyze.py`. Both pre-fix readings are
 reported next to it. Nothing else changes (items, gold, metrics, calibration map fitted on S16 only).
+
+## 2026-10-15 01:54 CEST — S25b plain list prompting on the S25 items (after the S25 result; before any S25b call)
+Why: the held-out S25 has only the keyword baseline; the design set's plain list prompting baseline (S9 D0, 0.655) is on
+other items. Design D0 exactly as S9: the chapter prompt without examples in identity code order (d0a) and in the S1
+permutation (d0b); chapter = top of the geometric mean of the two readings. d0b is the S25 run's second reading (already
+asked, no examples); d0a is asked now for every S25 affair that does not already hold it (the 10 French/Italian affairs
+hold it as their first reading), same build, same inputs, `runs/s25`. Primary: D0 top-1 vs APS editors (Wilson 95%,
+outward) and the paired difference shipped − D0 (bootstrap 2,000 over items). Reported as measured. Also reported, not
+pre-registered: subtopic and hierarchical metrics on S25 with the eval/s16/hierarchical.py definitions
+(eval/s25/hierarchical.py, already computed from the S25 rows, no calls).

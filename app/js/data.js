@@ -50,8 +50,11 @@ export async function probeApi() {
   }
   return false;
 }
+// writes carry the API's QS_WRITE_TOKEN when one is stored: localStorage.setItem('qs.token', '…') (SERVICE.md)
 export async function apiPost(path, body) {
-  const r = await fetch(`${API.base}${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const headers = { 'content-type': 'application/json' };
+  try { const t = localStorage.getItem('qs.token'); if (t) headers.authorization = `Bearer ${t}`; } catch (e) { /* storage off */ }
+  const r = await fetch(`${API.base}${path}`, { method: 'POST', headers, body: JSON.stringify(body) });
   if (!r.ok) throw new Error(`${r.status}`);
   return r.json();
 }

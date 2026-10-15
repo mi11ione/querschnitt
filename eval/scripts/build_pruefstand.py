@@ -1710,6 +1710,8 @@ for s_ in TOPICS19:
 
 # the held-out test (S25) leads: its rows open the app's first human-label table (the highlighted, shipped row)
 rows = [r for r in rows if r["file"].startswith("eval/s25/")] + [r for r in rows if not r["file"].startswith("eval/s25/")]
+# the pre-fix S25 readings stay in docs/PRUEFSTAND.md (with the amendment); the app's lead table shows what ships
+rows = [r for r in rows if not r["design"].startswith("vor dem Determinismus-Fix")]
 app = {"rows": rows,
        "curve": {"test": "APS-Kapitel, 1'357 Bundesgeschäfte, ausgeliefertes Design (D4)", "test_fr": "Chapitre APS, 1 357 objets fédéraux, design livré (D4)",
                  "n": N16, "x": "coverage", "y": "precision", "points": g(S16R, "coverage_precision", "aps-fed"),

@@ -2,9 +2,14 @@
 # Unattended nightly delta (ops/nightly-loop.sh, 09:15 CEST, after OPD's ~08:10 CEST export): fresh export → new/changed affairs → batch →
 # store → one metrics line. On even days of the month the endpoint is cut for the first pass (`--no-model`): new rows wait
 # as pending; the second pass with the endpoint drains them, and the log records pending count and minutes to drain.
+# Steps: the delta's full-profile default, `ch sub yn bi ev` (cli.NIGHTLY_STEPS; QS_STEPS overrides).
+# Paths: QS_DATA_DIR (default ../data, relative to the repo) holds inputs.jsonl.gz and the OPD export opd-new/; PY the
+# interpreter (default .venv/bin/python); caffeinate (macOS: no sleep during the run) only where it exists.
 cd "$(dirname "$0")/.." || exit 1
-export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$PWD/../data/inputs.jsonl.gz" QS_EXPORT_DIR="$PWD/../data/opd-new"
-L="runs/nightly/$(date +%F).log"; PY=.venv/bin/python
+D="${QS_DATA_DIR:-../data}"; case "$D" in /*) ;; *) D="$PWD/$D" ;; esac
+export QS_DB="$PWD/data/querschnitt.sqlite" QS_RUN_DIR="$PWD/runs/nightly" QS_INPUTS="$D/inputs.jsonl.gz" QS_EXPORT_DIR="$D/opd-new"
+L="runs/nightly/$(date +%F).log"; PY="${PY:-.venv/bin/python}"
+CAF=""; command -v caffeinate > /dev/null 2>&1 && CAF="caffeinate -i"
 day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
 {
   echo "== $(date '+%F %T') nightly start (endpoint cut for first pass: $cut)"
@@ -13,12 +18,12 @@ day=$(date +%d); cut=$(( ${day#0} % 2 == 0 ))
   # (--topics-file: topics.jsonl.gz must come from the same export as affairs.json, or the store and the app disagree)
   $PY -m querschnitt export --out app/data --topics-file > /dev/null && $PY -m querschnitt load --auto
   if [ "$cut" = 1 ]; then
-    caffeinate -i $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0 --last runs/nightly/last.json
+    $CAF $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0 --last runs/nightly/last.json
     echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics
     t1=$(date +%s)
   fi
   # the model pass scores the queue (everything pass 1 or an earlier night left unscored), whatever --since says
-  caffeinate -i $PY -m querschnitt delta --since yesterday --no-fetch --max-rate 1.0 --last runs/nightly/last.json
+  $CAF $PY -m querschnitt delta --since yesterday --no-fetch --max-rate 1.0 --last runs/nightly/last.json
   t2=$(date +%s)
   echo "-- $(date '+%F %T') after model pass:"; $PY -m querschnitt metrics
   echo "== $(date '+%F %T') nightly end, wall $(( (t2 - t0) / 60 )) min"

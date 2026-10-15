@@ -283,22 +283,6 @@
    "file": "eval/s16/hierarchical.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
-   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
-   "gold": "human",
-   "design": "vor dem Determinismus-Fix gesehen (alter Beispielabruf, zwei Auswertungen)",
-   "design_fr": "vu avant la correction du déterminisme (ancienne recherche d'exemples, deux compositions)",
-   "n": null,
-   "result": "top-1 0.7035 (636/904) · 0.6994 (633/905)",
-   "result_fr": "top-1 0,7035 (636/904) · 0,6994 (633/905)",
-   "interval": null,
-   "baseline": "final 0.696 (646/927)",
-   "baseline_fr": "final 0,696 (646/927)",
-   "split": "Änderung vor dem finalen Score (vorregistriert)",
-   "split_fr": "amendement avant le score final (préenregistré)",
-   "file": "eval/PREREG-BUILD.md"
-  },
-  {
    "test": "«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)",
    "test_fr": "« numérique » : 30 objets DVS choisis à la main (rappel)",
    "gold": "human",

@@ -71,6 +71,10 @@ const SCEN = [
   { name: 'anb-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#anb' },
   { name: 'anb-375', w: 375, h: 812, mobile: true, url: '#anb', full: true },
   { name: 'anb-live-1440', live: true, w: 1440, h: 900, url: '#anb' },
+  { name: 'neu-replay-1440', w: 1440, h: 900, url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 6000] },
+  { name: 'neu-replay-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 6000] },
+  { name: 'neu-replay-done-1440', w: 1440, h: 900, url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 82000] },
+  { name: 'neu-replay-375', w: 375, h: 812, mobile: true, url: '#neu', full: true, steps: [`document.querySelector('.nt-play .box').click()`, 6000] },
   { name: 'dark-1440', w: 1440, h: 900, url: '#karte', dark: true, steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
 ];
 

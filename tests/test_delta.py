@@ -47,6 +47,7 @@ def test_delta_end_to_end(tmp_path, fake, monkeypatch, capsys):
     export(tmp_path / "opd")
     log = delta(args(tmp_path))
     assert log["todo"] == 3 and log["load"]["inserted"] > 0
+    assert log["steps"] == ["ch", "sub", "yn", "bi", "ev"]                      # the nightly default, not the batch's
     line = capsys.readouterr().out.strip().splitlines()[-1]
     assert line.startswith("affairs 3 · wall ") and "list-price USD" in line and "pending 0" in line
     st = Store()
@@ -54,6 +55,7 @@ def test_delta_end_to_end(tmp_path, fake, monkeypatch, capsys):
     assert t[1001]["code"].endswith(":yes") and t[1003]["code"].endswith(":no")
     assert st.all("SELECT COUNT(*) AS n FROM topics WHERE scheme = 'aps' AND level = 1 AND rank = 1")[0]["n"] == 3
     assert all(r["build"] == "fp_fake_1" for r in st.all("SELECT build FROM topics"))
+    assert t[1001]["evidence"] and t[1003]["evidence"] is None          # the ev step ran: the flag quotes its title
     assert not any(m["role"] == "system" for b in fake.requests for m in b["messages"])
     n_req = len(fake.requests)
     # second night, nothing changed: nothing scored, nothing sent
@@ -70,7 +72,8 @@ def test_delta_end_to_end(tmp_path, fake, monkeypatch, capsys):
     assert len(runs) == 3 and runs[0]["affairs"] == 1 and runs[0]["usd"] > 0
 
 
-def test_delta_lite_chapter_only(tmp_path, fake, monkeypatch):
+def test_delta_lite_chapter_and_subtopic(tmp_path, fake, monkeypatch):
+    """lite = `ch sub`: the chapter as measured (read back from the subtopic), no ad-hoc topics, no quote."""
     from querschnitt.cli import delta
     from querschnitt.store import Store
     monkeypatch.setattr(C.Guard.__init__, "__defaults__", (50.0, 0.15))
@@ -78,10 +81,11 @@ def test_delta_lite_chapter_only(tmp_path, fake, monkeypatch):
         monkeypatch.setenv(k, v)
     monkeypatch.setenv("QS_PROFILE", "lite")
     export(tmp_path / "opd")
-    delta(args(tmp_path))
+    log = delta(args(tmp_path))
     st = Store()
+    assert log["steps"] == ["ch", "sub"]
     assert {r["scheme"] for r in st.all("SELECT scheme FROM topics")} == {"aps"}
-    assert st.all("SELECT COUNT(*) AS n FROM topics WHERE level = 2")[0]["n"] == 0
+    assert st.all("SELECT COUNT(*) AS n FROM topics WHERE level = 2")[0]["n"] > 0
 
 
 def add_affairs(d, extra, title3=None):

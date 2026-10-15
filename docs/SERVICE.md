@@ -10,7 +10,7 @@ fake OpenAI-compatible endpoint only.
 ```sh
 make install                         # uv venv .venv (Python 3.12) + editable install with dev and Postgres extras
 make run                             # API + app on SQLite with the shipped data -> http://127.0.0.1:8000
-make test                            # 71 tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint, ~30 s
+make test                            # unit, API, delta and export tests (+1 Postgres test when QS_TEST_PG_DSN is set), fake endpoint
 make eval GOLD=data/eval/gold_dvs30.csv          # recall + misses by level for a positives list
 make eval GOLD=data/eval/gold_aps_s9.csv         # APS editors' chapters (multi-class)
 make delta                           # nightly: fresh OPD export -> new/changed affairs -> batch -> rows (SINCE=yesterday)
@@ -18,7 +18,7 @@ make delta-plan                      # robots.txt + export index only: what woul
 make data-release                    # dist/querschnitt-data.tar.gz from the current export (checks it; does not publish)
 make smoke                           # load, start, /health + /metrics, stop (CI)
 docker compose --profile full up -d  # Postgres + API + app + nightly
-QS_PG_DSN=postgresql://… docker compose --profile lite up -d   # nightly chapter-only delta into an existing Postgres
+QS_PG_DSN=postgresql://… docker compose --profile lite up -d   # nightly chapter + subtopic delta into an existing Postgres
 ```
 
 `make run` loads, once (`--if-empty`), the first of: `data/inputs.jsonl.gz` + `data/topics.jsonl.gz`; the app's static
@@ -26,16 +26,25 @@ export `app/data/` (affair summaries from `affairs.json`/`bodies.json`/`detail/`
 `querschnitt export --topics-file`); else the test sample (80 OPD affairs, 504 synthetic rows marked `model: fixture`).
 The API serves `app/` at `/` when `app/index.html` exists.
 
+Writes: with `QS_WRITE_TOKEN` set, confirm / reject / undo, `POST /adhoc` and the run's stop / continue / terms / save need
+`Authorization: Bearer <token>` (constant-time compare; `401` otherwise); reads stay open. Unset, writes are open and
+`serve` logs one warning at startup: keep such an API on localhost (`make run` binds 127.0.0.1) or behind a reverse proxy
+that authenticates. The app sends the token when one is stored in the browser (`localStorage.setItem('qs.token', '…')`
+in the console); without it the review desk and Neues Thema expect a token-less local API.
+
 | Variable | Default | |
 |---|---|---|
 | `QS_DB` / `QS_PG_DSN` | `data/querschnitt.sqlite` / – | store; Postgres when the DSN is set |
 | `QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY` (or `QS_KEY_FILE`) | Public AI, `swiss-ai/apertus-v1.5-8b` | endpoint (client.Endpoint.from_env) |
 | `QS_MAX_RATE` | 1.6 (nightly 1.0) | requests/s ceiling of this process |
-| `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 2, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits |
+| `QS_WRITE_TOKEN` | – | bearer token for every write (above); unset = open, warned at startup |
+| `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 2, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits (`QS_ADHOC_CAP`: the ledger's total) |
+| `QS_ADHOC_DAILY_USD` | USD 2 | Neues Thema list-price spend per local day, summed from the ledger; 0 = off |
 | `QS_SCORED_SINCE` | 2025-01-01 | Neues Thema reads every affair from here on; before it, the candidate step |
 | `QS_SCOPE_SINCE` | 2025-01-01 | `pending` and the nightly's scope for new affairs |
 | `QS_EXPORT_DIR`, `QS_INPUTS`, `QS_RUN_DIR` | `data/opd`, `data/inputs.jsonl.gz`, `runs/main` | nightly paths |
-| `QS_PROFILE`, `QS_STEPS` | full, the batch's default | `lite` = chapter step only |
+| `QS_PROFILE`, `QS_STEPS` | full, `ch sub yn bi ev` | `lite` = `ch sub`; `QS_STEPS` overrides the full profile's steps |
+| `QS_DATA_DIR`, `PY` | `../data`, `.venv/bin/python` | `ops/nightly.sh` only: inputs and OPD export (`opd-new/`), interpreter |
 | `QS_NIGHTLY_AT` | 02:30 | `querschnitt nightly` |
 
 ## What exists
@@ -45,7 +54,7 @@ The API serves `app/` at `/` when `app/index.html` exists.
 | `sql/topics.sql` | Postgres DDL, ready to propose upstream: `topics` (CONTRACT §1, checks on lane/status/provenance, partial indexes on current rows, `topics_current` view) + `qs_affairs`, `qs_runs` (prefixed so they never collide with OPD tables in a shared database) |
 | `sql/topics.sqlite.sql` | the SQLite equivalent (ISO-8601 UTC text timestamps, JSON text evidence) |
 | `src/querschnitt/store.py` | `Store` (one class, both dialects), `load_topics` (jsonl, jsonl.gz, parquet), `load_affairs` (inputs), `load_affairs_export` (static export), reads, `decide`, `changes`, `coverage`, `pending`, `metrics`, run log |
-| `src/querschnitt/api.py` | FastAPI: every CONTRACT §2 endpoint + `/schemes`, `/adhoc/{slug}` (state), `/adhoc/{slug}/stop`, `PUT /adhoc/{slug}/terms`, `POST /adhoc/{slug}/save`; CORS for localhost; app at `/` |
+| `src/querschnitt/api.py` | FastAPI: every CONTRACT §2 endpoint + `/schemes`, `/adhoc/{slug}` (state), `/adhoc/{slug}/stop`, `PUT /adhoc/{slug}/terms`, `POST /adhoc/{slug}/save`; bearer token on writes (`QS_WRITE_TOKEN`); CORS for localhost; app at `/` |
 | `src/querschnitt/adhoc.py` | Neues Thema |
 | `src/querschnitt/evaluate.py` | `querschnitt eval` / `make eval` |
 | `src/querschnitt/cli.py` | `querschnitt build-inputs · run · load · serve · delta · nightly · eval · metrics · export` (`run` = `batch`, `export` = the lead's `export.main`) |
@@ -54,7 +63,7 @@ The API serves `app/` at `/` when `app/index.html` exists.
 | `tools/gold_csv.py` | `data/eval/gold_aps_s9.csv` (1,357 APS editors' chapters, S9) and `data/eval/gold_dvs30.csv` (the 30 public DVS items, S15) |
 | `tools/adhoc_live_check.py` | Neues Thema end to end against a running API (POST + SSE), timeline per topic |
 | `Makefile`, `Dockerfile`, `.dockerignore`, `docker-compose.yml`, `.github/workflows/ci.yml` | packaging |
-| `tests/test_{store,api,eval,adhoc,net,delta}.py`, `tests/conftest.py`, `tests/fixtures/{inputs,topics}_sample.jsonl` | tests |
+| `tests/test_*.py` (store, API, sync, eval, Neues Thema, net, delta, compose, prompts, export end to end, doc links), `tests/conftest.py`, `tests/fixtures/{inputs,topics}_sample.jsonl` | tests |
 
 ## API
 
@@ -67,8 +76,8 @@ The API serves `app/` at `/` when `app/index.html` exists.
 | `GET /changes?after=<seq>&since=&scheme=&body=&kind=all\|decisions\|machine&limit=≤5000` | the sync feed: every insert and every close, in `seq` order, exactly once; `{total, n, cursor, next, rows}`; upsert by `row_id` and follow `next`. `GET /decisions` = `kind=decisions` |
 | `GET /coverage[?scheme=aps&since=]` | per body over the affairs begun since `since` (default `QS_SCOPE_SINCE` = the export's slice, so the totals equal `meta.json`): affairs, scored, scored share, title-only share, `by_year` [affairs, scored], covered_from (first year of OPD's data for that parliament, from bodies.json); cached on the store state |
 | `POST /adhoc` | `{sentence, lang, period?: last_week\|last_month\|scored\|YYYY\|a..b, from?, to?, examples?, terms?, limit?}` → `{slug, topic, terms, terms_pending, period, period_name, estimate {affairs, mode, seconds, budget}, stream}` |
-| `POST /adhoc/{slug}/continue` | after `cap` or `stopped`: reads the affairs not yet decided with a fresh call budget, on the same stream |
-| `GET /adhoc/{slug}/stream` | SSE: `topic`, `terms`, then per affair `decision {id, p, flag, t, lane, sample, title, body, parl, level, lang, date, p_a, p_b, build, prompt_id}` and `progress {read, flagged, unread, seconds, total, period, stop, line: "read 50 / flagged 4 / 12.6 s"}`, last `done` with `stop` = `done` \| `cap` \| `stopped` \| `error: …` and the period read (also in `GET /adhoc/{slug}`). `Last-Event-ID` / `?from=` resume |
+| `POST /adhoc/{slug}/continue` | after `cap` or `stopped`: reads the affairs not yet decided with a fresh call budget, on the same stream; `429` (like `POST /adhoc`) once the day's spend reached `QS_ADHOC_DAILY_USD` |
+| `GET /adhoc/{slug}/stream` | SSE: `topic`, `terms`, then per affair `decision {id, p, flag, t, lane, sample, title, body, parl, level, lang, date, p_a, p_b, build, prompt_id}` and `progress {read, flagged, unread, seconds, total, period, stop, line: "read 50 / flagged 4 / 12.6 s"}`, last `done` with `stop` = `done` \| `cap` \| `daily_cap` \| `stopped` \| `error: …` and the period read (also in `GET /adhoc/{slug}`). `Last-Event-ID` / `?from=` resume |
 | `GET /health`, `GET /metrics[?format=line]` | `/metrics`: affairs in scope (= the export's `meta.affairs`), APS-scored in scope, affairs loaded, rows, seq, pending, builds, last run (wall s, list-price USD, pending) and the one-line form |
 
 Every row carries `label` {de, fr, it} from the scheme files.
@@ -94,8 +103,8 @@ Every row carries `label` {de, fr, it} from the scheme files.
 - `pending` = affairs in scope whose current input hash has no current machine row (new or changed, waiting for the
   batch). Affairs loaded from the static export carry no input hash and never count as pending.
 - One `Store` class serves both dialects (`?` → `%s`, `CAST(? AS jsonb)`, `RETURNING`); the whole test suite also runs
-  on Postgres (`QS_TEST_ALL_PG=1 QS_TEST_PG_DSN=…`). Verified locally on PostgreSQL from the `pgserver` wheel: 31 store,
-  API, eval and Neues-Thema tests and both delta tests pass; CI runs the same suite against a Postgres 16 service.
+  on Postgres (`QS_TEST_ALL_PG=1 QS_TEST_PG_DSN=…`), verified locally on PostgreSQL from the `pgserver` wheel; CI runs
+  the store, API, eval and Neues-Thema tests again against a Postgres 16 service.
 
 ## Neues Thema (decisions and the live check)
 - Topic: one plain generation request (user message only, no system message, no prefill) for the name in de/fr/it and
@@ -113,7 +122,9 @@ Every row carries `label` {de, fr, it} from the scheme files.
 - Decisions: order a, order b when 0.1 < p < 0.9; p, flag and lane by `compose.yn_decision` (the nightly rows' rule);
   3 worker threads, newest first. The first served build is locked for the process; a different build stops the run.
 - Budget and stop (dogfood round 1): `QS_ADHOC_MAX_CALLS` is a per-run budget (per start and per `continue`); the run
-  ends with `stop: cap` and `unread`, never as if complete. The term request failed with `FileNotFoundError` because
+  ends with `stop: cap` and `unread`, never as if complete. `QS_ADHOC_DAILY_USD` caps the list-price spend per local day:
+  today's rows in the ad-hoc ledger are summed before every start and `continue` (`429` when reached), and a running
+  run counts its own calls on top and stops with `stop: daily_cap`. The term request failed with `FileNotFoundError` because
   the ledger's directory did not exist yet at the first call (both the name and the terms then fell back silently);
   the directory is created up front and a terms failure is reported in the `terms` event.
 - Verify (S27 rule, as batch/compose for `verify: true` files): every flag (p ≥ 0.5) gets the stricter second question
@@ -149,7 +160,9 @@ or tab. Prediction = the latest machine row at rank 1 (editor rows are never sco
 Wilson 95% intervals, F1 with a 1,000-resample bootstrap; per level, language and body; misses listed; unscored gold
 affairs counted and listed. On the store composed from `runs/main` (14 Oct, 12,417 rows): the 30 public DVS items →
 recall 0.900 [0.743, 0.966] (27/30), cantonal 23/25, federal 4/5; misses BL 297879, BE 337826, CHE 161610. The 1,357
-APS editors' chapters are not yet in a run (pipeline phase `p1b-aps-gold`); the multi-class path is covered by tests.
+APS editors' chapters (`data/eval/gold_aps_s9.csv`, multi-class) on their production rows, composed from `runs/main` and
+`runs/side` by `eval/prod_gold/rows.py` with the export's rule: accuracy 0.718 [0.693, 0.743] on the 1,340 scored (17
+not scored), top 3 0.860 ([`eval/results/eval-gold_aps_s9.json`](../eval/results/eval-gold_aps_s9.json)).
 
 ## Nightly delta (`querschnitt delta --since yesterday`)
 1. `fetch_exports`: robots.txt, then `index.json`; downloads `affairs`, `bodies`, `contributors` and the `texts` split
@@ -163,7 +176,10 @@ APS editors' chapters are not yet in a run (pipeline phase `p1b-aps-gold`); the 
    their rows were scored on) enter `qs_queue`. A pass with `--no-model` stops there (endpoint cut); every model pass
    scores the whole queue (`batch run --ids`, cached prompts never re-sent, refused while a batch with a live PID runs
    in that dir), whatever its `--since`, and an affair leaves the queue only when it has a current row for its queued
-   input — a failed drain keeps it for the next pass. `lite` = `--steps ch`.
+   input — a failed drain keeps it for the next pass. Steps (`cli.NIGHTLY_STEPS`, `QS_STEPS` overrides): full
+   `ch sub yn bi ev` — chapter, subtopic (the chapter is read back from it), the ad-hoc topics, the German and French
+   readings of bilingual parliaments (their lane) and the evidence quote, so nightly rows carry what the export's rows
+   carry; lite `ch sub` — the chapter as measured, without ad-hoc topics, bilingual lane or quote.
 5. Rows: `compose.decide` + `compose.topic_rows` with `eval/calibration.json` (the export's rule) → `load_topics`.
 6. One `qs_runs` line and the printed line: `affairs N · wall S s · list-price USD X · pending P · unscored in scope U ·
    rows R · queue before → after · drain M min`. `pending` = the queue (new/changed since the previous nightly, not yet
@@ -187,8 +203,19 @@ all 326,123 input hashes identical to the full build (0 to re-score); the full r
 | Queries (326k affairs) | `/topics/…/affairs` 5–12 ms; `pending` 30–50 ms; coverage 0.6 s Postgres / 3–4 s SQLite, then cached |
 
 `lite` on OPD's ~20 GB VPS: about 0.95 GB of files (exports 370 MB, docs 335 MB, inputs 174 MB, chapter step rows
-≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (chapter rows only, ≈ 45 MB for 2025–26); `full` adds
-the API, the app and a Postgres volume.
+≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (≈ 45 MB for 2025–26 with chapter rows); these estimates
+are for the chapter step alone, and the subtopic step lite now runs adds step rows and subtopic rows not measured here.
+`full` adds the API, the app and a Postgres volume.
+
+What is measured: lite's `ch sub` is the shipped chapter design (chapter read back from the subtopic, recalibrated with
+`eval/calibration.json`), the design the held-out S25 score and the lane figures in PRUEFSTAND.md were measured on. A
+chapter-only run (`QS_STEPS=ch`) is not measured: its `p` would go through a map fitted on read-back confidences. Full's
+`bi` and `ev` add the bilingual lane and the quote.
+
+Outside this Mac: `ops/nightly.sh` takes `QS_DATA_DIR` and `PY` and uses `caffeinate` only where it exists, but
+`ops/nightly-loop.sh` (BSD `date -j`) and `ops/watchdog.sh` (BSD `stat -f`) are macOS scripts for the author's machine,
+and `ops/refresh-site.sh` deploys the author's site. A server runs `querschnitt nightly` (the compose `nightly` service)
+or cron with `querschnitt delta --since yesterday`.
 CI (GitHub Actions) builds the image, checks it runs as uid 10001, starts it, calls `/health`, `/metrics` and `/coverage`,
 and brings up both compose profiles (footprint below).
 

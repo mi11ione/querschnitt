@@ -2,31 +2,37 @@
 
     querschnitt serve [--host 127.0.0.1 --port 8000]      (QS_DB / QS_PG_DSN pick the store)
 
-Every response is JSON in the shapes of the static export; rows carry `label` {de, fr, it} from the scheme files."""
+Every response is JSON in the shapes of the static export; rows carry `label` {de, fr, it} from the scheme files.
+Reads are open. With QS_WRITE_TOKEN set, every endpoint that writes or spends model calls (confirm, reject, undo, POST /adhoc
+and the run's stop / continue / terms / save) needs `Authorization: Bearer <token>`, else 401; unset, they are open and
+the server warns once at startup."""
 from __future__ import annotations
 
 import asyncio
 import contextlib
+import hmac
 import json
+import logging
 import os
 import re
 import time
 import urllib.parse
 from pathlib import Path
 
-from fastapi import Body, FastAPI, HTTPException, Query, Request
+from fastapi import Body, Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict
 
 from . import scheme as S
-from .adhoc import Adhoc
+from .adhoc import Adhoc, DailyCap
 from .compose import VERSION
 from .scheme import APS
 from .store import ROOT, Store, metrics_line
 
 STATIC_SCHEMES = ("aps", "curia28", "be-directorates")
+log = logging.getLogger("querschnitt.api")
 
 
 class Evidence(BaseModel):
@@ -175,11 +181,30 @@ def split_scheme_code(rest: str, store: Store) -> tuple[str, str]:
     raise HTTPException(404, f"unknown scheme in {rest!r}; known: {', '.join(sorted(known_schemes(store)))}")
 
 
+def write_guard(token: str | None):
+    """Dependency of every state-changing endpoint: `Authorization: Bearer <token>` (constant-time compare) or 401.
+    No token configured: open, as before."""
+    def check(authorization: str | None = Header(None)):
+        if not token:
+            return
+        kind, _, given = (authorization or "").partition(" ")
+        if kind.lower() != "bearer" or not hmac.compare_digest(given.strip().encode(), token.encode()):
+            raise HTTPException(401, "this endpoint writes: send Authorization: Bearer <QS_WRITE_TOKEN>",
+                                headers={"WWW-Authenticate": "Bearer"})
+    return check
+
+
 def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: str | Path | None = None) -> FastAPI:
     st = store or Store()
     ah = adhoc or Adhoc(st)
+    token = os.environ.get("QS_WRITE_TOKEN") or None
+    write = [Depends(write_guard(token))]
+
     @contextlib.asynccontextmanager
     async def lifespan(_app):
+        if not token:
+            log.warning("QS_WRITE_TOKEN is not set: confirm / reject / undo and POST /adhoc are open to anyone who reaches "
+                        "this port; set it (or keep the API on localhost) before exposing the service")
         yield
         ah.shutdown()                      # running Neues-Thema jobs stop with the server
 
@@ -210,7 +235,7 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         return {"scheme": scheme, "code": code, "label": label(scheme, code), "total": total, "limit": limit, "offset": offset,
                 "rows": [with_label(r) for r in rows]}
 
-    @app.post("/affairs/{aid}/topics/{rest:path}", response_model=TopicRow | UndoResult)
+    @app.post("/affairs/{aid}/topics/{rest:path}", response_model=TopicRow | UndoResult, dependencies=write)
     def decide(aid: int, rest: str, payload: dict = Body(default={})):
         """confirm / reject (idempotent: the same current decision by the same person returns it with `unchanged: true`)
         and undo (closes the current decision on that code and restores the rows it had closed)."""
@@ -274,12 +299,14 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
                 "adhoc": [{"id": f"adhoc/{x}", "names": S.adhoc(x).get("names")} for x in S.adhoc_topics()]}
 
     # ---------------------------------------------------------------- Neues Thema
-    @app.post("/adhoc")
+    @app.post("/adhoc", dependencies=write)
     def adhoc_start(payload: dict = Body(...)):
         try:
             job = ah.start(payload.get("sentence", ""), payload.get("lang", "de"), payload.get("examples"),
                            payload.get("period"), payload.get("from"), payload.get("to"), payload.get("terms"),
                            payload.get("limit"), payload.get("generate", True), payload.get("verify", True))
+        except DailyCap as e:
+            raise HTTPException(429, str(e))
         except ValueError as e:
             raise HTTPException(422, str(e))
         return {"slug": job.slug, "topic": job.topic, "terms": job.terms, "terms_pending": job.terms_thread.is_alive(),
@@ -329,29 +356,31 @@ def create_app(store: Store | None = None, adhoc: Adhoc | None = None, app_dir: 
         return StreamingResponse(gen(), media_type="text/event-stream",
                                  headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
-    @app.post("/adhoc/{slug}/stop")
+    @app.post("/adhoc/{slug}/stop", dependencies=write)
     def adhoc_stop(slug: str):
         job = _job(slug)
         job.stop.set()
         return {"slug": slug, "stopping": True}
 
-    @app.post("/adhoc/{slug}/continue")
+    @app.post("/adhoc/{slug}/continue", dependencies=write)
     def adhoc_continue(slug: str):
         """Read on after `cap` or `stopped`: the affairs not yet decided, with a fresh call budget; same stream."""
         _job(slug)
         try:
             job = ah.resume(slug)
+        except DailyCap as e:
+            raise HTTPException(429, str(e))
         except RuntimeError as e:
             raise HTTPException(409, str(e))
         return {"slug": slug, "unread": job.summary()["unread"], "stream": f"/adhoc/{slug}/stream?from={len(job.events)}"}
 
-    @app.put("/adhoc/{slug}/terms")
+    @app.put("/adhoc/{slug}/terms", dependencies=write)
     def adhoc_terms(slug: str, payload: dict = Body(...)):
         job = _job(slug)
         job.terms = ah.verify_terms(payload.get("terms") or {})
         return {"slug": slug, "terms": job.terms}
 
-    @app.post("/adhoc/{slug}/save")
+    @app.post("/adhoc/{slug}/save", dependencies=write)
     def adhoc_save(slug: str, payload: dict = Body(default={})):
         _job(slug)
         return ah.save(slug, payload.get("examples"), payload.get("by"), payload.get("load_rows", True))

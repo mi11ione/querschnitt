@@ -45,6 +45,7 @@ def api(store, fake, tmp_path, monkeypatch):
     from querschnitt.adhoc import Adhoc
     from querschnitt.api import create_app
     monkeypatch.setenv("QS_ADHOC_DIR", str(tmp_path / "adhoc_yaml"))
+    monkeypatch.delenv("QS_WRITE_TOKEN", raising=False)        # writes open unless a test sets a token (test_write_token)
     ah = Adhoc(store, fake_client(fake, tmp_path), out=tmp_path / "adhoc_runs")
     app = create_app(store, ah, app_dir=tmp_path / "noapp")
     with TestClient(app) as c:

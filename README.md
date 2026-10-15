@@ -2,7 +2,7 @@
 
 **One topic field for every Swiss parliament.** Querschnitt gives each OpenParlData affair — federal, cantonal and communal,
 German, French and Italian — an Année Politique Suisse (APS) chapter with ranked subtopics, a lane that says when a person
-should check, and a quoted sentence from the affair that supports it. A new topic or a parliament's own scheme is a file:
+should check, and — where the affair has a text and the evidence step has run — a quoted sentence that supports it. A new topic or a parliament's own scheme is a file:
 written once, applied to every parliament, no training. Every topic decision is made by
 [Apertus](https://www.swiss-ai.org/apertus), Switzerland's open model.
 
@@ -12,7 +12,9 @@ Live (static, read-only): https://querschnitt.mi11ion.io
 ![Überblick: one small Switzerland per topic, every canton shaded by the topic's share of its affairs](docs/img/ueberblick.png)
 
 ## Measured
-Human labels first; every test pre-registered before its result. Full tables with intervals, baselines, per-language and
+Human labels first. Each test was written down and hashed before its result ([eval/PREREG-BUILD.md](eval/PREREG-BUILD.md));
+choices made after a result — the 0.7 lane threshold, the hierarchical metrics — are labelled so, and the lane was then
+tested on the held-out set. Full tables with intervals, baselines, per-language and
 per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) · short report: [docs/REPORT.md](docs/REPORT.md).
 
 | Test | n | Querschnitt | Baseline on the same items |
@@ -49,6 +51,7 @@ prefill, served build, throughput, replay of stored prompts) before a run.
   French. The two readings feed the confidence and stay visible as the explanation; the lane is `please_check` when the
   recalibrated p is below 0.7 or the German and French readings disagree, otherwise `pass` (on the 927 held-out federal
   affairs: 67.3% pass and are right in 0.812, the rest in 0.458; on the 1,357 design affairs, cross-fitted: 66.8% at 0.864).
+  Cantonal and communal affairs are often title-only and less certain; in production about half of them go to a person.
 - **Read back from the subtopic.** One request over the subtopics of the top two or three chapters; the shipped chapter is
   the one read back from the chosen subtopic; the top three subtopics ship as ranked suggestions.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored
@@ -70,7 +73,7 @@ prefill, served build, throughput, replay of stored prompts) before a run.
   `GET /changes?after=<seq>` (a cursor feed for re-sync), `GET /coverage`, `/metrics`, Neues Thema (`POST /adhoc`, SSE).
 - **Upstream pack** ([docs/UPSTREAM.md](docs/UPSTREAM.md)): migration files in OPD's naming, an Apache Hop pipeline that loads
   the bulk file (run with `hop-run`), the Prüfstand as an evaluation task for any Apertus build.
-- **Operations:** `docker compose --profile lite` (nightly chapter step into an existing Postgres) or `--profile full`
+- **Operations:** `docker compose --profile lite` (nightly chapter and subtopic steps into an existing Postgres) or `--profile full`
   (Postgres + API + app + nightly); footprint measured by CI on every push ([docs/SERVICE.md](docs/SERVICE.md)). The nightly
   delta reads OPD's published exports only, queues new and changed affairs and drains the queue when the endpoint is back.
 

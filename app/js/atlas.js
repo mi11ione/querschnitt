@@ -40,12 +40,16 @@ export class Atlas {
     // share of scored APS rows that go to a person (lane please check), main slice
     let nS = 0, nC = 0;
     for (let i = 0; i < D.n; i++) if (c.ch[i] >= 0 && c.day[i] >= D.dmin) { nS++; if (c.lane[i] === 1) nC++; }
-    const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('b', { class: 'sig' }, pct(nS ? nC / nS : NaN, 0).replace(/\s/g, '\u2009')), h('span', {}, L.bigShare));
-    // big numbers
+    // big numbers; the lane leads with what needs no check, the rest is a person's weekly load (red tick: «wartet auf eine Person»)
     const weeks = Math.floor((D.dmax - D.dmin) / 7) + 1;
+    const nP = nS - nC;
+    const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nP)} ${L.of} ${num(nS)}` }, h('b', {}, pct(nS ? nP / nS : NaN, 0).replace(/\s/g, '\u2009')),
+      h('span', {}, L.bigPass), h('span', { class: 'bn-sub', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('i', { class: 'rtick' }),
+        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.perWeek(num(Math.round(nC / weeks)))}`));
     const big = h('div', { class: 'big' },
       bigN(num(scoredAny), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
       bigShare);
+    const lede = h('p', { class: 'lede' }, L.lede(num(m.parliaments ?? D.bodies.length)));
     // shared defs: every canton path once, used by every small map
     const [, , W, H] = D.geo.viewBox;
     const defs = s('svg', { width: 0, height: 0, class: 'atl-defs', 'aria-hidden': 'true' });
@@ -75,7 +79,7 @@ export class Atlas {
     const legend = h('p', { class: 'atl-leg' }, L.atlasLeg, ' ',
       ...[[1, '< 2.5'], [2, '2.5'], [3, '5'], [4, '10'], [5, '≥ 20']].map(([k, lab]) => h('span', { class: 'lk' }, h('span', { class: 'sw1', style: `background:var(--r${k})` }), lab)), h('span', {}, '%'),
       h('span', { class: 'lk' }, h('span', { class: 'sw1 hz' }), L.notScored));
-    root.replaceChildren(h('div', { class: 'atl' }, big, h('div', { class: 'atl-body' }, h('div', { class: 'atl-main' }, legend, grid), this.week()), defs));
+    root.replaceChildren(h('div', { class: 'atl' }, lede, big, h('div', { class: 'atl-body' }, h('div', { class: 'atl-main' }, legend, grid), this.week()), defs));
   }
   // «Diese Woche»: new affairs of the newest week by level, then up to 5 notable ones (one chapter on ≥ 2 levels, then highest p)
   week() {

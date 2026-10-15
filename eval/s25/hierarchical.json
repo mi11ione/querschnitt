@@ -1,0 +1,64 @@
+{
+ "prereg": "not pre-registered: computed after the S25 result (eval/s16/hierarchical.py definitions)",
+ "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "items": 927,
+ "subtopic_gold_items": 891,
+ "subtopic_top1": {
+  "k": 443,
+  "n": 891,
+  "value": 0.4971,
+  "ci95": [
+   0.464,
+   0.53
+  ]
+ },
+ "subtopic_top3": {
+  "k": 580,
+  "n": 891,
+  "value": 0.6509,
+  "ci95": [
+   0.619,
+   0.682
+  ]
+ },
+ "subtopic_top1_given_chapter_right": {
+  "k": 443,
+  "n": 625,
+  "value": 0.7088,
+  "ci95": [
+   0.671,
+   0.744
+  ]
+ },
+ "hierarchical": {
+  "hP": {
+   "value": 0.6095,
+   "ci95": [
+    0.58,
+    0.638
+   ]
+  },
+  "hR": {
+   "value": 0.5993,
+   "ci95": [
+    0.57,
+    0.628
+   ]
+  },
+  "hF1": {
+   "value": 0.6044,
+   "ci95": [
+    0.575,
+    0.633
+   ]
+  }
+ },
+ "chapter_macro_f1": {
+  "value": 0.647,
+  "ci95": [
+   0.611,
+   0.681
+  ],
+  "chapters": 22
+ }
+}

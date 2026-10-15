@@ -36,6 +36,7 @@ Generated and confirmed content are always distinguishable (`provenance`). A rej
 - `GET /coverage` → per body: affairs, scored, scored share, title-only share, covered from year
 - `POST /adhoc` body `{"sentence": "...", "lang": "de", "period": "last_week"}` → `{slug, topic}`; `GET /adhoc/{slug}/stream` (SSE: one event per decision `{id, p, flag, t}` + progress)
 - `GET /health`, `GET /metrics` (affairs, rows, pending, last run wall time, list-price USD)
+- Auth: reads are open. With `QS_WRITE_TOKEN` set, every `POST`/`PUT` (confirm, reject, undo, `POST /adhoc` and the run's stop, continue, terms, save) needs `Authorization: Bearer <token>`, else `401`; unset, writes are open and the server warns at startup. `POST /adhoc` and `/continue` answer `429` once the day's ad-hoc spend reaches `QS_ADHOC_DAILY_USD`.
 
 ## 3. Static export for the app (`app/data/`, built by `querschnitt export`)
 - `meta.json` — build, model, generated_at, counts, scored share, version, nightly log line

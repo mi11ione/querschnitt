@@ -30,6 +30,7 @@ is in [`eval/claims.tsv`](../eval/claims.tsv).
 | Bern: lead directorate vs the Grand Council's own field, 2025–26 (S18) | 531 | 0.651 [0.610, 0.691] German titles · 0.650 French titles | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt: the canton's own 46 themes vs its hand-assigned «Thema 1», 2019–24 (S20) | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
 | — with five of Basel's own labelled affairs as examples, other half of the data (S21) | 2,437 | 0.526 [0.506, 0.547]; paired +0.028 [+0.014, +0.043]; top 3: 0.711 | names only: 0.498 |
+| Ticino: the canton's own lead department (6 units), in Italian, vs the department it assigns, 2023–26, affairs whose text does not name it (S29) | 1,685 | 0.647 [0.624, 0.670]; readings agree (83%) 0.698, disagree 0.392 | keywords 0.219 · majority 0.194 |
 | "Digitalisierung": the 30 affairs DVS curates by hand (question written with them in view) | 30 | 27 recognised | keywords 21 |
 | Federal Sachbereiche vs Parliament's own Curia tags (S3/S5) | 200 | micro-F1 0.654 | BFH model, trained on 15,007 tagged affairs: 0.687 |
 
@@ -106,6 +107,9 @@ endpoint answered with the same build the drain scored all 49 in 9.6 min for USD
   endpoint answers again with the same build; editors' decisions become examples for their topics (§5).
 - **Model build changes:** a run locks the build it starts with; the recalibration applies only to rows of the build it
   was fitted on; a new build means a refit and the Prüfstand re-run (`upstream/eval-task/`) before its rows ship.
+- **Another endpoint:** the probe checks prefill and log-probabilities first. Without prefill, a labelled fallback mode
+  runs; on the held-out affairs it scored 0.705 against 0.696 with prefill (S28), so the design does not depend on
+  that vLLM feature.
 - The merge-request draft with day-1 steps and rollback is `upstream/MERGE_REQUEST.md`.
 
 ## 8. Limits

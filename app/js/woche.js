@@ -2,9 +2,11 @@
 // parliaments, the three biggest topics), the week by level and language, then the 6 topics with the most affairs
 // (APS chapters, Digitalisierung, saved ad-hoc topics): count by level as hairline bars and up to 3 example affairs from
 // different parliaments and languages, each with the quoted sentence that supports the topic and a red tick when a
-// person should check. Default week = the newest complete week up to the export date (meta.until); ‹ › step weeks.
+// person should check. Default week = the newest week with complete data (data.js newestFullWeek: ≥ 50 % of the median of
+// the 8 weeks before, so an export-lagged week is not the opener); ‹ › step weeks, later lagged weeks say so quietly.
+// Examples come from the pass lane; a please-check row only fills a slot that pass-lane rows cannot.
 // Detail files are per 1000 ids: only the buckets that hold this week's candidates are fetched.
-import { D, TOPIC_BY_ID, detail, norm } from './data.js';
+import { D, TOPIC_BY_ID, detail, norm, lastCompleteWeek, newestFullWeek, priorMedian, weekCounts } from './data.js';
 import { h, t, UI, num, isoWeek, isoOfDay, dayNum, fmtDate } from './util.js';
 import { bodyName } from './case.js';
 import { bindTips } from './viz.js';
@@ -60,21 +62,17 @@ export class Woche {
       else if (e.key === ']' || e.key === 'ArrowRight') { this.step(1); e.preventDefault(); }
     });
   }
-  // newest week whose Sunday is on or before the export date
-  lastFull() {
-    const until = D.meta.until ? dayNum(D.meta.until) : D.dmax;
-    let w = Math.floor((Math.min(D.dmax, until) - D.w0) / 7);
-    if (D.w0 + w * 7 + 6 > until) w--;
-    return Math.max(D.mainW, w);
-  }
+  // newest week whose Sunday is on or before the export date; the default is the newest of those with complete data
+  lastFull() { return lastCompleteWeek(); }
+  home() { return newestFullWeek(); }
   setDate(iso) { // #woche?d=2026-10-05
     if (!iso || !/^\d{4}-\d\d-\d\d$/.test(iso)) return;
     const w = Math.floor((dayNum(iso) - D.w0) / 7);
     if (w >= D.mainW && w <= this.lastFull()) this.w = w;
   }
-  hashQ() { return this.w != null && this.w !== this.lastFull() ? `d=${isoOfDay(D.w0 + this.w * 7)}` : ''; }
+  hashQ() { return this.w != null && this.w !== this.home() ? `d=${isoOfDay(D.w0 + this.w * 7)}` : ''; }
   step(d) {
-    const w = (this.w ?? this.lastFull()) + d;
+    const w = (this.w ?? this.home()) + d;
     if (w < D.mainW || w > this.lastFull()) return;
     this.w = w; this.render();
     const q = this.hashQ(); history.replaceState(null, '', `#woche${q ? `?${q}` : ''}`);
@@ -95,7 +93,7 @@ export class Woche {
 
   render() {
     const L = t(), c = D.c, root = this.root, tok = ++this.tok;
-    if (this.w == null) this.w = this.lastFull();
+    if (this.w == null) this.w = this.home();
     const w = this.w, d0 = D.w0 + w * 7, d1 = d0 + 6;
     // the week's affairs
     const rows = [], lv = [0, 0, 0, 0], lg = new Map(), bodies = new Set();
@@ -115,12 +113,15 @@ export class Woche {
     const [, k] = isoWeek(d0);
 
     // head: week stepper, the sentence, the week by level and language
-    const first = w <= D.mainW, last = w >= this.lastFull();
+    const first = w <= D.mainW, last = w >= this.lastFull(), home = this.home(), lag = w > home;
     const nav = h('p', { class: 'wo-nav' },
       h('button', { class: 'tb', type: 'button', disabled: first || null, 'aria-label': L.wkPrev, 'data-tip': first ? null : `${L.wkPrev} [‹]`, onclick: () => this.step(-1) }, '‹'),
-      h('span', {}, h('b', {}, `${L.week} ${k}`), ` · ${span(d0, d1)}${last ? ` · ${L.wkNewest}` : ''}`),
+      h('span', {}, h('b', {}, `${L.week} ${k}`), ` · ${span(d0, d1)}${w === home ? ` · ${L.wkNewest}` : ''}`),
       h('button', { class: 'tb', type: 'button', disabled: last || null, 'aria-label': L.wkNext, 'data-tip': last ? null : `${L.wkNext} [›]`, onclick: () => this.step(1) }, '›'));
     const head = h('h2', { class: 'wo-h' }, rows.length ? L.wkLine(k, num(rows.length), num(bodies.size), bodies.size, top.slice(0, 3).map(x => name(x.tp))) : L.wkNone(k));
+    // a week after the newest complete one: the export has not caught up yet (quiet, not red)
+    const md = lag ? priorMedian(w) : null;
+    const lagNote = lag ? h('p', { class: 'wo-lag', 'data-tip': L.wkLagTip(num(weekCounts()[w]), md == null ? '–' : num(Math.round(md))) }, L.wkLag) : '';
     const mxL = Math.max(1, ...lv);
     const langs = ['de', 'fr', 'it', 'rm'].filter(l => lg.get(l)).map(l => `${num(lg.get(l))} ${L.wkIn[l]}`);
     const sub = h('div', { class: 'wo-sub' },
@@ -143,7 +144,7 @@ export class Woche {
     const tail = more.length ? h('p', { class: 'wo-more' }, `${L.wkMore}: `, ...more.slice(0, 12).flatMap((x, j) => [j ? ' · ' : '',
       h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp, w) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
     const note = h('p', { class: 'wo-note' }, L.wkNote);
-    root.replaceChildren(h('div', { class: 'wo' }, nav, head, sub, rows.length ? list : '', tail, note));
+    root.replaceChildren(h('div', { class: 'wo' }, nav, head, lagNote, sub, rows.length ? list : '', tail, note));
     if (!top.length) { window.__wocheReady = Promise.resolve(); return; }
     window.__wocheReady = this.fill(top, slots, tok, w);
   }
@@ -192,18 +193,21 @@ export class Woche {
         const p = x.tp.p(i);
         // a clean title beats a weak fragment (letterhead, form fields, mid-sentence start)
         const score = (onTitle ? 0 : weak ? -1 : 1) + qual + (Number.isNaN(p) ? 0 : p * 0.5);
-        cands.push({ i, d, q, onTitle, weak, score, lang: langOf(i, d) });
+        cands.push({ i, d, q, onTitle, weak, score, lang: langOf(i, d), chk: !!x.tp.check(i) });
       }
       cands.sort((a, b) => b.score - a.score || c.day[b.i] - c.day[a.i]);
-      // diversity first among good quoted sentences, then titles and fragments as evidence: new language and level, new language, new parliament
+      // diversity first among good quoted sentences, then titles and fragments as evidence: new language and level, new language, new parliament;
+      // all of that in the pass lane first: a please-check row (the model was unsure) only fills a slot no pass-lane row can
       const sel = [], bodies = new Set(), langs = new Set(), lvls = new Set(), titles = new Set();
       const ok = (o, tier) => !used.has(o.i) && !bodies.has(c.body[o.i]) && !titles.has(norm(c.title[o.i]))
         && (tier % 3 === 2 || !langs.has(o.lang)) && (tier % 3 !== 0 || !lvls.has(c.lvl[o.i])) && (tier >= 3 || !o.weak);
-      for (let tier = 0; tier < 6 && sel.length < NEX; tier++) {
-        for (const o of cands) {
-          if (sel.length >= NEX) break;
-          if (!ok(o, tier)) continue;
-          sel.push(o); used.add(o.i); bodies.add(c.body[o.i]); langs.add(o.lang); lvls.add(c.lvl[o.i]); titles.add(norm(c.title[o.i]));
+      for (const pool of [cands.filter(o => !o.chk), cands.filter(o => o.chk)]) {
+        for (let tier = 0; tier < 6 && sel.length < NEX; tier++) {
+          for (const o of pool) {
+            if (sel.length >= NEX) break;
+            if (!ok(o, tier)) continue;
+            sel.push(o); used.add(o.i); bodies.add(c.body[o.i]); langs.add(o.lang); lvls.add(c.lvl[o.i]); titles.add(norm(c.title[o.i]));
+          }
         }
       }
       out.push(sel);

@@ -289,6 +289,9 @@ details>summary:hover{color:var(--ink)}
 .dgr .rk.on,.rr .rk.on{color:var(--ink);font-weight:500}
 .dgr.thin .rk{font:400 var(--f1)/1.3 var(--mono)}
 .dgr .rv,.rr .rv{text-align:right;font:400 var(--f1)/1.3 var(--mono);color:var(--ink2);white-space:nowrap}
+/* the right column holds a word (unsicher / ziemlich sicher / sicher), wrapped rather than squeezing the names */
+.dgr{grid-template-columns:minmax(0,1fr) minmax(72px,1fr) 72px}.dgr .rv{white-space:normal;line-height:1.2}
+.tipw{cursor:help}
 .rbar{display:block;min-width:0}
 .rbar.cut{position:relative}
 .cutl{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--ink)}
@@ -457,6 +460,7 @@ body.v-ueber .ctxw{display:none}
 .wo-nav .tb{font:400 var(--f3)/1 var(--mono);color:var(--ink);padding:0 4px;text-decoration:none}
 .wo-nav .tb:disabled{color:var(--hair);cursor:default}
 .wo-h{max-width:62ch;margin:0;font:500 28px/1.25 var(--sans);letter-spacing:-.015em}
+.wo-lag{margin:8px 0 0;max-width:80ch;font:400 var(--f1)/1.5 var(--mono);color:var(--ink2)}
 .wo-sub{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 40px;margin-top:16px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
 .wo-lg,.wo-key{margin:0;font:400 var(--f1)/1.5 var(--mono);color:var(--ink)}
 .wo-key{color:var(--ink2)}.wo-key .rtick{margin:0 2px 0 0}

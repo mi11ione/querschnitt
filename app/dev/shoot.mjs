@@ -16,9 +16,14 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const SCEN = [
   { name: 'woche-1440', w: 1440, h: 900, url: '', steps: [`window.__wocheReady`], print: `[...document.querySelectorAll('.wo-a')].map(e=>e.querySelector('.m').textContent+' | '+e.querySelector('.q').textContent).join(String.fromCharCode(10))` },
+  // what the landing view fetches (bytes as served by the dev server, i.e. uncompressed)
+  { name: 'firstload', w: 1440, h: 900, url: '', steps: [`window.__wocheReady`, 500], print: `(()=>{const r=performance.getEntriesByType('resource').filter(e=>/\.(json|js|css|woff2)$/.test(e.name));return r.map(e=>e.name.replace(location.origin+'/','')+' '+(e.decodedBodySize/1e6).toFixed(2)).join(', ')+' | total MB '+(r.reduce((a,e)=>a+e.decodedBodySize,0)/1e6).toFixed(2)})()` },
   { name: 'woche-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#woche', steps: [`window.__wocheReady`] },
   { name: 'woche-375', w: 375, h: 812, mobile: true, url: '#woche', full: true, steps: [`window.__wocheReady`] },
   { name: 'woche-prev-1440', w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'['}))`, `window.__wocheReady`], print: `location.hash` },
+  // a week after the newest complete one (export lag): the quiet note under the sentence
+  { name: 'woche-lag-1440', w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:']'}))`, `window.__wocheReady`], print: `location.hash + ' | ' + (document.querySelector('.wo-lag')||{}).textContent` },
+  { name: 'woche-lag-fr-375', w: 375, h: 812, mobile: true, lang: 'fr', url: '#woche', steps: [`window.__wocheReady`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:']'}))`, `window.__wocheReady`] },
   { name: 'woche-open-1440', w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, `document.querySelector('.wo-a').click()`, 800], print: `location.hash` },
   { name: 'ueber-1440', w: 1440, h: 900, url: '#ueber' },
   { name: 'ueber-375', w: 375, h: 812, mobile: true, url: '#ueber', full: true },
@@ -63,6 +68,8 @@ const SCEN = [
   { name: 'neu-cap-1440', live: true, w: 1440, h: 900, url: '#neu', steps: [`(()=>{const f=document.querySelector('.nt-field textarea');f.value='Schule, Unterricht, Lehrpersonen und Bildung';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 4000] },
   { name: 'why-1440', w: 1440, h: 900, url: '#karte?a=96375', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
   { name: 'readme-entscheid', w: 1440, h: 900, url: '#karte?a=338697', steps: [`(document.querySelector('#v-karte mark') || document.querySelector('#v-karte .dg')).scrollIntoView({ block: 'center' })`] },   // docs/img/entscheid.png: the Gate 1 demo affair
+  // an APS-chapter affair: Digitalisierung «nein» is one collapsed line; [+] opens its graphic
+  { name: 'why-collapse-1440', w: 1440, h: 900, url: '#karte?a=96375', steps: [`[...document.querySelectorAll('#v-karte .case dd button')].find(b=>b.textContent==='[+]').click()`, 300, `document.querySelector('#v-karte .case dd .dg').scrollIntoView({block:'center'})`], print: `document.querySelectorAll('#v-karte .case .dg').length + ' graphics · ' + __qs.karte.tp.id` },
   { name: 'why-bil-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?a=40171', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
   { name: 'why-dig-1440', w: 1440, h: 900, url: '#karte?a=340652', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
   { name: 'similar-1440', w: 1440, h: 900, url: '#karte?a=340652', steps: [`document.querySelector('#v-karte .strip').scrollIntoView()`] },

@@ -1,7 +1,7 @@
 // Überblick: a statistical-atlas page. One line of large numbers; one small Switzerland per topic (cantons on one
 // shared grey ramp = the topic's share of the canton's scored affairs, the Federal Assembly as a thin band; communes
 // omitted at this size); «Diese Woche» beside it. Click a map → the Karte on that topic.
-import { D, TOPIC_BY_ID } from './data.js';
+import { D, TOPIC_BY_ID, newestFullWeek } from './data.js';
 import { h, s, t, UI, num, pct, p3, fmtDate, isoWeek, isoOfDay } from './util.js';
 import { rampBreaks, rampClass } from './map.js';
 import { bindTips, rankList } from './viz.js';
@@ -41,9 +41,14 @@ export class Atlas {
     // big numbers; the lane leads with what needs no check, the rest is a person's weekly load (red tick: «wartet auf eine Person»)
     const weeks = Math.floor((D.dmax - D.dmin) / 7) + 1;
     const nP = nS - nC;
+    // the same load per parliament: please-check rows per week / parliaments with affairs in the period
+    const parl = new Set(); for (let i = 0; i < D.n; i++) if (c.day[i] >= D.dmin && c.day[i] <= D.dmax) parl.add(c.body[i]);
+    const perParl = parl.size ? nC / weeks / parl.size : NaN;
+    const fmt1 = x => Number.isNaN(x) ? '–' : (Math.floor(x * 10) / 10).toLocaleString(UI.lang === 'fr' ? 'fr-CH' : 'de-CH', { maximumFractionDigits: 1 });
     const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nP)} ${L.of} ${num(nS)}` }, h('b', {}, pct(nS ? nP / nS : NaN, 0).replace(/\s/g, '\u2009')),
       h('span', {}, `${L.bigPass} · ${L.bigPassOf}`), h('span', { class: 'bn-sub', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('i', { class: 'rtick' }),
-        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.round(nC / weeks)))}`));
+        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.round(nC / weeks)))} · `,
+        h('span', { 'data-tip': L.bigPerParlTip(num(nC), num(weeks), num(parl.size)) }, L.bigPerParl(fmt1(perParl)))));
     const big = h('div', { class: 'big' },
       bigN(num(nS), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
       bigShare);
@@ -82,10 +87,7 @@ export class Atlas {
   // «Diese Woche»: new affairs of the newest week by level, then up to 5 notable ones (one chapter on ≥ 2 levels, then highest p)
   week() {
     const L = t(), c = D.c;
-    const lastW = Math.floor((D.dmax - D.w0) / 7);
-    let w = lastW; const per = new Map();
-    for (let i = 0; i < D.n; i++) if (c.day[i] <= D.dmax) per.set(c.week[i], (per.get(c.week[i]) || 0) + 1);
-    while (w > 0 && (per.get(w) || 0) < 20) w--; // the newest week with a full intake
+    const w = newestFullWeek(); // the newest week with complete data, as «Diese Woche» (data.js)
     const lv = [0, 0, 0], rows = [];
     for (let i = 0; i < D.n; i++) if (c.week[i] === w && c.day[i] <= D.dmax) { if (c.lvl[i] < 3) lv[c.lvl[i]]++; rows.push(i); }
     const [y, k] = isoWeek(D.w0 + w * 7), mx = Math.max(1, ...lv);

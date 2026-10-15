@@ -154,7 +154,13 @@ async function boot() {
   }
   loadSaved();
   const { view: v0, p } = readHash();
-  const tp = (p.get('t') && TOPIC_BY_ID.get(p.get('t'))) || findTopic('Digitalisierung') || [...TOPIC_BY_ID.values()][0];
+  // an affair link without a topic (#karte?a=96375) opens on the affair's own topic, as from the Überblick: Digitalisierung
+  // when it is flagged, else its APS chapter
+  const ownTopic = () => {
+    const r = p.get('a') ? D.rowOf.get(+p.get('a')) : null; if (r == null) return null;
+    return D.c.df[r] ? TOPIC_BY_ID.get('adhoc/digitalisierung') : D.c.ch[r] >= 0 && D.scheme.chapters[D.c.ch[r]] ? TOPIC_BY_ID.get(D.scheme.chapters[D.c.ch[r]].code) : null;
+  };
+  const tp = (p.get('t') && TOPIC_BY_ID.get(p.get('t'))) || ownTopic() || findTopic('Digitalisierung') || [...TOPIC_BY_ID.values()][0];
   karte = new Board($('#v-karte'), { topic: tp, onChange: () => writeHash() });
   atlas = new Atlas($('#v-ueber'), {
     openTopic: x => { karte.S.brush = null; karte.S.mode = 'list'; show('karte'); karte.setTopic(x); },

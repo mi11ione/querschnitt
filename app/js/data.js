@@ -65,10 +65,11 @@ export const D = { meta: null, bodies: [], B: new Map(), scheme: null, pruef: nu
 function laneBit(v) { return v === 1 || v === true || v === 'please_check' ? 1 : (v == null ? -1 : 0); }
 
 export async function load() {
-  const [meta, bodies, affairs, scheme, geo] = await Promise.all([
-    loadFile('meta.json'), loadFile('bodies.json'), loadFile('affairs.json'), loadFile('scheme_aps.json'), loadFile('geo.json')]);
-  const pruef = await loadFile('pruefstand.json', true);
-  D.conf = await loadFile('pruef_confusion.json', true);
+  // one round trip for every boot file (the two Prüfstand files used to follow the others, one after the other)
+  const [meta, bodies, affairs, scheme, geo, pruef, conf] = await Promise.all([
+    loadFile('meta.json'), loadFile('bodies.json'), loadFile('affairs.json'), loadFile('scheme_aps.json'), loadFile('geo.json'),
+    loadFile('pruefstand.json', true), loadFile('pruef_confusion.json', true)]);
+  D.conf = conf;
   D.meta = meta; D.scheme = scheme; D.geo = geo; D.pruef = pruef;
   // bodies
   D.bodies = bodies;
@@ -129,6 +130,41 @@ export async function load() {
     T.affairs++; if (ch[i] >= 0) { T.aps++; if (lane[i] === 1) T.check++; } if (!Number.isNaN(dp[i])) T.dig++;
   }
   buildTopics();
+}
+
+// ---------------------------------------------------------------- weeks
+// affairs per week in the main period (D.dmin … D.dmax)
+let WK = null;
+export function weekCounts() {
+  if (WK) return WK;
+  WK = new Int32Array(D.nWeeks);
+  for (let i = 0; i < D.n; i++) if (D.c.day[i] >= D.dmin && D.c.day[i] <= D.dmax) WK[D.c.week[i]]++;
+  return WK;
+}
+// newest Monday–Sunday week whose Sunday is on or before the export date (meta.until)
+export function lastCompleteWeek() {
+  const until = D.meta.until ? dayNum(D.meta.until) : D.dmax;
+  let w = Math.floor((Math.min(D.dmax, until) - D.w0) / 7);
+  if (D.w0 + w * 7 + 6 > until) w--;
+  return Math.max(D.mainW, w);
+}
+// the median of the 8 weeks before w (fewer at the start of the period); null when there are none
+export function priorMedian(w) {
+  const n = weekCounts(), a = [];
+  for (let k = Math.max(D.mainW, w - 8); k < w; k++) a.push(n[k]);
+  if (!a.length) return null;
+  a.sort((x, y) => x - y);
+  return a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2;
+}
+// OPD's export lags: the newest calendar-complete week can hold a fraction of its affairs. A week counts as complete in the
+// data when it holds ≥ 50 % of the median of the 8 weeks before it (docs/APP.md «Juror round 6»). The newest such week, at
+// most 4 weeks back from the newest calendar-complete one (else that one). Holiday weeks further back are not judged.
+export const FULL_SHARE = 0.5;
+export const weekFull = w => { const m = priorMedian(w); return m == null || weekCounts()[w] >= FULL_SHARE * m; };
+export function newestFullWeek() {
+  const z = lastCompleteWeek();
+  for (let w = z; w >= Math.max(D.mainW, z - 4); w--) if (weekFull(w)) return w;
+  return z;
 }
 
 // ---------------------------------------------------------------- topics

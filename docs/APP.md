@@ -137,8 +137,9 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 - New first view «Überblick» (`#ueber`, default route, key `a`): one line of large numbers (affairs scored, parliaments,
   weeks, rows waiting in red), 26 small Switzerlands (Digitalisierung, the 24 APS chapters by volume, «Kein Sachthema»)
   on one fixed doubling ramp (`< 2.5 / 2.5 / 5 / 10 / ≥ 20 %` of the canton's scored affairs), Federal Assembly as a band,
-  cantons without scored affairs hatched; click = Karte on that topic with the Überblick panel. «Diese Woche»: newest
-  week with ≥ 20 affairs, per-level bars and up to 5 notable affairs (one chapter on ≥ 2 levels, then highest p).
+  cantons without scored affairs hatched; click = Karte on that topic with the Überblick panel. «Diese Woche»: the newest
+  week with complete data (same rule as the «Diese Woche» view, see «Juror round 6»), per-level bars and up to 5 notable
+  affairs (one chapter on ≥ 2 levels, then highest p).
   Canton paths are defined once and reused (`<use>`), so 26 maps cost one geometry. The fact line is hidden there.
 - Detail order: title (date · parliament · type) → decision graphic (the topic in view first) → quoted passage →
   subtopics → identical affairs → metadata + provenance → similar affairs → decision bar.
@@ -180,7 +181,7 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 ## Juror round 3 (14 Oct)
 - Lane = `pass` / `please_check` (calibrated p < 0.7, or DE/FR disagree in bilingual parliaments). The decision graphic
   explains the readings («Lesarten einig / uneinig», «DE und FR einig / uneinig») without red, and adds the lane line
-  only when a person is needed: «bitte prüfen: p 0.283 < 0.7». No label equates lane and reading agreement; CSV lane =
+  only when a person is needed (since round 6 in words: «aber unsicher», p on hover). No label equates lane and reading agreement; CSV lane =
   «bitte prüfen» / «ohne Prüfung».
 - Prüfstand: shipped point = p ≥ 0.7 (0.6684, 0.8644 from eval/lanes/results.json, via make_confusion.py
   `lanes_tau`, used when `curve.op` is still the readings point); the readings-agree point stays as a grey dot; the
@@ -221,9 +222,10 @@ not use them for counts. Labels name what they count:
 
 ## Diese Woche (15 Oct)
 - New first view and default route «Diese Woche» / «Cette semaine» (`#woche`, `#woche?d=<Monday ISO>` for an older
-  week, key `w`; `js/woche.js`). Überblick stays at `#ueber` (key `a`). Default week = the newest complete Monday–Sunday
-  week whose Sunday is ≤ `meta.until`; `‹ ›`, `[`/`]` or ←/→ step back to `meta.since`.
-- One computed sentence («Woche 41: 111 Geschäfte aus 27 Parlamenten. Am meisten: …» = the 3 largest topics), the week
+  week, key `w`; `js/woche.js`). Überblick stays at `#ueber` (key `a`). Default week = the newest week with complete
+  data (rule in «Juror round 6»); `‹ ›`, `[`/`]` or ←/→ step from `meta.since` up to the newest calendar-complete week
+  (Sunday ≤ `meta.until`).
+- One computed sentence (`«Woche 40: 758 Geschäfte aus 36 Parlamenten. Am meisten: …»` = the 3 largest topics), the week
   by level (hairline bars) and by language, then the 6 topics with the most affairs that week (24 APS chapters without
   «Kein Sachthema», Digitalisierung, saved ad-hoc topics; hit = rank-1 chapter / flag, as in the Karte): count, bars per
   level on one scale across rows, and up to 3 examples (phones: 2).
@@ -234,6 +236,51 @@ not use them for counts. Labels name what they count:
   prose-like sentence of the evidence span, cut at a word boundary (≤ 160 chars, «…»). Title in the UI language where
   the parliament publishes it (`title_alt`), else the original with a language tag. Red tick = the topic's please-check
   lane. Click an affair → `#karte?t=<topic>&a=<id>&w=<week>-<week>`; click a topic → its Karte brushed to that week.
-- Detail buckets (`1000` ids each, a few MB): only the buckets holding ≥ 10 % of the week's candidates (at least the largest)
+- Detail buckets (`1000` ids each, ≈ 2–2.5 MB for the newest ids): only the buckets holding ≥ 10 % of the week's candidates (at least the largest)
   are fetched, more only while a topic lacks two examples (≤ 3 rounds of ≤ 2 buckets).
 - Shots: `woche-1440`, `woche-fr-1440`, `woche-375`, `woche-prev-1440`, `woche-open-1440` in `dev/shoot.mjs`.
+
+## Juror round 6 (15 Oct)
+- **Newest week with complete data.** OPD's export lags: KW 41 held `111` affairs against `809 / 622 / 758` in KW 38–40 (15 Oct export).
+  A week counts as complete in the data when it holds ≥ 50 % of the median of the 8 weeks before it (`data.js`
+  `weekFull`, `FULL_SHARE = 0.5`; fewer prior weeks at the start of the period, none = complete). «Diese Woche» opens on
+  the newest such week, searched back at most 4 weeks from the newest calendar-complete week (else that week), labelled
+  «neueste Woche mit vollständigen Daten» / «dernière semaine aux données complètes»; with the export of 15 Oct that is
+  KW 40 (`758 ≥ 0.5 × 450`). `›` still reaches the later calendar-complete weeks, which carry a quiet grey line «Daten
+  dieser Woche noch unvollständig (Export-Verzug)» (counts and median on hover). Holiday weeks further back are not
+  judged. The Überblick's «Diese Woche» box uses the same week (it used «≥ 20 affairs»). `#woche` without `d=` = the
+  default week. Shots `woche-lag-1440`, `woche-lag-fr-375`.
+- **Examples from the pass lane.** Per topic, the example picker runs its diversity tiers over pass-lane rows first; a
+  please-check row (red tick) only fills a slot no pass-lane row can. (KW 40 Umweltschutz no longer opens with a
+  misfiled Ticino school e-mail affair.)
+- **Sicherheit in Worten** (`util.js` `confWord`, `CONF_LO = 0.7`, `CONF_HI = 0.9`). The detail shows the probability
+  of the answer as a word: < 0.7 «unsicher» / «incertain» (exactly the please-check cut-off: that row goes to a person),
+  0.7–0.9 «ziemlich sicher» / «plutôt sûr», ≥ 0.9 «sicher» / «sûr». For yes/no topics the answer's probability is p
+  for «ja» and 1 − p for «nein» (so «unsicher» ⇔ 0.3 ≤ p < 0.7, the yes/no lane). Used on the shipped chapter, the
+  first subtopic, Digitalisierung, saved and live topics and Bern's directorates; the sentence says «aber unsicher» /
+  «trotzdem ziemlich sicher». Every raw p (calibrated, raw, per reading) stays in the tooltip. A bilingual
+  DE/FR-disagree row can read «ziemlich sicher» and still go to a person: the sentence above says why.
+- Readings: the visible graphic no longer labels «Reihenfolge 1/2» (or «mit/ohne Beispiele», DE/FR); the sentence above
+  says how Apertus was asked, the tooltip names each reading with its p. The column head reads «Sicherheit».
+- **Unrelated ad-hoc «nein»**: Digitalisierung shows its full graphic only when it is the topic in view or its answer is
+  «ja». Otherwise (an APS chapter, a parliament's scheme or a new topic in view) it is one line at the end of the facts
+  («Digitalisierung nein · sicher [+]»), the graphic behind `[+]`. An affair link without a topic (`#karte?a=96375`)
+  opens on the affair's own topic (Digitalisierung when flagged, else its APS chapter), as from the Überblick. Shot
+  `why-collapse-1440`.
+- Map legend: hatching reads «wenig Daten» / «peu de données»; the definition (under 25 % scored or ≥ 50 % title only)
+  is on hover.
+- Überblick: «≈ M pro Parlament und Woche» / «≈ M par parlement et par semaine» after «≈ N pro Woche» = please-check
+  rows ÷ weeks ÷ parliaments with affairs in the period (15 Oct export: `15,812 / 94 / 89 ≈ 1.8`, truncated to one
+  decimal; the three counts on hover).
+- Footer, detail provenance and the Neues Thema recording say «Route swiss-ai/apertus-v1.5-8b»: it is Public AI's route
+  name and does not fix the model size (APERTUS-NOTES).
+- Anbindung: the `/changes` rows with `adhoc%2Fdigitalisierung%3Ayes` came from `dev/mock_api.py`, which stored the
+  app's percent-encoded path segment as the code (the real API decodes it). The mock now decodes paths, answers
+  `POST /adhoc/{slug}/stop` and has a larger accept queue; `make_integration.py` re-run (Hop path now 14 steps, sample
+  total `246,341` rows).
+- Loading: the landing view fetches `affairs.json` (`11.2 MB` raw; gzip `1.9 MB`, brotli `1.3 MB`), one detail bucket for
+  KW 40 (`detail/340.json`, `2.3 MB` raw, gzip `0.58 MB`) and `≈ 0.4 MB` of small files (bodies, scheme, geo, Prüfstand,
+  fonts, modules) = `14.1 MB` raw (`firstload` shot prints it). Detail buckets were already lazy; `topics.jsonl.gz`
+  (6 MB) is a download for loaders, never fetched by the app. The boot files now load in one parallel round (the two
+  Prüfstand files used to follow). Served compressed, first open is ≈ 2.5 MB; the deployed worker currently sends
+  `/data/` uncompressed (see the site's worker).

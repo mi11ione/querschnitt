@@ -12,6 +12,7 @@ import re
 import sys
 import time
 import unicodedata
+import urllib.parse
 from pathlib import Path
 
 APP = Path(__file__).resolve().parents[1]
@@ -64,7 +65,9 @@ class H(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         n = int(self.headers.get("content-length") or 0)
         body = json.loads(self.rfile.read(n) or b"{}")
-        p = self.path.split("?")[0]
+        # the app sends codes percent-encoded (`adhoc%2Fdigitalisierung%3Ayes`); decode as the real API's ASGI server does,
+        # or the stored rows (and /changes) carry the encoded form
+        p = urllib.parse.unquote(self.path.split("?")[0])
         if p == "/adhoc":
             s = body.get("sentence", "")
             words = [w for w in re.findall(r"[a-zA-ZÀ-ÿ]{5,}", s)][:6]
@@ -76,6 +79,8 @@ class H(http.server.SimpleHTTPRequestHandler):
             per = [C["date"][ids[-1][0]], C["date"][ids[0][0]]] if ids else None
             TOPICS[slug]["period"] = per
             return self.js({"slug": slug, "period": per, "topic": {"names": {"de": s, "fr": s, "it": s}, "terms": {"de": words}, "mock": True}})
+        if re.fullmatch(r"/adhoc/[\w-]+/stop", p):  # the app stops a run it leaves; nothing to stop here
+            return self.js({"stopped": True})
         m = re.fullmatch(r"/affairs/(\d+)/topics/(.+)/undo", p)
         if m:
             now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
@@ -123,4 +128,7 @@ class H(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8766
-    http.server.ThreadingHTTPServer(("127.0.0.1", port), H).serve_forever()
+    class S(http.server.ThreadingHTTPServer):  # a larger accept queue: the app fetches its boot files in one go (as serve.py)
+        request_queue_size = 256
+        daemon_threads = True
+    S(("127.0.0.1", port), H).serve_forever()

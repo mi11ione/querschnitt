@@ -38,6 +38,16 @@ export function p3(x) { // probabilities: truncated to 3 decimals
   return v.toFixed(3);
 }
 
+// confidence in words (docs/APP.md «Sicherheit in Worten»): the probability of the answer shown, on the lane's cut-off.
+// < 0.7 unsicher (that row goes to a person: «bitte prüfen»), 0.7–0.9 ziemlich sicher, ≥ 0.9 sicher. For a yes/no topic
+// the answer's probability is p for «ja», 1 − p for «nein». The number itself stays in the tooltip.
+export const CONF_LO = 0.7, CONF_HI = 0.9;
+export function confWord(x, yesNo = false) {
+  if (x == null || Number.isNaN(x)) return '';
+  const v = yesNo ? Math.max(x, 1 - x) : x, C = T[UI.lang].conf;
+  return v < CONF_LO ? C.lo : v < CONF_HI ? C.mid : C.hi;
+}
+
 // ---- dates: day numbers and Monday-based weeks
 export const dayNum = iso => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5;
 export const isoOfDay = d => new Date(d * 864e5).toISOString().slice(0, 10);
@@ -60,7 +70,7 @@ export const MONTHS = {
 export const T = {
   de: {
     anb: 'Anbindung', anbTable: 'Tabelle topics in OpenParlData', anbCols: 'Spalten', anbMachine: 'Maschine (inferred)', anbDecision: 'Entscheid (confirmed)', anbHop: 'Laden mit Apache Hop', anbSample: 'Beispiel', anbNew: 'neue Geschäfte', anbQueue: 'Warteschlange', anbDrain: 'abgebaut in', anbCut: 'Modell-Endpunkt war unterbrochen: die Warteschlange hielt die Geschäfte, bis derselbe Build wieder antwortete.', anbFoot: 'Speicher im Betrieb (docker stats, CI)',
-    woche: 'Diese Woche', affair1: 'Geschäft', wkPrev: 'vorherige Woche', wkNext: 'nächste Woche', wkNewest: 'neueste vollständige Woche',
+    woche: 'Diese Woche', affair1: 'Geschäft', wkPrev: 'vorherige Woche', wkNext: 'nächste Woche', wkNewest: 'neueste Woche mit vollständigen Daten', wkLag: 'Daten dieser Woche noch unvollständig (Export-Verzug)', wkLagTip: (n, m) => `${n} Geschäfte; Median der 8 Wochen davor: ${m}. Als vollständig gilt eine Woche ab der Hälfte dieses Medians.`,
     wkLine: (k, n, p, pn, names) => `Woche ${k}: ${n} Geschäfte aus ${p} ${pn === 1 ? 'Parlament' : 'Parlamenten'}. Am meisten: ${names.join('; ')}.`,
     wkNone: k => `Woche ${k}: keine Geschäfte im Export.`, wkIn: { de: 'auf Deutsch', fr: 'auf Französisch', it: 'auf Italienisch', rm: 'auf Rätoromanisch' },
     wkCheck: 'eine Person soll prüfen', wkMap: 'Karte dieses Themas, diese Woche', wkMore: 'Weitere Themen', wkNoQuote: 'kein Zitat in dieser Woche', wkOnTitle: 'Beleg: der Titel',
@@ -74,7 +84,7 @@ export const T = {
     same: n => `${n} gleichlautende Geschäfte`, sameNote: '1 / 2 entscheidet für alle', sameDec: n => `gilt für ${n} Geschäfte`, lines: 'Zeilen', pendingAll: 'warten auf eine Person (APS-Kapitel)', meta: 'Geschäft', read1: 'Reihenfolge 1', read2: 'Reihenfolge 2', readEx: 'mit Beispielen', readNoEx: 'ohne Beispiele', readsTip: 'Dieselbe Frage zweimal gestellt: bei Bundesgeschäften einmal mit fünf ähnlichen, von der APS-Redaktion eingeordneten Geschäften als Beispiel und einmal ohne; sonst mit den Themen in zwei Reihenfolgen. Grau: die Antwort jeder Lesart; schwarz: ihr erstes Thema.', cutoff: 'Schwelle', chapterP: 'p roh', overview: 'Überblick', weeks: 'Wochen nach Ebene', notable: 'Auffällig', acrossLv: (n) => `gleiche Woche, ${n} Ebenen`, newest: 'neu', matrix: 'Querschnitt', mapMode: 'Karte', matrixHint: 'Anteil der bewerteten Geschäfte eines Parlaments im Kapitel', gemAgg: 'Gemeinden', confusion: 'Verwechslungen (D4, ausgeliefert)', gold: 'APS-Redaktion', pred: 'Querschnitt', lanesT: 'Spuren', dark: 'dunkler Teil', rowsGold: 'Zeilen: APS-Redaktion', colsPred: 'Spalten: Querschnitt', agree: 'Lesarten einig', disagree: 'uneinig', noneOpen: 'keine offenen', noneOpenWeek: 'Keine offenen Geschäfte in dieser Woche. [‹] geht zurück.', noneTab: 'Nichts in diesem Reiter.', theme: 'Thema', themes: 'Geschäfte nach Thema', goldMatch: 'stimmt mit dem Kanton überein', theme1: 'Thema 1', theme12: 'Thema 1 oder 2', cantonTheme: 'Kanton', scoredPeriod: 'bewertet', ownSchemes: 'Eigene Schemata der Parlamente', savedTopics: 'Gespeicherte Themen', savedMark: 'gespeichert', dir: 'Direktion', beGroup: 'Grossratsgeschäfte nach federführender Direktion', beField: 'Feld des Grossen Rates', schemes: 'Schemata', bilingual: 'DE/FR-Lesarten', topic: 'Thema', topicPh: 'Thema wählen oder tippen', adhoc: 'Ad-hoc-Themen', chapters: 'APS-Kapitel', saved: 'Gespeichert (dieser Browser)',
     period: 'Zeitraum', all: 'alle', reset: 'zurücksetzen', hits: 'Treffer', notScored: 'noch nicht bewertet',
     coverage: 'bewertet', covered: 'erfasst ab', titleOnly: 'nur Titel', share: 'Anteil',
-    hatch: 'schraffiert: unter 25 % bewertet oder ab 50 % nur Titel', tick: 'wartet auf eine Person', ramp: 'Anteil am Parlament',
+    hatch: 'wenig Daten', hatchTip: 'schraffiert: unter 25 % der Geschäfte bewertet oder ab 50 % nur mit Titel', tick: 'wartet auf eine Person', ramp: 'Anteil am Parlament',
     list: 'Liste', pult: 'Pult',
     tabs: { neu: 'neu diese Woche', todo: 'zu prüfen', ok: 'übernommen', changed: 'Status geändert', done: 'erledigt' },
     notSuggested: 'nicht als dieses Kapitel vorgeschlagen', overwrite: (d, by, at, k) => `${d} von ${by}, ${at} · [${k}] nochmals = überschreiben · Esc = behalten`,
@@ -90,7 +100,8 @@ export const T = {
     apiErr: 'API-Fehler', by: 'von',
     evidence: 'Beleg', fullText: 'ganzer Text', noEvidence: 'kein Zitat gespeichert', text: 'Text', titleLong: 'Langer Titel',
     topicSec: 'Thema', chapter: 'APS-Kapitel', subtopics: 'Unterthemen', lane: 'Spur',
-    lanes: { pass: 'ohne Prüfung', readings_agree: 'ohne Prüfung', please_check: 'bitte prüfen' }, readAgree: 'Lesarten einig', readDisagree: 'Lesarten uneinig', langsAgree: 'DE und FR einig', langsDisagree: 'DE und FR uneinig', notMeasured: 'nicht gemessen', bigShare: 'an eine Person', bigPass: 'ohne Prüfung', bigPerWeek: n => `≈ ${n} pro Woche`, lede: n => `Geschäfte aus ${n} Schweizer Parlamenten, von Apertus einem Thema zugeordnet – mit dem Hinweis, wann eine Person prüfen soll, und wo vorhanden dem Satz, der es belegt.`, shipped: 'ausgeliefert: p ≥ 0.7', laneCheck: 'bitte prüfen: p < 0.7',
+    lanes: { pass: 'ohne Prüfung', readings_agree: 'ohne Prüfung', please_check: 'bitte prüfen' }, readAgree: 'Lesarten einig', readDisagree: 'Lesarten uneinig', langsAgree: 'DE und FR einig', langsDisagree: 'DE und FR uneinig', notMeasured: 'nicht gemessen', bigShare: 'an eine Person', bigPass: 'ohne Prüfung', bigPerWeek: n => `≈ ${n} pro Woche`, bigPerParl: n => `≈ ${n} pro Parlament und Woche`, bigPerParlTip: (n, w, p) => `${n} Zeilen «bitte prüfen» / ${w} Wochen / ${p} Parlamente mit Geschäften im Zeitraum`, lede: n => `Geschäfte aus ${n} Schweizer Parlamenten, von Apertus einem Thema zugeordnet – mit dem Hinweis, wann eine Person prüfen soll, und wo vorhanden dem Satz, der es belegt.`, shipped: 'ausgeliefert: p ≥ 0.7', laneCheck: 'bitte prüfen: p < 0.7',
+    conf: { lo: 'unsicher', mid: 'ziemlich sicher', hi: 'sicher', head: 'Sicherheit' },
     readings: 'Lesarten', prov: 'Herkunft', model: 'Modell', page: 'Seite des Parlaments', similar: 'Ähnliche Geschäfte',
     kw: 'Stichwort', kwYes: 'Stichwortliste trifft', kwNo: 'Stichwortliste trifft nicht',
     yes: 'ja', no: 'nein', flagged: 'markiert', read: 'gelesen', secs: 's',
@@ -103,11 +114,11 @@ export const T = {
     cpX: 'Abdeckung', cpY: 'Präzision', fromFixture: 'aus Fixture',
     keys: [['j/k', 'bewegen'], ['1', 'übernehmen'], ['2', 'verwerfen'], ['0', 'überspringen'], ['l', 'Pult'], ['/', 'suchen'], ['t', 'Thema'], ['Esc', 'schliessen'], ['d/f', 'DE/FR']],
     method: (n, topic, per, sc, build) => `Querschnitt: ${n} Geschäfte zum Thema «${topic}», ${per}; im Zeitraum bewertet, pro Parlament: ${sc}; Build ${build}; maschinelle Vorschläge, wahrscheinlich unvollständig.`,
-    prov1: 'Daten: OpenParlData.ch', geo: 'Grenzen: BFS GEOSTAT / swisstopo (swiss-maps 4.7.0)', engine: 'Modell',
+    prov1: 'Daten: OpenParlData.ch', geo: 'Grenzen: BFS GEOSTAT / swisstopo (swiss-maps 4.7.0)', engine: 'Route',
   },
   fr: {
     anb: 'Intégration', anbTable: 'Table topics dans OpenParlData', anbCols: 'colonnes', anbMachine: 'machine (inferred)', anbDecision: 'décision (confirmed)', anbHop: 'Chargement avec Apache Hop', anbSample: 'exemple', anbNew: 'nouveaux objets', anbQueue: 'file', anbDrain: 'résorbée en', anbCut: 'Le point d\u2019accès du modèle était interrompu : la file a gardé les objets jusqu\u2019à ce que le même build réponde à nouveau.', anbFoot: 'Mémoire en service (docker stats, CI)',
-    woche: 'Cette semaine', affair1: 'objet', wkPrev: 'semaine précédente', wkNext: 'semaine suivante', wkNewest: 'dernière semaine complète',
+    woche: 'Cette semaine', affair1: 'objet', wkPrev: 'semaine précédente', wkNext: 'semaine suivante', wkNewest: 'dernière semaine aux données complètes', wkLag: 'Données de cette semaine encore incomplètes (retard de l\u2019export)', wkLagTip: (n, m) => `${n} objets\u202f; médiane des 8 semaines précédentes\u202f: ${m}. Une semaine compte comme complète à partir de la moitié de cette médiane.`,
     wkLine: (k, n, p, pn, names) => `Semaine ${k}\u202f: ${n} objets de ${p} ${pn === 1 ? 'parlement' : 'parlements'}. Les plus fréquents\u202f: ${names.join('\u202f; ')}.`,
     wkNone: k => `Semaine ${k}\u202f: aucun objet dans l\u2019export.`, wkIn: { de: 'en allemand', fr: 'en français', it: 'en italien', rm: 'en romanche' },
     wkCheck: 'une personne doit vérifier', wkMap: 'carte de ce thème, cette semaine', wkMore: 'Autres thèmes', wkNoQuote: 'aucune citation cette semaine', wkOnTitle: 'Extrait\u202f: le titre',
@@ -121,7 +132,7 @@ export const T = {
     same: n => `${n} objets identiques`, sameNote: '1 / 2 décide pour tous', sameDec: n => `vaut pour ${n} objets`, lines: 'lignes', pendingAll: 'attendent une personne (chapitres APS)', meta: 'Objet', read1: 'ordre 1', read2: 'ordre 2', readEx: 'avec exemples', readNoEx: 'sans exemples', readsTip: 'La même question posée deux fois : pour les objets fédéraux, une fois avec cinq objets semblables classés par la rédaction APS comme exemples et une fois sans ; sinon avec les thèmes dans deux ordres. Gris : la réponse de chaque lecture ; noir : son premier thème.', cutoff: 'seuil', chapterP: 'p brut', overview: 'Aperçu', weeks: 'Semaines par niveau', notable: 'À noter', acrossLv: (n) => `même semaine, ${n} niveaux`, newest: 'nouveau', matrix: 'Querschnitt', mapMode: 'Carte', matrixHint: 'part des objets évalués d\u2019un parlement dans le chapitre', gemAgg: 'Communes', confusion: 'Confusions (D4, livré)', gold: 'rédaction APS', pred: 'Querschnitt', lanesT: 'Voies', dark: 'partie foncée', rowsGold: 'lignes : rédaction APS', colsPred: 'colonnes : Querschnitt', agree: 'lectures concordantes', disagree: 'discordantes', noneOpen: 'aucun en suspens', noneOpenWeek: 'Aucun objet en suspens cette semaine. [‹] recule.', noneTab: 'Rien dans cet onglet.', theme: 'Thème', themes: 'Objets par thème', goldMatch: 'concorde avec le canton', theme1: 'thème 1', theme12: 'thème 1 ou 2', cantonTheme: 'Canton', scoredPeriod: 'évalué', ownSchemes: 'Schémas propres des parlements', savedTopics: 'Thèmes enregistrés', savedMark: 'enregistré', dir: 'Direction', beGroup: 'Objets du Grand Conseil par direction compétente', beField: 'Champ du Grand Conseil', schemes: 'Schémas', bilingual: 'lectures DE/FR', topic: 'Thème', topicPh: 'Choisir ou taper un thème', adhoc: 'Thèmes ad hoc', chapters: 'Chapitres APS', saved: 'Enregistrés (ce navigateur)',
     period: 'Période', all: 'tous', reset: 'réinitialiser', hits: 'résultats', notScored: 'pas encore évalué',
     coverage: 'évalués', covered: 'couvert depuis', titleOnly: 'titres seuls', share: 'part',
-    hatch: 'hachuré : moins de 25 % évalués ou 50 % titres seuls et plus', tick: 'attend une personne', ramp: 'part du parlement',
+    hatch: 'peu de données', hatchTip: 'hachuré : moins de 25 % des objets évalués ou 50 % et plus avec le titre seul', tick: 'attend une personne', ramp: 'part du parlement',
     list: 'Liste', pult: 'Pupitre',
     tabs: { neu: 'nouveaux cette semaine', todo: 'à vérifier', ok: 'acceptés', changed: 'statut modifié', done: 'traités' },
     notSuggested: 'pas proposé pour ce chapitre', overwrite: (d, by, at, k) => `${d} par ${by}, ${at} · [${k}] encore = remplacer · Esc = garder`,
@@ -137,7 +148,8 @@ export const T = {
     apiErr: 'Erreur API', by: 'par',
     evidence: 'Extrait', fullText: 'texte entier', noEvidence: 'aucune citation enregistrée', text: 'Texte', titleLong: 'Titre long',
     topicSec: 'Thème', chapter: 'Chapitre APS', subtopics: 'Sous-thèmes', lane: 'Voie',
-    lanes: { pass: 'sans vérification', readings_agree: 'sans vérification', please_check: 'à vérifier' }, readAgree: 'lectures concordantes', readDisagree: 'lectures discordantes', langsAgree: 'DE et FR concordent', langsDisagree: 'DE et FR divergent', notMeasured: 'non mesuré', bigShare: 'à une personne', bigPass: 'sans vérification', bigPerWeek: n => `≈ ${n} par semaine`, lede: n => `Objets de ${n} parlements suisses, classés par Apertus dans un thème – avec l\u2019indication du moment où une personne doit vérifier et, si disponible, la phrase qui le justifie.`, shipped: 'livré : p ≥ 0,7', laneCheck: 'à vérifier : p < 0,7',
+    lanes: { pass: 'sans vérification', readings_agree: 'sans vérification', please_check: 'à vérifier' }, readAgree: 'lectures concordantes', readDisagree: 'lectures discordantes', langsAgree: 'DE et FR concordent', langsDisagree: 'DE et FR divergent', notMeasured: 'non mesuré', bigShare: 'à une personne', bigPass: 'sans vérification', bigPerWeek: n => `≈ ${n} par semaine`, bigPerParl: n => `≈ ${n} par parlement et par semaine`, bigPerParlTip: (n, w, p) => `${n} lignes « à vérifier » / ${w} semaines / ${p} parlements avec des objets dans la période`, lede: n => `Objets de ${n} parlements suisses, classés par Apertus dans un thème – avec l\u2019indication du moment où une personne doit vérifier et, si disponible, la phrase qui le justifie.`, shipped: 'livré : p ≥ 0,7', laneCheck: 'à vérifier : p < 0,7',
+    conf: { lo: 'incertain', mid: 'plutôt sûr', hi: 'sûr', head: 'certitude' },
     readings: 'lectures', prov: 'Provenance', model: 'Modèle', page: 'Page du parlement', similar: 'Objets similaires',
     kw: 'mot-clé', kwYes: 'la liste de mots-clés trouve', kwNo: 'la liste de mots-clés ne trouve pas',
     yes: 'oui', no: 'non', flagged: 'signalés', read: 'lus', secs: 's',
@@ -150,7 +162,7 @@ export const T = {
     cpX: 'couverture', cpY: 'précision', fromFixture: 'de la fixture',
     keys: [['j/k', 'naviguer'], ['1', 'accepter'], ['2', 'rejeter'], ['0', 'passer'], ['l', 'pupitre'], ['/', 'chercher'], ['t', 'thème'], ['Esc', 'fermer'], ['d/f', 'DE/FR']],
     method: (n, topic, per, sc, build) => `Querschnitt : ${n} objets sur le thème « ${topic} », ${per} ; part évaluée dans la période, par parlement : ${sc} ; build ${build} ; suggestions automatiques, probablement incomplètes.`,
-    prov1: 'Données : OpenParlData.ch', geo: 'Limites : OFS GEOSTAT / swisstopo (swiss-maps 4.7.0)', engine: 'Modèle',
+    prov1: 'Données : OpenParlData.ch', geo: 'Limites : OFS GEOSTAT / swisstopo (swiss-maps 4.7.0)', engine: 'Route',
   },
 };
 export const t = () => T[UI.lang];

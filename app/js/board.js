@@ -30,7 +30,7 @@ export class Board {
     }
     this.tsub = h('p', { class: 'tsub' }); this.mapcol.append(this.tsub);
     this.mapEl = h('div', { class: 'map', id: `map-${Math.random().toString(36).slice(2, 7)}` }); this.mapcol.append(this.mapEl);
-    this.legend = h('p', { class: 'legend' }); this.mapcol.append(this.legend);
+    this.legend = h('p', { class: 'legend' }); this.mapcol.append(this.legend); bindTips(this.legend);
     this.mxEl = h('div', { class: 'matrix', hidden: true }); this.mapEl.after(this.mxEl);
     this.mapMode = 'map';
     this.tlEl = h('div', { class: 'tl' }); this.mapcol.append(this.tlEl);
@@ -262,7 +262,7 @@ export class Board {
     this.legend.replaceChildren(
       isBe ? '' : h('span', {}, `${L.ramp} `, ramp, br.length ? ` ${pct(br[0])} … ${pct(this.maxShare)}` : ' –'),
       isBe ? '' : h('span', {}, h('span', { class: 'sw', style: 'background:var(--r0)' }), '0'),
-      h('span', { html: `<svg width="14" height="10" viewBox="0 0 14 10" style="vertical-align:-1px;margin-right:4px;border:1px solid var(--ink);box-sizing:content-box"><defs><pattern id="lg-h" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" style="stroke:var(--hatch);stroke-width:1.2"/></pattern></defs><rect width="14" height="10" fill="url(#lg-h)"/></svg>${L.hatch}` }),
+      h('span', { 'data-tip': L.hatchTip, html: `<svg width="14" height="10" viewBox="0 0 14 10" style="vertical-align:-1px;margin-right:4px;border:1px solid var(--ink);box-sizing:content-box"><defs><pattern id="lg-h" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" style="stroke:var(--hatch);stroke-width:1.2"/></pattern></defs><rect width="14" height="10" fill="url(#lg-h)"/></svg>${L.hatch}` }),
       h('span', {}, h('span', { class: 'tk' }), L.tick));
     // list header: mode toggle, Pult tabs, Pult line
     const N = this.tabsN;

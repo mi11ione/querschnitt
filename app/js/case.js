@@ -1,7 +1,7 @@
 // The selected affair: title and text in its own language with the quoted passage highlighted, the topic decision,
 // chapter and ranked subtopics, lane, provenance, the parliament's page, similar affairs, and the decision bar.
 import { D, detail, getDec, API, TOPIC_BY_ID, norm } from './data.js';
-import { h, s, esc, t, UI, num, p3, pct, fmtDate, MONTHS, loc } from './util.js';
+import { h, s, esc, t, UI, num, p3, pct, fmtDate, MONTHS, loc, confWord } from './util.js';
 import { bar, bindTips, grow } from './viz.js';
 
 const EN = /^(parliament|grand council|council|municipal council)$/i;
@@ -158,15 +158,26 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   };
   // the scheme in view leads the facts; otherwise its row follows the other topics
   if (ownT && tp === ownT) ownRow();
+  // Digitalisierung: the full graphic when it is the topic in view or its answer is «ja»; an unrelated «nein» (an APS
+  // chapter, a scheme or a new topic in view) is one collapsed line at the end of the facts, the graphic behind [+]
+  let digLate = null;
   if (!Number.isNaN(c.dp[i]) || dig) {
     const tn = (TOPIC_BY_ID.get('adhoc/digitalisierung') || {}).names || { de: 'Digitalisierung', fr: 'numérique' };
-    add(tn[UI.lang] || tn.de, yesNoGraphic(c.dp[i], dig, c.dl[i] === 1, !!c.df[i], c.kw[i]));
+    const dn = tn[UI.lang] || tn.de, inView = tp && tp.id === 'adhoc/digitalisierung';
+    if (inView || c.df[i]) add(dn, yesNoGraphic(c.dp[i], dig, c.dl[i] === 1, !!c.df[i], c.kw[i]));
+    else digLate = () => {
+      const box = h('span', {});
+      const more = h('button', { class: 'tb', type: 'button', 'aria-expanded': 'false' }, '[+]');
+      more.addEventListener('click', () => { more.remove(); box.append(yesNoGraphic(c.dp[i], dig, c.dl[i] === 1, false, c.kw[i])); bindTips(box); grow(box); });
+      add(dn, h('span', { class: 'mono', 'data-tip': `p ${p3(c.dp[i])}` }, `${L.no}${Number.isNaN(c.dp[i]) ? '' : ` · ${confWord(c.dp[i], true)}`}`),
+        c.dl[i] === 1 ? h('span', { class: 'sig' }, ` · ${L.lanes.please_check}`) : '', ' ', more, box);
+    };
   }
   if (tp && tp.kind === 'live') {
     const x = tp.dec.get(id);
-    if (x) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${x.flag ? L.yes : L.no} · p ${p3(x.p)}`));
+    if (x) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono', 'data-tip': `p ${p3(x.p)}` }, `${x.flag ? L.yes : L.no} · ${confWord(x.p, true)}`));
   }
-  if (tp && tp.saved && tp.scored(i)) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono' }, `${tp.hit(i) ? L.yes : L.no} · p ${p3(tp.p(i))}`),
+  if (tp && tp.saved && tp.scored(i)) add(tp.names[UI.lang] || tp.names.de, h('span', { class: 'mono', 'data-tip': `p ${p3(tp.p(i))}` }, `${tp.hit(i) ? L.yes : L.no} · ${confWord(tp.p(i), true)}`),
     tp.check(i) ? h('span', { class: 'sub2 sig' }, L.lanes.please_check) : '');
   if (ownT && tp !== ownT) ownRow();
   const be = (d && d.be) || (c.be[i] != null ? { code: c.be[i] } : null);
@@ -174,7 +185,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   if (be && beT) {
     const code = String(be.code || '').replace(/^be:/, ''), o = beT.opt.get(code);
     add(L.dir, h('span', {}, o ? h('span', { class: 'mono' }, `${o.abbr[UI.lang] || o.abbr.de} `) : '', o ? (o.name[UI.lang] || o.name.de) : code,
-      be.p != null ? h('span', { class: 'mono dim' }, ` p ${p3(be.p)}`) : ''),
+      be.p != null ? h('span', { class: 'mono dim', 'data-tip': `p ${p3(be.p)}` }, ` · ${confWord(be.p)}`) : ''),
       be.gold ? h('span', { class: 'sub2' }, `${L.beField}: ${String(be.gold).trim()}`) : '');
   }
   const aps = d && d.aps;
@@ -186,6 +197,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   } else if (c.bi[i] === 1 && !(bil && bil.reads)) { // with the readings, the chapter graphic's sentence says it
     add(L.bilingual, h('span', { class: 'mono sig', style: 'font-size:12px' }, L.lanes.please_check));
   }
+  if (digLate) digLate();
   let chart = null;
   if (c.ch[i] >= 0 || aps) chart = chapterGraphic(aps, c.ch[i], c.chp[i], c.lane[i] === 1);
   else add(L.chapter, h('span', { class: 'dim' }, L.notScored));
@@ -201,7 +213,8 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const addp = (k, ...v) => pv.append(h('dt', {}, k), h('dd', {}, ...v));
   if (d && d.url) addp(L.page, h('a', { href: d.url, target: '_blank', rel: 'noopener' }, d.url.replace(/^https?:\/\//, '').slice(0, 64) + ' ↗'));
   addp('OPD', h('span', { class: 'mono' }, `#${id} · ${c.body[i]}`));
-  if (d) addp(L.build, h('span', { class: 'mono' }, `${(d.build || '').slice(-8)} · ${d.model || ''}`));
+  // the route name Public AI serves under; it does not fix the model size (docs/APERTUS-NOTES.md)
+  if (d) addp(L.build, h('span', { class: 'mono' }, `${(d.build || '').slice(-8)}${d.model ? ` · ${L.engine} ${d.model}` : ''}`));
   const pids = d && ((d.aps && d.aps.pids) || d.prompt_ids || []);
   if (pids && pids.length) addp('prompt', h('span', { class: 'mono' }, pids.join(' ')));
   holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.prov), pv));
@@ -223,34 +236,39 @@ const WS = {
   de: { ex: 'Zweimal gefragt (mit und ohne Beispiele)', ord: 'Zweimal gefragt (Themenliste in zwei Reihenfolgen)', bil: 'Auf Deutsch und auf Französisch gefragt',
     yn: 'Zweimal gefragt (ja/nein in zwei Reihenfolgen)', once: 'Einmal gefragt', q: x => `«${x}»`,
     both: x => `beide Male «${x}»`, differ: x => `verschiedene Antworten (${x})`, clear: x => `klare Antwort «${x}»`,
-    pick: x => `Apertus wählt «${x}»`, prop: x => `Vorschlag «${x}»`, unsure: p => `aber nicht sicher genug (p ${p} < 0.7)`, sure: (x, p) => `«${x}» trotzdem sicher genug (p ${p} ≥ 0.7)`,
+    pick: x => `Apertus wählt «${x}»`, prop: x => `Vorschlag «${x}»`, unsure: 'aber unsicher', sure: (x, w) => `«${x}» trotzdem ${w}`,
     pass: 'ohne Prüfung', check: 'eine Person prüft' },
   fr: { ex: 'Posé deux fois (avec et sans exemples)', ord: 'Posé deux fois (liste des thèmes dans deux ordres)', bil: 'Demandé en allemand et en français',
     yn: 'Posé deux fois (oui/non dans deux ordres)', once: 'Posé une fois', q: x => `«\u202f${x}\u202f»`,
     both: x => `deux fois «\u202f${x}\u202f»`, differ: x => `réponses différentes (${x})`, clear: x => `réponse nette «\u202f${x}\u202f»`,
-    pick: x => `Apertus choisit «\u202f${x}\u202f»`, prop: x => `proposition «\u202f${x}\u202f»`, unsure: p => `mais pas assez sûr (p ${p} < 0,7)`, sure: (x, p) => `«\u202f${x}\u202f» quand même assez sûr (p ${p} ≥ 0,7)`,
+    pick: x => `Apertus choisit «\u202f${x}\u202f»`, prop: x => `proposition «\u202f${x}\u202f»`, unsure: 'mais incertain', sure: (x, w) => `«\u202f${x}\u202f» quand même ${w}`,
     pass: 'sans vérification', check: 'une personne vérifie' },
 };
 const ws = () => WS[UI.lang === 'fr' ? 'fr' : 'de'];
 // asked: how; what: the answers; why: only where the outcome does not follow from the answers alone
-const sentence = (asked, what, why, check) => h('p', { class: 'dgs' }, `${asked ? `${asked}: ` : ''}${what}${why ? `, ${why}` : ''} → `,
+// why may be a node (a word with its number on hover)
+const sentence = (asked, what, why, check) => h('p', { class: 'dgs' }, `${asked ? `${asked}: ` : ''}${what}`, why ? [', ', why] : '', ' → ',
   h('span', { class: check ? 'sig' : '' }, check ? ws().check : ws().pass), '.');
+// «aber unsicher» with «p 0.283 < 0.7» on hover; «trotzdem ziemlich sicher» with «p 0.812 ≥ 0.7»
+const unsureW = p => h('span', { class: 'tipw', 'data-tip': `p ${p3(p)} < 0.7` }, ws().unsure);
+const sureW = (x, p) => h('span', { class: 'tipw', 'data-tip': `p ${p3(p)} ≥ 0.7` }, ws().sure(x, confWord(p)));
 
 // yes/no topic: the decision's p on a 0–1 track with the cut-off, the two readings as thin bars beneath
 function yesNoGraphic(p, dig, check, flag, kw) {
   const L = t(), cut = 0.5, rn = [L.read1, L.read2];
-  const rows = [{ label: `${flag ? L.yes : L.no}`, v: p, tone: flag ? 'ink' : 'grey', value: p3(p), tip: `p ${p3(p)} · ${L.cutoff} ${cut}`, strong: true }];
-  if (dig && dig.p_a != null) rows.push({ label: rn[0], v: dig.p_a, tone: dig.p_a >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[0]} p ${p3(dig.p_a)}` });
-  if (dig && dig.p_b != null) rows.push({ label: rn[1], v: dig.p_b, tone: dig.p_b >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[1]} p ${p3(dig.p_b)}` });
+  // the answer's certainty in words; p, the cut-off and the two orders (the sentence names them) only on hover
+  const rows = [{ label: `${flag ? L.yes : L.no}`, v: p, tone: flag ? 'ink' : 'grey', value: confWord(p, true), tip: `p ${p3(p)} · ${L.cutoff} ${cut}`, strong: true }];
+  if (dig && dig.p_a != null) rows.push({ label: '', v: dig.p_a, tone: dig.p_a >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[0]} p ${p3(dig.p_a)}` });
+  if (dig && dig.p_b != null) rows.push({ label: '', v: dig.p_b, tone: dig.p_b >= cut ? 'ink' : 'grey', value: '', thin: true, tip: `${rn[1]} p ${p3(dig.p_b)}` });
   const el = h('div', { class: 'dg' });
   { // the sentence: order b is asked only when order a is not clear (0.1 < p < 0.9), so one reading = a clear answer
     const W = ws(), yn = v => (v >= cut ? L.yes : L.no), two = dig && dig.p_a != null && dig.p_b != null, unsure = p >= 0.3 && p < 0.7;
     if (two) {
       const same = (dig.p_a >= cut) === (dig.p_b >= cut);
       el.append(sentence(W.yn, same ? W.both(yn(dig.p_a)) : W.differ(`${W.q(yn(dig.p_a))} / ${W.q(yn(dig.p_b))}`),
-        same ? (check && unsure ? W.unsure(p3(p)) : '') : W.prop(flag ? L.yes : L.no), check));
-    } else if (dig && dig.p_a != null) el.append(sentence(W.once, W.clear(yn(dig.p_a)), check && unsure ? W.unsure(p3(p)) : '', check));
-    else if (!Number.isNaN(p)) el.append(sentence('', W.pick(yn(p)), check && unsure ? W.unsure(p3(p)) : '', check));
+        same ? (check && unsure ? unsureW(Math.max(p, 1 - p)) : '') : W.prop(flag ? L.yes : L.no), check));
+    } else if (dig && dig.p_a != null) el.append(sentence(W.once, W.clear(yn(dig.p_a)), check && unsure ? unsureW(Math.max(p, 1 - p)) : '', check));
+    else if (!Number.isNaN(p)) el.append(sentence('', W.pick(yn(p)), check && unsure ? unsureW(Math.max(p, 1 - p)) : '', check));
   }
   for (const r of rows) el.append(h('div', { class: `dgr ${r.thin ? 'thin' : ''}`, 'data-tip': r.tip, tabindex: '0' },
     h('span', { class: `rk ${r.strong ? 'on' : 'dim'}` }, r.label),
@@ -284,16 +302,18 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   const keys = [...rank];
   if (reads) for (const k of Object.keys(reads).sort((a, b) => Math.max(...reads[b]) - Math.max(...reads[a]))) if (!keys.includes(+k)) keys.push(+k);
   const shown = keys.slice(0, 5);
-  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter), h('span', { class: 'dim', 'data-tip': reads ? L.readsTip : '' }, reads ? `p · ${rnames.join(' / ')}` : 'p')));
+  // the right column says how sure, in words; what the readings were (orders, examples, DE/FR) is in the sentence and on hover
+  const el = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.chapter),
+    h('span', { class: 'dim', 'data-tip': reads ? `${L.readsTip} (p · ${rnames.join(' / ')})` : 'p' }, L.conf.head)));
   { // the sentence: how it was asked, what came back, what follows; the lane reason only where the answers do not give it
     const W = ws(), chk = lane === 'please_check', low = pShip != null && pShip < 0.7, ship = rank.length ? chapterName(rank[0]) : '';
     const asked = bil ? W.bil : aps && aps.examples ? W.ex : W.ord;
     if (nR > 1 && top[0] != null && top[1] != null) {
       const a = W.q(chapterName(top[0])), b = W.q(chapterName(top[1]));
       const what = disagree ? W.differ(bil ? `${rnames[0]} ${a}, ${rnames[1]} ${b}` : `${a} / ${b}`) : W.both(chapterName(top[0]));
-      const why = !disagree ? (chk && low ? W.unsure(p3(pShip)) : '') : !chk && pShip != null ? W.sure(ship, p3(pShip)) : ship ? W.prop(ship) : '';
+      const why = !disagree ? (chk && low ? unsureW(pShip) : '') : !chk && pShip != null ? sureW(ship, pShip) : ship ? W.prop(ship) : '';
       el.append(sentence(asked, what, why, chk));
-    } else if (ship) el.append(sentence('', W.pick(ship), chk && low ? W.unsure(p3(pShip)) : '', chk));
+    } else if (ship) el.append(sentence('', W.pick(ship), chk && low ? unsureW(pShip) : '', chk));
   }
   for (const k of shown) {
     const ri = rank.indexOf(k), v = ri >= 0 ? praw[ri] : null, shipped = ri === 0;
@@ -304,14 +324,14 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
     el.append(h('div', { class: 'dgr', 'data-tip': tip, tabindex: '0' },
       h('span', { class: `rk ${shipped ? 'on' : ''}` }, chapterName(k)),
       h('span', { class: 'rbar' }, v != null ? bar(v, shipped ? 'ink' : 'grey') : h('span', { class: 'vb none' }), ...subs.map(x => bar(x.v, x.tone, '', true))),
-      h('span', { class: 'rv' }, shipped && pShip != null ? p3(pShip) : '')));
+      h('span', { class: 'rv' }, shipped && pShip != null ? confWord(pShip) : '')));
   }
   const subs = aps && aps.subs ? aps.subs : [];
   let se = null;
   if (subs.length) {
     se = h('div', { class: 'dg' }, h('div', { class: 'dgh' }, h('span', {}, L.subtopics)));
     subs.slice(0, 3).forEach(([code, p], k) => se.append(h('div', { class: 'dgr', 'data-tip': `${subName(code)} · p ${p3(p)}`, tabindex: '0' },
-      h('span', { class: `rk ${k === 0 ? 'on' : ''}` }, `${k + 1}. ${subName(code)}`), h('span', { class: 'rbar' }, bar(p, k === 0 ? 'ink' : 'grey')), h('span', { class: 'rv' }, p3(p)))));
+      h('span', { class: `rk ${k === 0 ? 'on' : ''}` }, `${k + 1}. ${subName(code)}`), h('span', { class: 'rbar' }, bar(p, k === 0 ? 'ink' : 'grey')), h('span', { class: 'rv' }, k === 0 ? confWord(p) : ''))));
   }
   return { el, subs: se };
 }

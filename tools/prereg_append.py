@@ -1,13 +1,14 @@
 """Append one entry to eval/PREREG-BUILD.md and log its sha256 + UTC time in eval/PREREG-BUILD.sha256, under a lock (several
-jobs may pre-register at once). The entry's header time is taken from the clock now, never typed by hand.
-Usage: python tools/prereg_append.py "S28 short title (what is fixed before which call)" entry.md"""
-import datetime as dt, hashlib, os, sys, time
+jobs may pre-register at once). The entry's header time is taken from the clock now, never typed by hand. Then the two
+files alone are committed and pushed, so the entry has a public timestamp before any call it governs (--no-push skips).
+Usage: python tools/prereg_append.py "S28 short title (what is fixed before which call)" entry.md [--no-push]"""
+import datetime as dt, hashlib, os, subprocess, sys, time
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOG, SHA, LOCK = ROOT / "eval/PREREG-BUILD.md", ROOT / "eval/PREREG-BUILD.sha256", ROOT / "eval/.prereg.lock"
 
 
-def main(title: str, body_file: str):
+def main(title: str, body_file: str, push: bool = True):
     body = Path(body_file).read_text().strip()
     for _ in range(600):                                   # mkdir is atomic: a portable lock (macOS has no flock(1))
         try:
@@ -24,9 +25,15 @@ def main(title: str, body_file: str):
         with open(SHA, "a") as f:
             f.write(f"{h}  eval/PREREG-BUILD.md\n{dt.datetime.now(dt.timezone.utc):%a %b %d %H:%M:%S UTC %Y}\n")
         print(f"pre-registered at {now:%H:%M:%S} · sha256 {h[:12]}…")
+        if push:
+            files = ["eval/PREREG-BUILD.md", "eval/PREREG-BUILD.sha256"]
+            c = subprocess.run(["git", "commit", "-q", "-m", f"Pre-registration: {title}", "--", *files], cwd=ROOT)
+            p = subprocess.run(["git", "push", "-q"], cwd=ROOT) if c.returncode == 0 else c
+            print("committed and pushed" if p.returncode == 0 else "NOT pushed: commit and push eval/PREREG-BUILD.* before any call")
     finally:
         os.rmdir(LOCK)
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    args = [a for a in sys.argv[1:] if a != "--no-push"]
+    main(args[0], args[1], push="--no-push" not in sys.argv)

@@ -68,7 +68,7 @@ to use; without prefill, `QS_PREFILL=0` runs an unmeasured mode with its own pro
 - **Builds are never mixed.** Every row names the served model, its `system_fingerprint`, the prompt id and the input hash;
   a run locks the first build it sees and stops on any other. Tests pin the prompts byte-identical to the measured ones.
 
-![Why this label: the chapter read twice, the two readings side by side, the quoted sentence](docs/img/entscheid.png)
+![Why this label: Bern's Grand Council, the chapter asked in German and in French, two different answers, so a person checks; the quoted sentence from the draft law](docs/img/entscheid.png)
 
 ## Integration with OpenParlData
 - **Output:** a `topics` row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); Postgres DDL in

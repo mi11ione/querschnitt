@@ -118,12 +118,25 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     tsec.append(h('div', { class: 'sl' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, `${L.text}${d.text_src ? ' · ' + d.text_src : ''}`)));
     // a document that opens with a file path or file name (a letterhead) is shown only on request, never as the first lines
     const junk = !(ev && ev.field === 'text') && /^[\s\S]{0,200}?([A-Za-z]:\\|\\\\|\.(docx?|pdf|xlsx?)\b)/i.test(text);
-    const long = junk || (text.length > 640 && !(ev && ev.field === 'text'));
-    const p = highlight(junk ? '' : long ? text.slice(0, 600).replace(/\s+\S*$/, '') + ' …' : text, ev, 'text', lang) || h('p', { class: 'txt' });
+    // a long text with the quote in it: a window around the quote (letterheads and boilerplate stay behind [+])
+    let win = null;
+    if (ev && ev.field === 'text' && text.length > 640) {
+      let a = ev.start ?? ev.char_start, b = ev.end ?? ev.char_end;
+      if (!(a >= 0 && b > a && text.slice(a, b) === ev.quote) && ev.quote) { a = text.indexOf(ev.quote); b = a + (ev.quote || '').length; }
+      if (a >= 0 && b > a) {
+        let w0 = Math.max(0, a - 180), w1 = Math.min(text.length, b + 180);
+        if (w0 > 0) w0 = text.indexOf(' ', w0) + 1 || w0;
+        if (w1 < text.length) w1 = text.lastIndexOf(' ', w1) > b ? text.lastIndexOf(' ', w1) : w1;
+        win = { text: (w0 > 0 ? '… ' : '') + text.slice(w0, w1) + (w1 < text.length ? ' …' : ''), ev: { ...ev, start: a - w0 + (w0 > 0 ? 2 : 0), end: b - w0 + (w0 > 0 ? 2 : 0), char_start: undefined, char_end: undefined } };
+      }
+    }
+    const long = junk || !!win || (text.length > 640 && !(ev && ev.field === 'text'));
+    const p = (win ? highlight(win.text, win.ev, 'text', lang)
+      : highlight(junk ? '' : long ? text.slice(0, 600).replace(/\s+\S*$/, '') + ' …' : text, ev, 'text', lang)) || h('p', { class: 'txt' });
     p.classList.add('sm'); tsec.append(p);
     if (long) {
       const more = h('button', { class: 'tb more', type: 'button' }, `[+] ${L.fullText}`);
-      more.addEventListener('click', () => { p.textContent = text; more.remove(); });
+      more.addEventListener('click', () => { p.replaceChildren(...highlight(text, ev, 'text', lang).childNodes); more.remove(); });
       tsec.append(more);
     }
   }

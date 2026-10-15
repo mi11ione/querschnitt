@@ -57,6 +57,7 @@ const SCEN = [
   { name: 'neu-limit-1440', live: true, w: 1440, h: 900, url: '#neu?limit=25', steps: [`(()=>{const f=document.querySelector('.nt-field textarea');f.value='Schule, Unterricht, Lehrpersonen und Bildung';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 3000], print: `location.hash + ' | ' + document.querySelector('.runline').textContent` },
   { name: 'neu-cap-1440', live: true, w: 1440, h: 900, url: '#neu', steps: [`(()=>{const f=document.querySelector('.nt-field textarea');f.value='Schule, Unterricht, Lehrpersonen und Bildung';f.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})()`, 4000] },
   { name: 'why-1440', w: 1440, h: 900, url: '#karte?a=96375', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
+  { name: 'readme-entscheid', w: 1440, h: 900, url: '#karte?a=338697', steps: [`(document.querySelector('#v-karte mark') || document.querySelector('#v-karte .dg')).scrollIntoView({ block: 'center' })`] },   // docs/img/entscheid.png: the Gate 1 demo affair
   { name: 'why-bil-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#karte?a=40171', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
   { name: 'why-dig-1440', w: 1440, h: 900, url: '#karte?a=340652', steps: [`document.querySelector('#v-karte .dg').scrollIntoView()`] },
   { name: 'similar-1440', w: 1440, h: 900, url: '#karte?a=340652', steps: [`document.querySelector('#v-karte .strip').scrollIntoView()`] },

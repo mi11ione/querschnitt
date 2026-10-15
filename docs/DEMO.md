@@ -12,6 +12,7 @@ affair · `1` übernehmen · `2` verwerfen (then a digit picks the correction) �
 ## Gate 1 (5 min)
 | Beat | Keys / clicks | If it fails |
 |---|---|---|
+| Diese Woche (finals opener) | the landing view (`w`); read the sentence; point at three examples in three languages; `f` for French | static site, same view |
 | Atlas | `a`; let it stand 3 s; point at Digitalisierung, then a dark map (Umweltschutz) | static site, same view |
 | Digitalisierung → affair | click the Digitalisierung map → `/` type `souveränität` → Enter → `j` → «Der Kanton Bern strebt digitale Souveränität an» (`338697`: DE/FR readings disagree → bitte prüfen; quote from the draft law) | `t` → type `Digi` → Enter |
 | Why this label | point at the two reading bars and the highlighted sentence | — |

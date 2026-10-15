@@ -60,7 +60,7 @@ class Endpoint:
 
 
 def prefill_from_env() -> bool:
-    """QS_PREFILL=0 (or false/no/off) selects the unmeasured no-prefill mode; unset or anything else = prefill."""
+    """QS_PREFILL=0 (or false/no/off) selects the no-prefill fallback; unset or anything else = prefill."""
     return os.environ.get("QS_PREFILL", "1").strip().lower() not in ("0", "false", "no", "off")
 
 

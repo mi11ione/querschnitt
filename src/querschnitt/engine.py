@@ -13,7 +13,8 @@ turns rows into topic rows.
 
 With QS_PREFILL=0 (an endpoint without assistant prefill) every step sends one user message instead
 (prompts.no_prefill_user), reads the code after the JSON opening (first such token's top_logprobs, else the generated
-text) and marks `meta.mode = "no-prefill"`. That mode is unmeasured; its prompt ids differ from the measured ones."""
+text) and marks `meta.mode = "no-prefill"`. That mode was measured on the S25 held-out items (S28) but has no calibration map; its prompt ids differ
+from the prefill ones."""
 from __future__ import annotations
 
 import math

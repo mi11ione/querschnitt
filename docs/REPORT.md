@@ -60,7 +60,8 @@ On the production run itself, 200 random communal affairs of 2026 were judged bl
 0.135); where the readings agree 0.677, in the please-check lane 0.511; German 0.631, French 0.687, Italian 0.625.
 
 **New topics defined in one sentence (S19, S26, S27):** for wolves, heat protection and AI in schools over Aug–Oct 2026,
-every affair the judge marks relevant is flagged, but narrow topics over-flag (precision of flags 0.225 / 0.670 / 0.136; keyword
+every affair the judge marks relevant among the checked ones is flagged (recall outside them is not measured), but
+narrow topics over-flag (precision of flags 0.225 / 0.670 / 0.136; keyword
 hits 0.500 / 0.900 / 0.750, which miss some relevant affairs). Thirty editor decisions shown as examples help a little on heat
 (+0.038 [+0.018, +0.060]) and not measurably on wolves. A second question on the flags only — is the topic central or merely
 touched on? — raises precision to 0.444 / 0.770 / 0.250 (heat +0.100 [+0.069, +0.132]) and keeps 0.444 / 0.969 / 1.000 of the
@@ -70,13 +71,14 @@ relevant affairs; so unverified flags are not dropped but go to the please-check
 No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the
 Italian text give 0.702, from the German text 0.703 (difference +0.0007 [−0.020, +0.021], S22). Between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
 titles); federal APS chapters from German vs French text +0.016 [−0.003, +0.037]. Chapter accuracy across the six main
-parties differs too little to measure with these sample sizes (SP 0.701 … Grüne 0.578 on n 95, overall p = 0.47). What does differ is the submitter type: Federal Council business is easier than
+parties ranges from SP 0.701 to Grüne 0.578 (n 95); the overall test gives p = 0.47, and the largest pair, SP − Grüne
++0.122 [−0.007, +0.242], is borderline — reported, not dismissed. What does differ is the submitter type: Federal Council business is easier than
 members' motions (0.792 vs 0.653), and quality is reported per submitter type.
 
 ## 5. Runtime and cost
 Measured on the corpus run at Public AI list price ([`eval/cost/results.json`](../eval/cost/results.json)): USD 0.333 per
 1,000 affairs for chapter, subtopic and one ad-hoc topic; about 61.5 minutes per 1,000 affairs at the job's own
-0.969 requests/s on a shared key. Projection for all 326,123 OPD affairs (chapter step, not run):
+0.969 requests/s on a shared key. Projection for all 326,123 OPD affairs (chapter and subtopic steps, not run):
 843,173 requests, USD 102.24, about 241.8 h at that rate; wall time, not money, sets the schedule.
 
 The nightly update reads OPD's published export, queues new and changed affairs, and scores the queue. Its first real

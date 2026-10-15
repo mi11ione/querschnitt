@@ -6,7 +6,7 @@
 Rows are appended to <out>/<build>/<step>.jsonl. A step is done when its prompt id is in the current build's rows
 (identical prompts are sent once; a changed input re-runs only what changed). The first served build is locked in
 <out>/state.json; a different build stops the run (STOP.md) and nothing is mixed. Progress: <out>/PROGRESS.md.
-A run made with QS_PREFILL=0 (unmeasured no-prefill mode) records `mode` in the lock and writes to its own build dir; a
+A run made with QS_PREFILL=0 (the no-prefill fallback) records `mode` in the lock and writes to its own build dir; a
 run dir is never resumed in the other mode. An endpoint that refuses prefill or logprobs stops the run (STOP.md)."""
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ class Store:
                 return
             key = (fp or "nofp").split("-")[-1] + "-" + time.strftime("%Y%m%d") + ("-" + mode if mode else "")
             self.state["lock"] = dict(model=model, fp=fp, key=key, first_seen=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
-            if mode:   # unmeasured mode (QS_PREFILL=0); absent for the measured design
+            if mode:   # the no-prefill fallback (QS_PREFILL=0); absent for the shipped design
                 self.state["lock"]["mode"] = mode
             self.state_p.write_text(json.dumps(self.state, indent=1))
             self.build_dir().mkdir(exist_ok=True)
@@ -257,7 +257,7 @@ class Runner:
                f"- Rate: {rate10:.2f} req/s (last 10 min) · guard {self.client.guard.rate:.2f}/s (cap {self.client.guard.max_rate}) · HTTP 429s {c['n429']:,} · transient {c['transient']}\n"
                f"- List-price estimate (ledger): USD {self.client.spent:.3f} of cap {self.args.cap}\n"
                f"- Build: `{lock.get('model')}` · `{lock.get('fp')}`\n"
-               + (f"- Mode: **{lock['mode']}**: unmeasured; refit and pass the quality gate before use\n" if lock.get("mode") else ""))
+               + (f"- Mode: **{lock['mode']}**: no calibration map; refit and pass the quality gate before use\n" if lock.get("mode") else ""))
         (self.out / "PROGRESS.md").write_text(txt)
 
     def run(self):

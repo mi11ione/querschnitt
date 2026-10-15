@@ -7,7 +7,7 @@ Lane: `please_check` when the two code orders disagree on the top chapter; one r
 Ad-hoc yes/no (S8): p = mean of order a and, where run, order b; flag at p ≥ cut-off (0.5);
 `please_check` when the orders disagree or 0.3 ≤ p < 0.7.
 Recalibration (eval/calibration.json) applies only to rows of the build it was fitted on; rows of another build get p
-null and the chapter lane by the readings until it is refitted. Rows of the unmeasured no-prefill mode (QS_PREFILL=0) are
+null and the chapter lane by the readings until it is refitted. Rows of the no-prefill fallback (QS_PREFILL=0) are
 never recalibrated, and their topic rows carry `build` = "<fingerprint>+no-prefill"."""
 from __future__ import annotations
 
@@ -183,7 +183,7 @@ _WARNED: set = set()
 
 
 def run_build(lock: dict) -> str:
-    """The `build` written to topic rows: the fingerprint, labelled "+no-prefill" for the unmeasured mode."""
+    """The `build` written to topic rows: the fingerprint, labelled "+no-prefill" for the fallback mode."""
     return lock["fp"] + ("+" + lock["mode"] if lock.get("mode") else "")
 
 

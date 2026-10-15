@@ -40,7 +40,7 @@ Per outcome (`prefill` · `logprobs` in the probe's summary line):
   `eval/s16/analyze.py`), start a new run dir (a new build is never mixed into `runs/main`), point `ops/pipeline.py` at it.
   Replay `top1_agree` < 0.95 or `mean_abs_dp` > 0.05 → refit before any number from the new build is shown.
 - `rejected` or `ignored` prefill → the measured design cannot run there. Either keep Public AI for the corpus and show
-  CSCS only as a footprint, or run with `export QS_PREFILL=0` (verdict "runs in an unmeasured mode — refit + quality gate
+  CSCS only as a footprint, or run with `export QS_PREFILL=0` (verdict "runs in a fallback mode — refit + quality gate
   before use"): a fresh run dir, `make eval GOLD=data/eval/gold_aps_s9.csv` on its rows, cut-offs refitted, and every
   number from it labelled no-prefill. `noprefill_ok` false → do not use the endpoint.
   Measured cost on Public AI (S28, 927 held-out affairs): top-1 0.705 without prefill vs 0.696 with it, difference −0.008

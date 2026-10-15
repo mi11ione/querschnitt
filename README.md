@@ -17,6 +17,8 @@ choices made after a result — the 0.7 lane threshold, the hierarchical metrics
 tested on the held-out set. S25's amendment records the two readings seen before a determinism fix, next to the final one. Full tables with intervals, baselines, per-language and
 per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) · short report: [docs/REPORT.md](docs/REPORT.md).
 
+**Against human labels** — APS editors, the parliaments' own fields:
+
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
 | APS chapter vs APS editors, 927 federal affairs never used while designing (held out, pre-registered) | 927 | **0.696** [0.666, 0.726]; top 3 0.839; the 67.3% that pass without a check (recalibrated p ≥ 0.7) 0.812 [0.779, 0.842], the rest 0.458; subtopic top 1 0.497, hierarchical F1 0.604 (computed after the result) | plain list prompting 0.654 [0.623, 0.685] (n 918; paired +0.041 [+0.016, +0.067]) · keywords 0.186 |
@@ -28,6 +30,11 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 | Basel-Stadt's own 46 themes as a scheme file (names only) vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | 0.498 [0.478, 0.518]; Thema 1 or 2: 0.605; top 3: 0.665 | keywords 0.181 · majority 0.053 |
 | — with five of Basel's own labelled affairs as examples (other half of the data; no training) | 2,437 | 0.526 [0.506, 0.547], +0.028 [+0.014, +0.043] paired; top 3: 0.711; where the two readings agree (54.9%): 0.651 | names only: 0.498 |
 | Ticino's Gran Consiglio, in Italian: its own lead department (6 units) as a scheme file vs the department the canton assigns, 2023–26, affairs whose text does not name it (pre-registered) | 1,685 | 0.647 [0.624, 0.670]; where both readings agree (83% of affairs) 0.698 | keywords 0.219 · majority 0.194 |
+
+**Against a blind AI judge** — where no human labels exist (figures are agreement with that judge), and the DVS list:
+
+| Test | n | Querschnitt | Baseline on the same items |
+|---|---|---|---|
 | Evidence on production rows: the stored quote supports the topic (blind AI judge, κ 0.92) | 200 | 0.815 [0.755, 0.863]; exact substring at the stored offsets 198/198 | — |
 | Three new topics, each defined in one sentence (wolves · heat protection · AI in schools), Aug–Oct 2026, blind AI judge | 774 | precision of flags 0.225 · 0.670 · 0.136; with a verification question on the flags 0.444 · 0.770 · 0.250 (keeping 0.444 · 0.969 · 1.000 of the relevant ones) — unverified flags go to «please check»; recall outside the checked affairs is not measured (no judge positive among 120 random unflagged affairs per topic) | keywords 0.500 · 0.900 · 0.750 |
 | "Digitalisierung" in every Swiss parliament, 2026: all 14,512 affairs decided (651 flagged); a stratified sample judged blind by an AI judge and weighted back (pre-registered) | 453 judged (180 flags) | precision of flags 0.905 [0.865, 0.945]; recall estimated at 0.659 [0.491, 0.900] | keywords: precision 0.756 |
@@ -47,7 +54,8 @@ Model calls need an OpenAI-compatible chat endpoint serving Apertus (`QS_BASE_UR
 supports assistant prefill (vLLM's `continue_final_message`) and `top_logprobs`, the two capabilities every measured
 number depends on; Public AI's `swiss-ai/apertus-v1.5-8b` route has both and is the default. `python tools/probe_endpoint.py`
 checks an endpoint (prefill, log-probabilities, served build, throughput, replay of stored prompts) and prints the settings
-to use; without prefill, `QS_PREFILL=0` runs an unmeasured mode with its own prompt ids ([docs/SERVICE.md](docs/SERVICE.md)).
+to use; without prefill, `QS_PREFILL=0` runs a fallback mode with its own prompt ids, measured on the held-out affairs (0.705
+vs 0.696 with prefill; no calibration map yet) ([docs/SERVICE.md](docs/SERVICE.md)).
 
 ## How it works
 - **Closed choices only.** Chapter, subtopic, yes/no for an ad-hoc topic, evidence sentence: each is a choice among listed
@@ -86,10 +94,10 @@ to use; without prefill, `QS_PREFILL=0` runs an unmeasured mode with its own pro
   delta reads OPD's published exports only, queues new and changed affairs and drains the queue when the endpoint is back.
 
 ## Runtime and cost (measured on the corpus run, Public AI list price — [`eval/cost/results.json`](eval/cost/results.json))
-- USD 0.333 per 1,000 affairs for chapter, subtopic and one ad-hoc topic (USD 0.314 chapter step alone).
+- USD 0.333 per 1,000 affairs for chapter, subtopic and one ad-hoc topic (USD 0.314 for the chapter and subtopic steps alone).
 - About 61.5 minutes per 1,000 affairs at this job's average 0.969 requests/s over its first 13.3 h on a key shared with
   other jobs (lower while several jobs share the key).
-- All 326,123 OPD affairs, chapter step: 843,173 requests, USD 102.24, about 241.8 h at that average rate — a projection, not run;
+- All 326,123 OPD affairs, chapter and subtopic steps: 843,173 requests, USD 102.24, about 241.8 h at that average rate — a projection, not run;
   a dedicated endpoint shortens it in proportion to its rate.
 
 ## Model roles

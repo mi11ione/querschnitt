@@ -37,7 +37,7 @@ in the console); without it the review desk and Neues Thema expect a token-less 
 | `QS_DB` / `QS_PG_DSN` | `data/querschnitt.sqlite` / – | store; Postgres when the DSN is set |
 | `QS_BASE_URL`, `QS_MODEL`, `QS_API_KEY` (or `QS_KEY_FILE`) | Public AI, `swiss-ai/apertus-v1.5-8b` | endpoint (client.Endpoint.from_env) |
 | `QS_MAX_RATE` | 1.6 (nightly 1.0) | requests/s ceiling of this process |
-| `QS_PREFILL`, `QS_NO_LOGPROBS` | prefill on, logprobs on | endpoint capabilities (below); `QS_PREFILL=0` = the unmeasured no-prefill mode, `QS_NO_LOGPROBS=1` = codes from the generated text |
+| `QS_PREFILL`, `QS_NO_LOGPROBS` | prefill on, logprobs on | endpoint capabilities (below); `QS_PREFILL=0` = the no-prefill fallback (measured on the held-out affairs, no calibration map yet), `QS_NO_LOGPROBS=1` = codes from the generated text |
 | `QS_WRITE_TOKEN` | – | bearer token for every write (above); unset = open, warned at startup |
 | `QS_ADHOC_CONC`, `QS_ADHOC_CAP`, `QS_ADHOC_MAX_CALLS`, `QS_ADHOC_LEDGER` | 3, USD 50, –, `runs/adhoc/ledger.jsonl` | Neues Thema limits (`QS_ADHOC_CAP`: the ledger's lifetime total, a safety net; the working cap is `QS_ADHOC_DAILY_USD`) |
 | `QS_ADHOC_DAILY_USD` | USD 2 | Neues Thema list-price spend per local day, summed from the ledger; 0 = off |
@@ -248,7 +248,7 @@ all 326,123 input hashes identical to the full build (0 to re-score); the full r
 
 `lite` on OPD's ~20 GB VPS: about 0.95 GB of files (exports 370 MB, docs 335 MB, inputs 174 MB, chapter step rows
 ≈ 1.3 KB per call ≈ 60 MB for 2025–26) plus the `topics` table (≈ 45 MB for 2025–26 with chapter rows); these estimates
-are for the chapter step alone, and the subtopic step lite now runs adds step rows and subtopic rows not measured here.
+are for the chapter steps alone, and the subtopic step lite now runs adds step rows and subtopic rows not measured here.
 `full` adds the API, the app and a Postgres volume.
 
 What is measured: lite's `ch sub` is the shipped chapter design (chapter read back from the subtopic, recalibrated with

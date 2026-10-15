@@ -21,17 +21,27 @@ judge is (Claude runs + Qwen; matches APS editors on 0.790 of chapters; says yes
 please-check lane narrow it: S19/S27) · the DVS 27/30
 is not held out (the question was written with those items in view) · Romansh (German prompt; not measured).
 
-## Finals — 5 min, jurors who did not read the case (plain words)
+## Finals — 5 min, jurors who did not read the case (one user, three numbers)
+
+The user: the person at the Digital Public Services Switzerland (DVS) office who tracks what parliaments do about
+digitalisation — today by hand, keyword by keyword, in three languages. Three numbers carry the pitch: their 30 hand-found
+affairs against 651 flagged in 57 parliaments; 0.696 on affairs the system never saw, with two thirds decided at 0.812;
+USD 0.333 per 1,000 affairs. Everything else is for questions.
 
 | Time | Beat |
 |---|---|
-| 0:00–0:20 | (German, then French) "About 90 Swiss parliaments, about 50 new affairs a day — and no topic field. 'What are parliaments doing about digitalisation?' means guessing keywords in every language." |
-| 0:20–1:10 | «Diese Woche», the landing view: read its one sentence aloud (last week's affairs, how many parliaments, the biggest topics); point at three examples from three parliaments in German, French and Italian, each with the sentence that supports its topic and a red tick where a person should check; `d`/`f` switches the interface to French. Then Digitalisierung → the map and the timeline by level: digital sovereignty in Stadtrat Bern, the Federal Assembly and Kanton Bern. |
-| 1:10–1:50 | One table: "Two thirds of these affairs it decides on its own, and is right in 0.812 of those; the rest it hands to a person. Tested against 927 federal affairs labelled by the editors of Année Politique Suisse and never seen while we built it, registered in advance: across 24 chapters it picks the editors' one in 0.696 — keywords manage 0.186." |
-| 1:50–2:30 | Neues Thema, live: a juror's topic in one sentence → last week across Switzerland; rows arrive while the pitch goes on. |
-| 2:30–3:20 | Reused, not retrained: Kanton Bern's eight directorates as a file — 0.651 from German titles, 0.650 from French ones against the Grand Council's own field; Basel-Stadt's 46 themes — and with their own examples it gets better; Ticino's departments, in Italian, 0.647 against the canton's own assignment, keywords 0.219. |
-| 3:20–4:20 | Ops: last night's log. "On 15 Oct the model endpoint went down. The nightly's first pass fetched OPD's export and queued the 49 new and changed affairs without a model call; when the same model build answered again, the second pass scored all 49 in 9.6 minutes, for two cents at list price. Nothing was lost, nothing was scored by another build." `docker compose` footprint from CI. |
-| 4:20–5:00 | The open trail: repo, topics file, Prüfstand with raw logs and the blind annotations; QR code. |
+| 0:00–0:25 | (German, then French) "About 90 Swiss parliaments, about 50 new affairs a day — and no topic field. Someone who tracks digitalisation finds affairs by hand: the DVS list we were given has 30." |
+| 0:25–1:15 | «Diese Woche», the landing view: read its one sentence aloud; point at three examples from three parliaments in German, French and Italian, each with the sentence that supports its topic. "Every topic is a choice from a closed list, with its sentence. Where it is unsure, a person decides — the red tick." Open one: the plain sentence above the readings says why. |
+| 1:15–1:55 | Digitalisierung → the map. "In 2026: 651 affairs flagged in 57 parliaments — federal, cantonal, communal. A blind check found 0.905 of the flags right (an AI judge, not a person — the trail is in the repo)." |
+| 1:55–2:45 | Prüfstand, the lead block. "Tested against 927 federal affairs labelled by the editors of Année Politique Suisse and never seen while we built it, registered in advance: across 24 chapters it picks theirs in 0.696 — keywords manage 0.186. Two thirds of those it decides on its own and is right in 0.812; the rest it hands to a person. Across all parliaments, about half go to a person — about two per parliament a week." |
+| 2:45–3:35 | Neues Thema (`#neu?limit=25`; the recording if the endpoint is down): a juror's topic in one sentence → last week across Switzerland; rows arrive while the pitch goes on. "No training. Saved, it is a file in the nightly job." |
+| 3:35–4:25 | "It runs on Apertus, Switzerland's open model: USD 0.333 per 1,000 affairs at list price. When the endpoint went down on 15 Oct, the new affairs waited in a queue and were scored once the same model build answered again — nothing lost, nothing mixed." |
+| 4:25–5:00 | The open trail: repo, topics file, the Prüfstand with raw logs and blind annotations; QR code. "One topic field for every parliament — ready to hand to OpenParlData." |
 
-TO UPDATE when measured: Neues Thema timing on the event endpoint (on the shared key: 98 affairs of last week in
-145 s, `runs/adhoc/lehrpersonenmangel/summary.json`; no number is spoken until the event endpoint is measured).
+Q&A cards for the finals: own schemes in three languages (Bern's directorates 0.651 German / 0.650 French; Basel's 46
+themes; Ticino's departments in Italian 0.647 vs keywords 0.219) · the 15 Oct night in detail (the cut pass and the drain
+were started by hand that day — a fetch bug in the scheduled run, since fixed; automatic resume after an outage exists
+since then) · why Claude appears at all (annotator in the evaluation only; Apertus makes every decision that ships).
+
+TO UPDATE when measured: Neues Thema timing on the event endpoint (no number is spoken until it is measured; the
+recording on the site is a real run of 98 affairs, played at ×4).

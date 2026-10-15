@@ -220,7 +220,7 @@ def run(args):
                 scored=n_dec["aps"], scored_share=round(n_dec["aps"] / tot, 4) if tot else 0, dig_scored=n_dec["dig"],
                 please_check=sum(c["check"] for c in cov.values()), calibration=bool(calibration_for(calib, lock["fp"], lock.get("mode"))),
                 extra=dict(ranges=args.extra, affairs=n_extra))
-    if lock.get("mode"):   # the unmeasured no-prefill mode (QS_PREFILL=0)
+    if lock.get("mode"):   # the no-prefill fallback (QS_PREFILL=0)
         meta["mode"] = lock["mode"]
     nl = ROOT / "runs/nightly/last.json"
     if nl.exists():

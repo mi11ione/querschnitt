@@ -1,9 +1,9 @@
-// Shell: one bar (wordmark, three views with counts, DE/FR, build), one mono fact line, the view, provenance footer.
-import { D, SRC, API, load, probeApi, TOPIC_BY_ID, findTopic, syncDecisions } from './data.js';
+// Shell: one bar (wordmark, the views, export date or «live», DE/FR), one mono fact line, the view, provenance footer.
+import { D, SRC, API, load, probeApi, TOPIC_BY_ID, findTopic, syncDecisions, parlCount } from './data.js';
 import { $, h, t, UI, num } from './util.js';
 import { Board } from './board.js';
 import { Neu, loadSaved } from './neu.js';
-import { renderPruef, testCount } from './pruef.js';
+import { renderPruef } from './pruef.js';
 import { Atlas } from './atlas.js';
 import { renderAnb } from './anb.js';
 import { Woche } from './woche.js';
@@ -26,13 +26,16 @@ function setLang(l) {
 function renderShell() {
   const L = t(), m = D.meta;
   // bar
-  const counts = { anb: '', ueber: num(atlas ? atlas.topics().length : 0), karte: num(D.tally.affairs), neu: num([...TOPIC_BY_ID.values()].filter(x => x.kind === 'live').length || 0), pruef: num(testCount()) };
+  // tab names only: counts beside them («Überblick 29», «Prüfstand 21») read as unexplained codes to a newcomer
   for (const v of VIEWS) {
-    const b = $(`#t-${v}`); b.replaceChildren(L[v], h('span', { class: 'c' }, counts[v]));
+    const b = $(`#t-${v}`); b.replaceChildren(L[v]);
     b.setAttribute('aria-selected', String(v === view));
   }
   for (const l of ['de', 'fr']) $(`#l-${l}`).setAttribute('aria-pressed', String(UI.lang === l));
-  $('#mode').textContent = API.live ? L.live : L.static;
+  // static build: the export's date in words, what «static» means only on hover; live: «live»
+  const exp = (m.generated_at || '').slice(0, 10);
+  $('#mode').textContent = API.live ? L.live : L.snap(exp ? `${exp.slice(8, 10)}.${exp.slice(5, 7)}.${exp.slice(0, 4)}` : '–');
+  if (API.live) $('#mode').removeAttribute('title'); else $('#mode').title = L.snapTip;
   $('#fixture').hidden = SRC['meta.json'] !== 'data-fixture/';
   $('#fixture').textContent = L.fixture;
   $('#build').replaceChildren();
@@ -45,7 +48,7 @@ function renderShell() {
   const T = D.tally, dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
   const items = [
     [num(T.affairs), L.affairs],
-    [num(m.parliaments ?? D.bodies.length), L.parls],
+    [num(parlCount()[0]), L.parls(parlCount()[1])],
     [num(T.aps), L.scoredAps],
     T.dig && dig ? [num(T.dig), L.scoredTopic(dig.names[UI.lang] || dig.names.de)] : null,
     [num(T.check), L.pendingAll],
@@ -165,7 +168,7 @@ async function boot() {
   atlas = new Atlas($('#v-ueber'), {
     openTopic: x => { karte.S.brush = null; karte.S.mode = 'list'; show('karte'); karte.setTopic(x); },
     openAffair: i => { const c = D.c; const x = c.df[i] ? TOPIC_BY_ID.get('adhoc/digitalisierung') : (c.ch[i] >= 0 ? TOPIC_BY_ID.get(D.scheme.chapters[c.ch[i]].code) : karte.tp); karte.S.brush = null; show('karte'); karte.setTopic(x); karte.select(c.id[i]); } });
-  // Diese Woche → the Karte on that topic, brushed to that week
+  // Neueste Woche → the Karte on that topic, brushed to that week
   const toWeek = (x, w) => { karte.S.mode = 'list'; show('karte'); karte.setTopic(x); karte.S.brush = [w, w]; karte.refresh(); };
   woche = new Woche($('#v-woche'), { openTopic: toWeek, openAffair: (i, x, w) => { toWeek(x, w); karte.select(D.c.id[i]); } });
   if (v0 === 'woche') woche.setDate(p.get('d'));

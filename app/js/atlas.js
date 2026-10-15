@@ -1,7 +1,7 @@
 // Überblick: a statistical-atlas page. One line of large numbers; one small Switzerland per topic (cantons on one
 // shared grey ramp = the topic's share of the canton's scored affairs, the Federal Assembly as a thin band; communes
-// omitted at this size); «Diese Woche» beside it. Click a map → the Karte on that topic.
-import { D, TOPIC_BY_ID, newestFullWeek } from './data.js';
+// omitted at this size); «Neueste Woche» (the newest week with complete data) beside it. Click a map → the Karte on that topic.
+import { D, TOPIC_BY_ID, newestFullWeek, parlCount } from './data.js';
 import { h, s, t, UI, num, pct, p3, fmtDate, isoWeek, isoOfDay } from './util.js';
 import { rampBreaks, rampClass } from './map.js';
 import { bindTips, rankList } from './viz.js';
@@ -22,7 +22,7 @@ export class Atlas {
     return [dig, ...saved, ...ch, none].filter(Boolean);
   }
   render() {
-    const L = t(), c = D.c, root = this.root, m = D.meta;
+    const L = t(), c = D.c, root = this.root;
     const tps = this.topics();
     // per topic × canton (and federal): scored, hits
     const keys = Object.keys(D.geo.cantons), ki = new Map(keys.map((k, j) => [k, j])); ki.set('CHE', keys.length);
@@ -50,9 +50,9 @@ export class Atlas {
         ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.round(nC / weeks)))} · `,
         h('span', { 'data-tip': L.bigPerParlTip(num(nC), num(weeks), num(parl.size)) }, L.bigPerParl(fmt1(perParl)))));
     const big = h('div', { class: 'big' },
-      bigN(num(nS), L.bigScored), bigN(num(m.parliaments ?? D.bodies.length), L.parls), bigN(num(weeks), L.bigWeeks),
+      bigN(num(nS), L.bigScored), bigN(num(parlCount()[0]), L.parls(parlCount()[1])), bigN(num(weeks), L.bigWeeks),
       bigShare);
-    const lede = h('p', { class: 'lede' }, L.lede(num(m.parliaments ?? D.bodies.length)));
+    const lede = h('p', { class: 'lede' }, L.lede(num(parlCount()[0]), parlCount()[1]));
     // shared defs: every canton path once, used by every small map
     const [, , W, H] = D.geo.viewBox;
     const defs = s('svg', { width: 0, height: 0, class: 'atl-defs', 'aria-hidden': 'true' });
@@ -84,10 +84,10 @@ export class Atlas {
       h('span', { class: 'lk' }, h('span', { class: 'sw1 hz' }), L.notScored));
     root.replaceChildren(h('div', { class: 'atl' }, lede, big, h('div', { class: 'atl-body' }, h('div', { class: 'atl-main' }, legend, grid), this.week()), defs));
   }
-  // «Diese Woche»: new affairs of the newest week by level, then up to 5 notable ones (one chapter on ≥ 2 levels, then highest p)
+  // «Neueste Woche»: new affairs of the newest week by level, then up to 5 notable ones (one chapter on ≥ 2 levels, then highest p)
   week() {
     const L = t(), c = D.c;
-    const w = newestFullWeek(); // the newest week with complete data, as «Diese Woche» (data.js)
+    const w = newestFullWeek(); // the newest week with complete data, as the «Neueste Woche» view (data.js)
     const lv = [0, 0, 0], rows = [];
     for (let i = 0; i < D.n; i++) if (c.week[i] === w && c.day[i] <= D.dmax) { if (c.lvl[i] < 3) lv[c.lvl[i]]++; rows.push(i); }
     const [y, k] = isoWeek(D.w0 + w * 7), mx = Math.max(1, ...lv);

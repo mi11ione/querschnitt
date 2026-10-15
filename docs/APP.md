@@ -284,3 +284,26 @@ not use them for counts. Labels name what they count:
   (6 MB) is a download for loaders, never fetched by the app. The boot files now load in one parallel round (the two
   Prüfstand files used to follow). Served compressed, first open is ≈ 2.5 MB; the deployed worker currently sends
   `/data/` uncompressed (see the site's worker).
+
+## Juror round 7 (15 Oct)
+- **What the page is, first.** The landing view (`#woche`, view id unchanged) opens with one line under the bar:
+  «Apertus ordnet die Geschäfte einem von 24 Themen der Année Politique Suisse zu, wo vorhanden mit dem Satz, der es
+  belegt; ▌ rot: eine Person prüft.» (FR equivalent). It replaces the key beside the language line; the bottom note now
+  only says how examples are chosen (title-only evidence reads «Beleg: der Titel») and what a click does.
+- **Tab name.** «Neueste Woche» / «Dernière semaine» (the view shows the newest week with complete data, not the
+  calendar week); the Überblick box uses the same name.
+- **Ranking = APS chapters only.** The 6 ranked rows, the headline's «Am meisten» and «Weitere Kapitel» are APS
+  chapters. Digitalisierung follows in its own section «Querschnittsthemen» / «Thèmes transversaux» (a row with
+  examples, not numbered); saved ad-hoc topics are one line of names and counts under it. One bar scale for both.
+- **Liechtenstein.** `meta.parliaments` (89) includes the Landtag FL. `data.js parlCount()` → [Swiss, FL present];
+  labels read «88 Schweizer Parlamente + Landtag FL» (fact line, Überblick), «Geschäfte aus 88 Schweizer Parlamenten
+  und dem Landtag FL» (lede), «… aus 35 Parlamenten und dem Landtag FL» (week headline). The per-parliament load on the
+  Überblick still divides by all parliaments with affairs (FL included; the tooltip says «Parlamente», not «Schweizer»).
+- **Bar.** No counts beside tab names. The static-mode word «statisch» is now «Stand 15.10.2026» / «état au …» (the
+  export date); what static means (decisions stay in this browser, Neues Thema needs the live service) is the `title`.
+- **Read-back in the «why» sentence.** The shipped chapter is the chapter of the best subtopic (compose.py
+  `chapter_decision`, subtopic p × chapter mean p), so it can differ from both readings' first choices. When it does
+  and `aps.subs[0]` belongs to the shipped chapter (`scheme_aps.json subtopics[].ch`), the sentence says so: «verschiedene
+  Antworten («Öffentliche Finanzen» / «Gesundheit, Sozialhilfe, Sport»), Vorschlag aus dem passendsten Unterthema:
+  «Allgemeiner Umweltschutz» (Kapitel «Umweltschutz»), aber unsicher → eine Person prüft.» (`#karte?a=96375`, shot
+  `why-1440`). Subtopic names exist in German only, so the FR sentence quotes the German subtopic name.

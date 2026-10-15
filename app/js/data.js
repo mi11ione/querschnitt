@@ -167,6 +167,14 @@ export function newestFullWeek() {
   return z;
 }
 
+// parliaments in the export: [Swiss, Landtag FL present]. The count includes Liechtenstein's Landtag (level «other»),
+// so every label says «88 Schweizer Parlamente + Landtag FL», never «89 Schweizer Parlamente».
+export const FL_KEY = 'LIE';
+export function parlCount() {
+  const fl = D.bodies.some(b => b.key === FL_KEY);
+  return [(D.meta.parliaments ?? D.bodies.length) - (fl ? 1 : 0), fl];
+}
+
 // ---------------------------------------------------------------- topics
 export const TOPICS = [];
 export const TOPIC_BY_ID = new Map();

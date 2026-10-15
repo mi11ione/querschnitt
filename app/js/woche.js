@@ -1,12 +1,14 @@
-// Diese Woche: what Swiss parliaments did in one week, for a reader who has 30 seconds. One plain sentence (affairs,
-// parliaments, the three biggest topics), the week by level and language, then the 6 topics with the most affairs
-// (APS chapters, Digitalisierung, saved ad-hoc topics): count by level as hairline bars and up to 3 example affairs from
-// different parliaments and languages, each with the quoted sentence that supports the topic and a red tick when a
-// person should check. Default week = the newest week with complete data (data.js newestFullWeek: ≥ 50 % of the median of
+// Neueste Woche (view id `woche`): what Swiss parliaments did in one week, for a reader who has 30 seconds. First the one
+// line that says what the tool does (24 APS topics, the supporting sentence where there is one, red = a person checks),
+// then one plain sentence (affairs, parliaments, the three biggest chapters), the week by level and language, then the 6
+// APS chapters with the most affairs, ranked: count by level as hairline bars and up to 3 example affairs from different
+// parliaments and languages, each with the quoted sentence that supports the topic and a red tick when a person should
+// check. Digitalisierung and saved ad-hoc topics are not APS chapters: they follow in their own unranked section
+// («Querschnittsthemen»: Digitalisierung as a row with examples, saved topics as one line), never in the ranking. Default week = the newest week with complete data (data.js newestFullWeek: ≥ 50 % of the median of
 // the 8 weeks before, so an export-lagged week is not the opener); ‹ › step weeks, later lagged weeks say so quietly.
 // Examples come from the pass lane; a please-check row only fills a slot that pass-lane rows cannot.
 // Detail files are per 1000 ids: only the buckets that hold this week's candidates are fetched.
-import { D, TOPIC_BY_ID, detail, norm, lastCompleteWeek, newestFullWeek, priorMedian, weekCounts } from './data.js';
+import { D, TOPIC_BY_ID, FL_KEY, detail, norm, lastCompleteWeek, newestFullWeek, priorMedian, weekCounts } from './data.js';
 import { h, t, UI, num, isoWeek, isoOfDay, dayNum, fmtDate } from './util.js';
 import { bodyName } from './case.js';
 import { bindTips } from './viz.js';
@@ -77,10 +79,11 @@ export class Woche {
     this.w = w; this.render();
     const q = this.hashQ(); history.replaceState(null, '', `#woche${q ? `?${q}` : ''}`);
   }
-  topics() {
+  // the ranked list: APS chapters only; the cross-cutting yes/no topics (Digitalisierung, saved ad-hoc topics) apart
+  topics() { return [...TOPIC_BY_ID.values()].filter(x => x.kind === 'chapter' && x.code !== 'aps:none'); }
+  cross() {
     const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
-    const rest = [...TOPIC_BY_ID.values()].filter(x => x.saved || (x.kind === 'chapter' && x.code !== 'aps:none'));
-    return [dig, ...rest].filter(Boolean);
+    return [dig, ...[...TOPIC_BY_ID.values()].filter(x => x.saved)].filter(Boolean);
   }
   // the topic's own evidence: APS chapter → detail.aps, Digitalisierung → detail.dig, saved topic → detail.adhoc[slug]
   quote(tp, d) {
@@ -102,13 +105,17 @@ export class Woche {
       rows.push(i); lv[c.lvl[i]]++; bodies.add(c.body[i]);
       const l = c.lang[i] || '?'; lg.set(l, (lg.get(l) || 0) + 1);
     }
-    // topics by count this week
-    const tps = this.topics().map(tp => {
+    // chapters by count this week; the cross-cutting topics in their own fixed order (not ranked against the chapters)
+    const count = tp => {
       const hits = rows.filter(i => tp.hit(i)), l4 = [0, 0, 0, 0];
       for (const i of hits) l4[c.lvl[i]]++;
       return { tp, hits, l4 };
-    }).filter(x => x.hits.length).sort((a, b) => b.hits.length - a.hits.length);
+    };
+    const tps = this.topics().map(count).filter(x => x.hits.length).sort((a, b) => b.hits.length - a.hits.length);
     const top = tps.slice(0, NTOP), more = tps.slice(NTOP);
+    // Digitalisierung gets a full row; saved ad-hoc topics one quiet line (name and count) under it
+    const crsAll = this.cross().map(count).filter(x => x.hits.length);
+    const crs = crsAll.filter(x => !x.tp.saved), svd = crsAll.filter(x => x.tp.saved).sort((a, b) => b.hits.length - a.hits.length);
     const name = tp => tp.names[UI.lang] || tp.names.de;
     const [, k] = isoWeek(d0);
 
@@ -118,7 +125,11 @@ export class Woche {
       h('button', { class: 'tb', type: 'button', disabled: first || null, 'aria-label': L.wkPrev, 'data-tip': first ? null : `${L.wkPrev} [‹]`, onclick: () => this.step(-1) }, '‹'),
       h('span', {}, h('b', {}, `${L.week} ${k}`), ` · ${span(d0, d1)}${w === home ? ` · ${L.wkNewest}` : ''}`),
       h('button', { class: 'tb', type: 'button', disabled: last || null, 'aria-label': L.wkNext, 'data-tip': last ? null : `${L.wkNext} [›]`, onclick: () => this.step(1) }, '›'));
-    const head = h('h2', { class: 'wo-h' }, rows.length ? L.wkLine(k, num(rows.length), num(bodies.size), bodies.size, top.slice(0, 3).map(x => name(x.tp))) : L.wkNone(k));
+    // the Landtag FL is not a Swiss parliament: named apart («35 Parlamenten und dem Landtag FL»)
+    const fl = bodies.has(FL_KEY), nCH = bodies.size - (fl ? 1 : 0);
+    const head = h('h2', { class: 'wo-h' }, rows.length ? L.wkLine(k, num(rows.length), num(nCH), nCH, fl, top.slice(0, 3).map(x => name(x.tp))) : L.wkNone(k));
+    // what the page is, in one line, before anything else
+    const intro = h('p', { class: 'wo-lede' }, L.wkIntro[0], h('span', { class: 'k' }, h('span', { class: 'rtick', role: 'img', 'aria-label': L.wkCheck }), L.wkIntro[1]));
     // a week after the newest complete one: the export has not caught up yet (quiet, not red)
     const md = lag ? priorMedian(w) : null;
     const lagNote = lag ? h('p', { class: 'wo-lag', 'data-tip': L.wkLagTip(num(weekCounts()[w]), md == null ? '–' : num(Math.round(md))) }, L.wkLag) : '';
@@ -126,12 +137,10 @@ export class Woche {
     const langs = ['de', 'fr', 'it', 'rm'].filter(l => lg.get(l)).map(l => `${num(lg.get(l))} ${L.wkIn[l]}`);
     const sub = h('div', { class: 'wo-sub' },
       levelBars(lv, mxL, L, 'wo-lv wide'),
-      h('p', { class: 'wo-lg' }, langs.join(' · ')),
-      h('p', { class: 'wo-key' }, h('span', { class: 'rtick' }), ` ${L.wkCheck}`));
-    // topic rows; examples fill in once their detail buckets are in
-    const mx = Math.max(1, ...top.flatMap(x => x.l4));
-    const list = h('ol', { class: 'wo-list' });
-    const slots = top.map(x => {
+      h('p', { class: 'wo-lg' }, langs.join(' · ')));
+    // topic rows; examples fill in once their detail buckets are in. One bar scale for chapters and cross-cutting topics
+    const mx = Math.max(1, ...top.concat(crs).flatMap(x => x.l4));
+    const row = (x, list) => {
       const ex = h('div', { class: 'wo-ex' }, h('p', { class: 'wo-wait' }, '…'));
       list.append(h('li', { class: 'wo-row' },
         h('div', { class: 'wo-tp' },
@@ -140,13 +149,20 @@ export class Woche {
           levelBars(x.l4, mx, L, 'wo-lv')),
         ex));
       return ex;
-    });
+    };
+    const list = h('ol', { class: 'wo-list' }), slots = top.map(x => row(x, list));
     const tail = more.length ? h('p', { class: 'wo-more' }, `${L.wkMore}: `, ...more.slice(0, 12).flatMap((x, j) => [j ? ' · ' : '',
       h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp, w) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
+    // cross-cutting topics: own heading, own list (ul, unranked), after the chapters
+    const xlist = h('ul', { class: 'wo-list' }), xslots = crs.map(x => row(x, xlist));
+    const svLine = svd.length ? h('p', { class: 'wo-more' }, `${L.savedTopics}: `, ...svd.flatMap((x, j) => [j ? ' · ' : '',
+      h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp, w) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
+    const crossSec = crsAll.length ? h('section', { class: 'wo-x' }, h('h3', { class: 'wo-xh' }, L.wkCross, h('span', {}, L.wkCrossSub)), crs.length ? xlist : '', svLine) : '';
     const note = h('p', { class: 'wo-note' }, L.wkNote);
-    root.replaceChildren(h('div', { class: 'wo' }, nav, head, lagNote, sub, rows.length ? list : '', tail, note));
-    if (!top.length) { window.__wocheReady = Promise.resolve(); return; }
-    window.__wocheReady = this.fill(top, slots, tok, w);
+    root.replaceChildren(h('div', { class: 'wo' }, intro, nav, head, lagNote, sub, rows.length ? list : '', tail, crossSec, note));
+    const all = top.concat(crs);
+    if (!all.length) { window.__wocheReady = Promise.resolve(); return; }
+    window.__wocheReady = this.fill(all, slots.concat(xslots), tok, w);
   }
 
   // load the buckets that hold the candidates (largest first; a thin bucket only when a topic still lacks examples)

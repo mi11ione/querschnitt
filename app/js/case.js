@@ -37,6 +37,13 @@ const subName = code => {
   for (const x of Object.values(S)) if (x.code === code) return x.de;
   return code;
 };
+// the APS chapter a subtopic belongs to (scheme_aps.json subtopics[].ch), or null
+const subChapter = code => {
+  const S = D.scheme.subtopics || {};
+  if (typeof code === 'number' || /^\d+$/.test(code)) { const x = S[String(code)]; return x && x.ch != null ? x.ch : null; }
+  for (const x of Object.values(S)) if (x.code === code) return x.ch ?? null;
+  return null;
+};
 
 // ---------------------------------------------------------------- similar affairs (title words, other parliaments)
 let IDX = null;
@@ -237,11 +244,13 @@ const WS = {
     yn: 'Zweimal gefragt (ja/nein in zwei Reihenfolgen)', once: 'Einmal gefragt', q: x => `«${x}»`,
     both: x => `beide Male «${x}»`, differ: x => `verschiedene Antworten (${x})`, clear: x => `klare Antwort «${x}»`,
     pick: x => `Apertus wählt «${x}»`, prop: x => `Vorschlag «${x}»`, unsure: 'aber unsicher', sure: (x, w) => `«${x}» trotzdem ${w}`,
+    viaSub: (s, c) => `Vorschlag aus dem passendsten Unterthema: «${s}» (Kapitel «${c}»)`, still: w => `trotzdem ${w}`,
     pass: 'ohne Prüfung', check: 'eine Person prüft' },
   fr: { ex: 'Posé deux fois (avec et sans exemples)', ord: 'Posé deux fois (liste des thèmes dans deux ordres)', bil: 'Demandé en allemand et en français',
     yn: 'Posé deux fois (oui/non dans deux ordres)', once: 'Posé une fois', q: x => `«\u202f${x}\u202f»`,
     both: x => `deux fois «\u202f${x}\u202f»`, differ: x => `réponses différentes (${x})`, clear: x => `réponse nette «\u202f${x}\u202f»`,
     pick: x => `Apertus choisit «\u202f${x}\u202f»`, prop: x => `proposition «\u202f${x}\u202f»`, unsure: 'mais incertain', sure: (x, w) => `«\u202f${x}\u202f» quand même ${w}`,
+    viaSub: (s, c) => `proposition tirée du sous-thème le plus proche\u202f: «\u202f${s}\u202f» (chapitre «\u202f${c}\u202f»)`, still: w => `quand même ${w}`,
     pass: 'sans vérification', check: 'une personne vérifie' },
 };
 const ws = () => WS[UI.lang === 'fr' ? 'fr' : 'de'];
@@ -252,6 +261,7 @@ const sentence = (asked, what, why, check) => h('p', { class: 'dgs' }, `${asked 
 // «aber unsicher» with «p 0.283 < 0.7» on hover; «trotzdem ziemlich sicher» with «p 0.812 ≥ 0.7»
 const unsureW = p => h('span', { class: 'tipw', 'data-tip': `p ${p3(p)} < 0.7` }, ws().unsure);
 const sureW = (x, p) => h('span', { class: 'tipw', 'data-tip': `p ${p3(p)} ≥ 0.7` }, ws().sure(x, confWord(p)));
+const stillW = p => h('span', { class: 'tipw', 'data-tip': `p ${p3(p)} ≥ 0.7` }, ws().still(confWord(p)));
 
 // yes/no topic: the decision's p on a 0–1 track with the cut-off, the two readings as thin bars beneath
 function yesNoGraphic(p, dig, check, flag, kw) {
@@ -308,10 +318,16 @@ function chapterGraphic(aps, ch, chp, laneCheck) {
   { // the sentence: how it was asked, what came back, what follows; the lane reason only where the answers do not give it
     const W = ws(), chk = lane === 'please_check', low = pShip != null && pShip < 0.7, ship = rank.length ? chapterName(rank[0]) : '';
     const asked = bil ? W.bil : aps && aps.examples ? W.ex : W.ord;
+    // read-back (compose.py chapter_decision): the shipped chapter is the chapter of the best-scoring subtopic, so it can
+    // differ from both readings' first choices; the sentence then names that subtopic and its chapter
+    const sub0 = aps && aps.subs && aps.subs[0];
+    const readBack = nR > 1 && top[0] != null && top[1] != null && rank.length && rank[0] !== top[0] && rank[0] !== top[1]
+      && sub0 && subChapter(sub0[0]) === rank[0];
     if (nR > 1 && top[0] != null && top[1] != null) {
       const a = W.q(chapterName(top[0])), b = W.q(chapterName(top[1]));
       const what = disagree ? W.differ(bil ? `${rnames[0]} ${a}, ${rnames[1]} ${b}` : `${a} / ${b}`) : W.both(chapterName(top[0]));
-      const why = !disagree ? (chk && low ? unsureW(pShip) : '') : !chk && pShip != null ? sureW(ship, pShip) : ship ? W.prop(ship) : '';
+      const why = readBack ? h('span', {}, W.viaSub(subName(sub0[0]), ship), chk ? (low ? [', ', unsureW(pShip)] : '') : pShip != null ? [', ', stillW(pShip)] : '')
+        : !disagree ? (chk && low ? unsureW(pShip) : '') : !chk && pShip != null ? sureW(ship, pShip) : ship ? W.prop(ship) : '';
       el.append(sentence(asked, what, why, chk));
     } else if (ship) el.append(sentence('', W.pick(ship), chk && low ? unsureW(pShip) : '', chk));
   }

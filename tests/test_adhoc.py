@@ -238,3 +238,70 @@ def test_verify_can_be_switched_off(api, fake):
     assert r["topic"]["verify"] is False and all(d["verified"] is None for d in st["decisions"])
     from querschnitt.fake_endpoint import VERIFY_Q
     assert not any(VERIFY_Q.search(b["messages"][0]["content"]) for b in fake.requests)
+
+
+def test_examples_build_the_batch_prompt(api, fake):
+    """Neues Thema asks with the examples the nightly batch and compose use for the same topic (examples.topic_examples:
+    the 4 most similar, never the affair itself), so a saved run's rows carry the prompt ids the nightly computes."""
+    from querschnitt.examples import topic_examples
+    ex = [{"title": "Hitzeschutz für Arbeitnehmende", "match": True},                 # an affair of the period itself
+          {"title": "Hitzeschutz in Schulen", "match": True}, {"title": "Hitzeschutz und Arbeitszeiten", "match": True},
+          {"title": "Schutz vor Hitze am Arbeitsplatz", "match": True}, {"title": "Hitzeschutz im Spital", "match": False},
+          {"title": "Velowege im Kanton", "match": False}]
+    r = api.post("/adhoc", json={"sentence": "Hitzeschutz", "lang": "de", "period": "2026-10-02..2026-10-02", "examples": ex}).json()
+    st = wait(api, r["slug"])
+    t = dict(st["topic"], examples=ex)
+    assert st["decisions"]
+    for d in st["decisions"]:
+        a = api.app.state.store.affair(d["id"])
+        a = dict(a, title_long=a["title_long"] or "")
+        u, p = P.yesno_prompt(st["topic"], d["lang"], a["title"], a["title_long"], "a", topic_examples(t, a))
+        assert d["prompt_id"].split(",")[0] == P.pid(u, p), a["title"]
+        if a["title"] == "Hitzeschutz für Arbeitnehmende":
+            assert "Hitzeschutz für Arbeitnehmende →" not in u                          # not its own example
+
+
+def test_continue_twice_at_once_reads_once(api):
+    """Two `continue` requests at the same moment (a double click) start one reader, not two."""
+    import threading
+    api.ah.max_calls = 2
+    r = api.post("/adhoc", json={"sentence": "Digitale Verwaltung", "lang": "de", "period": "2026-09-01..2026-10-31"}).json()
+    st = wait(api, r["slug"])
+    assert st["stop"] == "cap"
+    api.ah.max_calls = None
+    slow = api.ah.check_daily
+    api.ah.check_daily = lambda: (time.sleep(0.3), slow())[1]
+    codes = []
+    th = [threading.Thread(target=lambda: codes.append(api.post(f"/adhoc/{r['slug']}/continue").status_code)) for _ in range(2)]
+    [x.start() for x in th]; [x.join() for x in th]
+    api.ah.check_daily = slow
+    assert sorted(codes) == [200, 409]
+    wait(api, r["slug"])
+
+
+def test_same_sentence_at_once_gets_two_slugs(api, monkeypatch):
+    """Two runs of the same sentence started at the same moment get their own slug (and run dir)."""
+    import threading
+    est = api.ah.estimate
+    monkeypatch.setattr(api.ah, "estimate", lambda f, t: (time.sleep(0.3), est(f, t))[1])
+    out = []
+    th = [threading.Thread(target=lambda: out.append(api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 1}).json()))
+          for _ in range(2)]
+    [x.start() for x in th]; [x.join() for x in th]
+    assert len({o["slug"] for o in out}) == 2
+    for o in out:
+        wait(api, o["slug"])
+
+
+def test_decision_usd_counts_every_call(api, fake):
+    """A decision's `usd` is what its calls cost, the verify readings included."""
+    r = api.post("/adhoc", json={"sentence": "Digitalisierung", "lang": "de", "period": "2026-09-01..2026-10-31"}).json()
+    st = wait(api, r["slug"])
+    d = next(d for d in st["decisions"] if d["verified"] is not None)
+    by_pid = {}
+    for b in fake.requests:
+        if b["messages"][-1]["role"] == "assistant":
+            u = b["messages"][0]["content"]
+            by_pid[P.pid(u, b["messages"][1]["content"])] = round((len(u) // 4 * 0.10 + 1 * 0.20) / 1e6, 7)
+    assert len(d["prompt_id"].split(",")) >= 2
+    assert abs(d["usd"] - sum(by_pid[x] for x in d["prompt_id"].split(","))) < 1e-9

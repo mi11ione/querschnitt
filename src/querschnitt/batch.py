@@ -203,7 +203,9 @@ class Runner:
             self.counts["errors"] += 1
             with open(self.out / "errors.jsonl", "a") as f:
                 f.write(json.dumps(dict(ts=time.time(), aid=a["id"], err=repr(e)[:400])) + "\n")
-            if "BUDGET" in str(e) or self.counts["errors"] > 200:
+            if "BUDGET" in str(e):      # not an outage: ops/pipeline.py and ops/watchdog.sh resume `Errors` stops by themselves
+                self.halt("Budget", repr(e)[:400])
+            elif self.counts["errors"] > 200:
                 self.halt("Errors", repr(e)[:400])
 
     def evidence(self, a, r1, r2, ih):

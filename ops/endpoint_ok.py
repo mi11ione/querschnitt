@@ -9,9 +9,10 @@ from querschnitt.client import Endpoint  # noqa: E402
 
 
 def ok(run: Path) -> bool:
-    lock = json.loads((run / "state.json").read_text())["lock"]
+    st = run / "state.json"           # none yet when the run stopped before its first answer: any build will do
+    lock = (json.loads(st.read_text()) if st.exists() else {}).get("lock")
     ep = Endpoint.from_env()
-    body = json.dumps(dict(model=lock["model"], messages=[{"role": "user", "content": "Antworte mit A."}], max_tokens=1,
+    body = json.dumps(dict(model=lock["model"] if lock else ep.model, messages=[{"role": "user", "content": "Antworte mit A."}], max_tokens=1,
                            temperature=0)).encode()
     req = urllib.request.Request(ep.base_url.rstrip("/") + "/chat/completions", body, method="POST",
                                  headers={"Authorization": f"Bearer {ep.key()}", "Content-Type": "application/json",
@@ -21,7 +22,7 @@ def ok(run: Path) -> bool:
             d = json.loads(r.read())
     except Exception as e:
         print(time.strftime("%F %T"), "endpoint not ok:", type(e).__name__, str(e)[:120]); return False
-    if d.get("system_fingerprint") != lock["fp"]:
+    if lock and d.get("system_fingerprint") != lock["fp"]:
         print(time.strftime("%F %T"), "endpoint answers another build:", d.get("system_fingerprint")); return False
     return True
 

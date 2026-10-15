@@ -67,3 +67,26 @@ def test_example_neighbours_same_in_every_process():
     outs = {subprocess.run([sys.executable, "-c", code], cwd=root, capture_output=True, text=True,
                            env={**os.environ, "PYTHONHASHSEED": str(s)}).stdout for s in range(12)}
     assert len(outs) == 1, outs
+
+
+def test_verify_rows_in_compose_match_batch_and_adhoc():
+    """S27 in compose: the verify readings are part of the decision's prompt ids (as Neues Thema's saved rows, so the
+    nightly row of the same decision is not a new version), and a verify reading that needs its order b counts only with
+    it (the batch and Neues Thema always ask both; a run stopped in between must not decide on order a alone)."""
+    from querschnitt.compose import decide
+    t = dict(id="adhoc/t", names={"de": "Wolf"}, question={"de": "Betrifft es «Wolf»?"}, answer_yes={"de": "Ja, Wolf"},
+             cutoff=0.5, verify=True)
+    a = dict(id=7, body="CHE", lang="de", title="Wolfsbestand regulieren", title_long="", text="")
+
+    def row(u_p, py):
+        return dict(pid=P.pid(*u_p), p_yes=py, meta={"fp": "x"})
+
+    ya = row(P.yesno_prompt(t, "de", a["title"], "", "a"), 0.95)
+    va = row(P.verify_prompt(t, "de", a["title"], "", "a"), 0.45)          # 0.1 < p < 0.9: order b is asked too
+    vb = row(P.verify_prompt(t, "de", a["title"], "", "b"), 0.75)
+    rows = {r["pid"]: r for r in (ya, va, vb)}
+    d = decide(a, rows, lambda a: ("", "", None), [t])[t["id"]]
+    assert d["verified"] is True and d["lane"] == "readings_agree" and d["pids"] == [ya["pid"], va["pid"], vb["pid"]]
+    del rows[vb["pid"]]                                                       # stopped between the two verify readings
+    d = decide(a, rows, lambda a: ("", "", None), [t])[t["id"]]
+    assert "verified" not in d and d["lane"] == "readings_agree" and d["pids"] == [ya["pid"]]

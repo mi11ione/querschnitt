@@ -11,6 +11,7 @@ import argparse
 import collections
 import gzip
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -35,7 +36,7 @@ def kw_text(x):
 
 def jdump(p: Path, obj):
     p.parent.mkdir(parents=True, exist_ok=True)
-    tmp = p.with_suffix(p.suffix + ".tmp")
+    tmp = p.with_suffix(p.suffix + f".{os.getpid()}.tmp")   # per process: ops/nightly.sh and ops/refresh-site.sh both export
     tmp.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")))
     tmp.rename(p)
 
@@ -64,7 +65,8 @@ def run(args):
     detail = collections.defaultdict(dict)
     cov = collections.defaultdict(collections.Counter)
     months = collections.defaultdict(collections.Counter)
-    tfile = gzip.open(out / "topics.jsonl.gz.tmp", "wt") if args.topics_file else None
+    ttmp = out / f"topics.jsonl.gz.{os.getpid()}.tmp"   # per process (two exports into app/data can overlap)
+    tfile = gzip.open(ttmp, "wt") if args.topics_file else None
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     n_dec = collections.Counter()
     n_extra = 0
@@ -131,7 +133,7 @@ def run(args):
                 tfile.write(json.dumps(r, ensure_ascii=False) + "\n")
     if tfile:
         tfile.close()
-        (out / "topics.jsonl.gz.tmp").rename(out / "topics.jsonl.gz")
+        ttmp.rename(out / "topics.jsonl.gz")
     jdump(out / "affairs.json", dict(n=len(cols["id"]), cols=cols))
     for k, v in detail.items():
         jdump(out / "detail" / f"{k}.json", v)

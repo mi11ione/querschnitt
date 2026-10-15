@@ -186,3 +186,37 @@ def test_static_export_load_keeps_input_hashes(tmp_path, fake, monkeypatch):
     n = len(fake.requests)
     delta(args(tmp_path))
     assert len(fake.requests) == n and Store().metrics()["pending"] == 0
+
+
+def test_budget_stop_is_not_an_outage(tmp_path, fake, monkeypatch):
+    """A run that reached its list-price cap stops with a `Budget` STOP.md: ops/pipeline.py and ops/watchdog.sh resume
+    `# Errors` stops (an endpoint outage) by themselves once the endpoint answers, which for a spent budget would restart
+    the run forever."""
+    from querschnitt import batch
+    env(tmp_path, fake, monkeypatch)
+    inp = tmp_path / "inputs.jsonl.gz"
+    gz(inp, [json.loads(l) for l in open("tests/fixtures/inputs_sample.jsonl")][:2])
+    run = tmp_path / "run"; run.mkdir()
+    (run / "ledger.jsonl").write_text(json.dumps(dict(ts=0, tag="batch", usd=5.0)) + "\n")
+    batch.main(["run", "--inputs", str(inp), "--out", str(run), "--since", "0000", "--cap", "1", "--no-examples", "--max-rate", "50"])
+    stop = (run / "STOP.md").read_text()
+    assert "BUDGET" in stop and stop.startswith("# Budget") and not stop.startswith("# Errors")
+
+
+def test_endpoint_ok_before_the_first_lock(tmp_path, fake, monkeypatch):
+    """ops/endpoint_ok.py: a run stopped on errors before its first answer has no lock (no state.json); the endpoint
+    answering at all is then enough. With a lock, the build must be the locked one."""
+    import importlib.util
+    import pathlib
+    env(tmp_path, fake, monkeypatch)
+    spec = importlib.util.spec_from_file_location("endpoint_ok", pathlib.Path(__file__).parents[1] / "ops/endpoint_ok.py")
+    E = importlib.util.module_from_spec(spec); spec.loader.exec_module(E)
+    run = tmp_path / "run"; run.mkdir()
+    assert E.ok(run)
+    (run / "state.json").write_text(json.dumps(dict(lock=dict(model=fake.model, fp="fp_other", key="x"))))
+    assert not E.ok(run)
+    (run / "state.json").write_text(json.dumps(dict(lock=dict(model=fake.model, fp=fake.fp, key="x"))))
+    assert E.ok(run)
+    fake.mode = "error"
+    assert not E.ok(run)
+    fake.mode = "logprobs"

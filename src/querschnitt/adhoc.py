@@ -36,6 +36,7 @@ from .client import BuildChanged, Client, Endpoint
 from .compose import VERSION, yn_decision
 from .engine import Engine, need_yn_b
 from .evaluate import wilson
+from .examples import topic_examples
 from .scheme import APS
 from .store import ROOT, Store
 
@@ -411,24 +412,24 @@ class Adhoc:
             except Exception as e:  # noqa: BLE001 — the fallback frame needs no model
                 meta = dict(error=repr(e)[:300])
         base = slugify(gen["name"].get("de") or sentence) if (gen and isinstance(gen.get("name"), dict)) else slugify(sentence)
-        slug = self._unique(base)
-        topic = build_topic(sentence, lang, gen, slug)
-        topic["verify"] = bool(verify)
         ex = []
         for e in examples or []:
             if isinstance(e, dict):
                 title = e.get("title") or ((self.store.affair(int(e["id"])) or {}).get("title") if e.get("id") else None)
                 if title:
                     ex.append((title, bool(e.get("match", e.get("yes", True)))))
-        job = Job(slug, topic, {l: [] for l in LANGS}, per[:2], ex)
+        with self.lock:                                        # slug chosen and taken at once: same sentence, own run
+            slug = self._unique(base)
+            topic = build_topic(sentence, lang, gen, slug)
+            topic["verify"] = bool(verify)
+            job = Job(slug, topic, {l: [] for l in LANGS}, per[:2], ex)
+            self.jobs[slug] = job
         job.budget, job.day = self.max_calls, day
         job.info.update(period_name=per[2], estimate=self.estimate(*per[:2]))
         job.info["generation"] = {k: meta.get(k) for k in ("model", "fp", "usd", "lat", "error") if k in meta}
         job.terms_thread = tt
         job.emit("topic", dict(slug=job.slug, topic=job.topic, period=job.period))       # always the first event
         box["job"] = job; box["ready"].set()
-        with self.lock:
-            self.jobs[slug] = job
         d = self.out / slug
         d.mkdir(parents=True, exist_ok=True)
         (d / "topic.json").write_text(json.dumps(dict(topic=topic, period=job.period, examples=ex, generation=meta),
@@ -466,13 +467,14 @@ class Adhoc:
     def resume(self, slug: str) -> Job:
         """Read on after a cap or a stop: the affairs not yet decided, with a fresh call budget."""
         job = self.jobs[slug]
-        if not job.done:
-            raise RuntimeError("the run is still reading")
-        rest = [a for a in job.items if a["id"] not in job.decisions]
-        if not rest:
-            raise RuntimeError("nothing left to read")
-        job.day = self.check_daily()
-        job.stop.clear(); job.error = None; job.stop_reason = None; job.done = False
+        with self.lock:                                        # check and claim at once: two `continue` start one reader
+            if not job.done:
+                raise RuntimeError("the run is still reading")
+            rest = [a for a in job.items if a["id"] not in job.decisions]
+            if not rest:
+                raise RuntimeError("nothing left to read")
+            job.day = self.check_daily()
+            job.stop.clear(); job.error = None; job.stop_reason = None; job.done = False
         job.budget = job.calls + self.max_calls if self.max_calls else None
         job.thread = threading.Thread(target=self._read, args=(job, rest), daemon=True, name=f"adhoc-{slug}-cont")
         job.thread.start()
@@ -483,20 +485,23 @@ class Adhoc:
         eng = Engine(self.client, None, job.stop)
         out = (self.out / job.slug / "decisions.jsonl").open("a")
         wlock = threading.Lock()
+        # the run's examples as the nightly batch and compose show them (the 4 most similar, never the affair itself)
+        tex = dict(job.topic, examples=[dict(title=t, match=m) for t, m in job.examples])
 
         def one(a: dict):
             if job.stop.is_set():
                 return
             a = dict(a, title_long=a.get("title_long") or "", lang=a["lang"] if a.get("lang") in LANGS else "de")
             try:
+                ex = topic_examples(tex, a)
                 self._count(job)
-                ra = eng.yn(job.topic, a, "a", job.examples or None)
+                ra = eng.yn(job.topic, a, "a", ex)
                 rb = None
                 if need_yn_b(ra["p_yes"]):
                     self._count(job)
-                    rb = eng.yn(job.topic, a, "b", job.examples or None)
+                    rb = eng.yn(job.topic, a, "b", ex)
                 d = yn_decision(ra, rb, job.topic["cutoff"])
-                verified, pv, vids = None, None, []
+                verified, pv, vids, vusd = None, None, [], 0.0
                 if job.topic.get("verify") and d["flag"]:              # S27: the stricter question, on flags only
                     self._count(job)
                     va = eng.verify(job.topic, a, "a")
@@ -506,6 +511,7 @@ class Adhoc:
                         vb = eng.verify(job.topic, a, "b")
                     pv = (va["p_yes"] + vb["p_yes"]) / 2 if vb else va["p_yes"]
                     verified, vids = pv >= 0.5, [va["pid"]] + ([vb["pid"]] if vb else [])
+                    vusd = va["meta"].get("usd", 0) + (vb["meta"].get("usd", 0) if vb else 0)
                     if not verified:
                         d["lane"] = "please_check"                    # the flag stays; a person decides
             except CapReached as e:
@@ -521,7 +527,7 @@ class Adhoc:
                        sample=a["sample"], title=a["title"], body=a["body_key"], parl=a.get("parl"), level=a.get("level"),
                        lang=a["lang"], date=a["date"], p_a=round(d["p_a"], 4), p_b=None if d["p_b"] is None else round(d["p_b"], 4),
                        model=ra["meta"].get("model"), build=ra["meta"].get("fp"), prompt_id=",".join([ra["pid"]] + ([rb["pid"]] if rb else []) + vids),
-                       usd=round(ra["meta"].get("usd", 0) + (rb["meta"].get("usd", 0) if rb else 0), 7))
+                       usd=round(ra["meta"].get("usd", 0) + (rb["meta"].get("usd", 0) if rb else 0) + vusd, 7))
             with wlock:
                 job.decisions[a["id"]] = rec
                 out.write(json.dumps(rec, ensure_ascii=False) + "\n"); out.flush()

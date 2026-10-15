@@ -24,15 +24,15 @@ is not held out (the question was written with those items in view) · Romansh (
 ## Finals — 5 min, jurors who did not read the case (one user, three numbers)
 
 The user: the person at the Digital Public Services Switzerland (DVS) office who tracks what parliaments do about
-digitalisation — today by hand, keyword by keyword, in three languages. Three numbers carry the pitch: their 30 hand-found
-affairs against 651 flagged in 57 parliaments; 0.696 on affairs the system never saw, with two thirds decided at 0.812;
-USD 0.333 per 1,000 affairs. Everything else is for questions.
+digitalisation — today by keyword search, in three languages. Three numbers carry the pitch: on the 2026 census, keyword lists are right
+in 0.756 of their hits and Querschnitt's flags in 0.905 (both against a blind AI judge); 0.696 on affairs the system
+never saw, with two thirds decided at 0.812; USD 0.333 per 1,000 affairs. Everything else is for questions.
 
 | Time | Beat |
 |---|---|
-| 0:00–0:25 | (German, then French) "About 90 Swiss parliaments, about 50 new affairs a day — and no topic field. Someone who tracks digitalisation finds affairs by hand: the DVS list we were given has 30." |
+| 0:00–0:25 | (German, then French) "About 90 Swiss parliaments, about 50 new affairs a day — and no topic field. Someone who tracks digitalisation searches keyword by keyword, in three languages." |
 | 0:25–1:15 | «Diese Woche», the landing view: read its one sentence aloud; point at three examples from three parliaments in German, French and Italian, each with the sentence that supports its topic. "Every topic is a choice from a closed list, with its sentence. Where it is unsure, a person decides — the red tick." Open one: the plain sentence above the readings says why. |
-| 1:15–1:55 | Digitalisierung → the map. "In 2026: 651 affairs flagged in 57 parliaments — federal, cantonal, communal. A blind check found 0.905 of the flags right (an AI judge, not a person — the trail is in the repo)." |
+| 1:15–1:55 | Digitalisierung → the map. "In 2026: 651 affairs flagged in 57 parliaments — federal, cantonal, communal. A blind check found 0.905 of the flags right; keyword lists, 0.756 of their hits (an AI judge, not a person — the trail is in the repo)." |
 | 1:55–2:45 | Prüfstand, the lead block. "Tested against 927 federal affairs labelled by the editors of Année Politique Suisse and never seen while we built it, registered in advance: across 24 chapters it picks theirs in 0.696 — keywords manage 0.186. Two thirds of those it decides on its own and is right in 0.812; the rest it hands to a person. Across all parliaments, about half go to a person — about two per parliament a week." |
 | 2:45–3:35 | Neues Thema (`#neu?limit=25`; the recording if the endpoint is down): a juror's topic in one sentence → last week across Switzerland; rows arrive while the pitch goes on. "No training. Saved, it is a file in the nightly job." |
 | 3:35–4:25 | "It runs on Apertus, Switzerland's open model: USD 0.333 per 1,000 affairs at list price. When the endpoint went down on 15 Oct, the new affairs waited in a queue and were scored once the same model build answered again — nothing lost, nothing mixed." |

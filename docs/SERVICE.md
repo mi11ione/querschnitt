@@ -56,7 +56,7 @@ verdict. An endpoint that refuses prefill (a 4xx naming those fields), or accept
 raises `CapabilityError` naming the capability and `QS_PREFILL=0`; the batch stops with `# Endpoint capability` in
 `STOP.md` and nothing is retried in another mode. `QS_PREFILL=0` sends one user message (the measured prompt plus a line
 asking the answer to begin with the JSON opening) and reads the code after it, from the token's `top_logprobs` or else
-from the text. That mode is not measured: its prompt ids differ, so its rows never mix with measured ones; step rows carry
+from the text. That mode was measured on the held-out affairs (S28) and has no calibration map yet: its prompt ids differ, so its rows never mix with measured ones; step rows carry
 `meta.mode`, the run lock `mode` (own build dir), topic rows `build = <fingerprint>+no-prefill`, export `meta.mode`; no
 calibration applies (`p` null); a run dir or compose in the other mode is refused; the build lock applies as before. Refit
 and pass the quality gate (`make eval GOLD=…`) before showing any of its numbers.

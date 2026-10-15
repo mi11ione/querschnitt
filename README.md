@@ -1,6 +1,6 @@
 # Querschnitt
 
-**One topic field for every Swiss parliament.** Querschnitt gives each OpenParlData affair — federal, cantonal and communal,
+**One topic field for every parliament in OpenParlData.** Querschnitt gives each OpenParlData affair — federal, cantonal and communal,
 German, French and Italian — an Année Politique Suisse (APS) chapter with ranked subtopics, a lane that says when a person
 should check, and — where the affair has a text and the evidence step has run — a quoted sentence that supports it. A new topic or a parliament's own scheme is a file:
 written once, applied to every parliament, no training. Every topic decision is made by
@@ -14,7 +14,9 @@ Live (static, read-only): https://querschnitt.mi11ion.io
 ## Measured
 Human labels first. Each test was written down and hashed before its result ([eval/PREREG-BUILD.md](eval/PREREG-BUILD.md));
 choices made after a result — the 0.7 lane threshold, the hierarchical metrics — are labelled so, and the lane was then
-tested on the held-out set. S25's amendment records the two readings seen before a determinism fix, next to the final one. Full tables with intervals, baselines, per-language and
+tested on the held-out set. S25's amendment records the two readings seen before a determinism fix, next to the final one. The S28–S30 entries
+reached git together with S28's results, so their order rests on the hash log; entries since are pushed when written.
+S31 is a design search on the design set with a gate set in advance, not a pre-registered test. Full tables with intervals, baselines, per-language and
 per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) · short report: [docs/REPORT.md](docs/REPORT.md).
 
 **Against human labels** — APS editors, the parliaments' own fields:
@@ -38,8 +40,8 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 |---|---|---|---|
 | Evidence on production rows: the stored quote supports the topic (blind AI judge, κ 0.92) | 200 | 0.815 [0.755, 0.863]; exact substring at the stored offsets 198/198 | — |
 | Three new topics, each defined in one sentence (wolves · heat protection · AI in schools), Aug–Oct 2026, blind AI judge | 774 | precision of flags 0.225 · 0.670 · 0.136; with a verification question on the flags 0.444 · 0.770 · 0.250 (keeping 0.444 · 0.969 · 1.000 of the relevant ones) — unverified flags go to «please check»; recall outside the checked affairs is not measured (no judge positive among 120 random unflagged affairs per topic) | keywords 0.500 · 0.900 · 0.750 |
-| Three more narrow topics (light pollution · drones · pesticides), held out, with a generated scope check on the flags (pre-registered) | 399 judged | precision of flags 0.642 → 0.761, +0.119 [+0.005, +0.260]; recall −0.099 [−0.250, 0.000] (the dropped ones go to «please check») | keywords: precision 0.944 |
-| "Digitalisierung" in every Swiss parliament, 2026: all 14,512 affairs decided (651 flagged); a stratified sample judged blind by an AI judge and weighted back (pre-registered) | 453 judged (180 flags) | precision of flags 0.905 [0.865, 0.945]; recall estimated at 0.659 [0.491, 0.900] | keywords: precision 0.756 |
+| Three more narrow topics (light pollution · drones · pesticides), held out, with a generated scope check on the flags (pre-registered) | 399 judged | precision of flags 0.642 → 0.761, +0.119 [+0.005, +0.260]; recall −0.099 [−0.250, 0.000] (the dropped ones go to «please check») | keywords: precision 0.944, recall 0.850 (variant 0.800) |
+| "Digitalisierung" in every parliament in OpenParlData, 2026: all 14,512 affairs decided (651 flagged); a stratified sample judged blind by an AI judge and weighted back (pre-registered) | 453 judged (180 flags) | precision of flags 0.905 [0.865, 0.945]; recall estimated at 0.659 [0.491, 0.900] | keywords: precision 0.756 |
 | "Digitalisierung": the 30 affairs DVS curated by hand (the question and its 0.5 cut-off were written with these items in view) | 30 | 27 recognised | keywords 21 |
 
 ## Quick start

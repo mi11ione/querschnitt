@@ -1,6 +1,6 @@
 # Querschnitt — evaluation report
 
-One topic field for every Swiss parliament in OpenParlData: an Année Politique Suisse (APS) chapter with ranked subtopics,
+One topic field for every parliament in OpenParlData: an Année Politique Suisse (APS) chapter with ranked subtopics,
 ad-hoc topics defined in one sentence, a lane that says when a person should check, and — where the affair has a text and the evidence step has run — a
 quoted sentence from the affair.
 Every topic decision is made by Apertus (`swiss-ai/apertus-v1.5-8b` on Public AI, build `…dd237840` on every call reported
@@ -72,7 +72,7 @@ relevant affairs; so unverified flags are not dropped but go to the please-check
 **A scope check for narrow topics (S30, held out):** on three further narrow topics, a generated include/exclude scope
 asked on the flags raised precision of flags from 0.642 to 0.761, +0.119 [+0.005, +0.260] pooled, at a recall cost of
 −0.099 [−0.250, 0.000]; the two dropped affairs go to a person. The pre-registered rule was met, narrowly, so new topics
-carry the scope; keyword lists remain more precise on such topics (0.944).
+carry the scope; keyword lists remain more precise on such topics (0.944) and reach recall 0.850 against 0.800.
 
 ## 4. Neutrality
 No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the

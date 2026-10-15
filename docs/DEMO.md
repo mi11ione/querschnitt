@@ -13,12 +13,12 @@ affair · `1` übernehmen · `2` verwerfen (then a digit picks the correction) �
 | Beat | Keys / clicks | If it fails |
 |---|---|---|
 | Atlas | `a`; let it stand 3 s; point at Digitalisierung, then a dark map (Umweltschutz) | static site, same view |
-| Digitalisierung → affair | click the Digitalisierung map → `/` type `rechenzentr` → Enter → `j` → «Rechenzentren im Kanton Bern» | `t` → type `Digi` → Enter |
+| Digitalisierung → affair | click the Digitalisierung map → `/` type `souveränität` → Enter → `j` → «Der Kanton Bern strebt digitale Souveränität an» (`338697`: DE/FR readings disagree → bitte prüfen; quote from the draft law) | `t` → type `Digi` → Enter |
 | Why this label | point at the two reading bars and the highlighted sentence | — |
 | Decide | `1` (name preset to «Demo») → state line shows who/when | static: "stored in this browser" is fine |
 | Neues Thema | `n` → Christian's sentence → Enter; while it streams, go on talking | if slower than 30 s to first rows: open a saved topic (`t` → «Wolf») and say it was defined in one sentence yesterday |
 | Prüfstand | `b`; point at the held-out row (0.696, 927 fresh affairs), then the lane split bar | — |
-| Integration | terminal: `psql "$DSN" -f upstream/opd/migrations/0001_topics.up.sql`, the Hop workflow (`upstream/hop/README.md`, `./hop-run.sh -j querschnitt-opd -e opd -r local -f '${PROJECT_HOME}/load_topics.hwf' …`), `curl -s ':8000/changes?after=0&limit=3'` | screenshots in docs/img |
+| Integration | the Anbindung view: the `topics` migration, the Hop loader, a `GET /changes` page, last night's log — no live terminal on stage; the commands (`psql … 0001_topics.up.sql`, `./hop-run.sh …`, `curl ':8000/changes?after=0&limit=3'`) are in `upstream/hop/README.md` for the deep dive | screenshots in docs/img |
 | make eval | terminal: `make eval GOLD=their.csv` or the Basel view (`t` → «Basel-Stadt») | `make eval GOLD=data/eval/gold_aps_s9.csv` |
 
 ## Finals (5 min)

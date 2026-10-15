@@ -163,6 +163,14 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
   overview = themes as a ranked bar list (click filters) with «stimmt mit dem Kanton überein: k / n (Thema 1) · k / n
   (Thema 1 oder 2)» from `own_gold`; detail = model theme, lane, the canton's Thema 1/2 with a mono mark ([=], [= 2],
   [≠]; red only for [≠] in the please-check lane) and the CC BY credit. Period = the scheme's own range (2019–24).
+- Ticino (S29, 15 Oct) is the second named scheme, with no code of its own in the app: `export.OWN` says per scheme
+  where its own labels live (Basel-Stadt: `../data/manual/bs_100086.csv` by number; Ticino: `eval/s29/items.jsonl` by
+  OPD id, OPD's lead department) and how the app names it (`names`, `unit`, `group`, `source`, option codes as `abbr`),
+  copied into scheme_aps.json `schemes[]`. Without `names` the picker says «<place>: <n> Themen»; with only one own
+  label per affair the overview drops «(Thema 1 oder 2)». Ticino: «Tessin: Departemente» / «Tessin : départements»,
+  options in Italian as the canton writes them, period 2023-01 – 2026-10 (`--extra TI:2023-01-01:2024-12-31` and
+  `runs/s29` are export defaults), detail «Kanton: …» under «Federführung laut OpenParlData (Gran Consiglio Ticino)».
+  The scheme in view leads the detail's facts.
 - The main slice starts at `meta.since`; affairs before it count only in the scheme views that cover them (atlas,
   matrix, topic counts and every other topic stay on 2025–26).
 - Saved topics: the scored period is the weeks where ≥ 50 % of all affairs carry a decision (a `period: [from, to]` in

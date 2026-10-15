@@ -1,6 +1,6 @@
 // Karte (and the Neues Thema board): topic → map + weekly timeline → ruled list (or Pult) → the selected affair.
 import { D, API, apiPost, getDec, setDec, detail, TOPICS, TOPIC_BY_ID, norm, syncDecisions } from './data.js';
-import { h, t, UI, num, pct, p3, fmtDate, isoWeek, isoOfDay, dayNum, debounce, toast, download } from './util.js';
+import { h, t, UI, num, pct, p3, fmtDate, isoWeek, isoOfDay, dayNum, debounce, toast, download, loc } from './util.js';
 import { SwissMap, rampBreaks, rampClass } from './map.js';
 import { Timeline } from './timeline.js';
 import { VList } from './vlist.js';
@@ -83,10 +83,10 @@ export class Board {
     const tp = this.tp;
     if (tp && tp.kind === 'be') {
       const cnt = new Map(); for (let i = 0; i < D.n; i++) { const cd = tp.codeAt(i); if (cd != null) cnt.set(cd, (cnt.get(cd) || 0) + 1); }
-      const ds = h('select', { 'aria-label': L.dir }, h('option', { value: '' }, L.all),
+      const ds = h('select', { 'aria-label': tp.named ? loc(tp.unit) : L.dir }, h('option', { value: '' }, L.all),
         tp.options.map(o => h('option', { value: o.code, selected: F.dir === o.code }, `${optLabel(o)} (${num(cnt.get(o.code) || 0)})`)));
       ds.addEventListener('change', () => { F.dir = ds.value; this.refresh(); });
-      this.filters.prepend(h('div', { class: 'fl wide' }, h('label', { class: 'k' }, tp.named ? L.theme : L.dir), ds));
+      this.filters.prepend(h('div', { class: 'fl wide' }, h('label', { class: 'k' }, tp.named ? loc(tp.unit) : L.dir), ds));
     }
   }
   passMask() {
@@ -246,7 +246,7 @@ export class Board {
     const isBe = tp && tp.kind === 'be';
     if (isBe) {
       const o = S.f.dir ? tp.opt.get(S.f.dir) : null;
-      this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${tp.named ? L.theme : L.dir}: ${o ? optLabel(o) : L.all} · ${per}`, ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`));
+      this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs} · ${tp.named ? loc(tp.unit) : L.dir}: ${o ? optLabel(o) : L.all} · ${per}`, ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`));
     } else if (tp && tp.kind === 'all') {
       this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs}${S.f.q || S.f.type || S.f.status || S.f.party ? ` ${L.of} ${num(scoredSel)} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)}` : ''} · ${per}`,
         bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`)) : '',
@@ -525,13 +525,15 @@ export class Board {
     }
     const mx = Math.max(1, ...cnt.values());
     const opts = tp.named ? [...tp.options].sort((a, b) => (cnt.get(b.code) || 0) - (cnt.get(a.code) || 0)).filter(o => cnt.get(o.code)) : tp.options;
-    const box = h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, tp.named ? L.themes : L.beGroup)));
-    if (n1) box.append(h('p', { class: 'dgn', style: 'margin:0 0 8px' }, `${L.goldMatch}: `, h('b', {}, `${num(k1)} / ${num(n1)}`), ` (${L.theme1}) · ${num(k12)} / ${num(n1)} (${L.theme12})`));
+    const box = h('div', { class: 'ov' }, h('div', { class: 'dgh' }, h('span', {}, tp.named ? loc(tp.group) || L.themes : L.beGroup)));
+    // the canton's own label: one (Ticino's lead department) or two per affair (Basel-Stadt's «Thema 1» / «Thema 2»)
+    if (n1) box.append(h('p', { class: 'dgn', style: 'margin:0 0 8px' }, `${L.goldMatch}: `, h('b', {}, `${num(k1)} / ${num(n1)}`),
+      tp.gold2 ? ` (${L.theme1}) · ${num(k12)} / ${num(n1)} (${L.theme12})` : ''));
     box.append(rankList(opts.map(o => ({ label: optLabel(o), v: (cnt.get(o.code) || 0) / mx,
       tone: this.S.f.dir === o.code ? 'ink' : 'grey', strong: this.S.f.dir === o.code, value: num(cnt.get(o.code) || 0), mark: chk.get(o.code) ? L.pending : null,
       tip: `${optName(o)} · ${num(cnt.get(o.code) || 0)}${chk.get(o.code) ? ` · ${L.pending} ${num(chk.get(o.code))}` : ''}`,
       onClick: () => { this.S.f.dir = this.S.f.dir === o.code ? '' : o.code; this.buildFilters(); this.refresh(); } }))));
-    if (tp.named && n1) box.append(h('p', { class: 'tm mono dim', style: 'font-size:12px;margin-top:8px' }, L.bsCredit));
+    if (tp.named && n1 && tp.source) box.append(h('p', { class: 'tm mono dim', style: 'font-size:12px;margin-top:8px' }, loc(tp.source)));
     sc.append(box);
   }
 

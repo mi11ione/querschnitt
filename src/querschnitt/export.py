@@ -41,6 +41,70 @@ def jdump(p: Path, obj):
     tmp.rename(p)
 
 
+def _code(o: dict) -> str:
+    return o["code"].split(":", 1)[1]
+
+
+def _gold_bs(sch: dict, path: Path) -> dict:
+    """Basel-Stadt OGD 100086 (CC BY 4.0): «Thema 1» / «Thema 2» per Signatur, by theme name."""
+    import csv
+    by_name = {o["name"]["de"]: _code(o) for o in sch["options"]}
+    return {(sch["body"], r["Signatur"]): [by_name.get(r["Thema 1"]), by_name.get(r["Thema 2"]) if r["Thema 2"] else None]
+            for r in csv.DictReader(open(path, encoding="utf-8-sig"), delimiter=";")}
+
+
+def _gold_items(sch: dict, path: Path) -> dict:
+    """An eval items file (eval/s29/items.py): one `gold` option name (Italian, as the canton writes it) per OPD affair id
+    (by id, not number: a number can recur on another affair)."""
+    by_name = {o["name"]["it"]: _code(o) for o in sch["options"] + [sch["none"]]}
+    out = {}
+    for line in open(path, encoding="utf-8"):
+        if line.strip():
+            r = json.loads(line)
+            out[r["id"]] = [by_name.get(r["gold"]), None]
+    return out
+
+
+# A parliament's own scheme (kind named) in the app: where its own labels live (gold: reader, file; skipped when the file is
+# missing) and how the app names it (unit of one option, the overview heading, the source line under the canton's label;
+# names: the picker entry, else «<place>: <n> Themen»; abbr: show the option codes as abbreviations).
+OWN = {
+    "bs-themen": dict(
+        gold=(_gold_bs, ROOT.parent / "data/manual/bs_100086.csv"),
+        unit=dict(de="Thema", fr="Thème"), group=dict(de="Geschäfte nach Thema", fr="Objets par thème"),
+        source=dict(de="Thema laut Kantons- und Stadtentwicklung Basel-Stadt, CC BY 4.0",
+                    fr="Thème selon Kantons- und Stadtentwicklung Basel-Stadt, CC BY 4.0")),
+    "ti-dipartimenti": dict(
+        gold=(_gold_items, ROOT / "eval/s29/items.jsonl"),
+        names=dict(de="Tessin: Departemente", fr="Tessin : départements", it="Ticino: dipartimenti"),
+        unit=dict(de="Departement", fr="Département", it="Dipartimento"),
+        group=dict(de="Geschäfte nach federführendem Departement", fr="Objets par département compétent"),
+        source=dict(de="Federführung laut OpenParlData (Gran Consiglio Ticino)",
+                    fr="Département compétent selon OpenParlData (Gran Consiglio Ticino)"),
+        abbr=True),
+}
+
+
+def own_gold() -> dict:
+    """OPD id or (body, number) → [code, second code or None] over every named scheme whose own labels are on disk
+    (OWN[id].gold)."""
+    out = {}
+    for sch in named_schemes():
+        reader, path = OWN.get(sch["id"], {}).get("gold", (None, None))
+        if reader and path.exists():
+            out.update(reader(sch, path))
+    return out
+
+
+def scheme_entry(s: dict) -> dict:
+    """A named scheme for scheme_aps.json: options (+ none), and the app's names for it from OWN."""
+    a = OWN.get(s["id"], {})
+    opt = lambda o: dict(code=_code(o), name=o["name"], **(dict(abbr=dict(de=_code(o), fr=_code(o))) if a.get("abbr") else {}))
+    return dict(id=s["id"], body=s.get("body"), kind="named", title=s["title"],
+                options=[opt(o) for o in s["options"]] + [dict(code=_code(s["none"]), name=s["none"]["name"])],
+                **{k: a[k] for k in ("names", "unit", "group", "source") if k in a})
+
+
 def run(args):
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
     extra = [tuple(e.split(":")) for e in args.extra]   # BODY:FROM:TO — a parliament's own scheme with its labelled years
@@ -70,15 +134,7 @@ def run(args):
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     n_dec = collections.Counter()
     n_extra = 0
-    gold_own = {}   # a parliament's own labels where published openly (Basel-Stadt OGD 100086, CC BY 4.0): number → code
-    bsf = ROOT.parent / "data/manual/bs_100086.csv"
-    if bsf.exists():
-        import csv
-        bs = next((s_ for s_ in named_schemes() if s_["id"] == "bs-themen"), None)
-        if bs:
-            by_name = {o["name"]["de"]: o["code"].split(":", 1)[1] for o in bs["options"]}
-            for r in csv.DictReader(open(bsf, encoding="utf-8-sig"), delimiter=";"):
-                gold_own[("BS", r["Signatur"])] = [by_name.get(r["Thema 1"]), by_name.get(r["Thema 2"]) if r["Thema 2"] else None]
+    gold_own = own_gold()   # OPD id or (body, number) → [code, second code or None]: each named scheme's own labels (OWN)
     for x in X:
         d = decide(x, rows, eng.ch1_prompt, topics)
         if not (args.since <= x["date"] <= args.until) and not any(k in NAMED_IDS for k in d):
@@ -108,7 +164,7 @@ def run(args):
                      ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None),
                      ("own", next(([k, v["code"].split(":", 1)[1], int(v["lane"] == "please_check")] for k, v in d.items()
                                    if k in NAMED_IDS), None)),
-                     ("own_gold", gold_own.get((x["body"], x["number"]))),
+                     ("own_gold", gold_own.get(x["id"]) or gold_own.get((x["body"], x["number"]))),
                      ("adhoc", {k.split("/", 1)[1]: [round(v["p"], 3), int(v["flag"]), int(v["lane"] == "please_check")]
                                 for k, v in d.items() if k.startswith("adhoc/") and k != "adhoc/digitalisierung"} or None)):
             cols[k].append(v)
@@ -156,9 +212,7 @@ def run(args):
         schemes=[dict(id="be-directorates", body="BE", title=flat("be-directorates")["title"],
                       options=[dict(code=o["code"].split(":")[1], abbr=o["abbr"], name=o["name"]) for o in flat("be-directorates")["options"]]
                       + [dict(code="none", abbr={"de": "—", "fr": "—"}, name=flat("be-directorates")["none"]["name"])])]
-                + [dict(id=s["id"], body=s.get("body"), kind="named", title=s["title"],
-                        options=[dict(code=o["code"].split(":", 1)[1], name=o["name"]) for o in s["options"]]
-                        + [dict(code=s["none"]["code"].split(":", 1)[1], name=s["none"]["name"])]) for s in named_schemes()]))
+                + [scheme_entry(s) for s in named_schemes()]))
     tot = sum(c["n"] for c in cov.values())
     meta = dict(generated_at=now, version=VERSION, model=lock["model"], build=lock["fp"], build_short=lock["fp"][-8:],
                 since=args.since, until=min(X[0]["date"], time.strftime("%Y-%m-%d")) if X else None,
@@ -180,14 +234,15 @@ def run(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev", "s20", "s19") if (ROOT / "runs" / r / "state.json").exists()))
+    ap.add_argument("--run", default=",".join(str(ROOT / "runs" / r) for r in ("main", "side", "ev", "s20", "s19", "s29") if (ROOT / "runs" / r / "state.json").exists()))
     ap.add_argument("--inputs", default=str(ROOT.parent / "data/inputs.jsonl.gz"))
     ap.add_argument("--opd", default=str(ROOT.parent / "data/opd-new"))
     ap.add_argument("--out", default=str(ROOT / "app/data"))
     ap.add_argument("--since", default="2025-01-01")
     ap.add_argument("--until", default="9999")
-    ap.add_argument("--extra", nargs="*", default=["BS:2019-01-01:2024-12-31"],
-                    help="BODY:FROM:TO ranges added to the slice (Basel-Stadt's labelled years for its own scheme, S20/S21)")
+    ap.add_argument("--extra", nargs="*", default=["BS:2019-01-01:2024-12-31", "TI:2023-01-01:2024-12-31"],
+                    help="BODY:FROM:TO ranges added to the slice, only affairs scored with the parliament's own scheme "
+                         "(Basel-Stadt's labelled years, S20/S21; Ticino's lead departments before the slice, S29)")
     ap.add_argument("--topics-file", dest="topics_file", action="store_true", default=True, help="write the open topics file (default)")
     ap.add_argument("--no-topics-file", dest="topics_file", action="store_false", help="skip the open topics file")
     run(ap.parse_args(argv))

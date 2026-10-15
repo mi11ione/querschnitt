@@ -161,16 +161,24 @@ function buildTopics() {
       scored: i => c.be[i] != null, hit: i => c.be[i] != null, p: () => NaN, check: i => c.beLane[i] === 1,
       coverage: b => b.n_affairs ? (b.n_scored || 0) / b.n_affairs : null });
   }
-  // a parliament's own named scheme (e.g. Basel-Stadt's 46 Themen): column own = [schemeId, code, lane]
+  // a parliament's own named scheme (Basel-Stadt's 46 Themen, Ticino's lead departments): column own = [schemeId, code,
+  // lane], own_gold = the parliament's own label [code, second code]; the export names the scheme (names, unit, group,
+  // source), else «<place>: <n> Themen»
   for (const sc of ((D.scheme && D.scheme.schemes) || []).filter(x => x.kind === 'named')) {
     const opt = new Map(sc.options.map((o, k) => [o.code, { ...o, k }]));
     const mine = i => { const o = c.own[i]; return o && o[0] === sc.id ? o : null; };
-    let a = Infinity, z = -Infinity, da = Infinity, dz = -Infinity;
-    for (let i = 0; i < D.n; i++) if (mine(i)) { if (c.week[i] < a) a = c.week[i]; if (c.week[i] > z) z = c.week[i]; if (c.day[i] < da) da = c.day[i]; if (c.day[i] > dz) dz = c.day[i]; }
-    const place = (D.B.get(sc.body) || {}).place_de || sc.body;
-    addTopic({ id: sc.id, kind: 'be', named: true, scheme: sc.id, scope: sc.body, options: sc.options, opt, prefix: sc.id,
-      names: { de: `${place}: ${sc.options.length - 1} Themen`, fr: `${(D.B.get(sc.body) || {}).place_fr || place} : ${sc.options.length - 1} thèmes`, it: place },
-      title: sc.title, aliases: [place, sc.body, 'Themen', 'thèmes'], dom: a <= z ? [a, z] : null, domDays: a <= z ? [da, dz] : null, gold: c.ownGold.length > 0,
+    let a = Infinity, z = -Infinity, da = Infinity, dz = -Infinity, gold = false, gold2 = false;
+    for (let i = 0; i < D.n; i++) if (mine(i)) {
+      if (c.week[i] < a) a = c.week[i]; if (c.week[i] > z) z = c.week[i]; if (c.day[i] < da) da = c.day[i]; if (c.day[i] > dz) dz = c.day[i];
+      const g = c.ownGold[i]; if (g && g[0]) { gold = true; if (g[1]) gold2 = true; }
+    }
+    const place = (D.B.get(sc.body) || {}).place_de || sc.body, placeFr = (D.B.get(sc.body) || {}).place_fr || place;
+    const names = sc.names || { de: `${place}: ${sc.options.length - 1} Themen`, fr: `${placeFr} : ${sc.options.length - 1} thèmes`, it: place };
+    const unit = sc.unit || { de: 'Thema', fr: 'Thème' };
+    addTopic({ id: sc.id, kind: 'be', named: true, scheme: sc.id, scope: sc.body, options: sc.options, opt, prefix: sc.id, names,
+      unit, group: sc.group || null, source: sc.source || null,
+      title: sc.title, aliases: [...new Set([place, placeFr, sc.body, ...Object.values(names), ...Object.values(sc.title || {}), ...(sc.names ? [] : ['Themen', 'thèmes'])])],
+      dom: a <= z ? [a, z] : null, domDays: a <= z ? [da, dz] : null, gold, gold2,
       codeAt: i => { const o = mine(i); return o ? o[1] : null; }, codeOf: i => `${sc.id}:${(mine(i) || [])[1]}`,
       scored: i => !!mine(i), hit: i => !!mine(i), p: () => NaN, check: i => { const o = mine(i); return !!o && o[2] === 1; },
       coverage: () => null });

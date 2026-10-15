@@ -7,7 +7,7 @@ documentation CC BY 4.0, topic rows CDLA-Permissive-2.0.
 ## Summary
 
 OPD has no topic field on affairs. This MR adds one, as three tables in OPD's conventions, a loader in Apache Hop, an API
-resource description and a bulk-export spec. Every row says whether a model suggested it (`provenance = 'inferred'`) or a
+resource description with its read endpoints as a FastAPI router, and a bulk-export spec. Every row says whether a model suggested it (`provenance = 'inferred'`) or a
 person or parliament decided it (`provenance = 'confirmed'`), and which model build, prompt and input produced it. The
 rows come from Querschnitt, which reads OPD's published bulk exports and classifies each affair with Apertus
 (`swiss-ai/apertus-v1.5-8b`) as a closed choice from a code list. Nothing in this MR calls a model; OPD loads a file.
@@ -22,10 +22,14 @@ rows come from Querschnitt, which reads OPD's published bulk exports and classif
 | `opd/tools/gen_seed.py` | writes the `0002` seed from the scheme files; `--scheme <id> --name <NNNN_name>` writes a later migration for one new or changed scheme |
 | `opd/tests/smoke.sql` | after `0001` + `0002`: checks the seed and every constraint, in a transaction that is rolled back |
 | `opd/api/topics.md`, `opd/api/models.py` | resource description for `/v1/topics/`, `/v1/affairs/{id}/topics`, `/v1/topic_schemes/` (filters, `data` + `meta` envelope) and Pydantic v2 models |
+| `opd/api/router.py` | the read endpoints of `topics.md` as a drop-in FastAPI router (plain SQL over `psycopg` 3; feed switch of 0003, APS subtopics held back), and the two functions OPD's affairs list calls for `expand=topics` and `topic=` |
+| `opd/tests/test_router.py` | tests of the router against the migrated tables with loaded rows (CI job `hop`) |
 | `opd/export/EXPORT.md`, `opd/export/to_opd.py`, `opd/export/sample/` | `topics.ndjson.gz` (or per-body split), `topic_schemes.ndjson.gz`, `topic_codes.ndjson.gz`, index entries; a converter that writes them from Querschnitt's file until OPD exports the table itself |
 | `hop/` | Apache Hop 2.x project: `load_topics.hwf` + `load_topics.hpl` load Querschnitt's `topics.jsonl.gz` into `topics` |
 
-The API description and models are a specification; the endpoint code in OPD's API is not part of this MR.
+The read endpoints are implemented in `opd/api/router.py`: a FastAPI router (OPD's stack as the challenge brief names it:
+Python with FastAPI, PostgreSQL) that OPD mounts and gives its own database connection; `opd/api/topics.md`,
+"Implementation", lists what it does and what it leaves to OPD's shared response layer.
 
 ## Data model
 
@@ -94,9 +98,11 @@ build is published (Querschnitt `docs/ONSITE.md`, gate thresholds there). Two th
 
 - Querschnitt re-scores only new and changed affairs, so the table holds rows of several builds side by side; a build
   change does not re-version the whole table.
-- The refit is a manual step today; nothing in Querschnitt's code refuses to apply a calibration fitted on another build.
-  Until it does, OPD can hold a load whose `model_build` differs from the previous load's until Querschnitt confirms the
-  refit (one `SELECT DISTINCT model_build` on the file).
+- The refit is a manual step. Until it is done, Querschnitt applies a calibration only to rows of the build it was
+  fitted on: rows of another build carry `p` null, no `cutoffs_id`, and the APS chapter lane from the readings alone,
+  and composing them logs one warning per build (Querschnitt `docs/CONTRACT.md` §1). A file with a new build therefore
+  loads without a recalibrated `p` on that build's rows until the refit; `SELECT DISTINCT model_build, cutoffs_id` on
+  the table shows which builds are calibrated.
 
 ## Who owns a row (proposal; every point is OPD's call)
 
@@ -152,8 +158,10 @@ build is published (Querschnitt `docs/ONSITE.md`, gate thresholds there). Two th
    Check: `SELECT scheme_key, count(*) FROM topics GROUP BY 1`.
 6. Schedule the same command after each new topics file. Where that file comes from (Querschnitt's nightly publishes it;
    who runs that nightly and where OPD fetches the file) is an open question below.
-7. API and export: implement the resources of `opd/api/topics.md` and add the three tables to the bulk export job
-   (`opd/export/EXPORT.md`; leave out `content_hash`; APS level 2 held back).
+7. API: mount `opd/api/router.py` in OPD's application with its connection (`opd/api/topics.md`, "Implementation"),
+   and call `topics_for_affairs` / `affairs_topic_filter` from the affairs list for `expand=topics` and `topic=`.
+   Export: add the three tables to the bulk export job (`opd/export/EXPORT.md`; leave out `content_hash`; APS level 2
+   held back).
 
 ## Rollback
 
@@ -176,13 +184,16 @@ build is published (Querschnitt `docs/ONSITE.md`, gate thresholds there). Two th
   `postgres:16` image with 0001–0003 up over stand-in `affairs` / `bodies`. A fixture from the shipped file loads with
   every row equal to the `to_opd.py` conversion, text and document quotes with their ids; an identical reload writes
   nothing; a row changed at the same `valid_from` is updated in place with a new `updated_at`, a newer row closes the old
-  one; the released topics file loads in full, every row equal to the conversion; then the down migrations in reverse
-  order with the rows in place.
+  one; the released topics file loads in full, every row equal to the conversion; the API router's tests run against
+  those rows (`opd/tests/test_router.py`: response shapes, feed switch, subtopic hold-back, provenance, pagination,
+  filters); then the down migrations in reverse order with the rows in place.
 - 14 Oct, Apache Hop 2.19.0, by hand: a published rejection left in place by a later load (`hop/README.md`, "Tested").
 
 ## Known gaps before a merge
 
-- API endpoints are specified, not implemented.
+- API endpoints: implemented as a drop-in router (`opd/api/router.py`), tested in CI against the migrated tables. Not
+  yet wired into OPD's application; `fields`, `hide_null`, `exclude_null` and `output_format` are left to OPD's shared
+  response layer, and the `group_by` response shape is a proposal until OPD's own is known.
 - `ON DELETE CASCADE` from `affairs`: if OPD's ETL deletes and re-inserts affairs (or truncates the table), the topic rows
   of those affairs go with them. OPD to confirm how affairs are updated; otherwise drop the cascade.
 - No CHANGELOG in this MR because the target repository's format is not known here; a proposed entry is below.

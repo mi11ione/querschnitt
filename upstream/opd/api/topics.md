@@ -4,7 +4,8 @@ Proposed API resources for the `topics`, `topic_schemes` and `topic_codes` table
 (`../migrations/0001_topics.up.sql`), written to match the existing `/v1/` endpoints: list and detail endpoints,
 relation endpoints under `/v1/affairs/{id}/…`, `group_by` endpoints, and the shared query parameters (`offset`, `limit`,
 `sort_by`, `fields`, `lang`, `lang_fallback`, `lang_format`, `hide_null`, `exclude_null`, `output_format`) with the
-`data` and `meta` envelope. Response models are in `models.py` (Pydantic v2).
+`data` and `meta` envelope. Response models are in `models.py` (Pydantic v2). The read endpoints are implemented in
+`router.py` as a drop-in FastAPI router, tested in CI against the migrated tables (see "Implementation" below).
 
 ## Endpoints
 
@@ -15,8 +16,8 @@ relation endpoints under `/v1/affairs/{id}/…`, `group_by` endpoints, and the s
 | `GET /v1/topics/group_by/code` | counts per code for the filters given, e.g. chapters of one parliament in 2026 |
 | `GET /v1/topics/group_by/body_key` | counts per parliament for the filters given, e.g. where "Digitalisierung" comes up |
 | `GET /v1/affairs/{id}/topics` | the current rows of one affair (relation endpoint; `history=true` adds closed rows) |
-| `GET /v1/affairs/?expand=topics` | affairs with their topic rows; `topics_limit`, `topics_offset` as for other relations |
-| `GET /v1/affairs/?topic=aps:1.7.2.` | affairs whose current rank-1 row has this code (proposal: a filter on the affairs list) |
+| `GET /v1/affairs/?expand=topics` | affairs with their topic rows; `topics_limit`, `topics_offset` as for other relations (`router.topics_for_affairs`, called by OPD's affairs endpoint) |
+| `GET /v1/affairs/?topic=aps:1.7.2.` | affairs whose current rank-1 row has this code (proposal: a filter on the affairs list; `router.affairs_topic_filter`) |
 | `GET /v1/topic_schemes/`, `GET /v1/topic_schemes/{id}` | schemes and versions, with licence and source |
 | `GET /v1/topic_schemes/{id}/codes` | the codes of a scheme with labels and parent |
 
@@ -50,6 +51,8 @@ migration 0003).
 
 `lang` keeps its OPD meaning (the language of the returned labels), so the affair-language filter is named `affair_lang`.
 Querschnitt's own API (`docs/CONTRACT.md` §2) calls the same filters `body` and `lang`; the OPD names above take precedence.
+Its `/topics/{scheme}/{code}/affairs` is `/v1/topics/?scheme=&code=` here (the rows carry `affair_id`), or the `topic`
+filter on the affairs list.
 
 `sort_by` accepts any column; default `-valid_from`. `fields` and `output_format=csv|excel` work as on other resources;
 CSV and Excel carry the flat columns of the table (`label_de` … `evidence_quote`).
@@ -125,6 +128,51 @@ machine row (`valid_to`) and adds its own row.
 
 (Ranks 2 and 3 omitted above; `total_records` counts them.) The same row with `lang=fr&lang_format=flat` has
 `"label": "Aménagement du territoire et logement"`.
+
+## Implementation
+
+`router.py`: a FastAPI `APIRouter` (prefix `/v1`) with plain SQL over `psycopg` 3 against the tables of migrations
+0001–0003; FastAPI with Pydantic and PostgreSQL is OPD's stack as the challenge brief names it. Every endpoint
+answers with the models of `models.py` (FastAPI validates each response).
+
+```python
+from router import router, get_conn            # or a relative import inside OPD's package
+app.include_router(router)
+app.dependency_overrides[get_conn] = opd_db     # OPD's connection or pool; default: OPD_DSN, one connection a request
+```
+
+- **Feed switch.** With migration 0003 applied, a row is shown only when its body and scheme are switched on in
+  `topic_feed_bodies`, machine rows by `inferred_public`, decisions by `decisions_public`: the condition of
+  `topics_public`, applied to closed rows as well, so `history` and `current=false` follow the same switch. Without 0003
+  every body is shown. The router checks for the table on each request.
+- **APS subtopics** are left out of rows, `group_by` counts and codes while `APS_SUBTOPICS_PUBLIC = False`; one constant to
+  change once APS agrees. `/v1/topics/{id}` of a held-back row answers 404.
+- **`/v1/topics/{id}`** returns a current or closed row; `/v1/affairs/{id}/topics` answers 404 for an affair that does not
+  exist, an empty list for one without public rows, and sorts by `scheme_key,level,rank` unless `sort_by` is given.
+- **`group_by`** answers `{scheme_key, code, level, label, count, affair_count}` per code and `{body_key, body_id, count,
+  affair_count}` per parliament (`TopicCodeCount`, `TopicBodyCount` in `models.py`), in the `data` and `meta` envelope,
+  sorted by `-count`; `count` is rows, `affair_count` distinct affairs. If OPD's other `group_by` endpoints use another
+  shape, theirs applies.
+- **Languages.** `lang_format=nested` (default) returns all four languages; `flat` returns the `lang` label (German when
+  `lang` is not given), else the first of `lang_fallback` (comma-separated languages) that is set. The same holds for the
+  `name` and `question` of a scheme.
+- **Pagination** as in the example: `offset`, `limit` (`LIMIT_DEFAULT`, `LIMIT_MAX` in `router.py`), page links that
+  keep the request's other parameters; the order always ends on `id`, so pages do not overlap.
+- **Left to OPD's shared layer:** `fields`, `hide_null`, `exclude_null`, `output_format`, as for its other resources.
+- The affairs-list columns behind `affair_lang`, `date_from` and `date_to` are `affairs.language` and
+  `affairs.begin_date` (constants `AFFAIRS_LANG`, `AFFAIRS_BEGIN`).
+
+**Tested** in CI job `hop` (`.github/workflows/ci.yml`), after the Hop loads and before the down migrations:
+`../tests/test_router.py` against PostgreSQL with 0001–0003 applied and the released topics file loaded, each test in a
+transaction that is rolled back. Expected values come from SQL on the same tables (the view `topics_public` for current
+public rows). Checked: every response validates against `models.py`; the feed is empty until a body is switched on, then
+shows that body and scheme only, and every body once 0003 is rolled back; machine rows and decisions follow their own
+switch; APS subtopics are absent from rows, counts, codes and the detail endpoint, and present once the constant is
+flipped; a published rejection is its own row (`provenance = 'confirmed'`, `status = 'rejected'`, who and when, no
+`generated_by`), hides the suggestion by default and leaves the closed machine row in the history; a confirmation
+replaces the suggestion; no row mixes provenance; pagination walks every row once in the default order with correct
+`meta` and links; `group_by` counts add up to the list totals; each filter of the table above against its SQL;
+`topics_for_affairs` and `affairs_topic_filter` against SQL.
 
 ## Queries and indexes
 

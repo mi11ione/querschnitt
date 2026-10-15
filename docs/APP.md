@@ -226,6 +226,6 @@ not use them for counts. Labels name what they count:
   prose-like sentence of the evidence span, cut at a word boundary (≤ 160 chars, «…»). Title in the UI language where
   the parliament publishes it (`title_alt`), else the original with a language tag. Red tick = the topic's please-check
   lane. Click an affair → `#karte?t=<topic>&a=<id>&w=<week>-<week>`; click a topic → its Karte brushed to that week.
-- Detail buckets (1000 ids, ~2.4 MB): only the buckets holding ≥ 10 % of the week's candidates (at least the largest)
+- Detail buckets (`1000` ids each, a few MB): only the buckets holding ≥ 10 % of the week's candidates (at least the largest)
   are fetched, more only while a topic lacks two examples (≤ 3 rounds of ≤ 2 buckets).
 - Shots: `woche-1440`, `woche-fr-1440`, `woche-375`, `woche-prev-1440`, `woche-open-1440` in `dev/shoot.mjs`.

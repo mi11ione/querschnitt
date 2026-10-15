@@ -77,6 +77,11 @@ Measured on the corpus run at Public AI list price ([`eval/cost/results.json`](.
 0.969 requests/s on a shared key. Projection for all 326,123 OPD affairs (chapter step, not run):
 843,173 requests, USD 102.24, about 241.8 h at that rate; wall time, not money, sets the schedule.
 
+The nightly update reads OPD's published export, queues new and changed affairs, and scores the queue. Its first real
+night (15 Oct) ran into a Public AI outage: the cut pass queued 49 affairs (33 new) without a model call, and once the
+endpoint answered with the same build the drain scored all 49 in 9.6 min for USD 0.0215; 0 were left
+([`eval/nightly/2026-10-15.json`](../eval/nightly/2026-10-15.json)).
+
 ## 6. Limits
 - On fresh federal affairs the chapter is right in 0.696 and the pass lane in 0.812, below the 0.740 and 0.864 of the design
   set; the recalibration map was fitted on the design set and is refitted per build.

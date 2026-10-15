@@ -30,9 +30,8 @@ is not held out (the question was written with those items in view) · Romansh (
 | 1:10–1:50 | One table: "Against 927 federal affairs labelled by the editors of Année Politique Suisse and never seen while we built it, registered in advance, it picks the right one of 24 chapters in 0.696; keywords manage 0.186. Two thirds of them pass without a check and are right in 0.812; the rest it hands to a person — for cantonal and communal affairs, often title-only, about half." |
 | 1:50–2:30 | Neues Thema, live: a juror's topic in one sentence → last week across Switzerland; rows arrive while the pitch goes on. |
 | 2:30–3:20 | Reused, not retrained: Kanton Bern's eight directorates as a file — 0.651 from German titles, 0.650 from French ones against the Grand Council's own field; Basel-Stadt's 46 themes — and with their own examples it gets better. |
-| 3:20–4:20 | Ops: last night's log — affairs scored, wall time, USD at list price, rows pending after the endpoint was cut, minutes to drain; `docker compose` footprint from CI. |
+| 3:20–4:20 | Ops: last night's log. "On 15 Oct the model endpoint went down. The nightly queued the 49 new and changed affairs and waited; when the same model build answered again, it scored all 49 in 9.6 minutes, for two cents at list price. Nothing was lost, nothing was scored by another build." `docker compose` footprint from CI. |
 | 4:20–5:00 | The open trail: repo, topics file, Prüfstand with raw logs and the blind annotations; QR code. |
 
-TO UPDATE when measured: the first nightly
-numbers (Thu 09:15) into the ops beat, Neues Thema timing on the event endpoint (on the shared key: 98 affairs of last week in
+TO UPDATE when measured: Neues Thema timing on the event endpoint (on the shared key: 98 affairs of last week in
 145 s, `runs/adhoc/lehrpersonenmangel/summary.json`; no number is spoken until the event endpoint is measured).

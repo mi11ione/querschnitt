@@ -1,0 +1,17 @@
+{
+ "date": "2026-10-15",
+ "new_affairs": 33,
+ "new_rows": 481,
+ "usd": 0.021546,
+ "scored": 49,
+ "pending_after_cut": 49,
+ "pending_after_drain": 0,
+ "drain_minutes": 9.6,
+ "opd_export_generated": "2026-10-15T05:38:31Z",
+ "pending": 0,
+ "unscored_in_scope": 3868,
+ "endpoint_cut_first_pass": true,
+ "cut_wall_s": 268,
+ "drain_wall_s": 665,
+ "cut_reason": "Public AI outage (HTTP 400/404 from ~08:35, back 11:05); cut pass 09:31, drain 14:52 after a machine restart"
+}

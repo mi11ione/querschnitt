@@ -36,8 +36,9 @@ function renderShell() {
   $('#build').replaceChildren();
   // fact line: affairs, parliaments, scored share, build, last night's new rows, pending rows
   // «letzte Nacht: 412 neu · 8 min»; nothing when the night added no rows
-  const ng = m.nightly || null, nRows = ng ? (ng.new_rows ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
-  const night = nRows ? [`${num(nRows)} ${L.newW}${ng && ng.wall_min != null ? ` · ${Math.floor(ng.wall_min)} min` : ''}`, `${L.night}:`, true] : null;
+  // last night in affairs (new in OPD's export, scored that night), not topic rows
+  const ng = m.nightly || null, nNew = ng ? (ng.new_affairs ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
+  const night = nNew ? [`${num(nNew)} ${ng ? L.newAff : L.newW}${ng && ng.scored != null ? ` · ${num(ng.scored)} ${L.scored}` : ''}`, `${L.night}:`, true] : null;
   const items = [
     [num(m.affairs ?? D.n), L.affairs],
     [num(m.parliaments ?? D.bodies.length), L.parls],

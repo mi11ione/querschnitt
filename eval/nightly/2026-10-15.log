@@ -1,0 +1,16 @@
+== 2026-10-15 09:15:00 nightly start (endpoint cut for first pass: 0)
+affairs 35,815 ← /Users/mi11ion/Desktop/hackapertus/bern/querschnitt/app/data (static export)
+affairs 35815 · wall 4 s · list-price USD - · pending 0 · unscored in scope 0 · rows 216469 · store sqlite
+affairs 0 · wall 163 s · list-price USD 0.0000 · pending 0 · unscored in scope 3868 · rows 216469 · store sqlite · queue 0 → 0
+-- 2026-10-15 09:18:02 after model pass:
+affairs 0 · wall 163 s · list-price USD 0.0000 · pending 0 · unscored in scope 3868 · rows 216469 · store sqlite
+== 2026-10-15 09:18:03 nightly end, wall 3 min
+== 2026-10-15 09:31:49 manual cut pass (Public AI down since ~08:35; the 09:15 run skipped the fetch on an odd day — fixed in ops/nightly.sh)
+affairs 0 · wall 268 s · list-price USD 0.0000 · pending 49 · unscored in scope 3917 · rows 216469 · store sqlite · queue 49 → 49
+-- 2026-10-15 09:36:18 after cut pass:
+affairs 0 · wall 268 s · list-price USD 0.0000 · pending 49 · unscored in scope 3917 · rows 216469 · store sqlite
+== 2026-10-15 14:52:48 endpoint back (locked build): drain pass (the 11:05 recovery was missed: the Mac restarted)
+affairs 49 · wall 665 s · list-price USD 0.0215 · pending 0 · unscored in scope 3868 · rows 216808 · store sqlite · queue 49 → 0 · drain 9.6 min
+-- 2026-10-15 15:03:55 after drain:
+affairs 49 · wall 665 s · list-price USD 0.0215 · pending 0 · unscored in scope 3868 · rows 216808 · store sqlite
+== 2026-10-15 15:03:55 drain end, wall 11 min

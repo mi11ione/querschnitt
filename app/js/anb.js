@@ -46,8 +46,11 @@ export async function renderAnb(root) {
   right.append(ch);
   // (4) last night
   const ng = m.nightly;
+  // truncated, never rounded up (drain minutes at 0.1, USD at 0.0001); the cut is shown when the endpoint was down
+  const tr = (v, d) => Math.floor(v * 10 ** d) / 10 ** d;
   if (ng) right.append(h('div', { class: 'anb-sec' }, h('h2', {}, L.night),
-    h('p', { class: 'tm mono' }, `${ng.date} · OPD-Export ${String(ng.opd_export_generated || '').replace('T', ' ').slice(0, 16)} · ${L.anbNew} ${num(ng.new_affairs ?? 0)} · ${L.anbQueue} ${num(ng.pending_after_cut ?? ng.pending ?? 0)} → ${num(ng.pending_after_drain ?? 0)} · ${L.anbDrain} ${num(Math.floor(ng.drain_minutes ?? 0))} min · USD ${ng.usd != null ? Number(ng.usd).toFixed(2) : '–'} · ${num(Math.floor(ng.wall_min || 0))} min`)));
+    h('p', { class: 'tm mono' }, `${ng.date} · OPD-Export ${String(ng.opd_export_generated || '').replace('T', ' ').slice(0, 16)} · ${L.anbNew} ${num(ng.new_affairs ?? 0)} · ${L.anbQueue} ${num(ng.pending_after_cut ?? ng.pending ?? 0)} → ${num(ng.pending_after_drain ?? 0)} · ${L.anbDrain} ${ng.drain_minutes != null ? tr(ng.drain_minutes, 1) : '–'} min · USD ${ng.usd != null ? tr(Number(ng.usd), 4).toFixed(4) : '–'}${ng.wall_min ? ` · ${num(Math.floor(ng.wall_min))} min` : ''}`),
+    ng.endpoint_cut_first_pass ? h('p', { class: 'tm mono dim', 'data-tip': ng.cut_reason || '' }, L.anbCut) : ''));
   // (5) footprint
   const F = I.footprint;
   if (F) {

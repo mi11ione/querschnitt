@@ -703,6 +703,11 @@ prodgold	-	1153/1340	make eval on production rows, S9 gold (re-run after the det
 prodgold	-	0.840	make eval on production rows, S9 gold (re-run after the determinism fix)	0.8408614053225986	eval/results/eval-gold_aps_s9.json	schemes > aps > overall > top3 > k, n: Wilson 95% exact, floored at 3 decimals	OK		recomputed outward (file stores 0.8409)
 prodgold	-	0.878	make eval on production rows, S9 gold (re-run after the determinism fix)	0.8779733144836644	eval/results/eval-gold_aps_s9.json	schemes > aps > overall > top3 > k, n: Wilson 95% exact, ceiled at 3 decimals	OK		recomputed outward (file stores 0.878)
 prodgold	-	17	make eval on production rows, S9 gold (re-run after the determinism fix)	17	eval/results/eval-gold_aps_s9.json	schemes > aps > not_scored	OK		count
+NIGHTLY	-	33	15 Oct night: new affairs in OPD's export of 15 Oct	33	eval/nightly/2026-10-15.json	new_affairs	OK		
+NIGHTLY	-	49	15 Oct night: affairs queued by the cut pass (endpoint down) and scored by the drain	49	eval/nightly/2026-10-15.json	pending_after_cut / scored	OK		
+NIGHTLY	-	9.6	15 Oct night: minutes to drain the queue once the endpoint answered with the locked build	9.6	eval/nightly/2026-10-15.json	drain_minutes	OK		
+NIGHTLY	-	0.0215	15 Oct night: list-price USD of the drain	0.021546	eval/nightly/2026-10-15.json	usd	OK		truncated
+NIGHTLY	-	0	15 Oct night: rows left in the queue after the drain	0	eval/nightly/2026-10-15.json	pending_after_drain	OK		
 S19-27	-	4,305	adhoc_new_topics population (affairs with a title begun 1 Aug–6 Oct 2026)	4305	eval/s19/results.json	<topic> > strata > N, summed (equal for the three topics)	OK		count
 S19-27	-	774	adhoc_new_topics affairs checked by the judge (three packets)	774	eval/s19/results.json	<topic> > n_packet, summed	OK		count
 S19-27	-	0.963	adhoc_new_topics judge run A = run B	0.9638	eval/s19/results.json	agree_AB	OK		truncated, never rounded up

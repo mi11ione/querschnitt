@@ -59,7 +59,7 @@ export const MONTHS = {
 
 export const T = {
   de: {
-    anb: 'Anbindung', anbTable: 'Tabelle topics in OpenParlData', anbCols: 'Spalten', anbMachine: 'Maschine (inferred)', anbDecision: 'Entscheid (confirmed)', anbHop: 'Laden mit Apache Hop', anbSample: 'Beispiel', anbNew: 'neue Geschäfte', anbQueue: 'Warteschlange', anbDrain: 'abgebaut in', anbFoot: 'Speicher im Betrieb (docker stats, CI)',
+    anb: 'Anbindung', anbTable: 'Tabelle topics in OpenParlData', anbCols: 'Spalten', anbMachine: 'Maschine (inferred)', anbDecision: 'Entscheid (confirmed)', anbHop: 'Laden mit Apache Hop', anbSample: 'Beispiel', anbNew: 'neue Geschäfte', anbQueue: 'Warteschlange', anbDrain: 'abgebaut in', anbCut: 'Modell-Endpunkt war unterbrochen: die Warteschlange hielt die Geschäfte, bis derselbe Build wieder antwortete.', anbFoot: 'Speicher im Betrieb (docker stats, CI)',
     ueber: 'Überblick', karte: 'Karte', neu: 'Neues Thema', pruef: 'Prüfstand',
     bigScored: 'Geschäfte bewertet', bigWeeks: 'Wochen', bigWaiting: 'warten auf eine Person', thisWeek: 'Diese Woche', atlasLeg: 'Anteil an den bewerteten Geschäften des Kantons',
     affairs: 'Geschäfte', parls: 'Parlamente', scored: 'bewertet', of: 'von', build: 'Build', night: 'letzte Nacht', pending: 'zu prüfen',
@@ -76,7 +76,7 @@ export const T = {
     correct: 'richtig ist', noCorrection: 'ohne Korrektur weiter', corrected: 'korrigiert', undoLocal: 'nur lokal rückgängig: der Server kennt kein Undo',
     suggested: 'vorgeschlagen', allGroup: 'Suche', periodRead: 'liest', stopped: (r, n, why) => `gestoppt bei ${r} / ${n}${why ? ` (${why})` : ''}`,
     periods: { week: 'letzte Woche', month: 'letzter Monat', y2526: '2025–26' }, utc: 'Ortszeit',
-    week: 'KW', newW: 'neu', budget: 'Budget', perWeek: '/Woche',
+    week: 'KW', newW: 'neu', newAff: 'neue Geschäfte', budget: 'Budget', perWeek: '/Woche',
     type: 'Typ', status: 'Status', party: 'Partei', search: 'Suche', searchPh: 'Titel, Name; a|b = oder',
     shown: 'angezeigt', export: 'CSV', selParl: 'Parlament', clear: 'aufheben',
     accept: 'übernehmen', reject: 'verwerfen', skip: 'überspringen', undo: 'rückgängig',
@@ -101,7 +101,7 @@ export const T = {
     prov1: 'Daten: OpenParlData.ch', geo: 'Grenzen: BFS GEOSTAT / swisstopo (swiss-maps 4.7.0)', engine: 'Modell',
   },
   fr: {
-    anb: 'Intégration', anbTable: 'Table topics dans OpenParlData', anbCols: 'colonnes', anbMachine: 'machine (inferred)', anbDecision: 'décision (confirmed)', anbHop: 'Chargement avec Apache Hop', anbSample: 'exemple', anbNew: 'nouveaux objets', anbQueue: 'file', anbDrain: 'résorbée en', anbFoot: 'Mémoire en service (docker stats, CI)',
+    anb: 'Intégration', anbTable: 'Table topics dans OpenParlData', anbCols: 'colonnes', anbMachine: 'machine (inferred)', anbDecision: 'décision (confirmed)', anbHop: 'Chargement avec Apache Hop', anbSample: 'exemple', anbNew: 'nouveaux objets', anbQueue: 'file', anbDrain: 'résorbée en', anbCut: 'Le point d\u2019accès du modèle était interrompu : la file a gardé les objets jusqu\u2019à ce que le même build réponde à nouveau.', anbFoot: 'Mémoire en service (docker stats, CI)',
     ueber: 'Aperçu', karte: 'Carte', neu: 'Nouveau thème', pruef: 'Banc d’essai',
     bigScored: 'objets évalués', bigWeeks: 'semaines', bigWaiting: 'attendent une personne', thisWeek: 'Cette semaine', atlasLeg: 'part des objets évalués du canton',
     affairs: 'objets', parls: 'parlements', scored: 'évalués', of: 'sur', build: 'Build', night: 'la nuit dernière', pending: 'à vérifier',
@@ -118,7 +118,7 @@ export const T = {
     correct: 'correct', noCorrection: 'continuer sans correction', corrected: 'corrigé', undoLocal: 'annulé localement seulement : le serveur ne connaît pas l\u2019annulation',
     suggested: 'suggéré', allGroup: 'Recherche', periodRead: 'lit', stopped: (r, n, why) => `arrêté à ${r} / ${n}${why ? ` (${why})` : ''}`,
     periods: { week: 'semaine dernière', month: 'mois dernier', y2526: '2025–26' }, utc: 'heure locale',
-    week: 'sem.', newW: 'nouveaux', budget: 'budget', perWeek: '/semaine',
+    week: 'sem.', newW: 'nouveaux', newAff: 'nouveaux objets', budget: 'budget', perWeek: '/semaine',
     type: 'Type', status: 'Statut', party: 'Parti', search: 'Recherche', searchPh: 'titre, nom ; a|b = ou',
     shown: 'affichés', export: 'CSV', selParl: 'Parlement', clear: 'annuler',
     accept: 'accepter', reject: 'rejeter', skip: 'passer', undo: 'annuler',

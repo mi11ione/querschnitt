@@ -188,6 +188,12 @@ not scored), top 3 0.860 ([`eval/results/eval-gold_aps_s9.json`](../eval/results
    pending_after_cut, pending_after_drain, drain_minutes, usd, pending, unscored_in_scope (a cut pass starts it, the
    model pass after it completes it). Real smoke, 14 Oct: 2 affairs scored, 1 new affair queued by a cut pass and
    drained by the next pass with `--since 2030-01-01` (19 Public AI calls, build `…dd237840`).
+- **First real night, 15 Oct, with an endpoint outage** ([`eval/nightly/2026-10-15.json`](../eval/nightly/2026-10-15.json),
+  [log](../eval/nightly/2026-10-15.log)): Public AI answered HTTP `400`/`404` from about 08:35. The cut pass fetched OPD's
+  export of 15 Oct and queued 33 new affairs, 49 in all with the changed ones, without a model call; once the endpoint
+  answered with the locked build, the drain scored all 49 in 9.6 min for USD 0.0215 at list price, and 0 were left in
+  the queue. The 09:15 run itself fetched nothing: on days without a cut pass the model pass did not fetch (fixed in
+  `ops/nightly.sh`).
 
 Measured on the 11 Oct export (no fetch, no model): touched-only rebuild in 131 s, peak RSS 1.55 GB,
 all 326,123 input hashes identical to the full build (0 to re-score); the full rebuild takes 86 s at 4.7 GB peak.

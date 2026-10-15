@@ -29,7 +29,7 @@ OUT = HERE.parent / "migrations/0002_topic_schemes_seed.up.sql"
 OUT_DOWN = HERE.parent / "migrations/0002_topic_schemes_seed.down.sql"
 
 SCHEME_IDS = {"aps": 1, "adhoc/digitalisierung": 2, "be-directorates": 3, "adhoc/hitze": 4, "adhoc/ki-schule": 5,
-              "adhoc/wolf": 6, "bs-themen": 7}
+              "adhoc/wolf": 6, "bs-themen": 7, "ti-dipartimenti": 8}
 # Body schemes: who publishes the codes, under which licence (SPDX; None = to be agreed with the source).
 BODY_SCHEMES = {
     "be-directorates": dict(name_en="Canton of Bern: lead directorate", licence=None,
@@ -38,6 +38,14 @@ BODY_SCHEMES = {
     "bs-themen": dict(name_en="Basel-Stadt: themes of cantonal and urban development (Grand Council)", licence="CC-BY-4.0",
                       source_name="Kanton Basel-Stadt, Kantons- und Stadtentwicklung (OGD dataset 100086)",
                       source_url="https://data.bs.ch/explore/dataset/100086/"),
+    # Labels: the Gran Consiglio's lead department per affair as OPD's contributors export carries it (role
+    # leading_department, position 1; eval/s29/SOURCES.md). Neither OPD's export nor the canton states a licence for them.
+    "ti-dipartimenti": dict(name_en="Canton of Ticino: lead department (Grand Council)", licence=None,
+                            source_name="Repubblica e Cantone Ticino (department names); per-affair lead department as "
+                                        "published in the OpenParlData contributors export (role leading_department)",
+                            source_url="https://www.ti.ch",
+                            notes="Licence of the labels unconfirmed: OPD's export index states none, and the canton's object "
+                                  "pages were not opened (robots.txt). To be agreed with OPD / the Canton of Ticino."),
 }
 NO = {"de": "nein", "fr": "non", "it": "no"}
 
@@ -129,10 +137,10 @@ def schemes(strict: bool = True) -> list[tuple[dict, list[dict]]]:
                               label_it=d["none"]["name"].get("it")))
         body_key = d.get("body") or ("BE" if d["id"] == "be-directorates" else None)
         out.append((dict(id=_id(d["id"], strict), scheme_key=d["id"], version=version(p), type="body", levels=1,
-                         name_de=d["title"].get("de"), name_fr=d["title"].get("fr"), name_it=None, name_rm=None,
+                         name_de=d["title"].get("de"), name_fr=d["title"].get("fr"), name_it=d["title"].get("it"), name_rm=None,
                          name_en=meta["name_en"], question_de=None, question_fr=None, question_it=None, body_key=body_key,
                          licence=meta["licence"], source_name=meta["source_name"], source_url=meta["source_url"],
-                         notes=d.get("source"), code_count=len(codes)), codes))
+                         notes=" ".join(x for x in (d.get("source"), meta.get("notes")) if x) or None, code_count=len(codes)), codes))
     return sorted(out, key=lambda x: (x[0]["id"] is None, x[0]["id"] or 0, x[0]["scheme_key"]))
 
 

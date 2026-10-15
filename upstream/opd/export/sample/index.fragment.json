@@ -6,10 +6,10 @@
    "format": "ndjson.gz",
    "filename": "topics.ndjson.gz",
    "url": "https://files.openparldata.ch/exports/topics.ndjson.gz",
-   "size": 320462,
-   "size_human": "313.0K",
-   "row_count": 12719,
-   "created": "2026-10-14T00:28:38Z"
+   "size": 6431529,
+   "size_human": "6.1M",
+   "row_count": 139418,
+   "created": "2026-10-15T13:13:30Z"
   },
   {
    "entity": "topic_schemes",
@@ -17,10 +17,10 @@
    "format": "ndjson.gz",
    "filename": "topic_schemes.ndjson.gz",
    "url": "https://files.openparldata.ch/exports/topic_schemes.ndjson.gz",
-   "size": 1221,
-   "size_human": "1.2K",
-   "row_count": 3,
-   "created": "2026-10-14T00:28:38Z"
+   "size": 2652,
+   "size_human": "2.6K",
+   "row_count": 7,
+   "created": "2026-10-15T13:13:30Z"
   },
   {
    "entity": "topic_codes",
@@ -28,10 +28,10 @@
    "format": "ndjson.gz",
    "filename": "topic_codes.ndjson.gz",
    "url": "https://files.openparldata.ch/exports/topic_codes.ndjson.gz",
-   "size": 2006,
-   "size_human": "2.0K",
-   "row_count": 36,
-   "created": "2026-10-14T00:28:38Z"
+   "size": 3390,
+   "size_human": "3.3K",
+   "row_count": 89,
+   "created": "2026-10-15T13:13:30Z"
   }
  ]
 }

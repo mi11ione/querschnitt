@@ -32,9 +32,12 @@ read topics.jsonl.gz ─ parse JSON row ─ machine rows only ─ to OPD columns
   brought back by an identical reload.
 - **Lookups:** `bodies.body_key` → `body_id`; the active `topic_schemes` version → `scheme_id`; `topic_codes` →
   `label_de/fr/it/rm`, `parent_code`. A scheme missing from `topic_schemes` stops the load (`scheme_id` is NOT NULL);
-  apply `0002_topic_schemes_seed.sql` first.
+  apply `0002_topic_schemes_seed.up.sql` first. It seeds every scheme file in `src/querschnitt/schemes/`; an ad-hoc
+  topic saved later (Neues Thema writes `schemes/adhoc/<slug>.yaml`, and the nightly scores it) needs its own
+  `topic_schemes` row before the next load, or that load stops (rows committed before the failing batch stay; a re-run
+  after seeding skips them as unchanged).
 - **Only machine rows are loaded.** Decisions (`provenance = 'confirmed'`) come from the parliament or editor, not from
-  this file (`../opd/MERGE_REQUEST.md` §5).
+  this file (`../MERGE_REQUEST.md`, "Who owns a row").
 
 The workflow's SQL action then sets `valid_to` on every current machine row that a newer machine row of the same key
 supersedes (`valid_to` = the newer row's `valid_from`). Decision rows are never touched.
@@ -80,6 +83,23 @@ bulk export (326,124 affairs, 2,411 bodies):
 | 2 | the same file again | 15,386 skipped as unchanged, 0 written |
 | 3 | a new export (`valid_from` two days later, one row with a changed code) after a published rejection of another affair's chapter | 1 inserted, 1 closed at the new `valid_from`; the 15,385 equal rows skipped; the rejection stayed current and its machine row stayed closed |
 
-Both files are well-formed XML (`xmllint --noout`). Not covered by the loader: a key that disappears from a re-scored
-affair (e.g. an affair that loses its third subtopic) keeps its last machine row current; Querschnitt's own store closes
-such keys, and the same rule can be added to the SQL action if OPD wants it.
+Both files are well-formed XML (`xmllint --noout`). That test predates three changes, so it has to be repeated before
+the merge: the shipped topics file now carries seven schemes, four of which the old seed lacked (a load of it stopped at
+the first such row), and evidence quotes from documents; migration 0002 became `0002_topic_schemes_seed.up.sql` with a
+`.down.sql` and seeds all seven; 0001 lost the redundant `topics_machine_key` index (the lookup uses
+`topics_version_key`). The migrations themselves were re-checked on 15 Oct on PostgreSQL 16.2 without Hop (up, re-run,
+reverse rollback 0003 → 0002 → 0001 with data, re-up; the shipped file converted by `../opd/export/to_opd.py
+--with-subtopics` loads with every constraint and foreign key satisfied).
+
+Known gaps of the loader (not fixed, because they need a Hop run to verify):
+- **Evidence source.** The pipeline reads `evidence.field/start/end/quote` but not `evidence.source` (`text:<id>`,
+  `doc:<id>`), so `evidence_text_id` / `evidence_doc_id` stay null and a quote taken from a document is stored with
+  `evidence_field = 'text'`. `../opd/export/to_opd.py` maps it correctly (`doc` + `evidence_doc_id`); the pipeline needs
+  the same: one more JSON field (`$.evidence.source`) and a split on `:`.
+- **`updated_at` on update.** When the insert / update transform updates an existing key (same `valid_from`, changed
+  content), `updated_at` is not set, so `?since=` misses that change. Querschnitt never re-sends a changed row with the
+  same `valid_from`, so this does not happen with its files; add `updated_at` to the update fields if OPD writes rows
+  another way.
+- **Vanished keys.** A key that disappears from a re-scored affair (e.g. an affair that loses its third subtopic) keeps
+  its last machine row current; Querschnitt's own store closes such keys, and the same rule can be added to the SQL
+  action if OPD wants it.

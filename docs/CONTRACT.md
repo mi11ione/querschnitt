@@ -5,13 +5,13 @@
 |---|---|---|
 | affair_id | int | OPD affair id |
 | body_key | text | OPD body key (`CHE`, `BE`, `351`, …) |
-| scheme | text | `aps`, `curia28`, `be-directorates`, `adhoc/digitalisierung`, `adhoc/<slug>` |
+| scheme | text | `aps`, `be-directorates`, `bs-themen`, `adhoc/digitalisierung`, `adhoc/<slug>` (one file each in `src/querschnitt/schemes/`) |
 | level | int | 1 = chapter / yes-no, 2 = subtopic |
 | code | text | `aps:1.7.2.`, `aps:kw:1374918`, `aps:none`, `adhoc/digitalisierung:yes` |
 | rank | int | 1 = shipped label; 2–3 = ranked suggestions |
 | p | real | recalibrated probability (raw `p_raw` kept beside it) |
 | p_raw | real | engine probability before recalibration |
-| lane | text | `pass` · `please_check` (recalibrated p < 0.7, or German and French readings disagree in a bilingual parliament); `readings_agree` in rows made before 14 Oct |
+| lane | text | `please_check` = a person should look; otherwise no check is asked for. APS chapter, rank 1: `please_check` when the recalibrated p < 0.7 or the German and French readings of a bilingual parliament disagree, else `pass` (since 14 Oct; earlier rows `readings_agree`). Ad-hoc topics: `please_check` when the two answer orders disagree, 0.3 ≤ p < 0.7, or a flag fails the second question, else `readings_agree`. Parliament schemes: `please_check` when the two readings disagree, else `readings_agree`. Null on ranks 2–3 and subtopics. The check constraint allows exactly these three values |
 | status | text | `suggested` · `confirmed` · `rejected` |
 | provenance | text | `inferred` · `confirmed` |
 | evidence | jsonb | `{"source": "text:7100" \| "doc:4711" \| "title", "field": "title\|title_long\|text", "char_start": 212, "char_end": 318, "quote": "…"}` |

@@ -122,8 +122,8 @@ CREATE INDEX IF NOT EXISTS topics_body_current    ON topics (body_key, scheme_ke
 CREATE INDEX IF NOT EXISTS topics_parent_current  ON topics (scheme_key, parent_code) WHERE valid_to IS NULL AND level = 2;
 -- ?since=                                               rows opened or closed after a timestamp (re-sync, like /changes)
 CREATE INDEX IF NOT EXISTS topics_updated_at      ON topics (updated_at);
--- loader: the latest machine row of a key (content-hash comparison and closing superseded rows)
-CREATE INDEX IF NOT EXISTS topics_machine_key     ON topics (affair_id, scheme_key, level, rank, valid_from) WHERE provenance = 'inferred';
+-- loader: the latest machine row of a key (content-hash comparison, closing superseded rows) uses the unique index of
+-- topics_version_key (affair_id, scheme_key, level, rank, valid_from); no separate index.
 
 -- Current rows only; what the public feed reads.
 CREATE OR REPLACE VIEW topics_current AS SELECT * FROM topics WHERE valid_to IS NULL;

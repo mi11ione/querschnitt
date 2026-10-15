@@ -8,7 +8,8 @@ Writes topics.ndjson.gz (or topics/topics_<body_key>.ndjson.gz with --split), to
 topic_codes.ndjson.gz and index.fragment.json (entries in the shape of files.openparldata.ch/exports/index.json).
 Columns are those of the `topics` table (../migrations/0001_topics.up.sql) minus the loader's `content_hash`; `id` is
 null here because OPD's own export dumps the table and carries the table id. Timestamps: naive ISO 8601 in UTC, as in
-OPD's exports. APS level-2 rows (subtopics) are left out unless --with-subtopics (to be agreed with APS; MERGE_REQUEST §6).
+OPD's exports. APS level-2 rows and codes (subtopics) are left out unless --with-subtopics (to be agreed with APS;
+../../MERGE_REQUEST.md, open questions).
 Needs PyYAML (scheme labels come from the same files as the seed migration)."""
 from __future__ import annotations
 
@@ -113,7 +114,7 @@ def main(argv=None) -> int:
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
 
     schemes, codes = {}, {}
-    for s, cs in gen_seed.schemes():
+    for s, cs in gen_seed.schemes(strict=False):   # a scheme without a fixed id gets scheme_id null here
         schemes[s["scheme_key"]] = s
         for c in cs:
             codes[(s["scheme_key"], c["code"])] = c
@@ -149,7 +150,8 @@ def main(argv=None) -> int:
     else:
         p = out / "topics.ndjson.gz"
         n = write_ndjson_gz(p, (r for bk in sorted(by_body) for r in by_body[bk])); index.append(entry("topics", p, out, n, a.base_url))
-    s_rows = [{k: v for k, v in s.items()} | dict(active=True) for s in schemes.values()]
+    s_rows = [{k: v for k, v in s.items()} | dict(body_id=bodies.get(s["body_key"]) if s["body_key"] else None, active=True)
+              for s in schemes.values()]
     p = out / "topic_schemes.ndjson.gz"; index.append(entry("topic_schemes", p, out, write_ndjson_gz(p, s_rows), a.base_url))
     c_rows = [dict(id=None, scheme_id=schemes[sk]["id"], scheme_key=sk, **c, label_rm=None) for (sk, _), c in codes.items()
               if a.with_subtopics or not (sk == "aps" and c["level"] == 2)]

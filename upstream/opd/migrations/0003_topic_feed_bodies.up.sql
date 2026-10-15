@@ -1,7 +1,12 @@
--- 0003_topic_feed_bodies (up) — PROPOSAL, for OpenParlData to decide (MERGE_REQUEST.md §5).
+-- 0003_topic_feed_bodies (up) — PROPOSAL, for OpenParlData to decide (upstream/MERGE_REQUEST.md, "Who owns a row").
 -- Machine suggestions appear in the public API and export per body and scheme, switched on by OPD (or at a parliament's
 -- request). Rows are stored for every body either way; this table only decides what the public feed shows.
--- Without this migration the feed shows every body (the default of the API description).
+-- Without this migration the feed shows every body (the default of the API description). WITH it, the feed is empty
+-- until a body is switched on: one row per body and scheme_key (the switch holds across scheme versions; scheme_id
+-- records the version that was active when it was switched on). Switch on every body that has rows:
+--   INSERT INTO topic_feed_bodies (body_id, body_key, scheme_id, scheme_key)
+--   SELECT DISTINCT t.body_id, t.body_key, s.id, s.scheme_key FROM topics t JOIN topic_schemes s ON s.scheme_key = t.scheme_key AND s.active
+--   WHERE t.body_id IS NOT NULL ON CONFLICT (body_id, scheme_key) DO NOTHING;
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS topic_feed_bodies (
@@ -15,15 +20,18 @@ CREATE TABLE IF NOT EXISTS topic_feed_bodies (
   contact            text,                             -- who at the parliament decides about the feed (optional)
   created_at         timestamp NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   updated_at         timestamp NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
-  CONSTRAINT topic_feed_bodies_body_scheme UNIQUE (body_id, scheme_id)
+  CONSTRAINT topic_feed_bodies_body_scheme UNIQUE (body_id, scheme_key)
 );
 
--- The public feed: current rows of switched-on bodies; a parliament's published decision is always shown.
+-- The public feed: current rows of switched-on bodies, machine rows and published decisions each by their own switch.
+-- APS subtopics (level 2) stay out until APS agrees to their publication (MERGE_REQUEST.md, open questions); drop that
+-- line with CREATE OR REPLACE VIEW once it does.
 CREATE OR REPLACE VIEW topics_public AS
 SELECT t.*
 FROM topics t
 JOIN topic_feed_bodies f ON f.body_id = t.body_id AND f.scheme_key = t.scheme_key
 WHERE t.valid_to IS NULL
+  AND NOT (t.scheme_key = 'aps' AND t.level = 2)
   AND ((t.provenance = 'inferred' AND f.inferred_public) OR (t.provenance = 'confirmed' AND f.decisions_public));
 
 COMMIT;

@@ -21,7 +21,12 @@ relation endpoints under `/v1/affairs/{id}/…`, `group_by` endpoints, and the s
 | `GET /v1/topic_schemes/{id}/codes` | the codes of a scheme with labels and parent |
 
 The write side (how a parliament's decision reaches the table) is not part of the public read API; see
-`../MERGE_REQUEST.md` §5.
+`../../MERGE_REQUEST.md`, "Who owns a row".
+
+**APS subtopics.** Until APS agrees to their publication, `/v1/topics/`, `/v1/affairs/{id}/topics`, the `group_by`
+endpoints and `/v1/topic_schemes/{id}/codes` leave out `scheme_key = 'aps' AND level = 2` (rows and codes), as the bulk
+export does. The table holds them already; the rule is one condition in the queries (and in the `topics_public` view of
+migration 0003).
 
 ## Filters on `/v1/topics/`
 
@@ -35,7 +40,7 @@ The write side (how a parliament's decision reaches the table) is not part of th
 | `affair_id` | `340560` | rows of these affairs |
 | `status` | `suggested,confirmed` | default: `suggested,confirmed` (rejected rows only on request) |
 | `provenance` | `inferred` | `inferred` = machine suggestion, `confirmed` = published decision |
-| `lane` | `please_check` | `readings_agree` or `please_check` |
+| `lane` | `please_check` | `please_check`, `pass` or `readings_agree` (see Row) |
 | `p_min` | `0.8` | recalibrated probability at least this |
 | `since` | `2026-10-15T00:00:00` | rows opened or closed after this time (UTC): a client re-syncs without re-reading the whole export |
 | `current` | `true` | default `true`; `false` includes closed versions (history) |
@@ -56,7 +61,7 @@ CSV and Excel carry the flat columns of the table (`label_de` … `evidence_quot
 | `scheme_key`, `level`, `code`, `parent_code`, `rank`, `label` | the model's choice among the scheme's codes | the decided code |
 | `p` | recalibrated probability for rank 1 (isotonic, fitted per served build); `null` for ranks 2–3 | copied from the machine row it decides |
 | `p_raw` | the model's probability | copied |
-| `lane` | `readings_agree`: two independent readings gave the same top code; `please_check`: they differ | copied |
+| `lane` | `please_check`: a person should look. APS chapter (rank 1): `please_check` when the recalibrated `p` is below 0.7 or the German and French readings of a bilingual parliament disagree, else `pass` (rule of 14 Oct 2026; earlier rows carry `readings_agree` = the two code orders agreed). Ad-hoc topics: `please_check` when the two answer orders disagree, `p` is between 0.3 and 0.7, or a flag failed the second question; parliament schemes: when the two readings disagree; else `readings_agree`. `null` on ranks 2–3 and subtopics | copied |
 | `status` | always `suggested` | `confirmed` or `rejected` |
 | `evidence` | one sentence of the affair; `quote` is an exact substring at `char_start`–`char_end` of `field` | copied |
 | `generated_by` | `model`, `model_build`, `cutoffs_id`, `prompt_id`, `input_hash`, `engine_version` | copied from the machine row |
@@ -130,6 +135,6 @@ machine row (`valid_to`) and adds its own row.
 | `… &body_key=` | `topics_body_current (body_key, scheme_key, code) WHERE valid_to IS NULL` |
 | `… &code=<chapter>&level=2` | `topics_parent_current (scheme_key, parent_code) WHERE valid_to IS NULL AND level = 2` |
 | `?since=` | `topics_updated_at (updated_at)` |
-| loader: latest machine row of a key | `topics_machine_key (affair_id, scheme_key, level, rank, valid_from) WHERE provenance = 'inferred'` |
+| loader: latest machine row of a key | the unique index of `topics_version_key (affair_id, scheme_key, level, rank, valid_from)` |
 
 `date_from` / `date_to` and `affair_lang` join `affairs` on `affairs.id`, which OPD already indexes by its primary key.

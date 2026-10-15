@@ -10,7 +10,9 @@ from typing import Literal, Optional, Union
 
 from pydantic import BaseModel, Field
 
-Lane = Literal["readings_agree", "please_check"]
+# please_check: a person should look; pass (APS chapter rows since 14 Oct 2026) and readings_agree (ad-hoc and parliament
+# schemes, and APS chapter rows before 14 Oct 2026): no check asked for. null on rank 2-3 and on subtopic rows.
+Lane = Literal["pass", "please_check", "readings_agree"]
 Status = Literal["suggested", "confirmed", "rejected"]
 Provenance = Literal["inferred", "confirmed"]
 

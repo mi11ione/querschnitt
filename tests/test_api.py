@@ -154,3 +154,22 @@ def test_adhoc_daily_cap(api):
     r = api.post("/adhoc", json={"sentence": "Wolf", "lang": "de", "limit": 1})
     assert r.status_code == 200
     wait(r.json()["slug"])
+
+
+def test_confirmations_become_examples(api, store, tmp_path, monkeypatch):
+    """The nightly's `querschnitt examples --all`: a Pult decision on an ad-hoc topic lands in that topic's file as an
+    example (the S26 loop), and a topic without decisions is left alone."""
+    import shutil, yaml
+    from querschnitt import cli
+    from querschnitt.store import ROOT
+    d = tmp_path / "adhoc_yaml"; d.mkdir(exist_ok=True)
+    shutil.copy(ROOT / "src/querschnitt/schemes/adhoc/digitalisierung.yaml", d / "digitalisierung.yaml")
+    import os
+    monkeypatch.setenv("QS_DB", store.path)
+    if os.environ.get("QS_TEST_ALL_PG") and os.environ.get("QS_TEST_PG_DSN"):
+        monkeypatch.setenv("QS_PG_DSN", os.environ["QS_TEST_PG_DSN"])
+    assert api.post(f"/affairs/{AID}/topics/adhoc/digitalisierung:yes/confirm",
+                    json={"by": "dvs", "scheme": "adhoc/digitalisierung"}).status_code == 200
+    cli.examples_cmd(["--all"])
+    ex = yaml.safe_load((d / "digitalisierung.yaml").read_text())["examples"]
+    assert [e["affair_id"] for e in ex if e["affair_id"] == AID] == [AID] and next(e for e in ex if e["affair_id"] == AID)["match"] is True

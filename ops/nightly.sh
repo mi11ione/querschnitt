@@ -21,6 +21,8 @@ FETCH="--no-fetch"; [ "$cut" = 1 ] || FETCH=""
   # the store mirrors the corpus run first (latest export of its rows; reloading identical rows adds nothing)
   # (--topics-file: topics.jsonl.gz must come from the same export as affairs.json, or the store and the app disagree)
   $PY -m querschnitt export --out app/data --topics-file > /dev/null && $PY -m querschnitt load --auto
+  # a person's decisions in the Pult become examples for their ad-hoc topic (the S26 loop) before tonight's scoring
+  $PY -m querschnitt examples --all
   if [ "$cut" = 1 ]; then
     $CAF $PY -m querschnitt delta --since yesterday --no-model --max-rate 1.0 --last runs/nightly/last.json
     echo "-- $(date '+%F %T') after cut pass:"; $PY -m querschnitt metrics

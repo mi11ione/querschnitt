@@ -198,6 +198,9 @@ not scored), top 3 0.860 ([`eval/results/eval-gold_aps_s9.json`](../eval/results
    pending_after_cut, pending_after_drain, drain_minutes, usd, pending, unscored_in_scope (a cut pass starts it, the
    model pass after it completes it). Real smoke, 14 Oct: 2 affairs scored, 1 new affair queued by a cut pass and
    drained by the next pass with `--since 2030-01-01` (19 Public AI calls, build `…dd237840`).
+- **Decisions become examples.** Before scoring, the nightly runs `querschnitt examples --all`: every ad-hoc topic with
+  confirmed or rejected rows in the Pult gets them written into its file as examples; its next yes/no prompts show the
+  four most similar decided affairs (the S26 loop; new prompt ids, so rows are re-scored, never mixed).
 - **First real night, 15 Oct, with an endpoint outage** ([`eval/nightly/2026-10-15.json`](../eval/nightly/2026-10-15.json),
   [log](../eval/nightly/2026-10-15.log)): Public AI answered HTTP `400`/`404` from about 08:35. The cut pass fetched OPD's
   export of 15 Oct and queued 33 new affairs, 49 in all with the changed ones, without a model call; once the endpoint

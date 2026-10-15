@@ -336,17 +336,34 @@ def shipped_data() -> tuple[str | None, list[str], Path | None]:
 
 
 # ---------------------------------------------------------------- editor decisions → examples
+def adhoc_dir() -> Path:
+    """The ad-hoc topic files (QS_ADHOC_DIR overrides, as for Neues Thema's save)."""
+    return Path(os.environ.get("QS_ADHOC_DIR") or ROOT / "src/querschnitt/schemes/adhoc")
+
+
 def examples_cmd(argv):
-    """querschnitt examples --topic digitalisierung [--dry-run]
+    """querschnitt examples --topic digitalisierung | --all [--dry-run]
     Reads the current confirmed/rejected rows of `adhoc/<topic>` from the store and writes them into
     schemes/adhoc/<topic>.yaml as `examples` ({affair_id, title, match, by, at}). From the next run on, each yes/no prompt
     for that topic shows the four most similar decided affairs (the S8 P8.5 loop shape; rows change prompt id and are
     re-scored, never mixed)."""
     import yaml
     ap = argparse.ArgumentParser(prog="querschnitt examples")
-    ap.add_argument("--topic", required=True)
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--topic")
+    g.add_argument("--all", action="store_true", help="every ad-hoc topic with confirmed decisions (the nightly runs this)")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
+    if a.all:
+        st = Store()
+        topics = sorted({r["scheme"].split("/", 1)[1] for r in st.all(
+            "SELECT DISTINCT scheme FROM topics WHERE scheme LIKE 'adhoc/%' AND provenance = 'confirmed' AND valid_to IS NULL")})
+        for t in topics:
+            if (adhoc_dir() / f"{t}.yaml").exists():
+                examples_cmd(["--topic", t] + (["--dry-run"] if a.dry_run else []))
+        if not topics:
+            print("no confirmed decisions on ad-hoc topics")
+        return
     st = Store(); sch = f"adhoc/{a.topic}"
     rows = st.all("SELECT t.affair_id, t.code, t.status, t.confirmed_by, t.confirmed_at, a.title FROM topics t "
                   "JOIN qs_affairs a ON a.id = t.affair_id WHERE t.scheme = ? AND t.valid_to IS NULL AND t.provenance = 'confirmed'", (sch,))
@@ -355,7 +372,7 @@ def examples_cmd(argv):
         yes = r["code"].endswith(":yes")
         match = yes if r["status"] == "confirmed" else (not yes)
         ex[r["affair_id"]] = dict(affair_id=r["affair_id"], title=r["title"], match=match, by=r["confirmed_by"], at=str(r["confirmed_at"]))
-    p = ROOT / "src/querschnitt/schemes/adhoc" / f"{a.topic}.yaml"
+    p = adhoc_dir() / f"{a.topic}.yaml"
     doc = yaml.safe_load(p.read_text())
     old = {e.get("affair_id"): e for e in doc.get("examples") or [] if isinstance(e, dict)}
     old.update(ex)

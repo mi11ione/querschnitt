@@ -24,3 +24,4 @@ eval/s25/raw_pages.jsonl.gz
 eval/s25/cdx/
 runs/prodgold.sqlite*
 data/topics.jsonl.gz
+eval/.prereg.lock

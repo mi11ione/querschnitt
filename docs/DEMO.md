@@ -13,20 +13,51 @@ affair · `1` übernehmen · `2` verwerfen (then a digit picks the correction) �
 ## Gate 1 (5 min)
 | Beat | Keys / clicks | If it fails |
 |---|---|---|
-| Diese Woche (finals opener) | the landing view (`w`); read the sentence; point at three examples in three languages; `f` for French | static site, same view |
 | Atlas | `a`; let it stand 3 s; point at Digitalisierung, then a dark map (Umweltschutz) | static site, same view |
 | Digitalisierung → affair | click the Digitalisierung map → `/` type `strebt digital` → Enter → `j` → «Der Kanton Bern strebt digitale Souveränität an» (`338697`: DE/FR readings disagree → bitte prüfen; quote from the draft law) | `t` → type `Digi` → Enter |
 | Why this label | point at the two reading bars and the highlighted sentence | — |
-| Decide | `1` (name preset to «Demo») → state line shows who/when | static: "stored in this browser" is fine |
+| Decide | `1` (set the name «Demo» in «Name für die Entscheidung» before the slot — it stays in the browser; without a name `1` only focuses the field) → state line shows who/when | static: "stored in this browser" is fine |
 | Neues Thema | open `#neu?limit=25` (or pick «höchstens 25 Geschäfte» beside the period) to cap the run at the 25 newest affairs (roughly 20–80 s; uncapped, the recorded run read 98 affairs in about five minutes); `n` → Christian's sentence → Enter; while it streams, go on talking | endpoint down or silent: the run line says «Der Modell-Endpunkt antwortet nicht» (or counts the seconds without a decision) and offers `[Aufzeichnung abspielen]`: one click plays the recorded real run, labelled as a recording; say so. Or open a saved topic (`t` → «Wolf») and say it was defined in one sentence yesterday |
 | Prüfstand | `b`; point at the held-out row (0.696, 927 fresh affairs), then the lane split bar | — |
 | Integration | the Anbindung view: the `topics` migration, the Hop loader, a `GET /changes` page, last night's log — no live terminal on stage; the commands (`psql … 0001_topics.up.sql`, `./hop-run.sh …`, `curl ':8000/changes?after=0&limit=3'`) are in `upstream/hop/README.md` for the deep dive | screenshots in docs/img |
 | make eval | terminal: `make eval GOLD=their.csv` or the Basel view (`m`, empty the search field: it stays across topics; `t` → «Basel-Stadt») | `make eval GOLD=data/eval/gold_aps_s9.csv` |
 
 ## Finals (5 min)
-Atlas (`a`) → Digitalisierung map → timeline brush on Feb–Sep 2026 → a Ticino affair (`/` `sovranit` Enter `j`) → `f` (French) →
-`d` → Prüfstand one row → Neues Thema with a juror's topic → Bern view (`t` «Bern») → an affair with DE/FR disagreement → `2`
-then the right directorate → ops terminal (`cat runs/nightly/last.json`) → end on the repo URL.
+`w` «Neueste Woche» (loaded before the slot) → read the line under the header and the headline → point at examples in
+German and French (Italian where the week has one) → open one: the why-sentence → `t` «Digi» → the map → `b` Prüfstand,
+the lead block (69.6%, 81.2%, 18.6%) → the second tab with `#neu?limit=25` (live run, or the recording on the static
+site) → `i` Anbindung: «letzte Nacht», the cost line, then the repository block with the QR code → end.
+
+## Stage setup (both slots)
+- Load the site before the slot: a cold first load takes 2–3 s, about 8 s on slow Wi-Fi; afterwards every key answers in
+  under a second.
+- Never paste a `#…` link on stage: it reloads the whole app. Open `#neu?limit=25` in a second tab beforehand.
+- Set the decision name once («Demo») in the browser you present from.
+- Check the demo affair (`#karte?a=338697`) on the morning of the slot: it must show its chapter, the DE/FR readings and
+  the quote; if not, use the fallback affair in the Gate 1 table.
+
+## Backup video
+If the venue Wi-Fi fails, play `dist/querschnitt-demo.mp4` (silent; the finals voice runs over it). `make film` records it
+from the live site in one command (`~15 min`, needs node, Chrome and ffmpeg): `app/dev/film.mjs` plays the storyboard below
+in headless Chrome, one virtual-time step per frame, so a slow network or machine cannot cause stutter or half-loaded
+frames (a step that waits for a fetch is not filmed), then encodes `1920×1080`, `30 fps`, H.264 and checks the file with
+ffprobe; beat and caption times go to `dist/querschnitt-demo.beats.json`. Re-record after the evening export refresh, then
+watch it once end to end. Preview without encoding: `node app/dev/film.mjs --frames /tmp/film --every 30`.
+The Woche beat adapts to the week: it scrolls to the two ranked rows with the most languages, names the languages it shows,
+points at a red tick if one is in view and opens a German example in the pass lane (the script prints which).
+
+| Time | Screen | Caption (lower third) |
+|---|---|---|
+| 0:00 | «Neueste Woche»: the sentence, the week by level and language | Last week in Swiss parliaments, by topic |
+| 0:05 | scroll through two topic rows, their quoted examples | Quoted sentences in German and French (the languages in view) |
+| 0:16 | the cursor rests on a red tick, its tip shows | Red tick: unsure, so a person checks |
+| 0:20 | click an example → Karte: the plain why-sentence, then the case scrolls to the quoted sentence | Why this topic, in one plain sentence · The sentence in the affair that supports it |
+| 0:34 | Überblick | One map per topic, same scale |
+| 0:39 | click Digitalisierung → its map | Digitalisierung across every parliament · AI judge: flags 0.905 right, keywords 0.756 |
+| 0:50 | Prüfstand, the lead block: held-out row, then the lane row | 927 unseen federal affairs: 0.696 match the editors · Two thirds pass unchecked, right in 0.812 |
+| 1:04 | Neues Thema: the recorded real run plays, its label in view, decisions stream in | A new topic from one sentence: recorded run |
+| 1:25 | Anbindung: the topics table and Hop loader, scroll to last night | The topics table and loader for OpenParlData · On Apertus: USD 0.333 per 1,000 affairs |
+| 1:38 | hold, fade to white | github.com/mi11ione/querschnitt |
 
 ## Offline
 The demo runs with Wi-Fi off once the data is on the laptop.

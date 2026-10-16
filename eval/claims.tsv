@@ -860,6 +860,10 @@ S30	-	1.000	S30 judge run A = run B	1.0	eval/s30/results.json	agree_AB	OK		trunc
 S30	-	0	S30 tie-breaks	0	eval/s30/results.json	n_C	OK		count
 S30	-	120	S30 random unflagged per topic	120	eval/s30/results.json	licht > strata > neither > n	OK		count
 S30	-	0	S30 judge positives among random unflagged	0	eval/s30/results.json	<topic> > strata > neither > judge_Y	OK		count
+PITCH	-	69.6%	S25 top-1 as the Prüfstand lead shows it (percent, truncated)	0.6968	eval/s25/results.json	top1 > value	OK		truncated
+PITCH	-	81.2%	S25 pass lane precision as the Prüfstand lead shows it	0.8125	eval/s25/results.json	lanes > pass > value	OK		truncated
+PITCH	-	18.6%	S25 keyword baseline as the Prüfstand lead shows it	0.1866	eval/s25/results.json	keyword_top1 > value	OK		truncated
+PITCH	-	1.8	please-check affairs per parliament and week on the Überblick (export of 15 Oct)	1.89	app/data (15 Oct export)	please_check / weeks / parliaments, truncated	OK		live figure; changes with each export
 S19-27	-	4,305	adhoc_new_topics population (affairs with a title begun 1 Aug–6 Oct 2026)	4305	eval/s19/results.json	<topic> > strata > N, summed (equal for the three topics)	OK		count
 S19-27	-	774	adhoc_new_topics affairs checked by the judge (three packets)	774	eval/s19/results.json	<topic> > n_packet, summed	OK		count
 S19-27	-	0.963	adhoc_new_topics judge run A = run B	0.9638	eval/s19/results.json	agree_AB	OK		truncated, never rounded up

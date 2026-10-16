@@ -154,8 +154,19 @@ Every row carries `label` {de, fr, it} from the scheme files.
   before it, candidates = title hits of the kept terms ∪ affairs whose stored APS subtopic (rank ≤ 3) Apertus names as
   able to hold the topic, plus a random outside sample (40; a third of `limit` in a capped run) whose flag rate and
   Wilson interval estimate the misses.
+- Capped run (`limit`, e.g. `#neu?limit=25`; J3 r8): the same candidate step runs over the whole period, inside the
+  scored slice too, and the candidates are read first (term hits ∪ subtopic hits, newest first), then the rest newest
+  first up to the cap; before the slice the outside sample keeps its third of the cap. Before this, a capped run read
+  the newest affairs whether or not they matched, so a narrow topic usually found nothing in its 25. The summary and
+  every `progress` / `done` event carry `order: "candidates first"`, `candidates_first` {n, terms, subtopics, read,
+  flagged}, `census` (false unless every affair of the period was read) and a `note`: a capped run is not a census of
+  the period, its flag count is a lower bound, and no recall is estimated for the unread affairs (the outside sample
+  covers only the part before the slice). The app's run line adds «Kandidaten zuerst (Begriffe, Unterthemen)». Inside
+  the slice a capped run waits at most `QS_ADHOC_GEN_S` for the terms, and a failed subtopic request leaves the terms
+  alone. Without a cap nothing changes: every affair of the period, newest first, no subtopic request inside the slice
+  (`tests/test_adhoc.py::test_uncapped_run_reads_what_it_read_before`).
 - Decisions: order a, order b when 0.1 < p < 0.9; p, flag and lane by `compose.yn_decision` (the nightly rows' rule);
-  3 worker threads, newest first. The first served build is locked for the process; a different build stops the run.
+  3 worker threads, in the order above. The first served build is locked for the process; a different build stops the run.
 - Budget and stop (dogfood round 1): `QS_ADHOC_MAX_CALLS` is a per-run budget (per start and per `continue`); the run
   ends with `stop: cap` and `unread`, never as if complete. `QS_ADHOC_DAILY_USD` caps the list-price spend per local day:
   today's rows in the ad-hoc ledger are summed before every start and `continue` (`429` when reached), and a running

@@ -1,6 +1,6 @@
 """Endpoint capabilities (fake endpoint only): the measured design needs assistant prefill and top_logprobs. An endpoint
 that refuses or ignores prefill stops with an error naming the capability and QS_PREFILL=0; QS_PREFILL=0 is a separate,
-unmeasured mode (one user message, own prompt ids, `mode` in meta and lock); the default path is unchanged."""
+fallback mode measured in S28 (one user message, own prompt ids, `mode` in meta and lock); the default path is unchanged."""
 import gzip
 import importlib.util
 import json
@@ -46,7 +46,8 @@ def test_endpoint_rejecting_prefill_raises_named_error(tmp_path):
         assert len(f.requests) == 1                               # not retried, not silently re-sent without prefill
     msg = str(ex.value)
     assert ex.value.capability == "prefill"
-    assert "QS_PREFILL=0" in msg and "continue_final_message" in msg and "unmeasured" in msg
+    assert "QS_PREFILL=0" in msg and "continue_final_message" in msg and "measured on the held-out set (S28)" in msg
+    assert "unmeasured" not in msg
 
 
 def test_endpoint_ignoring_prefill_raises(tmp_path):
@@ -83,7 +84,7 @@ def test_plain_request_4xx_is_not_blamed_on_prefill():
     assert capability_error(400, '{"error": "bad request"}', dict(messages=[]), "x") is None
 
 
-# ------------------------------------------------------------------ QS_PREFILL=0: the unmeasured no-prefill mode
+# ------------------------------------------------------------------ QS_PREFILL=0: the no-prefill fallback (measured, S28)
 @pytest.mark.parametrize("mode", ["noprefill", "nologprobs"])
 def test_no_prefill_mode(tmp_path, monkeypatch, mode):
     with FakeEndpoint() as f:                                     # the measured design on an endpoint with prefill
@@ -204,10 +205,10 @@ def _probe_mod():
 
 
 @pytest.mark.parametrize("mode,prefill,env,measured", [
-    ("logprobs", "honoured", {}, True),
-    ("noprefill", "rejected", {"QS_PREFILL": "0"}, False),
-    ("ignoreprefill", "ignored", {"QS_PREFILL": "0"}, False),
-    ("nologprobs", "honoured", {"QS_NO_LOGPROBS": "1"}, False),
+    ("logprobs", "honoured", {}, "MEASURED"),
+    ("noprefill", "rejected", {"QS_PREFILL": "0"}, "FALLBACK"),        # S28: the no-prefill fallback is measured
+    ("ignoreprefill", "ignored", {"QS_PREFILL": "0"}, "FALLBACK"),
+    ("nologprobs", "honoured", {"QS_NO_LOGPROBS": "1"}, "UNMEASURED"),
 ])
 def test_probe_reports_prefill_and_settings(tmp_path, mode, prefill, env, measured):
     pr = _probe_mod()
@@ -221,7 +222,7 @@ def test_probe_reports_prefill_and_settings(tmp_path, mode, prefill, env, measur
     for k in {"QS_PREFILL", "QS_NO_LOGPROBS"} - set(env):
         assert k not in R["env"]
     assert "QS_MAX_RATE" in R["env"] and R["batch_args"].startswith("--conc ")
-    assert R["verdict"] == pr.MEASURED if measured else R["verdict"].startswith(pr.UNMEASURED)
+    assert R["verdict"] == pr.MEASURED if measured == "MEASURED" else R["verdict"].startswith(getattr(pr, measured))
 
 
 def _tok(token, lp, alts):

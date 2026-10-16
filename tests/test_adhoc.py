@@ -387,3 +387,60 @@ def test_no_scope_check_without_generation_or_verify(api, fake):
         assert all(d.get("p_scope") is None for d in st["decisions"])
         assert not any(SCOPE_Q.search(b["messages"][0]["content"]) or '"include"' in b["messages"][0]["content"]
                        for b in fake.requests[n0:])
+
+
+def _subtopic_row(store, affair_id, code):
+    a = store.affair(affair_id)
+    return dict(affair_id=affair_id, body_key=a["body_key"], status="suggested", provenance="inferred", model="fixture",
+                build="fixture-00000000", input_hash=a.get("input_hash"), valid_to=None, version="0.6.0", scheme="aps",
+                level=2, code=code, rank=1, p_raw=0.7, p=None, lane=None, cutoffs_id="aps@00000000",
+                prompt_id="fixture-sub", evidence=None)
+
+
+def test_capped_run_reads_candidates_first(api, monkeypatch):
+    """J3 r8: under a cap, term hits and stored-subtopic hits are read before the newest rest, and the run says so."""
+    from querschnitt.adhoc import SUBS
+    monkeypatch.setenv("QS_TERM_BROAD", "1")              # 80 fixture titles: every term would count as broad
+    store = api.app.state.store
+    store.load_topics([_subtopic_row(store, 341356, SUBS[9][0])])     # the fake names subtopics 10 and 11
+    per = "2026-09-01..2026-10-31"
+    r = api.post("/adhoc", json={"sentence": "Wolf und Herdenschutz", "lang": "de", "period": per, "limit": 5}).json()
+    st = wait(api, r["slug"])
+    items = [(a["id"], a["sample"]) for a in api.ah.jobs[r["slug"]].items]
+    newest = [x["id"] for x in store.all("SELECT id FROM qs_affairs WHERE date >= '2026-09-01' AND date <= '2026-10-31' "
+                                         "ORDER BY date DESC, id DESC")]
+    # 341356 (7 Oct, stored subtopic) and 340424 (30 Sep, «Wolf» in the title), newest first, then the newest rest
+    assert items[:2] == [(341356, "candidate"), (340424, "candidate")]
+    assert [i for i, _ in items[2:]] == [i for i in newest if i not in (341356, 340424)][:3]
+    assert {s for _, s in items[2:]} == {"rest"}
+    assert 340424 not in newest[:5]                       # the old order would not have read the wolf affair at all
+    s = st["summary"]
+    assert s["order"] == "candidates first" and s["census"] is False and "not a census" in s["note"]
+    c = s["candidates_first"]
+    assert (c["n"], c["terms"], c["subtopics"], c["read"]) == (2, 1, 1, 2)
+    assert c["flagged"] == sum(d["flag"] for d in st["decisions"] if d["id"] in (341356, 340424)) == 1
+    assert {d["id"] for d in st["decisions"]} == {i for i, _ in items} and s["read"] == 5
+    ev = sse(api.get(f"/adhoc/{r['slug']}/stream").text)
+    prog = [d for k, d in ev if k == "progress"]
+    assert prog and all(p["order"] == "candidates first" for p in prog)
+    assert "candidates first: 2 of 2 candidates read, 1 flagged" in prog[-1]["line"]
+    done = ev[-1][1]
+    assert ev[-1][0] == "done" and done["order"] == "candidates first" and done["candidates_first"]["read"] == 2
+
+
+def test_uncapped_run_reads_what_it_read_before(api, fake, monkeypatch):
+    """Without a cap the order is unchanged: every affair of the period, newest first, no candidate step in the slice."""
+    from querschnitt.adhoc import SUBS
+    monkeypatch.setenv("QS_TERM_BROAD", "1")
+    store = api.app.state.store
+    store.load_topics([_subtopic_row(store, 341356, SUBS[9][0])])
+    r = api.post("/adhoc", json={"sentence": "Wolf und Herdenschutz", "lang": "de", "period": "2026-09-01..2026-10-31"}).json()
+    st = wait(api, r["slug"])
+    items = [(a["id"], a["sample"]) for a in api.ah.jobs[r["slug"]].items]
+    newest = [x["id"] for x in store.all("SELECT id FROM qs_affairs WHERE date >= '2026-09-01' AND date <= '2026-10-31' "
+                                         "ORDER BY date DESC, id DESC")]
+    assert items == [(i, "all") for i in newest]
+    s = st["summary"]
+    assert "order" not in s and "candidates_first" not in s and "census" not in s and "note" not in s
+    assert "subtopics" not in st["topic"]                 # no subtopic request inside the scored slice
+    assert not any('"subtopics"' in m["content"] for b in fake.requests for m in b["messages"])

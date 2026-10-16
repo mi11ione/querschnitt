@@ -6,8 +6,8 @@ All classification calls end with an assistant prefill that opens a JSON value (
 the code; the engine reads that token's top log-probabilities (or, without them, the generated code).
 
 QS_PREFILL=0 selects the no-prefill mode for endpoints that cannot continue an assistant message: one user message, the
-measured prompt plus a line asking the answer to begin with the prefill text (`no_prefill_user`). It is NOT measured; its
-prompt ids differ from every measured one (`pid` hashes the message actually sent), so its rows never mix with measured
+measured prompt plus a line asking the answer to begin with the prefill text (`no_prefill_user`). It is a fallback measured on
+the held-out set (S28), without a calibration map; its prompt ids differ from every measured one (`pid` hashes the message actually sent), so its rows never mix with measured
 rows, and compose applies no calibration to them."""
 from __future__ import annotations
 

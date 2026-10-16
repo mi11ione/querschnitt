@@ -5,7 +5,8 @@ The measured design (every Prüfstand number) needs two endpoint capabilities be
 (vLLM's `continue_final_message` / `add_generation_prompt` with a final assistant message) and next-token
 `top_logprobs`. `Endpoint.prefill` / `Endpoint.logprobs` state them (env QS_PREFILL=0, QS_NO_LOGPROBS=1); an endpoint
 that refuses one raises `CapabilityError` naming it and its switch. Nothing is retried in another mode mid-run: the
-no-prefill mode has its own prompt ids (prompts.no_prefill_user) and is not measured.
+no-prefill mode has its own prompt ids (prompts.no_prefill_user) and is a fallback measured on the held-out set (S28:
+chapter top-1 0.705 vs 0.696 with prefill), without a calibration map; the no-logprobs mode is not measured.
 
 Rules it enforces: no system message, ever; no assistant prefill to a `-70b` name (that route is answered by another
 model when it gets one). The key is read from a file or env and never logged."""
@@ -83,9 +84,11 @@ SWITCH = {"prefill": "QS_PREFILL=0", "logprobs": "QS_NO_LOGPROBS=1"}
 def capability_message(cap: str, endpoint: str, what: str) -> str:
     need = ("assistant prefill (a final assistant message continued via the vLLM fields continue_final_message / "
             "add_generation_prompt)" if cap == "prefill" else "next-token top_logprobs")
+    mode = ("a fallback measured on the held-out set (S28), without a calibration map; its own prompt ids, lane by the "
+            "readings rule" if cap == "prefill" else
+            "an unmeasured mode with its own prompt ids; refit and pass the quality gate before use")
     return (f"endpoint '{endpoint}': {what}. The measured design needs {need}; nothing was retried in another mode. "
-            f"Check the endpoint with tools/probe_endpoint.py. To run without it set {SWITCH[cap]}: an unmeasured mode "
-            f"with its own prompt ids; refit and pass the quality gate before use.")
+            f"Check the endpoint with tools/probe_endpoint.py. To run without it set {SWITCH[cap]}: {mode}.")
 
 
 def capability_error(code: int, text: str, payload: dict, endpoint: str) -> CapabilityError | None:

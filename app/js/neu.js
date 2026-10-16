@@ -42,19 +42,21 @@ const termsText = tr => {
 
 // strings of the replay (kept here: util.js holds the shared ones)
 const R = {
-  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', recCut: n => `Aufzeichnung, gekürzt auf ${n}`, last: 'zuletzt gelesen, neueste zuerst',
+  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', recCut: n => `Aufzeichnung, gekürzt auf ${n}`, last: 'zuletzt gelesen, neueste zuerst', cand: 'Kandidaten zuerst (Begriffe, Unterthemen)',
     line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.`,
     down: 'Der Modell-Endpunkt antwortet nicht.', slow: s => `seit ${s} s keine Entscheidung vom Modell-Endpunkt`, fall: 'Aufzeichnung abspielen', back: 'zurück zur Eingabe',
     fallLine: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}, keine Live-Antwort: der Modell-Endpunkt antwortet gerade nicht.` },
-  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', recCut: n => `enregistrement, réduit à ${n}`, last: 'derniers lus, le plus récent en haut',
+  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', recCut: n => `enregistrement, réduit à ${n}`, last: 'derniers lus, le plus récent en haut', cand: 'candidats d’abord (termes, sous-thèmes)',
     line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.`,
     down: 'Le modèle ne répond pas.', slow: s => `aucune décision du modèle depuis ${s} s`, fall: 'Rejouer l’enregistrement', back: 'retour à la saisie',
     fallLine: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}, pas une réponse en direct : le modèle ne répond pas en ce moment.` },
 };
 const r = () => R[UI.lang] || R.de;
 const SPEEDS = [1, 4];
-// a live run can be capped (POST /adhoc `limit`, newest affairs first): #neu?limit=25, or the quiet select beside the
-// period; default: no cap. A recording honours #neu?limit=N too: its first N decisions in recorded order (clipRec).
+// a live run can be capped (POST /adhoc `limit`): #neu?limit=25, or the quiet select beside the period; default: no cap.
+// A capped run reads candidates first (term and subtopic hits, then the newest rest); the server reports it as
+// `order: "candidates first"` and the run line says so (R.cand).
+// A recording honours #neu?limit=N too: its first N decisions in recorded order (clipRec).
 // A recorded run plays once by itself per page load (the button replays it).
 const LIMITS = [0, 25, 50];
 const hashLimit = () => { const v = +new URLSearchParams(location.hash.split('?')[1] || '').get('limit'); return v > 0 ? Math.floor(v) : 0; };
@@ -191,7 +193,8 @@ export class Neu {
   relang() {
     const L = t();
     this.field.placeholder = this.recWait ? '' : L.ntPh; this.exd.querySelector('summary').textContent = L.ntEx;
-    if (!this.rec) this.exd.hidden = !!this.recWait; // while the recording loads: no input affordances this.saveB.textContent = `[${L.ntSave}]`;
+    if (!this.rec) this.exd.hidden = !!this.recWait; // while the recording loads: no input affordances
+    this.saveB.textContent = `[${L.ntSave}]`;
     const pv = this.per.value || 'week';
     this.per.replaceChildren(...Object.entries(L.periods).map(([k, v]) => h('option', { value: k, selected: k === pv }, v)));
     this.per.disabled = !API.live || !!this.fall;
@@ -270,10 +273,10 @@ export class Neu {
       if (wz >= wa) { this.board.S.brush = [wa, wz]; this.board.refresh(); }
     };
     showPeriod(res.period);
-    const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false, lastT = rec ? t0 : this.t0;
+    const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false, order = null, lastT = rec ? t0 : this.t0;
     const line = () => {
       const secs = Math.floor(rec && this.es && this.es.clock ? Math.min(this.es.clock(), rec.summary.seconds) : done && rec ? rec.summary.seconds : (performance.now() - t0) / 1000);
-      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${recTag()}` : ''}${done ? '' : ' · …'}`;
+      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)}${order === 'candidates first' ? ` · ${r().cand}` : ''} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${recTag()}` : ''}${done ? '' : ' · …'}`;
     };
     this.lineNow = () => { if (!done) line(); };
     let pend = false;
@@ -289,6 +292,7 @@ export class Neu {
         kick();
       }
       const pr = d.progress || (type === 'progress' ? d : null);
+      if (d.order) order = d.order;
       if (pr) { if (pr.total != null) total = pr.total; if (pr.read != null) read = Math.max(read, pr.read); kick(); }
       if (type === 'topic' && d.period) showPeriod(d.period);
       if (type === 'terms' && d.terms) { const x = termsText(d.terms); this.terms.hidden = !x; this.terms.value = x; }

@@ -11,9 +11,13 @@
    default 2025-01-01) every affair is read. Before it, candidates = title hits of the kept, non-broad terms ∪ affairs whose stored
    APS subtopic (rank ≤ 3) is one Apertus names as able to hold the topic (a closed choice over the 190 subtopics,
    checked against the list); a random outside sample (QS_OUTSIDE_N, default 40) is read as well and its flag rate,
-   with a Wilson interval, estimates what the candidate step misses (VISION §4.1).
+   with a Wilson interval, estimates what the candidate step misses (VISION §4.1). A capped run (`limit`) reads the
+   candidates first over the whole period (term hits ∪ subtopic hits, newest first, also inside the slice), then the
+   rest newest first up to the cap, and says so: `order: "candidates first"`, `candidates_first` {n, read, flagged},
+   `census` and a `note` in the summary and in every `progress` / `done` event. Such a run is not a census of the
+   period; no recall is estimated for what it leaves unread. Without a cap nothing of this changes.
 4. Decisions. `engine.Engine.yn`, order a; order b when 0.1 < p < 0.9 (as in the batch); p, flag and lane by
-   `compose.yn_decision` (the nightly rows' rule). 3 worker threads, newest affair first, each decision an SSE event.
+   `compose.yn_decision` (the nightly rows' rule). 3 worker threads, in the order of step 3, each decision an SSE event.
    Every flag gets two checks (same two-order rule): the S27 question «is the topic central?» and the S30 scope check
    (`prompts.scope_check_prompt`) with the topic's generated include / exclude lists; a flag both confirm is `verified`,
    any other flag goes to `please_check` (the flag stays). The lists come from one more plain generation request
@@ -198,6 +202,10 @@ class Job:
                  please_check=sum(x.get("lane") == "please_check" for x in d), seconds=round(time.time() - self.t0, 1), **self.info)
         s.update(period=list(self.period), period_name=self.info.get("period_name"), calls=self.calls, budget=self.budget,
                  unread=max(0, (self.info.get("total") or 0) - len(d)), stop=self.stop_reason)
+        if self.info.get("order"):                         # a capped run: candidates first (Adhoc.select)
+            c = [x for x in d if x["sample"] == "candidate"]
+            s["candidates_first"] = dict(self.info["candidates_first"], read=len(c), flagged=sum(x["flag"] for x in c))
+            s["census"] = self.info.get("mode") == "all" and len(d) == (self.info.get("in_period") or 0)
         if self.info.get("mode") == "candidates":
             n_non = self.info.get("non_candidates", 0)
             s["outside"] = dict(n=len(out), flagged=k, rate=round(k / len(out), 4) if out else None,
@@ -406,8 +414,42 @@ class Adhoc:
         return codes, meta
 
     # ------------------------------------------------------------------ selection
+    def candidates(self, job: Job, rows: list[dict], wait: float = 120,
+                   soft: bool = False) -> tuple[set[int], set[int], list[str]]:
+        """(term hits, subtopic hits, subtopics) among `rows`: title / long title hits of the kept, non-broad terms, and
+        affairs whose stored APS subtopic (rank ≤ 3) is one Apertus names as able to hold the topic. Waits up to `wait`
+        seconds for the corpus-checked terms; `soft`: a failed subtopic request leaves the terms alone (a cap still
+        raises)."""
+        if getattr(job, "terms_thread", None):
+            job.terms_thread.join(timeout=wait)                     # candidates need the corpus-checked terms
+        subs = []
+        if self.store.one("SELECT 1 AS x FROM qs_topics WHERE scheme = 'aps' AND level = 2 LIMIT 1"):
+            try:
+                subs, _ = self.propose_subtopics(job.topic, job)
+            except CapReached:
+                raise
+            except Exception as e:  # noqa: BLE001
+                if not soft:
+                    raise
+                job.info["subtopics_error"] = repr(e)[:300]
+        job.topic["subtopics"] = subs
+        terms = [x["term"].lower() for l in LANGS for x in job.terms.get(l, []) if not x.get("broad")]
+        by_term = {r["id"] for r in rows if any(w in (r["title"] + " " + (r["title_long"] or "")).lower() for w in terms)}
+        by_sub = set()
+        if subs:
+            ids = [r["id"] for r in rows]
+            for i in range(0, len(ids), 900):
+                part = ids[i:i + 900]
+                q = (f"SELECT DISTINCT affair_id FROM qs_topics WHERE valid_to IS NULL AND scheme = 'aps' AND level = 2 AND rank <= 3 "
+                     f"AND code IN ({', '.join('?' * len(subs))}) AND affair_id IN ({', '.join('?' * len(part))})")
+                by_sub |= {r["affair_id"] for r in self.store.all(q, subs + part)}
+        return by_term, by_sub, subs
+
     def select(self, job: Job, limit: int | None) -> list[dict]:
-        """Affairs to read, newest first; inside the scored slice all of them, before it candidates + outside sample."""
+        """Affairs to read. Without a cap: inside the scored slice all of them, newest first; before it candidates +
+        outside sample. With a cap (`limit`): candidates first (term or subtopic hits, newest first), then the rest of
+        the scored slice, newest first, up to the cap (before the slice the outside sample keeps its third of the cap);
+        such a run is labelled `order: "candidates first"` and is not a census of the period."""
         f, t = job.period
         cut = os.environ.get("QS_SCORED_SINCE", "2025-01-01")
         cols = "id, body_key, level, lang, date, title, title_long, parl, type_h"
@@ -416,22 +458,22 @@ class Adhoc:
         before = [r for r in rows if r["date"] < cut]
         job.info.update(mode="all" if not before else "candidates", period=[f, t], in_period=len(rows), scored_slice_from=cut)
         items = inside
+        if limit and rows:                                 # a capped run: candidates first, over the whole period
+            wait = 120 if before else float(os.environ.get("QS_ADHOC_GEN_S", "20"))   # inside the slice: no long wait
+            by_term, by_sub, subs = self.candidates(job, rows, wait=wait, soft=not before)
+            hit_all = by_term | by_sub
+            inside = [dict(r, sample="candidate" if r["id"] in hit_all else "rest") for r in inside]
+            inside = [r for r in inside if r["sample"] == "candidate"] + [r for r in inside if r["sample"] == "rest"]
+            job.info.update(order="candidates first", candidates_first=dict(
+                n=len(hit_all), terms=len(by_term), subtopics=len(by_sub), subtopic_codes=subs))
+            items = inside
         if before:
-            if getattr(job, "terms_thread", None):
-                job.terms_thread.join(timeout=120)                  # candidates need the corpus-checked terms
-            subs, meta = self.propose_subtopics(job.topic, job) if self.store.one(
-                "SELECT 1 AS x FROM qs_topics WHERE scheme = 'aps' AND level = 2 LIMIT 1") else ([], {})
-            job.topic["subtopics"] = subs
-            terms = [x["term"].lower() for l in LANGS for x in job.terms.get(l, []) if not x.get("broad")]
-            hit = {r["id"] for r in before if any(w in (r["title"] + " " + (r["title_long"] or "")).lower() for w in terms)}
-            n_terms = len(hit)
-            if subs:
-                ids = [r["id"] for r in before]
-                for i in range(0, len(ids), 900):
-                    part = ids[i:i + 900]
-                    q = (f"SELECT DISTINCT affair_id FROM qs_topics WHERE valid_to IS NULL AND scheme = 'aps' AND level = 2 AND rank <= 3 "
-                         f"AND code IN ({', '.join('?' * len(subs))}) AND affair_id IN ({', '.join('?' * len(part))})")
-                    hit |= {r["affair_id"] for r in self.store.all(q, subs + part)}
+            if limit:
+                hit = {r["id"] for r in before} & hit_all
+                n_terms = len({r["id"] for r in before} & by_term)
+            else:
+                by_term, by_sub, subs = self.candidates(job, before)
+                hit, n_terms = by_term | by_sub, len(by_term)
             cand = [dict(r, sample="candidate") for r in before if r["id"] in hit]
             non = [r for r in before if r["id"] not in hit]
             rng = random.Random(job.slug)
@@ -442,13 +484,19 @@ class Adhoc:
             if limit:                                  # a capped run keeps a third of its reads for the outside sample
                 k = min(len(outside), max(1, limit // 3))
                 outside = outside[:k]
-                items = (inside + cand)[:limit - k] + outside
+                first = [r for r in inside if r["sample"] == "candidate"] + cand      # candidates first, newest first
+                items = (first + [r for r in inside if r["sample"] == "rest"])[:limit - k] + outside
                 job.info["outside_n"] = len(outside)
             else:
                 items = inside + cand + outside
         if limit:
             items = items[:limit]
         job.info["total"] = len(items)
+        if limit and len(items) < len(rows):
+            job.info["note"] = (f"capped run (limit {limit}): candidates first (term and subtopic hits), then the newest of the "
+                                f"rest; it reads {len(items)} of the {len(rows)} affairs in the period, so it is not a census: "
+                                "the flag count is a lower bound and no recall is estimated for the unread affairs"
+                                + (" (the outside sample estimates misses before the scored slice only)" if before else ""))
         return items
 
     # ------------------------------------------------------------------ run
@@ -650,6 +698,9 @@ class Adhoc:
     def _progress(self, job: Job) -> dict:
         s = job.summary()
         s["line"] = f"read {s['read']} / flagged {s['flagged']} / verified {s['verified']} / please check {s['please_check']} / {s['seconds']:.1f} s"
+        if s.get("order"):
+            c = s["candidates_first"]
+            s["line"] += f" / {s['order']}: {c['read']} of {c['n']} candidates read, {c['flagged']} flagged"
         return s
 
     # ------------------------------------------------------------------ save

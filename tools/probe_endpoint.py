@@ -38,6 +38,7 @@ A = dict(title="Rechenzentren im Kanton Bern", title_long="Wie viel Strom und Wa
 
 MEASURED = "measured design runs as measured"
 UNMEASURED = "runs in an unmeasured mode — refit + quality gate before use"
+FALLBACK = "runs the no-prefill fallback — measured on the held-out set (S28: 0.705 vs 0.696 with prefill); no calibration map, the lane follows the readings"
 
 
 def one(c: Client, msgs, **kw):
@@ -196,6 +197,8 @@ def advise(R: dict) -> tuple[dict, str, str]:
         batch = f"--conc {best['conc']} --max-rate {env['QS_MAX_RATE']}"
     if R.get("deterministic") is False:
         reasons.append("not deterministic")
+    if reasons and all(r.startswith("prefill ") for r in reasons):   # S28: measured on the held-out set, no calibration map
+        return env, batch, f"{FALLBACK} ({'; '.join(reasons)})"
     if reasons:
         return env, batch, f"{UNMEASURED} ({'; '.join(reasons)})"
     return env, batch, MEASURED

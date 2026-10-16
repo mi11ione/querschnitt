@@ -16,6 +16,7 @@ pg = ["psycopg[binary]>=3.2"]
 parquet = ["pyarrow>=17"]
 dev = ["pytest>=8", "httpx>=0.27", "markdown-it-py>=3", "openpyxl>=3.1"]
 xlsx = ["openpyxl>=3.1"]   # make scheme-eval GOLD=*.xlsx
+eval = ["scikit-learn>=1.5"]   # eval/s34 (trained baseline; GitHub Actions workflow «eval»)
 
 [project.scripts]
 querschnitt = "querschnitt.cli:main"

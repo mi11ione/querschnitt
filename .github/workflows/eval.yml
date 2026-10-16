@@ -1,0 +1,21 @@
+name: eval
+# One evaluation script that needs no model calls and no local data (its inputs are committed next to it), run here
+# instead of on a laptop; its result files come back as the artifact «eval-result».
+on:
+  workflow_dispatch:
+    inputs:
+      script: {description: "the script, e.g. eval/s34/run.py", required: true}
+permissions: {contents: read}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -e ".[eval]"
+      - name: run the script, keep its folder
+        env: {SCRIPT: "${{ inputs.script }}"}
+        run: python "$SCRIPT" && echo "DIR=$(dirname "$SCRIPT")" >> "$GITHUB_ENV"
+      - uses: actions/upload-artifact@v4
+        with: {name: eval-result, path: "${{ env.DIR }}"}

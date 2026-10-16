@@ -110,4 +110,4 @@ both scripts against the real demo (timer on screen).
 - [ ] demo URL answers; static app shows the frozen data; live API on the laptop; `make preflight` has no red but the endpoint
 - [ ] backup video (≤ 2 min) uploaded next to the repo
 - [ ] report PDF/MD link; Prüfstand page link
-- [ ] sprintd form: repo URL, demo URL, video URL, team, challenge; Roman submits
+- [ ] sprintd form: text and links in `docs/SUBMISSION.md` (repo, live, video, report, team, challenge); Roman submits

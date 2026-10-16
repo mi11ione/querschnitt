@@ -16,7 +16,7 @@ const LS = {
   de: {
     intro: 'Wie gut ordnet Apertus zu? Verglichen mit Fachleuten, die dieselben Geschäfte von Hand eingeordnet haben:',
     fed: n => `der ${n} neuen Bundesgeschäfte bekommen von Apertus dasselbe Themenkapitel, das ihnen die Redaktion der Année politique suisse (APS) gegeben hat; keines davon wurde beim Entwickeln benutzt.`,
-    fedSub: (lp, kw) => [lp != null ? `nur Kapitelliste ${pct(lp)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
+    fedSub: (lp, kw, tr) => [lp != null ? `nur Kapitelliste ${pct(lp)}` : '', tr != null ? `trainiert auf 1'654 APS-Labels ${pct(tr)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'Vergleich:',
     lane: (n, ok, chk) => [`der ${n} neuen Bundesgeschäfte gehen ohne Prüfung durch, und davon sind `, nw(ok), ` richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort `, nw(chk), ` richtig).`],
     laneSub: 'Regel: rekalibriertes p ≥ 0.7, vor dem Test festgelegt',
@@ -43,7 +43,7 @@ const LS = {
   fr: {
     intro: 'Le classement d’Apertus est-il bon ? Comparé à des spécialistes qui ont classé les mêmes objets à la main :',
     fed: n => `des ${n} nouveaux objets fédéraux reçoivent d’Apertus le chapitre thématique que leur a attribué la rédaction de l’Année politique suisse (APS) ; aucun n’a servi pendant le développement.`,
-    fedSub: (lp, kw) => [lp != null ? `liste des chapitres seule ${pct(lp)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
+    fedSub: (lp, kw, tr) => [lp != null ? `liste des chapitres seule ${pct(lp)}` : '', tr != null ? `entraîné sur 1 654 étiquettes APS ${pct(tr)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'comparaison :',
     lane: (n, ok, chk) => [`des ${n} nouveaux objets fédéraux passent sans vérification, dont `, nw(ok), ` sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, `, nw(chk), ` justes).`],
     laneSub: 'règle : p recalibré ≥ 0,7, fixée avant le test',
@@ -110,7 +110,9 @@ function lead(rows) {
   if (fed) {
     const top1 = cf && cf.n === fed.n ? cf.correct / cf.n : num1(fed.result, /top-1 ([\d.]+)/);
     if (top1 != null) {
-      const cmp = S.fedSub(num1(fed.baseline, /Listen-Prompt ([\d.]+)/), num1(fed.baseline, /Stichwort ([\d.]+)/));
+      // S34: a classifier trained on the 1,654 APS labels of the example pool, the same 927 affairs (its row's file)
+      const tr = byFile('eval/s34/results.json');
+      const cmp = S.fedSub(num1(fed.baseline, /Listen-Prompt ([\d.]+)/), num1(fed.baseline, /Stichwort ([\d.]+)/), tr ? num1(tr.result, /top-1 ([\d.]+)/) : null);
       out.push(item(pct(top1), S.fed(num(fed.n)), `top-1 ${p3(top1)}${ci(fed)}${cmp ? ` · ${S.cmp} ${cmp}` : ''}`, fed.file));
     }
   }

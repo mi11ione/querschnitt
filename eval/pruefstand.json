@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-15T20:09:20Z",
+ "generated_utc": "2026-10-16T08:39:17Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -3866,7 +3866,7 @@
       ]
      }
     },
-    "see_also": "neutrality_s9 (party, submitter kind, instrument on D1)"
+    "see_also": "neutrality_s9 (party, submitter kind, instrument on D1); the shipped design: neutrality_shipped_s32"
    },
    "test": "APS-Kapitel gegen APS-Redaktion, aus dem Unterthema zurückgelesen (D1, ausgeliefert ohne APS-Beispiele)",
    "interval": [
@@ -13054,11 +13054,7145 @@
    }
   },
   {
+   "id": "neutrality_shipped_s32",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Neutralität des ausgelieferten Bundes-Designs (S32, APS-Redaktion): Partei, Einreichende, Instrument, Sprache — Produktionszeilen der S9-Geschäfte und die S25-Hold-out-Geschäfte (Neuauswertung, nicht vorregistriert)",
+   "title_fr": "Neutralité du design fédéral livré (S32, rédaction APS) : parti, auteur, instrument, langue — lignes de production des objets S9 et objets hors échantillon S25 (réanalyse, non préenregistrée)",
+   "n": 2267,
+   "design": "keine neuen Aufrufe; S9 prod = die Produktionszeilen (eval/prod_gold, wie make eval: 963/1340), S25 = eval/s25/decisions.jsonl (646/927); Partei, Einreichende und Instrument mit S14s eigenen Funktionen (s14lib.py) auf dem OPD-Export der Produktion (16.10.2026; S9-Zellen identisch mit S14); Sprache = text_lang des Produktions-Inputs; Zellen n < 30 klein; Permutationstest 5'000 über die sechs Hauptparteien; grösste Lücke mit Bootstrap (2'000)",
+   "result": {
+    "p_perm": 0.4317,
+    "p_chi2": 0.4125,
+    "df": 5,
+    "cells_tested": [
+     "SVP",
+     "SP",
+     "FDP",
+     "Mitte",
+     "Grüne",
+     "GLP"
+    ],
+    "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+    "at": {
+     "file": "eval/s32/results.json",
+     "key": "s9_prod > party > top1 > test"
+    },
+    "metric": "S9 prod: party test over the six main parties, permutation p",
+    "value": 0.4317,
+    "shown": {
+     "p_perm": [
+      "0.4",
+      "0.43"
+     ],
+     "p_chi2": [
+      "0.4",
+      "0.41"
+     ],
+     "value": [
+      "0.4",
+      "0.43"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "p_perm": 0.5563,
+     "p_chi2": 0.5608,
+     "df": 5,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ],
+     "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > party > top1 > test"
+     },
+     "metric": "S25 held out: party test over the six main parties, permutation p",
+     "value": 0.5563,
+     "shown": {
+      "p_perm": [
+       "0.5",
+       "0.55"
+      ],
+      "p_chi2": [
+       "0.5",
+       "0.56"
+      ],
+      "value": [
+       "0.5",
+       "0.55"
+      ]
+     }
+    },
+    {
+     "p_perm": 0.8726,
+     "p_chi2": 0.8733,
+     "df": 5,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ],
+     "note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "pooled > party > test"
+     },
+     "metric": "pooled: party test (permutation within set)",
+     "value": 0.8726,
+     "shown": {
+      "p_perm": [
+       "0.8",
+       "0.87"
+      ],
+      "p_chi2": [
+       "0.8",
+       "0.87"
+      ],
+      "value": [
+       "0.8",
+       "0.87"
+      ]
+     }
+    },
+    {
+     "metric": "S9 prod, production rows (1,340 scored): largest party gap, cells n ≥ 30",
+     "hi": "GLP",
+     "lo": "Mitte",
+     "value": 0.1052,
+     "diff": 0.1052,
+     "ci95": [
+      -0.059,
+      0.252
+     ],
+     "ci95_raw": [
+      -0.058,
+      0.2514
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > party > top1 > gap"
+     },
+     "shown": {
+      "value": [
+       "0.1",
+       "0.10"
+      ],
+      "diff": [
+       "0.1",
+       "0.10"
+      ],
+      "ci95": [
+       "-0.06",
+       "-0.1",
+       "0.26",
+       "0.3"
+      ],
+      "ci95_raw": [
+       "-0.05",
+       "0.0",
+       "0.2",
+       "0.25"
+      ]
+     }
+    },
+    {
+     "metric": "S25 held out (927 affairs): largest party gap, cells n ≥ 30",
+     "hi": "Mitte",
+     "lo": "SP",
+     "value": 0.1112,
+     "diff": 0.1112,
+     "ci95": [
+      -0.037,
+      0.255
+     ],
+     "ci95_raw": [
+      -0.0362,
+      0.2541
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > party > top1 > gap"
+     },
+     "shown": {
+      "value": [
+       "0.1",
+       "0.11"
+      ],
+      "diff": [
+       "0.1",
+       "0.11"
+      ],
+      "ci95": [
+       "-0.04",
+       "-0.1",
+       "0.26",
+       "0.3"
+      ],
+      "ci95_raw": [
+       "-0.03",
+       "0.0",
+       "0.2",
+       "0.25"
+      ]
+     }
+    },
+    {
+     "metric": "S9 prod + S25 pooled (2,267): largest party gap, cells n ≥ 30",
+     "hi": "GLP",
+     "lo": "SVP",
+     "value": 0.0832,
+     "diff": 0.0832,
+     "ci95": [
+      -0.043,
+      0.199
+     ],
+     "ci95_raw": [
+      -0.0429,
+      0.1984
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "pooled > party > gap"
+     },
+     "shown": {
+      "value": [
+       "0.0",
+       "0.08"
+      ],
+      "diff": [
+       "0.0",
+       "0.08"
+      ],
+      "ci95": [
+       "-0.05",
+       "-0.1",
+       "0.2",
+       "0.20"
+      ],
+      "ci95_raw": [
+       "-0.04",
+       "0.0",
+       "0.1",
+       "0.19"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "name": "S14 on the earlier D1 design, same 1,357 S9 affairs (neutrality_s9)",
+     "p_perm": 0.4655,
+     "at": {
+      "file": "eval/spikes/s14-neutrality/results.json",
+      "key": "S9 > party > D1_top1 > test > p_perm"
+     },
+     "shown": {
+      "p_perm": [
+       "0.4",
+       "0.46"
+      ]
+     }
+    },
+    {
+     "name": "keyword top-1 per cell (in breakdowns)"
+    }
+   ],
+   "breakdowns": {
+    "s9_prod_party_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party SVP",
+       "value": 0.6323,
+       "ci95": [
+        0.548,
+        0.709
+       ],
+       "k": 86,
+       "n": 136,
+       "kn": "86/136",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.63"
+        ],
+        "ci95": [
+         "0.5",
+         "0.54",
+         "0.71",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party SP",
+       "value": 0.7218,
+       "ci95": [
+        0.649,
+        0.784
+       ],
+       "k": 122,
+       "n": 169,
+       "kn": "122/169",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.72"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.79",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party FDP",
+       "value": 0.6896,
+       "ci95": [
+        0.61,
+        0.76
+       ],
+       "k": 100,
+       "n": 145,
+       "kn": "100/145",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68"
+        ],
+        "ci95": [
+         "0.6",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party Mitte",
+       "value": 0.628,
+       "ci95": [
+        0.539,
+        0.71
+       ],
+       "k": 76,
+       "n": 121,
+       "kn": "76/121",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.62"
+        ],
+        "ci95": [
+         "0.5",
+         "0.53",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party Grüne",
+       "value": 0.6956,
+       "ci95": [
+        0.595,
+        0.781
+       ],
+       "k": 64,
+       "n": 92,
+       "kn": "64/92",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 4"
+       },
+       "cell": "Grüne",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.5",
+         "0.59",
+         "0.79",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party GLP",
+       "value": 0.7333,
+       "ci95": [
+        0.589,
+        0.841
+       ],
+       "k": 33,
+       "n": 45,
+       "kn": "33/45",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 5"
+       },
+       "cell": "GLP",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.5",
+         "0.58",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party other party",
+       "value": 0.6875,
+       "ci95": [
+        0.514,
+        0.821
+       ],
+       "k": 22,
+       "n": 32,
+       "kn": "22/32",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 6"
+       },
+       "cell": "other party",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68"
+        ],
+        "ci95": [
+         "0.5",
+         "0.51",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party committee",
+       "value": 0.7918,
+       "ci95": [
+        0.733,
+        0.841
+       ],
+       "k": 175,
+       "n": 221,
+       "kn": "175/221",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 7"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79"
+        ],
+        "ci95": [
+         "0.7",
+         "0.73",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party government",
+       "value": 0.7472,
+       "ci95": [
+        0.692,
+        0.796
+       ],
+       "k": 204,
+       "n": 273,
+       "kn": "204/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 8"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.6",
+         "0.69",
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party canton",
+       "value": 0.7397,
+       "ci95": [
+        0.628,
+        0.827
+       ],
+       "k": 54,
+       "n": 73,
+       "kn": "54/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 9"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.62",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): party unknown",
+       "value": 0.8181,
+       "ci95": [
+        0.656,
+        0.914
+       ],
+       "k": 27,
+       "n": 33,
+       "kn": "27/33",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top1 > cells > 10"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.81"
+        ],
+        "ci95": [
+         "0.6",
+         "0.65",
+         "0.92",
+         "1.0"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored): all",
+      "value": 0.7186,
+      "ci95": [
+       0.693,
+       0.743
+      ],
+      "k": 963,
+      "n": 1340,
+      "kn": "963/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.71"
+       ],
+       "ci95": [
+        "0.6",
+        "0.69",
+        "0.75",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > party > top1"
+     },
+     "test": {
+      "p_perm": 0.4317,
+      "p_chi2": 0.4125,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > top1 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.4",
+        "0.43"
+       ],
+       "p_chi2": [
+        "0.4",
+        "0.41"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored): largest party gap, cells n ≥ 30",
+      "hi": "GLP",
+      "lo": "Mitte",
+      "value": 0.1052,
+      "diff": 0.1052,
+      "ci95": [
+       -0.059,
+       0.252
+      ],
+      "ci95_raw": [
+       -0.058,
+       0.2514
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.10"
+       ],
+       "diff": [
+        "0.1",
+        "0.10"
+       ],
+       "ci95": [
+        "-0.06",
+        "-0.1",
+        "0.26",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.05",
+        "0.0",
+        "0.2",
+        "0.25"
+       ]
+      }
+     }
+    },
+    "s9_prod_party_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party SVP",
+       "value": 0.2941,
+       "ci95": [
+        0.224,
+        0.376
+       ],
+       "k": 40,
+       "n": 136,
+       "kn": "40/136",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.29"
+        ],
+        "ci95": [
+         "0.2",
+         "0.22",
+         "0.38",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party SP",
+       "value": 0.2071,
+       "ci95": [
+        0.152,
+        0.275
+       ],
+       "k": 35,
+       "n": 169,
+       "kn": "35/169",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.20"
+        ],
+        "ci95": [
+         "0.1",
+         "0.15",
+         "0.28",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party FDP",
+       "value": 0.1793,
+       "ci95": [
+        0.125,
+        0.25
+       ],
+       "k": 26,
+       "n": 145,
+       "kn": "26/145",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.17"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party Mitte",
+       "value": 0.1983,
+       "ci95": [
+        0.137,
+        0.279
+       ],
+       "k": 24,
+       "n": 121,
+       "kn": "24/121",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.19"
+        ],
+        "ci95": [
+         "0.1",
+         "0.13",
+         "0.28",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party Grüne",
+       "value": 0.2173,
+       "ci95": [
+        0.145,
+        0.313
+       ],
+       "k": 20,
+       "n": 92,
+       "kn": "20/92",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 4"
+       },
+       "cell": "Grüne",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.14",
+         "0.32",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party GLP",
+       "value": 0.1111,
+       "ci95": [
+        0.048,
+        0.235
+       ],
+       "k": 5,
+       "n": 45,
+       "kn": "5/45",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 5"
+       },
+       "cell": "GLP",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.11"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.24",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party other party",
+       "value": 0.25,
+       "ci95": [
+        0.132,
+        0.422
+       ],
+       "k": 8,
+       "n": 32,
+       "kn": "8/32",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 6"
+       },
+       "cell": "other party",
+       "shown": {
+        "value": [
+         "0.2"
+        ],
+        "ci95": [
+         "0.1",
+         "0.13",
+         "0.43",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party committee",
+       "value": 0.1719,
+       "ci95": [
+        0.127,
+        0.228
+       ],
+       "k": 38,
+       "n": 221,
+       "kn": "38/221",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 7"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.17"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.23",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party government",
+       "value": 0.2124,
+       "ci95": [
+        0.168,
+        0.265
+       ],
+       "k": 58,
+       "n": 273,
+       "kn": "58/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 8"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.16",
+         "0.27",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party canton",
+       "value": 0.2602,
+       "ci95": [
+        0.173,
+        0.372
+       ],
+       "k": 19,
+       "n": 73,
+       "kn": "19/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 9"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.26"
+        ],
+        "ci95": [
+         "0.1",
+         "0.17",
+         "0.38",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: party unknown",
+       "value": 0.1212,
+       "ci95": [
+        0.048,
+        0.274
+       ],
+       "k": 4,
+       "n": 33,
+       "kn": "4/33",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > kw > cells > 10"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.12"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.28",
+         "0.3"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: all",
+      "value": 0.2067,
+      "ci95": [
+       0.185,
+       0.23
+      ],
+      "k": 277,
+      "n": 1340,
+      "kn": "277/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.20"
+       ],
+       "ci95": [
+        "0.1",
+        "0.18",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > party > kw"
+     },
+     "test": {
+      "p_perm": 0.0958,
+      "p_chi2": 0.0963,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > kw > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.0",
+        "0.09"
+       ],
+       "p_chi2": [
+        "0.0",
+        "0.09"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: largest party gap, cells n ≥ 30",
+      "hi": "SVP",
+      "lo": "GLP",
+      "value": 0.183,
+      "diff": 0.183,
+      "ci95": [
+       0.05,
+       0.294
+      ],
+      "ci95_raw": [
+       0.0502,
+       0.294
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > kw > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.18"
+       ],
+       "diff": [
+        "0.1",
+        "0.18"
+       ],
+       "ci95": [
+        "0.0",
+        "0.3",
+        "0.30"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.05",
+        "0.2",
+        "0.29"
+       ]
+      }
+     }
+    },
+    "s9_prod_submitter_kind_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored): submitter kind member/faction",
+       "value": 0.6797,
+       "ci95": [
+        0.645,
+        0.713
+       ],
+       "k": 503,
+       "n": 740,
+       "kn": "503/740",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > top1 > cells > 0"
+       },
+       "cell": "member/faction",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.72",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): submitter kind committee",
+       "value": 0.7918,
+       "ci95": [
+        0.733,
+        0.841
+       ],
+       "k": 175,
+       "n": 221,
+       "kn": "175/221",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > top1 > cells > 1"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79"
+        ],
+        "ci95": [
+         "0.7",
+         "0.73",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): submitter kind government",
+       "value": 0.7472,
+       "ci95": [
+        0.692,
+        0.796
+       ],
+       "k": 204,
+       "n": 273,
+       "kn": "204/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > top1 > cells > 2"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.6",
+         "0.69",
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): submitter kind canton",
+       "value": 0.7397,
+       "ci95": [
+        0.628,
+        0.827
+       ],
+       "k": 54,
+       "n": 73,
+       "kn": "54/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > top1 > cells > 3"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.62",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): submitter kind unknown",
+       "value": 0.8181,
+       "ci95": [
+        0.656,
+        0.914
+       ],
+       "k": 27,
+       "n": 33,
+       "kn": "27/33",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > top1 > cells > 4"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.81"
+        ],
+        "ci95": [
+         "0.6",
+         "0.65",
+         "0.92",
+         "1.0"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored): all",
+      "value": 0.7186,
+      "ci95": [
+       0.693,
+       0.743
+      ],
+      "k": 963,
+      "n": 1340,
+      "kn": "963/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > submitter kind > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.71"
+       ],
+       "ci95": [
+        "0.6",
+        "0.69",
+        "0.75",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > submitter kind > top1"
+     },
+     "test": {
+      "p_perm": 0.0064,
+      "p_chi2": 0.0064,
+      "df": 4,
+      "cells_tested": [
+       "member/faction",
+       "committee",
+       "government",
+       "canton",
+       "unknown"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > submitter kind > top1 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.0",
+        "0.00"
+       ],
+       "p_chi2": [
+        "0.0",
+        "0.00"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored): largest submitter kind gap, cells n ≥ 30",
+      "hi": "unknown",
+      "lo": "member/faction",
+      "value": 0.1384,
+      "diff": 0.1384,
+      "ci95": [
+       0.004,
+       0.264
+      ],
+      "ci95_raw": [
+       0.0045,
+       0.2631
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > submitter kind > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.13"
+       ],
+       "diff": [
+        "0.1",
+        "0.13"
+       ],
+       "ci95": [
+        "0.0",
+        "0.00",
+        "0.27",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.00",
+        "0.2",
+        "0.26"
+       ]
+      }
+     }
+    },
+    "s9_prod_submitter_kind_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: submitter kind member/faction",
+       "value": 0.2135,
+       "ci95": [
+        0.185,
+        0.245
+       ],
+       "k": 158,
+       "n": 740,
+       "kn": "158/740",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > kw > cells > 0"
+       },
+       "cell": "member/faction",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.18",
+         "0.25",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: submitter kind committee",
+       "value": 0.1719,
+       "ci95": [
+        0.127,
+        0.228
+       ],
+       "k": 38,
+       "n": 221,
+       "kn": "38/221",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > kw > cells > 1"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.17"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.23",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: submitter kind government",
+       "value": 0.2124,
+       "ci95": [
+        0.168,
+        0.265
+       ],
+       "k": 58,
+       "n": 273,
+       "kn": "58/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > kw > cells > 2"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.16",
+         "0.27",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: submitter kind canton",
+       "value": 0.2602,
+       "ci95": [
+        0.173,
+        0.372
+       ],
+       "k": 19,
+       "n": 73,
+       "kn": "19/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > kw > cells > 3"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.26"
+        ],
+        "ci95": [
+         "0.1",
+         "0.17",
+         "0.38",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: submitter kind unknown",
+       "value": 0.1212,
+       "ci95": [
+        0.048,
+        0.274
+       ],
+       "k": 4,
+       "n": 33,
+       "kn": "4/33",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > submitter kind > kw > cells > 4"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.12"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.28",
+         "0.3"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: all",
+      "value": 0.2067,
+      "ci95": [
+       0.185,
+       0.23
+      ],
+      "k": 277,
+      "n": 1340,
+      "kn": "277/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > submitter kind > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.20"
+       ],
+       "ci95": [
+        "0.1",
+        "0.18",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > submitter kind > kw"
+     },
+     "test": {
+      "p_perm": 0.3341,
+      "p_chi2": 0.3262,
+      "df": 4,
+      "cells_tested": [
+       "member/faction",
+       "committee",
+       "government",
+       "canton",
+       "unknown"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > submitter kind > kw > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.3",
+        "0.33"
+       ],
+       "p_chi2": [
+        "0.3",
+        "0.32"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: largest submitter kind gap, cells n ≥ 30",
+      "hi": "canton",
+      "lo": "unknown",
+      "value": 0.139,
+      "diff": 0.139,
+      "ci95": [
+       -0.024,
+       0.282
+      ],
+      "ci95_raw": [
+       -0.0232,
+       0.2819
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > submitter kind > kw > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.13"
+       ],
+       "diff": [
+        "0.1",
+        "0.13"
+       ],
+       "ci95": [
+        "-0.03",
+        "-0.1",
+        "0.29",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.2",
+        "0.28"
+       ]
+      }
+     }
+    },
+    "s9_prod_instrument_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored): instrument Motion",
+       "value": 0.6919,
+       "ci95": [
+        0.647,
+        0.733
+       ],
+       "k": 310,
+       "n": 448,
+       "kn": "310/448",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > top1 > cells > 0"
+       },
+       "cell": "Motion",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): instrument Postulat",
+       "value": 0.6734,
+       "ci95": [
+        0.617,
+        0.725
+       ],
+       "k": 198,
+       "n": 294,
+       "kn": "198/294",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > top1 > cells > 1"
+       },
+       "cell": "Postulat",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): instrument Regierungsgeschäft",
+       "value": 0.7472,
+       "ci95": [
+        0.692,
+        0.796
+       ],
+       "k": 204,
+       "n": 273,
+       "kn": "204/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > top1 > cells > 2"
+       },
+       "cell": "Regierungsgeschäft",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.6",
+         "0.69",
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): instrument Parlamentarische Initiative",
+       "value": 0.7975,
+       "ci95": [
+        0.742,
+        0.844
+       ],
+       "k": 193,
+       "n": 242,
+       "kn": "193/242",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > top1 > cells > 3"
+       },
+       "cell": "Parlamentarische Initiative",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.79"
+        ],
+        "ci95": [
+         "0.7",
+         "0.74",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): instrument Standesinitiative",
+       "value": 0.7397,
+       "ci95": [
+        0.628,
+        0.827
+       ],
+       "k": 54,
+       "n": 73,
+       "kn": "54/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > top1 > cells > 4"
+       },
+       "cell": "Standesinitiative",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.62",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored): instrument other type",
+       "value": 0.4,
+       "ci95": [
+        0.168,
+        0.688
+       ],
+       "k": 4,
+       "n": 10,
+       "kn": "4/10",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > top1 > cells > 5"
+       },
+       "cell": "other type",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.1",
+         "0.16",
+         "0.69",
+         "0.7"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored): all",
+      "value": 0.7186,
+      "ci95": [
+       0.693,
+       0.743
+      ],
+      "k": 963,
+      "n": 1340,
+      "kn": "963/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.71"
+       ],
+       "ci95": [
+        "0.6",
+        "0.69",
+        "0.75",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > instrument > top1"
+     },
+     "test": {
+      "p_perm": 0.003,
+      "p_chi2": 0.0026,
+      "df": 5,
+      "cells_tested": [
+       "Motion",
+       "Postulat",
+       "Regierungsgeschäft",
+       "Parlamentarische Initiative",
+       "Standesinitiative",
+       "other type"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > top1 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.0",
+        "0.00"
+       ],
+       "p_chi2": [
+        "0.0",
+        "0.00"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored): largest instrument gap, cells n ≥ 30",
+      "hi": "Parlamentarische Initiative",
+      "lo": "Postulat",
+      "value": 0.124,
+      "diff": 0.124,
+      "ci95": [
+       0.047,
+       0.196
+      ],
+      "ci95_raw": [
+       0.0473,
+       0.1955
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.12"
+       ],
+       "diff": [
+        "0.1",
+        "0.12"
+       ],
+       "ci95": [
+        "0.0",
+        "0.04",
+        "0.2",
+        "0.20"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.04",
+        "0.1",
+        "0.19"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S9 prod, production rows (1,340 scored): largest instrument gap, every tested cell",
+      "hi": "Parlamentarische Initiative",
+      "lo": "other type",
+      "value": 0.3975,
+      "diff": 0.3975,
+      "ci95": [
+       0.076,
+       0.706
+      ],
+      "ci95_raw": [
+       0.0769,
+       0.7058
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > top1 > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.3",
+        "0.39"
+       ],
+       "diff": [
+        "0.3",
+        "0.39"
+       ],
+       "ci95": [
+        "0.0",
+        "0.07",
+        "0.71",
+        "0.8"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.07",
+        "0.7",
+        "0.70"
+       ]
+      }
+     }
+    },
+    "s9_prod_instrument_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: instrument Motion",
+       "value": 0.1785,
+       "ci95": [
+        0.145,
+        0.217
+       ],
+       "k": 80,
+       "n": 448,
+       "kn": "80/448",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > kw > cells > 0"
+       },
+       "cell": "Motion",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.17"
+        ],
+        "ci95": [
+         "0.1",
+         "0.14",
+         "0.22",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: instrument Postulat",
+       "value": 0.1564,
+       "ci95": [
+        0.119,
+        0.203
+       ],
+       "k": 46,
+       "n": 294,
+       "kn": "46/294",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > kw > cells > 1"
+       },
+       "cell": "Postulat",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.15"
+        ],
+        "ci95": [
+         "0.1",
+         "0.11",
+         "0.21",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: instrument Regierungsgeschäft",
+       "value": 0.2124,
+       "ci95": [
+        0.168,
+        0.265
+       ],
+       "k": 58,
+       "n": 273,
+       "kn": "58/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > kw > cells > 2"
+       },
+       "cell": "Regierungsgeschäft",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.16",
+         "0.27",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: instrument Parlamentarische Initiative",
+       "value": 0.3057,
+       "ci95": [
+        0.251,
+        0.367
+       ],
+       "k": 74,
+       "n": 242,
+       "kn": "74/242",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > kw > cells > 3"
+       },
+       "cell": "Parlamentarische Initiative",
+       "shown": {
+        "value": [
+         "0.3",
+         "0.30"
+        ],
+        "ci95": [
+         "0.2",
+         "0.25",
+         "0.37",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: instrument Standesinitiative",
+       "value": 0.2602,
+       "ci95": [
+        0.173,
+        0.372
+       ],
+       "k": 19,
+       "n": 73,
+       "kn": "19/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > kw > cells > 4"
+       },
+       "cell": "Standesinitiative",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.26"
+        ],
+        "ci95": [
+         "0.1",
+         "0.17",
+         "0.38",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: instrument other type",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.278
+       ],
+       "k": 0,
+       "n": 10,
+       "kn": "0/10",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > instrument > kw > cells > 5"
+       },
+       "cell": "other type",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.28",
+         "0.3"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: all",
+      "value": 0.2067,
+      "ci95": [
+       0.185,
+       0.23
+      ],
+      "k": 277,
+      "n": 1340,
+      "kn": "277/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.20"
+       ],
+       "ci95": [
+        "0.1",
+        "0.18",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > instrument > kw"
+     },
+     "test": {
+      "p_perm": 0.0006,
+      "p_chi2": 0.0001,
+      "df": 5,
+      "cells_tested": [
+       "Motion",
+       "Postulat",
+       "Regierungsgeschäft",
+       "Parlamentarische Initiative",
+       "Standesinitiative",
+       "other type"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > kw > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.0",
+        "0.00"
+       ],
+       "p_chi2": [
+        "0.0",
+        "0.00"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: largest instrument gap, cells n ≥ 30",
+      "hi": "Parlamentarische Initiative",
+      "lo": "Postulat",
+      "value": 0.1493,
+      "diff": 0.1493,
+      "ci95": [
+       0.076,
+       0.221
+      ],
+      "ci95_raw": [
+       0.0769,
+       0.22
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > kw > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.14"
+       ],
+       "diff": [
+        "0.1",
+        "0.14"
+       ],
+       "ci95": [
+        "0.0",
+        "0.07",
+        "0.23",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.07",
+        "0.2"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: largest instrument gap, every tested cell",
+      "hi": "Parlamentarische Initiative",
+      "lo": "other type",
+      "value": 0.3057,
+      "diff": 0.3057,
+      "ci95": [
+       0.252,
+       0.368
+      ],
+      "ci95_raw": [
+       0.2521,
+       0.3678
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > instrument > kw > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.3",
+        "0.30"
+       ],
+       "diff": [
+        "0.3",
+        "0.30"
+       ],
+       "ci95": [
+        "0.2",
+        "0.25",
+        "0.37",
+        "0.4"
+       ],
+       "ci95_raw": [
+        "0.2",
+        "0.25",
+        "0.3",
+        "0.36"
+       ]
+      }
+     }
+    },
+    "s9_prod_language_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored): language of the text de",
+       "value": 0.7186,
+       "ci95": [
+        0.693,
+        0.743
+       ],
+       "k": 963,
+       "n": 1340,
+       "kn": "963/1340",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > language of the text > top1 > cells > 0"
+       },
+       "cell": "de",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.71"
+        ],
+        "ci95": [
+         "0.6",
+         "0.69",
+         "0.75",
+         "0.8"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored): all",
+      "value": 0.7186,
+      "ci95": [
+       0.693,
+       0.743
+      ],
+      "k": 963,
+      "n": 1340,
+      "kn": "963/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > language of the text > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.71"
+       ],
+       "ci95": [
+        "0.6",
+        "0.69",
+        "0.75",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > language of the text > top1"
+     },
+     "test": null,
+     "not_informative": {
+      "what": "{'de': 1340}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > language of the text > top1 > not_informative"
+      }
+     },
+     "largest_gap": null
+    },
+    "s9_prod_language_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored) keyword: language of the text de",
+       "value": 0.2067,
+       "ci95": [
+        0.185,
+        0.23
+       ],
+       "k": 277,
+       "n": 1340,
+       "kn": "277/1340",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > language of the text > kw > cells > 0"
+       },
+       "cell": "de",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.20"
+        ],
+        "ci95": [
+         "0.1",
+         "0.18",
+         "0.3"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored) keyword: all",
+      "value": 0.2067,
+      "ci95": [
+       0.185,
+       0.23
+      ],
+      "k": 277,
+      "n": 1340,
+      "kn": "277/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > language of the text > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.20"
+       ],
+       "ci95": [
+        "0.1",
+        "0.18",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > language of the text > kw"
+     },
+     "test": null,
+     "not_informative": {
+      "what": "{'de': 1340}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > language of the text > kw > not_informative"
+      }
+     },
+     "largest_gap": null
+    },
+    "s9_prod_party_top3": {
+     "cells": [
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party SVP",
+       "value": 0.8308,
+       "ci95": [
+        0.759,
+        0.885
+       ],
+       "k": 113,
+       "n": 136,
+       "kn": "113/136",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.83"
+        ],
+        "ci95": [
+         "0.7",
+         "0.75",
+         "0.89",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party SP",
+       "value": 0.8402,
+       "ci95": [
+        0.777,
+        0.888
+       ],
+       "k": 142,
+       "n": 169,
+       "kn": "142/169",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.84"
+        ],
+        "ci95": [
+         "0.7",
+         "0.77",
+         "0.89",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party FDP",
+       "value": 0.8758,
+       "ci95": [
+        0.812,
+        0.921
+       ],
+       "k": 127,
+       "n": 145,
+       "kn": "127/145",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.87"
+        ],
+        "ci95": [
+         "0.8",
+         "0.81",
+         "0.93",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party Mitte",
+       "value": 0.8099,
+       "ci95": [
+        0.73,
+        0.87
+       ],
+       "k": 98,
+       "n": 121,
+       "kn": "98/121",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.80"
+        ],
+        "ci95": [
+         "0.7",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party Grüne",
+       "value": 0.8586,
+       "ci95": [
+        0.773,
+        0.916
+       ],
+       "k": 79,
+       "n": 92,
+       "kn": "79/92",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 4"
+       },
+       "cell": "Grüne",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.85"
+        ],
+        "ci95": [
+         "0.7",
+         "0.77",
+         "0.92",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party GLP",
+       "value": 0.8444,
+       "ci95": [
+        0.712,
+        0.923
+       ],
+       "k": 38,
+       "n": 45,
+       "kn": "38/45",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 5"
+       },
+       "cell": "GLP",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.84"
+        ],
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.93",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party other party",
+       "value": 0.8125,
+       "ci95": [
+        0.646,
+        0.912
+       ],
+       "k": 26,
+       "n": 32,
+       "kn": "26/32",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 6"
+       },
+       "cell": "other party",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.81"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.92",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party committee",
+       "value": 0.9095,
+       "ci95": [
+        0.864,
+        0.941
+       ],
+       "k": 201,
+       "n": 221,
+       "kn": "201/221",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 7"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.9",
+         "0.90"
+        ],
+        "ci95": [
+         "0.8",
+         "0.86",
+         "0.95",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party government",
+       "value": 0.8571,
+       "ci95": [
+        0.81,
+        0.894
+       ],
+       "k": 234,
+       "n": 273,
+       "kn": "234/273",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 8"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.85"
+        ],
+        "ci95": [
+         "0.8",
+         "0.9",
+         "0.90"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party canton",
+       "value": 0.8493,
+       "ci95": [
+        0.749,
+        0.914
+       ],
+       "k": 62,
+       "n": 73,
+       "kn": "62/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 9"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.84"
+        ],
+        "ci95": [
+         "0.7",
+         "0.74",
+         "0.92",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod, production rows (1,340 scored) top-3: party unknown",
+       "value": 1.0,
+       "ci95": [
+        0.895,
+        1.0
+       ],
+       "k": 33,
+       "n": 33,
+       "kn": "33/33",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s9_prod > party > top3 > cells > 10"
+       },
+       "cell": "unknown",
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.89"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod, production rows (1,340 scored) top-3: all",
+      "value": 0.8604,
+      "ci95": [
+       0.84,
+       0.878
+      ],
+      "k": 1153,
+      "n": 1340,
+      "kn": "1153/1340",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > top3 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.8",
+        "0.86"
+       ],
+       "ci95": [
+        "0.8",
+        "0.88",
+        "0.9"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > party > top3"
+     },
+     "test": {
+      "p_perm": 0.7878,
+      "p_chi2": 0.7736,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > top3 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.7",
+        "0.78"
+       ],
+       "p_chi2": [
+        "0.7",
+        "0.77"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod, production rows (1,340 scored) top-3: largest party gap, cells n ≥ 30",
+      "hi": "FDP",
+      "lo": "Mitte",
+      "value": 0.0659,
+      "diff": 0.0659,
+      "ci95": [
+       -0.024,
+       0.152
+      ],
+      "ci95_raw": [
+       -0.0236,
+       0.1514
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s9_prod > party > top3 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.06"
+       ],
+       "diff": [
+        "0.0",
+        "0.06"
+       ],
+       "ci95": [
+        "-0.03",
+        "-0.1",
+        "0.16",
+        "0.2"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.1",
+        "0.15"
+       ]
+      }
+     }
+    },
+    "s9_prod_all_submitter_categories_test": {
+     "p_perm": 0.0338,
+     "p_chi2": 0.0321,
+     "df": 10,
+     "cells": 11,
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > party > top1_all_categories_test"
+     },
+     "shown": {
+      "p_perm": [
+       "0.0",
+       "0.03"
+      ],
+      "p_chi2": [
+       "0.0",
+       "0.03"
+      ]
+     }
+    },
+    "s25_party_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs): party SVP",
+       "value": 0.6701,
+       "ci95": [
+        0.571,
+        0.756
+       ],
+       "k": 65,
+       "n": 97,
+       "kn": "65/97",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.5",
+         "0.57",
+         "0.76",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party SP",
+       "value": 0.5952,
+       "ci95": [
+        0.488,
+        0.694
+       ],
+       "k": 50,
+       "n": 84,
+       "kn": "50/84",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.5",
+         "0.59"
+        ],
+        "ci95": [
+         "0.4",
+         "0.48",
+         "0.7",
+         "0.70"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party FDP",
+       "value": 0.6385,
+       "ci95": [
+        0.531,
+        0.734
+       ],
+       "k": 53,
+       "n": 83,
+       "kn": "53/83",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.63"
+        ],
+        "ci95": [
+         "0.5",
+         "0.53",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party Mitte",
+       "value": 0.7065,
+       "ci95": [
+        0.606,
+        0.79
+       ],
+       "k": 65,
+       "n": 92,
+       "kn": "65/92",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.70"
+        ],
+        "ci95": [
+         "0.6",
+         "0.60",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party Grüne",
+       "value": 0.5652,
+       "ci95": [
+        0.368,
+        0.744
+       ],
+       "k": 13,
+       "n": 23,
+       "kn": "13/23",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 4"
+       },
+       "cell": "Grüne",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.5",
+         "0.56"
+        ],
+        "ci95": [
+         "0.3",
+         "0.36",
+         "0.75",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party GLP",
+       "value": 0.7272,
+       "ci95": [
+        0.518,
+        0.869
+       ],
+       "k": 16,
+       "n": 22,
+       "kn": "16/22",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 5"
+       },
+       "cell": "GLP",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.72"
+        ],
+        "ci95": [
+         "0.5",
+         "0.51",
+         "0.87",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party other party",
+       "value": 0.6666,
+       "ci95": [
+        0.453,
+        0.829
+       ],
+       "k": 14,
+       "n": 21,
+       "kn": "14/21",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 6"
+       },
+       "cell": "other party",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.4",
+         "0.45",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party party unknown",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 7"
+       },
+       "cell": "party unknown",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party committee",
+       "value": 0.728,
+       "ci95": [
+        0.639,
+        0.802
+       ],
+       "k": 83,
+       "n": 114,
+       "kn": "83/114",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 8"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.72"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.81",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party government",
+       "value": 0.7361,
+       "ci95": [
+        0.682,
+        0.784
+       ],
+       "k": 212,
+       "n": 288,
+       "kn": "212/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 9"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.68",
+         "0.79",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party canton",
+       "value": 0.7142,
+       "ci95": [
+        0.529,
+        0.848
+       ],
+       "k": 20,
+       "n": 28,
+       "kn": "20/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 10"
+       },
+       "cell": "canton",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.71"
+        ],
+        "ci95": [
+         "0.5",
+         "0.52",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party other group",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 11"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): party unknown",
+       "value": 0.7397,
+       "ci95": [
+        0.628,
+        0.827
+       ],
+       "k": 54,
+       "n": 73,
+       "kn": "54/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top1 > cells > 12"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.62",
+         "0.83",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs): all",
+      "value": 0.6968,
+      "ci95": [
+       0.666,
+       0.726
+      ],
+      "k": 646,
+      "n": 927,
+      "kn": "646/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.69"
+       ],
+       "ci95": [
+        "0.6",
+        "0.66",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > party > top1"
+     },
+     "test": {
+      "p_perm": 0.5563,
+      "p_chi2": 0.5608,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top1 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.5",
+        "0.55"
+       ],
+       "p_chi2": [
+        "0.5",
+        "0.56"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs): largest party gap, cells n ≥ 30",
+      "hi": "Mitte",
+      "lo": "SP",
+      "value": 0.1112,
+      "diff": 0.1112,
+      "ci95": [
+       -0.037,
+       0.255
+      ],
+      "ci95_raw": [
+       -0.0362,
+       0.2541
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.11"
+       ],
+       "diff": [
+        "0.1",
+        "0.11"
+       ],
+       "ci95": [
+        "-0.04",
+        "-0.1",
+        "0.26",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.03",
+        "0.0",
+        "0.2",
+        "0.25"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs): largest party gap, every tested cell",
+      "hi": "GLP",
+      "lo": "Grüne",
+      "value": 0.162,
+      "diff": 0.162,
+      "ci95": [
+       -0.111,
+       0.429
+      ],
+      "ci95_raw": [
+       -0.1107,
+       0.4289
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top1 > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.16"
+       ],
+       "diff": [
+        "0.1",
+        "0.16"
+       ],
+       "ci95": [
+        "-0.12",
+        "-0.2",
+        "0.43",
+        "0.5"
+       ],
+       "ci95_raw": [
+        "-0.1",
+        "-0.11",
+        "0.4",
+        "0.42"
+       ]
+      }
+     }
+    },
+    "s25_party_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs) keyword: party SVP",
+       "value": 0.2577,
+       "ci95": [
+        0.181,
+        0.353
+       ],
+       "k": 25,
+       "n": 97,
+       "kn": "25/97",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.25"
+        ],
+        "ci95": [
+         "0.1",
+         "0.18",
+         "0.36",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party SP",
+       "value": 0.1904,
+       "ci95": [
+        0.12,
+        0.288
+       ],
+       "k": 16,
+       "n": 84,
+       "kn": "16/84",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.19"
+        ],
+        "ci95": [
+         "0.1",
+         "0.29",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party FDP",
+       "value": 0.1566,
+       "ci95": [
+        0.093,
+        0.25
+       ],
+       "k": 13,
+       "n": 83,
+       "kn": "13/83",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.15"
+        ],
+        "ci95": [
+         "0.0",
+         "0.09",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party Mitte",
+       "value": 0.25,
+       "ci95": [
+        0.172,
+        0.348
+       ],
+       "k": 23,
+       "n": 92,
+       "kn": "23/92",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.2"
+        ],
+        "ci95": [
+         "0.1",
+         "0.17",
+         "0.35",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party Grüne",
+       "value": 0.0869,
+       "ci95": [
+        0.024,
+        0.268
+       ],
+       "k": 2,
+       "n": 23,
+       "kn": "2/23",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 4"
+       },
+       "cell": "Grüne",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.0",
+         "0.08"
+        ],
+        "ci95": [
+         "0.0",
+         "0.02",
+         "0.27",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party GLP",
+       "value": 0.1363,
+       "ci95": [
+        0.047,
+        0.334
+       ],
+       "k": 3,
+       "n": 22,
+       "kn": "3/22",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 5"
+       },
+       "cell": "GLP",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.1",
+         "0.13"
+        ],
+        "ci95": [
+         "0.0",
+         "0.04",
+         "0.34",
+         "0.4"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party other party",
+       "value": 0.1904,
+       "ci95": [
+        0.076,
+        0.401
+       ],
+       "k": 4,
+       "n": 21,
+       "kn": "4/21",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 6"
+       },
+       "cell": "other party",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.1",
+         "0.19"
+        ],
+        "ci95": [
+         "0.0",
+         "0.07",
+         "0.41",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party party unknown",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 7"
+       },
+       "cell": "party unknown",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party committee",
+       "value": 0.1842,
+       "ci95": [
+        0.123,
+        0.266
+       ],
+       "k": 21,
+       "n": 114,
+       "kn": "21/114",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 8"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.18"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.27",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party government",
+       "value": 0.1458,
+       "ci95": [
+        0.109,
+        0.192
+       ],
+       "k": 42,
+       "n": 288,
+       "kn": "42/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 9"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.14"
+        ],
+        "ci95": [
+         "0.1",
+         "0.10",
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party canton",
+       "value": 0.2857,
+       "ci95": [
+        0.152,
+        0.471
+       ],
+       "k": 8,
+       "n": 28,
+       "kn": "8/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 10"
+       },
+       "cell": "canton",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.2",
+         "0.28"
+        ],
+        "ci95": [
+         "0.1",
+         "0.15",
+         "0.48",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party other group",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 11"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: party unknown",
+       "value": 0.2191,
+       "ci95": [
+        0.139,
+        0.327
+       ],
+       "k": 16,
+       "n": 73,
+       "kn": "16/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > kw > cells > 12"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.13",
+         "0.33",
+         "0.4"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs) keyword: all",
+      "value": 0.1866,
+      "ci95": [
+       0.162,
+       0.213
+      ],
+      "k": 173,
+      "n": 927,
+      "kn": "173/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.18"
+       ],
+       "ci95": [
+        "0.1",
+        "0.16",
+        "0.22",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > party > kw"
+     },
+     "test": {
+      "p_perm": 0.2482,
+      "p_chi2": 0.2429,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > kw > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.2",
+        "0.24"
+       ],
+       "p_chi2": [
+        "0.2",
+        "0.24"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs) keyword: largest party gap, cells n ≥ 30",
+      "hi": "SVP",
+      "lo": "FDP",
+      "value": 0.1011,
+      "diff": 0.1011,
+      "ci95": [
+       -0.023,
+       0.217
+      ],
+      "ci95_raw": [
+       -0.0227,
+       0.2164
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > kw > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.10"
+       ],
+       "diff": [
+        "0.1",
+        "0.10"
+       ],
+       "ci95": [
+        "-0.03",
+        "-0.1",
+        "0.22",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.2",
+        "0.21"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs) keyword: largest party gap, every tested cell",
+      "hi": "SVP",
+      "lo": "Grüne",
+      "value": 0.1707,
+      "diff": 0.1707,
+      "ci95": [
+       0.011,
+       0.305
+      ],
+      "ci95_raw": [
+       0.0117,
+       0.3048
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > kw > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.17"
+       ],
+       "diff": [
+        "0.1",
+        "0.17"
+       ],
+       "ci95": [
+        "0.0",
+        "0.01",
+        "0.31",
+        "0.4"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.01",
+        "0.3",
+        "0.30"
+       ]
+      }
+     }
+    },
+    "s25_submitter_kind_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs): submitter kind member/faction",
+       "value": 0.6524,
+       "ci95": [
+        0.605,
+        0.697
+       ],
+       "k": 276,
+       "n": 423,
+       "kn": "276/423",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > top1 > cells > 0"
+       },
+       "cell": "member/faction",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.65"
+        ],
+        "ci95": [
+         "0.6",
+         "0.60",
+         "0.7",
+         "0.70"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): submitter kind committee",
+       "value": 0.728,
+       "ci95": [
+        0.639,
+        0.802
+       ],
+       "k": 83,
+       "n": 114,
+       "kn": "83/114",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > top1 > cells > 1"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.72"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.81",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): submitter kind government",
+       "value": 0.7361,
+       "ci95": [
+        0.682,
+        0.784
+       ],
+       "k": 212,
+       "n": 288,
+       "kn": "212/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > top1 > cells > 2"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.68",
+         "0.79",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): submitter kind canton",
+       "value": 0.7142,
+       "ci95": [
+        0.529,
+        0.848
+       ],
+       "k": 20,
+       "n": 28,
+       "kn": "20/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > top1 > cells > 3"
+       },
+       "cell": "canton",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.71"
+        ],
+        "ci95": [
+         "0.5",
+         "0.52",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): submitter kind other group",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > top1 > cells > 4"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): submitter kind unknown",
+       "value": 0.7397,
+       "ci95": [
+        0.628,
+        0.827
+       ],
+       "k": 54,
+       "n": 73,
+       "kn": "54/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > top1 > cells > 5"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.62",
+         "0.83",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs): all",
+      "value": 0.6968,
+      "ci95": [
+       0.666,
+       0.726
+      ],
+      "k": 646,
+      "n": 927,
+      "kn": "646/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.69"
+       ],
+       "ci95": [
+        "0.6",
+        "0.66",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > submitter kind > top1"
+     },
+     "test": {
+      "p_perm": 0.1606,
+      "p_chi2": 0.1748,
+      "df": 5,
+      "cells_tested": [
+       "member/faction",
+       "committee",
+       "government",
+       "canton",
+       "other group",
+       "unknown"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > top1 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.1",
+        "0.16"
+       ],
+       "p_chi2": [
+        "0.1",
+        "0.17"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs): largest submitter kind gap, cells n ≥ 30",
+      "hi": "unknown",
+      "lo": "member/faction",
+      "value": 0.0872,
+      "diff": 0.0872,
+      "ci95": [
+       -0.024,
+       0.192
+      ],
+      "ci95_raw": [
+       -0.0238,
+       0.1917
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.08"
+       ],
+       "diff": [
+        "0.0",
+        "0.08"
+       ],
+       "ci95": [
+        "-0.03",
+        "-0.1",
+        "0.2",
+        "0.20"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.1",
+        "0.19"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs): largest submitter kind gap, every tested cell",
+      "hi": "other group",
+      "lo": "member/faction",
+      "value": 0.3475,
+      "diff": 0.3475,
+      "ci95": [
+       0.297,
+       0.395
+      ],
+      "ci95_raw": [
+       0.2979,
+       0.3948
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > top1 > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.3",
+        "0.34"
+       ],
+       "diff": [
+        "0.3",
+        "0.34"
+       ],
+       "ci95": [
+        "0.2",
+        "0.29",
+        "0.4",
+        "0.40"
+       ],
+       "ci95_raw": [
+        "0.2",
+        "0.29",
+        "0.3",
+        "0.39"
+       ]
+      }
+     }
+    },
+    "s25_submitter_kind_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs) keyword: submitter kind member/faction",
+       "value": 0.2033,
+       "ci95": [
+        0.167,
+        0.245
+       ],
+       "k": 86,
+       "n": 423,
+       "kn": "86/423",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > kw > cells > 0"
+       },
+       "cell": "member/faction",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.20"
+        ],
+        "ci95": [
+         "0.1",
+         "0.16",
+         "0.25",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: submitter kind committee",
+       "value": 0.1842,
+       "ci95": [
+        0.123,
+        0.266
+       ],
+       "k": 21,
+       "n": 114,
+       "kn": "21/114",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > kw > cells > 1"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.18"
+        ],
+        "ci95": [
+         "0.1",
+         "0.12",
+         "0.27",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: submitter kind government",
+       "value": 0.1458,
+       "ci95": [
+        0.109,
+        0.192
+       ],
+       "k": 42,
+       "n": 288,
+       "kn": "42/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > kw > cells > 2"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.14"
+        ],
+        "ci95": [
+         "0.1",
+         "0.10",
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: submitter kind canton",
+       "value": 0.2857,
+       "ci95": [
+        0.152,
+        0.471
+       ],
+       "k": 8,
+       "n": 28,
+       "kn": "8/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > kw > cells > 3"
+       },
+       "cell": "canton",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.2",
+         "0.28"
+        ],
+        "ci95": [
+         "0.1",
+         "0.15",
+         "0.48",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: submitter kind other group",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > kw > cells > 4"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: submitter kind unknown",
+       "value": 0.2191,
+       "ci95": [
+        0.139,
+        0.327
+       ],
+       "k": 16,
+       "n": 73,
+       "kn": "16/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > submitter kind > kw > cells > 5"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.13",
+         "0.33",
+         "0.4"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs) keyword: all",
+      "value": 0.1866,
+      "ci95": [
+       0.162,
+       0.213
+      ],
+      "k": 173,
+      "n": 927,
+      "kn": "173/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.18"
+       ],
+       "ci95": [
+        "0.1",
+        "0.16",
+        "0.22",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > submitter kind > kw"
+     },
+     "test": {
+      "p_perm": 0.2775,
+      "p_chi2": 0.2616,
+      "df": 5,
+      "cells_tested": [
+       "member/faction",
+       "committee",
+       "government",
+       "canton",
+       "other group",
+       "unknown"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > kw > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.2",
+        "0.27"
+       ],
+       "p_chi2": [
+        "0.2",
+        "0.26"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs) keyword: largest submitter kind gap, cells n ≥ 30",
+      "hi": "unknown",
+      "lo": "government",
+      "value": 0.0733,
+      "diff": 0.0733,
+      "ci95": [
+       -0.023,
+       0.18
+      ],
+      "ci95_raw": [
+       -0.0229,
+       0.1795
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > kw > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.07"
+       ],
+       "diff": [
+        "0.0",
+        "0.07"
+       ],
+       "ci95": [
+        "-0.03",
+        "-0.1",
+        "0.2"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.1",
+        "0.17"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs) keyword: largest submitter kind gap, every tested cell",
+      "hi": "canton",
+      "lo": "other group",
+      "value": 0.2857,
+      "diff": 0.2857,
+      "ci95": [
+       0.142,
+       0.465
+      ],
+      "ci95_raw": [
+       0.1429,
+       0.4643
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > submitter kind > kw > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.28"
+       ],
+       "diff": [
+        "0.2",
+        "0.28"
+       ],
+       "ci95": [
+        "0.1",
+        "0.14",
+        "0.47",
+        "0.5"
+       ],
+       "ci95_raw": [
+        "0.1",
+        "0.14",
+        "0.4",
+        "0.46"
+       ]
+      }
+     }
+    },
+    "s25_instrument_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs): instrument Motion",
+       "value": 0.6666,
+       "ci95": [
+        0.609,
+        0.72
+       ],
+       "k": 188,
+       "n": 282,
+       "kn": "188/282",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > top1 > cells > 0"
+       },
+       "cell": "Motion",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.6",
+         "0.60",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): instrument Postulat",
+       "value": 0.6818,
+       "ci95": [
+        0.604,
+        0.751
+       ],
+       "k": 105,
+       "n": 154,
+       "kn": "105/154",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > top1 > cells > 1"
+       },
+       "cell": "Postulat",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68"
+        ],
+        "ci95": [
+         "0.6",
+         "0.60",
+         "0.76",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): instrument Regierungsgeschäft",
+       "value": 0.7361,
+       "ci95": [
+        0.682,
+        0.784
+       ],
+       "k": 212,
+       "n": 288,
+       "kn": "212/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > top1 > cells > 2"
+       },
+       "cell": "Regierungsgeschäft",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.68",
+         "0.79",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): instrument Parlamentarische Initiative",
+       "value": 0.6759,
+       "ci95": [
+        0.582,
+        0.757
+       ],
+       "k": 73,
+       "n": 108,
+       "kn": "73/108",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > top1 > cells > 3"
+       },
+       "cell": "Parlamentarische Initiative",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.5",
+         "0.58",
+         "0.76",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): instrument Standesinitiative",
+       "value": 0.7142,
+       "ci95": [
+        0.529,
+        0.848
+       ],
+       "k": 20,
+       "n": 28,
+       "kn": "20/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > top1 > cells > 4"
+       },
+       "cell": "Standesinitiative",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.71"
+        ],
+        "ci95": [
+         "0.5",
+         "0.52",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): instrument other type",
+       "value": 0.7164,
+       "ci95": [
+        0.599,
+        0.811
+       ],
+       "k": 48,
+       "n": 67,
+       "kn": "48/67",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > top1 > cells > 5"
+       },
+       "cell": "other type",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.71"
+        ],
+        "ci95": [
+         "0.5",
+         "0.59",
+         "0.82",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs): all",
+      "value": 0.6968,
+      "ci95": [
+       0.666,
+       0.726
+      ],
+      "k": 646,
+      "n": 927,
+      "kn": "646/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.69"
+       ],
+       "ci95": [
+        "0.6",
+        "0.66",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > instrument > top1"
+     },
+     "test": {
+      "p_perm": 0.5623,
+      "p_chi2": 0.5686,
+      "df": 5,
+      "cells_tested": [
+       "Motion",
+       "Postulat",
+       "Regierungsgeschäft",
+       "Parlamentarische Initiative",
+       "Standesinitiative",
+       "other type"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > top1 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.5",
+        "0.56"
+       ],
+       "p_chi2": [
+        "0.5",
+        "0.56"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs): largest instrument gap, cells n ≥ 30",
+      "hi": "Regierungsgeschäft",
+      "lo": "Motion",
+      "value": 0.0694,
+      "diff": 0.0694,
+      "ci95": [
+       -0.008,
+       0.144
+      ],
+      "ci95_raw": [
+       -0.008,
+       0.1432
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.06"
+       ],
+       "diff": [
+        "0.0",
+        "0.06"
+       ],
+       "ci95": [
+        "-0.01",
+        "-0.1",
+        "0.15",
+        "0.2"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.00",
+        "0.1",
+        "0.14"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs): largest instrument gap, every tested cell",
+      "hi": "Regierungsgeschäft",
+      "lo": "Motion",
+      "value": 0.0694,
+      "diff": 0.0694,
+      "ci95": [
+       -0.008,
+       0.144
+      ],
+      "ci95_raw": [
+       -0.008,
+       0.1432
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > top1 > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.06"
+       ],
+       "diff": [
+        "0.0",
+        "0.06"
+       ],
+       "ci95": [
+        "-0.01",
+        "-0.1",
+        "0.15",
+        "0.2"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.00",
+        "0.1",
+        "0.14"
+       ]
+      }
+     }
+    },
+    "s25_instrument_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs) keyword: instrument Motion",
+       "value": 0.1879,
+       "ci95": [
+        0.146,
+        0.238
+       ],
+       "k": 53,
+       "n": 282,
+       "kn": "53/282",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > kw > cells > 0"
+       },
+       "cell": "Motion",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.18"
+        ],
+        "ci95": [
+         "0.1",
+         "0.14",
+         "0.24",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: instrument Postulat",
+       "value": 0.2012,
+       "ci95": [
+        0.145,
+        0.272
+       ],
+       "k": 31,
+       "n": 154,
+       "kn": "31/154",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > kw > cells > 1"
+       },
+       "cell": "Postulat",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.20"
+        ],
+        "ci95": [
+         "0.1",
+         "0.14",
+         "0.28",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: instrument Regierungsgeschäft",
+       "value": 0.1458,
+       "ci95": [
+        0.109,
+        0.192
+       ],
+       "k": 42,
+       "n": 288,
+       "kn": "42/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > kw > cells > 2"
+       },
+       "cell": "Regierungsgeschäft",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.14"
+        ],
+        "ci95": [
+         "0.1",
+         "0.10",
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: instrument Parlamentarische Initiative",
+       "value": 0.2129,
+       "ci95": [
+        0.146,
+        0.3
+       ],
+       "k": 23,
+       "n": 108,
+       "kn": "23/108",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > kw > cells > 3"
+       },
+       "cell": "Parlamentarische Initiative",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.14"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: instrument Standesinitiative",
+       "value": 0.2857,
+       "ci95": [
+        0.152,
+        0.471
+       ],
+       "k": 8,
+       "n": 28,
+       "kn": "8/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > kw > cells > 4"
+       },
+       "cell": "Standesinitiative",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.2",
+         "0.28"
+        ],
+        "ci95": [
+         "0.1",
+         "0.15",
+         "0.48",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: instrument other type",
+       "value": 0.2388,
+       "ci95": [
+        0.152,
+        0.354
+       ],
+       "k": 16,
+       "n": 67,
+       "kn": "16/67",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > instrument > kw > cells > 5"
+       },
+       "cell": "other type",
+       "shown": {
+        "value": [
+         "0.2",
+         "0.23"
+        ],
+        "ci95": [
+         "0.1",
+         "0.15",
+         "0.36",
+         "0.4"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs) keyword: all",
+      "value": 0.1866,
+      "ci95": [
+       0.162,
+       0.213
+      ],
+      "k": 173,
+      "n": 927,
+      "kn": "173/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.18"
+       ],
+       "ci95": [
+        "0.1",
+        "0.16",
+        "0.22",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > instrument > kw"
+     },
+     "test": {
+      "p_perm": 0.232,
+      "p_chi2": 0.2293,
+      "df": 5,
+      "cells_tested": [
+       "Motion",
+       "Postulat",
+       "Regierungsgeschäft",
+       "Parlamentarische Initiative",
+       "Standesinitiative",
+       "other type"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > kw > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.2",
+        "0.23"
+       ],
+       "p_chi2": [
+        "0.2",
+        "0.22"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs) keyword: largest instrument gap, cells n ≥ 30",
+      "hi": "other type",
+      "lo": "Regierungsgeschäft",
+      "value": 0.0929,
+      "diff": 0.0929,
+      "ci95": [
+       -0.012,
+       0.206
+      ],
+      "ci95_raw": [
+       -0.0115,
+       0.2054
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > kw > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.09"
+       ],
+       "diff": [
+        "0.0",
+        "0.09"
+       ],
+       "ci95": [
+        "-0.02",
+        "-0.1",
+        "0.21",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.01",
+        "0.0",
+        "0.2",
+        "0.20"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs) keyword: largest instrument gap, every tested cell",
+      "hi": "Standesinitiative",
+      "lo": "Regierungsgeschäft",
+      "value": 0.1398,
+      "diff": 0.1398,
+      "ci95": [
+       -0.028,
+       0.309
+      ],
+      "ci95_raw": [
+       -0.0273,
+       0.308
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > instrument > kw > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.13"
+       ],
+       "diff": [
+        "0.1",
+        "0.13"
+       ],
+       "ci95": [
+        "-0.03",
+        "-0.1",
+        "0.31",
+        "0.4"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.3",
+        "0.30"
+       ]
+      }
+     }
+    },
+    "s25_language_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs): language of the text de",
+       "value": 0.6965,
+       "ci95": [
+        0.666,
+        0.726
+       ],
+       "k": 645,
+       "n": 926,
+       "kn": "645/926",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > language of the text > top1 > cells > 0"
+       },
+       "cell": "de",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.66",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs): language of the text fr",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > language of the text > top1 > cells > 1"
+       },
+       "cell": "fr",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs): all",
+      "value": 0.6968,
+      "ci95": [
+       0.666,
+       0.726
+      ],
+      "k": 646,
+      "n": 927,
+      "kn": "646/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > language of the text > top1 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.69"
+       ],
+       "ci95": [
+        "0.6",
+        "0.66",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > language of the text > top1"
+     },
+     "test": null,
+     "not_informative": {
+      "what": "{'de': 926, 'fr': 1}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > language of the text > top1 > not_informative"
+      }
+     },
+     "largest_gap": null
+    },
+    "s25_language_keyword_top1": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs) keyword: language of the text de",
+       "value": 0.1868,
+       "ci95": [
+        0.163,
+        0.214
+       ],
+       "k": 173,
+       "n": 926,
+       "kn": "173/926",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > language of the text > kw > cells > 0"
+       },
+       "cell": "de",
+       "shown": {
+        "value": [
+         "0.1",
+         "0.18"
+        ],
+        "ci95": [
+         "0.1",
+         "0.16",
+         "0.22",
+         "0.3"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) keyword: language of the text fr",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > language of the text > kw > cells > 1"
+       },
+       "cell": "fr",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs) keyword: all",
+      "value": 0.1866,
+      "ci95": [
+       0.162,
+       0.213
+      ],
+      "k": 173,
+      "n": 927,
+      "kn": "173/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > language of the text > kw > overall"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.18"
+       ],
+       "ci95": [
+        "0.1",
+        "0.16",
+        "0.22",
+        "0.3"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > language of the text > kw"
+     },
+     "test": null,
+     "not_informative": {
+      "what": "{'de': 926, 'fr': 1}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > language of the text > kw > not_informative"
+      }
+     },
+     "largest_gap": null
+    },
+    "s25_party_top3": {
+     "cells": [
+      {
+       "metric": "S25 held out (927 affairs) top-3: party SVP",
+       "value": 0.8247,
+       "ci95": [
+        0.737,
+        0.888
+       ],
+       "k": 80,
+       "n": 97,
+       "kn": "80/97",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.82"
+        ],
+        "ci95": [
+         "0.7",
+         "0.73",
+         "0.89",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party SP",
+       "value": 0.7619,
+       "ci95": [
+        0.66,
+        0.841
+       ],
+       "k": 64,
+       "n": 84,
+       "kn": "64/84",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.76"
+        ],
+        "ci95": [
+         "0.6",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party FDP",
+       "value": 0.8072,
+       "ci95": [
+        0.709,
+        0.878
+       ],
+       "k": 67,
+       "n": 83,
+       "kn": "67/83",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.80"
+        ],
+        "ci95": [
+         "0.7",
+         "0.70",
+         "0.88",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party Mitte",
+       "value": 0.8695,
+       "ci95": [
+        0.785,
+        0.924
+       ],
+       "k": 80,
+       "n": 92,
+       "kn": "80/92",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.86"
+        ],
+        "ci95": [
+         "0.7",
+         "0.78",
+         "0.93",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party Grüne",
+       "value": 0.7826,
+       "ci95": [
+        0.58,
+        0.904
+       ],
+       "k": 18,
+       "n": 23,
+       "kn": "18/23",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 4"
+       },
+       "cell": "Grüne",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.78"
+        ],
+        "ci95": [
+         "0.5",
+         "0.91",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party GLP",
+       "value": 0.8181,
+       "ci95": [
+        0.614,
+        0.927
+       ],
+       "k": 18,
+       "n": 22,
+       "kn": "18/22",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 5"
+       },
+       "cell": "GLP",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.8",
+         "0.81"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.93",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party other party",
+       "value": 0.9047,
+       "ci95": [
+        0.71,
+        0.974
+       ],
+       "k": 19,
+       "n": 21,
+       "kn": "19/21",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 6"
+       },
+       "cell": "other party",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.9",
+         "0.90"
+        ],
+        "ci95": [
+         "0.7",
+         "0.98",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party party unknown",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 7"
+       },
+       "cell": "party unknown",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party committee",
+       "value": 0.8947,
+       "ci95": [
+        0.824,
+        0.939
+       ],
+       "k": 102,
+       "n": 114,
+       "kn": "102/114",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 8"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.89"
+        ],
+        "ci95": [
+         "0.8",
+         "0.82",
+         "0.94",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party government",
+       "value": 0.8333,
+       "ci95": [
+        0.785,
+        0.872
+       ],
+       "k": 240,
+       "n": 288,
+       "kn": "240/288",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 9"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.83"
+        ],
+        "ci95": [
+         "0.7",
+         "0.78",
+         "0.88",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party canton",
+       "value": 0.8928,
+       "ci95": [
+        0.728,
+        0.963
+       ],
+       "k": 25,
+       "n": 28,
+       "kn": "25/28",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 10"
+       },
+       "cell": "canton",
+       "small": true,
+       "shown": {
+        "value": [
+         "0.8",
+         "0.89"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.97",
+         "1.0"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party other group",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 11"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S25 held out (927 affairs) top-3: party unknown",
+       "value": 0.8767,
+       "ci95": [
+        0.781,
+        0.934
+       ],
+       "k": 64,
+       "n": 73,
+       "kn": "64/73",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "s25 > party > top3 > cells > 12"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.8",
+         "0.87"
+        ],
+        "ci95": [
+         "0.7",
+         "0.78",
+         "0.94",
+         "1.0"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S25 held out (927 affairs) top-3: all",
+      "value": 0.8392,
+      "ci95": [
+       0.814,
+       0.862
+      ],
+      "k": 778,
+      "n": 927,
+      "kn": "778/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top3 > overall"
+      },
+      "shown": {
+       "value": [
+        "0.8",
+        "0.83"
+       ],
+       "ci95": [
+        "0.8",
+        "0.81",
+        "0.87",
+        "0.9"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > party > top3"
+     },
+     "test": {
+      "p_perm": 0.5875,
+      "p_chi2": 0.6009,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "method": "permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top3 > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.5",
+        "0.58"
+       ],
+       "p_chi2": [
+        "0.6",
+        "0.60"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S25 held out (927 affairs) top-3: largest party gap, cells n ≥ 30",
+      "hi": "Mitte",
+      "lo": "SP",
+      "value": 0.1076,
+      "diff": 0.1076,
+      "ci95": [
+       -0.013,
+       0.223
+      ],
+      "ci95_raw": [
+       -0.0129,
+       0.2226
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top3 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.10"
+       ],
+       "diff": [
+        "0.1",
+        "0.10"
+       ],
+       "ci95": [
+        "-0.02",
+        "-0.1",
+        "0.23",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.01",
+        "0.0",
+        "0.2",
+        "0.22"
+       ]
+      }
+     },
+     "largest_gap_all_tested": {
+      "metric": "S25 held out (927 affairs) top-3: largest party gap, every tested cell",
+      "hi": "Mitte",
+      "lo": "SP",
+      "value": 0.1076,
+      "diff": 0.1076,
+      "ci95": [
+       -0.013,
+       0.223
+      ],
+      "ci95_raw": [
+       -0.0129,
+       0.2226
+      ],
+      "basis": "every tested cell, small ones included",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s25 > party > top3 > gap_all_tested_cells"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.10"
+       ],
+       "diff": [
+        "0.1",
+        "0.10"
+       ],
+       "ci95": [
+        "-0.02",
+        "-0.1",
+        "0.23",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.01",
+        "0.0",
+        "0.2",
+        "0.22"
+       ]
+      }
+     }
+    },
+    "s25_all_submitter_categories_test": {
+     "p_perm": 0.2983,
+     "p_chi2": 0.3058,
+     "df": 12,
+     "cells": 13,
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s25 > party > top1_all_categories_test"
+     },
+     "shown": {
+      "p_perm": [
+       "0.2",
+       "0.29"
+      ],
+      "p_chi2": [
+       "0.3",
+       "0.30"
+      ]
+     }
+    },
+    "pooled_party_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party SVP",
+       "value": 0.648,
+       "ci95": [
+        0.584,
+        0.707
+       ],
+       "k": 151,
+       "n": 233,
+       "kn": "151/233",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 0"
+       },
+       "cell": "SVP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.64"
+        ],
+        "ci95": [
+         "0.5",
+         "0.58",
+         "0.71",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party SP",
+       "value": 0.6798,
+       "ci95": [
+        0.62,
+        0.735
+       ],
+       "k": 172,
+       "n": 253,
+       "kn": "172/253",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 1"
+       },
+       "cell": "SP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.74",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party FDP",
+       "value": 0.671,
+       "ci95": [
+        0.607,
+        0.729
+       ],
+       "k": 153,
+       "n": 228,
+       "kn": "153/228",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 2"
+       },
+       "cell": "FDP",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.60",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party Mitte",
+       "value": 0.6619,
+       "ci95": [
+        0.596,
+        0.723
+       ],
+       "k": 141,
+       "n": 213,
+       "kn": "141/213",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 3"
+       },
+       "cell": "Mitte",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.5",
+         "0.59",
+         "0.73",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party Grüne",
+       "value": 0.6695,
+       "ci95": [
+        0.579,
+        0.749
+       ],
+       "k": 77,
+       "n": 115,
+       "kn": "77/115",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 4"
+       },
+       "cell": "Grüne",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.5",
+         "0.57",
+         "0.75",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party GLP",
+       "value": 0.7313,
+       "ci95": [
+        0.614,
+        0.823
+       ],
+       "k": 49,
+       "n": 67,
+       "kn": "49/67",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 5"
+       },
+       "cell": "GLP",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.61",
+         "0.83",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party other party",
+       "value": 0.6792,
+       "ci95": [
+        0.545,
+        0.79
+       ],
+       "k": 36,
+       "n": 53,
+       "kn": "36/53",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 6"
+       },
+       "cell": "other party",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.5",
+         "0.54",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party party unknown",
+       "value": 0.0,
+       "ci95": [
+        0.0,
+        0.794
+       ],
+       "k": 0,
+       "n": 1,
+       "kn": "0/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 7"
+       },
+       "cell": "party unknown",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.8",
+         "0.80"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party committee",
+       "value": 0.7701,
+       "ci95": [
+        0.722,
+        0.812
+       ],
+       "k": 258,
+       "n": 335,
+       "kn": "258/335",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 8"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.77"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.82",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party government",
+       "value": 0.7415,
+       "ci95": [
+        0.703,
+        0.777
+       ],
+       "k": 416,
+       "n": 561,
+       "kn": "416/561",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 9"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.7",
+         "0.70",
+         "0.78",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party canton",
+       "value": 0.7326,
+       "ci95": [
+        0.639,
+        0.81
+       ],
+       "k": 74,
+       "n": 101,
+       "kn": "74/101",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 10"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party other group",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 11"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): party unknown",
+       "value": 0.7641,
+       "ci95": [
+        0.674,
+        0.835
+       ],
+       "k": 81,
+       "n": 106,
+       "kn": "81/106",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > party > cells > 12"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.76"
+        ],
+        "ci95": [
+         "0.6",
+         "0.67",
+         "0.84",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod + S25 pooled (2,267): all",
+      "value": 0.7097,
+      "ci95": [
+       0.69,
+       0.729
+      ],
+      "k": 1609,
+      "n": 2267,
+      "kn": "1609/2267",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > party > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.70"
+       ],
+       "ci95": [
+        "0.6",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "test": {
+      "p_perm": 0.8726,
+      "p_chi2": 0.8733,
+      "df": 5,
+      "cells_tested": [
+       "SVP",
+       "SP",
+       "FDP",
+       "Mitte",
+       "Grüne",
+       "GLP"
+      ],
+      "note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > party > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.8",
+        "0.87"
+       ],
+       "p_chi2": [
+        "0.8",
+        "0.87"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod + S25 pooled (2,267): largest party gap, cells n ≥ 30",
+      "hi": "GLP",
+      "lo": "SVP",
+      "value": 0.0832,
+      "diff": 0.0832,
+      "ci95": [
+       -0.043,
+       0.199
+      ],
+      "ci95_raw": [
+       -0.0429,
+       0.1984
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > party > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.08"
+       ],
+       "diff": [
+        "0.0",
+        "0.08"
+       ],
+       "ci95": [
+        "-0.05",
+        "-0.1",
+        "0.2",
+        "0.20"
+       ],
+       "ci95_raw": [
+        "-0.04",
+        "0.0",
+        "0.1",
+        "0.19"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "pooled > party"
+     }
+    },
+    "pooled_submitter_kind_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod + S25 pooled (2,267): submitter kind member/faction",
+       "value": 0.6698,
+       "ci95": [
+        0.642,
+        0.697
+       ],
+       "k": 779,
+       "n": 1163,
+       "kn": "779/1163",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > submitter kind > cells > 0"
+       },
+       "cell": "member/faction",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.7",
+         "0.70"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): submitter kind committee",
+       "value": 0.7701,
+       "ci95": [
+        0.722,
+        0.812
+       ],
+       "k": 258,
+       "n": 335,
+       "kn": "258/335",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > submitter kind > cells > 1"
+       },
+       "cell": "committee",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.77"
+        ],
+        "ci95": [
+         "0.7",
+         "0.72",
+         "0.82",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): submitter kind government",
+       "value": 0.7415,
+       "ci95": [
+        0.703,
+        0.777
+       ],
+       "k": 416,
+       "n": 561,
+       "kn": "416/561",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > submitter kind > cells > 2"
+       },
+       "cell": "government",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.7",
+         "0.70",
+         "0.78",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): submitter kind canton",
+       "value": 0.7326,
+       "ci95": [
+        0.639,
+        0.81
+       ],
+       "k": 74,
+       "n": 101,
+       "kn": "74/101",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > submitter kind > cells > 3"
+       },
+       "cell": "canton",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): submitter kind other group",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > submitter kind > cells > 4"
+       },
+       "cell": "other group",
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): submitter kind unknown",
+       "value": 0.7641,
+       "ci95": [
+        0.674,
+        0.835
+       ],
+       "k": 81,
+       "n": 106,
+       "kn": "81/106",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > submitter kind > cells > 5"
+       },
+       "cell": "unknown",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.76"
+        ],
+        "ci95": [
+         "0.6",
+         "0.67",
+         "0.84",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod + S25 pooled (2,267): all",
+      "value": 0.7097,
+      "ci95": [
+       0.69,
+       0.729
+      ],
+      "k": 1609,
+      "n": 2267,
+      "kn": "1609/2267",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > submitter kind > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.70"
+       ],
+       "ci95": [
+        "0.6",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "test": {
+      "p_perm": 0.0014,
+      "p_chi2": 0.0013,
+      "df": 5,
+      "cells_tested": [
+       "member/faction",
+       "committee",
+       "government",
+       "canton",
+       "other group",
+       "unknown"
+      ],
+      "note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > submitter kind > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.0",
+        "0.00"
+       ],
+       "p_chi2": [
+        "0.0",
+        "0.00"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod + S25 pooled (2,267): largest submitter kind gap, cells n ≥ 30",
+      "hi": "committee",
+      "lo": "member/faction",
+      "value": 0.1003,
+      "diff": 0.1003,
+      "ci95": [
+       0.045,
+       0.151
+      ],
+      "ci95_raw": [
+       0.0457,
+       0.1508
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > submitter kind > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.10"
+       ],
+       "diff": [
+        "0.1",
+        "0.10"
+       ],
+       "ci95": [
+        "0.0",
+        "0.04",
+        "0.16",
+        "0.2"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.04",
+        "0.1",
+        "0.15"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "pooled > submitter kind"
+     }
+    },
+    "pooled_instrument_top1": {
+     "cells": [
+      {
+       "metric": "S9 prod + S25 pooled (2,267): instrument Motion",
+       "value": 0.6821,
+       "ci95": [
+        0.647,
+        0.715
+       ],
+       "k": 498,
+       "n": 730,
+       "kn": "498/730",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > instrument > cells > 0"
+       },
+       "cell": "Motion",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68"
+        ],
+        "ci95": [
+         "0.6",
+         "0.64",
+         "0.72",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): instrument Postulat",
+       "value": 0.6763,
+       "ci95": [
+        0.631,
+        0.719
+       ],
+       "k": 303,
+       "n": 448,
+       "kn": "303/448",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > instrument > cells > 1"
+       },
+       "cell": "Postulat",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.72",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): instrument Regierungsgeschäft",
+       "value": 0.7415,
+       "ci95": [
+        0.703,
+        0.777
+       ],
+       "k": 416,
+       "n": 561,
+       "kn": "416/561",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > instrument > cells > 2"
+       },
+       "cell": "Regierungsgeschäft",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.74"
+        ],
+        "ci95": [
+         "0.7",
+         "0.70",
+         "0.78",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): instrument Parlamentarische Initiative",
+       "value": 0.76,
+       "ci95": [
+        0.712,
+        0.802
+       ],
+       "k": 266,
+       "n": 350,
+       "kn": "266/350",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > instrument > cells > 3"
+       },
+       "cell": "Parlamentarische Initiative",
+       "shown": {
+        "value": [
+         "0.7"
+        ],
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.81",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): instrument Standesinitiative",
+       "value": 0.7326,
+       "ci95": [
+        0.639,
+        0.81
+       ],
+       "k": 74,
+       "n": 101,
+       "kn": "74/101",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > instrument > cells > 4"
+       },
+       "cell": "Standesinitiative",
+       "shown": {
+        "value": [
+         "0.7",
+         "0.73"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.9"
+        ]
+       }
+      },
+      {
+       "metric": "S9 prod + S25 pooled (2,267): instrument other type",
+       "value": 0.6753,
+       "ci95": [
+        0.564,
+        0.77
+       ],
+       "k": 52,
+       "n": 77,
+       "kn": "52/77",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s32/results.json",
+        "key": "pooled > instrument > cells > 5"
+       },
+       "cell": "other type",
+       "shown": {
+        "value": [
+         "0.6",
+         "0.67"
+        ],
+        "ci95": [
+         "0.5",
+         "0.56",
+         "0.8"
+        ]
+       }
+      }
+     ],
+     "overall": {
+      "metric": "S9 prod + S25 pooled (2,267): all",
+      "value": 0.7097,
+      "ci95": [
+       0.69,
+       0.729
+      ],
+      "k": 1609,
+      "n": 2267,
+      "kn": "1609/2267",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s32/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > instrument > overall"
+      },
+      "shown": {
+       "value": [
+        "0.7",
+        "0.70"
+       ],
+       "ci95": [
+        "0.6",
+        "0.73",
+        "0.8"
+       ]
+      }
+     },
+     "test": {
+      "p_perm": 0.0264,
+      "p_chi2": 0.0247,
+      "df": 5,
+      "cells_tested": [
+       "Motion",
+       "Postulat",
+       "Regierungsgeschäft",
+       "Parlamentarische Initiative",
+       "Standesinitiative",
+       "other type"
+      ],
+      "note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > instrument > test"
+      },
+      "shown": {
+       "p_perm": [
+        "0.0",
+        "0.02"
+       ],
+       "p_chi2": [
+        "0.0",
+        "0.02"
+       ]
+      }
+     },
+     "largest_gap": {
+      "metric": "S9 prod + S25 pooled (2,267): largest instrument gap, cells n ≥ 30",
+      "hi": "Parlamentarische Initiative",
+      "lo": "other type",
+      "value": 0.0846,
+      "diff": 0.0846,
+      "ci95": [
+       -0.03,
+       0.198
+      ],
+      "ci95_raw": [
+       -0.0291,
+       0.1971
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "pooled > instrument > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.08"
+       ],
+       "diff": [
+        "0.0",
+        "0.08"
+       ],
+       "ci95": [
+        "-0.1",
+        "0.2",
+        "0.20"
+       ],
+       "ci95_raw": [
+        "-0.02",
+        "0.0",
+        "0.1",
+        "0.19"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "pooled > instrument"
+     }
+    },
+    "s16_d4_party_top1": {
+     "p_perm": 0.5659,
+     "p_chi2": 0.563,
+     "df": 5,
+     "largest_gap": {
+      "metric": "S16 D4 (S9 input): largest party gap",
+      "hi": "SVP",
+      "lo": "Grüne",
+      "value": 0.091,
+      "diff": 0.091,
+      "ci95": [
+       -0.042,
+       0.211
+      ],
+      "ci95_raw": [
+       -0.041,
+       0.2109
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s16_d4_secondary > party > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.09"
+       ],
+       "diff": [
+        "0.0",
+        "0.09"
+       ],
+       "ci95": [
+        "-0.05",
+        "-0.1",
+        "0.22",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "-0.04",
+        "0.0",
+        "0.2",
+        "0.21"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s16_d4_secondary > party > top1 > test"
+     },
+     "shown": {
+      "p_perm": [
+       "0.5",
+       "0.56"
+      ],
+      "p_chi2": [
+       "0.5",
+       "0.56"
+      ]
+     }
+    },
+    "s16_d4_submitter_kind_top1": {
+     "p_perm": 0.0004,
+     "p_chi2": 0.0002,
+     "df": 4,
+     "largest_gap": {
+      "metric": "S16 D4 (S9 input): largest submitter kind gap",
+      "hi": "government",
+      "lo": "member/faction",
+      "value": 0.1311,
+      "diff": 0.1311,
+      "ci95": [
+       0.073,
+       0.186
+      ],
+      "ci95_raw": [
+       0.0735,
+       0.1853
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s16_d4_secondary > submitter kind > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.13"
+       ],
+       "diff": [
+        "0.1",
+        "0.13"
+       ],
+       "ci95": [
+        "0.0",
+        "0.07",
+        "0.19",
+        "0.2"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.07",
+        "0.1",
+        "0.18"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s16_d4_secondary > submitter kind > top1 > test"
+     },
+     "shown": {
+      "p_perm": [
+       "0.0",
+       "0.00"
+      ],
+      "p_chi2": [
+       "0.0",
+       "0.00"
+      ]
+     }
+    },
+    "s16_d4_instrument_top1": {
+     "p_perm": 0.0002,
+     "p_chi2": 0.0,
+     "df": 5,
+     "largest_gap": {
+      "metric": "S16 D4 (S9 input): largest instrument gap",
+      "hi": "Regierungsgeschäft",
+      "lo": "Postulat",
+      "value": 0.1592,
+      "diff": 0.1592,
+      "ci95": [
+       0.083,
+       0.228
+      ],
+      "ci95_raw": [
+       0.0837,
+       0.2278
+      ],
+      "basis": "tested cells with n >= 30",
+      "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals (eval/s32/analyze.py)",
+      "at": {
+       "file": "eval/s32/results.json",
+       "key": "s16_d4_secondary > instrument > top1 > gap"
+      },
+      "shown": {
+       "value": [
+        "0.1",
+        "0.15"
+       ],
+       "diff": [
+        "0.1",
+        "0.15"
+       ],
+       "ci95": [
+        "0.0",
+        "0.08",
+        "0.23",
+        "0.3"
+       ],
+       "ci95_raw": [
+        "0.0",
+        "0.08",
+        "0.2",
+        "0.22"
+       ]
+      }
+     },
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s16_d4_secondary > instrument > top1 > test"
+     },
+     "shown": {
+      "p_perm": [
+       "0.0",
+       "0.00"
+      ]
+     }
+    },
+    "s9_prod_not_scored": {
+     "value": 17,
+     "by_party": {
+      "Mitte": 4,
+      "Grüne": 3,
+      "SP": 5,
+      "FDP": 1,
+      "government": 1,
+      "canton": 1,
+      "committee": 1,
+      "SVP": 1
+     },
+     "why": "no APS chapter row in the production run (as make eval: not scored)",
+     "at": {
+      "file": "eval/s32/results.json",
+      "key": "s9_prod > not_scored > n"
+     }
+    }
+   },
+   "small_threshold": 30,
+   "split": "re-analysis of existing measurements (S9 production rows, S25 held-out decisions, S16 raw); no new calls; not pre-registered (written after review round 8, J2 change 2)",
+   "prereg": null,
+   "not_preregistered": "a re-analysis of existing measurements; nothing was tuned, no call was made",
+   "language_note": "both sets are German: S9 prod 1,340/1,340 inputs, S25 926 of 927; the shipped federal design reads the German input, so neither set measures a language effect (cells in breakdowns, no test)",
+   "sources": [
+    "eval/s32/results.json",
+    "eval/s32/README.md",
+    "eval/s32/analyze.py",
+    "eval/prod_gold/topics.jsonl.gz",
+    "eval/prod_gold/inputs.jsonl.gz",
+    "eval/s25/decisions.jsonl",
+    "eval/spikes/s14-neutrality/scripts/s14lib.py",
+    "data/eval/gold_aps_s9.csv"
+   ],
+   "build": "no calls (rows: vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-16",
+   "test": "Neutralität des ausgelieferten Bundes-Designs (S32, APS-Redaktion): Partei, Einreichende, Instrument, Sprache — Produktionszeilen der S9-Geschäfte und die S25-Hold-out-Geschäfte (Neuauswertung, nicht vorregistriert)",
+   "interval": null,
+   "baseline": {
+    "name": "S14 on the earlier D1 design, same 1,357 S9 affairs (neutrality_s9)",
+    "value": null,
+    "ci95": null
+   },
+   "file": "eval/s32/results.json",
+   "key": "s9_prod > party > top1 > test"
+  },
+  {
    "id": "neutrality_s9",
    "gold": "human",
    "subject": "Apertus",
-   "title_de": "Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument",
-   "title_fr": "Neutralité, Confédération (S9, rédaction APS) : langue, parti, auteur, instrument",
+   "title_de": "Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument — D1, früheres Design (ausgeliefert: S32)",
+   "title_fr": "Neutralité, Confédération (S9, rédaction APS) : langue, parti, auteur, instrument — D1, design antérieur (livré : S32)",
    "n": 1357,
    "design": "keine neuen Aufrufe; D1 aus S9-Rohdaten neu berechnet (955/1357 wie S9); Partei aus dem OPD-Export",
    "result": {
@@ -14917,7 +22051,7 @@
    ],
    "build": "no calls (S9 rows: vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840)",
    "date": "2026-10-13T21:31:29Z",
-   "test": "Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument",
+   "test": "Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument — D1, früheres Design (ausgeliefert: S32)",
    "interval": [
     -0.0029,
     0.0361
@@ -30876,6 +38010,7 @@
   "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
   "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
   "one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely inconclusive at n = 927, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
+  "a held-out French / Italian federal slice for the shipped design (S32: the S9 production inputs and the S25 items are German)",
   "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
   "Romansh"
  ]

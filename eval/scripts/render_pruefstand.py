@@ -555,10 +555,89 @@ w("")
 
 ns = T["neutrality_s9"]
 bd = ns["breakdowns"]
-w("### 8 · Neutrality on human labels (S9, no new calls; S22 Italian)")
+
+
+def cell_table(title, blocks, labels, small_n=20):
+    """blocks: cells() dicts (cell rows in order; the union of their cells is shown); labels: column names."""
+    w(f"| {title} | " + " | ".join(labels) + " |")
+    w("|---|" + "---|" * len(labels))
+    names = []
+    for bk in blocks:
+        names += [c["cell"] for c in bk["cells"] if c["cell"] not in names]
+    for nm in names:
+        row = []
+        for bk in blocks:
+            c = next((x for x in bk["cells"] if x["cell"] == nm), None)
+            row.append("—" if c is None else L(num(c["value"]) + ci(c["ci95"]) + f", n {c['n']}", c.get("at") or bk["at"]) + (" (small)" if c.get("small") else ""))
+        w(f"| {nm} | " + " | ".join(row) + " |")
+    tests = []
+    for bk in blocks:
+        t = bk["test"] or {}; g = bk.get("largest_gap") or {}
+        s = f"p {t['p_perm']}" if t.get("p_perm") is not None else ""
+        if g.get("diff") is not None:
+            s += f"; gap {g['hi']} − {g['lo']} {sgn(g['diff'])}{ci(g['ci95'], signed=True)}"
+        tests.append(L(s, t.get("at") or bk["at"]) if s else "—")
+    w(f"| *test (cells n ≥ {small_n})* | " + " | ".join(tests) + " |")
+    w("")
+
+
+s32 = T["neutrality_shipped_s32"]; b32 = s32["breakdowns"]
+p9, p25, ppo = b32["s9_prod_party_top1"], b32["s25_party_top1"], b32["pooled_party_top1"]
+lg9, lg25 = b32["s9_prod_language_top1"], b32["s25_language_top1"]
+nsc = b32["s9_prod_not_scored"]
+w("### 8 · Neutrality on human labels (S32 shipped design; S14 earlier design D1; S22 Italian)")
 w("")
-w(f"Language, same {num(ns['n'], 0)} affairs scored from the German vs the French text (paired): German − French "
+w(f"**Shipped design (S32: a re-analysis of existing rows, not pre-registered, no new calls).** Gold: the APS editors' chapter. Two "
+  f"sets. The S9 affairs' production rows ([`eval/prod_gold/`](../eval/prod_gold/rows.py), the rows `make eval` scores: "
+  f"{L(p9['overall']['kn'], p9['overall']['at'])} scored, {L(str(nsc['value']), nsc['at'])} without a chapter row). The S25 held-out "
+  f"affairs ([`eval/s25/decisions.jsonl`](../eval/s25/decisions.jsonl), {L(p25['overall']['kn'], p25['overall']['at'])}). Party, "
+  "submitter type and instrument come from S14's own functions on the OPD export the production run reads; on the S9 affairs they give "
+  f"exactly S14's cells. Cells with n < {s32['small_threshold']} are marked "
+  "small. The party test is a permutation test (5,000) over the six main parties (pooled: shuffled within set); the largest gap is "
+  f"among cells with n ≥ {s32['small_threshold']}, bootstrap (2,000). "
+  "Script and notes: [`eval/s32/analyze.py`](../eval/s32/analyze.py), [`eval/s32/README.md`](../eval/s32/README.md).")
+w("")
+cell_table("S32 by party, top-1", [p9, p25, ppo], ["S9 prod", "S25 held out", "pooled"], s32["small_threshold"])
+cell_table("S32 by submitter type, top-1", [b32["s9_prod_submitter_kind_top1"], b32["s25_submitter_kind_top1"], b32["pooled_submitter_kind_top1"]],
+           ["S9 prod", "S25 held out", "pooled"], s32["small_threshold"])
+cell_table("S32 by instrument, top-1", [b32["s9_prod_instrument_top1"], b32["s25_instrument_top1"], b32["pooled_instrument_top1"]],
+           ["S9 prod", "S25 held out", "pooled"], s32["small_threshold"])
+ga25 = p25["largest_gap_all_tested"]; ac9, ac25 = b32["s9_prod_all_submitter_categories_test"], b32["s25_all_submitter_categories_test"]
+k16 = b32["s16_d4_party_top1"]
+w(f"In S25 two party cells are small; over all six, the gap is {ga25['hi']} − {ga25['lo']} {L(sgn(ga25['diff']) + ci(ga25['ci95'], signed=True), ga25['at'])}. "
+  f"Test over all submitter categories: S9 prod {L('p ' + str(ac9['p_perm']), ac9['at'])} ({ac9['cells']} cells), "
+  f"S25 {L('p ' + str(ac25['p_perm']), ac25['at'])} ({ac25['cells']} cells). Secondary, S16 D4 on the S9 input: party "
+  f"{L('p ' + str(k16['p_perm']), k16['at'])}, gap {k16['largest_gap']['hi']} − {k16['largest_gap']['lo']} "
+  f"{L(sgn(k16['largest_gap']['diff']) + ci(k16['largest_gap']['ci95'], signed=True), k16['largest_gap']['at'])}.")
+w("")
+c9 = lg9["cells"]; c25 = {c["cell"]: c for c in lg25["cells"]}
+w(f"**Language: not informative for the shipped design.** The S9 production inputs are German ({L(num(c9[0]['n']), c9[0]['at'])} of "
+  f"{num(p9['overall']['n'])}). The S25 items are {L(num(c25['de']['n']), c25['de']['at'])} German and {L(num(c25['fr']['n']), c25['fr']['at'])} French. "
+  "Federal affairs are read from the German input (no DE/FR two-readings lane), so neither set can show a language effect. The "
+  "language evidence on human labels is S22 (Italian vs German, D1, below) and Bern (DE vs FR titles, §5). A held-out French or "
+  "Italian federal slice for the shipped design is still to measure.")
+w("")
+gmax = max((p9, p25, ppo), key=lambda x: x["largest_gap"]["ci95"][1])["largest_gap"]
+kk9, ki9 = b32["s9_prod_submitter_kind_keyword_top1"]["test"], b32["s9_prod_instrument_keyword_top1"]["test"]
+w("Reading (shipped design): among the six main parties, top-1 differs too little to measure with these sample sizes, both on the "
+  "S9 production rows and held out in S25. This is not evidence of no difference: the gap intervals reach up to "
+  f"{L(F.signed(F.hi(gmax['ci95'][1])), gmax['at'])}. The lowest party is not the same in the two sets (Mitte and SVP in S9 prod, SP in S25). "
+  "Members' affairs score below committee and government business (pooled test above), as in "
+  "S14. Unlike S14, the keyword baseline on the production input does not order the submitter types that way "
+  f"(S9 prod keyword {L('p ' + str(kk9['p_perm']), kk9['at'])}), so «easier texts» is not shown for submitter type here; by "
+  f"instrument it is (S9 prod keyword {L('p ' + str(ki9['p_perm']), ki9['at'])}, Parlamentarische Initiative highest and Postulat "
+  "lowest, as for Apertus).")
+w("")
+w("**Earlier design (S14, «D1, earlier design»), same 1,357 S9 affairs, Curia input.**")
+w("")
+w(f"Language, same {num(ns['n'], 0)} affairs scored from the German vs the French text (paired, one identity-order chapter call each): German − French "
   f"{r(ns['result'], signed=True)}, McNemar p {ns['result']['p_mcnemar']}.")
+w("")
+cell_table("S9 by party (D1, earlier design)", [bd["party_D1_top1"], bd["party_keyword_top1"]], ["D1 top-1", "keyword top-1"])
+cell_table("S9 by instrument (D1, earlier design)", [bd["instrument_D1_top1"], bd["instrument_keyword_top1"]], ["D1 top-1", "keyword top-1"])
+w("Reading (D1): top-1 differs too little to measure with these sample sizes by language and among the six main parties (this is not "
+  "evidence of no difference; the party gaps' intervals are wide). Government business scores higher than members' motions, and the "
+  "keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.")
 w("")
 it = T["aps_italian_vs_german"]; im = it["results_more"]; idf = im[0]; ide = it["baselines"][0]
 iwt, ito = im[3], im[4]
@@ -576,36 +655,6 @@ w(f"| title only (n {num(ito['n'])}) | {r(ito)} | {r(ito['german_same_items'])} 
 w("")
 w("Shares are k / n recovered from the stored 4-decimal values and truncated; the difference is a paired bootstrap (2,000), "
   "shown at 4 decimals because it is near zero, bounds rounded outward.")
-w("")
-
-
-def cell_table(title, blocks, labels):
-    """blocks: list of cells() dicts with the same cell order; labels: column names."""
-    w(f"| {title} | " + " | ".join(labels) + " |")
-    w("|---|" + "---|" * len(labels))
-    names = [c["cell"] for c in blocks[0]["cells"]]
-    for i, nm in enumerate(names):
-        row = []
-        for bk in blocks:
-            c = next((x for x in bk["cells"] if x["cell"] == nm), None)
-            row.append("—" if c is None else L(num(c["value"]) + ci(c["ci95"]) + f", n {c['n']}", bk["at"]) + (" (small)" if c.get("small") else ""))
-        w(f"| {nm} | " + " | ".join(row) + " |")
-    tests = []
-    for bk in blocks:
-        t = bk["test"]; g = bk.get("largest_gap") or {}
-        s = f"p {t['p_perm']}" if t.get("p_perm") is not None else ""
-        if g.get("diff") is not None:
-            s += f"; gap {g['hi']} − {g['lo']} {sgn(g['diff'])}{ci(g['ci95'], signed=True)}"
-        tests.append(L(s, bk["at"]) if s else "—")
-    w("| *test (cells n ≥ 20)* | " + " | ".join(tests) + " |")
-    w("")
-
-
-cell_table("S9 by party", [bd["party_D1_top1"], bd["party_keyword_top1"]], ["D1 top-1", "keyword top-1"])
-cell_table("S9 by instrument", [bd["instrument_D1_top1"], bd["instrument_keyword_top1"]], ["D1 top-1", "keyword top-1"])
-w("Reading: top-1 differs too little to measure with these sample sizes by language and among the six main parties (this is not "
-  "evidence of no difference; the party gaps' intervals are wide). Government business scores higher than members' motions, and the "
-  "keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.")
 w("")
 
 fg = T["free_generation"]

@@ -75,12 +75,27 @@ asked on the flags raised precision of flags from 0.642 to 0.761, +0.119 [+0.005
 carry the scope; keyword lists remain more precise on such topics (0.944) and reach recall 0.850 against 0.800.
 
 ## 4. Neutrality
-No measurable difference between the languages on human labels: the same 1,350 APS-labelled federal affairs scored from the
-Italian text give 0.702, from the German text 0.703 (difference +0.0007 [−0.020, +0.021], S22). Between German and French: Bern directorates +0.001 [−0.031, +0.034] (same affairs, both
-titles); federal APS chapters from German vs French text +0.016 [−0.003, +0.037]. Chapter accuracy across the six main
-parties ranges from SP 0.701 to Grüne 0.578 (n 95); the overall test gives p = 0.47, and the largest pair, SP − Grüne
-+0.122 [−0.007, +0.242], is borderline — reported, not dismissed. What does differ is the submitter type: Federal Council business is easier than
-members' motions (0.792 vs 0.653), and quality is reported per submitter type.
+**Party, on the design that ships (S32).** S32 is a re-analysis of rows that already exist; it is not pre-registered and
+made no new calls. It scores two sets against the APS editors' chapter: the production rows of the 1,357 S9 federal affairs
+(1,340 scored) and the 927 held-out S25 affairs. On the S9 rows, chapter accuracy across the six main parties ranges from
+Mitte 0.628 (n 121) to GLP 0.733 (n 45), permutation p 0.4317. Held out, among the four parties with at least 30
+affairs, it ranges from SP 0.595 (n 84) to Mitte 0.706 (n 92); Grüne and GLP have only 23 and 22 affairs there. The test
+over all six gives p 0.5563. Pooled, p is 0.8726. The largest gaps between parties
+with at least 30 affairs are GLP − Mitte +0.105 [−0.059, +0.252] and Mitte − SP +0.111 [−0.037, +0.255]. Both intervals
+include zero, but they are wide, so a gap of that size is not ruled out. The lowest party is not the same in the two sets.
+The earlier D1 design (S14, same S9 affairs) gave p 0.4655 and SP − Grüne +0.122 [−0.007, +0.242].
+
+**Submitter type.** Members' affairs score below committee and Federal Council business. On the S9 rows: 0.679 vs 0.791
+and 0.747 (p 0.0064). Held out: 0.652 vs 0.728 and 0.736 (p 0.1606). Pooled: p 0.0014. Quality is reported per submitter
+type.
+
+**Language.** Both shipped-design sets are German: all 1,340 scored S9 inputs, and 926 of the 927 S25 affairs. So they say
+nothing about language. The language evidence on human labels comes from other designs:
+- Italian vs German text on 1,350 federal affairs: 0.702 vs 0.703, difference +0.0007 [−0.020, +0.021] (S22, D1).
+- Bern directorates, DE vs FR titles of the same affairs: +0.001 [−0.031, +0.034].
+- Federal APS chapters from German vs French text, one chapter call each: +0.016 [−0.003, +0.037] (S14).
+
+A held-out French or Italian federal slice for the shipped design is still to be measured.
 
 ## 5. Runtime and cost
 Measured on the corpus run at Public AI list price ([`eval/cost/results.json`](../eval/cost/results.json)): USD 0.333 per

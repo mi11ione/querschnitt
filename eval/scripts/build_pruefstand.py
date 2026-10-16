@@ -212,7 +212,7 @@ tests.append(dict(
     sources=SRC_S9, build=BUILD, model=MODEL, date=date_s9, shipped="default chapter",
     breakdowns={"per_chapter": {"macro_F1": g(S9P, "D1", "macro_F1"), "chapters": g(S9P, "D1", "chapters"),
                                 "worst": g(S9P, "D1", "worst"), "best": g(S9P, "D1", "best"), "at": loc(S9P, "D1")},
-                "see_also": "neutrality_s9 (party, submitter kind, instrument on D1)"}))
+                "see_also": "neutrality_s9 (party, submitter kind, instrument on D1); the shipped design: neutrality_shipped_s32"}))
 
 d2, d2t3 = s9chapter("D2")
 tests.append(dict(
@@ -339,8 +339,8 @@ tests.append(dict(
 s9lang = g(S14, "S9", "language (paired, same affairs; single identity-order call)")
 tests.append(dict(
     id="neutrality_s9", gold="human", subject="Apertus",
-    title_de="Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument",
-    title_fr="Neutralité, Confédération (S9, rédaction APS) : langue, parti, auteur, instrument",
+    title_de="Neutralität, Bund (S9, APS-Redaktion): Sprache, Partei, Einreichende, Instrument — D1, früheres Design (ausgeliefert: S32)",
+    title_fr="Neutralité, Confédération (S9, rédaction APS) : langue, parti, auteur, instrument — D1, design antérieur (livré : S32)",
     n=1357, design="keine neuen Aufrufe; D1 aus S9-Rohdaten neu berechnet (955/1357 wie S9); Partei aus dem OPD-Export",
     result={"metric": "language: DE − FR, paired (identity-order chapter call on DE vs FR text)", "value": s9lang["diff_DE_minus_FR"],
             "ci95": s9lang["diff_ci"], "p_mcnemar": s9lang["p_mcnemar"],
@@ -1280,6 +1280,102 @@ tests.append(dict(
     build=s29["build"] + " (run runs/s29)", model=s29["model"], date="2026-10-15"))
 assert MODEL == s29["model"]
 
+# ---------------------------------------------------------------- S32: neutrality of the shipped federal design (re-analysis, not pre-registered)
+S32R, S32M = f"{QE}/s32/results.json", f"{QE}/s32/README.md"
+s32 = g(S32R)
+assert s32["test"] == "S32" and s32["prereg"] is None and s32["checks"]["s9_submitter_cells_equal_s14"], s32["checks"]
+assert s32["checks"]["s25_top1"] == [t25["k"], t25["n"]] and s32["checks"]["s16_d4_top1"] == [d4["k"], N16], s32["checks"]
+SM32 = s32["small_threshold"]
+
+
+def s32gap(*keys, metric):
+    b = g(S32R, *keys)
+    assert b["ci"][0] <= b["diff"] <= b["ci"][1] and round(b["diff"], 4) == b["diff"], (keys, b)
+    return {"metric": metric, "hi": b["hi"], "lo": b["lo"], "value": b["diff"], "diff": b["diff"], "ci95": list(b["ci"]),
+            "ci95_raw": list(b["ci_raw"]), "basis": b["basis"],
+            "ci_method": b["ci_method"] + " (eval/s32/analyze.py)", "at": loc(S32R, *keys)}
+
+
+def s32cells(st, dim, m, label):
+    """one S32 breakdown (cells k/n via knblock, test, largest gap) in the cells() layout the renderer's cell_table reads."""
+    d_ = g(S32R, st, dim, m)
+    cl = []
+    for i_, c_ in enumerate(d_["cells"]):
+        b_ = knblock(S32R, st, dim, m, "cells", i_, metric=f"{label}: {dim} {c_['cell']}", script="eval/s32/analyze.py")
+        b_ = dict(b_, cell=c_["cell"])
+        if c_["n"] < SM32: b_["small"] = True
+        assert bool(c_.get("small")) == bool(b_.get("small")), (st, dim, m, c_)
+        cl.append(b_)
+    o = {"cells": cl, "overall": knblock(S32R, st, dim, m, "overall", metric=f"{label}: all", script="eval/s32/analyze.py"),
+         "at": loc(S32R, st, dim, m)}
+    t_ = d_.get("test")
+    o["test"] = ({"p_perm": t_["p_perm"], "p_chi2": t_["p_chi2"], "df": t_["df"], "cells_tested": t_["cells_tested"],
+                  "method": f"permutation 5,000 (seed 14) of Pearson's χ² across the tested cells (S14's perm_test)",
+                  "at": loc(S32R, st, dim, m, "test")} if t_ else None)
+    if d_.get("not_informative"): o["not_informative"] = {"what": d_["not_informative"], "at": loc(S32R, st, dim, m, "not_informative")}
+    o["largest_gap"] = s32gap(st, dim, m, "gap", metric=f"{label}: largest {dim} gap, cells n ≥ {SM32}") if d_.get("gap") else None
+    if d_.get("gap_all_tested_cells"):
+        o["largest_gap_all_tested"] = s32gap(st, dim, m, "gap_all_tested_cells", metric=f"{label}: largest {dim} gap, every tested cell")
+    return o
+
+
+L32 = {"s9_prod": f"S9 prod, production rows ({s32['s9_prod']['n']:,} scored)", "s25": f"S25 held out ({s32['s25']['n']} affairs)",
+       "pooled": f"S9 prod + S25 pooled ({s32['pooled']['n']:,})"}
+bd32 = {}
+for st_ in ("s9_prod", "s25"):
+    for dim_, k_ in (("party", "party"), ("submitter kind", "submitter_kind"), ("instrument", "instrument"), ("language of the text", "language")):
+        for m_, mk_ in (("top1", "top1"), ("kw", "keyword_top1")):
+            bd32[f"{st_}_{k_}_{mk_}"] = s32cells(st_, dim_, m_, L32[st_] + (" keyword" if m_ == "kw" else ""))
+    bd32[f"{st_}_party_top3"] = s32cells(st_, "party", "top3", L32[st_] + " top-3")
+    at_ = g(S32R, st_, "party", "top1_all_categories_test")
+    bd32[f"{st_}_all_submitter_categories_test"] = {"p_perm": at_["p_perm"], "p_chi2": at_["p_chi2"], "df": at_["df"],
+                                                    "cells": len(at_["cells_tested"]), "at": loc(S32R, st_, "party", "top1_all_categories_test")}
+for dim_, k_ in (("party", "party"), ("submitter kind", "submitter_kind"), ("instrument", "instrument")):
+    d_ = g(S32R, "pooled", dim_)
+    cl_ = [dict(knblock(S32R, "pooled", dim_, "cells", i_, metric=f"{L32['pooled']}: {dim_} {c_['cell']}", script="eval/s32/analyze.py"),
+                cell=c_["cell"], **({"small": True} if c_["n"] < SM32 else {})) for i_, c_ in enumerate(d_["cells"])]
+    bd32[f"pooled_{k_}_top1"] = {"cells": cl_, "overall": knblock(S32R, "pooled", dim_, "overall", metric=f"{L32['pooled']}: all", script="eval/s32/analyze.py"),
+                                 "test": {"p_perm": d_["test"]["p_perm"], "p_chi2": d_["test"]["p_chi2"], "df": d_["test"]["df"],
+                                          "cells_tested": d_["test"]["cells_tested"], "note": d_["test"]["p_chi2_note"],
+                                          "at": loc(S32R, "pooled", dim_, "test")},
+                                 "largest_gap": s32gap("pooled", dim_, "gap", metric=f"{L32['pooled']}: largest {dim_} gap, cells n ≥ {SM32}"),
+                                 "at": loc(S32R, "pooled", dim_)}
+for dim_, k_ in (("party", "party"), ("submitter kind", "submitter_kind"), ("instrument", "instrument")):
+    d_ = g(S32R, "s16_d4_secondary", dim_, "top1")
+    bd32[f"s16_d4_{k_}_top1"] = {"p_perm": d_["test"]["p_perm"], "p_chi2": d_["test"]["p_chi2"], "df": d_["test"]["df"],
+                                 "largest_gap": s32gap("s16_d4_secondary", dim_, "top1", "gap", metric=f"S16 D4 (S9 input): largest {dim_} gap"),
+                                 "at": loc(S32R, "s16_d4_secondary", dim_, "top1", "test")}
+ns32 = g(S32R, "s9_prod", "not_scored")
+bd32["s9_prod_not_scored"] = {"value": ns32["n"], "by_party": ns32["by_party"], "why": ns32["why"], "at": loc(S32R, "s9_prod", "not_scored", "n")}
+p32 = bd32["s9_prod_party_top1"]; q32 = bd32["s25_party_top1"]; o32 = bd32["pooled_party_top1"]
+tests.append(dict(
+    id="neutrality_shipped_s32", gold="human", subject="Apertus",
+    title_de="Neutralität des ausgelieferten Bundes-Designs (S32, APS-Redaktion): Partei, Einreichende, Instrument, Sprache — "
+             "Produktionszeilen der S9-Geschäfte und die S25-Hold-out-Geschäfte (Neuauswertung, nicht vorregistriert)",
+    title_fr="Neutralité du design fédéral livré (S32, rédaction APS) : parti, auteur, instrument, langue — lignes de production des objets "
+             "S9 et objets hors échantillon S25 (réanalyse, non préenregistrée)",
+    n=p32["overall"]["n"] + q32["overall"]["n"],
+    design=f"keine neuen Aufrufe; S9 prod = die Produktionszeilen (eval/prod_gold, wie make eval: {p32['overall']['kn']}), S25 = "
+           f"eval/s25/decisions.jsonl ({q32['overall']['kn']}); Partei, Einreichende und Instrument mit S14s eigenen Funktionen (s14lib.py) "
+           "auf dem OPD-Export der Produktion (16.10.2026; S9-Zellen identisch mit S14); Sprache = text_lang des Produktions-Inputs; "
+           f"Zellen n < {SM32} klein; Permutationstest 5'000 über die sechs Hauptparteien; grösste Lücke mit Bootstrap (2'000)",
+    result=dict(p32["test"], metric="S9 prod: party test over the six main parties, permutation p", value=p32["test"]["p_perm"]),
+    results_more=[dict(q32["test"], metric="S25 held out: party test over the six main parties, permutation p", value=q32["test"]["p_perm"]),
+                  dict(o32["test"], metric="pooled: party test (permutation within set)", value=o32["test"]["p_perm"]),
+                  p32["largest_gap"], q32["largest_gap"], o32["largest_gap"]],
+    baselines=[{"name": "S14 on the earlier D1 design, same 1,357 S9 affairs (neutrality_s9)",
+                "p_perm": g(S14, "S9", "party", "D1_top1", "test", "p_perm"), "at": loc(S14, "S9", "party", "D1_top1", "test", "p_perm")},
+               {"name": "keyword top-1 per cell (in breakdowns)"}],
+    breakdowns=bd32, small_threshold=SM32,
+    split="re-analysis of existing measurements (S9 production rows, S25 held-out decisions, S16 raw); no new calls; not pre-registered "
+          "(written after review round 8, J2 change 2)",
+    prereg=None, not_preregistered="a re-analysis of existing measurements; nothing was tuned, no call was made",
+    language_note="both sets are German: S9 prod 1,340/1,340 inputs, S25 926 of 927; the shipped federal design reads the German input, so "
+                  "neither set measures a language effect (cells in breakdowns, no test)",
+    sources=[S32R, S32M, f"{QE}/s32/analyze.py", "eval/prod_gold/topics.jsonl.gz", "eval/prod_gold/inputs.jsonl.gz", "eval/s25/decisions.jsonl",
+             f"{I2}/s14-neutrality/scripts/s14lib.py", "data/eval/gold_aps_s9.csv"],
+    build="no calls (rows: " + BUILD + ")", model=MODEL, date=s32["generated_utc"][:10]))
+
 s17 = g(S17R)
 tests.append(dict(
     id="aps_communal_production", gold="ai-judge", subject="Apertus",
@@ -1781,7 +1877,7 @@ for t_ in tests:
 ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
          "aps_hierarchical_d4", "aps_hierarchical_heldout_s25", "aps_design_search_s31",
          "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
-         "basel_themes_names", "basel_themes_examples", "ticino_departments", "judge_anchor_aps", "judge_dvs_human", "neutrality_s9", "aps_italian_vs_german",
+         "basel_themes_names", "basel_themes_examples", "ticino_departments", "judge_anchor_aps", "judge_dvs_human", "neutrality_shipped_s32", "neutrality_s9", "aps_italian_vs_german",
          "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
          "evidence_support_production", "aps_cantonal_communal", "aps_bilingual", "adhoc_new_topics", "adhoc_editor_examples",
@@ -1916,8 +2012,9 @@ for t_ in tests: t_["interval"] = t_["result"].get("ci95")
 print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in ("aps_chapter_heldout_s25", "aps_hierarchical_heldout_s25", "aps_chapter_heldout_s28_no_prefill",
-                                                            "ticino_departments", "adhoc_scope_check", "aps_design_search_s31")]
-# S25 / S28 / S29 / S30 / S31 intervals are already outward (recomputed exactly from k and n above)
+                                                            "ticino_departments", "adhoc_scope_check", "aps_design_search_s31",
+                                                            "neutrality_shipped_s32")]
+# S25 / S28 / S29 / S30 / S31 / S32 intervals are already outward (recomputed exactly from k and n above)
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
 BOUND = re.compile(r"(^|_)ci(95)?(_w)?$")
@@ -1974,6 +2071,7 @@ out = {
         "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
         f"one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely "
         f"inconclusive at n = {N25}, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
+        "a held-out French / Italian federal slice for the shipped design (S32: the S9 production inputs and the S25 items are German)",
         "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
         "Romansh"],
 }

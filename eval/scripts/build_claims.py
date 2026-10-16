@@ -348,9 +348,9 @@ def classify(tok, written_norm, f, line, approx):
 
 # ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
 # are; the S19 / S26 / S27, S25, S28 (section S28-pruefstand; the hand rows of section S28 stay), S29, S30 (section S30-pruefstand; the
-# hand rows of section S30 stay) and S31 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
+# hand rows of section S30 stay), S31 and S32 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
 ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
-GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31"}
+GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31", "S32"}
 
 
 def adhoc_rows():
@@ -638,6 +638,39 @@ def s30_rows():
     return rows
 
 
+def s32_rows():
+    """S32, neutrality of the shipped federal design (a re-analysis, not pre-registered, no calls): every block of eval/pruefstand.json >
+    neutrality_shipped_s32 (read from eval/s32/results.json) — per set (S9 production rows, S25 held out, pooled) and dimension (party,
+    submitter type, instrument, language of the text; top-1, keyword top-1, party top-3): each cell's share (truncated), Wilson bounds
+    (outward, re-checked by build_pruefstand.py), k/n and n; the permutation and asymptotic p as stored; the largest gap and its bootstrap
+    bounds (outward at 3 decimals); the all-categories tests, the S16 D4 secondary tests and the affairs not scored."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "neutrality_shipped_s32")
+    rows, r, block, point = _gen("S32", "S32 (shipped design, re-analysis, not pre-registered)")
+
+    def ptest(ctx, b):
+        for k in ("p_perm", "p_chi2"):
+            if b.get(k) is not None:
+                r(f"{ctx} {k}", str(b[k]), b[k], b["at"]["file"], f"{b['at']['key']} > {k}", "as stored (4 decimals)")
+
+    r("affairs in both sets (S9 prod scored + S25)", NF.t(t["n"]), t["n"], t["sources"][0], "s9_prod > n + s25 > n", "count")
+    for name, b in t["breakdowns"].items():
+        if isinstance(b.get("cells"), list):
+            for c in b["cells"]:
+                block(f"{name} {c['cell']}", c)
+            block(f"{name} all", b["overall"])
+            if b.get("test"): ptest(f"{name} test", b["test"])
+            for gk in ("largest_gap", "largest_gap_all_tested"):
+                if b.get(gk): point(f"{name} {gk} {b[gk]['hi']} − {b[gk]['lo']}", b[gk], signed=True)
+        elif name.endswith("all_submitter_categories_test"):
+            ptest(name, b); r(f"{name} cells", str(b["cells"]), b["cells"], b["at"]["file"], f"{b['at']['key']} > cells_tested (count)", "count")
+        elif name.startswith("s16_d4"):
+            ptest(name, b); point(f"{name} largest_gap {b['largest_gap']['hi']} − {b['largest_gap']['lo']}", b["largest_gap"], signed=True)
+        elif name == "s9_prod_not_scored":
+            r("S9 affairs not scored (no chapter row in the production run)", str(b["value"]), b["value"], b["at"]["file"], b["at"]["key"], "count")
+    return rows
+
+
 def s31_rows():
     """S31, a documented design search on the design set (dev only, not pre-registered): every block of eval/pruefstand.json >
     aps_design_search_s31 (read from eval/s31/results.json) — chapter top-1 per design and stage (k/n, Wilson bounds outward), top-3, the
@@ -740,7 +773,7 @@ def main():
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
         kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
-    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows()
+    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows() + s32_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
@@ -749,7 +782,7 @@ def main():
     from collections import Counter
     c = Counter(r["status"] for r in rows + gen)
     c.update(l.split("\t")[7] for l in kept)
-    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 generated {len(gen)})")
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 + S32 generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

@@ -224,22 +224,58 @@ Bern (§5, S18) and Basel-Stadt (§6, S20) are reported beside this result, not 
 
 The judge's precision on human negatives is not measured (no human negatives exist).
 
-### 8 · Neutrality on human labels (S9, no new calls; S22 Italian)
+### 8 · Neutrality on human labels (S32 shipped design; S14 earlier design D1; S22 Italian)
 
-Language, same 1,357 affairs scored from the German vs the French text (paired): German − French [+0.016 [−0.003, +0.037]](../eval/spikes/s14-neutrality/results.json), McNemar p 0.1133.
+**Shipped design (S32: a re-analysis of existing rows, not pre-registered, no new calls).** Gold: the APS editors' chapter. Two sets. The S9 affairs' production rows ([`eval/prod_gold/`](../eval/prod_gold/rows.py), the rows `make eval` scores: [963/1340](../eval/s32/results.json) scored, [17](../eval/s32/results.json) without a chapter row). The S25 held-out affairs ([`eval/s25/decisions.jsonl`](../eval/s25/decisions.jsonl), [646/927](../eval/s32/results.json)). Party, submitter type and instrument come from S14's own functions on the OPD export the production run reads; on the S9 affairs they give exactly S14's cells. Cells with n < 30 are marked small. The party test is a permutation test (5,000) over the six main parties (pooled: shuffled within set); the largest gap is among cells with n ≥ 30, bootstrap (2,000). Script and notes: [`eval/s32/analyze.py`](../eval/s32/analyze.py), [`eval/s32/README.md`](../eval/s32/README.md).
 
-**Italian vs German (S22, [pre-registered](../eval/PREREG-BUILD.md#L69)).** The S9 affairs whose Italian title differs from the French one (1,350 of 1,357), gold the APS editors' chapter; Italian title + long title + the Italian submitted text where it differs from the French, D1 in the Italian frame (chapter names Italian, subtopic names German as published), both code orders; paired against the S9 German D1 on the same affairs.
-
-| n = 1,350 | Italian | German (S9 D1) | German − Italian, paired |
+| S32 by party, top-1 | S9 prod | S25 held out | pooled |
 |---|---|---|---|
-| chapter top-1 | **[0.702 [0.678, 0.727]](../eval/s22/results.json)** | [0.703 [0.678, 0.728]](../eval/s22/results.json) | [+0.0007 [−0.020, +0.021]](../eval/s22/results.json) |
-| chapter top-3 | [0.843](../eval/s22/results.json) | [0.842](../eval/s22/results.json) | |
-| with Italian submitted text (n 1,074) | [0.697](../eval/s22/results.json) | [0.683](../eval/s22/results.json) | |
-| title only (n 276) | [0.724](../eval/s22/results.json) | [0.782](../eval/s22/results.json) | |
+| SVP | [0.632 [0.548, 0.709], n 136](../eval/s32/results.json) | [0.670 [0.571, 0.756], n 97](../eval/s32/results.json) | [0.648 [0.584, 0.707], n 233](../eval/s32/results.json) |
+| SP | [0.721 [0.649, 0.784], n 169](../eval/s32/results.json) | [0.595 [0.488, 0.694], n 84](../eval/s32/results.json) | [0.679 [0.620, 0.735], n 253](../eval/s32/results.json) |
+| FDP | [0.689 [0.610, 0.760], n 145](../eval/s32/results.json) | [0.638 [0.531, 0.734], n 83](../eval/s32/results.json) | [0.671 [0.607, 0.729], n 228](../eval/s32/results.json) |
+| Mitte | [0.628 [0.539, 0.710], n 121](../eval/s32/results.json) | [0.706 [0.606, 0.790], n 92](../eval/s32/results.json) | [0.661 [0.596, 0.723], n 213](../eval/s32/results.json) |
+| Grüne | [0.695 [0.595, 0.781], n 92](../eval/s32/results.json) | [0.565 [0.368, 0.744], n 23](../eval/s32/results.json) (small) | [0.669 [0.579, 0.749], n 115](../eval/s32/results.json) |
+| GLP | [0.733 [0.589, 0.841], n 45](../eval/s32/results.json) | [0.727 [0.518, 0.869], n 22](../eval/s32/results.json) (small) | [0.731 [0.614, 0.823], n 67](../eval/s32/results.json) |
+| other party | [0.687 [0.514, 0.821], n 32](../eval/s32/results.json) | [0.666 [0.453, 0.829], n 21](../eval/s32/results.json) (small) | [0.679 [0.545, 0.790], n 53](../eval/s32/results.json) |
+| committee | [0.791 [0.733, 0.841], n 221](../eval/s32/results.json) | [0.728 [0.639, 0.802], n 114](../eval/s32/results.json) | [0.770 [0.722, 0.812], n 335](../eval/s32/results.json) |
+| government | [0.747 [0.692, 0.796], n 273](../eval/s32/results.json) | [0.736 [0.682, 0.784], n 288](../eval/s32/results.json) | [0.741 [0.703, 0.777], n 561](../eval/s32/results.json) |
+| canton | [0.739 [0.628, 0.827], n 73](../eval/s32/results.json) | [0.714 [0.529, 0.848], n 28](../eval/s32/results.json) (small) | [0.732 [0.639, 0.810], n 101](../eval/s32/results.json) |
+| unknown | [0.818 [0.656, 0.914], n 33](../eval/s32/results.json) | [0.739 [0.628, 0.827], n 73](../eval/s32/results.json) | [0.764 [0.674, 0.835], n 106](../eval/s32/results.json) |
+| party unknown | — | [0.000 [0.000, 0.794], n 1](../eval/s32/results.json) (small) | [0.000 [0.000, 0.794], n 1](../eval/s32/results.json) (small) |
+| other group | — | [1.000 [0.206, 1.000], n 1](../eval/s32/results.json) (small) | [1.000 [0.206, 1.000], n 1](../eval/s32/results.json) (small) |
+| *test (cells n ≥ 30)* | [p 0.4317; gap GLP − Mitte +0.105 [−0.059, +0.252]](../eval/s32/results.json) | [p 0.5563; gap Mitte − SP +0.111 [−0.037, +0.255]](../eval/s32/results.json) | [p 0.8726; gap GLP − SVP +0.083 [−0.043, +0.199]](../eval/s32/results.json) |
 
-Shares are k / n recovered from the stored 4-decimal values and truncated; the difference is a paired bootstrap (2,000), shown at 4 decimals because it is near zero, bounds rounded outward.
+| S32 by submitter type, top-1 | S9 prod | S25 held out | pooled |
+|---|---|---|---|
+| member/faction | [0.679 [0.645, 0.713], n 740](../eval/s32/results.json) | [0.652 [0.605, 0.697], n 423](../eval/s32/results.json) | [0.669 [0.642, 0.697], n 1163](../eval/s32/results.json) |
+| committee | [0.791 [0.733, 0.841], n 221](../eval/s32/results.json) | [0.728 [0.639, 0.802], n 114](../eval/s32/results.json) | [0.770 [0.722, 0.812], n 335](../eval/s32/results.json) |
+| government | [0.747 [0.692, 0.796], n 273](../eval/s32/results.json) | [0.736 [0.682, 0.784], n 288](../eval/s32/results.json) | [0.741 [0.703, 0.777], n 561](../eval/s32/results.json) |
+| canton | [0.739 [0.628, 0.827], n 73](../eval/s32/results.json) | [0.714 [0.529, 0.848], n 28](../eval/s32/results.json) (small) | [0.732 [0.639, 0.810], n 101](../eval/s32/results.json) |
+| unknown | [0.818 [0.656, 0.914], n 33](../eval/s32/results.json) | [0.739 [0.628, 0.827], n 73](../eval/s32/results.json) | [0.764 [0.674, 0.835], n 106](../eval/s32/results.json) |
+| other group | — | [1.000 [0.206, 1.000], n 1](../eval/s32/results.json) (small) | [1.000 [0.206, 1.000], n 1](../eval/s32/results.json) (small) |
+| *test (cells n ≥ 30)* | [p 0.0064; gap unknown − member/faction +0.138 [+0.004, +0.264]](../eval/s32/results.json) | [p 0.1606; gap unknown − member/faction +0.087 [−0.024, +0.192]](../eval/s32/results.json) | [p 0.0014; gap committee − member/faction +0.100 [+0.045, +0.151]](../eval/s32/results.json) |
 
-| S9 by party | D1 top-1 | keyword top-1 |
+| S32 by instrument, top-1 | S9 prod | S25 held out | pooled |
+|---|---|---|---|
+| Motion | [0.691 [0.647, 0.733], n 448](../eval/s32/results.json) | [0.666 [0.609, 0.720], n 282](../eval/s32/results.json) | [0.682 [0.647, 0.715], n 730](../eval/s32/results.json) |
+| Postulat | [0.673 [0.617, 0.725], n 294](../eval/s32/results.json) | [0.681 [0.604, 0.751], n 154](../eval/s32/results.json) | [0.676 [0.631, 0.719], n 448](../eval/s32/results.json) |
+| Regierungsgeschäft | [0.747 [0.692, 0.796], n 273](../eval/s32/results.json) | [0.736 [0.682, 0.784], n 288](../eval/s32/results.json) | [0.741 [0.703, 0.777], n 561](../eval/s32/results.json) |
+| Parlamentarische Initiative | [0.797 [0.742, 0.844], n 242](../eval/s32/results.json) | [0.675 [0.582, 0.757], n 108](../eval/s32/results.json) | [0.760 [0.712, 0.802], n 350](../eval/s32/results.json) |
+| Standesinitiative | [0.739 [0.628, 0.827], n 73](../eval/s32/results.json) | [0.714 [0.529, 0.848], n 28](../eval/s32/results.json) (small) | [0.732 [0.639, 0.810], n 101](../eval/s32/results.json) |
+| other type | [0.400 [0.168, 0.688], n 10](../eval/s32/results.json) (small) | [0.716 [0.599, 0.811], n 67](../eval/s32/results.json) | [0.675 [0.564, 0.770], n 77](../eval/s32/results.json) |
+| *test (cells n ≥ 30)* | [p 0.003; gap Parlamentarische Initiative − Postulat +0.124 [+0.047, +0.196]](../eval/s32/results.json) | [p 0.5623; gap Regierungsgeschäft − Motion +0.069 [−0.008, +0.144]](../eval/s32/results.json) | [p 0.0264; gap Parlamentarische Initiative − other type +0.084 [−0.030, +0.198]](../eval/s32/results.json) |
+
+In S25 two party cells are small; over all six, the gap is GLP − Grüne [+0.162 [−0.111, +0.429]](../eval/s32/results.json). Test over all submitter categories: S9 prod [p 0.0338](../eval/s32/results.json) (11 cells), S25 [p 0.2983](../eval/s32/results.json) (13 cells). Secondary, S16 D4 on the S9 input: party [p 0.5659](../eval/s32/results.json), gap SVP − Grüne [+0.091 [−0.042, +0.211]](../eval/s32/results.json).
+
+**Language: not informative for the shipped design.** The S9 production inputs are German ([1,340](../eval/s32/results.json) of 1,340). The S25 items are [926](../eval/s32/results.json) German and [1](../eval/s32/results.json) French. Federal affairs are read from the German input (no DE/FR two-readings lane), so neither set can show a language effect. The language evidence on human labels is S22 (Italian vs German, D1, below) and Bern (DE vs FR titles, §5). A held-out French or Italian federal slice for the shipped design is still to measure.
+
+Reading (shipped design): among the six main parties, top-1 differs too little to measure with these sample sizes, both on the S9 production rows and held out in S25. This is not evidence of no difference: the gap intervals reach up to [+0.255](../eval/s32/results.json). The lowest party is not the same in the two sets (Mitte and SVP in S9 prod, SP in S25). Members' affairs score below committee and government business (pooled test above), as in S14. Unlike S14, the keyword baseline on the production input does not order the submitter types that way (S9 prod keyword [p 0.3341](../eval/s32/results.json)), so «easier texts» is not shown for submitter type here; by instrument it is (S9 prod keyword [p 0.0006](../eval/s32/results.json), Parlamentarische Initiative highest and Postulat lowest, as for Apertus).
+
+**Earlier design (S14, «D1, earlier design»), same 1,357 S9 affairs, Curia input.**
+
+Language, same 1,357 affairs scored from the German vs the French text (paired, one identity-order chapter call each): German − French [+0.016 [−0.003, +0.037]](../eval/spikes/s14-neutrality/results.json), McNemar p 0.1133.
+
+| S9 by party (D1, earlier design) | D1 top-1 | keyword top-1 |
 |---|---|---|
 | SVP | [0.664 [0.581, 0.738], n 137](../eval/spikes/s14-neutrality/results.json) | [0.248 [0.183, 0.327], n 137](../eval/spikes/s14-neutrality/results.json) |
 | SP | [0.701 [0.629, 0.765], n 174](../eval/spikes/s14-neutrality/results.json) | [0.172 [0.123, 0.236], n 174](../eval/spikes/s14-neutrality/results.json) |
@@ -254,7 +290,7 @@ Shares are k / n recovered from the stored 4-decimal values and truncated; the d
 | unknown | [0.697 [0.526, 0.827], n 33](../eval/spikes/s14-neutrality/results.json) | [0.212 [0.106, 0.378], n 33](../eval/spikes/s14-neutrality/results.json) |
 | *test (cells n ≥ 20)* | [p 0.4655; gap SP − Grüne +0.122 [−0.007, +0.242]](../eval/spikes/s14-neutrality/results.json) | [p 0.1458; gap SVP − GLP +0.159 [+0.041, +0.263]](../eval/spikes/s14-neutrality/results.json) |
 
-| S9 by instrument | D1 top-1 | keyword top-1 |
+| S9 by instrument (D1, earlier design) | D1 top-1 | keyword top-1 |
 |---|---|---|
 | Motion | [0.653 [0.608, 0.696], n 459](../eval/spikes/s14-neutrality/results.json) | [0.180 [0.148, 0.219], n 459](../eval/spikes/s14-neutrality/results.json) |
 | Postulat | [0.658 [0.603, 0.711], n 296](../eval/spikes/s14-neutrality/results.json) | [0.141 [0.106, 0.187], n 296](../eval/spikes/s14-neutrality/results.json) |
@@ -264,7 +300,18 @@ Shares are k / n recovered from the stored 4-decimal values and truncated; the d
 | other type | [0.400 [0.168, 0.688], n 10](../eval/spikes/s14-neutrality/results.json) (small) | [0.200 [0.056, 0.510], n 10](../eval/spikes/s14-neutrality/results.json) (small) |
 | *test (cells n ≥ 20)* | [p 0.0002; gap Regierungsgeschäft − Motion +0.138 [+0.068, +0.201]](../eval/spikes/s14-neutrality/results.json) | [p 0.0796; gap Regierungsgeschäft − Postulat +0.095 [+0.029, +0.160]](../eval/spikes/s14-neutrality/results.json) |
 
-Reading: top-1 differs too little to measure with these sample sizes by language and among the six main parties (this is not evidence of no difference; the party gaps' intervals are wide). Government business scores higher than members' motions, and the keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.
+Reading (D1): top-1 differs too little to measure with these sample sizes by language and among the six main parties (this is not evidence of no difference; the party gaps' intervals are wide). Government business scores higher than members' motions, and the keyword baseline shows the same order (easier texts, not a political tilt). Quality is reported per submitter type.
+
+**Italian vs German (S22, [pre-registered](../eval/PREREG-BUILD.md#L69)).** The S9 affairs whose Italian title differs from the French one (1,350 of 1,357), gold the APS editors' chapter; Italian title + long title + the Italian submitted text where it differs from the French, D1 in the Italian frame (chapter names Italian, subtopic names German as published), both code orders; paired against the S9 German D1 on the same affairs.
+
+| n = 1,350 | Italian | German (S9 D1) | German − Italian, paired |
+|---|---|---|---|
+| chapter top-1 | **[0.702 [0.678, 0.727]](../eval/s22/results.json)** | [0.703 [0.678, 0.728]](../eval/s22/results.json) | [+0.0007 [−0.020, +0.021]](../eval/s22/results.json) |
+| chapter top-3 | [0.843](../eval/s22/results.json) | [0.842](../eval/s22/results.json) | |
+| with Italian submitted text (n 1,074) | [0.697](../eval/s22/results.json) | [0.683](../eval/s22/results.json) | |
+| title only (n 276) | [0.724](../eval/s22/results.json) | [0.782](../eval/s22/results.json) | |
+
+Shares are k / n recovered from the stored 4-decimal values and truncated; the difference is a paired bootstrap (2,000), shown at 4 decimals because it is near zero, bounds rounded outward.
 
 ### 9 · Free naming without a list (rule check)
 
@@ -496,5 +543,6 @@ Reading, all against the AI judge: pooled over the three topics the scope check 
 - a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)
 - a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)
 - one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely inconclusive at n = 927, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)
+- a held-out French / Italian federal slice for the shipped design (S32: the S9 production inputs and the S25 items are German)
 - human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)
 - Romansh

@@ -1,0 +1,3457 @@
+{
+ "test": "S32",
+ "generated_utc": "2026-10-16T08:32:44Z",
+ "prereg": null,
+ "not_preregistered": "a re-analysis of existing measurements (S9 production rows, S25 held-out decisions, S16 raw); no model calls; written after the reviewer note (round 8, J2 change 2) that S14 measured the earlier D1 design",
+ "small_threshold": 30,
+ "permutations": 5000,
+ "bootstrap": 2000,
+ "sources": {
+  "party_functions": "eval/spikes/s14-neutrality/scripts/s14lib.py (unchanged; OPD subset replaced by the export below)",
+  "opd_export": "../data/opd-new (affairs.ndjson.gz, contributors.ndjson.gz; OpenParlData export of 16 Oct 2026)",
+  "s9_rows": "eval/prod_gold/topics.jsonl.gz + inputs.jsonl.gz (eval/prod_gold/rows.py)",
+  "s9_gold": "data/eval/gold_aps_s9.csv",
+  "s25": "eval/s25/decisions.jsonl",
+  "s25_lang": "../data/inputs.jsonl.gz (text_lang)",
+  "s16": "eval/s16/raw.jsonl"
+ },
+ "checks": {
+  "s9_submitter_cells_equal_s14": true,
+  "s9_prod_top1": [
+   963,
+   1340
+  ],
+  "s9_prod_equals_make_eval": "eval/results/eval-gold_aps_s9.json",
+  "s25_top1": [
+   646,
+   927
+  ],
+  "s16_d4_top1": [
+   1005,
+   1357
+  ]
+ },
+ "shipped_path": "S9 prod = the production rows (D4 where the affair has APS-labelled neighbours, D1 otherwise, as compose.decide); S25 = the same composition on the held-out affairs. S16 D4 (S9 input, every item with examples) is secondary.",
+ "s9_prod": {
+  "n": 1340,
+  "party": {
+   "top1": {
+    "overall": {
+     "k": 963,
+     "n": 1340,
+     "value": 0.7186,
+     "ci": [
+      0.693,
+      0.743
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 86,
+      "n": 136,
+      "value": 0.6323,
+      "ci": [
+       0.548,
+       0.709
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 122,
+      "n": 169,
+      "value": 0.7218,
+      "ci": [
+       0.649,
+       0.784
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 100,
+      "n": 145,
+      "value": 0.6896,
+      "ci": [
+       0.61,
+       0.76
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 76,
+      "n": 121,
+      "value": 0.628,
+      "ci": [
+       0.539,
+       0.71
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 64,
+      "n": 92,
+      "value": 0.6956,
+      "ci": [
+       0.595,
+       0.781
+      ]
+     },
+     {
+      "cell": "GLP",
+      "k": 33,
+      "n": 45,
+      "value": 0.7333,
+      "ci": [
+       0.589,
+       0.841
+      ]
+     },
+     {
+      "cell": "other party",
+      "k": 22,
+      "n": 32,
+      "value": 0.6875,
+      "ci": [
+       0.514,
+       0.821
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 175,
+      "n": 221,
+      "value": 0.7918,
+      "ci": [
+       0.733,
+       0.841
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 204,
+      "n": 273,
+      "value": 0.7472,
+      "ci": [
+       0.692,
+       0.796
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 54,
+      "n": 73,
+      "value": 0.7397,
+      "ci": [
+       0.628,
+       0.827
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 27,
+      "n": 33,
+      "value": 0.8181,
+      "ci": [
+       0.656,
+       0.914
+      ]
+     }
+    ],
+    "test": {
+     "stat": 5.027,
+     "df": 5,
+     "p_perm": 0.4317,
+     "p_chi2": 0.4125,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "GLP",
+     "lo": "Mitte",
+     "diff": 0.1052,
+     "ci": [
+      -0.059,
+      0.252
+     ],
+     "ci_raw": [
+      -0.058,
+      0.2514
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top3": {
+    "overall": {
+     "k": 1153,
+     "n": 1340,
+     "value": 0.8604,
+     "ci": [
+      0.84,
+      0.878
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 113,
+      "n": 136,
+      "value": 0.8308,
+      "ci": [
+       0.759,
+       0.885
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 142,
+      "n": 169,
+      "value": 0.8402,
+      "ci": [
+       0.777,
+       0.888
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 127,
+      "n": 145,
+      "value": 0.8758,
+      "ci": [
+       0.812,
+       0.921
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 98,
+      "n": 121,
+      "value": 0.8099,
+      "ci": [
+       0.73,
+       0.87
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 79,
+      "n": 92,
+      "value": 0.8586,
+      "ci": [
+       0.773,
+       0.916
+      ]
+     },
+     {
+      "cell": "GLP",
+      "k": 38,
+      "n": 45,
+      "value": 0.8444,
+      "ci": [
+       0.712,
+       0.923
+      ]
+     },
+     {
+      "cell": "other party",
+      "k": 26,
+      "n": 32,
+      "value": 0.8125,
+      "ci": [
+       0.646,
+       0.912
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 201,
+      "n": 221,
+      "value": 0.9095,
+      "ci": [
+       0.864,
+       0.941
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 234,
+      "n": 273,
+      "value": 0.8571,
+      "ci": [
+       0.81,
+       0.894
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 62,
+      "n": 73,
+      "value": 0.8493,
+      "ci": [
+       0.749,
+       0.914
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 33,
+      "n": 33,
+      "value": 1.0,
+      "ci": [
+       0.895,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 2.519,
+     "df": 5,
+     "p_perm": 0.7878,
+     "p_chi2": 0.7736,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "FDP",
+     "lo": "Mitte",
+     "diff": 0.0659,
+     "ci": [
+      -0.024,
+      0.152
+     ],
+     "ci_raw": [
+      -0.0236,
+      0.1514
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "kw": {
+    "overall": {
+     "k": 277,
+     "n": 1340,
+     "value": 0.2067,
+     "ci": [
+      0.185,
+      0.23
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 40,
+      "n": 136,
+      "value": 0.2941,
+      "ci": [
+       0.224,
+       0.376
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 35,
+      "n": 169,
+      "value": 0.2071,
+      "ci": [
+       0.152,
+       0.275
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 26,
+      "n": 145,
+      "value": 0.1793,
+      "ci": [
+       0.125,
+       0.25
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 24,
+      "n": 121,
+      "value": 0.1983,
+      "ci": [
+       0.137,
+       0.279
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 20,
+      "n": 92,
+      "value": 0.2173,
+      "ci": [
+       0.145,
+       0.313
+      ]
+     },
+     {
+      "cell": "GLP",
+      "k": 5,
+      "n": 45,
+      "value": 0.1111,
+      "ci": [
+       0.048,
+       0.235
+      ]
+     },
+     {
+      "cell": "other party",
+      "k": 8,
+      "n": 32,
+      "value": 0.25,
+      "ci": [
+       0.132,
+       0.422
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 38,
+      "n": 221,
+      "value": 0.1719,
+      "ci": [
+       0.127,
+       0.228
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 58,
+      "n": 273,
+      "value": 0.2124,
+      "ci": [
+       0.168,
+       0.265
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 19,
+      "n": 73,
+      "value": 0.2602,
+      "ci": [
+       0.173,
+       0.372
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 4,
+      "n": 33,
+      "value": 0.1212,
+      "ci": [
+       0.048,
+       0.274
+      ]
+     }
+    ],
+    "test": {
+     "stat": 9.339,
+     "df": 5,
+     "p_perm": 0.0958,
+     "p_chi2": 0.0963,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SVP",
+     "lo": "GLP",
+     "diff": 0.183,
+     "ci": [
+      0.05,
+      0.294
+     ],
+     "ci_raw": [
+      0.0502,
+      0.294
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top1_all_categories_test": {
+    "stat": 19.71,
+    "df": 10,
+    "p_perm": 0.0338,
+    "p_chi2": 0.0321,
+    "cells_tested": [
+     "SVP",
+     "SP",
+     "FDP",
+     "Mitte",
+     "Grüne",
+     "GLP",
+     "other party",
+     "committee",
+     "government",
+     "canton",
+     "unknown"
+    ]
+   }
+  },
+  "submitter kind": {
+   "top1": {
+    "overall": {
+     "k": 963,
+     "n": 1340,
+     "value": 0.7186,
+     "ci": [
+      0.693,
+      0.743
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 503,
+      "n": 740,
+      "value": 0.6797,
+      "ci": [
+       0.645,
+       0.713
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 175,
+      "n": 221,
+      "value": 0.7918,
+      "ci": [
+       0.733,
+       0.841
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 204,
+      "n": 273,
+      "value": 0.7472,
+      "ci": [
+       0.692,
+       0.796
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 54,
+      "n": 73,
+      "value": 0.7397,
+      "ci": [
+       0.628,
+       0.827
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 27,
+      "n": 33,
+      "value": 0.8181,
+      "ci": [
+       0.656,
+       0.914
+      ]
+     }
+    ],
+    "test": {
+     "stat": 14.284,
+     "df": 4,
+     "p_perm": 0.0064,
+     "p_chi2": 0.0064,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "unknown",
+     "lo": "member/faction",
+     "diff": 0.1384,
+     "ci": [
+      0.004,
+      0.264
+     ],
+     "ci_raw": [
+      0.0045,
+      0.2631
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top3": {
+    "overall": {
+     "k": 1153,
+     "n": 1340,
+     "value": 0.8604,
+     "ci": [
+      0.84,
+      0.878
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 623,
+      "n": 740,
+      "value": 0.8418,
+      "ci": [
+       0.813,
+       0.867
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 201,
+      "n": 221,
+      "value": 0.9095,
+      "ci": [
+       0.864,
+       0.941
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 234,
+      "n": 273,
+      "value": 0.8571,
+      "ci": [
+       0.81,
+       0.894
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 62,
+      "n": 73,
+      "value": 0.8493,
+      "ci": [
+       0.749,
+       0.914
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 33,
+      "n": 33,
+      "value": 1.0,
+      "ci": [
+       0.895,
+       1.0
+      ]
+     }
+    ],
+    "test": {
+     "stat": 12.003,
+     "df": 4,
+     "p_perm": 0.0202,
+     "p_chi2": 0.0173,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "unknown",
+     "lo": "member/faction",
+     "diff": 0.1581,
+     "ci": [
+      0.131,
+      0.187
+     ],
+     "ci_raw": [
+      0.1311,
+      0.1865
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "kw": {
+    "overall": {
+     "k": 277,
+     "n": 1340,
+     "value": 0.2067,
+     "ci": [
+      0.185,
+      0.23
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 158,
+      "n": 740,
+      "value": 0.2135,
+      "ci": [
+       0.185,
+       0.245
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 38,
+      "n": 221,
+      "value": 0.1719,
+      "ci": [
+       0.127,
+       0.228
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 58,
+      "n": 273,
+      "value": 0.2124,
+      "ci": [
+       0.168,
+       0.265
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 19,
+      "n": 73,
+      "value": 0.2602,
+      "ci": [
+       0.173,
+       0.372
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 4,
+      "n": 33,
+      "value": 0.1212,
+      "ci": [
+       0.048,
+       0.274
+      ]
+     }
+    ],
+    "test": {
+     "stat": 4.641,
+     "df": 4,
+     "p_perm": 0.3341,
+     "p_chi2": 0.3262,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "canton",
+     "lo": "unknown",
+     "diff": 0.139,
+     "ci": [
+      -0.024,
+      0.282
+     ],
+     "ci_raw": [
+      -0.0232,
+      0.2819
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  },
+  "instrument": {
+   "top1": {
+    "overall": {
+     "k": 963,
+     "n": 1340,
+     "value": 0.7186,
+     "ci": [
+      0.693,
+      0.743
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 310,
+      "n": 448,
+      "value": 0.6919,
+      "ci": [
+       0.647,
+       0.733
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 198,
+      "n": 294,
+      "value": 0.6734,
+      "ci": [
+       0.617,
+       0.725
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 204,
+      "n": 273,
+      "value": 0.7472,
+      "ci": [
+       0.692,
+       0.796
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 193,
+      "n": 242,
+      "value": 0.7975,
+      "ci": [
+       0.742,
+       0.844
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 54,
+      "n": 73,
+      "value": 0.7397,
+      "ci": [
+       0.628,
+       0.827
+      ]
+     },
+     {
+      "cell": "other type",
+      "k": 4,
+      "n": 10,
+      "value": 0.4,
+      "ci": [
+       0.168,
+       0.688
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 18.278,
+     "df": 5,
+     "p_perm": 0.003,
+     "p_chi2": 0.0026,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Parlamentarische Initiative",
+     "lo": "Postulat",
+     "diff": 0.124,
+     "ci": [
+      0.047,
+      0.196
+     ],
+     "ci_raw": [
+      0.0473,
+      0.1955
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Parlamentarische Initiative",
+     "lo": "other type",
+     "diff": 0.3975,
+     "ci": [
+      0.076,
+      0.706
+     ],
+     "ci_raw": [
+      0.0769,
+      0.7058
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top3": {
+    "overall": {
+     "k": 1153,
+     "n": 1340,
+     "value": 0.8604,
+     "ci": [
+      0.84,
+      0.878
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 385,
+      "n": 448,
+      "value": 0.8593,
+      "ci": [
+       0.824,
+       0.889
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 247,
+      "n": 294,
+      "value": 0.8401,
+      "ci": [
+       0.793,
+       0.878
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 234,
+      "n": 273,
+      "value": 0.8571,
+      "ci": [
+       0.81,
+       0.894
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 217,
+      "n": 242,
+      "value": 0.8966,
+      "ci": [
+       0.851,
+       0.93
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 62,
+      "n": 73,
+      "value": 0.8493,
+      "ci": [
+       0.749,
+       0.914
+      ]
+     },
+     {
+      "cell": "other type",
+      "k": 8,
+      "n": 10,
+      "value": 0.8,
+      "ci": [
+       0.49,
+       0.944
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 4.067,
+     "df": 5,
+     "p_perm": 0.5431,
+     "p_chi2": 0.5399,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Parlamentarische Initiative",
+     "lo": "Postulat",
+     "diff": 0.0565,
+     "ci": [
+      -0.002,
+      0.113
+     ],
+     "ci_raw": [
+      -0.0015,
+      0.1129
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Parlamentarische Initiative",
+     "lo": "other type",
+     "diff": 0.0966,
+     "ci": [
+      -0.12,
+      0.397
+     ],
+     "ci_raw": [
+      -0.1198,
+      0.3967
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "kw": {
+    "overall": {
+     "k": 277,
+     "n": 1340,
+     "value": 0.2067,
+     "ci": [
+      0.185,
+      0.23
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 80,
+      "n": 448,
+      "value": 0.1785,
+      "ci": [
+       0.145,
+       0.217
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 46,
+      "n": 294,
+      "value": 0.1564,
+      "ci": [
+       0.119,
+       0.203
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 58,
+      "n": 273,
+      "value": 0.2124,
+      "ci": [
+       0.168,
+       0.265
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 74,
+      "n": 242,
+      "value": 0.3057,
+      "ci": [
+       0.251,
+       0.367
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 19,
+      "n": 73,
+      "value": 0.2602,
+      "ci": [
+       0.173,
+       0.372
+      ]
+     },
+     {
+      "cell": "other type",
+      "k": 0,
+      "n": 10,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.278
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 25.113,
+     "df": 5,
+     "p_perm": 0.0006,
+     "p_chi2": 0.0001,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Parlamentarische Initiative",
+     "lo": "Postulat",
+     "diff": 0.1493,
+     "ci": [
+      0.076,
+      0.221
+     ],
+     "ci_raw": [
+      0.0769,
+      0.22
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Parlamentarische Initiative",
+     "lo": "other type",
+     "diff": 0.3057,
+     "ci": [
+      0.252,
+      0.368
+     ],
+     "ci_raw": [
+      0.2521,
+      0.3678
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  },
+  "language of the text": {
+   "top1": {
+    "overall": {
+     "k": 963,
+     "n": 1340,
+     "value": 0.7186,
+     "ci": [
+      0.693,
+      0.743
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "k": 963,
+      "n": 1340,
+      "value": 0.7186,
+      "ci": [
+       0.693,
+       0.743
+      ]
+     }
+    ],
+    "test": null,
+    "not_informative": "{'de': 1340}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect"
+   },
+   "top3": {
+    "overall": {
+     "k": 1153,
+     "n": 1340,
+     "value": 0.8604,
+     "ci": [
+      0.84,
+      0.878
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "k": 1153,
+      "n": 1340,
+      "value": 0.8604,
+      "ci": [
+       0.84,
+       0.878
+      ]
+     }
+    ],
+    "test": null,
+    "not_informative": "{'de': 1340}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect"
+   },
+   "kw": {
+    "overall": {
+     "k": 277,
+     "n": 1340,
+     "value": 0.2067,
+     "ci": [
+      0.185,
+      0.23
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "k": 277,
+      "n": 1340,
+      "value": 0.2067,
+      "ci": [
+       0.185,
+       0.23
+      ]
+     }
+    ],
+    "test": null,
+    "not_informative": "{'de': 1340}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect"
+   }
+  },
+  "not_scored": {
+   "n": 17,
+   "ids": [
+    61279,
+    63987,
+    64113,
+    65271,
+    65379,
+    65852,
+    66632,
+    67328,
+    68043,
+    68162,
+    68655,
+    70605,
+    157788,
+    203521,
+    204307,
+    212029,
+    234710
+   ],
+   "by_party": {
+    "Mitte": 4,
+    "Grüne": 3,
+    "SP": 5,
+    "FDP": 1,
+    "government": 1,
+    "canton": 1,
+    "committee": 1,
+    "SVP": 1
+   },
+   "why": "no APS chapter row in the production run (as make eval: not scored)"
+  }
+ },
+ "s25": {
+  "n": 927,
+  "party": {
+   "top1": {
+    "overall": {
+     "k": 646,
+     "n": 927,
+     "value": 0.6968,
+     "ci": [
+      0.666,
+      0.726
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 65,
+      "n": 97,
+      "value": 0.6701,
+      "ci": [
+       0.571,
+       0.756
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 50,
+      "n": 84,
+      "value": 0.5952,
+      "ci": [
+       0.488,
+       0.694
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 53,
+      "n": 83,
+      "value": 0.6385,
+      "ci": [
+       0.531,
+       0.734
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 65,
+      "n": 92,
+      "value": 0.7065,
+      "ci": [
+       0.606,
+       0.79
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 13,
+      "n": 23,
+      "value": 0.5652,
+      "ci": [
+       0.368,
+       0.744
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "k": 16,
+      "n": 22,
+      "value": 0.7272,
+      "ci": [
+       0.518,
+       0.869
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "k": 14,
+      "n": 21,
+      "value": 0.6666,
+      "ci": [
+       0.453,
+       0.829
+      ],
+      "small": true
+     },
+     {
+      "cell": "party unknown",
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.794
+      ],
+      "small": true
+     },
+     {
+      "cell": "committee",
+      "k": 83,
+      "n": 114,
+      "value": 0.728,
+      "ci": [
+       0.639,
+       0.802
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 212,
+      "n": 288,
+      "value": 0.7361,
+      "ci": [
+       0.682,
+       0.784
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 20,
+      "n": 28,
+      "value": 0.7142,
+      "ci": [
+       0.529,
+       0.848
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci": [
+       0.206,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "k": 54,
+      "n": 73,
+      "value": 0.7397,
+      "ci": [
+       0.628,
+       0.827
+      ]
+     }
+    ],
+    "test": {
+     "stat": 3.921,
+     "df": 5,
+     "p_perm": 0.5563,
+     "p_chi2": 0.5608,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.1112,
+     "ci": [
+      -0.037,
+      0.255
+     ],
+     "ci_raw": [
+      -0.0362,
+      0.2541
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "GLP",
+     "lo": "Grüne",
+     "diff": 0.162,
+     "ci": [
+      -0.111,
+      0.429
+     ],
+     "ci_raw": [
+      -0.1107,
+      0.4289
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top3": {
+    "overall": {
+     "k": 778,
+     "n": 927,
+     "value": 0.8392,
+     "ci": [
+      0.814,
+      0.862
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 80,
+      "n": 97,
+      "value": 0.8247,
+      "ci": [
+       0.737,
+       0.888
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 64,
+      "n": 84,
+      "value": 0.7619,
+      "ci": [
+       0.66,
+       0.841
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 67,
+      "n": 83,
+      "value": 0.8072,
+      "ci": [
+       0.709,
+       0.878
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 80,
+      "n": 92,
+      "value": 0.8695,
+      "ci": [
+       0.785,
+       0.924
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 18,
+      "n": 23,
+      "value": 0.7826,
+      "ci": [
+       0.58,
+       0.904
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "k": 18,
+      "n": 22,
+      "value": 0.8181,
+      "ci": [
+       0.614,
+       0.927
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "k": 19,
+      "n": 21,
+      "value": 0.9047,
+      "ci": [
+       0.71,
+       0.974
+      ],
+      "small": true
+     },
+     {
+      "cell": "party unknown",
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.794
+      ],
+      "small": true
+     },
+     {
+      "cell": "committee",
+      "k": 102,
+      "n": 114,
+      "value": 0.8947,
+      "ci": [
+       0.824,
+       0.939
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 240,
+      "n": 288,
+      "value": 0.8333,
+      "ci": [
+       0.785,
+       0.872
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 25,
+      "n": 28,
+      "value": 0.8928,
+      "ci": [
+       0.728,
+       0.963
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci": [
+       0.206,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "k": 64,
+      "n": 73,
+      "value": 0.8767,
+      "ci": [
+       0.781,
+       0.934
+      ]
+     }
+    ],
+    "test": {
+     "stat": 3.65,
+     "df": 5,
+     "p_perm": 0.5875,
+     "p_chi2": 0.6009,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.1076,
+     "ci": [
+      -0.013,
+      0.223
+     ],
+     "ci_raw": [
+      -0.0129,
+      0.2226
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Mitte",
+     "lo": "SP",
+     "diff": 0.1076,
+     "ci": [
+      -0.013,
+      0.223
+     ],
+     "ci_raw": [
+      -0.0129,
+      0.2226
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "kw": {
+    "overall": {
+     "k": 173,
+     "n": 927,
+     "value": 0.1866,
+     "ci": [
+      0.162,
+      0.213
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 25,
+      "n": 97,
+      "value": 0.2577,
+      "ci": [
+       0.181,
+       0.353
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 16,
+      "n": 84,
+      "value": 0.1904,
+      "ci": [
+       0.12,
+       0.288
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 13,
+      "n": 83,
+      "value": 0.1566,
+      "ci": [
+       0.093,
+       0.25
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 23,
+      "n": 92,
+      "value": 0.25,
+      "ci": [
+       0.172,
+       0.348
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 2,
+      "n": 23,
+      "value": 0.0869,
+      "ci": [
+       0.024,
+       0.268
+      ],
+      "small": true
+     },
+     {
+      "cell": "GLP",
+      "k": 3,
+      "n": 22,
+      "value": 0.1363,
+      "ci": [
+       0.047,
+       0.334
+      ],
+      "small": true
+     },
+     {
+      "cell": "other party",
+      "k": 4,
+      "n": 21,
+      "value": 0.1904,
+      "ci": [
+       0.076,
+       0.401
+      ],
+      "small": true
+     },
+     {
+      "cell": "party unknown",
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.794
+      ],
+      "small": true
+     },
+     {
+      "cell": "committee",
+      "k": 21,
+      "n": 114,
+      "value": 0.1842,
+      "ci": [
+       0.123,
+       0.266
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 42,
+      "n": 288,
+      "value": 0.1458,
+      "ci": [
+       0.109,
+       0.192
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 8,
+      "n": 28,
+      "value": 0.2857,
+      "ci": [
+       0.152,
+       0.471
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.794
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "k": 16,
+      "n": 73,
+      "value": 0.2191,
+      "ci": [
+       0.139,
+       0.327
+      ]
+     }
+    ],
+    "test": {
+     "stat": 6.713,
+     "df": 5,
+     "p_perm": 0.2482,
+     "p_chi2": 0.2429,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SVP",
+     "lo": "FDP",
+     "diff": 0.1011,
+     "ci": [
+      -0.023,
+      0.217
+     ],
+     "ci_raw": [
+      -0.0227,
+      0.2164
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "SVP",
+     "lo": "Grüne",
+     "diff": 0.1707,
+     "ci": [
+      0.011,
+      0.305
+     ],
+     "ci_raw": [
+      0.0117,
+      0.3048
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top1_all_categories_test": {
+    "stat": 13.921,
+    "df": 12,
+    "p_perm": 0.2983,
+    "p_chi2": 0.3058,
+    "cells_tested": [
+     "SVP",
+     "SP",
+     "FDP",
+     "Mitte",
+     "Grüne",
+     "GLP",
+     "other party",
+     "party unknown",
+     "committee",
+     "government",
+     "canton",
+     "other group",
+     "unknown"
+    ]
+   }
+  },
+  "submitter kind": {
+   "top1": {
+    "overall": {
+     "k": 646,
+     "n": 927,
+     "value": 0.6968,
+     "ci": [
+      0.666,
+      0.726
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 276,
+      "n": 423,
+      "value": 0.6524,
+      "ci": [
+       0.605,
+       0.697
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 83,
+      "n": 114,
+      "value": 0.728,
+      "ci": [
+       0.639,
+       0.802
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 212,
+      "n": 288,
+      "value": 0.7361,
+      "ci": [
+       0.682,
+       0.784
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 20,
+      "n": 28,
+      "value": 0.7142,
+      "ci": [
+       0.529,
+       0.848
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci": [
+       0.206,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "k": 54,
+      "n": 73,
+      "value": 0.7397,
+      "ci": [
+       0.628,
+       0.827
+      ]
+     }
+    ],
+    "test": {
+     "stat": 7.68,
+     "df": 5,
+     "p_perm": 0.1606,
+     "p_chi2": 0.1748,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "other group",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "unknown",
+     "lo": "member/faction",
+     "diff": 0.0872,
+     "ci": [
+      -0.024,
+      0.192
+     ],
+     "ci_raw": [
+      -0.0238,
+      0.1917
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "other group",
+     "lo": "member/faction",
+     "diff": 0.3475,
+     "ci": [
+      0.297,
+      0.395
+     ],
+     "ci_raw": [
+      0.2979,
+      0.3948
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top3": {
+    "overall": {
+     "k": 778,
+     "n": 927,
+     "value": 0.8392,
+     "ci": [
+      0.814,
+      0.862
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 346,
+      "n": 423,
+      "value": 0.8179,
+      "ci": [
+       0.778,
+       0.852
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 102,
+      "n": 114,
+      "value": 0.8947,
+      "ci": [
+       0.824,
+       0.939
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 240,
+      "n": 288,
+      "value": 0.8333,
+      "ci": [
+       0.785,
+       0.872
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 25,
+      "n": 28,
+      "value": 0.8928,
+      "ci": [
+       0.728,
+       0.963
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci": [
+       0.206,
+       1.0
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "k": 64,
+      "n": 73,
+      "value": 0.8767,
+      "ci": [
+       0.781,
+       0.934
+      ]
+     }
+    ],
+    "test": {
+     "stat": 5.644,
+     "df": 5,
+     "p_perm": 0.3561,
+     "p_chi2": 0.3424,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "other group",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "committee",
+     "lo": "member/faction",
+     "diff": 0.0767,
+     "ci": [
+      0.004,
+      0.142
+     ],
+     "ci_raw": [
+      0.0049,
+      0.1419
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "other group",
+     "lo": "member/faction",
+     "diff": 0.182,
+     "ci": [
+      0.144,
+      0.22
+     ],
+     "ci_raw": [
+      0.1442,
+      0.2199
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "kw": {
+    "overall": {
+     "k": 173,
+     "n": 927,
+     "value": 0.1866,
+     "ci": [
+      0.162,
+      0.213
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 86,
+      "n": 423,
+      "value": 0.2033,
+      "ci": [
+       0.167,
+       0.245
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 21,
+      "n": 114,
+      "value": 0.1842,
+      "ci": [
+       0.123,
+       0.266
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 42,
+      "n": 288,
+      "value": 0.1458,
+      "ci": [
+       0.109,
+       0.192
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 8,
+      "n": 28,
+      "value": 0.2857,
+      "ci": [
+       0.152,
+       0.471
+      ],
+      "small": true
+     },
+     {
+      "cell": "other group",
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.794
+      ],
+      "small": true
+     },
+     {
+      "cell": "unknown",
+      "k": 16,
+      "n": 73,
+      "value": 0.2191,
+      "ci": [
+       0.139,
+       0.327
+      ]
+     }
+    ],
+    "test": {
+     "stat": 6.487,
+     "df": 5,
+     "p_perm": 0.2775,
+     "p_chi2": 0.2616,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "other group",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "unknown",
+     "lo": "government",
+     "diff": 0.0733,
+     "ci": [
+      -0.023,
+      0.18
+     ],
+     "ci_raw": [
+      -0.0229,
+      0.1795
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "canton",
+     "lo": "other group",
+     "diff": 0.2857,
+     "ci": [
+      0.142,
+      0.465
+     ],
+     "ci_raw": [
+      0.1429,
+      0.4643
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  },
+  "instrument": {
+   "top1": {
+    "overall": {
+     "k": 646,
+     "n": 927,
+     "value": 0.6968,
+     "ci": [
+      0.666,
+      0.726
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 188,
+      "n": 282,
+      "value": 0.6666,
+      "ci": [
+       0.609,
+       0.72
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 105,
+      "n": 154,
+      "value": 0.6818,
+      "ci": [
+       0.604,
+       0.751
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 212,
+      "n": 288,
+      "value": 0.7361,
+      "ci": [
+       0.682,
+       0.784
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 73,
+      "n": 108,
+      "value": 0.6759,
+      "ci": [
+       0.582,
+       0.757
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 20,
+      "n": 28,
+      "value": 0.7142,
+      "ci": [
+       0.529,
+       0.848
+      ],
+      "small": true
+     },
+     {
+      "cell": "other type",
+      "k": 48,
+      "n": 67,
+      "value": 0.7164,
+      "ci": [
+       0.599,
+       0.811
+      ]
+     }
+    ],
+    "test": {
+     "stat": 3.868,
+     "df": 5,
+     "p_perm": 0.5623,
+     "p_chi2": 0.5686,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Regierungsgeschäft",
+     "lo": "Motion",
+     "diff": 0.0694,
+     "ci": [
+      -0.008,
+      0.144
+     ],
+     "ci_raw": [
+      -0.008,
+      0.1432
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Regierungsgeschäft",
+     "lo": "Motion",
+     "diff": 0.0694,
+     "ci": [
+      -0.008,
+      0.144
+     ],
+     "ci_raw": [
+      -0.008,
+      0.1432
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "top3": {
+    "overall": {
+     "k": 778,
+     "n": 927,
+     "value": 0.8392,
+     "ci": [
+      0.814,
+      0.862
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 240,
+      "n": 282,
+      "value": 0.851,
+      "ci": [
+       0.804,
+       0.888
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 124,
+      "n": 154,
+      "value": 0.8051,
+      "ci": [
+       0.735,
+       0.86
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 240,
+      "n": 288,
+      "value": 0.8333,
+      "ci": [
+       0.785,
+       0.872
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 91,
+      "n": 108,
+      "value": 0.8425,
+      "ci": [
+       0.762,
+       0.9
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 25,
+      "n": 28,
+      "value": 0.8928,
+      "ci": [
+       0.728,
+       0.963
+      ],
+      "small": true
+     },
+     {
+      "cell": "other type",
+      "k": 58,
+      "n": 67,
+      "value": 0.8656,
+      "ci": [
+       0.763,
+       0.928
+      ]
+     }
+    ],
+    "test": {
+     "stat": 2.643,
+     "df": 5,
+     "p_perm": 0.7594,
+     "p_chi2": 0.7549,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "other type",
+     "lo": "Postulat",
+     "diff": 0.0604,
+     "ci": [
+      -0.046,
+      0.158
+     ],
+     "ci_raw": [
+      -0.0459,
+      0.1572
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Standesinitiative",
+     "lo": "Postulat",
+     "diff": 0.0876,
+     "ci": [
+      -0.056,
+      0.205
+     ],
+     "ci_raw": [
+      -0.0552,
+      0.2045
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   },
+   "kw": {
+    "overall": {
+     "k": 173,
+     "n": 927,
+     "value": 0.1866,
+     "ci": [
+      0.162,
+      0.213
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 53,
+      "n": 282,
+      "value": 0.1879,
+      "ci": [
+       0.146,
+       0.238
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 31,
+      "n": 154,
+      "value": 0.2012,
+      "ci": [
+       0.145,
+       0.272
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 42,
+      "n": 288,
+      "value": 0.1458,
+      "ci": [
+       0.109,
+       0.192
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 23,
+      "n": 108,
+      "value": 0.2129,
+      "ci": [
+       0.146,
+       0.3
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 8,
+      "n": 28,
+      "value": 0.2857,
+      "ci": [
+       0.152,
+       0.471
+      ],
+      "small": true
+     },
+     {
+      "cell": "other type",
+      "k": 16,
+      "n": 67,
+      "value": 0.2388,
+      "ci": [
+       0.152,
+       0.354
+      ]
+     }
+    ],
+    "test": {
+     "stat": 6.885,
+     "df": 5,
+     "p_perm": 0.232,
+     "p_chi2": 0.2293,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "other type",
+     "lo": "Regierungsgeschäft",
+     "diff": 0.0929,
+     "ci": [
+      -0.012,
+      0.206
+     ],
+     "ci_raw": [
+      -0.0115,
+      0.2054
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Standesinitiative",
+     "lo": "Regierungsgeschäft",
+     "diff": 0.1398,
+     "ci": [
+      -0.028,
+      0.309
+     ],
+     "ci_raw": [
+      -0.0273,
+      0.308
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  },
+  "language of the text": {
+   "top1": {
+    "overall": {
+     "k": 646,
+     "n": 927,
+     "value": 0.6968,
+     "ci": [
+      0.666,
+      0.726
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "k": 645,
+      "n": 926,
+      "value": 0.6965,
+      "ci": [
+       0.666,
+       0.726
+      ]
+     },
+     {
+      "cell": "fr",
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci": [
+       0.206,
+       1.0
+      ],
+      "small": true
+     }
+    ],
+    "test": null,
+    "not_informative": "{'de': 926, 'fr': 1}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect"
+   },
+   "top3": {
+    "overall": {
+     "k": 778,
+     "n": 927,
+     "value": 0.8392,
+     "ci": [
+      0.814,
+      0.862
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "k": 777,
+      "n": 926,
+      "value": 0.839,
+      "ci": [
+       0.814,
+       0.862
+      ]
+     },
+     {
+      "cell": "fr",
+      "k": 1,
+      "n": 1,
+      "value": 1.0,
+      "ci": [
+       0.206,
+       1.0
+      ],
+      "small": true
+     }
+    ],
+    "test": null,
+    "not_informative": "{'de': 926, 'fr': 1}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect"
+   },
+   "kw": {
+    "overall": {
+     "k": 173,
+     "n": 927,
+     "value": 0.1866,
+     "ci": [
+      0.162,
+      0.213
+     ]
+    },
+    "cells": [
+     {
+      "cell": "de",
+      "k": 173,
+      "n": 926,
+      "value": 0.1868,
+      "ci": [
+       0.163,
+       0.214
+      ]
+     },
+     {
+      "cell": "fr",
+      "k": 0,
+      "n": 1,
+      "value": 0.0,
+      "ci": [
+       0.0,
+       0.794
+      ],
+      "small": true
+     }
+    ],
+    "test": null,
+    "not_informative": "{'de': 926, 'fr': 1}: every input of the shipped federal design is read in one language, so this set cannot measure a language effect"
+   }
+  }
+ },
+ "pooled": {
+  "party": {
+   "overall": {
+    "k": 1609,
+    "n": 2267,
+    "value": 0.7097,
+    "ci": [
+     0.69,
+     0.729
+    ]
+   },
+   "cells": [
+    {
+     "cell": "SVP",
+     "k": 151,
+     "n": 233,
+     "value": 0.648,
+     "ci": [
+      0.584,
+      0.707
+     ]
+    },
+    {
+     "cell": "SP",
+     "k": 172,
+     "n": 253,
+     "value": 0.6798,
+     "ci": [
+      0.62,
+      0.735
+     ]
+    },
+    {
+     "cell": "FDP",
+     "k": 153,
+     "n": 228,
+     "value": 0.671,
+     "ci": [
+      0.607,
+      0.729
+     ]
+    },
+    {
+     "cell": "Mitte",
+     "k": 141,
+     "n": 213,
+     "value": 0.6619,
+     "ci": [
+      0.596,
+      0.723
+     ]
+    },
+    {
+     "cell": "Grüne",
+     "k": 77,
+     "n": 115,
+     "value": 0.6695,
+     "ci": [
+      0.579,
+      0.749
+     ]
+    },
+    {
+     "cell": "GLP",
+     "k": 49,
+     "n": 67,
+     "value": 0.7313,
+     "ci": [
+      0.614,
+      0.823
+     ]
+    },
+    {
+     "cell": "other party",
+     "k": 36,
+     "n": 53,
+     "value": 0.6792,
+     "ci": [
+      0.545,
+      0.79
+     ]
+    },
+    {
+     "cell": "party unknown",
+     "k": 0,
+     "n": 1,
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.794
+     ],
+     "small": true
+    },
+    {
+     "cell": "committee",
+     "k": 258,
+     "n": 335,
+     "value": 0.7701,
+     "ci": [
+      0.722,
+      0.812
+     ]
+    },
+    {
+     "cell": "government",
+     "k": 416,
+     "n": 561,
+     "value": 0.7415,
+     "ci": [
+      0.703,
+      0.777
+     ]
+    },
+    {
+     "cell": "canton",
+     "k": 74,
+     "n": 101,
+     "value": 0.7326,
+     "ci": [
+      0.639,
+      0.81
+     ]
+    },
+    {
+     "cell": "other group",
+     "k": 1,
+     "n": 1,
+     "value": 1.0,
+     "ci": [
+      0.206,
+      1.0
+     ],
+     "small": true
+    },
+    {
+     "cell": "unknown",
+     "k": 81,
+     "n": 106,
+     "value": 0.7641,
+     "ci": [
+      0.674,
+      0.835
+     ]
+    }
+   ],
+   "test": {
+    "stat": 1.821,
+    "df": 5,
+    "p_perm": 0.8726,
+    "p_chi2": 0.8733,
+    "p_chi2_note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+    "cells_tested": [
+     "SVP",
+     "SP",
+     "FDP",
+     "Mitte",
+     "Grüne",
+     "GLP"
+    ]
+   },
+   "gap": {
+    "hi": "GLP",
+    "lo": "SVP",
+    "diff": 0.0832,
+    "ci": [
+     -0.043,
+     0.199
+    ],
+    "ci_raw": [
+     -0.0429,
+     0.1984
+    ],
+    "basis": "tested cells with n >= 30",
+    "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+   }
+  },
+  "submitter kind": {
+   "overall": {
+    "k": 1609,
+    "n": 2267,
+    "value": 0.7097,
+    "ci": [
+     0.69,
+     0.729
+    ]
+   },
+   "cells": [
+    {
+     "cell": "member/faction",
+     "k": 779,
+     "n": 1163,
+     "value": 0.6698,
+     "ci": [
+      0.642,
+      0.697
+     ]
+    },
+    {
+     "cell": "committee",
+     "k": 258,
+     "n": 335,
+     "value": 0.7701,
+     "ci": [
+      0.722,
+      0.812
+     ]
+    },
+    {
+     "cell": "government",
+     "k": 416,
+     "n": 561,
+     "value": 0.7415,
+     "ci": [
+      0.703,
+      0.777
+     ]
+    },
+    {
+     "cell": "canton",
+     "k": 74,
+     "n": 101,
+     "value": 0.7326,
+     "ci": [
+      0.639,
+      0.81
+     ]
+    },
+    {
+     "cell": "other group",
+     "k": 1,
+     "n": 1,
+     "value": 1.0,
+     "ci": [
+      0.206,
+      1.0
+     ],
+     "small": true
+    },
+    {
+     "cell": "unknown",
+     "k": 81,
+     "n": 106,
+     "value": 0.7641,
+     "ci": [
+      0.674,
+      0.835
+     ]
+    }
+   ],
+   "test": {
+    "stat": 19.874,
+    "df": 5,
+    "p_perm": 0.0014,
+    "p_chi2": 0.0013,
+    "p_chi2_note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+    "cells_tested": [
+     "member/faction",
+     "committee",
+     "government",
+     "canton",
+     "other group",
+     "unknown"
+    ]
+   },
+   "gap": {
+    "hi": "committee",
+    "lo": "member/faction",
+    "diff": 0.1003,
+    "ci": [
+     0.045,
+     0.151
+    ],
+    "ci_raw": [
+     0.0457,
+     0.1508
+    ],
+    "basis": "tested cells with n >= 30",
+    "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+   },
+   "gap_all_tested_cells": {
+    "hi": "other group",
+    "lo": "member/faction",
+    "diff": 0.3301,
+    "ci": [
+     0.301,
+     0.359
+    ],
+    "ci_raw": [
+     0.3018,
+     0.3586
+    ],
+    "basis": "every tested cell, small ones included",
+    "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+   }
+  },
+  "instrument": {
+   "overall": {
+    "k": 1609,
+    "n": 2267,
+    "value": 0.7097,
+    "ci": [
+     0.69,
+     0.729
+    ]
+   },
+   "cells": [
+    {
+     "cell": "Motion",
+     "k": 498,
+     "n": 730,
+     "value": 0.6821,
+     "ci": [
+      0.647,
+      0.715
+     ]
+    },
+    {
+     "cell": "Postulat",
+     "k": 303,
+     "n": 448,
+     "value": 0.6763,
+     "ci": [
+      0.631,
+      0.719
+     ]
+    },
+    {
+     "cell": "Regierungsgeschäft",
+     "k": 416,
+     "n": 561,
+     "value": 0.7415,
+     "ci": [
+      0.703,
+      0.777
+     ]
+    },
+    {
+     "cell": "Parlamentarische Initiative",
+     "k": 266,
+     "n": 350,
+     "value": 0.76,
+     "ci": [
+      0.712,
+      0.802
+     ]
+    },
+    {
+     "cell": "Standesinitiative",
+     "k": 74,
+     "n": 101,
+     "value": 0.7326,
+     "ci": [
+      0.639,
+      0.81
+     ]
+    },
+    {
+     "cell": "other type",
+     "k": 52,
+     "n": 77,
+     "value": 0.6753,
+     "ci": [
+      0.564,
+      0.77
+     ]
+    }
+   ],
+   "test": {
+    "stat": 12.86,
+    "df": 5,
+    "p_perm": 0.0264,
+    "p_chi2": 0.0247,
+    "p_chi2_note": "asymptotic p ignores the set strata; the permutation shuffles within set",
+    "cells_tested": [
+     "Motion",
+     "Postulat",
+     "Regierungsgeschäft",
+     "Parlamentarische Initiative",
+     "Standesinitiative",
+     "other type"
+    ]
+   },
+   "gap": {
+    "hi": "Parlamentarische Initiative",
+    "lo": "other type",
+    "diff": 0.0846,
+    "ci": [
+     -0.03,
+     0.198
+    ],
+    "ci_raw": [
+     -0.0291,
+     0.1971
+    ],
+    "basis": "tested cells with n >= 30",
+    "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+   }
+  },
+  "n": 2267,
+  "note": "S9 prod + S25, top-1; permutation within set (strata), gap bootstraps within cell"
+ },
+ "s16_d4_secondary": {
+  "n": 1357,
+  "party": {
+   "top1": {
+    "overall": {
+     "k": 1005,
+     "n": 1357,
+     "value": 0.7406,
+     "ci": [
+      0.716,
+      0.764
+     ]
+    },
+    "cells": [
+     {
+      "cell": "SVP",
+      "k": 99,
+      "n": 137,
+      "value": 0.7226,
+      "ci": [
+       0.642,
+       0.791
+      ]
+     },
+     {
+      "cell": "SP",
+      "k": 124,
+      "n": 174,
+      "value": 0.7126,
+      "ci": [
+       0.641,
+       0.775
+      ]
+     },
+     {
+      "cell": "FDP",
+      "k": 103,
+      "n": 146,
+      "value": 0.7054,
+      "ci": [
+       0.627,
+       0.774
+      ]
+     },
+     {
+      "cell": "Mitte",
+      "k": 81,
+      "n": 125,
+      "value": 0.648,
+      "ci": [
+       0.561,
+       0.727
+      ]
+     },
+     {
+      "cell": "Grüne",
+      "k": 60,
+      "n": 95,
+      "value": 0.6315,
+      "ci": [
+       0.531,
+       0.722
+      ]
+     },
+     {
+      "cell": "GLP",
+      "k": 32,
+      "n": 45,
+      "value": 0.7111,
+      "ci": [
+       0.566,
+       0.823
+      ]
+     },
+     {
+      "cell": "other party",
+      "k": 24,
+      "n": 32,
+      "value": 0.75,
+      "ci": [
+       0.578,
+       0.868
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 176,
+      "n": 222,
+      "value": 0.7927,
+      "ci": [
+       0.734,
+       0.841
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 226,
+      "n": 274,
+      "value": 0.8248,
+      "ci": [
+       0.775,
+       0.866
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 55,
+      "n": 74,
+      "value": 0.7432,
+      "ci": [
+       0.633,
+       0.83
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 25,
+      "n": 33,
+      "value": 0.7575,
+      "ci": [
+       0.589,
+       0.872
+      ]
+     }
+    ],
+    "test": {
+     "stat": 3.906,
+     "df": 5,
+     "p_perm": 0.5659,
+     "p_chi2": 0.563,
+     "cells_tested": [
+      "SVP",
+      "SP",
+      "FDP",
+      "Mitte",
+      "Grüne",
+      "GLP"
+     ]
+    },
+    "gap": {
+     "hi": "SVP",
+     "lo": "Grüne",
+     "diff": 0.091,
+     "ci": [
+      -0.042,
+      0.211
+     ],
+     "ci_raw": [
+      -0.041,
+      0.2109
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  },
+  "submitter kind": {
+   "top1": {
+    "overall": {
+     "k": 1005,
+     "n": 1357,
+     "value": 0.7406,
+     "ci": [
+      0.716,
+      0.764
+     ]
+    },
+    "cells": [
+     {
+      "cell": "member/faction",
+      "k": 523,
+      "n": 754,
+      "value": 0.6936,
+      "ci": [
+       0.659,
+       0.726
+      ]
+     },
+     {
+      "cell": "committee",
+      "k": 176,
+      "n": 222,
+      "value": 0.7927,
+      "ci": [
+       0.734,
+       0.841
+      ]
+     },
+     {
+      "cell": "government",
+      "k": 226,
+      "n": 274,
+      "value": 0.8248,
+      "ci": [
+       0.775,
+       0.866
+      ]
+     },
+     {
+      "cell": "canton",
+      "k": 55,
+      "n": 74,
+      "value": 0.7432,
+      "ci": [
+       0.633,
+       0.83
+      ]
+     },
+     {
+      "cell": "unknown",
+      "k": 25,
+      "n": 33,
+      "value": 0.7575,
+      "ci": [
+       0.589,
+       0.872
+      ]
+     }
+    ],
+    "test": {
+     "stat": 21.974,
+     "df": 4,
+     "p_perm": 0.0004,
+     "p_chi2": 0.0002,
+     "cells_tested": [
+      "member/faction",
+      "committee",
+      "government",
+      "canton",
+      "unknown"
+     ]
+    },
+    "gap": {
+     "hi": "government",
+     "lo": "member/faction",
+     "diff": 0.1311,
+     "ci": [
+      0.073,
+      0.186
+     ],
+     "ci_raw": [
+      0.0735,
+      0.1853
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  },
+  "instrument": {
+   "top1": {
+    "overall": {
+     "k": 1005,
+     "n": 1357,
+     "value": 0.7406,
+     "ci": [
+      0.716,
+      0.764
+     ]
+    },
+    "cells": [
+     {
+      "cell": "Motion",
+      "k": 328,
+      "n": 459,
+      "value": 0.7145,
+      "ci": [
+       0.671,
+       0.754
+      ]
+     },
+     {
+      "cell": "Postulat",
+      "k": 197,
+      "n": 296,
+      "value": 0.6655,
+      "ci": [
+       0.609,
+       0.717
+      ]
+     },
+     {
+      "cell": "Regierungsgeschäft",
+      "k": 226,
+      "n": 274,
+      "value": 0.8248,
+      "ci": [
+       0.775,
+       0.866
+      ]
+     },
+     {
+      "cell": "Parlamentarische Initiative",
+      "k": 195,
+      "n": 244,
+      "value": 0.7991,
+      "ci": [
+       0.744,
+       0.845
+      ]
+     },
+     {
+      "cell": "Standesinitiative",
+      "k": 55,
+      "n": 74,
+      "value": 0.7432,
+      "ci": [
+       0.633,
+       0.83
+      ]
+     },
+     {
+      "cell": "other type",
+      "k": 4,
+      "n": 10,
+      "value": 0.4,
+      "ci": [
+       0.168,
+       0.688
+      ],
+      "small": true
+     }
+    ],
+    "test": {
+     "stat": 30.812,
+     "df": 5,
+     "p_perm": 0.0002,
+     "p_chi2": 0.0,
+     "cells_tested": [
+      "Motion",
+      "Postulat",
+      "Regierungsgeschäft",
+      "Parlamentarische Initiative",
+      "Standesinitiative",
+      "other type"
+     ]
+    },
+    "gap": {
+     "hi": "Regierungsgeschäft",
+     "lo": "Postulat",
+     "diff": 0.1592,
+     "ci": [
+      0.083,
+      0.228
+     ],
+     "ci_raw": [
+      0.0837,
+      0.2278
+     ],
+     "basis": "tested cells with n >= 30",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    },
+    "gap_all_tested_cells": {
+     "hi": "Regierungsgeschäft",
+     "lo": "other type",
+     "diff": 0.4248,
+     "ci": [
+      0.095,
+      0.729
+     ],
+     "ci_raw": [
+      0.0956,
+      0.7285
+     ],
+     "basis": "every tested cell, small ones included",
+     "ci_method": "independent within-cell bootstraps (2,000 each, random.Random(14)), paired at random (random.Random(15)); 2.5 / 97.5 percentiles as S14, bounds rounded outward at 3 decimals"
+    }
+   }
+  }
+ }
+}

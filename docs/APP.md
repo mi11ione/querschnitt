@@ -307,3 +307,20 @@ not use them for counts. Labels name what they count:
   Antworten («Öffentliche Finanzen» / «Gesundheit, Sozialhilfe, Sport»), Vorschlag aus dem passendsten Unterthema:
   «Allgemeiner Umweltschutz» (Kapitel «Umweltschutz»), aber unsicher → eine Person prüft.» (`#karte?a=96375`, shot
   `why-1440`). Subtopic names exist in German only, so the FR sentence quotes the German subtopic name.
+
+## Stage fixes (16 Oct, querschnitt-review/timing.md 7, 8, 10, 13)
+- **Anbindung, first screen.** «letzte Nacht» (incl. the 15 Oct endpoint-cut sentence) now heads the right column, with
+  one line under it: «USD 0.333 pro 1'000 Geschäfte (Kapitel, Unterthema, ein Ad-hoc-Thema; Listenpreis Public AI) ·
+  eval/cost/results.json» (FR equivalent). The number is `integration.json cost.usd_per_1000_affairs`, which
+  `make_integration.py` copies from `eval/cost/results.json usd_per_1000_affairs_all_steps`; shown truncated to 0.001.
+  Hop, `/changes` and the footprint follow.
+- **Repository.** Bottom of the left column: repo and site URLs (`integration.json repo`) and a QR code for the repo URL,
+  `app/img/qr-repo.svg` (37 × 37 modules incl. the 4-module quiet zone, black on white, shown at 148 px = 4 px a
+  module). It is written by `make_integration.py` with `app/dev/qr.py`, a pure-Python encoder (byte mode, level M,
+  version 3 here). `python3 app/dev/qr.py --test` checks it against ISO 18004 vectors (generator polynomial, format
+  bits, Annex I ECC codewords); the SVG and the rendered page both decode to the URL with OpenCV's QR detector.
+- **Neues Thema, static.** The run line shows «…» (and no input affordances) until `neu_replay.json` has loaded; «Braucht
+  den Live-Dienst» appears only when there is no recording. `#neu?limit=25` now applies to the recording too: its first
+  25 decisions in recorded order (`clipRec`), progress out of 25, done at the 25th decision's time (≈ 20 s at ×4); the
+  run line reads «gelesen 25 / 25 · markiert 4 · 76 s · Aufzeichnung, gekürzt auf 25 · ×4». Shot
+  `neu-replay-limit-1440`.

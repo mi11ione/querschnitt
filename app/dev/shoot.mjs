@@ -34,7 +34,7 @@ const SCEN = [
   { name: 'pult-1440', w: 1440, h: 900, url: '#karte?m=pult&tab=todo', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'karte-fr-1440', w: 1440, h: 900, url: '#karte', steps: [`localStorage.clear()`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'f'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`] },
   { name: 'karte-1100', w: 1100, h: 800, url: '#karte' },
-  { name: 'neu-1440', w: 1440, h: 900, url: '#neu' },
+  { name: 'neu-1440', w: 1440, h: 900, url: '#neu', print: `document.querySelector('#v-neu .runline').textContent` },
   { name: 'pruef-1440', w: 1440, h: 900, url: '#pruef' },
   { name: 'karte-375', w: 375, h: 812, mobile: true, url: '#karte', full: true },
   { name: 'detail-375', w: 375, h: 812, mobile: true, url: '#karte', steps: [`document.dispatchEvent(new KeyboardEvent('keydown',{key:'j'}))`, `document.querySelector('#v-karte .case').scrollIntoView()`] },
@@ -94,6 +94,8 @@ const SCEN = [
   { name: 'anb-375', w: 375, h: 812, mobile: true, url: '#anb', full: true },
   { name: 'anb-live-1440', live: true, w: 1440, h: 900, url: '#anb' },
   { name: 'neu-replay-1440', w: 1440, h: 900, url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 6000] },
+  // #neu?limit=25 on the static site: the recording plays by itself, its first 25 decisions (≈ 20 s at ×4), then stops
+  { name: 'neu-replay-limit-1440', w: 1440, h: 900, url: '#neu?limit=25', steps: [22000], print: `document.querySelector('#v-neu .runline').textContent` },
   { name: 'neu-replay-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 6000] },
   { name: 'neu-replay-done-1440', w: 1440, h: 900, url: '#neu', steps: [`document.querySelector('.nt-play .box').click()`, 82000] },
   { name: 'neu-replay-375', w: 375, h: 812, mobile: true, url: '#neu', full: true, steps: [`document.querySelector('.nt-play .box').click()`, 6000] },

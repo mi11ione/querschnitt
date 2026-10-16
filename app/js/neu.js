@@ -42,11 +42,11 @@ const termsText = tr => {
 
 // strings of the replay (kept here: util.js holds the shared ones)
 const R = {
-  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', last: 'zuletzt gelesen, neueste zuerst',
+  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', recCut: n => `Aufzeichnung, gekürzt auf ${n}`, last: 'zuletzt gelesen, neueste zuerst',
     line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.`,
     down: 'Der Modell-Endpunkt antwortet nicht.', slow: s => `seit ${s} s keine Entscheidung vom Modell-Endpunkt`, fall: 'Aufzeichnung abspielen', back: 'zurück zur Eingabe',
     fallLine: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}, keine Live-Antwort: der Modell-Endpunkt antwortet gerade nicht.` },
-  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', last: 'derniers lus, le plus récent en haut',
+  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', recCut: n => `enregistrement, réduit à ${n}`, last: 'derniers lus, le plus récent en haut',
     line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.`,
     down: 'Le modèle ne répond pas.', slow: s => `aucune décision du modèle depuis ${s} s`, fall: 'Rejouer l’enregistrement', back: 'retour à la saisie',
     fallLine: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}, pas une réponse en direct : le modèle ne répond pas en ce moment.` },
@@ -54,7 +54,8 @@ const R = {
 const r = () => R[UI.lang] || R.de;
 const SPEEDS = [1, 4];
 // a live run can be capped (POST /adhoc `limit`, newest affairs first): #neu?limit=25, or the quiet select beside the
-// period; default: no cap. A recorded run plays once by itself per page load (the button replays it).
+// period; default: no cap. A recording honours #neu?limit=N too: its first N decisions in recorded order (clipRec).
+// A recorded run plays once by itself per page load (the button replays it).
 const LIMITS = [0, 25, 50];
 const hashLimit = () => { const v = +new URLSearchParams(location.hash.split('?')[1] || '').get('limit'); return v > 0 ? Math.floor(v) : 0; };
 const LIMIT0 = hashLimit(); // read at load, before the shell rewrites the hash
@@ -83,6 +84,23 @@ class Replay {
     if (this.i >= this.ev.length) this.close();
   }
   close() { clearInterval(this.timer); this.timer = null; }
+}
+// The first n decisions of a recording, in recorded order: progress counts out of n, and the run is done at the n-th
+// decision's recorded time (the run line then says «Aufzeichnung, gekürzt auf n»).
+function clipRec(rec, n) {
+  const dec = rec.events.filter(e => e.event === 'decision');
+  if (!n || n >= dec.length) return rec;
+  const end = dec[n - 1].t, ev = [];
+  let k = 0, flagged = 0, done = null;
+  for (const e of rec.events) {
+    if (e.event === 'decision') { if (k >= n) continue; k++; if (e.data.flag != null ? e.data.flag : e.data.p >= 0.5) flagged++; ev.push(e); }
+    else if (e.event === 'progress') { if (e.t <= end && (e.data.read || 0) <= n) ev.push({ ...e, data: { ...e.data, total: n } }); }
+    else if (e.event === 'done') done = e;
+    else ev.push(e);
+  }
+  const summary = { ...rec.summary, read: n, flagged, total: n, in_period: n, seconds: end, stop: 'limit' };
+  ev.push({ t: end, event: 'done', data: { ...(done ? done.data : {}), ...summary, done: true } });
+  return { ...rec, events: ev, summary, clipped: n };
 }
 async function loadReplay() {
   for (const b of ['data/', 'data-fixture/']) {
@@ -120,9 +138,11 @@ export class Neu {
     this.feed = h('ol', { class: 'nt-feed', hidden: true });
     this.head.querySelector('.perrow').after(this.recL, this.playRow);
     this.board.reg.prepend(this.feed); // the list column: hits only, so the stream of every decision goes above it
+    this.recWait = !API.live; // static: «…» until the recording has loaded (or failed), not the live-service note
     this.relang();
     if (!API.live) loadReplay().then(rec => {
-      if (!(rec && rec.events) || API.live) return;
+      this.recWait = false;
+      if (!(rec && rec.events) || API.live) { this.relang(); return; }
       this.rec = rec; this.relang(); this.shown();
     });
     if (API.live && REC0) this.fallback();
@@ -170,7 +190,8 @@ export class Neu {
   }
   relang() {
     const L = t();
-    this.field.placeholder = L.ntPh; this.exd.querySelector('summary').textContent = L.ntEx; this.saveB.textContent = `[${L.ntSave}]`;
+    this.field.placeholder = this.recWait ? '' : L.ntPh; this.exd.querySelector('summary').textContent = L.ntEx;
+    if (!this.rec) this.exd.hidden = !!this.recWait; // while the recording loads: no input affordances this.saveB.textContent = `[${L.ntSave}]`;
     const pv = this.per.value || 'week';
     this.per.replaceChildren(...Object.entries(L.periods).map(([k, v]) => h('option', { value: k, selected: k === pv }, v)));
     this.per.disabled = !API.live || !!this.fall;
@@ -179,7 +200,7 @@ export class Neu {
     this.lim.hidden = !API.live || !!this.fall; // the cap is for a live run only
     this.fallB.textContent = `[${r().fall}]`; this.backB.textContent = r().back; this.backB.hidden = !this.fall;
     this.field.disabled = !API.live && !this.rec; this.ex.disabled = !API.live;
-    this.root.classList.toggle('nt-static', !API.live && !this.rec);
+    this.root.classList.toggle('nt-static', !API.live && !this.rec && !this.recWait);
     this.root.classList.toggle('nt-replay', !!this.rec);
     if (this.rec) { // a recorded run: its sentence, read-only; the label says what it is
       const R0 = r(), x = this.rec;
@@ -193,12 +214,12 @@ export class Neu {
       this.playB.textContent = this.played ? R0.again : R0.play;
       this.renderSpeed();
       if (!this.played) this.run.textContent = '';
-    } else if (!API.live) { this.run.textContent = L.ntStatic; }
+    } else if (!API.live) { this.run.textContent = this.recWait ? '…' : L.ntStatic; }
     else if (!this.es) this.run.textContent = L.ntRun;
     this.board.relang && this.board.relang();
   }
   async start(terms) {
-    const L = t(), sentence = this.field.value.trim(), rec = !API.live || this.fall ? this.rec : null;
+    const L = t(), sentence = this.field.value.trim(), rec = !API.live || this.fall ? this.rec && clipRec(this.rec, this.limit) : null;
     if ((!API.live && !rec) || !sentence) return;
     if (this.es) { this.es.close(); this.es = null; }
     clearInterval(this.tick); // a restart: the previous run's clock stops writing the line
@@ -212,7 +233,8 @@ export class Neu {
     if (examples.length) body.examples = examples;
     if (this.limit) body.limit = this.limit;
     if (terms) body.terms = terms;
-    this.run.className = 'runline'; this.run.textContent = rec ? `${L.read} 0 · ${r().rec} ×${this.speed} · …` : '…';
+    const recTag = () => (rec.clipped ? `${r().recCut(rec.clipped)} · ×${this.speed}` : `${r().rec} ×${this.speed}`);
+    this.run.className = 'runline'; this.run.textContent = rec ? `${L.read} 0 · ${recTag()} · …` : '…';
     if (rec && rec.post && rec.post.topic && rec.post.topic.names) this.board.setTopic(liveTopic('neu', rec.post.topic.names, new Map())); // its name from the first frame
     let res;
     if (rec) { // the recorded POST answer, after the recorded topic generation time
@@ -251,7 +273,7 @@ export class Neu {
     const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false, lastT = rec ? t0 : this.t0;
     const line = () => {
       const secs = Math.floor(rec && this.es && this.es.clock ? Math.min(this.es.clock(), rec.summary.seconds) : done && rec ? rec.summary.seconds : (performance.now() - t0) / 1000);
-      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${r().rec} ×${this.speed}` : ''}${done ? '' : ' · …'}`;
+      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${recTag()}` : ''}${done ? '' : ' · …'}`;
     };
     this.lineNow = () => { if (!done) line(); };
     let pend = false;

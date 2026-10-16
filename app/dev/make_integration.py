@@ -1,7 +1,8 @@
 """Build app/data/integration.json for the «Anbindung» view from the repo (no runtime fetch of repo files):
 the `topics` table of upstream/opd/migrations/0001_topics.up.sql, the main path of upstream/hop/load_topics.hpl with the
 run line of upstream/hop/README.md, a stored /changes sample from app/data/topics.jsonl.gz, and the compose footprint
-of eval/ci_footprint.txt. Usage: python3 app/dev/make_integration.py"""
+of eval/ci_footprint.txt, the measured cost per 1,000 affairs of eval/cost/results.json, and the repository and site
+URLs with a QR code for the repository (app/img/qr-repo.svg, dev/qr.py). Usage: python3 app/dev/make_integration.py"""
 import gzip
 import json
 import re
@@ -14,6 +15,10 @@ HPL = REPO / "upstream/hop/load_topics.hpl"
 HOP_README = REPO / "upstream/hop/README.md"
 TOPICS = APP / "data/topics.jsonl.gz"
 FOOT = REPO / "eval/ci_footprint.txt"
+COST = REPO / "eval/cost/results.json"
+QR_SVG = APP / "img/qr-repo.svg"
+REPO_URL = "https://github.com/mi11ione/querschnitt"
+SITE_URL = "https://querschnitt.mi11ion.io"
 
 MACHINE = {"p", "p_raw", "lane", "evidence_field", "evidence_text_id", "evidence_doc_id", "evidence_char_start", "evidence_char_end",
            "evidence_quote", "model", "model_build", "cutoffs_id", "prompt_id", "input_hash", "content_hash", "engine_version"}
@@ -80,13 +85,28 @@ def footprint():
                 run_id=run.group(1) if run else None, run_url=run.group(2) if run else None, file=str(FOOT.relative_to(REPO)))
 
 
+def cost():
+    c = json.loads(COST.read_text())
+    return dict(usd_per_1000_affairs=c["usd_per_1000_affairs_all_steps"], steps=sorted(c["requests"]), generated=c.get("generated"),
+                file=str(COST.relative_to(REPO)))
+
+
+def repo():
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import qr
+    QR_SVG.parent.mkdir(exist_ok=True)
+    QR_SVG.write_text(qr.svg(qr.encode(REPO_URL, "M")))
+    return dict(url=REPO_URL, site=SITE_URL, qr=str(QR_SVG.relative_to(APP)))
+
+
 def main():
-    out = dict(table=table(), hop=hop(), changes=changes_sample(), footprint=footprint())
+    out = dict(table=table(), hop=hop(), changes=changes_sample(), footprint=footprint(), cost=cost(), repo=repo())
     s = json.dumps(out, ensure_ascii=False, separators=(",", ":"))
     for d in (APP / "data", APP / "data-fixture"):
         (d / "integration.json").write_text(s)
     print(len(out["table"]["columns"]), "columns ·", " → ".join(x["name"] for x in out["hop"]["steps"]), "·", out["changes"]["total"], "rows ·",
-          out["footprint"]["full_mib"], "MiB full")
+          out["footprint"]["full_mib"], "MiB full · USD", out["cost"]["usd_per_1000_affairs"], "per 1000 ·", out["repo"]["qr"])
 
 
 if __name__ == "__main__":

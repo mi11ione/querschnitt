@@ -1,4 +1,4 @@
-# Pitch scripts (Thu 15 Oct — re-time against the real demo; numbers from eval/claims.tsv only)
+# Pitch scripts (draft; rebuilt and timed on site against the finished product, Mon 19 Oct before 14:30; numbers from eval/claims.tsv only)
 
 Rules: the screen shows what has actually run (scored share, last night's log); every spoken number is in the Prüfstand;
 wherever a number comes from the AI judge, the sentence says so. Three numbers carry each pitch. Check with

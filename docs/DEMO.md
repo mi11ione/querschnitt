@@ -1,4 +1,4 @@
-# Demo runbook (keys and fallbacks; rehearse against the timings in docs/PITCH.md)
+# Demo runbook (draft; the beats, the demo affair, the recording and the backup video are made on site against the finished product)
 
 Setup on the laptop: `make demo` (API + app at http://127.0.0.1:8000 on its own store, live mode: Pult decisions and Neues
 Thema work; it prints the link of each beat below and needs no network, see Offline);

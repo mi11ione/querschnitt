@@ -39,7 +39,7 @@ set and no example pool: 0.696 top-1, 0.839 top-3, ahead of plain list prompting
 [+0.016, +0.067] (pre-registered as S25b after the S25 result). A search over five design variants on the design set
 (S31, leave-one-out) found none better by the pre-set margin (best +0.0117 [−0.0008, +0.0244]), so the held-out set was
 not touched again. A classifier trained on the 1,654 APS labels the shipped design holds (TF-IDF + logistic regression, S34)
-reaches 0.563 [0.530, 0.595] on these affairs, +0.133 [+0.098, +0.172] behind; its learning curve still rises (0.380,
+reaches 0.563 [0.530, 0.595] on these affairs; the shipped design is ahead by +0.133 [+0.098, +0.172]. Its learning curve still rises (0.380,
 0.474, 0.563 at 424, 836, 1,654 labels). The shipped top-1 is below the 0.740 on the affairs the design was chosen on, which is
 the expected direction for a held-out set. The lane carries over: 67.3% pass without a check and are right in 0.812, the
 rest go to a person (0.458). The lane separates confident from doubtful rows on every human-labelled set where it was

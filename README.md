@@ -2,8 +2,8 @@
 
 **One topic field for every parliament in OpenParlData.** Querschnitt gives each OpenParlData affair — federal, cantonal and communal,
 German, French and Italian — an Année Politique Suisse (APS) chapter with ranked subtopics, a lane that says when a person
-should check, and — where the affair has a text and the evidence step has run — a quoted passage from the affair (the title where the text offers nothing better; the AI judge finds the quote supports
-the label in 0.815 of 200 checked). A new topic or a parliament's own scheme is a file:
+should check, and — where the affair has a text and the evidence step has run — the sentence Apertus cites as evidence,
+quoted at its exact place in the text. A new topic or a parliament's own scheme is a file:
 written once, applied to every parliament, no training. Every topic decision is made by
 [Apertus](https://www.swiss-ai.org/apertus), Switzerland's open model. Scored so far: nearly every affair since January 2025 (the app shows the scored share); the whole archive (326,123 affairs) is
 a projection, not a run.
@@ -74,8 +74,7 @@ vs 0.696 with prefill; no calibration map yet) ([docs/SERVICE.md](docs/SERVICE.m
   French. The two readings feed the confidence and stay visible as the explanation; the lane is `please_check` when the
   recalibrated p is below 0.7 or the German and French readings disagree, otherwise `pass` (on the 927 held-out federal
   affairs: 67.3% pass and are right in 0.812, the rest in 0.458; on the 1,357 design affairs, cross-fitted: 66.8% at 0.864).
-  Cantonal and communal affairs are often title-only and less certain; in production about half of them go to a person,
-  and French and Italian affairs more often than German ones at every level (point shares; [`eval/lanes/heldout.json`](eval/lanes/heldout.json)).
+  Cantonal and communal affairs are often title-only and less certain; in production about half of them go to a person.
 - **Read back from the subtopic.** One request over the subtopics of the top two or three chapters; the shipped chapter is
   the one read back from the chosen subtopic; the top three subtopics ship as ranked suggestions.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored

@@ -1010,6 +1010,99 @@ tests.append(dict(
     build=s28["build"] + " (run runs/s28, mode no-prefill)", model=MODEL, date="2026-10-15",
     shipped="labelled fallback only (QS_PREFILL=0) for an endpoint that cannot continue an assistant message; the default ships prefill"))
 
+# ---------------------------------------------------------------- S33: the same held-out affairs read from the French text
+# Production reads federal affairs from the German text; S33 reads the 927 S25 affairs from OPD's French title and submitted text,
+# with the design production runs for a French federal affair (examples only for German federal text: D1 read-back, French frame),
+# paired against the shipped S25 decisions on the German text.
+S33R = f"{QE}/s33/results.json"
+pre33 = pre(PB, "— S33 the S25 held-out affairs read from the French text")
+s33 = g(S33R)
+assert s33["items"] == s33["scored"] == N25 and s33["missing"] == 0 and s33["with_examples"] == 0, (s33["items"], s33["scored"])
+assert s33["build"] == s25["build"], (s33["build"], s25["build"])
+
+
+def s33k(*keys, metric):
+    """a {k, n, value, ci} block of eval/s33/results.json (see knblock)."""
+    return knblock(S33R, *keys, metric=metric, script="eval/s33/analyze.py")
+
+
+def s33d(*keys, metric, first, second):
+    """a paired difference of eval/s33/results.json (mean of per-affair differences truncated toward zero at 4 decimals; percentile
+    bootstrap 2,000, random.Random(2026), bounds rounded outward at 3 decimals, by eval/s33/analyze.py)."""
+    b = g(S33R, *keys)
+    assert b["ci95"][0] <= b["value"] <= b["ci95"][1], (keys, b)
+    return {"metric": metric, "value": b["value"], "ci95": list(b["ci95"]), "n": b["n"],
+            f"{first}_only_right": b["first_only_right"], f"{second}_only_right": b["second_only_right"],
+            "method": "paired bootstrap 2,000 over affairs, percentile, random.Random(2026), bounds rounded outward (eval/s33/analyze.py)",
+            "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3", "at": loc(S33R, *keys)}
+
+
+t33 = s33k("french_top1", metric="chapter top-1 vs APS editors, French text (D1 read-back without examples, French frame: what "
+           "production runs for a French federal affair)")
+de33 = s33k("german_shipped_top1", metric="chapter top-1 of the shipped pipeline on the German text (S25 final, D4), same affairs")
+assert (de33["k"], de33["n"]) == (t25["k"], t25["n"]), (de33["kn"], t25["kn"])   # the S25 final decisions, re-read by eval/s33/analyze.py
+df33 = s33d("french_minus_german_top1", metric="paired Δ top-1, French − German shipped (same affairs)", first="french", second="german")
+assert abs(df33["value"] - (t33["k"] - de33["k"]) / N25) < 1e-4, df33
+sd33 = g(S33R, "same_design_readings_only")
+ro33 = {"french": s33k("same_design_readings_only", "french_top1", metric="chapter top-1, French, chapter readings only (no read-back)"),
+        "german": s33k("same_design_readings_only", "german_top1", metric="chapter top-1, German, chapter readings only (no read-back)"),
+        "paired": s33d("same_design_readings_only", "french_minus_german_top1", metric="paired Δ top-1, French − German, same design "
+                       "(chapter readings only)", first="french", second="german"),
+        "design": sd33["design"], "german_sources": sd33["german_sources"],
+        "two_readings": {"french": sd33["french_two_readings"], "german": sd33["german_two_readings"], "at": loc(S33R, "same_design_readings_only")},
+        "german_inputs_matched_pre_rebuild": {"value": sd33["german_inputs_matched_pre_rebuild"],
+                                              "at": loc(S33R, "same_design_readings_only", "german_inputs_matched_pre_rebuild")}}
+assert ro33["french"]["n"] == ro33["german"]["n"] == N25, (ro33["french"]["kn"], ro33["german"]["kn"])
+in33 = g(S33R, "inputs"); c33 = g(S33R, "cost")
+assert in33["with_french_text"] + in33["french_title_only"] == N25
+assert c33["fps"] == [s25["build"]] and c33["models"] == [MODEL], (c33["fps"], c33["models"])
+TX33 = {"french_with_text": "French submitted text", "french_title_only": "French title only",
+        "french_title_only_german_document_text": "French title only, German read with a document text",
+        "french_title_only_german_no_text": "French title only, German had no text either"}
+tests.append(dict(
+    id="aps_chapter_heldout_s33_french", gold="human", subject="Apertus",
+    title_de=f"APS-Kapitel gegen APS-Redaktion, dieselben {N25} neuen Bundesgeschäfte (hold-out): aus dem französischen Text gelesen, "
+             "gegen das ausgelieferte Design auf dem deutschen Text (S33)",
+    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} nouveaux objets fédéraux (hors échantillon) : lus dans le texte "
+             "français, contre le design livré sur le texte allemand (S33)",
+    n=N25, design=f"die {N25} S25-Geschäfte, Gold = APS-Kapitel der Redaktion; Input aus OPD: französischer Titel (+ Langtitel, bei keinem "
+    f"vorhanden) + französischer eingereichter Text («Texte déposé», erste 1'500 Zeichen) bei {in33['with_french_text']}, nur Titel bei "
+    f"{in33['french_title_only']} (davon {in33['title_only_and_german_had_document_text']} auf Deutsch mit Dokumenttext gelesen); Design wie "
+    "die Produktion ein französisches Bundesgeschäft heute liest: Beispiele nur für deutschen Bundestext, also D1 ohne Beispiele im "
+    "französischen Rahmen (Kapitelnamen französisch, Unterthemen deutsch wie publiziert), zweite Code-Reihenfolge, wenn die erste Lesart "
+    "p < 0.9 hat, Kapitel aus dem Unterthema zurückgelesen; Entscheide komponiert wie im Export (compose.decide); gepaart gegen die "
+    "S25-Entscheide (D4 auf dem deutschen Text) auf denselben Geschäften",
+    result=dict(t33, display=f"{F.t(t33['value'])} [{F.lo(t33['ci95'][0])}, {F.hi(t33['ci95'][1])}]"),
+    results_more=[s33k("french_top3", metric="chapter top-3, French"), df33,
+                  s33d("french_minus_german_top3", metric="paired Δ top-3, French − German shipped (same affairs)", first="french", second="german"),
+                  s33k("same_chapter_as_german", metric="same chapter as the shipped German decision")],
+    baselines=[dict(de33, name=f"shipped design on the German text (S25 final, D4), same {N25} affairs"),
+               dict(s33k("german_shipped_top3", metric="chapter top-3 of the shipped design on the German text (S25 final)"),
+                    name="shipped design on the German text, top-3")],
+    breakdowns={
+        "same_design_readings_only": ro33,
+        "same_design_read_back": {"skipped": True, "why": g(S33R, "same_design_read_back", "why"),
+                                  "german_subtopic_rows_available": g(S33R, "same_design_read_back", "german_subtopic_rows_available"),
+                                  "missing": g(S33R, "same_design_read_back", "missing"), "at": loc(S33R, "same_design_read_back")},
+        "lanes_french": {k_: dict(s33k("lanes_french", k_, metric=f"precision, French: {L25[k_]}"), cell=k_)
+                         for k_ in ("pass", "please_check", "readings_agree", "readings_disagree")}
+        | {"rule": g(S33R, "lanes_rule"), "share_note": "share = share of the scored affairs (truncated)"},
+        "by_text": {"cells": [dict(s33k(k_, "french", metric=f"chapter top-1, French, {v_}"), cell=v_,
+                                   german_same_items=s33k(k_, "german_shipped_same_items", metric=f"chapter top-1, German shipped, same affairs ({v_})"),
+                                   **({"small": True} if g(S33R, k_, "french")["n"] < 20 else {})) for k_, v_ in TX33.items()],
+                    "at": loc(S33R, "french_with_text")},
+        "inputs": {**in33, "at": loc(S33R, "inputs")},
+        "cost": {"calls": c33["calls"], "usd": c33["usd"], "rows": c33["rows"], "calls_per_affair": c33["calls_per_affair"],
+                 "first_launch_calls_not_written": c33["first_launch_calls_not_written"], "note": c33["note"], "at": loc(S33R, "cost")},
+        "scored": {"in_set": s33["items"], "scored": s33["scored"], "missing": s33["missing"], "at": loc(S33R, "scored")}},
+    split=f"the {N25} S25 held-out affairs (none used while designing), pre-registered (S33) before any S33 call; nothing tuned",
+    prereg=pre33,
+    reference={"id": "aps_chapter_heldout_s25", "what": "the shipped design on the German text of the same affairs (S25)"},
+    sources=[S33R, f"{QE}/s33/analyze.py", f"{QE}/s33/run.py", f"{QE}/s33/inputs_fr.jsonl.gz", f"{QE}/s25/decisions.jsonl",
+             f"{QE}/s25/items.jsonl", f"{QE}/s25b/raw.jsonl", "src/querschnitt/engine.py", "src/querschnitt/compose.py", PB],
+    build=s33["build"] + " (run runs/s33)", model=MODEL, date="2026-10-16",
+    shipped="measurement of the shipped code path for French federal text; production keeps reading federal affairs from the German text"))
+
 # ---------------------------------------------------------------- S31: a documented design search on the design set (dev only, not pre-registered)
 # Five variants of the federal design against D4 on the S9/S16 design set, leave-one-out examples, a gate fixed before any S31 call
 # (paired Δ vs D4 ≥ +0.02 on all 1,357 with the 95% interval above 0). No variant cleared it, so no test was run: the S25 held-out
@@ -1874,7 +1967,7 @@ for t_ in tests:
         t_["title_de"] += " (S8-Momentaufnahme, ersetzt durch die volle Erhebung)"
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
-ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
+ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_heldout_s33_french", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
          "aps_hierarchical_d4", "aps_hierarchical_heldout_s25", "aps_design_search_s31",
          "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
          "basel_themes_names", "basel_themes_examples", "ticino_departments", "judge_anchor_aps", "judge_dvs_human", "neutrality_shipped_s32", "neutrality_s9", "aps_italian_vs_german",
@@ -2071,7 +2164,7 @@ out = {
         "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
         f"one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely "
         f"inconclusive at n = {N25}, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
-        "a held-out French / Italian federal slice for the shipped design (S32: the S9 production inputs and the S25 items are German)",
+        "a held-out Italian federal slice (S33 measured French on the S25 items; S22 measured Italian on the design set only)",
         "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
         "Romansh"],
 }
@@ -2242,6 +2335,27 @@ row(*APS28, "human", f"ohne Prefill: Lesarten-Regel, keine Kalibrierung ({F.pct(
     f"bitte prüfen: {p3(lc28['value'])} {civ(lc28['ci95'])} (n {lc28['n']}) · mit Prefill, rekalibriertes p ≥ 0.7: {p3(lp25['value'])}",
     fr(f"à vérifier : {p3(lc28['value'])} {civ(lc28['ci95'])} (n {lc28['n']}) · avec prefill, p recalibré ≥ 0.7 : {p3(lp25['value'])}"),
     *SPLIT_S28, T28["file"], result_fr=fr(p3(lp28["value"])))
+# S33: the same held-out affairs read from the French text (production's code path for French federal text), right after S28's table
+T33 = TD["aps_chapter_heldout_s33_french"]; m33 = T33["results_more"]; de33_, d33_ = T33["baselines"][0], m33[1]
+ro33_ = T33["breakdowns"]["same_design_readings_only"]; rof_, rog_, rod_ = ro33_["french"], ro33_["german"], ro33_["paired"]
+APS33 = (f"APS-Kapitel, dieselben {p3(N25)} Bundesgeschäfte (hold-out): aus dem französischen Text gelesen (S33)",
+         f"Chapitre APS, les mêmes {F.t(N25, sep=' ')} objets fédéraux (hors échantillon) : lus dans le texte français (S33)")
+SPLIT_S33 = ("held-out (S25-Geschäfte), vorregistriert (S33); der Code-Pfad der Produktion für französischen Bundestext; ausgeliefert "
+             "bleibt das Lesen aus dem deutschen Text",
+             "hors échantillon (objets S25), préenregistré (S33) ; le chemin de production pour un texte fédéral français ; la "
+             "production continue de lire le texte allemand")
+row(*APS33, "human", "französischer Titel + eingereichter Text, ohne Beispiele (D1, französischer Rahmen; wie die Produktion "
+    "französischen Bundestext liest)",
+    "titre français + texte déposé, sans exemples (D1, cadre français ; comme la production lit un texte fédéral français)", N25,
+    f"top-1 {p3(T33['result']['value'])} · top-3 {p3(m33[0]['value'])}", iv(T33["result"]["ci95"]),
+    f"Deutsch, ausgeliefert (S25, D4) {p3(de33_['value'])} · Δ FR − DE {F.signed(p3(d33_['value']))} {sciv(d33_['ci95'])}",
+    fr(f"allemand, livré (S25, D4) {p3(de33_['value'])} · Δ FR − DE {F.signed(p3(d33_['value']))} {sciv(d33_['ci95'])}"),
+    *SPLIT_S33, T33["file"])
+row(*APS33, "human", "gleiches Design in beiden Sprachen: nur die Kapitel-Lesarten ohne Beispiele, ohne Rücklesen",
+    "même design dans les deux langues : seulement les lectures du chapitre sans exemples, sans relecture", rof_["n"],
+    f"FR {p3(rof_['value'])} · DE {p3(rog_['value'])}", iv(rof_["ci95"]),
+    f"Δ FR − DE {F.signed(p3(rod_['value']))} {sciv(rod_['ci95'])}", fr(f"Δ FR − DE {F.signed(p3(rod_['value']))} {sciv(rod_['ci95'])}"),
+    *SPLIT_S33, T33["file"], result_fr=fr(f"FR {p3(rof_['value'])} · DE {p3(rog_['value'])}"))
 
 dv = TD["dvs_human30"]
 row("«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)", "« numérique » : 30 objets DVS choisis à la main (rappel)", "human",
@@ -2442,8 +2556,8 @@ for s_ in TOPICS30 + ("pooled",):
         result_fr=fr(f"{p3(P_['value'])} ({P_['kn']}) / {p3(R_['value'])} · {dd_[1]}"))
 
 # the held-out test (S25) leads: its rows open the app's first human-label table (the highlighted, shipped row)
-# S28 (the same held-out affairs without prefill) follows right after S25's table
-LEAD = ("eval/s25/", "eval/s28/")
+# S28 (the same held-out affairs without prefill) and S33 (the same affairs read from the French text) follow right after S25's table
+LEAD = ("eval/s25/", "eval/s28/", "eval/s33/")
 rows = [r for r in rows if r["file"].startswith(LEAD)] + [r for r in rows if not r["file"].startswith(LEAD)]
 # the pre-fix S25 readings stay in docs/PRUEFSTAND.md (with the amendment); the app's lead table shows what ships
 rows = [r for r in rows if not r["design"].startswith("vor dem Determinismus-Fix")]

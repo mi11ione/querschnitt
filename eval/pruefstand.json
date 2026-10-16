@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-16T08:39:17Z",
+ "generated_utc": "2026-10-16T10:39:49Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -2562,6 +2562,808 @@
      "0.67",
      "0.7",
      "0.73"
+    ]
+   }
+  },
+  {
+   "id": "aps_chapter_heldout_s33_french",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): aus dem französischen Text gelesen, gegen das ausgelieferte Design auf dem deutschen Text (S33)",
+   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 nouveaux objets fédéraux (hors échantillon) : lus dans le texte français, contre le design livré sur le texte allemand (S33)",
+   "n": 927,
+   "design": "die 927 S25-Geschäfte, Gold = APS-Kapitel der Redaktion; Input aus OPD: französischer Titel (+ Langtitel, bei keinem vorhanden) + französischer eingereichter Text («Texte déposé», erste 1'500 Zeichen) bei 580, nur Titel bei 347 (davon 291 auf Deutsch mit Dokumenttext gelesen); Design wie die Produktion ein französisches Bundesgeschäft heute liest: Beispiele nur für deutschen Bundestext, also D1 ohne Beispiele im französischen Rahmen (Kapitelnamen französisch, Unterthemen deutsch wie publiziert), zweite Code-Reihenfolge, wenn die erste Lesart p < 0.9 hat, Kapitel aus dem Unterthema zurückgelesen; Entscheide komponiert wie im Export (compose.decide); gepaart gegen die S25-Entscheide (D4 auf dem deutschen Text) auf denselben Geschäften",
+   "result": {
+    "metric": "chapter top-1 vs APS editors, French text (D1 read-back without examples, French frame: what production runs for a French federal affair)",
+    "value": 0.6752,
+    "ci95": [
+     0.644,
+     0.705
+    ],
+    "k": 626,
+    "n": 927,
+    "kn": "626/927",
+    "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+    "at": {
+     "file": "eval/s33/results.json",
+     "key": "french_top1"
+    },
+    "display": "0.675 [0.644, 0.705]",
+    "shown": {
+     "value": [
+      "0.6",
+      "0.67"
+     ],
+     "ci95": [
+      "0.6",
+      "0.64",
+      "0.71",
+      "0.8"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3, French",
+     "value": 0.7831,
+     "ci95": [
+      0.755,
+      0.809
+     ],
+     "k": 726,
+     "n": 927,
+     "kn": "726/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "french_top3"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.78"
+      ],
+      "ci95": [
+       "0.7",
+       "0.75",
+       "0.81",
+       "0.9"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ top-1, French − German shipped (same affairs)",
+     "value": -0.0215,
+     "ci95": [
+      -0.05,
+      0.007
+     ],
+     "n": 927,
+     "french_only_right": 78,
+     "german_only_right": 98,
+     "method": "paired bootstrap 2,000 over affairs, percentile, random.Random(2026), bounds rounded outward (eval/s33/analyze.py)",
+     "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "french_minus_german_top1"
+     },
+     "shown": {
+      "value": [
+       "-0.02",
+       "0.0"
+      ],
+      "ci95": [
+       "-0.1",
+       "0.01",
+       "0.1"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ top-3, French − German shipped (same affairs)",
+     "value": -0.056,
+     "ci95": [
+      -0.085,
+      -0.029
+     ],
+     "n": 927,
+     "french_only_right": 54,
+     "german_only_right": 106,
+     "method": "paired bootstrap 2,000 over affairs, percentile, random.Random(2026), bounds rounded outward (eval/s33/analyze.py)",
+     "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "french_minus_german_top3"
+     },
+     "shown": {
+      "value": [
+       "-0.05",
+       "0.0"
+      ],
+      "ci95": [
+       "-0.02",
+       "-0.09",
+       "-0.1",
+       "0.0"
+      ]
+     }
+    },
+    {
+     "metric": "same chapter as the shipped German decision",
+     "value": 0.7605,
+     "ci95": [
+      0.732,
+      0.787
+     ],
+     "k": 705,
+     "n": 927,
+     "kn": "705/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "same_chapter_as_german"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.76"
+      ],
+      "ci95": [
+       "0.7",
+       "0.73",
+       "0.79",
+       "0.8"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1 of the shipped pipeline on the German text (S25 final, D4), same affairs",
+     "value": 0.6968,
+     "ci95": [
+      0.666,
+      0.726
+     ],
+     "k": 646,
+     "n": 927,
+     "kn": "646/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "german_shipped_top1"
+     },
+     "name": "shipped design on the German text (S25 final, D4), same 927 affairs",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69"
+      ],
+      "ci95": [
+       "0.6",
+       "0.66",
+       "0.73",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "chapter top-3 of the shipped design on the German text (S25 final)",
+     "value": 0.8392,
+     "ci95": [
+      0.814,
+      0.862
+     ],
+     "k": 778,
+     "n": 927,
+     "kn": "778/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "german_shipped_top3"
+     },
+     "name": "shipped design on the German text, top-3",
+     "shown": {
+      "value": [
+       "0.8",
+       "0.83"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "same_design_readings_only": {
+     "french": {
+      "metric": "chapter top-1, French, chapter readings only (no read-back)",
+      "value": 0.6396,
+      "ci95": [
+       0.608,
+       0.67
+      ],
+      "k": 593,
+      "n": 927,
+      "kn": "593/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "same_design_readings_only > french_top1"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.63"
+       ],
+       "ci95": [
+        "0.6",
+        "0.60",
+        "0.7"
+       ]
+      }
+     },
+     "german": {
+      "metric": "chapter top-1, German, chapter readings only (no read-back)",
+      "value": 0.6429,
+      "ci95": [
+       0.611,
+       0.674
+      ],
+      "k": 596,
+      "n": 927,
+      "kn": "596/927",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "same_design_readings_only > german_top1"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.64"
+       ],
+       "ci95": [
+        "0.6",
+        "0.61",
+        "0.68",
+        "0.7"
+       ]
+      }
+     },
+     "paired": {
+      "metric": "paired Δ top-1, French − German, same design (chapter readings only)",
+      "value": -0.0032,
+      "ci95": [
+       -0.03,
+       0.024
+      ],
+      "n": 927,
+      "french_only_right": 77,
+      "german_only_right": 80,
+      "method": "paired bootstrap 2,000 over affairs, percentile, random.Random(2026), bounds rounded outward (eval/s33/analyze.py)",
+      "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3",
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "same_design_readings_only > french_minus_german_top1"
+      },
+      "shown": {
+       "value": [
+        "0.0",
+        "0.00"
+       ],
+       "ci95": [
+        "-0.1",
+        "0.03",
+        "0.1"
+       ]
+      }
+     },
+     "design": "top of the geometric mean of the chapter readings production asks without examples (identity order; S1 order where the first top p < 0.9), no subtopic read-back, both languages",
+     "german_sources": "eval/s25b/raw.jsonl (identity order, no examples) + runs/s25 ch2 rows (S1 order, no examples)",
+     "two_readings": {
+      "french": 239,
+      "german": 267,
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "same_design_readings_only"
+      }
+     },
+     "german_inputs_matched_pre_rebuild": {
+      "value": 40,
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "same_design_readings_only > german_inputs_matched_pre_rebuild"
+      }
+     }
+    },
+    "same_design_read_back": {
+     "skipped": true,
+     "why": "the German D1 read-back needs the subtopic request over the chapter set of the no-example readings; runs/s25 holds it for 179 of the 927 affairs, so it is not composable without new calls (pre-registered)",
+     "german_subtopic_rows_available": 179,
+     "missing": 748,
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "same_design_read_back"
+     }
+    },
+    "lanes_french": {
+     "pass": {
+      "metric": "precision, French: pass: recalibrated p ≥ 0.7 (shipped lane rule; map fitted on S16 only)",
+      "value": 0.767,
+      "ci95": [
+       0.731,
+       0.8
+      ],
+      "k": 451,
+      "n": 588,
+      "kn": "451/588",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.6343,
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "lanes_french > pass"
+      },
+      "cell": "pass",
+      "shown": {
+       "value": [
+        "0.7",
+        "0.76"
+       ],
+       "ci95": [
+        "0.7",
+        "0.73"
+       ],
+       "share": [
+        "0.6",
+        "0.63"
+       ]
+      }
+     },
+     "please_check": {
+      "metric": "precision, French: please check: recalibrated p < 0.7",
+      "value": 0.5162,
+      "ci95": [
+       0.463,
+       0.569
+      ],
+      "k": 175,
+      "n": 339,
+      "kn": "175/339",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.3656,
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "lanes_french > please_check"
+      },
+      "cell": "please_check",
+      "shown": {
+       "value": [
+        "0.5",
+        "0.51"
+       ],
+       "ci95": [
+        "0.4",
+        "0.46",
+        "0.57",
+        "0.6"
+       ],
+       "share": [
+        "0.3",
+        "0.36"
+       ]
+      }
+     },
+     "readings_agree": {
+      "metric": "precision, French: the two readings (with / without examples) agree on the chapter",
+      "value": 0.6915,
+      "ci95": [
+       0.658,
+       0.723
+      ],
+      "k": 538,
+      "n": 778,
+      "kn": "538/778",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.8392,
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "lanes_french > readings_agree"
+      },
+      "cell": "readings_agree",
+      "shown": {
+       "value": [
+        "0.6",
+        "0.69"
+       ],
+       "ci95": [
+        "0.6",
+        "0.65",
+        "0.73",
+        "0.8"
+       ],
+       "share": [
+        "0.8",
+        "0.83"
+       ]
+      }
+     },
+     "readings_disagree": {
+      "metric": "precision, French: the two readings disagree",
+      "value": 0.5906,
+      "ci95": [
+       0.51,
+       0.667
+      ],
+      "k": 88,
+      "n": 149,
+      "kn": "88/149",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+      "share": 0.1607,
+      "at": {
+       "file": "eval/s33/results.json",
+       "key": "lanes_french > readings_disagree"
+      },
+      "cell": "readings_disagree",
+      "shown": {
+       "value": [
+        "0.5",
+        "0.59"
+       ],
+       "ci95": [
+        "0.5",
+        "0.67",
+        "0.7"
+       ],
+       "share": [
+        "0.1",
+        "0.16"
+       ]
+      }
+     },
+     "rule": "readings: disagree when the two code orders give different top chapters; one reading (top p >= 0.9, so no second order) counts as agree. pass / please_check: production's lane (recalibrated p >= 0.7, map fitted on S16; compose.decide)",
+     "share_note": "share = share of the scored affairs (truncated)"
+    },
+    "by_text": {
+     "cells": [
+      {
+       "metric": "chapter top-1, French, French submitted text",
+       "value": 0.6603,
+       "ci95": [
+        0.62,
+        0.698
+       ],
+       "k": 383,
+       "n": 580,
+       "kn": "383/580",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s33/results.json",
+        "key": "french_with_text > french"
+       },
+       "cell": "French submitted text",
+       "german_same_items": {
+        "metric": "chapter top-1, German shipped, same affairs (French submitted text)",
+        "value": 0.6741,
+        "ci95": [
+         0.634,
+         0.712
+        ],
+        "k": 391,
+        "n": 580,
+        "kn": "391/580",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s33/results.json",
+         "key": "french_with_text > german_shipped_same_items"
+        },
+        "shown": {
+         "value": [
+          "0.6",
+          "0.67"
+         ],
+         "ci95": [
+          "0.6",
+          "0.63",
+          "0.72",
+          "0.8"
+         ]
+        }
+       },
+       "shown": {
+        "value": [
+         "0.6",
+         "0.66"
+        ],
+        "ci95": [
+         "0.6",
+         "0.7",
+         "0.70"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, French, French title only",
+       "value": 0.7002,
+       "ci95": [
+        0.65,
+        0.747
+       ],
+       "k": 243,
+       "n": 347,
+       "kn": "243/347",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s33/results.json",
+        "key": "french_title_only > french"
+       },
+       "cell": "French title only",
+       "german_same_items": {
+        "metric": "chapter top-1, German shipped, same affairs (French title only)",
+        "value": 0.7348,
+        "ci95": [
+         0.686,
+         0.779
+        ],
+        "k": 255,
+        "n": 347,
+        "kn": "255/347",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s33/results.json",
+         "key": "french_title_only > german_shipped_same_items"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.73"
+         ],
+         "ci95": [
+          "0.6",
+          "0.68",
+          "0.78",
+          "0.8"
+         ]
+        }
+       },
+       "shown": {
+        "value": [
+         "0.7",
+         "0.70"
+        ],
+        "ci95": [
+         "0.6",
+         "0.75",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, French, French title only, German read with a document text",
+       "value": 0.6907,
+       "ci95": [
+        0.635,
+        0.742
+       ],
+       "k": 201,
+       "n": 291,
+       "kn": "201/291",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s33/results.json",
+        "key": "french_title_only_german_document_text > french"
+       },
+       "cell": "French title only, German read with a document text",
+       "german_same_items": {
+        "metric": "chapter top-1, German shipped, same affairs (French title only, German read with a document text)",
+        "value": 0.7319,
+        "ci95": [
+         0.678,
+         0.78
+        ],
+        "k": 213,
+        "n": 291,
+        "kn": "213/291",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s33/results.json",
+         "key": "french_title_only_german_document_text > german_shipped_same_items"
+        },
+        "shown": {
+         "value": [
+          "0.7",
+          "0.73"
+         ],
+         "ci95": [
+          "0.6",
+          "0.67",
+          "0.8"
+         ]
+        }
+       },
+       "shown": {
+        "value": [
+         "0.6",
+         "0.69"
+        ],
+        "ci95": [
+         "0.6",
+         "0.63",
+         "0.75",
+         "0.8"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, French, French title only, German had no text either",
+       "value": 0.75,
+       "ci95": [
+        0.623,
+        0.845
+       ],
+       "k": 42,
+       "n": 56,
+       "kn": "42/56",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s33/results.json",
+        "key": "french_title_only_german_no_text > french"
+       },
+       "cell": "French title only, German had no text either",
+       "german_same_items": {
+        "metric": "chapter top-1, German shipped, same affairs (French title only, German had no text either)",
+        "value": 0.75,
+        "ci95": [
+         0.623,
+         0.845
+        ],
+        "k": 42,
+        "n": 56,
+        "kn": "42/56",
+        "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s33/analyze.py; re-checked by build_pruefstand.py)",
+        "at": {
+         "file": "eval/s33/results.json",
+         "key": "french_title_only_german_no_text > german_shipped_same_items"
+        },
+        "shown": {
+         "value": [
+          "0.7"
+         ],
+         "ci95": [
+          "0.6",
+          "0.62",
+          "0.85",
+          "0.9"
+         ]
+        }
+       },
+       "shown": {
+        "value": [
+         "0.7"
+        ],
+        "ci95": [
+         "0.6",
+         "0.62",
+         "0.85",
+         "0.9"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "french_with_text"
+     }
+    },
+    "inputs": {
+     "affairs": 927,
+     "already_french_in_production": 1,
+     "french_title_only": 347,
+     "identical_to_production_input": 1,
+     "title_only_and_german_had_document_text": 291,
+     "title_only_and_german_had_no_text": 56,
+     "with_french_long_title": 0,
+     "with_french_text": 580,
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "inputs"
+     }
+    },
+    "cost": {
+     "calls": 2077,
+     "usd": 0.195577,
+     "rows": 2052,
+     "calls_per_affair": 2.213,
+     "first_launch_calls_not_written": 25,
+     "note": "list price (client.PRICES); the ledger includes the first launch's 25 answered calls whose rows were not written (the run dir lacked its build folder; eval/s33/run.py), re-asked on relaunch",
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "cost"
+     },
+     "shown": {
+      "usd": [
+       "0.1",
+       "0.19",
+       "0.1955"
+      ],
+      "calls_per_affair": [
+       "2.2",
+       "2.21"
+      ]
+     }
+    },
+    "scored": {
+     "in_set": 927,
+     "scored": 927,
+     "missing": 0,
+     "at": {
+      "file": "eval/s33/results.json",
+      "key": "scored"
+     }
+    }
+   },
+   "split": "the 927 S25 held-out affairs (none used while designing), pre-registered (S33) before any S33 call; nothing tuned",
+   "prereg": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S33 the S25 held-out affairs read from the French text",
+    "line": 246
+   },
+   "reference": {
+    "id": "aps_chapter_heldout_s25",
+    "what": "the shipped design on the German text of the same affairs (S25)"
+   },
+   "sources": [
+    "eval/s33/results.json",
+    "eval/s33/analyze.py",
+    "eval/s33/run.py",
+    "eval/s33/inputs_fr.jsonl.gz",
+    "eval/s25/decisions.jsonl",
+    "eval/s25/items.jsonl",
+    "eval/s25b/raw.jsonl",
+    "src/querschnitt/engine.py",
+    "src/querschnitt/compose.py",
+    "eval/PREREG-BUILD.md"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (run runs/s33)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-16",
+   "shipped": "measurement of the shipped code path for French federal text; production keeps reading federal affairs from the German text",
+   "test": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): aus dem französischen Text gelesen, gegen das ausgelieferte Design auf dem deutschen Text (S33)",
+   "interval": [
+    0.644,
+    0.705
+   ],
+   "baseline": {
+    "name": "shipped design on the German text (S25 final, D4), same 927 affairs",
+    "value": 0.6968,
+    "ci95": [
+     0.666,
+     0.726
+    ],
+    "shown": {
+     "value": [
+      "0.6",
+      "0.69"
+     ],
+     "ci95": [
+      "0.6",
+      "0.66",
+      "0.73",
+      "0.8"
+     ]
+    }
+   },
+   "file": "eval/s33/results.json",
+   "key": "french_top1",
+   "shown": {
+    "interval": [
+     "0.6",
+     "0.64",
+     "0.7",
+     "0.70"
     ]
    }
   },
@@ -38010,7 +38812,7 @@
   "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
   "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
   "one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely inconclusive at n = 927, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
-  "a held-out French / Italian federal slice for the shipped design (S32: the S9 production inputs and the S25 items are German)",
+  "a held-out Italian federal slice (S33 measured French on the S25 items; S22 measured Italian on the design set only)",
   "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
   "Romansh"
  ]

@@ -134,6 +134,44 @@
    "file": "eval/s28/results.json"
   },
   {
+   "test": "APS-Kapitel, dieselben 927 Bundesgeschäfte (hold-out): aus dem französischen Text gelesen (S33)",
+   "test_fr": "Chapitre APS, les mêmes 927 objets fédéraux (hors échantillon) : lus dans le texte français (S33)",
+   "gold": "human",
+   "design": "französischer Titel + eingereichter Text, ohne Beispiele (D1, französischer Rahmen; wie die Produktion französischen Bundestext liest)",
+   "design_fr": "titre français + texte déposé, sans exemples (D1, cadre français ; comme la production lit un texte fédéral français)",
+   "n": 927,
+   "result": "top-1 0.675 · top-3 0.783",
+   "result_fr": "top-1 0,675 · top-3 0,783",
+   "interval": [
+    0.644,
+    0.705
+   ],
+   "baseline": "Deutsch, ausgeliefert (S25, D4) 0.696 · Δ FR − DE −0.021 [−0.050, +0.007]",
+   "baseline_fr": "allemand, livré (S25, D4) 0,696 · Δ FR − DE −0,021 [−0,050, +0,007]",
+   "split": "held-out (S25-Geschäfte), vorregistriert (S33); der Code-Pfad der Produktion für französischen Bundestext; ausgeliefert bleibt das Lesen aus dem deutschen Text",
+   "split_fr": "hors échantillon (objets S25), préenregistré (S33) ; le chemin de production pour un texte fédéral français ; la production continue de lire le texte allemand",
+   "file": "eval/s33/results.json"
+  },
+  {
+   "test": "APS-Kapitel, dieselben 927 Bundesgeschäfte (hold-out): aus dem französischen Text gelesen (S33)",
+   "test_fr": "Chapitre APS, les mêmes 927 objets fédéraux (hors échantillon) : lus dans le texte français (S33)",
+   "gold": "human",
+   "design": "gleiches Design in beiden Sprachen: nur die Kapitel-Lesarten ohne Beispiele, ohne Rücklesen",
+   "design_fr": "même design dans les deux langues : seulement les lectures du chapitre sans exemples, sans relecture",
+   "n": 927,
+   "result": "FR 0.639 · DE 0.642",
+   "result_fr": "FR 0,639 · DE 0,642",
+   "interval": [
+    0.608,
+    0.67
+   ],
+   "baseline": "Δ FR − DE −0.003 [−0.030, +0.024]",
+   "baseline_fr": "Δ FR − DE −0,003 [−0,030, +0,024]",
+   "split": "held-out (S25-Geschäfte), vorregistriert (S33); der Code-Pfad der Produktion für französischen Bundestext; ausgeliefert bleibt das Lesen aus dem deutschen Text",
+   "split_fr": "hors échantillon (objets S25), préenregistré (S33) ; le chemin de production pour un texte fédéral français ; la production continue de lire le texte allemand",
+   "file": "eval/s33/results.json"
+  },
+  {
    "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
    "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",

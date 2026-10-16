@@ -1,0 +1,4 @@
+11:33:30 items 927 cached prompts 0
+11:34:27 end stop=True counts={'errors': 25}
+11:34:43 items 927 cached prompts 0
+12:38:51 end stop=False counts={'calls': 2052, 'ch1': 907, 'sub': 907, 'affairs': 927, 'ch2': 238, 'cached': 41}

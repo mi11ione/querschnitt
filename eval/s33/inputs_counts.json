@@ -1,0 +1,10 @@
+{
+ "affairs": 927,
+ "already_french_in_production": 1,
+ "french_title_only": 347,
+ "identical_to_production_input": 1,
+ "title_only_and_german_had_document_text": 291,
+ "title_only_and_german_had_no_text": 56,
+ "with_french_long_title": 0,
+ "with_french_text": 580
+}

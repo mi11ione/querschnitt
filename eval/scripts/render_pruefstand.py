@@ -370,6 +370,67 @@ w(f"Outcome: no variant cleared the gate. The closest, V3 (the five examples in 
   f"{L(num(c31['usd_list_price'], 4), c31['at'])} at list price.")
 w("")
 
+# ------------------------------------------------------------------ S33: the same held-out affairs read from the French text
+t33 = T["aps_chapter_heldout_s33_french"]; m33 = t33["results_more"]; b33 = t33["breakdowns"]
+de33, de33t3 = t33["baselines"][0], t33["baselines"][1]
+t33t3, d33, d33t3, same33 = m33[0], m33[1], m33[2], m33[3]
+ro33 = b33["same_design_readings_only"]; in33 = b33["inputs"]; c33 = b33["cost"]; l33 = b33["lanes_french"]
+
+
+def side(d_):
+    """plain reading of a paired difference interval."""
+    if d_["ci95"][0] > 0: return "French higher (the interval lies above 0)"
+    if d_["ci95"][1] < 0: return "French lower (the interval lies below 0)"
+    return "no difference measurable (the interval includes 0)"
+
+
+w(f"### 1e · French text: the same {num(t33['n'], 0)} held-out affairs read in French (S33, pre-registered)")
+w("")
+w(f"Production reads federal affairs from the German text, so §1b says nothing about French. S33 reads the same {num(t33['n'], 0)} affairs "
+  "from OPD's French title and the French submitted text («Texte déposé», first 1,500 characters) where OPD has one "
+  f"({L(num(in33['with_french_text']), in33['at'])} affairs; {L(num(in33['french_title_only']), in33['at'])} French title only, "
+  f"{L(num(in33['title_only_and_german_had_document_text']), in33['at'])} of them read in §1b with a German document text; no affair has a long "
+  "title in either language). The design is what production runs for a French federal affair today: the APS-labelled examples are shown "
+  "only for German federal text (`engine.ch1_prompt`), so French gets D1 — the chapter prompt in the French frame without examples (chapter "
+  "names French, subtopic names German as published), a second code order when the first reading's top p < 0.9, one subtopic request, "
+  "chapter read back — composed as the export composes it. Paired against the §1b decisions on the German text (D4). Gold: APS editors' "
+  f"chapter. [`eval/s33/run.py`](../eval/s33/run.py) (inputs, batch runner) → [`eval/s33/analyze.py`](../eval/s33/analyze.py) → "
+  f"[`eval/s33/results.json`](../eval/s33/results.json). Pre-registration: {L('PREREG-BUILD.md § S33', t33['prereg'])}. S33 selects "
+  "nothing: it changes no design and spends no S25 item on a design choice.")
+w("")
+w(f"| n = {num(t33['n'], 0)}, gold = APS editors' chapter | top-1 | top-3 |")
+w("|---|---|---|")
+w(f"| **French text, D1 without examples (production's path for French)** | **{r(t33['result'])}** ({L(t33['result']['kn'], t33['result']['at'])}) | {r(t33t3)} |")
+w(f"| German text, shipped D4 (S25 final, §1b), same affairs | {r(de33)} ({L(de33['kn'], de33['at'])}) | {r(de33t3)} |")
+w(f"| paired, French − German (bootstrap 2,000, bounds outward) | {r(d33, signed=True)} | {r(d33t3, signed=True)} |")
+w("")
+rf_, rg_, rd_ = ro33["french"], ro33["german"], ro33["paired"]
+w(f"Primary: French − German {r(d33, signed=True)}, {side(d33)}. Top-3 (secondary): {r(d33t3, signed=True)}, {side(d33t3)}. The two arms "
+  f"differ in language and in design (German has the five examples, French has none). **Same design in both languages** (pre-registered secondary): the full German D1 read-back would need new "
+  f"calls (the subtopic request for the D1 chapter set exists for {L(num(b33['same_design_read_back']['german_subtopic_rows_available']), b33['same_design_read_back']['at'])} "
+  "of the affairs; the entry counted 171 before the 40 affairs whose input the 16 Oct rebuild changed were matched to their S25-time "
+  "input), so it is skipped; at the level of the chapter readings "
+  "(no examples, identity order and the second order where p < 0.9, top of the geometric mean, no read-back) French reaches "
+  f"{r(rf_)} ({L(rf_['kn'], rf_['at'])}) and German {r(rg_)} ({L(rg_['kn'], rg_['at'])}): French − German {r(rd_, signed=True)}, {side(rd_)}.")
+w("")
+w("| S33 lane (French) | share of affairs (n) | precision |")
+w("|---|---|---|")
+for k_, nm_ in (("pass", "pass: recalibrated p ≥ 0.7 (production's lane; map fitted on S16)"), ("please_check", "`please check`: recalibrated p < 0.7"),
+                ("readings_agree", "readings agree (one reading with p ≥ 0.9 counts as agree)"), ("readings_disagree", "readings disagree")):
+    c_ = l33[k_]
+    w(f"| {nm_} | {L(F.pct(c_['share']), c_['at'])} ({L(num(c_['n']), c_['at'])}) | {r(c_)} |")
+w("")
+w("| French input | n | French top-1 | German shipped, same affairs |")
+w("|---|---|---|---|")
+for c_ in b33["by_text"]["cells"]:
+    w(f"| {c_['cell']} | {L(num(c_['n']), c_['at'])} | {r(c_)} | {r(c_['german_same_items'])} |")
+w("")
+w(f"French and German give the same chapter on {L(num(same33['k']), same33['at'])} of {num(same33['n'], 0)} affairs ({r(same33)}). Calls: "
+  f"{L(num(c33['calls']), c33['at'])} on the locked build (S25's), USD {L(num(c33['usd'], 4), c33['at'])} at list price, including "
+  f"{L(str(c33['first_launch_calls_not_written']), c33['at'])} calls of a first launch whose rows were not written (the run folder lacked its "
+  "build directory) and were asked again.")
+w("")
+
 sub = T["aps_subtopic"]
 w(f"### 2 · APS subtopic vs APS editors, end to end (S9)")
 w("")
@@ -614,8 +675,9 @@ c9 = lg9["cells"]; c25 = {c["cell"]: c for c in lg25["cells"]}
 w(f"**Language: not informative for the shipped design.** The S9 production inputs are German ({L(num(c9[0]['n']), c9[0]['at'])} of "
   f"{num(p9['overall']['n'])}). The S25 items are {L(num(c25['de']['n']), c25['de']['at'])} German and {L(num(c25['fr']['n']), c25['fr']['at'])} French. "
   "Federal affairs are read from the German input (no DE/FR two-readings lane), so neither set can show a language effect. The "
-  "language evidence on human labels is S22 (Italian vs German, D1, below) and Bern (DE vs FR titles, §5). A held-out French or "
-  "Italian federal slice for the shipped design is still to measure.")
+  "language evidence on human labels is S22 (Italian vs German, D1, below), Bern (DE vs FR titles, §5) and, held out, S33 (the S25 "
+  f"affairs read from the French text, §1e: French − German shipped {r(d33, signed=True)}; same design, readings only, "
+  f"{r(ro33['paired'], signed=True)}). A held-out Italian federal slice is still to measure.")
 w("")
 gmax = max((p9, p25, ppo), key=lambda x: x["largest_gap"]["ci95"][1])["largest_gap"]
 kk9, ki9 = b32["s9_prod_submitter_kind_keyword_top1"]["test"], b32["s9_prod_instrument_keyword_top1"]["test"]
@@ -1018,6 +1080,9 @@ w(f"- The held-out test (S25, §1b) pre-registered the chapter, its lanes and pl
 w(f"- Without prefill (the endpoint fallback `QS_PREFILL=0`, §1c) the chapter top-1 on the held-out affairs is {r(t28['result'])}, paired "
   f"prefill − no prefill {r(d28, signed=True)}; no calibration map exists for that mode, so its lane is the readings rule, not the "
   "recalibrated p. Measured on one build; another endpoint may tokenise the JSON opening differently (the S28 amendment).")
+w(f"- French federal text (§1e, S33) is measured held out with production's French path, D1 without examples: French − German shipped "
+  f"{r(d33, signed=True)} mixes language and design (German has the five examples). The same-design comparison ({r(ro33['paired'], signed=True)}) "
+  "is at the level of the chapter readings only, without the subtopic read-back. Italian held out is not measured (S22 is on the design set).")
 w(f"- Ticino (§6b, Italian, the canton's own lead department) is measured on the inputs that do not name the unit ({num(ti['n'])} of "
   f"{num(a9['n'])}). The State Chancellery and «none of these» are weak "
   f"({num(next(c for c in bg9['cells'] if c['cell'] == 'Cancelleria dello Stato')['value'])} and "

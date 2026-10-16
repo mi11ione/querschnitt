@@ -1,0 +1,351 @@
+{
+ "prereg": "eval/PREREG-BUILD.md 2026-10-16 11:33 CEST — S33",
+ "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "model": "swiss-ai/apertus-v1.5-8b",
+ "items": 927,
+ "scored": 927,
+ "missing": 0,
+ "with_examples": 0,
+ "inputs": {
+  "affairs": 927,
+  "already_french_in_production": 1,
+  "french_title_only": 347,
+  "identical_to_production_input": 1,
+  "title_only_and_german_had_document_text": 291,
+  "title_only_and_german_had_no_text": 56,
+  "with_french_long_title": 0,
+  "with_french_text": 580
+ },
+ "french_top1": {
+  "k": 626,
+  "n": 927,
+  "value": 0.6752,
+  "ci": [
+   0.644,
+   0.705
+  ]
+ },
+ "german_shipped_top1": {
+  "k": 646,
+  "n": 927,
+  "value": 0.6968,
+  "ci": [
+   0.666,
+   0.726
+  ]
+ },
+ "french_minus_german_top1": {
+  "value": -0.0215,
+  "ci95": [
+   -0.05,
+   0.007
+  ],
+  "n": 927,
+  "first_only_right": 78,
+  "second_only_right": 98,
+  "note": "first = French (S33), second = German shipped (S25 decisions, D4)"
+ },
+ "french_top3": {
+  "k": 726,
+  "n": 927,
+  "value": 0.7831,
+  "ci": [
+   0.755,
+   0.809
+  ]
+ },
+ "german_shipped_top3": {
+  "k": 778,
+  "n": 927,
+  "value": 0.8392,
+  "ci": [
+   0.814,
+   0.862
+  ]
+ },
+ "french_minus_german_top3": {
+  "value": -0.056,
+  "ci95": [
+   -0.085,
+   -0.029
+  ],
+  "n": 927,
+  "first_only_right": 54,
+  "second_only_right": 106,
+  "note": "the same 2,000 resamples as top-1 (same seed, same n)"
+ },
+ "same_chapter_as_german": {
+  "k": 705,
+  "n": 927,
+  "value": 0.7605,
+  "ci": [
+   0.732,
+   0.787
+  ]
+ },
+ "same_design_readings_only": {
+  "design": "top of the geometric mean of the chapter readings production asks without examples (identity order; S1 order where the first top p < 0.9), no subtopic read-back, both languages",
+  "n": 927,
+  "french_top1": {
+   "k": 593,
+   "n": 927,
+   "value": 0.6396,
+   "ci": [
+    0.608,
+    0.67
+   ]
+  },
+  "german_top1": {
+   "k": 596,
+   "n": 927,
+   "value": 0.6429,
+   "ci": [
+    0.611,
+    0.674
+   ]
+  },
+  "french_minus_german_top1": {
+   "value": -0.0032,
+   "ci95": [
+    -0.03,
+    0.024
+   ],
+   "n": 927,
+   "first_only_right": 77,
+   "second_only_right": 80,
+   "note": "first = French, second = German, same design"
+  },
+  "german_two_readings": 267,
+  "french_two_readings": 239,
+  "german_inputs_matched_pre_rebuild": 40,
+  "german_sources": "eval/s25b/raw.jsonl (identity order, no examples) + runs/s25 ch2 rows (S1 order, no examples)"
+ },
+ "same_design_read_back": {
+  "skipped": true,
+  "german_subtopic_rows_available": 179,
+  "missing": 748,
+  "why": "the German D1 read-back needs the subtopic request over the chapter set of the no-example readings; runs/s25 holds it for 179 of the 927 affairs, so it is not composable without new calls (pre-registered)",
+  "count_note": "the entry's count (171 of the 927, 716 missing) was made on the 16 Oct inputs, where the 40 affairs whose document text the rebuild trims match no S25 row; matched with their S25-time input here, the count is the one above; the skip stands either way"
+ },
+ "french_read_back_minus_readings_only": {
+  "value": 0.0355,
+  "ci95": [
+   0.019,
+   0.053
+  ],
+  "n": 927,
+  "first_only_right": 47,
+  "second_only_right": 14,
+  "note": "descriptive, not pre-registered"
+ },
+ "lanes_french": {
+  "pass": {
+   "share": 0.6343,
+   "k": 451,
+   "n": 588,
+   "value": 0.767,
+   "ci": [
+    0.731,
+    0.8
+   ]
+  },
+  "please_check": {
+   "share": 0.3656,
+   "k": 175,
+   "n": 339,
+   "value": 0.5162,
+   "ci": [
+    0.463,
+    0.569
+   ]
+  },
+  "readings_agree": {
+   "share": 0.8392,
+   "k": 538,
+   "n": 778,
+   "value": 0.6915,
+   "ci": [
+    0.658,
+    0.723
+   ]
+  },
+  "readings_disagree": {
+   "share": 0.1607,
+   "k": 88,
+   "n": 149,
+   "value": 0.5906,
+   "ci": [
+    0.51,
+    0.667
+   ]
+  }
+ },
+ "lanes_rule": "readings: disagree when the two code orders give different top chapters; one reading (top p >= 0.9, so no second order) counts as agree. pass / please_check: production's lane (recalibrated p >= 0.7, map fitted on S16; compose.decide)",
+ "lanes_german_shipped": {
+  "pass": {
+   "share": 0.6731,
+   "k": 507,
+   "n": 624,
+   "value": 0.8125,
+   "ci": [
+    0.779,
+    0.842
+   ]
+  },
+  "please_check": {
+   "share": 0.3268,
+   "k": 139,
+   "n": 303,
+   "value": 0.4587,
+   "ci": [
+    0.403,
+    0.516
+   ]
+  },
+  "readings_agree": {
+   "share": 0.6515,
+   "k": 475,
+   "n": 604,
+   "value": 0.7864,
+   "ci": [
+    0.751,
+    0.818
+   ]
+  },
+  "readings_disagree": {
+   "share": 0.3484,
+   "k": 171,
+   "n": 323,
+   "value": 0.5294,
+   "ci": [
+    0.474,
+    0.584
+   ]
+  }
+ },
+ "readings_per_affair_french": {
+  "2": 239,
+  "1": 688
+ },
+ "french_with_text": {
+  "french": {
+   "k": 383,
+   "n": 580,
+   "value": 0.6603,
+   "ci": [
+    0.62,
+    0.698
+   ]
+  },
+  "german_shipped_same_items": {
+   "k": 391,
+   "n": 580,
+   "value": 0.6741,
+   "ci": [
+    0.634,
+    0.712
+   ]
+  }
+ },
+ "french_title_only": {
+  "french": {
+   "k": 243,
+   "n": 347,
+   "value": 0.7002,
+   "ci": [
+    0.65,
+    0.747
+   ]
+  },
+  "german_shipped_same_items": {
+   "k": 255,
+   "n": 347,
+   "value": 0.7348,
+   "ci": [
+    0.686,
+    0.779
+   ]
+  }
+ },
+ "french_title_only_german_document_text": {
+  "french": {
+   "k": 201,
+   "n": 291,
+   "value": 0.6907,
+   "ci": [
+    0.635,
+    0.742
+   ]
+  },
+  "german_shipped_same_items": {
+   "k": 213,
+   "n": 291,
+   "value": 0.7319,
+   "ci": [
+    0.678,
+    0.78
+   ]
+  }
+ },
+ "french_title_only_german_no_text": {
+  "french": {
+   "k": 42,
+   "n": 56,
+   "value": 0.75,
+   "ci": [
+    0.623,
+    0.845
+   ]
+  },
+  "german_shipped_same_items": {
+   "k": 42,
+   "n": 56,
+   "value": 0.75,
+   "ci": [
+    0.623,
+    0.845
+   ]
+  }
+ },
+ "cost": {
+  "calls": 2077,
+  "usd": 0.195577,
+  "prompt_tokens": 1951616,
+  "completion_tokens": 2077,
+  "fps": [
+   "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840"
+  ],
+  "models": [
+   "swiss-ai/apertus-v1.5-8b"
+  ],
+  "rows": 2052,
+  "calls_per_affair": 2.213,
+  "first_launch_calls_not_written": 25,
+  "note": "list price (client.PRICES); the ledger includes the first launch's 25 answered calls whose rows were not written (the run dir lacked its build folder; eval/s33/run.py), re-asked on relaunch"
+ },
+ "errors_logged": 0,
+ "gold_chapters": {
+  "2": 108,
+  "5": 93,
+  "17": 92,
+  "12": 78,
+  "18": 68,
+  "1": 57,
+  "8": 54,
+  "7": 53,
+  "16": 50,
+  "10": 46,
+  "14": 36,
+  "9": 35,
+  "11": 28,
+  "6": 23,
+  "19": 20,
+  "13": 18,
+  "15": 17,
+  "0": 15,
+  "20": 14,
+  "3": 11,
+  "21": 8,
+  "23": 3
+ }
+}

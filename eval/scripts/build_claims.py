@@ -348,9 +348,9 @@ def classify(tok, written_norm, f, line, approx):
 
 # ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
 # are; the S19 / S26 / S27, S25, S28 (section S28-pruefstand; the hand rows of section S28 stay), S29, S30 (section S30-pruefstand; the
-# hand rows of section S30 stay), S31 and S32 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
+# hand rows of section S30 stay), S31, S32 and S33 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
 ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
-GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31", "S32"}
+GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31", "S32", "S33"}
 
 
 def adhoc_rows():
@@ -565,6 +565,57 @@ def s28_rows():
     return rows
 
 
+def s33_rows():
+    """S33, the 927 S25 held-out affairs read from the French text with production's French path (D1 read-back without examples, French
+    frame), paired against the shipped S25 decisions on the German text: every block of eval/pruefstand.json >
+    aps_chapter_heldout_s33_french (read from eval/s33/results.json) — shares (truncated), Wilson bounds (outward, re-checked by
+    build_pruefstand.py), k/n and n; the paired differences and their bootstrap bounds (outward at 3 decimals); lanes, the by-text cells,
+    input counts and cost."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "aps_chapter_heldout_s33_french")
+    rows, r, block, point = _gen("S33", "S33")
+    sc = t["breakdowns"]["scored"]
+    r("affairs scored from the French text (the S25 held-out affairs, none missing)", NF.t(t["n"]), t["n"], sc["at"]["file"], sc["at"]["key"], "count")
+    block("chapter top-1, French", t["result"])
+    rm = t["results_more"]
+    block("chapter top-3, French", rm[0])
+    for i, nm in ((1, "top-1"), (2, "top-3")):
+        point(f"paired French − German shipped, {nm}", rm[i], signed=True)
+        for k in ("french_only_right", "german_only_right"):
+            r(f"{rm[i]['metric']}: {k}", NF.t(rm[i][k]), rm[i][k], rm[i]["at"]["file"], f"{rm[i]['at']['key']} > {k.replace('french', 'first').replace('german', 'second')}", "count")
+    block("same chapter as the German shipped decision", rm[3])
+    for b in t["baselines"]:
+        block("German text, shipped (S25 final), same affairs", b)
+    bd = t["breakdowns"]
+    ro = bd["same_design_readings_only"]
+    block("same design, readings only, French", ro["french"])
+    block("same design, readings only, German", ro["german"])
+    point("same design, readings only, paired French − German", ro["paired"], signed=True)
+    for k in ("french", "german"):
+        r(f"same design, readings only: affairs with two readings, {k}", NF.t(ro["two_readings"][k]), ro["two_readings"][k], ro["two_readings"]["at"]["file"],
+          f"{ro['two_readings']['at']['key']} > {k}_two_readings", "count")
+    gm = ro["german_inputs_matched_pre_rebuild"]
+    r("German inputs matched with their S25-time text (pre-rebuild document head)", str(gm["value"]), gm["value"], gm["at"]["file"], gm["at"]["key"], "count")
+    rb = bd["same_design_read_back"]
+    for k in ("german_subtopic_rows_available", "missing"):
+        r(f"same design with read-back (skipped): {k.replace('_', ' ')}", NF.t(rb[k]), rb[k], rb["at"]["file"], f"{rb['at']['key']} > {k}", "count")
+    for k, b in bd["lanes_french"].items():
+        if isinstance(b, dict): block(f"lanes_french {k}", b, whole_pct=True)
+    for c in bd["by_text"]["cells"]:
+        block(f"by text {c['cell']}", c)
+        block(f"by text {c['cell']}, German shipped same affairs", c["german_same_items"])
+    inp = bd["inputs"]
+    for k, v in inp.items():
+        if isinstance(v, int):
+            r(f"inputs: {k.replace('_', ' ')}", NF.t(v), v, inp["at"]["file"], f"{inp['at']['key']} > {k}", "count")
+    c = bd["cost"]
+    r("calls (ledger)", NF.t(c["calls"]), c["calls"], c["at"]["file"], f"{c['at']['key']} > calls", "count")
+    r("USD at list price", NF.t(c["usd"], 4), c["usd"], c["at"]["file"], f"{c['at']['key']} > usd", "truncated, never rounded up")
+    r("first launch: calls whose rows were not written", str(c["first_launch_calls_not_written"]), c["first_launch_calls_not_written"], c["at"]["file"],
+      f"{c['at']['key']} > first_launch_calls_not_written", "count")
+    return rows
+
+
 def s29_rows():
     """S29, Ticino Gran Consiglio, the canton's own lead department, Italian: every block of eval/pruefstand.json > ticino_departments
     (read from eval/s29/results.json; shares truncated, Wilson bounds re-rounded outward at 3 decimals from k and n; the file stores them
@@ -773,7 +824,7 @@ def main():
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
         kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
-    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows() + s32_rows()
+    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows() + s32_rows() + s33_rows()
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
@@ -782,7 +833,7 @@ def main():
     from collections import Counter
     c = Counter(r["status"] for r in rows + gen)
     c.update(l.split("\t")[7] for l in kept)
-    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 + S32 generated {len(gen)})")
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 + S32 + S33 generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

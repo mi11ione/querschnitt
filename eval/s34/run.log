@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/mi11ion/Desktop/hackapertus/bern/querschnitt/eval/s34/run.py", line 78, in <module>
+    Xs, _, ys, _ = train_test_split(Xp, yp, train_size=frac, stratify=yp, random_state=2026)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mi11ion/Desktop/hackapertus/bern/querschnitt/.venv/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mi11ion/Desktop/hackapertus/bern/querschnitt/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 2968, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mi11ion/Desktop/hackapertus/bern/querschnitt/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 1935, in split
+    for train, test in self._iter_indices(X, y, groups):
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mi11ion/Desktop/hackapertus/bern/querschnitt/.venv/lib/python3.12/site-packages/sklearn/model_selection/_split.py", line 2353, in _iter_indices
+    raise ValueError(
+ValueError: The least populated classes in y have only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2. Classes with too few members are: [4, 22, 23]

@@ -242,7 +242,7 @@ export class Woche {
       `${bodyName(c.body[i]).trim()} · ${fmtDate(c.date[i])}`,
       check ? h('span', { class: 'rtick', role: 'img', 'aria-label': L.wkCheck, 'data-tip': L.wkCheck }) : '');
     // the topic rests on the title alone: the title is marked, no second copy of it
-    return h('button', { class: 'wo-a', type: 'button', onclick: () => this.openAffair(i, tp, w) },
+    return h('button', { class: 'wo-a', type: 'button', 'data-id': D.c.id[i], onclick: () => this.openAffair(i, tp, w) },
       h('span', { class: 't', lang: tlLang }, onTitle && !alt ? h('mark', {}, tl) : tl),
       meta,
       onTitle && !alt ? h('span', { class: 'q dim' }, L.wkOnTitle) : h('span', { class: 'q' }, `«${q}»`));

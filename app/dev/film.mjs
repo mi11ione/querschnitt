@@ -78,10 +78,17 @@ async function story(f) {
   if (tick) { await glide('[data-film=tick]', { dx: 0.5, dy: 0.6, hover: true }); cap(CAP.tick); await hold(3.5); }
   else await hold(2.0);
   // open one example: in view, the model sure (no red tick), a quoted sentence, German first
-  const pick = `(() => { const box = document.querySelector('#v-woche').getBoundingClientRect();
+  const pick = `(async () => { const box = document.querySelector('#v-woche').getBoundingClientRect();
     const ok = [...document.querySelectorAll('#v-woche ol.wo-list .wo-a')].filter(a => { const r = a.getBoundingClientRect(); return r.top > box.top + 8 && r.bottom < box.bottom - 8 && !a.querySelector('.rtick') && !a.querySelector('.q.dim'); });
     const whole = a => !/^«?…|…»?$/.test(a.querySelector('.q').textContent.trim());
-    const a = ok.find(a => !a.querySelector('.lg') && whole(a)) || ok.find(a => !a.querySelector('.lg')) || ok[0]; if (!a) return null; a.dataset.film = 'pick'; return a.querySelector('.t').textContent; })()`;
+    // the stored quote is what the case view marks: skip affairs whose quote is letterhead (letter-spaced words, ref numbers)
+    const junk = q => /(?:\\b\\p{L} ){4,}|\\b\\d+\\/\\d{4}\\b/u.test(q || '');
+    const clean = async a => { const id = +a.dataset.id; if (!id) return true;
+      const d = await (await fetch('data/detail/' + Math.floor(id / 1000) + '.json')).json(); const x = d[id] || {};
+      const ev = (x.aps && x.aps.evidence) || (x.dig && x.dig.evidence); return !junk(ev && ev.quote); };
+    const pref = [...ok.filter(a => !a.querySelector('.lg') && whole(a)), ...ok.filter(a => !a.querySelector('.lg')), ...ok];
+    let a = null; for (const c of pref) if (await clean(c)) { a = c; break; }
+    a = a || ok[0]; if (!a) return null; a.dataset.film = 'pick'; return a.querySelector('.t').textContent; })()`;
   const title = await js(pick);
   if (!title) throw new Error('no example to open on the Woche view');
   console.log(`  opens «${title}»`);

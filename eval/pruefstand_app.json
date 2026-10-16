@@ -172,6 +172,41 @@
    "file": "eval/s33/results.json"
   },
   {
+   "test": "APS-Kapitel, dieselben 927 Bundesgeschäfte (hold-out): trainierte Basislinie auf denselben Labels (S34)",
+   "test_fr": "Chapitre APS, les mêmes 927 objets fédéraux (hors échantillon) : base entraînée sur les mêmes étiquettes (S34)",
+   "gold": "human",
+   "design": "TF-IDF + logistische Regression, trainiert auf den 1'654 APS-gelabelten Geschäften des Beispielpools",
+   "design_fr": "TF-IDF + régression logistique, entraînée sur les 1 654 objets étiquetés APS du pool d'exemples",
+   "n": 927,
+   "result": "top-1 0.563 · top-3 0.742",
+   "result_fr": "top-1 0,563 · top-3 0,742",
+   "interval": [
+    0.53,
+    0.595
+   ],
+   "baseline": "ausgeliefert (S25) 0.696 · Δ ausgeliefert − trainiert +0.133 [+0.098, +0.172]",
+   "baseline_fr": "livré (S25) 0,696 · Δ livré − entraîné +0,133 [+0,098, +0,172]",
+   "split": "held-out (S25-Geschäfte), vorregistriert (S34); trainiert nur auf den 1'654 Pool-Labels des ausgelieferten Designs; keine Modellaufrufe",
+   "split_fr": "hors échantillon (objets S25), préenregistré (S34) ; entraîné seulement sur les 1 654 étiquettes du pool du design livré ; aucun appel au modèle",
+   "file": "eval/s34/results.json"
+  },
+  {
+   "test": "APS-Kapitel, dieselben 927 Bundesgeschäfte (hold-out): trainierte Basislinie auf denselben Labels (S34)",
+   "test_fr": "Chapitre APS, les mêmes 927 objets fédéraux (hors échantillon) : base entraînée sur les mêmes étiquettes (S34)",
+   "gold": "human",
+   "design": "Lernkurve: 424 / 836 / 1'654 Trainingsgeschäfte (steigt noch)",
+   "design_fr": "courbe d'apprentissage : 424 / 836 / 1 654 objets d'entraînement (monte encore)",
+   "n": 927,
+   "result": "0.380 · 0.474 · 0.563",
+   "result_fr": "0,380 · 0,474 · 0,563",
+   "interval": null,
+   "baseline": "ausgeliefert (S25) 0.696",
+   "baseline_fr": "livré (S25) 0,696",
+   "split": "held-out (S25-Geschäfte), vorregistriert (S34); trainiert nur auf den 1'654 Pool-Labels des ausgelieferten Designs; keine Modellaufrufe",
+   "split_fr": "hors échantillon (objets S25), préenregistré (S34) ; entraîné seulement sur les 1 654 étiquettes du pool du design livré ; aucun appel au modèle",
+   "file": "eval/s34/results.json"
+  },
+  {
    "test": "APS-Kapitel vs. APS-Redaktion, 1'357 Bundesgeschäfte (Design-Set, S9/S16)",
    "test_fr": "Chapitre APS vs rédaction APS, 1 357 objets fédéraux (jeu de conception, S9/S16)",
    "gold": "human",
@@ -238,8 +273,8 @@
    "result": "ECE 0.0211",
    "result_fr": "ECE 0,0211",
    "interval": null,
-   "baseline": "roh 0.2463",
-   "baseline_fr": "brute 0,2463",
+   "baseline": "roh 0.2463 · hold-out (S25, nachträglich berechnet) 0.0576",
+   "baseline_fr": "brute 0,2463 · hors échantillon (S25, calculé après coup) 0,0576",
    "split": "2-fach kreuzangepasst (S16)",
    "split_fr": "validation croisée à 2 plis (S16)",
    "file": "eval/calibration.json"

@@ -348,9 +348,10 @@ def classify(tok, written_norm, f, line, approx):
 
 # ---- rows not built from VISION: the build-week rows of claims.tsv (S16 …, written by hand when each result landed) are kept as they
 # are; the S19 / S26 / S27, S25, S28 (section S28-pruefstand; the hand rows of section S28 stay), S29, S30 (section S30-pruefstand; the
-# hand rows of section S30 stay), S31, S32 and S33 rows are generated from eval/pruefstand.json (run build_pruefstand.py first).
+# hand rows of section S30 stay), S31, S32, S33, S34 and the post-hoc lanes rows (section lanes-heldout) are generated from
+# eval/pruefstand.json (run build_pruefstand.py first).
 ADHOC = ("adhoc_new_topics", "adhoc_editor_examples", "adhoc_verification")
-GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31", "S32", "S33"}
+GEN_SECTIONS = {"S19-27", "S25", "S28-pruefstand", "S29", "S30-pruefstand", "S31", "S32", "S33", "S34", "lanes-heldout"}
 
 
 def adhoc_rows():
@@ -616,6 +617,82 @@ def s33_rows():
     return rows
 
 
+def s34_rows():
+    """S34, the trained baseline on the same labels: a TF-IDF + logistic-regression classifier fitted on the shipped design's 1,654
+    pool labels, scored on the 927 S25 held-out affairs and paired against the shipped S25 decisions (no model calls): every block of
+    eval/pruefstand.json > aps_chapter_heldout_s34_trained (read from eval/s34/results.json) — shares (truncated), Wilson bounds
+    (outward, re-checked by build_pruefstand.py), k/n and n; the paired difference and its bootstrap bounds (outward at 3 decimals); the
+    learning curve, the shipped lanes, the agreement figures, C and the pool size."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    t = next(x for x in P["tests"] if x["id"] == "aps_chapter_heldout_s34_trained")
+    rows, r, block, point = _gen("S34", "S34")
+    bd = t["breakdowns"]
+    tr = bd["train"]
+    r("training affairs (the shipped design's APS-labelled example pool)", NF.t(tr["value"]), tr["value"], tr["at"]["file"], tr["at"]["key"], "count")
+    r("held-out test affairs (S25)", NF.t(t["n"]), t["n"], t["result"]["at"]["file"], "test", "count")
+    cv = bd["cv_accuracy"]
+    r("C chosen by 5-fold CV on the pool", str(cv["C"]), cv["C"], cv["at"]["file"], "C", "count (grid value)")
+    block("chapter top-1, trained", t["result"])
+    rm = t["results_more"]
+    block("chapter top-3, trained", rm[0])
+    point("paired shipped − trained, top-1", rm[1], signed=True)
+    for k in ("shipped_only_right", "trained_only_right"):
+        r(f"{rm[1]['metric']}: {k}", NF.t(rm[1][k]), rm[1][k], rm[1]["at"]["file"],
+          "agreement > " + ("shipped" if k.startswith("shipped") else "trained") + "_top1_where_different > k", "count")
+    for b in t["baselines"]:
+        block("shipped design (S25 final), same affairs", b)
+    for p in bd["learning_curve"]["points"]:
+        block(f"learning curve {p['fraction']}", p)
+        r(f"learning curve {p['fraction']}: training affairs", NF.t(p["train"]), p["train"], p["at"]["file"], f"{p['at']['key']} > train", "count")
+    for k, c in bd["trained_by_shipped_lane"].items():
+        block(f"trained top-1 on the shipped {k} lane", c)
+        block(f"shipped top-1 on its {k} lane", c["shipped"])
+    ag = bd["agreement"]
+    r("share of affairs where trained and shipped give the same chapter", NF.t(ag["share"]["value"]), ag["share"]["value"], ag["share"]["at"]["file"],
+      ag["share"]["at"]["key"], "truncated, never rounded up")
+    r("share of affairs where trained and shipped give the same chapter (percent)", NF.pct(ag["share"]["value"]), ag["share"]["value"],
+      ag["share"]["at"]["file"], ag["share"]["at"]["key"], "share as a percentage, truncated")
+    for k in ("shipped_top1_where_same", "shipped_top1_where_different", "trained_top1_where_different"):
+        block(k.replace("_", " "), ag[k])
+    return rows
+
+
+def lanes_heldout_rows():
+    """Lanes and calibration beyond the fitted set (computed after the results, not pre-registered; no model calls): eval/pruefstand.json >
+    aps_lanes_heldout_post_hoc (read from eval/lanes/heldout.json) — the held-out ECE next to the in-sample one, the bins and the largest
+    isotonic steps (shares truncated, Wilson bounds outward), the please-check share of the shipped export by level, language and level ×
+    language; and aps_communal_production > lanes_calibrated_post_hoc (S17 rows, agreement with the AI judge, Wilson computed from k and n)."""
+    P = json.load(open(os.path.join(EVAL, "pruefstand.json"), encoding="utf-8"))
+    T = {x["id"]: x for x in P["tests"]}
+    t = T["aps_lanes_heldout_post_hoc"]
+    rows, r, block, point = _gen("lanes-heldout", "lanes held out (post hoc, not pre-registered)")
+    res = t["result"]
+    r("ECE of the recalibrated p, held out (S25, map fitted on S16 only)", NF.t(res["value"], 4), res["value"], res["at"]["file"], res["at"]["key"],
+      "truncated, never rounded up")
+    r("ECE in-sample (S16, cross-fitted), for comparison", NF.t(res["in_sample"], 4), res["in_sample"], res["in_sample_at"]["file"],
+      res["in_sample_at"]["key"], "truncated, never rounded up")
+    bd = t["breakdowns"]
+    for c in bd["bins"]["cells"]:
+        block(f"bin {c['cell']}", c)
+        r(f"bin {c['cell']} mean recalibrated p", NF.t(c["mean_p"]), c["mean_p"], c["at"]["file"], c["at"]["key"].rsplit(" > ", 1)[0] + " > mean_p",
+          "truncated, never rounded up")
+    for c in bd["largest_steps"]["cells"]:
+        r(f"isotonic step p_cal {c['p_cal']}", NF.t(c["p_cal"], 4), c["p_cal"], c["at"]["file"], f"{c['at']['key']} > p_cal", "as stored (4 decimals)")
+        block(f"isotonic step p_cal {c['p_cal']}", c)
+    pc = bd["please_check_share"]
+    block("please-check share, all", pc["all"])
+    for grp in ("by_level", "by_language", "by_level_and_language"):
+        for k, c in pc[grp].items():
+            block(f"please-check share {grp} {k}", c)
+    s17 = T["aps_communal_production"]["breakdowns"]["lanes_calibrated_post_hoc"]
+    for k in ("pass", "please_check", "readings_agree", "readings_disagree"):
+        b = s17[k]
+        block(f"S17 communal (AI judge) {k}", b)
+        r(f"S17 communal (AI judge) {k} coverage", NF.pct(b["coverage"]), b["coverage"], b["at"]["file"], f"{b['at']['key']} > coverage",
+          "share as a percentage, truncated")
+    return rows
+
+
 def s29_rows():
     """S29, Ticino Gran Consiglio, the canton's own lead department, Italian: every block of eval/pruefstand.json > ticino_departments
     (read from eval/s29/results.json; shares truncated, Wilson bounds re-rounded outward at 3 decimals from k and n; the file stores them
@@ -824,7 +901,8 @@ def main():
         kept = [l for l in open(out, encoding="utf-8").read().splitlines()[1:]
                 if l.strip() and l.split("\t", 1)[0] not in vision_secs | GEN_SECTIONS]
         kept = ["\t".join(c[:5] + [repo_path(c[5])] + c[6:]) for c in (l.split("\t") for l in kept)]
-    gen = adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows() + s32_rows() + s33_rows()
+    gen = (adhoc_rows() + s25_rows() + s28_rows() + s29_rows() + s30_rows() + s31_rows() + s32_rows() + s33_rows() + s34_rows()
+           + lanes_heldout_rows())
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols, delimiter="\t", lineterminator="\n")
         w.writeheader(); w.writerows(rows)
@@ -833,7 +911,7 @@ def main():
     from collections import Counter
     c = Counter(r["status"] for r in rows + gen)
     c.update(l.split("\t")[7] for l in kept)
-    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 + S32 + S33 generated {len(gen)})")
+    print(dict(c), "rows", len(rows) + len(kept) + len(gen), f"(VISION {len(rows)}, kept {len(kept)}, S19-27 + S25 + S28 + S29 + S30 + S31 + S32 + S33 + S34 + lanes generated {len(gen)})")
     for r in rows:
         if r["status"] in ("MISMATCH", "NOT FOUND"):
             print(f"{r['section']} L{r['line']} {r['status']}: {r['written']!r} source {r['source_value']} -> {r['correct']} | {r['note']}")

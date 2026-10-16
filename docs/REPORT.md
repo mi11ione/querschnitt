@@ -38,7 +38,9 @@ The held-out test (S25) is the shipped pipeline, unchanged, on 927 APS-labelled 
 set and no example pool: 0.696 top-1, 0.839 top-3, ahead of plain list prompting on the same affairs by +0.041
 [+0.016, +0.067] (pre-registered as S25b after the S25 result). A search over five design variants on the design set
 (S31, leave-one-out) found none better by the pre-set margin (best +0.0117 [−0.0008, +0.0244]), so the held-out set was
-not touched again. It is below the 0.740 on the affairs the design was chosen on, which is
+not touched again. A classifier trained on the 1,654 APS labels the shipped design holds (TF-IDF + logistic regression, S34)
+reaches 0.563 [0.530, 0.595] on these affairs, +0.133 [+0.098, +0.172] behind; its learning curve still rises (0.380,
+0.474, 0.563 at 424, 836, 1,654 labels). The shipped top-1 is below the 0.740 on the affairs the design was chosen on, which is
 the expected direction for a held-out set. The lane carries over: 67.3% pass without a check and are right in 0.812, the
 rest go to a person (0.458). The lane separates confident from doubtful rows on every human-labelled set where it was
 measured: on the 1,357 design affairs the 66.8% passing without a check (cross-fitted) are right in 0.864, the rest in 0.491; by reading agreement,
@@ -118,9 +120,9 @@ endpoint answered with the same build the drain scored all 49 in 9.6 min for USD
   sentence. Every call is a user message (no system message); closed choices are read from next-token probabilities.
 - **No other model decides anything in the product.** Example retrieval is BM25 in code; recalibration is isotonic
   regression fitted per build.
-- **In the evaluation only**, where no human labels exist, blind Claude runs (two independent runs of the same model
-  as annotators, and a tie-break) serve as the judge, cross-checked by the open-weights Qwen-SEA-LION; every figure measured against them is labelled as
-  agreement with that judge (§3), and the judge itself was checked against APS editors (0.790 of chapters).
+- **In the evaluation only**, where no human labels exist, blind Claude runs (two independent runs of one model,
+  plus a tie-break) serve as the judge, cross-checked by the open-weights Qwen-SEA-LION; every figure measured against them is labelled as
+  agreement with that judge (§3), and the judge was checked against APS editors (0.790 of chapters).
 - The code was written with Claude Code.
 
 ## 7. Path to production at OpenParlData
@@ -139,7 +141,8 @@ endpoint answered with the same build the drain scored all 49 in 9.6 min for USD
 
 ## 8. Limits
 - On fresh federal affairs the chapter is right in 0.696 and the pass lane in 0.812, below the 0.740 and 0.864 of the design
-  set; the recalibration map was fitted on the design set and is refitted per build.
+  set; the recalibration map was fitted on the design set and is refitted per build. Held out, its calibration error is
+  0.0576 (in-sample 0.0211; computed after the results); French and Italian go to `please check` more often at every level.
 - Subtopics are suggestions (0.520 top-1), never a lane of their own.
 - Fine-grained cantonal schemes without descriptions are harder (Basel-Stadt 46 themes: 0.498), and title-only
   affairs are the hardest input; coverage and title-only share are reported per parliament.

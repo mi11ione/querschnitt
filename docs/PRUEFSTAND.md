@@ -34,7 +34,7 @@ Decision ([S16 results](../eval/s16/results.json)): D4 shipped for federal affai
 | D1 (no APS examples) | readings agree (rule until 14 Oct) | [61.0%](../eval/lanes/results.json), [828](../eval/lanes/results.json) | [0.797 [0.768, 0.824]](../eval/lanes/results.json) | — |
 | D1 (no APS examples) | recalibrated p, same share as readings agree | [61.0%](../eval/lanes/results.json), [828](../eval/lanes/results.json) | [0.839 [0.812, 0.863]](../eval/lanes/results.json) | — |
 
-**Calibration of D4** ([S16](../eval/s16/results.json); isotonic, 2-fold cross-fitted, n 1,357; the map the production run reads, [`eval/calibration.json`](../eval/calibration.json)): expected calibration error [0.2463](../eval/s16/results.json) raw → [0.0211](../eval/s16/results.json) recalibrated (D1, same file: [0.2791](../eval/s16/results.json) → [0.0319](../eval/s16/results.json)).
+**Calibration of D4** ([S16](../eval/s16/results.json); isotonic, 2-fold cross-fitted, n 1,357; the map the production run reads, [`eval/calibration.json`](../eval/calibration.json)): expected calibration error [0.2463](../eval/s16/results.json) raw → [0.0211](../eval/s16/results.json) recalibrated (D1, same file: [0.2791](../eval/s16/results.json) → [0.0319](../eval/s16/results.json)). These are in-sample; held out on the S25 affairs (computed after the results, not pre-registered, §1g) the D4 map's error is [0.0576](../eval/lanes/heldout.json).
 
 Per period, D3: pre-2010 [0.678 [0.493, 0.821], n 28](../eval/spikes/s9-aps/results.json) · 2010-19 [0.697 [0.653, 0.739], n 446](../eval/spikes/s9-aps/results.json) · 2020+ [0.736 [0.706, 0.765], n 883](../eval/spikes/s9-aps/results.json).
 Lanes of D3 (S9; the two code orders agree / disagree): orders agree [0.610](../eval/spikes/s9-aps/results.json) of affairs, D3 precision [0.812 [0.784, 0.838]](../eval/spikes/s9-aps/results.json) · orders disagree [0.389](../eval/spikes/s9-aps/results.json) of affairs, D3 precision [0.580 [0.537, 0.622]](../eval/spikes/s9-aps/results.json).
@@ -152,6 +152,57 @@ Primary: French − German [−0.021 [−0.050, +0.007]](../eval/s33/results.jso
 | French title only, German had no text either | [56](../eval/s33/results.json) | [0.750 [0.623, 0.845]](../eval/s33/results.json) | [0.750 [0.623, 0.845]](../eval/s33/results.json) |
 
 French and German give the same chapter on [705](../eval/s33/results.json) of 927 affairs ([0.760 [0.732, 0.787]](../eval/s33/results.json)). Calls: [2,077](../eval/s33/results.json) on the locked build (S25's), USD [0.1955](../eval/s33/results.json) at list price, including [25](../eval/s33/results.json) calls of a first launch whose rows were not written (the run folder lacked its build directory) and were asked again.
+
+### 1f · The trained baseline on the same labels: a classifier fitted on the shipped design's 1,654 APS labels, the same 927 held-out affairs (S34, pre-registered)
+
+§1b compares the shipped design with keywords and with plain list prompting, not with a trained classifier. The shipped design already holds [1,654](../eval/s34/results.json) APS-labelled affairs: its example pool (`data/eval/aps_pool.jsonl`, the S9 and S5 affairs, none in S25). S34 trains a standard text classifier on exactly those labels and scores it on the §1b affairs: TF-IDF over word 1–2-grams and character 2–5-grams, logistic regression, C chosen by 5-fold cross-validation on the pool only (C = [30](../eval/s34/results.json)), on the text the model sees (title, long title and text of the production inputs); nothing tuned on S25. Paired against the §1b decisions on the same affairs. No model calls; run on GitHub Actions ([`eval/s34/run.py`](../eval/s34/run.py) → [`eval/s34/results.json`](../eval/s34/results.json), [`eval/s34/predictions.jsonl`](../eval/s34/predictions.jsonl); [`eval/s34/RUN.md`](../eval/s34/RUN.md)). Pre-registration: [PREREG-BUILD.md § S34](../eval/PREREG-BUILD.md#L283). Gold: APS editors' chapter.
+
+| n = 927, gold = APS editors' chapter | top-1 | top-3 |
+|---|---|---|
+| trained classifier, 1,654 pool labels | [0.563 [0.530, 0.595]](../eval/s34/results.json) ([522/927](../eval/s34/results.json)) | [0.742 [0.713, 0.770]](../eval/s34/results.json) |
+| **shipped design (S25 final, §1b), same affairs** | **[0.696 [0.666, 0.726]](../eval/s34/results.json)** ([646/927](../eval/s34/results.json)) | [0.839 [0.814, 0.862]](../eval/s34/results.json) |
+| paired, shipped − trained (bootstrap 2,000, bounds outward) | [+0.133 [+0.098, +0.172]](../eval/s34/results.json) | — |
+
+Primary: shipped − trained [+0.133 [+0.098, +0.172]](../eval/s34/results.json), the interval above 0 (shipped right where the classifier is wrong on [218](../eval/s34/results.json) affairs, the reverse on [94](../eval/s34/results.json)). **Learning curve** (secondary; stratified by chapter, same C): trained on [424](../eval/s34/results.json) / [836](../eval/s34/results.json) / [1,654](../eval/s34/results.json) pool affairs, top-1 [0.380 [0.350, 0.413]](../eval/s34/results.json) / [0.474 [0.442, 0.507]](../eval/s34/results.json) / [0.563 [0.530, 0.595]](../eval/s34/results.json). The curve is still rising at the full pool: S34 measures a classifier with the labels the shipped design has, and says nothing about one trained on many more.
+
+| shipped lane (§1b) | n | trained top-1 | shipped top-1 |
+|---|---|---|---|
+| pass: recalibrated p ≥ 0.7 | [624](../eval/s34/results.json) | [0.626 [0.587, 0.664]](../eval/s34/results.json) | [0.812 [0.779, 0.842]](../eval/s34/results.json) |
+| `please check`: recalibrated p < 0.7 | [303](../eval/s34/results.json) | [0.432 [0.377, 0.489]](../eval/s34/results.json) | [0.458 [0.403, 0.516]](../eval/s34/results.json) |
+
+The two give the same chapter on [0.551](../eval/s34/results.json) of the affairs ([511](../eval/s34/results.json)); there the chapter is right in [0.837 [0.803, 0.868]](../eval/s34/results.json). Where they differ ([416](../eval/s34/results.json)), the shipped chapter is right in [0.524 [0.476, 0.572]](../eval/s34/results.json), the classifier's in [0.225 [0.188, 0.269]](../eval/s34/results.json).
+
+### 1g · Lanes and calibration beyond the fitted set (computed after the results, not pre-registered)
+
+§1's calibration figures are in-sample: the isotonic map was fitted (2-fold cross-fitted) on the 1,357 items they are measured on. The same map, fitted on S16 only, on the 927 S25 affairs of §1b: expected calibration error **[0.0576](../eval/lanes/heldout.json)** held out against [0.0211](../eval/s16/results.json) in-sample (10 equal-width bins, the same definition, `calibrate.ece`; no interval computed). [`eval/lanes/heldout.py`](../eval/lanes/heldout.py) → [`eval/lanes/heldout.json`](../eval/lanes/heldout.json); no model calls.
+
+| recalibrated p | n | mean recalibrated p | share right (APS editors) |
+|---|---|---|---|
+| 0.0–0.1 | [1](../eval/lanes/heldout.json) | [0.000](../eval/lanes/heldout.json) | [1.000 [0.206, 1.000]](../eval/lanes/heldout.json) (small) |
+| 0.1–0.2 | [8](../eval/lanes/heldout.json) | [0.200](../eval/lanes/heldout.json) | [0.125 [0.022, 0.471]](../eval/lanes/heldout.json) (small) |
+| 0.3–0.4 | [82](../eval/lanes/heldout.json) | [0.316](../eval/lanes/heldout.json) | [0.219 [0.143, 0.321]](../eval/lanes/heldout.json) |
+| 0.4–0.5 | [93](../eval/lanes/heldout.json) | [0.449](../eval/lanes/heldout.json) | [0.537 [0.436, 0.636]](../eval/lanes/heldout.json) |
+| 0.5–0.6 | [19](../eval/lanes/heldout.json) | [0.552](../eval/lanes/heldout.json) | [0.526 [0.317, 0.727]](../eval/lanes/heldout.json) (small) |
+| 0.6–0.7 | [101](../eval/lanes/heldout.json) | [0.613](../eval/lanes/heldout.json) | [0.584 [0.486, 0.676]](../eval/lanes/heldout.json) |
+| 0.7–0.8 | [96](../eval/lanes/heldout.json) | [0.766](../eval/lanes/heldout.json) | [0.687 [0.589, 0.772]](../eval/lanes/heldout.json) |
+| 0.8–0.9 | [275](../eval/lanes/heldout.json) | [0.837](../eval/lanes/heldout.json) | [0.767 [0.713, 0.814]](../eval/lanes/heldout.json) |
+| 0.9–1.0 | [252](../eval/lanes/heldout.json) | [0.933](../eval/lanes/heldout.json) | [0.912 [0.871, 0.942]](../eval/lanes/heldout.json) |
+
+The map is a step function; at its five steps with the most affairs the share right is p [0.8484](../eval/lanes/heldout.json): [0.807 [0.740, 0.861]](../eval/lanes/heldout.json) of [166](../eval/lanes/heldout.json) · p [0.9451](../eval/lanes/heldout.json): [0.930 [0.880, 0.961]](../eval/lanes/heldout.json) of [159](../eval/lanes/heldout.json) · p [0.8169](../eval/lanes/heldout.json): [0.686 [0.589, 0.770]](../eval/lanes/heldout.json) of [99](../eval/lanes/heldout.json) · p [0.6095](../eval/lanes/heldout.json): [0.563 [0.463, 0.660]](../eval/lanes/heldout.json) of [94](../eval/lanes/heldout.json) · p [0.9139](../eval/lanes/heldout.json): [0.881 [0.800, 0.933]](../eval/lanes/heldout.json) of [93](../eval/lanes/heldout.json). Above 0.7 the held-out point shares sit below the mean recalibrated p of their bin: the pass lane is right somewhat less often than its p says.
+
+**`please check` share in the shipped export** (export 2026-10-16; the APS chapter lane of every affair that has one; a count, not an accuracy; cells with n ≥ 30):
+
+| level | all languages | de | fr | it |
+|---|---|---|---|---|
+| federal | [0.376 [0.364, 0.388]](../eval/lanes/heldout.json) (n [6,864](../eval/lanes/heldout.json)) | [0.373 [0.362, 0.386]](../eval/lanes/heldout.json) (n [6,653](../eval/lanes/heldout.json)) | [0.452 [0.384, 0.522]](../eval/lanes/heldout.json) (n [199](../eval/lanes/heldout.json)) | — |
+| cantonal | [0.480 [0.472, 0.489]](../eval/lanes/heldout.json) (n [16,466](../eval/lanes/heldout.json)) | [0.461 [0.452, 0.471]](../eval/lanes/heldout.json) (n [11,657](../eval/lanes/heldout.json)) | [0.529 [0.513, 0.546]](../eval/lanes/heldout.json) (n [3,591](../eval/lanes/heldout.json)) | [0.522 [0.494, 0.551]](../eval/lanes/heldout.json) (n [1,218](../eval/lanes/heldout.json)) |
+| communal | [0.512 [0.502, 0.523]](../eval/lanes/heldout.json) (n [9,380](../eval/lanes/heldout.json)) | [0.483 [0.471, 0.496]](../eval/lanes/heldout.json) (n [6,650](../eval/lanes/heldout.json)) | [0.569 [0.546, 0.593]](../eval/lanes/heldout.json) (n [1,788](../eval/lanes/heldout.json)) | [0.609 [0.577, 0.640]](../eval/lanes/heldout.json) (n [942](../eval/lanes/heldout.json)) |
+| other | [0.411 [0.371, 0.453]](../eval/lanes/heldout.json) (n [557](../eval/lanes/heldout.json)) | [0.411 [0.371, 0.453]](../eval/lanes/heldout.json) (n [557](../eval/lanes/heldout.json)) | — | — |
+| **all** | [0.466 [0.461, 0.473]](../eval/lanes/heldout.json) (n [33,267](../eval/lanes/heldout.json)) | [0.442 [0.436, 0.450]](../eval/lanes/heldout.json) (n [25,517](../eval/lanes/heldout.json)) | [0.539 [0.526, 0.553]](../eval/lanes/heldout.json) (n [5,578](../eval/lanes/heldout.json)) | [0.560 [0.539, 0.582]](../eval/lanes/heldout.json) (n [2,172](../eval/lanes/heldout.json)) |
+
+French and Italian affairs go to a person more often than German ones at every level (federal French, n 199, has an interval that overlaps the German one). Both calibration maps were fitted on federal affairs read in German (the S9 items).
+
+**Communal affairs** (S17, §11; computed after S17, not pre-registered; gold is the AI judge, so these figures are agreement with it): with the map fitted on federal items, the pass lane holds [63.5%](../eval/lanes/results.json) of the 200 affairs and agrees with the judge in [0.818 [0.742, 0.877]](../eval/lanes/results.json) ([104/127](../eval/lanes/results.json)); `please check` in [0.328 [0.231, 0.443]](../eval/lanes/results.json) ([24/73](../eval/lanes/results.json)). ([`eval/lanes/results.json`](../eval/lanes/results.json) → `S17_communal_post_hoc`; Wilson intervals computed here from k and n.)
 
 ### 2 · APS subtopic vs APS editors, end to end (S9)
 
@@ -438,6 +489,8 @@ All bodies: [`eval/pruefstand.json`](../eval/pruefstand.json) → `dvs_2026.brea
 | with text | [0.636 [0.563, 0.704]](../eval/s17/results.json) | [176](../eval/s17/results.json) |
 | title only | [0.666 [0.467, 0.821]](../eval/s17/results.json) | [24](../eval/s17/results.json) |
 
+The shipped lane rule (recalibrated p ≥ 0.7) on these rows, computed after S17 and not pre-registered: §1g (agreement with the judge).
+
 ### 12 · Correction loop, text input, evidence
 
 | Test | n | Result | Same items, without |
@@ -561,6 +614,8 @@ Reading, all against the AI judge: pooled over the three topics the scope check 
 - Without prefill (the endpoint fallback `QS_PREFILL=0`, §1c) the chapter top-1 on the held-out affairs is [0.705 [0.675, 0.734]](../eval/s28/results.json), paired prefill − no prefill [−0.008 [−0.022, +0.004]](../eval/s28/results.json); no calibration map exists for that mode, so its lane is the readings rule, not the recalibrated p. Measured on one build; another endpoint may tokenise the JSON opening differently (the S28 amendment).
 - French federal text (§1e, S33) is measured held out with production's French path, D1 without examples: French − German shipped [−0.021 [−0.050, +0.007]](../eval/s33/results.json) mixes language and design (German has the five examples). The same-design comparison ([−0.003 [−0.030, +0.024]](../eval/s33/results.json)) is at the level of the chapter readings only, without the subtopic read-back. Italian held out is not measured (S22 is on the design set).
 - Ticino (§6b, Italian, the canton's own lead department) is measured on the inputs that do not name the unit (1,685 of 2,274). The State Chancellery and «none of these» are weak (0.188 and 0.266); the gold is OPD's lead-department field, and its licence is unconfirmed (SOURCES.md). No French-speaking parliament's own scheme is measured yet (Bern's French titles, §5, are the closest).
+- The trained baseline (§1f, S34) is fitted on the 1,654 APS labels the shipped design holds; its learning curve is still rising (0.380 / 0.474 / 0.563), so a classifier trained on many more labels is not measured.
+- The calibration is in-sample on the design set (ECE 0.0211); held out on the S25 affairs it is 0.0576 (§1g, computed after the results, not pre-registered). French and Italian affairs go to `please check` more often than German ones at every level of the shipped export (all levels: 0.539 French, 0.560 Italian, 0.442 German).
 - All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.
 
 ## To measure

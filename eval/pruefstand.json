@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-16T10:39:49Z",
+ "generated_utc": "2026-10-16T12:36:17Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -3364,6 +3364,582 @@
      "0.64",
      "0.7",
      "0.70"
+    ]
+   }
+  },
+  {
+   "id": "aps_chapter_heldout_s34_trained",
+   "gold": "human",
+   "subject": "trained classifier (scikit-learn, no Apertus)",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): ein Klassifikator, trainiert auf den 1'654 APS-Labels des ausgelieferten Designs, gegen das ausgelieferte Design (S34)",
+   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 nouveaux objets fédéraux (hors échantillon) : un classifieur entraîné sur les 1 654 étiquettes APS du design livré, contre le design livré (S34)",
+   "n": 927,
+   "design": "die trainierte Basislinie auf denselben Labels: die 1'654 APS-gelabelten Geschäfte des Beispielpools des ausgelieferten Designs (data/eval/aps_pool.jsonl; S9 1'357 + S5 297, keines in S25) als Trainingsdaten; Text wie das Modell ihn sieht (Titel + Langtitel + Text der Produktions-Inputs); TF-IDF (Wort-1–2-Gramme und Zeichen-2–5-Gramme), logistische Regression, C per 5-facher Kreuzvalidierung auf dem Pool gewählt (C = 30); nichts auf S25 abgestimmt; gepaart gegen die S25-Entscheide auf denselben Geschäften; keine Modellaufrufe",
+   "result": {
+    "metric": "chapter top-1 vs APS editors, trained classifier (TF-IDF word 1–2 + char 2–5 grams, logistic regression, C by 5-fold CV on the pool) fitted on the 1654 pool affairs",
+    "value": 0.5631,
+    "ci95": [
+     0.53,
+     0.595
+    ],
+    "k": 522,
+    "n": 927,
+    "kn": "522/927",
+    "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+    "at": {
+     "file": "eval/s34/results.json",
+     "key": "trained_top1"
+    },
+    "display": "0.563 [0.530, 0.595]",
+    "shown": {
+     "value": [
+      "0.5",
+      "0.56"
+     ],
+     "ci95": [
+      "0.5",
+      "0.6",
+      "0.60"
+     ]
+    }
+   },
+   "results_more": [
+    {
+     "metric": "chapter top-3, trained classifier",
+     "value": 0.7421,
+     "ci95": [
+      0.713,
+      0.77
+     ],
+     "k": 688,
+     "n": 927,
+     "kn": "688/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "trained_top3"
+     },
+     "shown": {
+      "value": [
+       "0.7",
+       "0.74"
+      ],
+      "ci95": [
+       "0.7",
+       "0.71",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "paired Δ top-1, shipped − trained (same affairs)",
+     "value": 0.1337,
+     "ci95": [
+      0.098,
+      0.172
+     ],
+     "n": 927,
+     "shipped_only_right": 218,
+     "trained_only_right": 94,
+     "method": "paired bootstrap 2,000 over affairs, percentile 2.5 / 97.5, random.Random(2026), bounds rounded outward (eval/s34/run.py)",
+     "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3; only-right counts from agreement > *_top1_where_different (where the two differ at most one is right)",
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "paired_shipped_minus_trained"
+     },
+     "shown": {
+      "value": [
+       "0.1",
+       "0.13"
+      ],
+      "ci95": [
+       "0.0",
+       "0.09",
+       "0.18",
+       "0.2"
+      ]
+     }
+    }
+   ],
+   "baselines": [
+    {
+     "metric": "chapter top-1 of the shipped design (S25 final), same affairs",
+     "value": 0.6968,
+     "ci95": [
+      0.666,
+      0.726
+     ],
+     "k": 646,
+     "n": 927,
+     "kn": "646/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "shipped_top1"
+     },
+     "name": "shipped design (S25 final), same 927 affairs",
+     "shown": {
+      "value": [
+       "0.6",
+       "0.69"
+      ],
+      "ci95": [
+       "0.6",
+       "0.66",
+       "0.73",
+       "0.8"
+      ]
+     }
+    },
+    {
+     "metric": "chapter top-3 of the shipped design (S25 final)",
+     "value": 0.8392,
+     "ci95": [
+      0.814,
+      0.862
+     ],
+     "k": 778,
+     "n": 927,
+     "kn": "778/927",
+     "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "shipped_top3"
+     },
+     "name": "shipped design, top-3",
+     "shown": {
+      "value": [
+       "0.8",
+       "0.83"
+      ],
+      "ci95": [
+       "0.8",
+       "0.81",
+       "0.87",
+       "0.9"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "learning_curve": {
+     "points": [
+      {
+       "metric": "chapter top-1, trained on 25% of the pool (424 affairs)",
+       "value": 0.3807,
+       "ci95": [
+        0.35,
+        0.413
+       ],
+       "k": 353,
+       "n": 927,
+       "kn": "353/927",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s34/results.json",
+        "key": "learning_curve > 25%"
+       },
+       "fraction": "25%",
+       "train": 424,
+       "shown": {
+        "value": [
+         "0.3",
+         "0.38"
+        ],
+        "ci95": [
+         "0.3",
+         "0.42",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, trained on 50% of the pool (836 affairs)",
+       "value": 0.4746,
+       "ci95": [
+        0.442,
+        0.507
+       ],
+       "k": 440,
+       "n": 927,
+       "kn": "440/927",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s34/results.json",
+        "key": "learning_curve > 50%"
+       },
+       "fraction": "50%",
+       "train": 836,
+       "shown": {
+        "value": [
+         "0.4",
+         "0.47"
+        ],
+        "ci95": [
+         "0.4",
+         "0.44",
+         "0.51",
+         "0.6"
+        ]
+       }
+      },
+      {
+       "metric": "chapter top-1, trained on 100% of the pool (1654 affairs)",
+       "value": 0.5631,
+       "ci95": [
+        0.53,
+        0.595
+       ],
+       "k": 522,
+       "n": 927,
+       "kn": "522/927",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s34/results.json",
+        "key": "learning_curve > 100%"
+       },
+       "fraction": "100%",
+       "train": 1654,
+       "shown": {
+        "value": [
+         "0.5",
+         "0.56"
+        ],
+        "ci95": [
+         "0.5",
+         "0.6",
+         "0.60"
+        ]
+       }
+      }
+     ],
+     "note": "stratified by chapter (random.Random(2026)), same C; still rising at the full pool: the curve says nothing about how a classifier would do with many more labels",
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "learning_curve"
+     }
+    },
+    "trained_by_shipped_lane": {
+     "pass": {
+      "metric": "trained top-1 on the shipped pass lane (recalibrated p ≥ 0.7)",
+      "value": 0.6266,
+      "ci95": [
+       0.587,
+       0.664
+      ],
+      "k": 391,
+      "n": 624,
+      "kn": "391/624",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s34/results.json",
+       "key": "trained_by_shipped_lane > pass"
+      },
+      "cell": "pass",
+      "shipped": {
+       "metric": "shipped top-1 on the shipped pass lane (recalibrated p ≥ 0.7)",
+       "value": 0.8125,
+       "ci95": [
+        0.779,
+        0.842
+       ],
+       "k": 507,
+       "n": 624,
+       "kn": "507/624",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s34/results.json",
+        "key": "shipped_by_lane > pass"
+       },
+       "shown": {
+        "value": [
+         "0.8",
+         "0.81"
+        ],
+        "ci95": [
+         "0.7",
+         "0.77",
+         "0.85",
+         "0.9"
+        ]
+       }
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.62"
+       ],
+       "ci95": [
+        "0.5",
+        "0.58",
+        "0.67",
+        "0.7"
+       ]
+      }
+     },
+     "please_check": {
+      "metric": "trained top-1 on the shipped please-check lane (recalibrated p < 0.7)",
+      "value": 0.4323,
+      "ci95": [
+       0.377,
+       0.489
+      ],
+      "k": 131,
+      "n": 303,
+      "kn": "131/303",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s34/results.json",
+       "key": "trained_by_shipped_lane > please_check"
+      },
+      "cell": "please_check",
+      "shipped": {
+       "metric": "shipped top-1 on the shipped please-check lane (recalibrated p < 0.7)",
+       "value": 0.4587,
+       "ci95": [
+        0.403,
+        0.516
+       ],
+       "k": 139,
+       "n": 303,
+       "kn": "139/303",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/s34/results.json",
+        "key": "shipped_by_lane > please_check"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.45"
+        ],
+        "ci95": [
+         "0.4",
+         "0.40",
+         "0.52",
+         "0.6"
+        ]
+       }
+      },
+      "shown": {
+       "value": [
+        "0.4",
+        "0.43"
+       ],
+       "ci95": [
+        "0.3",
+        "0.37",
+        "0.49",
+        "0.5"
+       ]
+      }
+     }
+    },
+    "agreement": {
+     "share": {
+      "value": 0.5512,
+      "at": {
+       "file": "eval/s34/results.json",
+       "key": "agreement > share"
+      },
+      "shown": {
+       "value": [
+        "0.5",
+        "0.55"
+       ]
+      }
+     },
+     "shipped_top1_where_same": {
+      "metric": "shipped top-1 where trained and shipped agree",
+      "value": 0.8375,
+      "ci95": [
+       0.803,
+       0.868
+      ],
+      "k": 428,
+      "n": 511,
+      "kn": "428/511",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s34/results.json",
+       "key": "agreement > shipped_top1_where_same"
+      },
+      "shown": {
+       "value": [
+        "0.8",
+        "0.83"
+       ],
+       "ci95": [
+        "0.8",
+        "0.80",
+        "0.87",
+        "0.9"
+       ]
+      }
+     },
+     "shipped_top1_where_different": {
+      "metric": "shipped top-1 where they differ",
+      "value": 0.524,
+      "ci95": [
+       0.476,
+       0.572
+      ],
+      "k": 218,
+      "n": 416,
+      "kn": "218/416",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s34/results.json",
+       "key": "agreement > shipped_top1_where_different"
+      },
+      "shown": {
+       "value": [
+        "0.5",
+        "0.52"
+       ],
+       "ci95": [
+        "0.4",
+        "0.47",
+        "0.58",
+        "0.6"
+       ]
+      }
+     },
+     "trained_top1_where_different": {
+      "metric": "trained top-1 where they differ",
+      "value": 0.2259,
+      "ci95": [
+       0.188,
+       0.269
+      ],
+      "k": 94,
+      "n": 416,
+      "kn": "94/416",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/s34/run.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/s34/results.json",
+       "key": "agreement > trained_top1_where_different"
+      },
+      "shown": {
+       "value": [
+        "0.2",
+        "0.22"
+       ],
+       "ci95": [
+        "0.1",
+        "0.18",
+        "0.27",
+        "0.3"
+       ]
+      }
+     }
+    },
+    "cv_accuracy": {
+     "grid": {
+      "0.3": 0.3766,
+      "1": 0.5096,
+      "3": 0.5707,
+      "10": 0.5967,
+      "30": 0.6039,
+      "100": 0.5997,
+      "shown": {
+       "0.3": [
+        "0.3",
+        "0.37"
+       ],
+       "1": [
+        "0.5",
+        "0.50"
+       ],
+       "3": [
+        "0.5",
+        "0.57"
+       ],
+       "10": [
+        "0.5",
+        "0.59"
+       ],
+       "30": [
+        "0.6",
+        "0.60"
+       ],
+       "100": [
+        "0.5",
+        "0.59"
+       ]
+      }
+     },
+     "C": 30,
+     "note": "5-fold stratified CV accuracy on the pool only",
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "cv_accuracy"
+     }
+    },
+    "train": {
+     "value": 1654,
+     "at": {
+      "file": "eval/s34/results.json",
+      "key": "train"
+     }
+    }
+   },
+   "split": "the 927 S25 held-out affairs (none used while designing, none in the pool), pre-registered (S34) before any S34 fit; trained on the shipped design's own 1654 pool labels only; nothing tuned on S25",
+   "prereg": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S34 a trained classifier on the shipped design's 1,654 APS labels",
+    "line": 283
+   },
+   "reference": {
+    "id": "aps_chapter_heldout_s25",
+    "what": "the shipped design on the same affairs (S25)"
+   },
+   "sources": [
+    "eval/s34/results.json",
+    "eval/s34/run.py",
+    "eval/s34/RUN.md",
+    "eval/s34/predictions.jsonl",
+    "eval/s34/texts.jsonl.gz",
+    "data/eval/aps_pool.jsonl",
+    "eval/s25/decisions.jsonl",
+    "eval/s25/items.jsonl",
+    "eval/PREREG-BUILD.md"
+   ],
+   "build": "no model calls (GitHub Actions, workflow eval; scikit-learn)",
+   "model": "none (trained classifier)",
+   "date": "2026-10-16",
+   "shipped": "no (a baseline: the shipped design stays)",
+   "test": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): ein Klassifikator, trainiert auf den 1'654 APS-Labels des ausgelieferten Designs, gegen das ausgelieferte Design (S34)",
+   "interval": [
+    0.53,
+    0.595
+   ],
+   "baseline": {
+    "name": "shipped design (S25 final), same 927 affairs",
+    "value": 0.6968,
+    "ci95": [
+     0.666,
+     0.726
+    ],
+    "shown": {
+     "value": [
+      "0.6",
+      "0.69"
+     ],
+     "ci95": [
+      "0.6",
+      "0.66",
+      "0.73",
+      "0.8"
+     ]
+    }
+   },
+   "file": "eval/s34/results.json",
+   "key": "trained_top1",
+   "shown": {
+    "interval": [
+     "0.5",
+     "0.59"
     ]
    }
   },
@@ -8251,6 +8827,1055 @@
      "0.88"
     ]
    }
+  },
+  {
+   "id": "aps_lanes_heldout_post_hoc",
+   "gold": "human",
+   "subject": "Apertus",
+   "title_de": "Lane und Kalibrierung jenseits des angepassten Sets: Kalibrierfehler auf den 927 S25-Geschäften und Anteil «bitte prüfen» im Export nach Ebene und Sprache (nachträglich berechnet, nicht vorregistriert)",
+   "title_fr": "Voie et calibration au-delà du jeu ajusté : erreur de calibration sur les 927 objets S25 et part « à vérifier » dans l'export par niveau et langue (calculé après coup, non préenregistré)",
+   "n": 927,
+   "design": "(1) das rekalibrierte p der S25-Entscheide (Karte nur auf S16 angepasst) gegen die APS-Redaktion: ECE über 10 gleich breite Klassen (calibrate.ece, dieselbe Definition wie das In-Sample-ECE 0.0211); (2) Anteil «bitte prüfen» der APS-Kapitel-Lane im ausgelieferten Export nach Ebene, Sprache und Ebene × Sprache (Zellen ab n 30; Zählung, kein Gold); keine Modellaufrufe",
+   "result": {
+    "metric": "ECE of the recalibrated p, held out (S25, map fitted on S16 only)",
+    "value": 0.0576,
+    "ci95": null,
+    "in_sample": 0.0211,
+    "in_sample_at": {
+     "file": "eval/s16/results.json",
+     "key": "calibration > aps-fed > ece_crossfit"
+    },
+    "at": {
+     "file": "eval/lanes/heldout.json",
+     "key": "calibration_heldout > ece"
+    },
+    "shown": {
+     "value": [
+      "0.0",
+      "0.05"
+     ],
+     "in_sample": [
+      "0.0",
+      "0.02"
+     ]
+    }
+   },
+   "results_more": [],
+   "baselines": [
+    {
+     "name": "in-sample ECE (S16, 2-fold cross-fitted on the 1,357 design affairs)",
+     "value": 0.0211,
+     "at": {
+      "file": "eval/s16/results.json",
+      "key": "calibration > aps-fed > ece_crossfit"
+     },
+     "shown": {
+      "value": [
+       "0.0",
+       "0.02"
+      ]
+     }
+    }
+   ],
+   "breakdowns": {
+    "bins": {
+     "cells": [
+      {
+       "metric": "share right, recalibrated p in 0.0–0.1",
+       "value": 1.0,
+       "ci95": [
+        0.206,
+        1.0
+       ],
+       "k": 1,
+       "n": 1,
+       "kn": "1/1",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 0 > correct"
+       },
+       "cell": "0.0–0.1",
+       "mean_p": 0.0,
+       "small": true,
+       "shown": {
+        "ci95": [
+         "0.2",
+         "0.20"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.1–0.2",
+       "value": 0.125,
+       "ci95": [
+        0.022,
+        0.471
+       ],
+       "k": 1,
+       "n": 8,
+       "kn": "1/8",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 1 > correct"
+       },
+       "cell": "0.1–0.2",
+       "mean_p": 0.2,
+       "small": true,
+       "shown": {
+        "value": [
+         "0.1",
+         "0.12"
+        ],
+        "ci95": [
+         "0.0",
+         "0.02",
+         "0.48",
+         "0.5"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.3–0.4",
+       "value": 0.2195,
+       "ci95": [
+        0.143,
+        0.321
+       ],
+       "k": 18,
+       "n": 82,
+       "kn": "18/82",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 2 > correct"
+       },
+       "cell": "0.3–0.4",
+       "mean_p": 0.3162,
+       "shown": {
+        "value": [
+         "0.2",
+         "0.21"
+        ],
+        "ci95": [
+         "0.1",
+         "0.14",
+         "0.33",
+         "0.4"
+        ],
+        "mean_p": [
+         "0.3",
+         "0.31"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.4–0.5",
+       "value": 0.5376,
+       "ci95": [
+        0.436,
+        0.636
+       ],
+       "k": 50,
+       "n": 93,
+       "kn": "50/93",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 3 > correct"
+       },
+       "cell": "0.4–0.5",
+       "mean_p": 0.4494,
+       "shown": {
+        "value": [
+         "0.5",
+         "0.53"
+        ],
+        "ci95": [
+         "0.4",
+         "0.43",
+         "0.64",
+         "0.7"
+        ],
+        "mean_p": [
+         "0.4",
+         "0.44"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.5–0.6",
+       "value": 0.5263,
+       "ci95": [
+        0.317,
+        0.727
+       ],
+       "k": 10,
+       "n": 19,
+       "kn": "10/19",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 4 > correct"
+       },
+       "cell": "0.5–0.6",
+       "mean_p": 0.5526,
+       "small": true,
+       "shown": {
+        "value": [
+         "0.5",
+         "0.52"
+        ],
+        "ci95": [
+         "0.3",
+         "0.31",
+         "0.73",
+         "0.8"
+        ],
+        "mean_p": [
+         "0.5",
+         "0.55"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.6–0.7",
+       "value": 0.5841,
+       "ci95": [
+        0.486,
+        0.676
+       ],
+       "k": 59,
+       "n": 101,
+       "kn": "59/101",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 5 > correct"
+       },
+       "cell": "0.6–0.7",
+       "mean_p": 0.6137,
+       "shown": {
+        "value": [
+         "0.5",
+         "0.58"
+        ],
+        "ci95": [
+         "0.4",
+         "0.48",
+         "0.68",
+         "0.7"
+        ],
+        "mean_p": [
+         "0.6",
+         "0.61"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.7–0.8",
+       "value": 0.6875,
+       "ci95": [
+        0.589,
+        0.772
+       ],
+       "k": 66,
+       "n": 96,
+       "kn": "66/96",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 6 > correct"
+       },
+       "cell": "0.7–0.8",
+       "mean_p": 0.7669,
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68"
+        ],
+        "ci95": [
+         "0.5",
+         "0.58",
+         "0.78",
+         "0.8"
+        ],
+        "mean_p": [
+         "0.7",
+         "0.76"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.8–0.9",
+       "value": 0.7672,
+       "ci95": [
+        0.713,
+        0.814
+       ],
+       "k": 211,
+       "n": 275,
+       "kn": "211/275",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 7 > correct"
+       },
+       "cell": "0.8–0.9",
+       "mean_p": 0.8377,
+       "shown": {
+        "value": [
+         "0.7",
+         "0.76"
+        ],
+        "ci95": [
+         "0.7",
+         "0.71",
+         "0.82",
+         "0.9"
+        ],
+        "mean_p": [
+         "0.8",
+         "0.83"
+        ]
+       }
+      },
+      {
+       "metric": "share right, recalibrated p in 0.9–1.0",
+       "value": 0.9126,
+       "ci95": [
+        0.871,
+        0.942
+       ],
+       "k": 230,
+       "n": 252,
+       "kn": "230/252",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > bins > 8 > correct"
+       },
+       "cell": "0.9–1.0",
+       "mean_p": 0.9335,
+       "shown": {
+        "value": [
+         "0.9",
+         "0.91"
+        ],
+        "ci95": [
+         "0.8",
+         "0.87",
+         "0.95",
+         "1.0"
+        ],
+        "mean_p": [
+         "0.9",
+         "0.93"
+        ]
+       }
+      }
+     ],
+     "at": {
+      "file": "eval/lanes/heldout.json",
+      "key": "calibration_heldout > bins"
+     }
+    },
+    "largest_steps": {
+     "cells": [
+      {
+       "metric": "share right at the isotonic step p_cal 0.8484",
+       "value": 0.8072,
+       "ci95": [
+        0.74,
+        0.861
+       ],
+       "k": 134,
+       "n": 166,
+       "kn": "134/166",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > largest_steps > 0"
+       },
+       "p_cal": 0.8484,
+       "shown": {
+        "value": [
+         "0.8",
+         "0.80"
+        ],
+        "ci95": [
+         "0.7",
+         "0.87",
+         "0.9"
+        ],
+        "p_cal": [
+         "0.8",
+         "0.84"
+        ]
+       }
+      },
+      {
+       "metric": "share right at the isotonic step p_cal 0.9451",
+       "value": 0.9308,
+       "ci95": [
+        0.88,
+        0.961
+       ],
+       "k": 148,
+       "n": 159,
+       "kn": "148/159",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > largest_steps > 1"
+       },
+       "p_cal": 0.9451,
+       "shown": {
+        "value": [
+         "0.9",
+         "0.93"
+        ],
+        "ci95": [
+         "0.8",
+         "0.97",
+         "1.0"
+        ],
+        "p_cal": [
+         "0.9",
+         "0.94"
+        ]
+       }
+      },
+      {
+       "metric": "share right at the isotonic step p_cal 0.8169",
+       "value": 0.6868,
+       "ci95": [
+        0.589,
+        0.77
+       ],
+       "k": 68,
+       "n": 99,
+       "kn": "68/99",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > largest_steps > 2"
+       },
+       "p_cal": 0.8169,
+       "shown": {
+        "value": [
+         "0.6",
+         "0.68"
+        ],
+        "ci95": [
+         "0.5",
+         "0.58",
+         "0.8"
+        ],
+        "p_cal": [
+         "0.8",
+         "0.81"
+        ]
+       }
+      },
+      {
+       "metric": "share right at the isotonic step p_cal 0.6095",
+       "value": 0.5638,
+       "ci95": [
+        0.463,
+        0.66
+       ],
+       "k": 53,
+       "n": 94,
+       "kn": "53/94",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > largest_steps > 3"
+       },
+       "p_cal": 0.6095,
+       "shown": {
+        "value": [
+         "0.5",
+         "0.56"
+        ],
+        "ci95": [
+         "0.4",
+         "0.46",
+         "0.7"
+        ],
+        "p_cal": [
+         "0.6",
+         "0.60"
+        ]
+       }
+      },
+      {
+       "metric": "share right at the isotonic step p_cal 0.9139",
+       "value": 0.8817,
+       "ci95": [
+        0.8,
+        0.933
+       ],
+       "k": 82,
+       "n": 93,
+       "kn": "82/93",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "calibration_heldout > largest_steps > 4"
+       },
+       "p_cal": 0.9139,
+       "shown": {
+        "value": [
+         "0.8",
+         "0.88"
+        ],
+        "ci95": [
+         "0.94",
+         "1.0"
+        ],
+        "p_cal": [
+         "0.9",
+         "0.91"
+        ]
+       }
+      }
+     ],
+     "note": "the isotonic map is a step function; the five steps with the most affairs",
+     "at": {
+      "file": "eval/lanes/heldout.json",
+      "key": "calibration_heldout > largest_steps"
+     }
+    },
+    "please_check_share": {
+     "export": "2026-10-16T12:14:23Z",
+     "gold": "none (a count of the shipped lanes, not an accuracy)",
+     "all": {
+      "metric": "please-check share of the shipped export, all affairs with an APS lane",
+      "value": 0.4668,
+      "ci95": [
+       0.461,
+       0.473
+      ],
+      "k": 15530,
+      "n": 33267,
+      "kn": "15530/33267",
+      "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+      "at": {
+       "file": "eval/lanes/heldout.json",
+       "key": "please_check_share > all"
+      },
+      "shown": {
+       "value": [
+        "0.4",
+        "0.46"
+       ],
+       "ci95": [
+        "0.4",
+        "0.46",
+        "0.48",
+        "0.5"
+       ]
+      }
+     },
+     "by_level": {
+      "cantonal": {
+       "metric": "please-check share, cantonal",
+       "value": 0.4805,
+       "ci95": [
+        0.472,
+        0.489
+       ],
+       "k": 7913,
+       "n": 16466,
+       "kn": "7913/16466",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level > cantonal"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.48"
+        ],
+        "ci95": [
+         "0.4",
+         "0.47",
+         "0.49",
+         "0.5"
+        ]
+       }
+      },
+      "communal": {
+       "metric": "please-check share, communal",
+       "value": 0.5122,
+       "ci95": [
+        0.502,
+        0.523
+       ],
+       "k": 4805,
+       "n": 9380,
+       "kn": "4805/9380",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level > communal"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.51"
+        ],
+        "ci95": [
+         "0.5",
+         "0.50",
+         "0.53",
+         "0.6"
+        ]
+       }
+      },
+      "federal": {
+       "metric": "please-check share, federal",
+       "value": 0.3763,
+       "ci95": [
+        0.364,
+        0.388
+       ],
+       "k": 2583,
+       "n": 6864,
+       "kn": "2583/6864",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level > federal"
+       },
+       "shown": {
+        "value": [
+         "0.3",
+         "0.37"
+        ],
+        "ci95": [
+         "0.3",
+         "0.36",
+         "0.39",
+         "0.4"
+        ]
+       }
+      },
+      "other": {
+       "metric": "please-check share, other",
+       "value": 0.4111,
+       "ci95": [
+        0.371,
+        0.453
+       ],
+       "k": 229,
+       "n": 557,
+       "kn": "229/557",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level > other"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.41"
+        ],
+        "ci95": [
+         "0.3",
+         "0.37",
+         "0.46",
+         "0.5"
+        ]
+       }
+      }
+     },
+     "by_language": {
+      "de": {
+       "metric": "please-check share, language de",
+       "value": 0.4429,
+       "ci95": [
+        0.436,
+        0.45
+       ],
+       "k": 11303,
+       "n": 25517,
+       "kn": "11303/25517",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_language > de"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.44"
+        ],
+        "ci95": [
+         "0.4",
+         "0.43",
+         "0.5"
+        ]
+       }
+      },
+      "fr": {
+       "metric": "please-check share, language fr",
+       "value": 0.5396,
+       "ci95": [
+        0.526,
+        0.553
+       ],
+       "k": 3010,
+       "n": 5578,
+       "kn": "3010/5578",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_language > fr"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.53"
+        ],
+        "ci95": [
+         "0.5",
+         "0.52",
+         "0.56",
+         "0.6"
+        ]
+       }
+      },
+      "it": {
+       "metric": "please-check share, language it",
+       "value": 0.5603,
+       "ci95": [
+        0.539,
+        0.582
+       ],
+       "k": 1217,
+       "n": 2172,
+       "kn": "1217/2172",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_language > it"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.56"
+        ],
+        "ci95": [
+         "0.5",
+         "0.53",
+         "0.59",
+         "0.6"
+        ]
+       }
+      }
+     },
+     "by_level_and_language": {
+      "cantonal · de": {
+       "metric": "please-check share, cantonal · de",
+       "value": 0.4611,
+       "ci95": [
+        0.452,
+        0.471
+       ],
+       "k": 5376,
+       "n": 11657,
+       "kn": "5376/11657",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > cantonal · de"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.46"
+        ],
+        "ci95": [
+         "0.4",
+         "0.45",
+         "0.48",
+         "0.5"
+        ]
+       }
+      },
+      "cantonal · fr": {
+       "metric": "please-check share, cantonal · fr",
+       "value": 0.5293,
+       "ci95": [
+        0.513,
+        0.546
+       ],
+       "k": 1901,
+       "n": 3591,
+       "kn": "1901/3591",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > cantonal · fr"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.52"
+        ],
+        "ci95": [
+         "0.5",
+         "0.51",
+         "0.55",
+         "0.6"
+        ]
+       }
+      },
+      "cantonal · it": {
+       "metric": "please-check share, cantonal · it",
+       "value": 0.5221,
+       "ci95": [
+        0.494,
+        0.551
+       ],
+       "k": 636,
+       "n": 1218,
+       "kn": "636/1218",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > cantonal · it"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.52"
+        ],
+        "ci95": [
+         "0.4",
+         "0.49",
+         "0.56",
+         "0.6"
+        ]
+       }
+      },
+      "communal · de": {
+       "metric": "please-check share, communal · de",
+       "value": 0.483,
+       "ci95": [
+        0.471,
+        0.496
+       ],
+       "k": 3212,
+       "n": 6650,
+       "kn": "3212/6650",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > communal · de"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.48"
+        ],
+        "ci95": [
+         "0.4",
+         "0.47",
+         "0.5",
+         "0.50"
+        ]
+       }
+      },
+      "communal · fr": {
+       "metric": "please-check share, communal · fr",
+       "value": 0.5699,
+       "ci95": [
+        0.546,
+        0.593
+       ],
+       "k": 1019,
+       "n": 1788,
+       "kn": "1019/1788",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > communal · fr"
+       },
+       "shown": {
+        "value": [
+         "0.5",
+         "0.56"
+        ],
+        "ci95": [
+         "0.5",
+         "0.54",
+         "0.6",
+         "0.60"
+        ]
+       }
+      },
+      "communal · it": {
+       "metric": "please-check share, communal · it",
+       "value": 0.6093,
+       "ci95": [
+        0.577,
+        0.64
+       ],
+       "k": 574,
+       "n": 942,
+       "kn": "574/942",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > communal · it"
+       },
+       "shown": {
+        "value": [
+         "0.6",
+         "0.60"
+        ],
+        "ci95": [
+         "0.5",
+         "0.57",
+         "0.7"
+        ]
+       }
+      },
+      "federal · de": {
+       "metric": "please-check share, federal · de",
+       "value": 0.3736,
+       "ci95": [
+        0.362,
+        0.386
+       ],
+       "k": 2486,
+       "n": 6653,
+       "kn": "2486/6653",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > federal · de"
+       },
+       "shown": {
+        "value": [
+         "0.3",
+         "0.37"
+        ],
+        "ci95": [
+         "0.3",
+         "0.36",
+         "0.39",
+         "0.4"
+        ]
+       }
+      },
+      "federal · fr": {
+       "metric": "please-check share, federal · fr",
+       "value": 0.4522,
+       "ci95": [
+        0.384,
+        0.522
+       ],
+       "k": 90,
+       "n": 199,
+       "kn": "90/199",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > federal · fr"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.45"
+        ],
+        "ci95": [
+         "0.3",
+         "0.38",
+         "0.53",
+         "0.6"
+        ]
+       }
+      },
+      "other · de": {
+       "metric": "please-check share, other · de",
+       "value": 0.4111,
+       "ci95": [
+        0.371,
+        0.453
+       ],
+       "k": 229,
+       "n": 557,
+       "kn": "229/557",
+       "ci_method": "Wilson 95% from k and n, bounds rounded outward (eval/lanes/heldout.py; re-checked by build_pruefstand.py)",
+       "at": {
+        "file": "eval/lanes/heldout.json",
+        "key": "please_check_share > by_level_and_language > other · de"
+       },
+       "shown": {
+        "value": [
+         "0.4",
+         "0.41"
+        ],
+        "ci95": [
+         "0.3",
+         "0.37",
+         "0.46",
+         "0.5"
+        ]
+       }
+      }
+     },
+     "at": {
+      "file": "eval/lanes/heldout.json",
+      "key": "please_check_share"
+     }
+    }
+   },
+   "split": "computed after the results (juror round 9), not pre-registered; the calibration map was fitted on S16 only, so the S25 affairs are held out for it; no model calls",
+   "prereg": null,
+   "prereg_more": {
+    "file": "eval/PREREG-BUILD.md",
+    "anchor": "— S25 fresh APS-labelled federal affairs",
+    "line": 85
+   },
+   "reference": {
+    "id": "aps_calibration_shipped",
+    "what": "the in-sample ECE of the same map (S16, cross-fitted)"
+   },
+   "sources": [
+    "eval/lanes/heldout.json",
+    "eval/lanes/heldout.py",
+    "eval/s25/decisions.jsonl",
+    "src/querschnitt/calibrate.py",
+    "app/data/affairs.json",
+    "app/data/meta.json"
+   ],
+   "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840 (S25 decisions; export rows: the shipped export)",
+   "model": "swiss-ai/apertus-v1.5-8b",
+   "date": "2026-10-16",
+   "note": "no interval computed for ECE (TO MEASURE: bootstrap)",
+   "test": "Lane und Kalibrierung jenseits des angepassten Sets: Kalibrierfehler auf den 927 S25-Geschäften und Anteil «bitte prüfen» im Export nach Ebene und Sprache (nachträglich berechnet, nicht vorregistriert)",
+   "interval": null,
+   "baseline": {
+    "name": "in-sample ECE (S16, 2-fold cross-fitted on the 1,357 design affairs)",
+    "value": 0.0211,
+    "ci95": null,
+    "shown": {
+     "value": [
+      "0.0",
+      "0.02"
+     ]
+    }
+   },
+   "file": "eval/lanes/heldout.json",
+   "key": "calibration_heldout > ece"
   },
   {
    "id": "aps_calibration",
@@ -27283,6 +28908,163 @@
        "0.46",
        "0.8"
       ]
+     }
+    },
+    "lanes_calibrated_post_hoc": {
+     "pass": {
+      "metric": "agreement with the AI judge, pass lane (recalibrated p ≥ 0.7, map fitted on federal S16)",
+      "value": 0.8188,
+      "value_source": 0.8189,
+      "k": 104,
+      "n": 127,
+      "kn": "104/127",
+      "ci95": [
+       0.742,
+       0.877
+      ],
+      "coverage": 0.635,
+      "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n, bounds rounded outward (the file stores no interval)",
+      "at": {
+       "file": "eval/lanes/results.json",
+       "key": "S17_communal_post_hoc > calibrated_tau_0_7"
+      },
+      "shown": {
+       "value": [
+        "0.8",
+        "0.81"
+       ],
+       "value_source": [
+        "0.8",
+        "0.81"
+       ],
+       "ci95": [
+        "0.7",
+        "0.74",
+        "0.88",
+        "0.9"
+       ],
+       "coverage": [
+        "0.6",
+        "0.63"
+       ]
+      }
+     },
+     "please_check": {
+      "metric": "agreement with the AI judge, please check (recalibrated p < 0.7)",
+      "value": 0.3287,
+      "value_source": 0.3288,
+      "k": 24,
+      "n": 73,
+      "kn": "24/73",
+      "ci95": [
+       0.231,
+       0.443
+      ],
+      "coverage": 0.365,
+      "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n, bounds rounded outward (the file stores no interval)",
+      "at": {
+       "file": "eval/lanes/results.json",
+       "key": "S17_communal_post_hoc > calibrated_tau_0_7_check"
+      },
+      "shown": {
+       "value": [
+        "0.3",
+        "0.32"
+       ],
+       "value_source": [
+        "0.3",
+        "0.32"
+       ],
+       "ci95": [
+        "0.2",
+        "0.23",
+        "0.45",
+        "0.5"
+       ],
+       "coverage": [
+        "0.3",
+        "0.36"
+       ]
+      }
+     },
+     "readings_agree": {
+      "metric": "agreement with the AI judge, readings agree",
+      "value": 0.6774,
+      "value_source": 0.6774,
+      "k": 105,
+      "n": 155,
+      "kn": "105/155",
+      "ci95": [
+       0.6,
+       0.746
+      ],
+      "coverage": 0.775,
+      "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n, bounds rounded outward (the file stores no interval)",
+      "at": {
+       "file": "eval/lanes/results.json",
+       "key": "S17_communal_post_hoc > readings_agree"
+      },
+      "shown": {
+       "value": [
+        "0.6",
+        "0.67"
+       ],
+       "value_source": [
+        "0.6",
+        "0.67"
+       ],
+       "ci95": [
+        "0.75",
+        "0.8"
+       ],
+       "coverage": [
+        "0.7",
+        "0.77"
+       ]
+      }
+     },
+     "readings_disagree": {
+      "metric": "agreement with the AI judge, readings disagree",
+      "value": 0.5111,
+      "value_source": 0.5111,
+      "k": 23,
+      "n": 45,
+      "kn": "23/45",
+      "ci95": [
+       0.37,
+       0.651
+      ],
+      "coverage": 0.225,
+      "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n, bounds rounded outward (the file stores no interval)",
+      "at": {
+       "file": "eval/lanes/results.json",
+       "key": "S17_communal_post_hoc > readings_disagree"
+      },
+      "shown": {
+       "value": [
+        "0.5",
+        "0.51"
+       ],
+       "value_source": [
+        "0.5",
+        "0.51"
+       ],
+       "ci95": [
+        "0.3",
+        "0.66",
+        "0.7"
+       ],
+       "coverage": [
+        "0.2",
+        "0.22"
+       ]
+      }
+     },
+     "note": "post hoc on the S17 production slice (AI-judge consensus gold, n 200); calibration map fitted on federal S16 items; computed after S17, not pre-registered; gold is the AI judge, so the figures are agreement with it",
+     "prereg": null,
+     "at": {
+      "file": "eval/lanes/results.json",
+      "key": "S17_communal_post_hoc"
      }
     }
    },

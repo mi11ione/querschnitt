@@ -1103,6 +1103,139 @@ tests.append(dict(
     build=s33["build"] + " (run runs/s33)", model=MODEL, date="2026-10-16",
     shipped="measurement of the shipped code path for French federal text; production keeps reading federal affairs from the German text"))
 
+# ---------------------------------------------------------------- S34: a trained classifier on the shipped design's own APS labels
+# The trained baseline on the same labels: TF-IDF + logistic regression fitted on the 1,654 APS-labelled affairs of the shipped
+# example pool (data/eval/aps_pool.jsonl), scored on the 927 S25 held-out affairs and paired against the shipped S25 decisions.
+# No model calls (run on GitHub Actions, workflow eval).
+S34R = f"{QE}/s34/results.json"
+pre34 = pre(PB, "— S34 a trained classifier on the shipped design's 1,654 APS labels")
+s34 = g(S34R)
+assert s34["test"] == N25 and s34["train"] == 1654 and s34["prereg"].startswith("eval/PREREG-BUILD.md 2026-10-16 14:03"), (s34["test"], s34["train"])
+N34 = s34["train"]
+
+
+def s34k(*keys, metric):
+    """a {k, n, value, ci} block of eval/s34/results.json (see knblock)."""
+    return knblock(S34R, *keys, metric=metric, script="eval/s34/run.py")
+
+
+t34 = s34k("trained_top1", metric=f"chapter top-1 vs APS editors, trained classifier (TF-IDF word 1–2 + char 2–5 grams, logistic "
+           f"regression, C by 5-fold CV on the pool) fitted on the {N34} pool affairs")
+sh34 = s34k("shipped_top1", metric="chapter top-1 of the shipped design (S25 final), same affairs")
+assert (sh34["k"], sh34["n"]) == (t25["k"], t25["n"]), (sh34["kn"], t25["kn"])   # the S25 final decisions, re-read by eval/s34/run.py
+ag34 = g(S34R, "agreement")
+dif34_ = g(S34R, "paired_shipped_minus_trained")
+sor34, tor34 = ag34["shipped_top1_where_different"]["k"], ag34["trained_top1_where_different"]["k"]
+assert dif34_["ci"][0] <= dif34_["value"] <= dif34_["ci"][1] and abs(dif34_["value"] - (sor34 - tor34) / N25) < 1e-4, dif34_
+assert sh34["k"] - t34["k"] == sor34 - tor34, (sh34["kn"], t34["kn"], sor34, tor34)
+df34 = {"metric": "paired Δ top-1, shipped − trained (same affairs)", "value": dif34_["value"], "ci95": list(dif34_["ci"]), "n": N25,
+        "shipped_only_right": sor34, "trained_only_right": tor34,
+        "method": "paired bootstrap 2,000 over affairs, percentile 2.5 / 97.5, random.Random(2026), bounds rounded outward (eval/s34/run.py)",
+        "value_note": "the file stores the mean difference truncated toward zero at 4 decimals; shown truncated at 3; only-right counts from "
+                      "agreement > *_top1_where_different (where the two differ at most one is right)",
+        "at": loc(S34R, "paired_shipped_minus_trained")}
+lc34 = {"points": [dict(s34k("learning_curve", k_, metric=f"chapter top-1, trained on {k_} of the pool ({v_['train']} affairs)"),
+                        fraction=k_, train=v_["train"]) for k_, v_ in g(S34R, "learning_curve").items()],
+        "note": "stratified by chapter (random.Random(2026)), same C; still rising at the full pool: the curve says nothing about how a "
+                "classifier would do with many more labels", "at": loc(S34R, "learning_curve")}
+assert [p_["train"] for p_ in lc34["points"]] == sorted(p_["train"] for p_ in lc34["points"]) and lc34["points"][-1]["train"] == N34
+assert all(a_["value"] < b_["value"] for a_, b_ in zip(lc34["points"], lc34["points"][1:])), "S34 learning curve no longer rising: reword"
+LN34 = {"pass": "shipped pass lane (recalibrated p ≥ 0.7)", "please_check": "shipped please-check lane (recalibrated p < 0.7)"}
+tests.append(dict(
+    id="aps_chapter_heldout_s34_trained", gold="human", subject="trained classifier (scikit-learn, no Apertus)",
+    title_de=f"APS-Kapitel gegen APS-Redaktion, dieselben {N25} neuen Bundesgeschäfte (hold-out): ein Klassifikator, trainiert auf den "
+             f"{F.t(N34, sep="'")} APS-Labels des ausgelieferten Designs, gegen das ausgelieferte Design (S34)",
+    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} nouveaux objets fédéraux (hors échantillon) : un classifieur entraîné "
+             f"sur les {F.t(N34, sep=' ')} étiquettes APS du design livré, contre le design livré (S34)",
+    n=N25, design=f"die trainierte Basislinie auf denselben Labels: die {F.t(N34, sep="'")} APS-gelabelten Geschäfte des Beispielpools des ausgelieferten "
+    "Designs (data/eval/aps_pool.jsonl; S9 1'357 + S5 297, keines in S25) als Trainingsdaten; Text wie das Modell ihn sieht (Titel + Langtitel + "
+    "Text der Produktions-Inputs); TF-IDF (Wort-1–2-Gramme und Zeichen-2–5-Gramme), logistische Regression, C per 5-facher "
+    f"Kreuzvalidierung auf dem Pool gewählt (C = {s34['C']}); nichts auf S25 abgestimmt; gepaart gegen die S25-Entscheide auf denselben Geschäften; "
+    "keine Modellaufrufe",
+    result=dict(t34, display=f"{F.t(t34['value'])} [{F.lo(t34['ci95'][0])}, {F.hi(t34['ci95'][1])}]"),
+    results_more=[s34k("trained_top3", metric="chapter top-3, trained classifier"), df34],
+    baselines=[dict(sh34, name=f"shipped design (S25 final), same {N25} affairs"),
+               dict(s34k("shipped_top3", metric="chapter top-3 of the shipped design (S25 final)"), name="shipped design, top-3")],
+    breakdowns={
+        "learning_curve": lc34,
+        "trained_by_shipped_lane": {k_: dict(s34k("trained_by_shipped_lane", k_, metric=f"trained top-1 on the {LN34[k_]}"), cell=k_,
+                                             shipped=s34k("shipped_by_lane", k_, metric=f"shipped top-1 on the {LN34[k_]}"))
+                                    for k_ in LN34},
+        "agreement": {"share": {"value": ag34["share"], "at": loc(S34R, "agreement", "share")},
+                      "shipped_top1_where_same": s34k("agreement", "shipped_top1_where_same", metric="shipped top-1 where trained and shipped agree"),
+                      "shipped_top1_where_different": s34k("agreement", "shipped_top1_where_different", metric="shipped top-1 where they differ"),
+                      "trained_top1_where_different": s34k("agreement", "trained_top1_where_different", metric="trained top-1 where they differ")},
+        "cv_accuracy": {"grid": g(S34R, "cv_accuracy"), "C": s34["C"], "note": "5-fold stratified CV accuracy on the pool only", "at": loc(S34R, "cv_accuracy")},
+        "train": {"value": N34, "at": loc(S34R, "train")}},
+    split=f"the {N25} S25 held-out affairs (none used while designing, none in the pool), pre-registered (S34) before any S34 fit; trained on "
+          f"the shipped design's own {N34} pool labels only; nothing tuned on S25",
+    prereg=pre34,
+    reference={"id": "aps_chapter_heldout_s25", "what": "the shipped design on the same affairs (S25)"},
+    sources=[S34R, f"{QE}/s34/run.py", f"{QE}/s34/RUN.md", f"{QE}/s34/predictions.jsonl", f"{QE}/s34/texts.jsonl.gz", "data/eval/aps_pool.jsonl",
+             f"{QE}/s25/decisions.jsonl", f"{QE}/s25/items.jsonl", PB],
+    build="no model calls (GitHub Actions, workflow eval; scikit-learn)", model="none (trained classifier)", date="2026-10-16",
+    shipped="no (a baseline: the shipped design stays)"))
+
+# ---------------------------------------------------------------- lanes and calibration beyond the fitted set (post hoc, not pre-registered)
+# The recalibrated p of the 927 S25 decisions (map fitted on S16 only) against the APS editors: held-out ECE next to the in-sample
+# 0.0211; and the please-check share of the shipped export by level and language (counts, no gold). No model calls.
+LH = f"{QE}/lanes/heldout.json"
+lh = g(LH); ch_ = lh["calibration_heldout"]
+assert lh["note"].startswith("computed after the results") and "not pre-registered" in lh["note"], lh["note"]
+assert ch_["n"] == N25 and ch_["in_sample_ece_reported"] == cal16["aps-fed"]["ece_crossfit"], (ch_["n"], ch_["in_sample_ece_reported"])
+assert sum(b_["n"] for b_ in ch_["bins"]) == N25
+
+
+def lhk(*keys, metric):
+    return knblock(LH, *keys, metric=metric, script="eval/lanes/heldout.py")
+
+
+pc_ = lh["please_check_share"]
+tests.append(dict(
+    id="aps_lanes_heldout_post_hoc", gold="human", subject="Apertus",
+    title_de=f"Lane und Kalibrierung jenseits des angepassten Sets: Kalibrierfehler auf den {N25} S25-Geschäften und Anteil «bitte prüfen» "
+             "im Export nach Ebene und Sprache (nachträglich berechnet, nicht vorregistriert)",
+    title_fr=f"Voie et calibration au-delà du jeu ajusté : erreur de calibration sur les {N25} objets S25 et part « à vérifier » dans "
+             "l'export par niveau et langue (calculé après coup, non préenregistré)",
+    n=N25, design="(1) das rekalibrierte p der S25-Entscheide (Karte nur auf S16 angepasst) gegen die APS-Redaktion: ECE über 10 gleich breite "
+    "Klassen (calibrate.ece, dieselbe Definition wie das In-Sample-ECE 0.0211); (2) Anteil «bitte prüfen» der APS-Kapitel-Lane im "
+    "ausgelieferten Export nach Ebene, Sprache und Ebene × Sprache (Zellen ab n 30; Zählung, kein Gold); keine Modellaufrufe",
+    result={"metric": "ECE of the recalibrated p, held out (S25, map fitted on S16 only)", "value": ch_["ece"], "ci95": None,
+            "in_sample": ch_["in_sample_ece_reported"], "in_sample_at": loc(S16R, "calibration", "aps-fed", "ece_crossfit"),
+            "at": loc(LH, "calibration_heldout", "ece")},
+    results_more=[],
+    baselines=[{"name": "in-sample ECE (S16, 2-fold cross-fitted on the 1,357 design affairs)", "value": cal16["aps-fed"]["ece_crossfit"],
+                "at": loc(S16R, "calibration", "aps-fed", "ece_crossfit")}],
+    breakdowns={
+        "bins": {"cells": [dict(lhk("calibration_heldout", "bins", i_, "correct", metric=f"share right, recalibrated p in {b_['bin']}"),
+                                cell=b_["bin"], mean_p=b_["mean_p"], **({"small": True} if b_["n"] < 20 else {}))
+                           for i_, b_ in enumerate(ch_["bins"])], "at": loc(LH, "calibration_heldout", "bins")},
+        "largest_steps": {"cells": [dict(lhk("calibration_heldout", "largest_steps", i_, metric=f"share right at the isotonic step p_cal {s_['p_cal']}"),
+                                         p_cal=s_["p_cal"]) for i_, s_ in enumerate(ch_["largest_steps"])],
+                          "note": "the isotonic map is a step function; the five steps with the most affairs",
+                          "at": loc(LH, "calibration_heldout", "largest_steps")},
+        "please_check_share": {
+            "export": pc_["export"], "gold": "none (a count of the shipped lanes, not an accuracy)",
+            "all": lhk("please_check_share", "all", metric="please-check share of the shipped export, all affairs with an APS lane"),
+            "by_level": {k_: lhk("please_check_share", "by_level", k_, metric=f"please-check share, {k_}") for k_ in pc_["by_level"]},
+            "by_language": {k_: lhk("please_check_share", "by_language", k_, metric=f"please-check share, language {k_}") for k_ in pc_["by_language"]},
+            "by_level_and_language": {k_: lhk("please_check_share", "by_level_and_language", k_, metric=f"please-check share, {k_}")
+                                      for k_ in pc_["by_level_and_language"]},
+            "at": loc(LH, "please_check_share")}},
+    split="computed after the results (juror round 9), not pre-registered; the calibration map was fitted on S16 only, so the S25 affairs "
+          "are held out for it; no model calls",
+    prereg=None, prereg_more=pre25,
+    reference={"id": "aps_calibration_shipped", "what": "the in-sample ECE of the same map (S16, cross-fitted)"},
+    sources=[LH, f"{QE}/lanes/heldout.py", f"{QE}/s25/decisions.jsonl", "src/querschnitt/calibrate.py", "app/data/affairs.json", "app/data/meta.json"],
+    build=s25["build"] + " (S25 decisions; export rows: the shipped export)", model=MODEL, date="2026-10-16",
+    note="no interval computed for ECE (TO MEASURE: bootstrap)"))
+# French and Italian go to please check more often than German at every level with both (point shares; asserted, so the docs' wording holds)
+for lv_ in pc_["by_level"]:
+    de_ = pc_["by_level_and_language"].get(f"{lv_} · de")
+    for lg_ in ("fr", "it"):
+        x_ = pc_["by_level_and_language"].get(f"{lv_} · {lg_}")
+        if de_ and x_: assert x_["value"] > de_["value"], (lv_, lg_, x_, de_)
+
 # ---------------------------------------------------------------- S31: a documented design search on the design set (dev only, not pre-registered)
 # Five variants of the federal design against D4 on the S9/S16 design set, leave-one-out examples, a gate fixed before any S31 call
 # (paired Δ vs D4 ≥ +0.02 on all 1,357 with the 95% interval above 0). No variant cleared it, so no test was run: the S25 held-out
@@ -1490,6 +1623,32 @@ tests.append(dict(
     split="random sample of the production run, pre-registered", prereg=pre(PB, "— S17 communal slice on the production run"),
     sources=[S17R, f"{QE}/s17/analyze.py", f"{QE}/s17/key.jsonl", f"{QE}/s17/ann_A.tsv", f"{QE}/s17/ann_B.tsv", f"{QE}/s17/ann_C.tsv"],
     build=BUILD + " (production run runs/main)", model=MODEL, judge_build="Claude (blind agent runs)", date="2026-10-14"))
+
+# S17 communal slice, post hoc: the shipped lane rule (recalibrated p >= 0.7; map fitted on federal S16 items) on the S17 rows, against the
+# AI judge's consensus (eval/lanes/analyze.py > S17_communal_post_hoc; computed after S17, not pre-registered). The file stores the shares
+# rounded at 4 decimals; here value = k / n truncated and Wilson 95% from k and n, bounds outward.
+S17PH = g(LR, "S17_communal_post_hoc")
+assert "post hoc" in S17PH["note"]
+
+
+def lane17(key, metric):
+    b_ = S17PH[key]; k_, n_ = b_["k"], b_["n"]; lo_, hi_ = wilson_exact(k_, n_)
+    assert abs(b_["precision"] - k_ / n_) < 1e-4 and abs(b_["coverage"] - n_ / s17["n"]) < 1e-9, (key, b_)
+    return {"metric": metric, "value": math.floor(k_ / n_ * 10 ** 4) / 10 ** 4, "value_source": b_["precision"], "k": k_, "n": n_, "kn": f"{k_}/{n_}",
+            "ci95": [float(F.q(lo_, 3, F.ROUND_FLOOR)), float(F.q(hi_, 3, F.ROUND_CEILING))], "coverage": b_["coverage"],
+            "ci_method": "Wilson 95% computed by build_pruefstand.py from k and n, bounds rounded outward (the file stores no interval)",
+            "at": loc(LR, "S17_communal_post_hoc", key)}
+
+
+for t_ in tests:
+    if t_["id"] == "aps_communal_production":
+        t_["breakdowns"]["lanes_calibrated_post_hoc"] = {
+            "pass": lane17("calibrated_tau_0_7", "agreement with the AI judge, pass lane (recalibrated p ≥ 0.7, map fitted on federal S16)"),
+            "please_check": lane17("calibrated_tau_0_7_check", "agreement with the AI judge, please check (recalibrated p < 0.7)"),
+            "readings_agree": lane17("readings_agree", "agreement with the AI judge, readings agree"),
+            "readings_disagree": lane17("readings_disagree", "agreement with the AI judge, readings disagree"),
+            "note": S17PH["note"] + "; computed after S17, not pre-registered; gold is the AI judge, so the figures are agreement with it",
+            "prereg": None, "at": loc(LR, "S17_communal_post_hoc")}
 
 s8f = g(S8F)
 gp, gc = s8f["gold_AB_C"]["point"], s8f["gold_AB_C"]["ci"]
@@ -1967,9 +2126,9 @@ for t_ in tests:
         t_["title_de"] += " (S8-Momentaufnahme, ersetzt durch die volle Erhebung)"
         t_["title_fr"] += " (instantané S8, remplacé par le recensement complet)"
 
-ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_heldout_s33_french", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
+ORDER = ["aps_chapter_shipped_d4", "aps_chapter_heldout_s25", "aps_chapter_heldout_s28_no_prefill", "aps_chapter_heldout_s33_french", "aps_chapter_heldout_s34_trained", "aps_chapter_d4s", "aps_chapter_examples", "aps_chapter_readback", "aps_chapter_pooling", "aps_subtopic",
          "aps_hierarchical_d4", "aps_hierarchical_heldout_s25", "aps_design_search_s31",
-         "aps_calibration_shipped", "aps_lane_rule", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
+         "aps_calibration_shipped", "aps_lane_rule", "aps_lanes_heldout_post_hoc", "aps_calibration", "dvs_human30", "curia_sachbereiche", "bern_directorates_production", "bern_directorates",
          "basel_themes_names", "basel_themes_examples", "ticino_departments", "judge_anchor_aps", "judge_dvs_human", "neutrality_shipped_s32", "neutrality_s9", "aps_italian_vs_german",
          "free_generation",
          "dvs_2026_census", "dvs_2026", "aps_communal_production", "dvs_correction_loop", "dvs_text_lever", "evidence_support",
@@ -2106,7 +2265,8 @@ print(f"Wilson intervals widened outward: {len(WILSON_LOG)}")
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC], [x for x in WILSON_LOG if x[0].split(".")[0] in NEW_ADHOC]
 assert not [x for x in WILSON_LOG if x[0].split(".")[0] in ("aps_chapter_heldout_s25", "aps_hierarchical_heldout_s25", "aps_chapter_heldout_s28_no_prefill",
                                                             "ticino_departments", "adhoc_scope_check", "aps_design_search_s31",
-                                                            "neutrality_shipped_s32")]
+                                                            "neutrality_shipped_s32", "aps_chapter_heldout_s34_trained",
+                                                            "aps_lanes_heldout_post_hoc")]
 # S25 / S28 / S29 / S30 / S31 / S32 intervals are already outward (recomputed exactly from k and n above)
 
 # ---------------------------------------------------------------- display forms (truncated points, outward bounds) so claims_check backs what is shown
@@ -2219,9 +2379,11 @@ row(*APS, "human", f"D4, Lesarten einig (bisherige Regel; {F.pct(la['share'])} d
     la["n"], f"{p3(la['precision'])}", iv(la["ci95"]), f"uneinig → bitte prüfen: {p3(ld['precision'])} {civ(ld['ci95'])} (n {ld['n']})",
     fr(f"discordantes → à vérifier : {p3(ld['precision'])} {civ(ld['ci95'])} (n {ld['n']})"),
     *SPLIT_S16, T4["file"], result_fr=fr(p3(la["precision"])))
-c4 = T4["breakdowns"]["calibration"]
+c4 = T4["breakdowns"]["calibration"]; TLH = TD["aps_lanes_heldout_post_hoc"]
 row(*APS, "human", "D4, Konfidenz nach isotoner Rekalibrierung (ECE)", "D4, confiance après recalibration isotone (ECE)", c4["n"],
-    f"ECE {p3(c4['ece_crossfit'], 4)}", None, f"roh {p3(c4['ece_raw'], 4)}", fr(f"brute {p3(c4['ece_raw'], 4)}"),
+    f"ECE {p3(c4['ece_crossfit'], 4)}", None,
+    f"roh {p3(c4['ece_raw'], 4)} · hold-out (S25, nachträglich berechnet) {p3(TLH['result']['value'], 4)}",
+    fr(f"brute {p3(c4['ece_raw'], 4)} · hors échantillon (S25, calculé après coup) {p3(TLH['result']['value'], 4)}"),
     "2-fach kreuzangepasst (S16)", "validation croisée à 2 plis (S16)", c4["file"])
 rs = T4s["results_more"]
 row(*APS, "human", "wie D4, zweite Lesart nur unter p 0.9 (D4s, sekundär)", "comme D4, seconde lecture seulement sous p 0,9 (D4s, secondaire)", N16,
@@ -2356,6 +2518,26 @@ row(*APS33, "human", "gleiches Design in beiden Sprachen: nur die Kapitel-Lesart
     f"FR {p3(rof_['value'])} · DE {p3(rog_['value'])}", iv(rof_["ci95"]),
     f"Δ FR − DE {F.signed(p3(rod_['value']))} {sciv(rod_['ci95'])}", fr(f"Δ FR − DE {F.signed(p3(rod_['value']))} {sciv(rod_['ci95'])}"),
     *SPLIT_S33, T33["file"], result_fr=fr(f"FR {p3(rof_['value'])} · DE {p3(rog_['value'])}"))
+# S34: the trained baseline on the same labels (a classifier fitted on the shipped design's own pool labels), right after S33's table
+T34 = TD["aps_chapter_heldout_s34_trained"]; m34 = T34["results_more"]; sh34_, d34_ = T34["baselines"][0], m34[1]
+lcp34 = T34["breakdowns"]["learning_curve"]["points"]
+APS34 = (f"APS-Kapitel, dieselben {p3(N25)} Bundesgeschäfte (hold-out): trainierte Basislinie auf denselben Labels (S34)",
+         f"Chapitre APS, les mêmes {F.t(N25, sep=' ')} objets fédéraux (hors échantillon) : base entraînée sur les mêmes étiquettes (S34)")
+SPLIT_S34 = (f"held-out (S25-Geschäfte), vorregistriert (S34); trainiert nur auf den {p3(N34)} Pool-Labels des ausgelieferten Designs; "
+             "keine Modellaufrufe",
+             f"hors échantillon (objets S25), préenregistré (S34) ; entraîné seulement sur les {F.t(N34, sep=' ')} étiquettes du pool du "
+             "design livré ; aucun appel au modèle")
+row(*APS34, "human", f"TF-IDF + logistische Regression, trainiert auf den {p3(N34)} APS-gelabelten Geschäften des Beispielpools",
+    f"TF-IDF + régression logistique, entraînée sur les {F.t(N34, sep=' ')} objets étiquetés APS du pool d'exemples", N25,
+    f"top-1 {p3(T34['result']['value'])} · top-3 {p3(m34[0]['value'])}", iv(T34["result"]["ci95"]),
+    f"ausgeliefert (S25) {p3(sh34_['value'])} · Δ ausgeliefert − trainiert {F.signed(p3(d34_['value']))} {sciv(d34_['ci95'])}",
+    fr(f"livré (S25) {p3(sh34_['value'])} · Δ livré − entraîné {F.signed(p3(d34_['value']))} {sciv(d34_['ci95'])}"),
+    *SPLIT_S34, T34["file"])
+row(*APS34, "human", "Lernkurve: " + " / ".join(p3(x["train"]) for x in lcp34) + " Trainingsgeschäfte (steigt noch)",
+    "courbe d'apprentissage : " + " / ".join(F.t(x["train"], sep=" ") for x in lcp34) + " objets d'entraînement (monte encore)", N25,
+    " · ".join(p3(x["value"]) for x in lcp34), None,
+    f"ausgeliefert (S25) {p3(sh34_['value'])}", fr(f"livré (S25) {p3(sh34_['value'])}"),
+    *SPLIT_S34, T34["file"], result_fr=fr(" · ".join(p3(x["value"]) for x in lcp34)))
 
 dv = TD["dvs_human30"]
 row("«Digitalisierung»: 30 handkuratierte DVS-Geschäfte (Recall)", "« numérique » : 30 objets DVS choisis à la main (rappel)", "human",
@@ -2556,8 +2738,9 @@ for s_ in TOPICS30 + ("pooled",):
         result_fr=fr(f"{p3(P_['value'])} ({P_['kn']}) / {p3(R_['value'])} · {dd_[1]}"))
 
 # the held-out test (S25) leads: its rows open the app's first human-label table (the highlighted, shipped row)
-# S28 (the same held-out affairs without prefill) and S33 (the same affairs read from the French text) follow right after S25's table
-LEAD = ("eval/s25/", "eval/s28/", "eval/s33/")
+# S28 (the same held-out affairs without prefill), S33 (the same affairs read from the French text) and S34 (the trained baseline on
+# the same labels) follow right after S25's table
+LEAD = ("eval/s25/", "eval/s28/", "eval/s33/", "eval/s34/")
 rows = [r for r in rows if r["file"].startswith(LEAD)] + [r for r in rows if not r["file"].startswith(LEAD)]
 # the pre-fix S25 readings stay in docs/PRUEFSTAND.md (with the amendment); the app's lead table shows what ships
 rows = [r for r in rows if not r["design"].startswith("vor dem Determinismus-Fix")]

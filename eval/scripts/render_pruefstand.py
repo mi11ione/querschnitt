@@ -140,7 +140,9 @@ cal4 = d4["breakdowns"]["calibration"]; cs = T["aps_calibration_shipped"]
 w(f"**Calibration of D4** ({L('S16', cal4['at'])}; isotonic, 2-fold cross-fitted, n {num(cal4['n'])}; the map the production run reads, "
   f"[`eval/calibration.json`](../eval/calibration.json)): expected calibration error {L(num(cal4['ece_raw'], 4), cal4['at'])} raw → "
   f"{L(num(cal4['ece_crossfit'], 4), cal4['at'])} recalibrated (D1, same file: {L(num(cs['results_more'][0]['raw'], 4), cs['results_more'][0]['at'])} → "
-  f"{L(num(cs['results_more'][0]['value'], 4), cs['results_more'][0]['at'])}).")
+  f"{L(num(cs['results_more'][0]['value'], 4), cs['results_more'][0]['at'])}). These are in-sample; held out on the S25 affairs "
+  f"(computed after the results, not pre-registered, §1g) the D4 map's error is "
+  f"{L(num(T['aps_lanes_heldout_post_hoc']['result']['value'], 4), T['aps_lanes_heldout_post_hoc']['result']['at'])}.")
 w("")
 st = d3["breakdowns"]["period_and_join"]
 w("Per period, D3: " + " · ".join(f"{c['cell']} {L(num(c['value']) + ci(c['ci95']) + ', n ' + str(c['n']), st['at'])}" for c in st["cells"][:3]) + ".")
@@ -430,6 +432,99 @@ w(f"French and German give the same chapter on {L(num(same33['k']), same33['at']
   f"{L(num(c33['calls']), c33['at'])} on the locked build (S25's), USD {L(num(c33['usd'], 4), c33['at'])} at list price, including "
   f"{L(str(c33['first_launch_calls_not_written']), c33['at'])} calls of a first launch whose rows were not written (the run folder lacked its "
   "build directory) and were asked again.")
+w("")
+
+# ------------------------------------------------------------------ S34: the trained baseline on the same labels
+t34 = T["aps_chapter_heldout_s34_trained"]; m34 = t34["results_more"]; b34 = t34["breakdowns"]
+sh34, sh34t3 = t34["baselines"][0], t34["baselines"][1]
+t34t3, d34 = m34[0], m34[1]
+lc34 = b34["learning_curve"]["points"]; ln34 = b34["trained_by_shipped_lane"]; ag34 = b34["agreement"]; tr34 = b34["train"]
+w(f"### 1f · The trained baseline on the same labels: a classifier fitted on the shipped design's {num(tr34['value'], 0)} APS labels, "
+  f"the same {num(t34['n'], 0)} held-out affairs (S34, pre-registered)")
+w("")
+w("§1b compares the shipped design with keywords and with plain list prompting, not with a trained classifier. The shipped design already "
+  f"holds {L(num(tr34['value'], 0), tr34['at'])} APS-labelled affairs: its example pool (`data/eval/aps_pool.jsonl`, the S9 and S5 affairs, "
+  "none in S25). S34 trains a standard text classifier on exactly those labels and scores it on the §1b affairs: TF-IDF over word 1–2-grams "
+  "and character 2–5-grams, logistic regression, C chosen by 5-fold cross-validation on the pool only "
+  f"(C = {L(str(b34['cv_accuracy']['C']), b34['cv_accuracy']['at'])}), on the text the model sees (title, long title and text of the "
+  "production inputs); nothing tuned on S25. Paired against the §1b decisions on the same affairs. No model calls; run on GitHub Actions "
+  f"([`eval/s34/run.py`](../eval/s34/run.py) → [`eval/s34/results.json`](../eval/s34/results.json), "
+  f"[`eval/s34/predictions.jsonl`](../eval/s34/predictions.jsonl); [`eval/s34/RUN.md`](../eval/s34/RUN.md)). Pre-registration: "
+  f"{L('PREREG-BUILD.md § S34', t34['prereg'])}. Gold: APS editors' chapter.")
+w("")
+w(f"| n = {num(t34['n'], 0)}, gold = APS editors' chapter | top-1 | top-3 |")
+w("|---|---|---|")
+w(f"| trained classifier, {num(tr34['value'], 0)} pool labels | {r(t34['result'])} ({L(t34['result']['kn'], t34['result']['at'])}) | {r(t34t3)} |")
+w(f"| **shipped design (S25 final, §1b), same affairs** | **{r(sh34)}** ({L(sh34['kn'], sh34['at'])}) | {r(sh34t3)} |")
+w(f"| paired, shipped − trained (bootstrap 2,000, bounds outward) | {r(d34, signed=True)} | — |")
+w("")
+w(f"Primary: shipped − trained {r(d34, signed=True)}, the interval above 0 (shipped right where the classifier is wrong on "
+  f"{L(num(d34['shipped_only_right']), d34['at'])} affairs, the reverse on {L(num(d34['trained_only_right']), d34['at'])}). "
+  "**Learning curve** (secondary; stratified by chapter, same C): trained on "
+  + " / ".join(L(num(p_['train'], 0), p_['at']) for p_ in lc34) + " pool affairs, top-1 "
+  + " / ".join(r(p_) for p_ in lc34) + ". The curve is still rising at the full pool: S34 measures a classifier with the labels the "
+  "shipped design has, and says nothing about one trained on many more.")
+w("")
+w("| shipped lane (§1b) | n | trained top-1 | shipped top-1 |")
+w("|---|---|---|---|")
+for k_, nm_ in (("pass", "pass: recalibrated p ≥ 0.7"), ("please_check", "`please check`: recalibrated p < 0.7")):
+    c_ = ln34[k_]
+    w(f"| {nm_} | {L(num(c_['n']), c_['at'])} | {r(c_)} | {r(c_['shipped'])} |")
+w("")
+sw_, dw_, tw_ = ag34["shipped_top1_where_same"], ag34["shipped_top1_where_different"], ag34["trained_top1_where_different"]
+w(f"The two give the same chapter on {L(num(ag34['share']['value']), ag34['share']['at'])} of the affairs ({L(num(sw_['n']), sw_['at'])}); "
+  f"there the chapter is right in {r(sw_)}. Where they differ ({L(num(dw_['n']), dw_['at'])}), the shipped chapter is right in {r(dw_)}, "
+  f"the classifier's in {r(tw_)}.")
+w("")
+
+# ------------------------------------------------------------------ lanes and calibration beyond the fitted set (post hoc)
+lh = T["aps_lanes_heldout_post_hoc"]; blh = lh["breakdowns"]; pcs = blh["please_check_share"]
+s17ph = T["aps_communal_production"]["breakdowns"]["lanes_calibrated_post_hoc"]
+w("### 1g · Lanes and calibration beyond the fitted set (computed after the results, not pre-registered)")
+w("")
+w(f"§1's calibration figures are in-sample: the isotonic map was fitted (2-fold cross-fitted) on the {num(d4['n'], 0)} items they are "
+  f"measured on. The same map, fitted on S16 only, on the {num(lh['n'], 0)} S25 affairs of §1b: expected calibration error "
+  f"**{L(num(lh['result']['value'], 4), lh['result']['at'])}** held out against {L(num(lh['result']['in_sample'], 4), lh['result']['in_sample_at'])} "
+  "in-sample (10 equal-width bins, the same definition, `calibrate.ece`; no interval computed). "
+  "[`eval/lanes/heldout.py`](../eval/lanes/heldout.py) → [`eval/lanes/heldout.json`](../eval/lanes/heldout.json); no model calls.")
+w("")
+w("| recalibrated p | n | mean recalibrated p | share right (APS editors) |")
+w("|---|---|---|---|")
+for c_ in blh["bins"]["cells"]:
+    w(f"| {c_['cell']} | {L(num(c_['n']), c_['at'])} | {L(num(c_['mean_p']), c_['at'])} | {r(c_)}{' (small)' if c_.get('small') else ''} |")
+w("")
+w("The map is a step function; at its five steps with the most affairs the share right is "
+  + " · ".join(f"p {L(num(c_['p_cal'], 4), c_['at'])}: {r(c_)} of {L(num(c_['n']), c_['at'])}" for c_ in blh["largest_steps"]["cells"])
+  + ". Above 0.7 the held-out point shares sit below the mean recalibrated p of their bin: the pass lane is right somewhat less often "
+  "than its p says.")
+w("")
+lv_ = [k_ for k_ in ("federal", "cantonal", "communal", "other") if k_ in pcs["by_level"]]
+lg_ = [k_ for k_ in ("de", "fr", "it") if k_ in pcs["by_language"]]
+w(f"**`please check` share in the shipped export** (export {pcs['export'][:10]}; the APS chapter lane of every affair that has one; a count, "
+  "not an accuracy; cells with n ≥ 30):")
+w("")
+w("| level | all languages | " + " | ".join(lg_) + " |")
+w("|---|---|" + "---|" * len(lg_))
+for v_ in lv_:
+    cells_ = []
+    for g_ in lg_:
+        c_ = pcs["by_level_and_language"].get(f"{v_} · {g_}")
+        cells_.append(f"{r(c_)} (n {L(num(c_['n']), c_['at'])})" if c_ else "—")
+    c_ = pcs["by_level"][v_]
+    w(f"| {v_} | {r(c_)} (n {L(num(c_['n']), c_['at'])}) | " + " | ".join(cells_) + " |")
+c_ = pcs["all"]
+w(f"| **all** | {r(c_)} (n {L(num(c_['n']), c_['at'])}) | " + " | ".join(
+    f"{r(pcs['by_language'][g_])} (n {L(num(pcs['by_language'][g_]['n']), pcs['by_language'][g_]['at'])})" for g_ in lg_) + " |")
+w("")
+fpf = pcs["by_level_and_language"]["federal · fr"]
+w(f"French and Italian affairs go to a person more often than German ones at every level (federal French, n {num(fpf['n'])}, has an "
+  "interval that overlaps the German one). Both calibration maps were fitted on federal affairs read in German (the S9 items).")
+w("")
+sp_, sc_ = s17ph["pass"], s17ph["please_check"]
+w(f"**Communal affairs** (S17, §11; computed after S17, not pre-registered; gold is the AI judge, so these figures are agreement with it): "
+  f"with the map fitted on federal items, the pass lane holds {L(F.pct(sp_['coverage']), sp_['at'])} of the 200 affairs and agrees with "
+  f"the judge in {r(sp_)} ({L(sp_['kn'], sp_['at'])}); `please check` in {r(sc_)} ({L(sc_['kn'], sc_['at'])}). "
+  f"([`eval/lanes/results.json`](../eval/lanes/results.json) → `S17_communal_post_hoc`; Wilson intervals computed here from k and n.)")
 w("")
 
 sub = T["aps_subtopic"]
@@ -830,6 +925,8 @@ for k, nm in (("lane_readings_agree", "lane: readings agree"), ("lane_please_che
               ("lang_fr", "French"), ("lang_it", "Italian"), ("with_text", "with text"), ("title_only", "title only")):
     c = b17[k]; w(f"| {nm} | {r(c)} | {L(str(c['n']), c['at'])} |")
 w("")
+w("The shipped lane rule (recalibrated p ≥ 0.7) on these rows, computed after S17 and not pre-registered: §1g (agreement with the judge).")
+w("")
 
 lp, tx, ev = T["dvs_correction_loop"], T["dvs_text_lever"], T["evidence_support"]
 w("### 12 · Correction loop, text input, evidence")
@@ -1089,6 +1186,12 @@ w(f"- Ticino (§6b, Italian, the canton's own lead department) is measured on th
   f"({num(next(c for c in bg9['cells'] if c['cell'] == 'Cancelleria dello Stato')['value'])} and "
   f"{num(next(c for c in bg9['cells'] if c['cell'] == NONE9)['value'])}); the gold is OPD's lead-department field, and its licence is "
   "unconfirmed (SOURCES.md). No French-speaking parliament's own scheme is measured yet (Bern's French titles, §5, are the closest).")
+w(f"- The trained baseline (§1f, S34) is fitted on the {num(tr34['value'], 0)} APS labels the shipped design holds; its learning curve is still "
+  f"rising ({' / '.join(num(p_['value']) for p_ in lc34)}), so a classifier trained on many more labels is not measured.")
+w(f"- The calibration is in-sample on the design set (ECE {num(lh['result']['in_sample'], 4)}); held out on the S25 affairs it is "
+  f"{num(lh['result']['value'], 4)} (§1g, computed after the results, not pre-registered). French and Italian affairs go to `please check` "
+  f"more often than German ones at every level of the shipped export (all levels: {num(pcs['by_language']['fr']['value'])} French, "
+  f"{num(pcs['by_language']['it']['value'])} Italian, {num(pcs['by_language']['de']['value'])} German).")
 w("- All Apertus rows come from one served build; cut-offs and recalibration are refitted per build. ECE intervals are not computed yet.")
 w("")
 w("## To measure")

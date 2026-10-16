@@ -216,6 +216,19 @@ APS editors' chapters (`data/eval/gold_aps_s9.csv`, multi-class) on their produc
 `runs/side` by `eval/prod_gold/rows.py` with the export's rule: accuracy 0.718 [0.693, 0.743] on the 1,340 scored (17
 not scored), top 3 0.860 ([`eval/results/eval-gold_aps_s9.json`](../eval/results/eval-gold_aps_s9.json)).
 
+## A partner's own scheme (`make scheme-eval GOLD=…`)
+`src/querschnitt/scheme_eval.py`: a labelled list in the partner's own categories (CSV in any delimiter and in utf-8,
+utf-8-sig or latin-1; XLSX through openpyxl, else a message asking for CSV) → key column detected from the data (share of
+values that join as OPD affair id or as business number; a number found in several parliaments is resolved by a body
+column, `BODY=`, or the body of the other rows, else reported) → label column (`LABEL=`, a hinted name, or the text column
+with the fewest distinct values; numbered siblings and multi-label cells give the «any label» outcomes) → a named scheme
+file `schemes/partner-<slug>.yaml` with the names verbatim and `status: test` (left out of `named_schemes()`, so compose
+and the static export never pick it up) → frozen keyword stems (S20 rule) → pre-registration (`tools/prereg_append.py
+--no-push`, before any call) → stratified sample → the batch runner's named step (build lock, never a system message,
+never a `-70b` name) and, with examples, the S21 arm (`Engine.named(..., examples=…)`, rows in `runs/scheme-<slug>/examples/`)
+→ `runs/scheme-<slug>/report.json`. Runbook and flags: [ONSITE.md](ONSITE.md#live-make-eval-on-whatever-the-partner-hands-over).
+Tests: `tests/test_scheme_eval.py` (reading, join, detection, scheme file, keywords, sample, one fake-endpoint run).
+
 ## Nightly delta (`querschnitt delta --since yesterday`)
 1. `fetch_exports`: robots.txt, then `index.json`; downloads `affairs`, `bodies`, `contributors` and the `texts` split
    files whose size or `created` changed (first fetch: 22 files, 370 MB).

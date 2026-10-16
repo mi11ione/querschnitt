@@ -67,11 +67,35 @@ Per outcome (`prefill` · `logprobs` in the probe's summary line):
 
 ## Live `make eval` on whatever the partner hands over
 ```sh
-make eval GOLD=their.csv            # columns affair_id,label (APS code, ad-hoc yes/no, or their own scheme code)
+make eval GOLD=their.csv            # columns affair_id,label in OUR schemes (APS code, ad-hoc yes/no)
 make eval GOLD=data/eval/gold_aps_s9.csv     # fallback: 1,357 APS editors' chapters on production rows
+make scheme-eval GOLD=their.xlsx    # THEIR categories (POLITmonitor / DVS export, any CSV or XLSX): own scheme, scored
 ```
-Their own taxonomy: copy `src/querschnitt/schemes/bs-themen.yaml` (names only) → `querschnitt run --named <file> --ids …`
-(S20 shape); their labels as examples: `eval/s21/run.py` shape (two folds).
+`make scheme-eval` turns their list into the S20/S21 test in one command: it reads the file, joins OPD ids or business
+numbers (Curia `24.4266`, cantonal numbers) to the inputs, writes `src/querschnitt/schemes/partner-<slug>.yaml` from
+their category names (verbatim, `status: test`: never composed or exported until someone removes that line), freezes the
+keyword baseline, pre-registers, samples `N` affairs (stratified by label, `random.Random(2026)`), runs the shipped named
+step through the batch runner (`--conc 2 --max-rate 0.5 --cap $CAP`, build locked first), with `EXAMPLES>0` a second arm
+with their own labelled affairs as examples (S21 shape, two folds by id parity), and scores: top-1, top-3, any of their
+labels in top-1/top-3, per-label recall, majority and keyword baselines, lanes, examples minus names (Wilson intervals,
+points truncated). Report on screen and in `runs/scheme-<slug>/report.json`. Runbook:
+1. `make scheme-eval GOLD=their.xlsx DRY=1`: read the printed line (key column, label column, joined, why the rest did not
+   join); fix a wrong guess with `ID=col`, `LABEL=col` (`LABEL="Thema 1+Thema 2"`), `BODY=CHE`, `SEP=';'`, `NAME=slug`.
+2. Look at `runs/scheme-<slug>/scheme.yaml` (their names) with Christian; agree `N` and `EXAMPLES` (defaults `N=200 EXAMPLES=5`).
+3. `make scheme-eval GOLD=their.xlsx REGISTER=1`: writes the scheme file and appends the pre-registration to
+   `eval/PREREG-BUILD.md` with `tools/prereg_append.py --no-push`, no call yet. Decide here whether to push it
+   (`git commit eval/PREREG-BUILD.* -m … && git push`) so it is public before the numbers.
+4. `make scheme-eval GOLD=their.xlsx CAP=2`: finds the entry (same plan, no second entry) and starts the calls; a stop
+   (`STOP.md`, network, budget) resumes with the same command, cached rows are not asked again.
+5. Show the printed report (top-1 against keyword and majority on the same items, the agree lane); the number is a
+   measurement on their labels, registered before the calls; it goes into the docs only through `eval/claims.tsv`.
+
+Pre-registration text: the generic template `PREREG` in `src/querschnitt/scheme_eval.py`, filled from the plan (file and
+its sha256, columns, join counts, scheme, sample ids and their sha256, arms, outcomes, baselines, run flags, model and
+build). `PREREG=local` writes it to the run dir instead (tooling checks), `PREREG=off` skips it.
+Checked on 16 Oct on Basel-Stadt's own labels (`../data/manual/bs_100086.csv`, `N=150 EXAMPLES=0 PREREG=local`;
+a tooling check, not a registered result): `runs/scheme-bs-100086/report.json`. Hand-built variants stay possible:
+copy `src/querschnitt/schemes/bs-themen.yaml` → `querschnitt run --named <file> --ids …` (S20); `eval/s21/run.py` (S21).
 
 ## Afternoon / night
 Tailor per variant; check-in with the partner on the live path; `make eval` on any sample received; re-runs; polish; rehearse

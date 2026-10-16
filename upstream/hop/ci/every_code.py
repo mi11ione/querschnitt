@@ -44,6 +44,8 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     rows = []
     for p in sorted(SCHEMES.rglob("*.yaml")):
+        if "\nstatus: test" in "\n" + p.read_text():   # an on-site partner scheme (make scheme-eval): never shipped, never seeded
+            continue
         key, body, cs = codes(p)
         for level, code in cs:
             rows.append(dict(affair_id=900000001 + len(rows), body_key=body, status="suggested", provenance="inferred",

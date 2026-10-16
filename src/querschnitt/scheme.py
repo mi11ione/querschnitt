@@ -54,12 +54,7 @@ def named(name: str) -> dict:
 
 @functools.lru_cache(maxsize=None)
 def _named_schemes() -> tuple:
-    out = []
-    for p in sorted(HERE.glob("*.yaml")):
-        d = yaml.safe_load(p.read_text())
-        if d.get("kind") == "named":
-            out.append(d)
-    return tuple(out)
+    return tuple(_named_schemes_uncached())
 
 
 def named_schemes() -> list[dict]:   # parsed once per process (it was re-parsed per affair)
@@ -67,10 +62,12 @@ def named_schemes() -> list[dict]:   # parsed once per process (it was re-parsed
 
 
 def _named_schemes_uncached() -> list[dict]:
-    """Every named scheme file (topic names only) with the parliament it applies to (`body`)."""
+    """Every shipped named scheme file (topic names only) with the parliament it applies to (`body`). A file marked
+    `status: test` (a partner's scheme under test, written by `make scheme-eval`) is left out: compose and the static
+    export never show it until a person removes that line; `named(id)` still reads it for the batch runner."""
     out = []
     for p in sorted(HERE.glob("*.yaml")):
         d = yaml.safe_load(p.read_text())
-        if d.get("kind") == "named":
+        if d.get("kind") == "named" and d.get("status") != "test":
             out.append(d)
     return out

@@ -9,6 +9,11 @@
 #   make test             unit and API tests (fake model endpoint; no network, no model calls)
 #   make eval GOLD=f.csv  score a labelled CSV against the stored rows (SCHEME=adhoc/digitalisierung for a positives list);
 #                         GOLD=data/eval/gold_aps_s9.csv is scored on its production rows (eval/prod_gold, own store)
+#   make scheme-eval GOLD=their.csv|xlsx [ID=col] [LABEL=col] [N=200] [EXAMPLES=5] [CAP=2]
+#                         a partner's own labels -> schemes/partner-<slug>.yaml -> pre-registered (no push), sampled,
+#                         run through the shipped named step and scored -> runs/scheme-<slug>/report.json (docs/ONSITE.md)
+#                         (BODY=CHE for numbers without a body column, NAME=slug, DRY=1 plan only, REGISTER=1 stop after
+#                         the pre-registration, PREREG=local|off)
 #   make claims           every number in README and docs backed by eval/claims.tsv or eval/pruefstand.json
 #   make delta            nightly delta: fresh OPD export -> new/changed affairs -> batch -> rows (SINCE=yesterday)
 #   make delta-plan       robots.txt + export index only: what the delta would download
@@ -20,7 +25,7 @@
 #   make report-png       the PDF's pages as PNGs in dist/report-pages/ for review (needs pdftoppm, poppler)
 #   make film             the backup demo video from the live site -> dist/querschnitt-demo.mp4 (headless Chrome + node + ffmpeg;
 #                         FILM_URL=... for another copy of the app; docs/DEMO.md «Backup video»)
-.PHONY: report report-png report-figure film deps install run demo load serve test claims eval delta delta-plan smoke fake-endpoint docker up-full up-lite clean-db data data-release
+.PHONY: report report-png report-figure film deps install run demo load serve test claims eval scheme-eval delta delta-plan smoke fake-endpoint docker up-full up-lite clean-db data data-release
 VENV   := .venv/bin/python
 PY     ?= $(VENV)
 HOST   ?= 127.0.0.1
@@ -109,6 +114,17 @@ eval: deps
 	  $(PY) -m querschnitt load --auto --if-empty; \
 	fi
 	$(if $(EVAL_DB),QS_DB=$(EVAL_DB) )$(PY) -m querschnitt eval $(GOLD) $(if $(SCHEME),--scheme $(SCHEME)) --out $(EVAL_OUT)
+
+# a partner's labels as their own scheme (src/querschnitt/scheme_eval.py); every option is passed only when set
+ID ?=
+LABEL ?=
+N ?= 200
+EXAMPLES ?= 5
+CAP ?= 2
+scheme-eval: deps
+	@test -n "$(GOLD)" || { echo "usage: make scheme-eval GOLD=their.csv|xlsx [ID=col] [LABEL=col] [N=200] [EXAMPLES=5] [CAP=2] [BODY=CHE] [NAME=slug] [DRY=1] [REGISTER=1] [PREREG=local|off]"; exit 2; }
+	@test -f "$(GOLD)" || { echo "no such file: $(GOLD)"; exit 2; }
+	$(PY) -m querschnitt scheme-eval "$(GOLD)" --n $(N) --examples $(EXAMPLES) --cap $(CAP)$(if $(ID), --id "$(ID)")$(if $(LABEL), --label "$(LABEL)")$(if $(BODY), --body $(BODY))$(if $(NAME), --name $(NAME))$(if $(SEP), --sep '$(SEP)')$(if $(PREREG), --prereg $(PREREG))$(if $(BUILD), --build $(BUILD))$(if $(DRY), --dry-run)$(if $(REGISTER), --register-only)
 
 delta: deps
 	$(PY) -m querschnitt delta --since $(SINCE)

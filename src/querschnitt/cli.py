@@ -8,6 +8,7 @@
     querschnitt nightly --at 02:30                                                      (delta once a day, forever)
     querschnitt topics-file --out out/topics.jsonl.gz       (the store's current machine rows, for the Hop loader)
     querschnitt eval GOLD.csv [--scheme adhoc/digitalisierung] [--out result.json]
+    querschnitt scheme-eval THEIR.csv|xlsx [--id COL] [--label COL] [--n 200] [--examples 5] [--cap 2]   (make scheme-eval)
     querschnitt metrics | export
 
 Paths default to the environment: QS_DB / QS_PG_DSN (store), QS_INPUTS (data/inputs.jsonl.gz), QS_EXPORT_DIR
@@ -404,6 +405,9 @@ def main(argv=None):
     if argv and argv[0] == "eval":
         from . import evaluate
         return evaluate.main(argv[1:])
+    if argv and argv[0] == "scheme-eval":              # a partner's labels -> their own scheme file -> a scored test
+        from . import scheme_eval
+        return scheme_eval.main(argv[1:])
     if argv and argv[0] == "examples":                  # editor decisions → the topic file's examples (used from the next run)
         return examples_cmd(argv[1:])
     if argv and argv[0] == "export":                    # pass-through to the static export (its own flags)
@@ -417,6 +421,7 @@ def main(argv=None):
     b.add_argument("--docs", help="docs_slim.jsonl.gz (default: <export>/docs_slim.jsonl.gz)")
     sub.add_parser("run", help="the corpus batch (querschnitt run --help)")
     sub.add_parser("eval", help="score a labelled CSV (querschnitt eval --help)")
+    sub.add_parser("scheme-eval", help="a partner's labels as their own scheme, scored (querschnitt scheme-eval --help)")
     l = sub.add_parser("load", help="topic rows and affair summaries → store")
     l.add_argument("--topics", nargs="*", default=[])
     l.add_argument("--inputs")

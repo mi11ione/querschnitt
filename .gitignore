@@ -26,3 +26,4 @@ runs/prodgold.sqlite*
 data/topics.jsonl.gz
 eval/.prereg.lock
 /out/
+src/querschnitt/schemes/partner-*.yaml

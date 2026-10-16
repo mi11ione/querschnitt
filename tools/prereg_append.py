@@ -6,6 +6,9 @@ import datetime as dt, hashlib, os, subprocess, sys, time
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOG, SHA, LOCK = ROOT / "eval/PREREG-BUILD.md", ROOT / "eval/PREREG-BUILD.sha256", ROOT / "eval/.prereg.lock"
+if os.environ.get("QS_PREREG_LOG"):   # another log (make scheme-eval --prereg local: a tooling check's run dir); never pushed
+    LOG = Path(os.environ["QS_PREREG_LOG"]).resolve()
+    SHA, LOCK = LOG.with_suffix(".sha256"), LOG.parent / ".prereg.lock"
 
 
 def main(title: str, body_file: str, push: bool = True):
@@ -23,9 +26,9 @@ def main(title: str, body_file: str, push: bool = True):
             f.write(f"\n## {now:%Y-%m-%d %H:%M} CEST — {title}\n{body}\n")
         h = hashlib.sha256(LOG.read_bytes()).hexdigest()
         with open(SHA, "a") as f:
-            f.write(f"{h}  eval/PREREG-BUILD.md\n{dt.datetime.now(dt.timezone.utc):%a %b %d %H:%M:%S UTC %Y}\n")
+            f.write(f"{h}  {LOG.relative_to(ROOT) if LOG.is_relative_to(ROOT) else LOG}\n{dt.datetime.now(dt.timezone.utc):%a %b %d %H:%M:%S UTC %Y}\n")
         print(f"pre-registered at {now:%H:%M:%S} · sha256 {h[:12]}…")
-        if push:
+        if push and not os.environ.get("QS_PREREG_LOG"):
             files = ["eval/PREREG-BUILD.md", "eval/PREREG-BUILD.sha256"]
             c = subprocess.run(["git", "commit", "-q", "-m", f"Pre-registration: {title}", "--", *files], cwd=ROOT)
             p = subprocess.run(["git", "push", "-q"], cwd=ROOT) if c.returncode == 0 else c

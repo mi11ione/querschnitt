@@ -110,13 +110,15 @@ class Engine:
         d, meta = self._ask(u, p, codes)
         return dict(step=f"flat:{scheme['id']}", pid=P.pid(u, p), codes=d, p=probs(d, codes), lang=lang, meta=meta)
 
-    def named(self, scheme: dict, a: dict, second: bool = False) -> dict:
-        """A named scheme file (topic names only, S20): one closed choice; `second` = the other code order."""
+    def named(self, scheme: dict, a: dict, second: bool = False, examples: list[tuple[str, int]] | None = None) -> dict:
+        """A named scheme file (topic names only, S20): one closed choice; `second` = the other code order. `examples`
+        [(title, option index)]: the S21 reading with labelled examples (identity order; step `named:<id>:ex`)."""
         n = len(scheme["options"]) + 1
         perm = P.named_perm(n) if second else list(range(n))
-        u, p, codes = P.named_prompt(scheme, a, perm)
+        u, p, codes = P.named_prompt(scheme, a, perm, examples)
         d, meta = self._ask(u, p, codes)
-        return dict(step=f"named:{scheme['id']}:{'b' if second else 'a'}", pid=P.pid(u, p), codes=d, p=probs(d, codes, perm), meta=meta)
+        tag = "ex" if examples else "b" if second else "a"
+        return dict(step=f"named:{scheme['id']}:{tag}", pid=P.pid(u, p), codes=d, p=probs(d, codes, perm), meta=meta)
 
     def sub(self, a: dict, chs: list[int]) -> dict:
         u, p, opts, codes = P.subtopic_prompt(a, chs)

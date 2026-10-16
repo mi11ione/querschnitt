@@ -1,7 +1,7 @@
 // Headless check: opens the app in Chrome over the DevTools protocol (no npm deps), runs scripted steps, prints console
 // errors and writes screenshots to app/dev/shots/. Usage: node app/dev/shoot.mjs [base-url|-] [only-name]
 import { spawn } from 'node:child_process';
-import { writeFileSync, mkdirSync, mkdtempSync } from 'node:fs';
+import { writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -180,5 +180,7 @@ async function main() {
     console.log(`${sc.name}: ready ${ready} ms ${info}${errs.length ? '\n  ' + errs.join('\n  ') : ''}`);
   }
   ws.close(); ch.kill('SIGTERM');
+  await new Promise(r => { ch.once('exit', r); setTimeout(r, 3000); });   // the profile goes once Chrome has closed it
+  try { rmSync(prof, { recursive: true, force: true }); } catch (e) { /* */ }
 }
 main().catch(e => { console.error(e); process.exit(1); });

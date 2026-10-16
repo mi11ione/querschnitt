@@ -242,3 +242,40 @@ subagent C on A≠B. Outcomes per topic and pooled: precision of flags (Wilson 9
 2,000), paired differences variant − shipped in precision and recall (same bootstrap). Points truncated, intervals outward.
 Product rule: the variant goes into the product only if the pooled precision difference interval lies above 0 and no
 recall-difference interval (pooled or per topic) lies below 0; otherwise the product stays as it is. Reported as measured.
+
+## 2026-10-16 11:33 CEST — S33 the S25 held-out affairs read from the French text (before any S33 call)
+Why: production reads federal affairs from the German text, so the held-out S25 (927 APS-labelled federal affairs, 926 read
+in German) says nothing about French; S22 measured Italian on the design set (S9) with D1. S33 measures French held out.
+Items and gold: the 927 S25 affairs (`eval/s25/items.jsonl`, ids `eval/s25/ids.txt`), gold = the APS editors' chapter.
+French input (`eval/s33/run.py build`, data only, run before this entry; no call): from OPD's bulk export `../data/opd-new`,
+`title_fr` and `title_long_fr` (cleaned as `data.py`), and the French text of the affair's own OPD text row in production's
+federal order (`data.CHE_ORDER`, «Texte déposé» first), first 1,500 characters, used only where it differs from the German
+text of the same row; else French title + long title only; no attached documents. Counts: 580 with French text, 347 title
+only (291 of them were read in S25 with a German document text, 56 had no text in German either); no affair has a French long
+title (none has a German one); all 580 French texts differ from the German. One affair (153932) is French in production
+already; its S33 input is identical to the S25 one and it is kept. Other fields as the production input row; lang = "fr".
+Design: what production runs for a FRENCH federal affair today. `engine.ch1_prompt` shows the five APS-labelled examples
+only for federal affairs with lang = "de", so a French affair gets D1 read-back WITHOUT examples: `prompts.chapter_prompt(a,
+perm)` in the French frame (lang "fr"; chapter names French, subtopic names German as published), identity order; the S1
+permutation as second reading only when the first reading's top p < 0.9 (`engine.need_ch2`; S22 asked both orders always);
+one subtopic request over the top 2–3 chapters (`prompts.subtopic_prompt`, French frame); the chapter read back
+(`compose.chapter_decision`), composed by `compose.decide` as the export composes it.
+Run: the batch runner (`eval/s33/run.py run` = `querschnitt.batch run --inputs eval/s33/inputs_fr.jsonl.gz --out runs/s33
+--ids eval/s25/ids.txt --steps ch sub --topics --conc 2 --max-rate 0.6 --cap 0.5`), model `swiss-ai/apertus-v1.5-8b`, never
+a system message; the lock in `runs/s33/state.json` is written before the first call to build
+vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840, so a call on any other build stops the run and no row of another build is
+used. Budget ≤ USD 0.5 list price.
+Primary: (1) French top-1 vs APS editors (Wilson 95%); (2) the paired difference French − German on the same affairs, German =
+the shipped S25 decisions (`eval/s25/decisions.jsonl`, D4: five examples on the German text), paired bootstrap 2,000 over
+affairs, random.Random(2026), percentile 2.5/97.5.
+Secondary: (a) French vs German with the SAME design. The full German D1 read-back cannot be composed without new calls:
+`runs/s25` holds the subtopic request for the D1 chapter set (from the no-example readings) for 171 of the 927 affairs only
+(716 missing; coverage counted before this entry, no accuracy computed), so it is skipped. Instead, same design at the level of
+the chapter readings (no read-back): top of the geometric mean of the readings production asks for a no-example affair
+(identity order; S1 order where the first top p < 0.9; else the first reading) in both languages — German from the identity-order
+no-example reading `eval/s25b/raw.jsonl` and the S1-order rows of `runs/s25` (the 40 affairs whose document text the 16 Oct
+inputs rebuild trims are matched with their S25-time input, the untrimmed document head, verified by prompt id); French from
+`runs/s33`; paired bootstrap as the primary. (b) top-3, French and German shipped. (c) lanes: readings agree / disagree (one
+reading with top p ≥ 0.9 counts as agree) with share and accuracy each; also production's pass / please-check lane (calibration
+map fitted on S16). (d) French with text (580) vs title only (347), German shipped on the same affairs.
+Points truncated, intervals rounded outward. Reported as measured.

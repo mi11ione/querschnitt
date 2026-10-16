@@ -37,27 +37,28 @@ site) → `i` Anbindung: «letzte Nacht», the cost line, then the repository bl
   the quote; if not, use the fallback affair in the Gate 1 table.
 
 ## Backup video
-If the venue Wi-Fi fails, play `dist/querschnitt-demo.mp4` (silent; the finals voice runs over it). `make film` records it
-from the live site in one command (`~15 min`, needs node, Chrome and ffmpeg): `app/dev/film.mjs` plays the storyboard below
-in headless Chrome, one virtual-time step per frame, so a slow network or machine cannot cause stutter or half-loaded
-frames (a step that waits for a fetch is not filmed), then encodes `1920×1080`, `30 fps`, H.264 and checks the file with
-ffprobe; beat and caption times go to `dist/querschnitt-demo.beats.json`. Re-record after the evening export refresh, then
-watch it once end to end. Preview without encoding: `node app/dev/film.mjs --frames /tmp/film --every 30`.
-The Woche beat adapts to the week: it scrolls to the two ranked rows with the most languages, names the languages it shows,
-points at a red tick if one is in view and opens a German example in the pass lane (the script prints which).
+If the venue Wi-Fi fails, play `dist/querschnitt-demo.mp4` (silent, about 1:42; the finals voice runs over it). `make film`
+records it from the live site in one command (`~8 min`, needs node, Chrome and ffmpeg): `app/dev/film.mjs` plays the
+storyboard below in headless Chrome, one virtual-time step per frame, so a slow network or machine cannot cause stutter or
+half-loaded frames (a step that waits for a fetch is not filmed), then encodes `1920×1080`, `30 fps`, H.264 and checks the
+file with ffprobe (constant rate, every filmed frame encoded, at most two minutes); beat and caption times go to
+`dist/querschnitt-demo.beats.json`. Re-record after the evening export refresh, then watch it once end to end. Preview
+without encoding: `node app/dev/film.mjs --frames /tmp/film --every 30`.
+The Woche beat adapts to the week: it scrolls to the two ranked rows with the most languages, names the languages in view,
+points at a red tick if one is in view (else rests on the rows) and opens a German pass-lane example with a whole quote
+(the script prints which). Times below are from the test take of 16 Oct; a red tick in view adds a few seconds to the Woche.
 
 | Time | Screen | Caption (lower third) |
 |---|---|---|
 | 0:00 | «Neueste Woche»: the sentence, the week by level and language | Last week in Swiss parliaments, by topic |
-| 0:05 | scroll through two topic rows, their quoted examples | Quoted sentences in German and French (the languages in view) |
-| 0:16 | the cursor rests on a red tick, its tip shows | Red tick: unsure, so a person checks |
-| 0:20 | click an example → Karte: the plain why-sentence, then the case scrolls to the quoted sentence | Why this topic, in one plain sentence · The sentence in the affair that supports it |
-| 0:34 | Überblick | One map per topic, same scale |
-| 0:39 | click Digitalisierung → its map | Digitalisierung across every parliament · AI judge: flags 0.905 right, keywords 0.756 |
-| 0:50 | Prüfstand, the lead block: held-out row, then the lane row | 927 unseen federal affairs: 0.696 match the editors · Two thirds pass unchecked, right in 0.812 |
-| 1:04 | Neues Thema: the recorded real run plays, its label in view, decisions stream in | A new topic from one sentence: recorded run |
-| 1:25 | Anbindung: the topics table and Hop loader, scroll to last night | The topics table and loader for OpenParlData · On Apertus: USD 0.333 per 1,000 affairs |
-| 1:38 | hold, fade to white | github.com/mi11ione/querschnitt |
+| 0:05 | scroll through two topic rows, their quoted examples; the cursor on a red tick if one is in view | Quoted sentences in German and French (the languages in view) · Red tick: unsure, so a person checks |
+| 0:18 | click an example → Karte: the plain why-sentence, then the case scrolls to the quoted sentence | Why this topic, in one plain sentence · The sentence in the affair that supports it |
+| 0:31 | Überblick | One map per topic, same scale |
+| 0:37 | click Digitalisierung → its map | Digitalisierung across every parliament · AI judge: flags 0.905 right, keywords 0.756 |
+| 0:48 | Prüfstand, the lead block: held-out row, then the lane row | 927 unseen federal affairs: 0.696 match the editors · Two thirds pass unchecked, right in 0.812 |
+| 1:02 | Neues Thema: the recorded real run plays, its label in view, decisions stream in | A new topic from one sentence: recorded run |
+| 1:24 | Anbindung: the topics table and Hop loader, then last night's run | The topics table and loader for OpenParlData · On Apertus: USD 0.333 per 1,000 affairs |
+| 1:34 | the page scrolls on to /changes and the footprint, fade to white | github.com/mi11ione/querschnitt |
 
 ## Offline
 The demo runs with Wi-Fi off once the data is on the laptop.

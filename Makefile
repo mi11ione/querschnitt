@@ -18,7 +18,9 @@
 #   make report           docs/REPORT.md -> dist/querschnitt-report.pdf (A4; markdown-it-py + headless Chrome + node;
 #                         REPORT_DATE=YYYY-MM-DD fixes the printed date; CHROME=... for another Chrome)
 #   make report-png       the PDF's pages as PNGs in dist/report-pages/ for review (needs pdftoppm, poppler)
-.PHONY: report report-png report-figure deps install run demo load serve test claims eval delta delta-plan smoke fake-endpoint docker up-full up-lite clean-db data data-release
+#   make film             the backup demo video from the live site -> dist/querschnitt-demo.mp4 (headless Chrome + node + ffmpeg;
+#                         FILM_URL=... for another copy of the app; docs/DEMO.md «Backup video»)
+.PHONY: report report-png report-figure film deps install run demo load serve test claims eval delta delta-plan smoke fake-endpoint docker up-full up-lite clean-db data data-release
 VENV   := .venv/bin/python
 PY     ?= $(VENV)
 HOST   ?= 127.0.0.1
@@ -169,3 +171,13 @@ report-png: report
 APP_URL ?= http://127.0.0.1:8765/
 report-figure:
 	node tools/report/chrome.mjs shot '$(APP_URL)?lang=de#pruef' docs/img/pruefstand.png --size 1440x900 --scale 2 --clip 984,112,442,400
+
+# the backup demo video (docs/DEMO.md «Backup video»): app/dev/film.mjs plays its storyboard on the live site in headless
+# Chrome, one virtual-time step per frame (30 fps, nothing depends on machine or network speed), encodes H.264 and checks
+# the file with ffprobe (constant 30 fps, every filmed frame encoded, at most 120 s); beats and captions in *.beats.json
+FILM_URL ?= https://querschnitt.mi11ion.io/
+FILM_OUT ?= dist/querschnitt-demo.mp4
+film:
+	@command -v node >/dev/null 2>&1 || { echo "make film needs node >= 22 (WebSocket) to drive headless Chrome"; exit 2; }
+	@test -x /opt/homebrew/bin/ffmpeg || command -v ffmpeg >/dev/null 2>&1 || test -n "$$FFMPEG" || { echo "make film needs ffmpeg (brew install ffmpeg, or FFMPEG=...)"; exit 2; }
+	node app/dev/film.mjs --base '$(FILM_URL)' --out $(FILM_OUT)

@@ -280,7 +280,7 @@ export function liveTopic(slug, names, dec) {
   const c = D.c;
   const tp = { id: `adhoc/${slug}`, kind: 'live', scheme: `adhoc/${slug}`, code: `adhoc/${slug}:yes`, names, aliases: Object.values(names), dec,
     scored: i => dec.has(c.id[i]), hit: i => { const d = dec.get(c.id[i]); return !!d && !!d.flag; },
-    p: i => { const d = dec.get(c.id[i]); return d ? d.p : NaN; }, check: i => { const d = dec.get(c.id[i]); return !!d && d.p >= 0.3 && d.p < 0.7; },
+    p: i => { const d = dec.get(c.id[i]); return d ? d.p : NaN; }, check: i => { const d = dec.get(c.id[i]); return !!d && (d.lane === 'please_check' || (d.lane == null && d.p >= 0.3 && d.p < 0.7)); },   // the server's lane (incl. an unverified flag), else the p band
     coverage: () => null, count: 0 };
   return tp;
 }

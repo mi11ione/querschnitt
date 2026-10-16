@@ -287,7 +287,7 @@ export class Neu {
       if (d.id != null && d.p != null) {
         read++; const flag = d.flag != null ? !!d.flag : d.p >= 0.5; if (flag) flagged++;
         if (!D.rowOf.has(d.id)) outside++;
-        tp.dec.set(d.id, rec ? { p: d.p, flag, t: d.t, rec: d } : { p: d.p, flag, t: d.t });
+        tp.dec.set(d.id, rec ? { p: d.p, flag, lane: d.lane, t: d.t, rec: d } : { p: d.p, flag, lane: d.lane, t: d.t });
         lastT = performance.now(); if (!rec) this.fallB.hidden = true;
         kick();
       }

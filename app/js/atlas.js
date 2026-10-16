@@ -53,11 +53,15 @@ export class Atlas {
     // the same load per parliament: please-check rows per week / parliaments with affairs in the period
     const parl = new Set(); for (let i = 0; i < D.n; i++) if (c.day[i] >= D.dmin && c.day[i] <= D.dmax) parl.add(c.body[i]);
     const perParl = parl.size ? nC / weeks / parl.size : NaN;
+    // the same load by level (a desk per level): please-check APS rows per week
+    const lvOf = new Map(D.bodies.map(b => [b.key, b.level])), byLv = {};
+    for (let i = 0; i < D.n; i++) if (c.day[i] >= D.dmin && c.day[i] <= D.dmax && c.ch[i] >= 0 && c.lane[i] === 1) { const lv = lvOf.get(c.body[i]); byLv[lv] = (byLv[lv] || 0) + 1; }
     const fmt1 = x => Number.isNaN(x) ? '–' : (Math.floor(x * 10) / 10).toLocaleString(UI.lang === 'fr' ? 'fr-CH' : 'de-CH', { maximumFractionDigits: 1 });
     const bigShare = h('span', { class: 'bn', 'data-tip': `${num(nP)} ${L.of} ${num(nS)}` }, h('b', {}, pct(nS ? nP / nS : NaN, 0).replace(/\s/g, '\u2009')),
       h('span', {}, `${L.bigPass} · ${L.bigPassOf}`), h('span', { class: 'bn-sub', 'data-tip': `${num(nC)} ${L.of} ${num(nS)}` }, h('i', { class: 'rtick' }),
-        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.round(nC / weeks)))} · `,
-        h('span', { 'data-tip': L.bigPerParlTip(num(nC), num(weeks), num(parl.size)) }, L.bigPerParl(fmt1(perParl)))));
+        ` ${pct(nS ? nC / nS : NaN, 0)} ${L.bigShare} · ${L.bigPerWeek(num(Math.floor(nC / weeks)))} · `,
+        h('span', { 'data-tip': L.bigPerParlTip(num(nC), num(weeks), num(parl.size)) }, L.bigPerParl(fmt1(perParl)))),
+      h('span', { class: 'bn-sub dim' }, L.bigPerLevel(...['federal', 'cantonal', 'communal'].map(lv => num(Math.floor((byLv[lv] || 0) / weeks))))));
     const big = h('div', { class: 'big' },
       bigN(num(nS), L.bigScored), bigN(num(parlCount()[0]), L.parls(parlCount()[1])), bigN(num(weeks), L.bigWeeks),
       bigShare);

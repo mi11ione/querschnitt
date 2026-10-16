@@ -30,7 +30,8 @@ per-level breakdowns and source files: [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md) 
 | Basel-Stadt's own 46 themes as a scheme file vs the canton's hand-assigned «Thema 1», 2019–24 | 2,437 | names only 0.498 [0.478, 0.518]; with five of Basel's own labelled affairs as examples (other half; no training) 0.526 [0.506, 0.547], +0.028 [+0.014, +0.043] | keywords 0.181 · majority 0.053 |
 | Ticino's Gran Consiglio, in Italian: its own lead department (6 units) as a scheme file vs the department the canton assigns, 2023–26, affairs whose text does not name it (pre-registered) | 1,685 | 0.647 [0.624, 0.670]; where both readings agree (83% of affairs) 0.698 | keywords 0.219 · majority 0.194 |
 
-Also measured on the federal APS affairs ([Prüfstand §1](docs/PRUEFSTAND.md)): the Italian text against the German, +0.0007
+Also measured on the federal APS affairs ([Prüfstand §1](docs/PRUEFSTAND.md)): the held-out affairs read from the French text,
+0.675 against 0.696, paired −0.021 [−0.050, +0.007] (no gap measurable); the Italian text against the German, +0.0007
 [−0.020, +0.021] (no gap); an endpoint without assistant prefill, 0.705 vs 0.696 (no loss); five design variants, none
 better than the shipped one (best +0.0117 [−0.0008, +0.0244]); `make eval` on the production rows, 0.718 [0.693, 0.743].
 

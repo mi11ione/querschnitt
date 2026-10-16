@@ -97,6 +97,10 @@ nothing about language. The language evidence on human labels comes from other d
 
 A held-out French or Italian federal slice for the shipped design is still to be measured.
 
+
+Language on the held-out set (S33): read from the French text, the 927 held-out affairs get 0.675 against 0.696 from the
+German, paired −0.021 [−0.050, +0.007]; with the same design in both languages the gap is −0.003 [−0.030, +0.024].
+Top-3 is lower in French (−0.056 [−0.085, −0.029]).
 ## 5. Runtime and cost
 Measured on the corpus run at Public AI list price ([`eval/cost/results.json`](../eval/cost/results.json)): USD 0.333 per
 1,000 affairs for chapter, subtopic and one ad-hoc topic; about 61.5 minutes per 1,000 affairs at the job's own

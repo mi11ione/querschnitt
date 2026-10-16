@@ -217,8 +217,9 @@ not use them for counts. Labels name what they count:
   brushes other weeks. The replay starts by itself once per page load in static mode.
 - Detail: one plain sentence above each decision graphic («Zweimal gefragt (mit und ohne Beispiele): beide Male «X» →
   ohne Prüfung.»; DE/FR parliaments «Auf Deutsch und auf Französisch gefragt …»); the bars stay for experts.
-- Neues Thema live cap: `#neu?limit=25` or the select beside the period sends `limit` with `POST /adhoc` (newest
-  affairs first); default no cap; hidden in static mode.
+- Neues Thema live cap: `#neu?limit=25` or the select beside the period sends `limit` with `POST /adhoc`; a capped
+  run reads candidates first (term and subtopic hits, then the newest rest; SERVICE.md «Neues Thema») and the run line
+  then adds «Kandidaten zuerst (Begriffe, Unterthemen)»; default no cap; hidden in static mode.
 
 ## Diese Woche (15 Oct)
 - New first view and default route «Diese Woche» / «Cette semaine» (`#woche`, `#woche?d=<Monday ISO>` for an older
@@ -324,3 +325,38 @@ not use them for counts. Labels name what they count:
   25 decisions in recorded order (`clipRec`), progress out of 25, done at the 25th decision's time (≈ 20 s at ×4); the
   run line reads `«gelesen 25 / 25 · markiert 4 · 76 s · Aufzeichnung, gekürzt auf 25 · ×4»`. Shot
   `neu-replay-limit-1440`.
+
+## Juror round 8 (16 Oct, querschnitt-review/r8 J3, J4)
+- **«letzte Nacht», honest.** The endpoint-outage sentence appears only when the night record carries `cut_reason` (a
+  real outage). An even-day cut without it is the scheduled test cut (ops/nightly.sh): «geplanter Unterbruch: der erste
+  Durchgang läuft jeden zweiten Tag ohne Modell, als Test.» / «interruption planifiée : …». A hand-written `note`
+  (`{de, fr, en}` or a string) in `runs/nightly/last.json` replaces the queue/drain/USD figures it corrects; the export
+  copies the record whole (`meta.nightly`, incl. `note`). The 16 Oct record carries one: the model pass was stopped by
+  hand after 105 affairs, because the `9,645` queued were letterhead-trimmed inputs a parallel re-score was already
+  scoring; the queue then fell to `1,179` because that re-score filled the store (log `runs/nightly/2026-10-16.log`).
+  `cli.write_last` starts a fresh record on the next date, so the note does not carry over.
+- **The outage stays visible.** The export writes `meta.nightly_outage` from the newest `eval/nightly/<date>.json` with
+  `cut_reason` (date, queue before/after, drain minutes, USD, reason, file). The panel shows it on its own line under
+  «letzte Nacht»: «Ausfall 15.10.2026: Warteschlange 49 → 0 · abgebaut in 9.6 min · USD 0.0215» (FR «Panne du …»),
+  then the outage sentence with the reason on hover. Minutes and USD truncated (0.1 / 0.0001), never rounded up.
+- **Überblick: saved topics apart.** The saved narrow topics (Hitzeschutz, Wolf, KI an Schulen) leave the APS grid and
+  follow it in a quieter row «Gespeicherte Themen (gemessen gegen KI-Richter)» (heading generic when a row's gold is not
+  the judge). Under each map: «eng · Präzision 0.225 (KI-Richter)» — the leading figure of the topic's Prüfstand row
+  (`pruefstand.json rows[].topic`, `result` / `result_fr` as written); no row → «eng · nicht gemessen», never a number.
+- **Procedural quotes (Neueste Woche).** `woche.js PROC` lists phrases that name the instrument, not the subject:
+  DE «Der Bundesrat/Regierungsrat/Gemeinderat … wird beauftragt/gebeten/ersucht (, zu prüfen und Bericht zu erstatten)
+  (, folgende Fragen zu beantworten)», «bitte ich den … um die Beantwortung der folgenden Fragen», «… haben
+  Ratsmitglieder, Kommissionen und Fraktionen das Recht, Interpellationen einzureichen», «gestützt auf Art./§ …»,
+  «Der Grosse Rat … wolle beschliessen», «Antwort des Regierungsrates», form labels (Eingereicht von:, Erst-/
+  Mitunterzeichnende:, Einreichedatum:, Geschäftstyp:, Urheber/in:, Zuständig:, Signatur:, Dringlichkeit:);
+  FR «Le Conseil fédéral/d'État/communal … est chargé/prié/invité de (répondre aux questions suivantes)», «en vertu/
+  conformément à l'art. …», «Le Grand Conseil décrète/arrête», «Réponse du Conseil d'État», form labels (Signataire:,
+  Cosignataires:, Date de dépôt:, Réception au SGC:, Département(s):, Numéro:, Heure:); IT «Il Consiglio federale/di
+  Stato/comunale, Il Municipio è incaricato/invitato di (rispondere alle seguenti domande)», «ai sensi dell'art. …»,
+  «chiediamo al Municipio di rispondere alle seguenti domande / quanto segue», «Lodevole Municipio». A quote is
+  procedural when it contains one of these and, with them removed, fewer than 4 content words (≥ 4 letters, not in the
+  small DE/FR/IT stop list) remain or none shares a 7-letter stem with the topic. The topic's stems come from its
+  names and aliases, a chapter's APS subtopics (`scheme_aps.json subtopics[].ch`, German names) and a saved topic's
+  bracketed question text. A procedural quote is never shown: the row counts as title evidence («Beleg: der Titel» /
+  «Extrait : le titre») and, like other title evidence, only fills a slot no clean quote can. Among clean quotes, one
+  that shares a stem with the topic ranks first (+0.75). The bottom note says so.

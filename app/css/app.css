@@ -506,3 +506,11 @@ body.v-ueber .ctxw{display:none}
 @media (max-width:1100px){.wo-row{grid-template-columns:minmax(0,1fr);gap:12px 0}.wo-tp{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:0 24px;align-items:start}.wo-tp .wo-lv{grid-column:2;grid-row:1/3}}
 @media (max-width:599px){.wo-h{font-size:var(--f4)}.wo-lv.wide{width:100%}.wo-ex{grid-template-columns:minmax(0,1fr);gap:12px 0}.wo-ex .wo-a:nth-child(3){display:none}
  .wo-tp{grid-template-columns:minmax(0,1fr)}.wo-tp .wo-lv{grid-column:auto;grid-row:auto;max-width:none}}
+
+/* Überblick: saved narrow topics apart from the APS maps, quieter (16 Oct, r8) */
+.atl-sv{margin-top:28px;padding-top:4px;border-top:1px solid var(--hair)}
+.atl-sv .atl-h3{margin:8px 0 12px;color:var(--ink2)}
+.atl-saved .sv .nw{white-space:nowrap}
+.atl-saved .atl-n .nm{font-weight:400;color:var(--ink2)}
+.anb .anb-out{margin:16px 0 0}
+.anb .anb-out + .tm{margin-top:0}

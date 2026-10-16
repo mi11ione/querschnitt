@@ -235,7 +235,16 @@ def run(args):
         meta["mode"] = lock["mode"]
     nl = ROOT / "runs/nightly/last.json"
     if nl.exists():
-        meta["nightly"] = json.loads(nl.read_text())
+        meta["nightly"] = json.loads(nl.read_text())   # copied whole, incl. `cut_reason` (an outage) and `note` (a hand-written correction)
+    # the newest archived night with a real outage (eval/nightly/<date>.json carrying `cut_reason`), shown apart from
+    # «letzte Nacht» so a scheduled test cut is never read as an outage, and the outage stays visible after it
+    for f in sorted((ROOT / "eval/nightly").glob("*.json"), reverse=True):
+        rec = json.loads(f.read_text())
+        if rec.get("cut_reason"):
+            meta["nightly_outage"] = {k: rec.get(k) for k in ("date", "pending_after_cut", "pending_after_drain", "drain_minutes",
+                                                               "usd", "new_affairs", "cut_reason", "note") if rec.get(k) is not None}
+            meta["nightly_outage"]["file"] = str(f.relative_to(ROOT))
+            break
     jdump(out / "meta.json", meta)
     pf = ROOT / "eval/pruefstand_app.json"
     if pf.exists():

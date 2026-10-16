@@ -14,12 +14,21 @@ export class Atlas {
     this.root = root; this.openTopic = openTopic; this.openAffair = openAffair;
     bindTips(root);
   }
+  // Digitalisierung and the APS chapters first; the saved narrow topics after them, in their own quiet row
   topics() {
     const dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
     const saved = [...TOPIC_BY_ID.values()].filter(x => x.saved).sort((a, b) => b.count - a.count);
     const ch = [...TOPIC_BY_ID.values()].filter(x => x.kind === 'chapter' && x.code !== 'aps:none').sort((a, b) => b.count - a.count);
     const none = TOPIC_BY_ID.get('aps:none');
-    return [dig, ...saved, ...ch, none].filter(Boolean);
+    return [dig, ...ch, none, ...saved].filter(Boolean);
+  }
+  // a saved topic's measured precision of flags: the leading figure of its Prüfstand row (pruefstand.json rows[].topic),
+  // exactly as written there; null when the topic has no row (then «nicht gemessen», never a number)
+  prec(tp) {
+    const r = ((D.pruef && (D.pruef.rows || D.pruef)) || []).find(x => x.topic === tp.id);
+    if (!r) return null;
+    const v = /^\s*(\d+[.,]\d+)/.exec(String((UI.lang === 'fr' && r.result_fr) || r.result || ''));
+    return v ? { v: v[1], gold: r.gold } : null;
   }
   render() {
     const L = t(), c = D.c, root = this.root;
@@ -60,7 +69,7 @@ export class Atlas {
     for (const [k, d] of Object.entries(D.geo.cantons)) dg.append(s('path', { id: `cp-${k}`, d }));
     dg.innerHTML += '<pattern id="atl-h" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" style="stroke:var(--hatch);stroke-width:2"/></pattern>';
     defs.append(dg);
-    const grid = h('div', { class: 'atl-grid' });
+    const grid = h('div', { class: 'atl-grid' }), sgrid = h('div', { class: 'atl-grid atl-saved' });
     tps.forEach((tp, j) => {
       const st = stat[j], name = tp.names[UI.lang] || tp.names.de;
       const svg = s('svg', { viewBox: `0 ${-BAND - 14} ${W} ${H + BAND + 14}`, class: 'atl-map', role: 'img', 'aria-label': name });
@@ -74,15 +83,21 @@ export class Atlas {
         svg.append(u);
         if (!st.n[j2]) svg.append(s('use', { href: `#cp-${k}`, fill: 'url(#atl-h)', class: 'atl-hz' }));
       }
+      // a saved topic says it is narrow and how often its flags were right (Prüfstand), under its map
+      const pr = tp.saved ? this.prec(tp) : null;
       const cell = h('button', { class: `atl-cell ${j === 0 ? 'first' : ''}`, type: 'button', onclick: () => this.openTopic(tp), 'aria-label': name },
         svg, h('span', { class: 'atl-n' }, h('span', { class: 'nm' }, name), h('span', { class: 'ct' }, num(tp.count))),
-        tp.saved ? h('span', { class: 'sv' }, tp.measured ? L.savedMark : L.notMeasured) : '');
-      grid.append(cell);
+        tp.saved ? h('span', { class: 'sv' }, h('span', { class: 'nw' }, `${L.narrow} ·`), ' ', pr ? [h('span', { class: 'nw' }, `${L.prec} ${pr.v}`), ' ',
+          h('span', { class: 'nw' }, `(${pr.gold === 'judge' ? L.judgeLc : L.humanLc})`)] : h('span', { class: 'nw' }, L.notMeasured)) : '');
+      (tp.saved ? sgrid : grid).append(cell);
     });
+    const golds = new Set(tps.filter(x => x.saved).map(x => this.prec(x)).filter(Boolean).map(x => x.gold));
+    const savedSec = sgrid.childNodes.length ? h('section', { class: 'atl-sv' },
+      h('h3', { class: 'atl-h3' }, golds.size === 1 && golds.has('judge') ? L.savedAtlJ : L.savedTopics), sgrid) : '';
     const legend = h('p', { class: 'atl-leg' }, L.atlasLeg, ' ',
       ...[[1, '< 2.5'], [2, '2.5'], [3, '5'], [4, '10'], [5, '≥ 20']].map(([k, lab]) => h('span', { class: 'lk' }, h('span', { class: 'sw1', style: `background:var(--r${k})` }), lab)), h('span', {}, '%'),
       h('span', { class: 'lk' }, h('span', { class: 'sw1 hz' }), L.notScored));
-    root.replaceChildren(h('div', { class: 'atl' }, lede, big, h('div', { class: 'atl-body' }, h('div', { class: 'atl-main' }, legend, grid), this.week()), defs));
+    root.replaceChildren(h('div', { class: 'atl' }, lede, big, h('div', { class: 'atl-body' }, h('div', { class: 'atl-main' }, legend, grid, savedSec), this.week()), defs));
   }
   // «Neueste Woche»: new affairs of the newest week by level, then up to 5 notable ones (one chapter on ≥ 2 levels, then highest p)
   week() {

@@ -26,6 +26,8 @@ const SCEN = [
   { name: 'woche-lag-fr-375', w: 375, h: 812, mobile: true, lang: 'fr', url: '#woche', steps: [`window.__wocheReady`, `document.dispatchEvent(new KeyboardEvent('keydown',{key:']'}))`, `window.__wocheReady`] },
   { name: 'woche-open-1440', w: 1440, h: 900, url: '#woche', steps: [`window.__wocheReady`, `document.querySelector('.wo-a').click()`, 800], print: `location.hash` },
   { name: 'ueber-1440', w: 1440, h: 900, url: '#ueber' },
+  { name: 'ueber-saved-1440', w: 1440, h: 900, url: '#ueber', steps: [`document.querySelector('.atl-sv').scrollIntoView({ block: 'center' })`] },
+  { name: 'ueber-saved-fr-375', w: 375, h: 812, mobile: true, lang: 'fr', url: '#ueber', steps: [`document.querySelector('.atl-sv').scrollIntoView({ block: 'center' })`] },
   { name: 'ueber-375', w: 375, h: 812, mobile: true, url: '#ueber', full: true },
   { name: 'ueber-fr-1440', w: 1440, h: 900, lang: 'fr', url: '#ueber' },
   { name: 'karte-1440', w: 1440, h: 900, url: '#karte' },

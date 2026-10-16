@@ -52,6 +52,70 @@ function cleanQuote(q) {
   return [s, bs];
 }
 
+// Procedural boilerplate (docs/APP.md «Procedural quotes»): phrases that say what kind of instrument an affair is, not what
+// it is about. A quote counts as procedural when it contains one of them and, once they are removed, fewer than 4 content
+// words remain, or none shares a stem with the topic (its names, its subtopics, a saved topic's question) and the rest
+// is short (< 6 content words) or carries form labels (FORM). Content words: ≥ 4 letters, not in STOP.
+// Such a quote is never shown: the row falls back to its title as evidence («Beleg: der Titel»).
+const GOV = '(?:bundesrat|regierungsrat|gemeinderat|stadtrat|staatsrat|landrat|kleine rat|regierung|exekutive)\\p{L}*';
+const PROC = [
+  // DE
+  new RegExp(`\\b(?:der|die) ${GOV} (?:wird|werden) (?:beauftragt|gebeten|ersucht|eingeladen|aufgefordert)(?:,? zu prüfen(?: und bericht zu erstatten)?)?(?:,? (?:die )?folgenden? fragen? zu beantworten)?\\s*[,:]?`, 'giu'),
+  new RegExp(`\\b(?:ich )?bitte (?:ich )?(?:den|die) ${GOV} (?:um die beantwortung der folgenden fragen?|(?:um )?folgende fragen? zu beantworten)\\s*:?`, 'giu'),
+  /\b(?:haben|hat|steht)\b[^.]{0,40}?\b(?:ratsmitglieder|mitglieder|kommissionen|fraktionen)\b[^.]*?\brecht\b[^.]*?\b(?:einzureichen|zu stellen|einzubringen|zu verlangen)\b\.?/giu,
+  /\bgestützt auf (?:art(?:\.|ikel)?|§)[^,:]{0,60}[,:]?/giu,
+  /\bder (?:grosse rat|kantonsrat|landrat|einwohnerrat|gemeinderat|stadtrat) (?:wolle|möge) beschliessen\s*:?/giu,
+  /\bantwort des (?:bundesrates|regierungsrates|gemeinderates|stadtrates|staatsrates)\b/giu,
+  // FR
+  /\ble conseil (?:fédéral|d['’]état|communal|municipal|administratif|exécutif) (?:est|sont) (?:chargé|prié|invité)e?s? (?:de|d['’])(?: répondre aux questions suivantes)?\s*:?/giu,
+  /\b(?:en vertu|conformément|en application) (?:de l['’]|à l['’]|des |aux |de )?art(?:\.|icles?)[^,:]{0,60}[,:]?/giu,
+  /\ble grand conseil (?:décrète|arrête)\s*:?/giu,
+  /\bréponse du conseil (?:d['’]état|fédéral|communal|municipal)\b/giu,
+  // IT
+  /\bil (?:consiglio (?:federale|di stato|comunale)|municipio) (?:è|viene) (?:incaricato|invitato|pregato) (?:di|a)(?: rispondere alle seguenti domande)?\s*:?/giu,
+  /\b(?:ai sensi|giusta|conformemente|in virtù) (?:del|dell['’]|dello|degli|all['’])\s*(?:art(?:\.|icolo)|artt\.)[^,:]{0,60}[,:]?/giu,
+  /\b(?:chiediamo|chiedo|chiedono) (?:al (?:lodevole )?(?:municipio|consiglio di stato) )?(?:di rispondere alle seguenti domande|quanto segue)\s*:?/giu,
+];
+// standard form lines and letterheads (labels of a submission form, the address of a Ticino municipality)
+const FORM = [
+  /\b(?:eingereicht von|erstunterzeichnende?r?|mitunterzeichnende?r?|mitunterzeichnet von|einreichedatum|datum der einreichung|geschäftstyp|urheber\/?in|zuständig|signatur|dringlichkeit(?: verlangt| beantragt)?)\s*:/giu,
+  /\b(?:signataires?|cosignataires?|date de dépôt|réception au sgc|département\(s\)|numéro|heure|à compléter par le secrétariat[^.:]*)\s*:/giu,
+  /\blodevole (?:municipio|consiglio di stato)\b/giu,
+];
+const STOP = new Set(('und oder sowie der die das des den dem ein eine einer eines einem für fur über uber mit von vom zum zur bei aus nach auch sich sind wird werden dass nicht '
+  + 'andere anderen weitere sonstige allgemein allgemeine allgemeiner fragen frage politik politische politischen politisches bereich bereiche massnahmen schweiz schweizer '
+  + 'kanton kantone kantonale bund bundes thema themen betrifft folgende parlamentarische geschäft geschaft '
+  + 'les des dans pour avec sans leur sont autres autre questions question générale generale général general politique politiques problèmes problemes mesures suisse '
+  + 'canton cantons fédéral federal fédérale federale thème theme objet parlementaire suivant concerne '
+  + 'della delle degli dello nella nelle alla alle sulla altri altre questioni generali politica politiche problemi misure svizzera cantone cantoni federale tema oggetto '
+  + 'parlamentare seguente riguarda '
+  // the vocabulary of a request, not of a subject
+  + 'vorzulegen vorlegen anzupassen erforderlichen erforderliche notwendigen notwendige gesetzlichen gesetzliche grundlagen grundlage ergreifen treffen '
+  + 'schaffen prüfen bericht erstatten sicherzustellen entsprechend entsprechende aufzunehmen vorzuschlagen ausarbeiten auszuarbeiten unterbreiten '
+  + 'parlament bundesversammlung folgenden nécessaires prendre proposer modification rapport présenter afin suivantes necessarie adottare proporre '
+  + 'rapporto affinché seguenti').split(' ').map(w => norm(w)));
+const words = x => (norm(x).match(/\p{L}{4,}/gu) || []).filter(w => !STOP.has(w));
+const STEMS = new Map();
+// the topic's stems: its names (and aliases), a chapter's APS subtopics (German names), a saved topic's question in brackets
+function stems(tp) {
+  if (STEMS.has(tp.id)) return STEMS.get(tp.id);
+  const src = [...Object.values(tp.names || {}), ...(tp.aliases || [])];
+  if (tp.kind === 'chapter') for (const x of Object.values((D.scheme && D.scheme.subtopics) || {})) if (x.ch === tp.idx) src.push(x.de);
+  const st = ((D.scheme && D.scheme.topics) || []).find(x => x.id === tp.id);
+  if (st && st.question) for (const q of Object.values(st.question)) for (const m of String(q).matchAll(/\(([^)]*)\)/g)) src.push(m[1]);
+  const out = [...new Set(src.flatMap(words).map(w => w.slice(0, 7)))];
+  STEMS.set(tp.id, out);
+  return out;
+}
+// [procedural, topic signal] of a cleaned quote
+function signalOf(q, tp) {
+  let rest = q, hit = false, form = false;
+  for (const re of PROC) { re.lastIndex = 0; if (re.test(rest)) { hit = true; re.lastIndex = 0; rest = rest.replace(re, ' '); } }
+  for (const re of FORM) { re.lastIndex = 0; if (re.test(rest)) { hit = form = true; re.lastIndex = 0; rest = rest.replace(re, ' '); } }
+  const n = norm(rest), sig = stems(tp).some(x => n.includes(x)), k = words(rest).length;
+  return [hit && (k < 4 || (!sig && (k < 6 || form))), sig];
+}
+
 export class Woche {
   constructor(root, { openTopic, openAffair }) {
     this.root = root; this.openTopic = openTopic; this.openAffair = openAffair;
@@ -205,11 +269,14 @@ export class Woche {
         const d = await detail(c.id[i]); const ev = this.quote(x.tp, d);
         if (!ev) continue;
         const [q, qual] = cleanQuote(ev.quote), nt = norm(bare(c.title[i]));
-        const onTitle = ev.field === 'title' || norm(q.replace(/^… /, '')).startsWith(nt.slice(0, 40)), weak = onTitle || qual < 0.6;
+        // procedural boilerplate with no topic signal: the title is the evidence instead
+        const [proc, sig] = signalOf(q, x.tp);
+        const onTitle = proc || ev.field === 'title' || norm(q.replace(/^… /, '')).startsWith(nt.slice(0, 40)), weak = onTitle || qual < 0.6;
         const p = x.tp.p(i);
-        // a clean title beats a weak fragment (letterhead, form fields, mid-sentence start)
-        const score = (onTitle ? 0 : weak ? -1 : 1) + qual + (Number.isNaN(p) ? 0 : p * 0.5);
-        cands.push({ i, d, q, onTitle, weak, score, lang: langOf(i, d), chk: !!x.tp.check(i) });
+        // a clean title beats a weak fragment (letterhead, form fields, mid-sentence start); a quote that shares a word
+        // with the topic or its subtopics comes first
+        const score = (onTitle ? 0 : weak ? -1 : 1) + qual + (!onTitle && sig ? 0.75 : 0) + (Number.isNaN(p) ? 0 : p * 0.5);
+        cands.push({ i, d, q, onTitle, proc, weak, score, lang: langOf(i, d), chk: !!x.tp.check(i) });
       }
       cands.sort((a, b) => b.score - a.score || c.day[b.i] - c.day[a.i]);
       // diversity first among good quoted sentences, then titles and fragments as evidence: new language and level, new language, new parliament;
@@ -231,7 +298,7 @@ export class Woche {
     return out;
   }
 
-  example({ i, d, q, onTitle, lang }, tp, w) {
+  example({ i, d, q, onTitle, proc, lang }, tp, w) {
     const c = D.c, L = t();
     // the title in the interface language where the parliament publishes that version, else the original with its language
     const alt = d && d.title_alt && d.alt_lang === UI.lang && d.alt_lang !== lang;
@@ -245,7 +312,7 @@ export class Woche {
     return h('button', { class: 'wo-a', type: 'button', 'data-id': D.c.id[i], onclick: () => this.openAffair(i, tp, w) },
       h('span', { class: 't', lang: tlLang }, onTitle && !alt ? h('mark', {}, tl) : tl),
       meta,
-      onTitle && !alt ? h('span', { class: 'q dim' }, L.wkOnTitle) : h('span', { class: 'q' }, `«${q}»`));
+      (onTitle && !alt) || proc ? h('span', { class: 'q dim' }, L.wkOnTitle) : h('span', { class: 'q' }, `«${q}»`));
   }
 }
 

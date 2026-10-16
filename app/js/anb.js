@@ -33,9 +33,20 @@ export async function renderAnb(root) {
   const tr = (v, d) => Math.floor(v * 10 ** d + 1e-9) / 10 ** d;
   const cost = C && C.usd_per_1000_affairs != null ? h('p', { class: 'tm mono anb-cost' }, h('b', {}, `USD ${tr(Number(C.usd_per_1000_affairs), 3).toFixed(3)}`),
     ` ${L.anbCost(num(1000))}`, h('span', { class: 'dim' }, ` · ${C.file}`)) : '';
+  // the night's own record; a hand-written `note` (runs/nightly/last.json) replaces the queue figures it corrects. The
+  // outage sentence only when the record names an outage (`cut_reason`); an even-day cut is the scheduled test cut
+  const note = ng && ng.note ? (typeof ng.note === 'string' ? ng.note : ng.note[UI.lang] || ng.note.de) : '';
+  const qline = r => `${L.anbQueue} ${num(r.pending_after_cut ?? r.pending ?? 0)} → ${num(r.pending_after_drain ?? 0)} · ${L.anbDrain} ${r.drain_minutes != null ? tr(r.drain_minutes, 1) : '–'} min · USD ${r.usd != null ? tr(Number(r.usd), 4).toFixed(4) : '–'}`;
+  const dmy = iso => String(iso || '').slice(0, 10).split('-').reverse().join('.');
+  // the last real outage (meta.nightly_outage, from eval/nightly/<date>.json), always on its own line
+  const O = m.nightly_outage;
+  const outage = O ? [h('p', { class: 'tm mono anb-out' }, `${L.anbOutage(dmy(O.date))} ${qline(O)}`),
+    h('p', { class: 'tm mono dim', 'data-tip': O.cut_reason || '' }, L.anbCut)] : [];
   if (ng) right.append(h('div', { class: 'anb-sec anb-first' }, h('h2', {}, L.night),
-    h('p', { class: 'tm mono' }, `${ng.date} · OPD-Export ${String(ng.opd_export_generated || '').replace('T', ' ').slice(0, 16)} · ${L.anbNew} ${num(ng.new_affairs ?? 0)} · ${L.anbQueue} ${num(ng.pending_after_cut ?? ng.pending ?? 0)} → ${num(ng.pending_after_drain ?? 0)} · ${L.anbDrain} ${ng.drain_minutes != null ? tr(ng.drain_minutes, 1) : '–'} min · USD ${ng.usd != null ? tr(Number(ng.usd), 4).toFixed(4) : '–'}${ng.wall_min ? ` · ${num(Math.floor(ng.wall_min))} min` : ''}`),
-    ng.endpoint_cut_first_pass ? h('p', { class: 'tm mono dim', 'data-tip': ng.cut_reason || '' }, L.anbCut) : '', cost));
+    h('p', { class: 'tm mono' }, `${ng.date} · OPD-Export ${String(ng.opd_export_generated || '').replace('T', ' ').slice(0, 16)} · ${L.anbNew} ${num(ng.new_affairs ?? 0)}${note ? '' : ` · ${qline(ng)}`}${ng.wall_min ? ` · ${num(Math.floor(ng.wall_min))} min` : ''}`),
+    note ? h('p', { class: 'tm mono dim' }, note) : '',
+    ng.endpoint_cut_first_pass ? h('p', { class: 'tm mono dim', 'data-tip': ng.cut_reason || '' }, ng.cut_reason ? L.anbCut : L.anbSched) : '',
+    ...(O && O.date !== ng.date ? outage : []), cost));
   else if (cost) right.append(h('div', { class: 'anb-sec anb-first' }, cost));
   // (3) the Hop pipeline
   const steps = h('ol', { class: 'hop' });

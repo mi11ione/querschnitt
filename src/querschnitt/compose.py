@@ -173,6 +173,11 @@ def decide(a: dict, rows: dict, engine_ch1_prompt, topics: list[dict]) -> dict:
             other = next((v for l, v in reads.items() if l != a["lang"]), None)
             out["be-directorates"] = dict(code=code, p=p, gold=a.get("dept") or None, readings={l: v[0] for l, v in reads.items()},
                                           lane="please_check" if (other and other[0] != code) else "readings_agree", pids=pids)
+            # where the Grand Council's own field names a directorate («FIN Finanzdirektion»), that field is the value: the
+            # reading stays beside it as a comparison, and no inferred row is published over the parliament's own label
+            fc = "be:" + (a.get("dept") or "").split()[0] if (a.get("dept") or "").split() else None
+            if fc in {o["code"] for o in sch["options"]}:
+                out["be-directorates"].update(field=fc, inferred=code)
     for sch in named_schemes():   # a parliament's own scheme file (e.g. Basel-Stadt's themes): two code orders, lane
         if sch.get("body") != a["body"]:
             continue
@@ -298,7 +303,8 @@ def topic_rows(a: dict, dec: dict, lock: dict, calib=None, valid_from: str = "")
                             cutoffs_id=cut, prompt_id=d["pids"][-1], evidence=None))
     named_ids = {sch["id"] for sch in named_schemes()} | {"be-directorates"}
     for key, v in dec.items():
-        if key in named_ids:   # a parliament's own scheme file; Bern's directorates (flat, decided for body BE)
+        if key in named_ids and not v.get("field"):   # a parliament's own scheme file; Bern's directorates (flat, decided
+            # for body BE) — not where the parliament's own field already holds the value (OPD has it; compose `field`)
             out.append(dict(base, scheme=key, level=1, code=v["code"], rank=1, p_raw=round(v["p"], 4), p=None, lane=v["lane"],
                             cutoffs_id=None, prompt_id=",".join(v.get("pids") or []) or None, evidence=None))
         if key.startswith("adhoc/"):

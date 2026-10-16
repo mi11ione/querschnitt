@@ -195,10 +195,17 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   const be = (d && d.be) || (c.be[i] != null ? { code: c.be[i] } : null);
   const beT = TOPIC_BY_ID.get('be-directorates');
   if (be && beT) {
-    const code = String(be.code || '').replace(/^be:/, ''), o = beT.opt.get(code);
-    add(L.dir, h('span', {}, o ? h('span', { class: 'mono' }, `${o.abbr[UI.lang] || o.abbr.de} `) : '', o ? (o.name[UI.lang] || o.name.de) : code,
-      be.p != null ? h('span', { class: 'mono dim', 'data-tip': `p ${p3(be.p)}` }, ` · ${confWord(be.p)}`) : ''),
-      be.gold ? h('span', { class: 'sub2' }, `${L.beField}: ${String(be.gold).trim()}`) : '');
+    const nm = cd => { const o = beT.opt.get(cd); return o ? [h('span', { class: 'mono' }, `${o.abbr[UI.lang] || o.abbr.de} `), o.name[UI.lang] || o.name.de] : [cd]; };
+    const code = String(be.field || be.code || '').replace(/^be:/, '');
+    if (be.field) {   // the Grand Council's own field is the value; Apertus's reading of the title stands beside it
+      const inf = String(be.inferred || '').replace(/^be:/, '');
+      add(L.dir, h('span', {}, ...nm(code)), h('span', { class: 'sub2 dim' }, L.beFieldSrc),
+        inf ? h('span', { class: 'sub2' }, `${L.beReading}: `, ...nm(inf), h('span', { class: 'mono dim' }, ` · ${inf === code ? L.beSame : L.beDiff}`)) : '');
+    } else {
+      add(L.dir, h('span', {}, ...nm(code),
+        be.p != null ? h('span', { class: 'mono dim', 'data-tip': `p ${p3(be.p)}` }, ` · ${confWord(be.p)}`) : ''),
+        be.gold ? h('span', { class: 'sub2' }, `${L.beField}: ${String(be.gold).trim()}`) : '');
+    }
   }
   const aps = d && d.aps;
   const bil = aps && aps.bilingual;

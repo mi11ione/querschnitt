@@ -36,6 +36,7 @@ def sgn(v, d=3):
 def ci(c, d=3, signed=False):
     """interval, bounds rounded outward."""
     if not c: return ""
+    if c[0] == c[1]: return " (no interval: the bootstrap saw no miss)"   # a collapsed percentile interval is not a 95% interval
     a, b = (F.lo(c[0], d), F.hi(c[1], d)) if not (abs(c[0]) >= 100 or abs(c[1]) >= 100) else (F.lo(c[0], 0), F.hi(c[1], 0))
     if signed: a, b = F.signed(a), F.signed(b)
     return f" [{a}, {b}]"

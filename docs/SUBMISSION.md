@@ -9,7 +9,6 @@ sentence that supports it and a lane that says when a person should check.
 - Repository: https://github.com/mi11ione/querschnitt (Apache-2.0 code, CC BY 4.0 docs, CDLA-Permissive-2.0 topics file)
 - Live: https://querschnitt.mi11ion.io
 - Report: `querschnitt-report.pdf` (GitHub release `data-latest`; source `docs/REPORT.md`)
-- Video (2 min, backup demo): `querschnitt-demo.mp4` (same release)
 
 **Description (≈ 150 words)**
 

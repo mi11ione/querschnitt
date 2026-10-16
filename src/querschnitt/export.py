@@ -160,8 +160,10 @@ def run(args):
                      ("subs", [1000 * APS.sub_index[s][0] + APS.sub_index[s][1] for s, _ in a["subs"]] if a else []),
                      ("dig_p", round(g["p"], 3) if g else None), ("dig_flag", int(g["flag"]) if g else None),
                      ("dig_lane", int(g["lane"] == "please_check") if g else None), ("kw", int(bool(KW.search(kw_text(x))))),
-                     ("be", d["be-directorates"]["code"].split(":")[1] if d.get("be-directorates") else None),
-                     ("be_lane", (d["be-directorates"]["lane"] == "please_check") * 1 if d.get("be-directorates") else None),
+                     ("be", (d["be-directorates"].get("field") or d["be-directorates"]["code"]).split(":")[1] if d.get("be-directorates") else None),
+                     ("be_lane", (d["be-directorates"]["lane"] == "please_check" and not d["be-directorates"].get("field")) * 1
+                      if d.get("be-directorates") else None),
+                     ("be_field", int(bool(d["be-directorates"].get("field"))) if d.get("be-directorates") else None),
                      ("bi", (a["bilingual"]["lane"] == "please_check") * 1 if (a and a.get("bilingual")) else None),
                      ("own", next(([k, v["code"].split(":", 1)[1], int(v["lane"] == "please_check")] for k, v in d.items()
                                    if k in NAMED_IDS), None)),

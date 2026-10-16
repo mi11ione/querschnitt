@@ -74,7 +74,9 @@ approximate formulas), simplifies shared arcs (Douglas–Peucker 0.55 units), wr
 ## Polish round (14 Oct)
 - Bern scheme swap: picker group «Schemata» → «Kanton Bern: Direktionen» (topic `be-directorates`, scope BE). List sorted by
   directorate (abbr in the p column), Direktion filter, summary table per directorate (click filters), detail shows abbr +
-  name in the UI language, p, and the Grand Council's own field (`be.gold`). Pult lane for this scheme = `bi` (DE/FR readings
+  name in the UI language, p, and the Grand Council's own field (`be.gold`). Since 16 Oct: where that field names a
+  directorate (`be.field`), the field is the value («aus dem Feld des Grossen Rates»), Apertus's reading stands under it
+  («Apertus las: … · gleich / anders»), the row never goes to please-check, and no inferred topic row is published over it. Pult lane for this scheme = `bi` (DE/FR readings
   disagree). Decisions POST code `be:<CODE>`, scheme `be-directorates`.
 - Every affair with `aps.bilingual` shows `DE <chapter> · FR <chapter> → <lane>` (red only for please_check).
 - Evidence: `{field, start, end, quote}` per `detail.dig|aps|be.evidence`; title highlight sits in the heading; long title is

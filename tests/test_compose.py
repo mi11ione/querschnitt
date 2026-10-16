@@ -153,6 +153,13 @@ def test_be_directorates_rows():
         r = rs[0]
         assert (r["level"], r["rank"], r["code"], r["p_raw"], r["p"], r["lane"]) == (1, 1, sch["options"][3]["code"], 0.8, None, lane)
         assert r["prompt_id"] == f"{de['pid']},{fr['pid']}" and r["valid_from"] == "2026-10-15T00:00:00Z" and r["body_key"] == "BE"
+    # the Grand Council's own field names a directorate: it is the value, the reading stays beside it, no inferred row
+    fr = reading(a["title_alt"], "fr", 3, 0.6)
+    d = decide(dict(a, dept="FIN\xa0Finanzdirektion"), {de["pid"]: de, fr["pid"]: fr}, lambda a: ("", "", None), [])
+    assert (d["be-directorates"]["field"], d["be-directorates"]["inferred"]) == ("be:FIN", sch["options"][3]["code"])
+    assert not [r for r in topic_rows(a, d, lock, None, "") if r["scheme"] == "be-directorates"]
+    d = decide(dict(a, dept="Ratssekretariat"), {de["pid"]: de, fr["pid"]: fr}, lambda a: ("", "", None), [])
+    assert "field" not in d["be-directorates"]   # a field that names no directorate leaves the reading as the value
     spec = importlib.util.spec_from_file_location("gen_seed", ROOT / "upstream/opd/tools/gen_seed.py")
     gs = importlib.util.module_from_spec(spec); spec.loader.exec_module(gs)
     seeded = {c["code"] for s, cs in gs.schemes(strict=False) if s["scheme_key"] == "be-directorates" for c in cs}

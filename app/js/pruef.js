@@ -11,13 +11,14 @@ export function testCount() {
 }
 
 // Local strings for the plain-language lead and the jargon rewrite (kept here, not in util.js).
+const nw = x => h('span', { style: 'white-space:nowrap' }, x);   // keep a figure with its % on one line
 const LS = {
   de: {
     intro: 'Wie gut ordnet Apertus zu? Verglichen mit Fachleuten, die dieselben Geschäfte von Hand eingeordnet haben:',
     fed: n => `der ${n} neuen Bundesgeschäfte bekommen von Apertus dasselbe Themenkapitel, das ihnen die Redaktion der Année politique suisse (APS) gegeben hat; keines davon wurde beim Entwickeln benutzt.`,
     fedSub: (lp, kw) => [lp != null ? `nur Kapitelliste ${pct(lp)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'Vergleich:',
-    lane: (n, ok, chk) => [`der ${n} neuen Bundesgeschäfte gehen ohne Prüfung durch, und davon sind ${ok} richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort ${chk} richtig).`],
+    lane: (n, ok, chk) => [`der ${n} neuen Bundesgeschäfte gehen ohne Prüfung durch, und davon sind `, nw(ok), ` richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort `, nw(chk), ` richtig).`],
     laneSub: 'Regel: rekalibriertes p ≥ 0.7, vor dem Test festgelegt',
     be: (n, k, other) => `der ${n} Geschäfte des Berner Grossen Rates landen mit deutschem Titel bei der federführenden von ${k} Direktionen; mit französischem Titel ${other}.`,
     beSub: (a, b) => `Stichwortsuche ${pct(a)} / ${pct(b)}`,
@@ -44,7 +45,7 @@ const LS = {
     fed: n => `des ${n} nouveaux objets fédéraux reçoivent d’Apertus le chapitre thématique que leur a attribué la rédaction de l’Année politique suisse (APS) ; aucun n’a servi pendant le développement.`,
     fedSub: (lp, kw) => [lp != null ? `liste des chapitres seule ${pct(lp)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'comparaison :',
-    lane: (n, ok, chk) => [`des ${n} nouveaux objets fédéraux passent sans vérification, dont ${ok} sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, ${chk} justes).`],
+    lane: (n, ok, chk) => [`des ${n} nouveaux objets fédéraux passent sans vérification, dont `, nw(ok), ` sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, `, nw(chk), ` justes).`],
     laneSub: 'règle : p recalibré ≥ 0,7, fixée avant le test',
     be: (n, k, other) => `des ${n} objets du Grand Conseil bernois arrivent, avec le titre français, à la direction compétente parmi ${k} ; avec le titre allemand ${other}.`,
     beSub: (a, b) => `mots-clés ${pct(a)} / ${pct(b)}`,

@@ -65,13 +65,13 @@ demo: deps
 	@if [ -n "$(FRESH)" ]; then rm -f $(DEMO_DB) $(DEMO_DB)-wal $(DEMO_DB)-shm; echo "FRESH: $(DEMO_DB) removed"; fi
 	@mkdir -p $(dir $(DEMO_DB)); test -f $(DEMO_DB) || echo "first make demo: loading the shipped data into $(DEMO_DB) (about a minute)"
 	QS_DB=$(DEMO_DB) $(PY) -m querschnitt load --auto --if-empty
-	@QS_DB=$(DEMO_DB) $(PY) -c "from querschnitt.store import Store; import sys; sys.exit(0 if Store().affair(338697) else 1)" || \
-	  echo "WARNING: demo affair 338697 is not in $(DEMO_DB) (make demo FRESH=1, or pick another affair for the Gate 1 beat)"
+	@QS_DB=$(DEMO_DB) $(PY) -c "from querschnitt.store import Store; import sys; sys.exit(0 if Store().affair(334708) else 1)" || \
+	  echo "WARNING: demo affair 334708 is not in $(DEMO_DB) (make demo FRESH=1, or pick another affair for the Gate 1 beat)"
 	@$(PY) -I tools/preflight.py --endpoint-only || true
 	@echo ""
 	@echo "  Diese Woche      $(DEMO_URL)/#woche"
 	@echo "  Atlas            $(DEMO_URL)/#ueber"
-	@echo "  Demo affair      $(DEMO_URL)/#karte?a=338697"
+	@echo "  Demo affair      $(DEMO_URL)/#karte?a=334708"
 	@echo "  Pult             $(DEMO_URL)/#karte?m=pult&tab=todo"
 	@echo "  Neues Thema      $(DEMO_URL)/#neu?limit=25"
 	@echo "  … its recording  $(DEMO_URL)/#neu?rec=1   (offered by itself when the model endpoint does not answer)"

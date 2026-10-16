@@ -14,7 +14,7 @@ affair · `1` übernehmen · `2` verwerfen (then a digit picks the correction) �
 | Beat | Keys / clicks | If it fails |
 |---|---|---|
 | Atlas | `a`; let it stand 3 s; point at Digitalisierung, then a dark map (Umweltschutz) | static site, same view |
-| Digitalisierung → affair | click the Digitalisierung map → `/` type `strebt digital` → Enter → `j` → «Der Kanton Bern strebt digitale Souveränität an» (`338697`: DE/FR readings disagree → bitte prüfen; quote from the draft law) | `t` → type `Digi` → Enter |
+| Digitalisierung → affair | click the Digitalisierung map → `/` type `WLAN-Netz` → Enter → `j` → «Wie werden die Bürgerinnen und Bürger mit einem gesünderen, frei zugänglichen, öffentlichen WLAN-Netz unterstützt?» (`334708`, Grosser Rat Bern: German reads «Verkehr und Kommunikation», French — «moins néfaste pour la santé» — «Umweltschutz» → bitte prüfen; Digitalisierung ja with its quote) | fallback affair `338697` («Der Kanton Bern strebt digitale Souveränität an», `/` `strebt digital`) |
 | Why this label | point at the two reading bars and the highlighted sentence | — |
 | Decide | `1` (set the name «Demo» in «Name für die Entscheidung» before the slot — it stays in the browser; without a name `1` only focuses the field) → state line shows who/when | static: "stored in this browser" is fine |
 | Neues Thema | open `#neu?limit=25` (or pick «höchstens 25 Geschäfte» beside the period) to cap the run at the 25 newest affairs (roughly 20–80 s; uncapped, the recorded run read 98 affairs in about five minutes); `n` → Christian's sentence → Enter; while it streams, go on talking | endpoint down or silent: the run line says «Der Modell-Endpunkt antwortet nicht» (or counts the seconds without a decision) and offers `[Aufzeichnung abspielen]`: one click plays the recorded real run, labelled as a recording; say so. Or open a saved topic (`t` → «Wolf») and say it was defined in one sentence yesterday |
@@ -33,7 +33,7 @@ site) → `i` Anbindung: «letzte Nacht», the cost line, then the repository bl
   under a second.
 - Never paste a `#…` link on stage: it reloads the whole app. Open `#neu?limit=25` in a second tab beforehand.
 - Set the decision name once («Demo») in the browser you present from.
-- Check the demo affair (`#karte?a=338697`) on the morning of the slot: it must show its chapter, the DE/FR readings and
+- Check the demo affair (`#karte?a=334708`) on the morning of the slot: it must show its chapter, the DE/FR readings and
   the quote; if not, use the fallback affair in the Gate 1 table.
 
 ## Backup video

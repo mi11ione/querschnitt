@@ -82,7 +82,7 @@ vs 0.696 with prefill; no calibration map yet) ([docs/SERVICE.md](docs/SERVICE.m
 - **Builds are never mixed.** Every row names the served model, its `system_fingerprint`, the prompt id and the input hash;
   a run locks the first build it sees and stops on any other. Tests pin the prompts byte-identical to the measured ones.
 
-![Why this label: Bern's Grand Council, the chapter asked in German and in French, two different answers, so a person checks; the quoted sentence from the draft law](docs/img/entscheid.png)
+![Why this label: Bern's Grand Council asks about public wifi; the German version reads as telecoms, the French one (wifi «moins néfaste pour la santé») as environment — two different answers, so a person checks](docs/img/entscheid.png)
 
 ## Integration with OpenParlData
 - **Output:** a topic row per affair, scheme and rank ([docs/CONTRACT.md](docs/CONTRACT.md); the service's own store table

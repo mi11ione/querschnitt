@@ -29,7 +29,7 @@ FIGURES = [
      "of its affairs; at right, this week's affairs.", False),
     (r"method", "docs/img/entscheid.png",
      "Why this label: an affair of Bern's Grand Council, the chapter asked in German and in French, two different answers, "
-     "so a person checks; below the readings, the quoted sentence from the draft law.", False),
+     "so a person checks: the German version of a question about public wifi reads as telecoms, the French one as environment.", False),
     (r"results on human labels", "docs/img/pruefstand.png",
      "Prüfstand, held-out APS chapters: precision against coverage on the 927 new federal affairs (black) and the 1,357 "
      "design affairs (grey). Red: the shipped cut, recalibrated p ≥ 0.7.", True),

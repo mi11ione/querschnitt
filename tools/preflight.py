@@ -27,7 +27,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-DEMO_ID = 338697
+DEMO_ID = 334708
 SITE = "https://querschnitt.mi11ion.io"
 PY = ROOT / ".venv/bin/python"
 QUICK = ["tests/test_api.py", "tests/test_store.py", "tests/test_compose.py", "tests/test_prompts.py",

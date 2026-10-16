@@ -24,7 +24,7 @@ KEEP = ("id", "t", "p", "flag", "verified", "lane", "sample", "title", "body", "
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    slug = args[0] if args else "schule-und-bildung"
+    slug = args[0] if args else "klimawandel-stadt"
     run = REPO / "runs" / "adhoc" / slug
     tj = json.loads((run / "topic.json").read_text())
     sm = json.loads((run / "summary.json").read_text())

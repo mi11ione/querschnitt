@@ -56,7 +56,7 @@ grid = {C: float(np.mean(cross_val_score(model(C), Xp, yp, cv=cv, scoring="accur
 C = max(grid, key=grid.get)
 clf = model(C).fit(Xp, yp)
 Xt = [text[o] for o in ids]
-prob = clf.predict_proba(Xt); cls = list(clf.classes_)
+prob = clf.predict_proba(Xt); cls = [int(c) for c in clf.classes_]
 rank = {o: [cls[j] for j in np.argsort(-prob[i])[:3]] for i, o in enumerate(ids)}
 gold = {o: items[o]["chapter"] for o in ids}
 T1 = {o: int(rank[o][0] == gold[o]) for o in ids}; S1 = {o: int(shipped[o]["ch"] == gold[o]) for o in ids}
@@ -90,15 +90,15 @@ for frac in (0.25, 0.5):
         js = by[y][:]; rs.shuffle(js); keep += js[:math.ceil(frac * len(js))]
     Xs, ys = [Xp[j] for j in sorted(keep)], [yp[j] for j in sorted(keep)]
     pr = model(C).fit(Xs, ys).predict(Xt)
-    curve[f"{int(frac * 100)}%"] = dict(train=len(Xs), **share(sum(pr[i] == gold[o] for i, o in enumerate(ids)), len(ids)))
+    curve[f"{int(frac * 100)}%"] = dict(train=len(Xs), **share(int(sum(int(pr[i]) == gold[o] for i, o in enumerate(ids))), len(ids)))
 curve["100%"] = dict(train=len(Xp), **R["trained_top1"])
 R["learning_curve"] = curve
 same = [o for o in ids if rank[o][0] == shipped[o]["ch"]]
 R["agreement"] = dict(share=trunc(len(same) / len(ids)), shipped_top1_where_same=share(sum(S1[o] for o in same), len(same)),
                       shipped_top1_where_different=share(sum(S1[o] for o in ids if o not in set(same)), len(ids) - len(same)),
                       trained_top1_where_different=share(sum(T1[o] for o in ids if o not in set(same)), len(ids) - len(same)))
-(HERE / "results.json").write_text(json.dumps(R, indent=1, ensure_ascii=False) + "\n")
+(HERE / "results.json").write_text(json.dumps(R, indent=1, ensure_ascii=False, default=lambda o: o.item()) + "\n")
 with open(HERE / "predictions.jsonl", "w") as f:
     for o in ids:
         f.write(json.dumps(dict(oid=o, gold=gold[o], trained=rank[o][0], trained_rank=rank[o], shipped=shipped[o]["ch"])) + "\n")
-print(json.dumps(R, indent=1, ensure_ascii=False))
+print(json.dumps(R, indent=1, ensure_ascii=False, default=lambda o: o.item()))

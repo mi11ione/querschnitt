@@ -279,3 +279,23 @@ inputs rebuild trims are matched with their S25-time input, the untrimmed docume
 reading with top p ≥ 0.9 counts as agree) with share and accuracy each; also production's pass / please-check lane (calibration
 map fitted on S16). (d) French with text (580) vs title only (347), German shipped on the same affairs.
 Points truncated, intervals rounded outward. Reported as measured.
+
+## 2026-10-16 14:03 CEST — S34 a trained classifier on the shipped design's 1,654 APS labels vs the shipped design on the 927 held-out (before any S34 fit)
+Why: the held-out S25 compares the shipped design with keywords and with list prompting, never with a classifier trained on
+APS labels. The shipped design already holds APS-labelled affairs (the example pool `data/eval/aps_pool.jsonl`, 1,654
+affairs: S9 1,357 + S5 297, none in S25; counted before this entry). S34 asks whether a standard trained text classifier,
+given those same 1,654 labels, beats the shipped design on the 927 held-out affairs. No model calls.
+Train: the 1,654 pool affairs, label = the pool's APS chapter (24 chapters). Test: the 927 S25 affairs (`eval/s25/ids.txt`),
+gold = the APS editors' chapter (`eval/s25/items.jsonl`). Input text for both: title + long title + text from the production
+inputs `../data/inputs.jsonl.gz` (the fields the model sees; 16 Oct rebuild), joined with newlines; no other field.
+Classifier (fixed now, nothing tuned on S25): scikit-learn, TF-IDF (word 1–2-grams, sublinear tf, min_df 2) concatenated with
+TF-IDF (char_wb 2–5-grams, sublinear tf, min_df 2), then LogisticRegression (multinomial, lbfgs, max_iter 3000,
+class_weight None); C chosen from {0.3, 1, 3, 10, 30, 100} by 5-fold stratified CV accuracy on the pool only
+(StratifiedKFold shuffle, random_state 2026); refit on the full pool with that C.
+Primary: (1) trained top-1 vs APS editors on the 927, Wilson 95%; (2) paired difference shipped − trained on the same 927,
+shipped = the frozen S25 decisions `eval/s25/decisions.jsonl`, paired bootstrap 2,000 over affairs, random.Random(2026),
+percentile 2.5/97.5.
+Secondary: (a) top-3 trained vs shipped; (b) trained top-1 on the shipped pass lane and on the please-check lane; (c) learning
+curve: trained top-1 on the 927 when trained on 25 % and 50 % of the pool (stratified subsample, random_state 2026, same C);
+(d) agreement: share of the 927 where trained and shipped give the same chapter, and shipped top-1 on that share.
+Points truncated, intervals rounded outward. Reported as measured, whichever way it goes.

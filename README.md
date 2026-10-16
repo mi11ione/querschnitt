@@ -75,7 +75,7 @@ vs 0.696 with prefill; no calibration map yet) ([docs/SERVICE.md](docs/SERVICE.m
   recalibrated p is below 0.7 or the German and French readings disagree, otherwise `pass` (on the 927 held-out federal
   affairs: 67.3% pass and are right in 0.812, the rest in 0.458; on the 1,357 design affairs, cross-fitted: 66.8% at 0.864).
   Cantonal and communal affairs are often title-only and less certain; in production about half of them go to a person,
-  and French and Italian affairs more often than German ones at every level ([`eval/lanes/heldout.json`](eval/lanes/heldout.json)).
+  and French and Italian affairs more often than German ones at every level (point shares; [`eval/lanes/heldout.json`](eval/lanes/heldout.json)).
 - **Read back from the subtopic.** One request over the subtopics of the top two or three chapters; the shipped chapter is
   the one read back from the chosen subtopic; the top three subtopics ship as ranked suggestions.
 - **Evidence.** One numbered sentence of the affair, chosen by Apertus, checked by code as an exact substring and stored

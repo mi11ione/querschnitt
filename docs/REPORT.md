@@ -127,26 +127,22 @@ endpoint answered with the same build the drain scored all 49 in 9.6 min for USD
 - **Data model:** one `topics` table in OPD's naming, with migrations up and down, a seed for every scheme file, and an
   optional per-parliament switch for the public feed (`upstream/opd/migrations/`). Inferred and confirmed rows stay
   apart: a confirmation or rejection is a new row with who and when; nothing is overwritten.
-- **Load:** an Apache Hop pipeline loads the bulk topics file; CI runs it on every push against Postgres, loading the
-  full released file and comparing every row with the reference converter (`upstream/hop/`).
-- **Read API:** a drop-in FastAPI router implements the specified endpoints against the migrated tables, tested in CI
-  (`upstream/opd/api/router.py`).
+- **Load and read:** an Apache Hop pipeline loads the bulk topics file, and a drop-in FastAPI router serves the
+  specified endpoints; CI loads the full released file against Postgres on every push and compares every row with the
+  reference converter (`upstream/hop/`, `upstream/opd/api/router.py`).
 - **Nightly:** reads OPD's published export, queues new and changed affairs, scores the queue, and drains it when the
   endpoint answers again with the same build; editors' decisions become examples for their topics (§5).
 - **Model build changes:** a run locks the build it starts with; the recalibration applies only to rows of the build it
   was fitted on; a new build means a refit and the Prüfstand re-run (`upstream/eval-task/`) before its rows ship.
-- **Another endpoint:** the probe checks prefill and log-probabilities first. Without prefill, a labelled fallback mode
-  runs; on the held-out affairs it scored 0.705 against 0.696 with prefill (S28), so the design does not depend on
-  that vLLM feature.
-- The merge-request draft with day-1 steps and rollback is `upstream/MERGE_REQUEST.md`.
+- **Another endpoint:** the probe checks prefill and log-probabilities first; the labelled no-prefill mode scored 0.705
+  against 0.696 on the held-out affairs (S28). Day-1 steps and rollback: `upstream/MERGE_REQUEST.md`.
 
 ## 8. Limits
 - On fresh federal affairs the chapter is right in 0.696 and the pass lane in 0.812, below the 0.740 and 0.864 of the design
   set; the recalibration map was fitted on the design set and is refitted per build.
 - Subtopics are suggestions (0.520 top-1), never a lane of their own.
-- Fine-grained cantonal schemes without descriptions are harder (Basel-Stadt 46 themes: 0.498); the lane separates the
-  confident half from the rest.
-- Title-only cantonal affairs are the hardest input; coverage and title-only share are reported per parliament.
+- Fine-grained cantonal schemes without descriptions are harder (Basel-Stadt 46 themes: 0.498), and title-only
+  affairs are the hardest input; coverage and title-only share are reported per parliament.
 - On the Federal Parliament's own multi-tag task the trained BFH model is ahead (0.687 vs 0.654, not significant).
-- The DVS 27/30 is not held out: the yes/no question and its cut-off were written with those items in view.
-- Where gold is the AI judge, figures are agreement with that judge and are labelled as such.
+- The DVS 27/30 is not held out (question and cut-off written with those items in view); where gold is the AI judge,
+  figures are agreement with that judge.

@@ -118,8 +118,8 @@ endpoint answered with the same build the drain scored all 49 in 9.6 min for USD
   sentence. Every call is a user message (no system message); closed choices are read from next-token probabilities.
 - **No other model decides anything in the product.** Example retrieval is BM25 in code; recalibration is isotonic
   regression fitted per build.
-- **In the evaluation only**, where no human labels exist, blind Claude runs (two independent annotators and a
-  tie-break) serve as the judge, cross-checked by the open-weights Qwen-SEA-LION; every figure measured against them is labelled as
+- **In the evaluation only**, where no human labels exist, blind Claude runs (two independent runs of the same model
+  as annotators, and a tie-break) serve as the judge, cross-checked by the open-weights Qwen-SEA-LION; every figure measured against them is labelled as
   agreement with that judge (§3), and the judge itself was checked against APS editors (0.790 of chapters).
 - The code was written with Claude Code.
 

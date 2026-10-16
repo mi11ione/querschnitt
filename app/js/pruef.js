@@ -104,7 +104,8 @@ function lead(rows) {
   const byFile = f => rows.find(r => r.file === f);
   const item = (big, text, sub, file) => h('li', {}, h('b', { class: 'pl-n' }, big),
     h('div', {}, h('p', { class: 'pl-t' }, text), h('p', { class: 'pl-s' }, [sub, file].filter(Boolean).join(' · '))));
-  const ci = r => Array.isArray(r.interval) ? ` [${r.interval.map(v => v.toFixed(3)).join(', ')}]` : '';
+  // a collapsed bootstrap interval ([1, 1]: no miss resampled) is not a 95% interval; it is named, not printed
+  const ci = r => Array.isArray(r.interval) ? (r.interval[0] === r.interval[1] ? ` (${L.noCi})` : ` [${r.interval.map(v => v.toFixed(3)).join(', ')}]`) : '';
   const fed = byFile('eval/s25/results.json'), cf = D.conf && D.conf.heldout ? D.conf : null;
   if (fed) {
     const top1 = cf && cf.n === fed.n ? cf.correct / cf.n : num1(fed.result, /top-1 ([\d.]+)/);
@@ -174,7 +175,7 @@ export function renderPruef(root) {
       h('thead', {}, h('tr', {}, h('th', {}, L.design), h('th', { class: 'n' }, 'n'), h('th', {}, L.result), h('th', {}, L.ci), h('th', {}, L.baseline))));
     const body = h('tbody');
     for (const r of rs) {
-      const ci = Array.isArray(r.interval) ? `[${r.interval.map(v => typeof v === 'number' ? v.toFixed(3) : v).join(', ')}]` : (r.interval || '–');  // bounds are stored at 3 decimals (truncated / outward)
+      const ci = Array.isArray(r.interval) && r.interval[0] === r.interval[1] ? L.noCi : Array.isArray(r.interval) ? `[${r.interval.map(v => typeof v === 'number' ? v.toFixed(3) : v).join(', ')}]` : (r.interval || '–');  // bounds are stored at 3 decimals (truncated / outward)
       const ship = r === order[0][1][0]; // the production row leads the first human-label table
       const [des, desTip] = plain((fr && r.design_fr) || r.design), [base, baseTip] = plain((fr && r.baseline_fr) || r.baseline || '–');
       body.append(h('tr', { class: ship ? 'ship' : '' }, h('td', { 'data-tip': desTip }, des), h('td', { class: 'n' }, num(r.n)), h('td', { class: 'res' }, String((fr && r.result_fr) || r.result)),

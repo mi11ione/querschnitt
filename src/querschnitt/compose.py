@@ -1,9 +1,11 @@
 """Raw step rows of a corpus run → one decision per affair → topic rows (docs/CONTRACT.md §1).
 
-Chapter (S9 D1, shipped): P = mean of the available chapter readings; one subtopic request over the top 2–3 chapters;
+Chapter (shipped: D4 for German federal affairs — one reading with five APS-labelled examples, one without; D1 otherwise —
+two code orders): P = mean of the available chapter readings; one subtopic request over the top 2–3 chapters;
 score(subtopic) = p(subtopic) × P(its chapter); the shipped chapter is the chapter of the best-scoring subtopic and its
 confidence is that chapter's share of the scored mass. When P's top chapter is "no policy topic", that is shipped.
-Lane: `please_check` when the two code orders disagree on the top chapter; one reading with top p ≥ 0.9 counts as agree.
+Lane: `please_check` when the recalibrated p is below LANE_TAU (0.7), or the German and French readings disagree, or (no
+recalibration for the build) the two readings disagree on the top chapter; one reading with top p ≥ 0.9 counts as agree.
 Ad-hoc yes/no (S8): p = mean of order a and, where run, order b; flag at p ≥ cut-off (0.5);
 `please_check` when the orders disagree or 0.3 ≤ p < 0.7.
 Recalibration (eval/calibration.json) applies only to rows of the build it was fitted on; rows of another build get p

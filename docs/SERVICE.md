@@ -245,6 +245,12 @@ not scored), top 3 0.860 ([`eval/results/eval-gold_aps_s9.json`](../eval/results
 Measured on the 11 Oct export (no fetch, no model): touched-only rebuild in 131 s, peak RSS 1.55 GB,
 all 326,123 input hashes identical to the full build (0 to re-score); the full rebuild takes 86 s at 4.7 GB peak.
 
+## Restoring the static export
+`app/data/affairs.json`, `detail/`, `bodies.json` and `topics.jsonl.gz` are not in git (size); `meta.json` and the small
+files are. A restore from git alone therefore brings back a matching-looking `meta.json` over whatever export is on disk.
+Restore the whole export from the data release instead (`make data`, or `gh release download data-latest` and extract
+`app/data/`); `tests/test_shipped_data.py` checks that the chapters in `affairs.json` match `meta.json`.
+
 ## Footprints
 | | measured |
 |---|---|

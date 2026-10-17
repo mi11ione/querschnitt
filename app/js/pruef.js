@@ -1,17 +1,12 @@
-// Prüfstand: one ruled table per test (human labels first), one coverage–precision chart (black line, red dot at the
-// shipped operating point).
+// Prüfstand: the held-out federal results, the parliaments' own schemes as one table, a link to the full list
+// (docs/PRUEFSTAND.md), and one coverage–precision chart (black line, red dot at the shipped operating point).
 import { D, SRC } from './data.js';
 import { h, s, t, UI, num, pct, p3 } from './util.js';
 import { bindTips } from './viz.js';
 
-export function testCount() {
-  const P = D.pruef; if (!P) return 0;
-  const rows = Array.isArray(P) ? P : P.rows || [];
-  return new Set(rows.map(r => r.test)).size;
-}
-
-// Local strings for the plain-language lead and the jargon rewrite (kept here, not in util.js).
+// Local strings for the lead, the cantonal table and the closing lines (kept here, not in util.js).
 const nw = x => h('span', { style: 'white-space:nowrap' }, x);   // keep a figure with its % on one line
+const DOC = 'https://github.com/mi11ione/querschnitt/blob/main/docs/PRUEFSTAND.md';
 const LS = {
   de: {
     intro: 'Wie gut ordnet Apertus zu? Verglichen mit Fachleuten, die dieselben Geschäfte von Hand eingeordnet haben:',
@@ -20,24 +15,13 @@ const LS = {
     cmp: 'Vergleich:',
     lane: (n, ok, chk) => [`der ${n} neuen Bundesgeschäfte gehen ohne Prüfung durch, und davon sind `, nw(ok), ` richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort `, nw(chk), ` richtig).`],
     laneSub: 'Regel: rekalibriertes p ≥ 0.7, vor dem Test festgelegt',
-    be: (n, k, other) => `der ${n} Geschäfte des Berner Grossen Rates landen mit deutschem Titel bei der federführenden von ${k} Direktionen; mit französischem Titel ${other}.`,
-    beSub: (a, b) => `Stichwortsuche ${pct(a)} / ${pct(b)}`,
-    bs: (n, k) => `der ${n} Basler Grossratsgeschäfte bekommen dasselbe der ${k} Themen wie bei der Kantons- und Stadtentwicklung, allein aus der Liste der Themennamen, ohne jede Anpassung.`,
-    bsSub: (ex, kw) => [ex != null ? `mit fünf Basler Beispielen ${pct(ex)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
-    ti: (n, k) => `der ${n} Geschäfte des Tessiner Grossen Rates landen auf Italienisch bei der federführenden von ${k} Stellen (fünf Departemente und Staatskanzlei), allein aus der Liste der Namen, ohne jede Anpassung; gezählt sind die Geschäfte, deren Text die Stelle nicht selbst nennt.`,
-    tiSub: (kw, mj) => [kw != null ? `Stichwortsuche ${pct(kw)}` : '', mj != null ? `häufigste Stelle ${pct(mj)}` : ''].filter(Boolean).join(' · '),
-    note: 'Darunter alle Tests, auch die schwächeren: jede Zahl mit Stichprobe (n), 95-%-Intervall, Vergleich auf denselben Geschäften und Quelldatei. Vorab registriert ist ein Test nur, wo «vorregistriert» steht.',
-    all: 'Alle Tests',
-    gloss: [['top-1 / top-3', 'das erste Thema stimmt / das richtige ist unter den ersten drei'],
-      ['Präzision', 'Anteil richtig unter den Geschäften einer Spur'],
-      ['Spur', 'ohne Prüfung oder bitte prüfen, je nach Konfidenz p'],
-      ['Lesart', 'dieselbe Frage zweimal gestellt (z. B. mit und ohne Beispiele); einig = beide Antworten gleich'],
-      ['Listen-Prompt', 'nur die Themenliste, ohne Beispiele'],
-      ['Stichwort', 'Suche nach Wörtern, ohne Modell'],
-      ['KI-Richter', 'ein zweites Modell (Claude) urteilt, wo keine menschlichen Labels existieren'],
-      ['S25, D4 …', 'interne Kennungen von Tests und Varianten (Maus darüber); Ordner eval/']],
+    cols: ['Parlament', 'eigenes Schema', 'n', 'top-1 [95 %]', 'Stichwort', 'Datei'],
+    be: ['Bern, Grosser Rat', k => `${k} Direktionen`],
+    bs: ['Basel-Stadt, Grosser Rat', k => `${k} Themen der Kantons- und Stadtentwicklung`],
+    ti: ['Tessin, Gran Consiglio', k => `${k} Stellen, italienisch; Text nennt keine`],
+    dig: (a, ka, p, kp) => `«Digitalisierung»: ${a} DVS-Geschäfte gefunden (Stichwort ${ka}) · Präzision ${p} gegen KI-Richter (Stichwort ${kp})`,
+    doc: 'Alle Tests mit Stichprobe, Intervall, Vergleich und Quelldatei: ',
     internal: 'intern',
-    lanesPop: n => `der ${n} neuen Bundesgeschäfte (Test)`,
     codes: { D0: 'Listen-Prompt', D1: 'ohne Beispiele', D2: 'DE + FR gemittelt', D3: 'fünf Beispiele', D4: 'mit Beispielen, zwei Lesarten', D4s: 'Variante' },
   },
   fr: {
@@ -47,31 +31,20 @@ const LS = {
     cmp: 'comparaison :',
     lane: (n, ok, chk) => [`des ${n} nouveaux objets fédéraux passent sans vérification, dont `, nw(ok), ` sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, `, nw(chk), ` justes).`],
     laneSub: 'règle : p recalibré ≥ 0,7, fixée avant le test',
-    be: (n, k, other) => `des ${n} objets du Grand Conseil bernois arrivent, avec le titre français, à la direction compétente parmi ${k} ; avec le titre allemand ${other}.`,
-    beSub: (a, b) => `mots-clés ${pct(a)} / ${pct(b)}`,
-    bs: (n, k) => `des ${n} objets du Grand Conseil bâlois reçoivent le même des ${k} thèmes que chez Kantons- und Stadtentwicklung, à partir des seuls noms des thèmes, sans aucun ajustement.`,
-    bsSub: (ex, kw) => [ex != null ? `avec cinq exemples bâlois ${pct(ex)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
-    ti: (n, k) => `des ${n} objets du Grand Conseil tessinois arrivent, en italien, à l’unité compétente parmi ${k} (cinq départements et la Chancellerie), à partir de la seule liste des noms, sans aucun ajustement ; comptés : les objets dont le texte ne nomme pas lui-même l’unité.`,
-    tiSub: (kw, mj) => [kw != null ? `mots-clés ${pct(kw)}` : '', mj != null ? `unité la plus fréquente ${pct(mj)}` : ''].filter(Boolean).join(' · '),
-    note: 'Ci-dessous tous les tests, y compris les moins bons : chaque chiffre avec échantillon (n), intervalle 95 %, référence sur les mêmes objets et fichier source. Un test n’est préenregistré que là où « préenregistré » est indiqué.',
-    all: 'Tous les tests',
-    gloss: [['top-1 / top-3', 'le premier thème est juste / le bon est parmi les trois premiers'],
-      ['précision', 'part de réponses justes parmi les objets d’une voie'],
-      ['voie', 'sans vérification ou à vérifier, selon la confiance p'],
-      ['lecture', 'la même question posée deux fois (p. ex. avec et sans exemples) ; concordantes = deux réponses identiques'],
-      ['liste', 'seulement la liste des thèmes, sans exemples'],
-      ['mots-clés', 'recherche par mots, sans modèle'],
-      ['juge IA', 'un second modèle (Claude) juge là où il n’y a pas d’étiquettes humaines'],
-      ['S25, D4 …', 'identifiants internes des tests et variantes (survol) ; dossier eval/']],
+    cols: ['parlement', 'schéma propre', 'n', 'top-1 [95 %]', 'mots-clés', 'fichier'],
+    be: ['Berne, Grand Conseil', k => `${k} directions`],
+    bs: ['Bâle-Ville, Grand Conseil', k => `${k} thèmes du développement cantonal et urbain`],
+    ti: ['Tessin, Gran Consiglio', k => `${k} unités, en italien ; le texte n’en nomme aucune`],
+    dig: (a, ka, p, kp) => `« numérique » : ${a} objets DVS trouvés (mots-clés ${ka}) · précision ${p} contre juge IA (mots-clés ${kp})`,
+    doc: 'Tous les tests avec échantillon, intervalle, référence et fichier source : ',
     internal: 'interne',
-    lanesPop: n => `des ${n} nouveaux objets fédéraux (test)`,
     codes: { D0: 'liste', D1: 'sans exemples', D2: 'DE + FR moyennés', D3: 'cinq exemples', D4: 'avec exemples, deux lectures', D4s: 'variante' },
   },
 };
 const ls = () => LS[UI.lang === 'fr' ? 'fr' : 'de'];
 
-// Visible jargon → plain words. Design codes (D0…D4s) and test ids (S9…S27) leave the visible text and go to a tooltip;
-// the data stay as they are. Returns [text, tip|null].
+// Visible jargon → plain words (the chart's test labels). Design codes (D0…D4s) and test ids (S9…S27) leave the visible
+// text; the data stay as they are. Returns [text, tip|null].
 function plain(str) {
   if (!str) return [str, null];
   const S = ls(), names = S.codes, codes = [];
@@ -97,10 +70,11 @@ function plain(str) {
 
 const num1 = (str, re) => { const m = re.exec(str || ''); return m ? parseFloat(m[1]) : null; };
 
-// The lead: three to five results in plain words, each read from the rows (pruefstand.json) or the held-out decisions
-// (pruef_confusion.json). A line whose source row is missing is left out.
+// The lead: the two federal results in plain words, the three cantonal schemes as one table, the «Digitalisierung» line
+// and the link to the full list. Every figure is read from the rows (pruefstand.json) or the held-out decisions
+// (pruef_confusion.json); a line or row whose source is missing is left out.
 function lead(rows) {
-  const S = ls(), fr = UI.lang === 'fr', out = [];
+  const S = ls(), L = t(), out = [];
   const byFile = f => rows.find(r => r.file === f);
   const item = (big, text, sub, file) => h('li', {}, h('b', { class: 'pl-n' }, big),
     h('div', {}, h('p', { class: 'pl-t' }, text), h('p', { class: 'pl-s' }, [sub, file].filter(Boolean).join(' · '))));
@@ -118,36 +92,30 @@ function lead(rows) {
   }
   const lt = cf && cf.lanes_tau;
   if (lt && lt.pass_ && lt.check) {
-    out.push(item(pct(lt.pass_.coverage), S.lane(num(lt.pass_.n + lt.check.n), pct(lt.pass_.precision).replace(' ', '\u00a0'), pct(lt.check.precision).replace(' ', '\u00a0')),
+    out.push(item(pct(lt.pass_.coverage), S.lane(num(lt.pass_.n + lt.check.n), pct(lt.pass_.precision).replace(' ', ' '), pct(lt.check.precision).replace(' ', ' ')),
       `${S.laneSub} · n ${num(lt.pass_.n)} + ${num(lt.check.n)}`, lt.file));
   }
-  const be = byFile('eval/s18/results.json');
-  if (be) {
-    const de = num1(be.result, /DE ([\d.]+)/), frv = num1(be.result, /FR ([\d.]+)/), k = num1(be.test, /\((\d+)\)/);
-    if (de != null && frv != null) {
-      const kw = /Stichwort ([\d.]+) \/ ([\d.]+)/.exec(be.baseline || '');
-      out.push(item(pct(fr ? frv : de), S.be(num(be.n), k != null ? num(k) : '–', pct(fr ? de : frv)),
-        `DE ${p3(de)} · FR ${p3(frv)}${kw ? ` · ${S.beSub(parseFloat(kw[1]), parseFloat(kw[2]))}` : ''}`, be.file));
-    }
+  // the parliaments' own schemes: one row each (first row of its file = the primary population)
+  const kw = r => { const m = /Stichwort ([\d.]+)(?: \/ ([\d.]+))?/.exec(r.baseline || ''); return m ? [m[1], m[2]].filter(Boolean).map(v => p3(parseFloat(v))).join(' / ') : '–'; };
+  const cant = [];
+  for (const [key, f] of [['be', 'eval/s18/results.json'], ['bs', 'eval/s20/results.json'], ['ti', 'eval/s29/results.json']]) {
+    const r = byFile(f); if (!r) continue;
+    const k = num1(r.test, /\((\d+)\)/), [par, sch] = S[key];
+    const de = num1(r.result, /DE ([\d.]+)/), frv = num1(r.result, /FR ([\d.]+)/), top1 = num1(r.result, /top-1 ([\d.]+)/);
+    const res = de != null && frv != null ? `DE ${p3(de)}${ci(r)} · FR ${p3(frv)}` : top1 != null ? `${p3(top1)}${ci(r)}` : null;
+    if (res == null) continue;
+    cant.push(h('tr', {}, h('td', {}, par), h('td', { class: 'base' }, sch(k != null ? num(k) : '–')), h('td', { class: 'n' }, num(r.n)),
+      h('td', { class: 'res' }, res), h('td', { class: 'res' }, kw(r)), h('td', { class: 'base mono' }, r.file)));
   }
-  const bs = byFile('eval/s20/results.json'), bs2 = byFile('eval/s21/results.json');
-  if (bs) {
-    const top1 = num1(bs.result, /top-1 ([\d.]+)/), k = num1(bs.test, /\((\d+)\)/);
-    if (top1 != null) {
-      const sub = S.bsSub(bs2 ? num1(bs2.result, /top-1 ([\d.]+)/) : null, num1(bs.baseline, /Stichwort ([\d.]+)/));
-      out.push(item(pct(top1), S.bs(num(bs.n), k != null ? num(k) : '–'), `top-1 ${p3(top1)}${ci(bs)}${sub ? ` · ${sub}` : ''}`, bs.file));
-    }
-  }
-  const ti = byFile('eval/s29/results.json');   // first S29 row = the primary population (inputs that name no unit)
-  if (ti) {
-    const top1 = num1(ti.result, /top-1 ([\d.]+)/), k = num1(ti.test, /\((\d+)\)/);
-    if (top1 != null) {
-      const sub = S.tiSub(num1(ti.baseline, /Stichwort ([\d.]+)/), num1(ti.baseline, /Mehrheit ([\d.]+)/));
-      out.push(item(pct(top1), S.ti(num(ti.n), k != null ? num(k) : '–'), `top-1 ${p3(top1)}${ci(ti)}${sub ? ` · ${sub}` : ''}`, ti.file));
-    }
-  }
-  if (!out.length) return null;
-  return h('div', { class: 'pl' }, h('p', { class: 'pl-in' }, S.intro), h('ol', { class: 'pl-l' }, out), h('p', { class: 'pl-note' }, S.note));
+  const tab = cant.length ? h('div', { class: 'tw', style: 'margin-top:16px' }, h('table', {},
+    h('thead', {}, h('tr', {}, S.cols.map((c, i) => h('th', { class: i === 2 ? 'n' : '' }, c)))), h('tbody', {}, cant))) : '';
+  // «Digitalisierung»: the hand-picked DVS list (human) and the 2026 census precision (judge), each against keywords
+  const dvs = rows.find(r => r.file === 'eval/spikes/s8-dvs/results.md'), cen = rows.find(r => r.file === 'eval/s8full/results.json' && r.design === 'Präzision');
+  const dk = dvs && /Stichwort (\d+\/\d+)/.exec(dvs.baseline || ''), ck = cen && num1(cen.baseline, /Stichwort ([\d.]+)/), cp = cen && parseFloat(cen.result);
+  const dig = dvs && dk && cen && ck != null && !Number.isNaN(cp) ? h('p', { class: 'pl-note' }, S.dig(dvs.result, dk[1], p3(cp), p3(ck))) : '';
+  if (!out.length && !cant.length) return null;
+  return h('div', { class: 'pl' }, h('p', { class: 'pl-in' }, S.intro), out.length ? h('ol', { class: 'pl-l' }, out) : '', tab, dig,
+    h('p', { class: 'pl-note' }, S.doc, h('a', { href: DOC, target: '_blank', rel: 'noopener' }, 'docs/PRUEFSTAND.md')));
 }
 
 export function renderPruef(root) {
@@ -158,41 +126,15 @@ export function renderPruef(root) {
   wrap.append(left, right);
   if (!P) { left.append(h('p', { class: 'empty' }, '–')); return; }
   const rows = Array.isArray(P) ? P : P.rows || [];
-  const fr = UI.lang === 'fr';
-  const tests = new Map();
-  for (const r of rows) { if (!tests.has(r.test)) tests.set(r.test, []); tests.get(r.test).push(r); }
-  const order = [...tests.entries()].sort((a, b) => (a[1][0].gold === 'human' ? 0 : 1) - (b[1][0].gold === 'human' ? 0 : 1));
   const ld = lead(rows);
-  if (ld) left.append(ld, h('h2', { class: 'pl-h' }, ls().all), h('dl', { class: 'pl-gl' }, ls().gloss.flatMap(([k, v]) => [h('dt', {}, k), h('dd', {}, v)])));
-  let lastGold = null;
-  for (const [name, rs] of order) {
-    const r0 = rs[0];
-    if (r0.gold && r0.gold !== lastGold) { left.append(h('p', { class: 'grp' }, r0.gold === 'human' ? L.human : r0.gold === 'judge' ? L.judge : r0.gold)); lastGold = r0.gold; }
-    const file = r0.file ? (/^https?:/.test(r0.file) ? h('a', { href: r0.file, target: '_blank', rel: 'noopener' }, r0.file) : r0.file) : '';
-    const [title, titleTip] = plain((fr && r0.test_fr) || name);
-    const sec = h('section', { class: 'test' },
-      h('h3', { 'data-tip': titleTip }, title),
-      h('p', { class: 'tm' }, [r0.split ? `${L.split}: ${(fr && r0.split_fr) || r0.split}` : '', r0.file ? `${L.file}: ` : ''].filter(Boolean).join(' · '), file));
-    const tb = h('table', {}, h('colgroup', {}, h('col', { class: 'c-d' }), h('col'), h('col'), h('col'), h('col')),
-      h('thead', {}, h('tr', {}, h('th', {}, L.design), h('th', { class: 'n' }, 'n'), h('th', {}, L.result), h('th', {}, L.ci), h('th', {}, L.baseline))));
-    const body = h('tbody');
-    for (const r of rs) {
-      const ci = Array.isArray(r.interval) && r.interval[0] === r.interval[1] ? L.noCi : Array.isArray(r.interval) ? `[${r.interval.map(v => typeof v === 'number' ? v.toFixed(3) : v).join(', ')}]` : (r.interval || '–');  // bounds are stored at 3 decimals (truncated / outward)
-      const ship = r === order[0][1][0]; // the production row leads the first human-label table
-      const [des, desTip] = plain((fr && r.design_fr) || r.design), [base, baseTip] = plain((fr && r.baseline_fr) || r.baseline || '–');
-      body.append(h('tr', { class: ship ? 'ship' : '' }, h('td', { 'data-tip': desTip }, des), h('td', { class: 'n' }, num(r.n)), h('td', { class: 'res' }, String((fr && r.result_fr) || r.result)),
-        h('td', { class: 'res' }, ci), h('td', { class: 'base', 'data-tip': baseTip }, base)));
-    }
-    tb.append(body); sec.append(h('div', { class: 'tw' }, tb)); left.append(sec);
-  }
+  if (ld) left.append(ld);
   if (SRC['pruefstand.json'] === 'data-fixture/') left.append(h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `pruefstand.json ${L.fromFixture}`));
   if (P.curve) {
     // held out first: the S25 curve (black, red dot at the shipped lane); the design-set curve stays as a grey reference
     const hc = D.conf && D.conf.curve, cv = hc ? { ...hc, ref: P.curve.points, refLabel: [P.curve.test, P.curve.test_fr] } : { ...P.curve };
     right.append(chart(cv));
   }
-  if (D.conf) right.append(D.conf.lanes_tau ? lanesTau(D.conf.lanes_tau) : lanesBar(D.conf), confusion(D.conf));
-  bindTips(right); bindTips(left);
+  bindTips(right);
 }
 
 function chart(cv) {
@@ -228,52 +170,6 @@ function chart(cv) {
     h('h3', {}, L.cpTitle),
     h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 12px' }, `${plain((fr && cv.test_fr) || cv.test || '')[0]} · n ${num(cv.n)}`),
     svg,
-    cv.op ? h('p', { class: 'tm mono', style: 'font-size:12px;margin-top:8px' }, `${(fr ? cv.op.label_fr : cv.op.label_de) || ''}: ${L.cpX} ${pct(cv.op.coverage)}, ${L.cpY} ${p3(cv.op.precision)} (n ${num(cv.op.n)})`) : '',
-    cv.ref ? h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `${L.refCurve}: ${plain((fr && cv.refLabel[1]) || cv.refLabel[0])[0]}`) : '',
-    cv.file ? h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `${L.file}: ${cv.file}`) : '');
+    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin-top:8px' }, [cv.ref ? `${L.refCurve}: ${plain((fr && cv.refLabel[1]) || cv.refLabel[0])[0]}` : '', cv.file ? `${L.file}: ${cv.file}` : ''].filter(Boolean).join(' · ')));
 }
 
-// the two lanes of the shipped design as one split bar: width = share of affairs, dark part = precision in that lane
-function lanesBar(cf) {
-  const L = t(), l = cf.lanes, n = l.agree_n + l.disagree_n, a = l.agree_n / n;
-  const seg = (w, k, nn, cls, lab) => h('span', { class: `lseg ${cls}`, style: `width:${w * 100}%`, tabindex: '0', 'data-tip': `${lab} · ${pct(nn / n)} (n ${num(nn)}) · ${L.cpY} ${p3(k / nn)}` },
-    h('span', { class: 'lok', style: `width:${(k / nn) * 100}%` }));
-  return h('div', { class: 'lanes' }, h('h3', {}, L.lanesT),
-    h('div', { class: 'lbar' }, seg(a, l.agree_k, l.agree_n, 'ag', L.agree), seg(1 - a, l.disagree_k, l.disagree_n, 'dis', L.disagree)),
-    h('div', { class: 'llab' }, h('span', { style: `width:${a * 100}%` }, `${L.agree} ${pct(a)} · ${p3(l.agree_k / l.agree_n)}`),
-      h('span', { style: `width:${(1 - a) * 100}%` }, h('span', { class: 'rtick' }), ` ${L.disagree} · ${p3(l.disagree_k / l.disagree_n)}`)),
-    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:6px 0 0' }, `${L.cpY}: ${L.dark}; n ${num(n)} · ${cf.design}`));
-}
-
-// confusion: rows = APS editors' chapter, columns = Querschnitt's; cell grey = share of the row; diagonal outlined
-function confusion(cf) {
-  const L = t(), m = cf.m, K = m.length, chs = D.scheme.chapters;
-  const nm = k => chs[k] ? (UI.lang === 'fr' ? chs[k].fr || chs[k].de : chs[k].de) : String(k);
-  const rows = [...Array(K).keys()].filter(r => m[r].some(v => v) || m.some(row => row[r]));
-  const n = rows.length, cs = 12, LW = 0, W = n * cs, H = n * cs;
-  const svg = s('svg', { viewBox: `-1 -1 ${W + 2} ${H + 2}`, class: 'cf', role: 'img', 'aria-label': L.confusion });
-  rows.forEach((r, ri) => {
-    const tot = m[r].reduce((a, b) => a + b, 0);
-    rows.forEach((c, cj) => {
-      const v = m[r][c]; const sh = tot ? v / tot : 0;
-      const cls = v ? Math.min(5, 1 + Math.floor(sh * 5)) : 0;
-      svg.append(s('rect', { x: cj * cs, y: ri * cs, width: cs - 1, height: cs - 1, style: `fill:var(--r${cls})`, class: r === c ? 'dia' : 'off',
-        'data-tip': `${L.gold}: ${nm(r)} → ${L.pred}: ${nm(c)} · ${num(v)} ${L.of} ${num(tot)}${tot ? ` (${pct(sh)})` : ''}` }));
-    });
-  });
-  return h('div', { class: 'cfw' }, h('h3', {}, plain((UI.lang === 'fr' ? cf.title_fr : cf.title_de) || L.confusion)[0]),
-    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, `${L.rowsGold} · ${L.colsPred} · n ${num(cf.n)} · top-1 ${p3(cf.correct / cf.n)}`), svg);
-}
-
-// the two lanes of the shipped rule as one split bar: width = share of affairs, dark part = precision in that lane
-function lanesTau(lt) {
-  const L = t(), a = lt.pass_.coverage;
-  const seg = (w, x, cls, lab) => h('span', { class: `lseg ${cls}`, style: `width:${w * 100}%`, tabindex: '0', 'data-tip': `${lab} · ${pct(w)} (n ${num(x.n)}) · ${L.cpY} ${p3(x.precision)} [${x.ci.join(', ')}]` },
-    h('span', { class: 'lok', style: `width:${x.precision * 100}%` }));
-  return h('div', { class: 'lanes' }, h('h3', {}, L.lanesT),
-    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, ls().lanesPop(num(lt.pass_.n + lt.check.n))),
-    h('div', { class: 'lbar' }, seg(a, lt.pass_, 'ag', L.shipped), seg(1 - a, lt.check, 'dis', L.laneCheck)),
-    h('div', { class: 'llab' }, h('span', { style: `width:${a * 100}%` }, `${L.shipped} · ${pct(a)} · ${p3(lt.pass_.precision)}`),
-      h('span', { style: `width:${(1 - a) * 100}%` }, h('span', { class: 'rtick' }), ` ${L.laneCheck} · ${p3(lt.check.precision)}`)),
-    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:6px 0 0' }, `${L.cpY}: ${L.dark}; n ${num(lt.pass_.n + lt.check.n)} · ${lt.file}`));
-}

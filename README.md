@@ -23,9 +23,12 @@ Tests marked pre-registered were written down and hashed before their result ([e
 | Basel-Stadt's 46 themes vs the canton's «Thema 1»; names only / with five of Basel's labelled affairs as examples | 2,437 | 0.498 [0.478, 0.518] / 0.526 [0.506, 0.547] | keywords 0.181 · majority 0.053 |
 | Ticino, in Italian: its 6 lead units vs the one the canton assigns, where the text does not name it (pre-registered) | 1,685 | 0.647 [0.624, 0.670] | keywords 0.219 · majority 0.194 |
 | "Digitalisierung" in every parliament, 2026: 14,512 affairs decided, 651 flagged; stratified sample, agreement with a blind AI judge (pre-registered) | 453 | precision 0.905 [0.865, 0.945]; recall 0.659 [0.491, 0.900] | keywords: precision 0.756 |
+| Evidence on production rows: the stored quote supports the topic (blind AI judge) | 200 | 0.815 [0.755, 0.863]; exact substring at the stored offsets 198/198 | — |
+| Three narrow topics defined in one sentence (light pollution · drones · pesticides), held out, with a generated scope check on the flags (pre-registered) | 399 judged | precision of flags 0.642 → 0.761, +0.119 [+0.005, +0.260]; recall −0.099 [−0.250, 0.000] | hand-written keywords: precision 0.944, recall 0.850 |
+| "Digitalisierung": the 30 affairs DVS curated by hand (the question was written with these items in view) | 30 | 27 recognised | keywords 21 |
 | Cost, corpus run, Public AI list price ([eval/cost/results.json](eval/cost/results.json)) | — | USD 0.333 per 1,000 affairs (chapter, subtopic, one ad-hoc topic) | — |
 
-Further tests (design set, Italian, no prefill, evidence on production rows, six narrow topics, DVS's list): [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md)
+Further tests (design set, Italian, no prefill, three earlier narrow topics, neutrality): [docs/PRUEFSTAND.md](docs/PRUEFSTAND.md)
 · short report: [docs/REPORT.md](docs/REPORT.md).
 
 ## Quick start
@@ -42,7 +45,8 @@ and `top_logprobs`; Public AI is the default. `python tools/probe_endpoint.py` c
 
 ## How it works
 - **Closed choices only.** Chapter, subtopic, ad-hoc yes/no and evidence sentence are each a choice among listed codes, read
-  from Apertus's next-token probabilities; a label outside the scheme is never stored.
+  from Apertus's next-token probabilities; a label outside the scheme is never stored (asked to name a topic freely,
+  Apertus answered outside the scheme in 36 of 40 affairs; with the list shown, in 0 of 40).
 - **Two readings.** Federal affairs are read with and without retrieved APS examples; others in a second code order when the
   first is below p 0.9; bilingual parliaments in German and French. Both feed the confidence and are shown as the explanation.
 - **Lane.** `please_check` when the recalibrated p is below 0.7 or the German and French readings disagree; otherwise `pass`.

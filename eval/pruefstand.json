@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-17T10:36:55Z",
+ "generated_utc": "2026-10-17T14:38:52Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -990,8 +990,8 @@
    "id": "aps_chapter_heldout_s25",
    "gold": "human",
    "subject": "Apertus",
-   "title_de": "APS-Kapitel gegen APS-Redaktion, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
-   "title_fr": "Chapitre APS contre la rédaction APS, 927 nouveaux objets fédéraux (hors échantillon) : design livré, pipeline de production inchangé (S25)",
+   "title_de": "APS-Kapitel gegen APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
+   "title_fr": "Chapitre APS contre la rédaction APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon) : design livré, pipeline de production inchangé (S25)",
    "n": 927,
    "design": "Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: D4 (fünf BM25-nächste APS-gelabelte Beispiele aus dem S5+S9-Pool + zweite Lesart ohne Beispiele, Kapitel aus dem Unterthema zurückgelesen), D1 (ohne Beispiele) für die 10 Geschäfte ohne passendes APS-Beispiel (9 einwortige Verfahrenstitel wie «Vereidigung», «Nachruf», «Ordnungsantrag» ohne BM25-Nachbarn im Pool; 1 französischer Text); Lane: rekalibriertes p ≥ 0.7 → durchgelassen, Kalibrierkarte nur auf S16 angepasst; Entscheide komponiert wie im Export (compose.decide)",
    "result": {
@@ -1859,7 +1859,7 @@
    "model": "swiss-ai/apertus-v1.5-8b",
    "date": "2026-10-15",
    "shipped": "federal affairs: the production design as shipped (D4; D1 where no APS-labelled example is found: a text that is not German, or a title with no BM25 neighbour in the pool)",
-   "test": "APS-Kapitel gegen APS-Redaktion, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
+   "test": "APS-Kapitel gegen APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
    "interval": [
     0.666,
     0.726
@@ -1900,7 +1900,7 @@
    "gold": "human",
    "subject": "Apertus",
    "title_de": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): ohne Prefill (Endpunkt-Fallback QS_PREFILL=0) gegen das ausgelieferte Prefill (S28)",
-   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 nouveaux objets fédéraux (hors échantillon) : sans prefill (repli pour l'endpoint, QS_PREFILL=0) contre le prefill livré (S28)",
+   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon) : sans prefill (repli pour l'endpoint, QS_PREFILL=0) contre le prefill livré (S28)",
    "n": 927,
    "design": "eine Prüfung der Endpunkt-Fähigkeit, kein neues Design: Produktionspipeline wie ausgeliefert (D4 / D1 wie S25), aber mit QS_PREFILL=0: eine Nutzernachricht = der gemessene Prompt + eine Zeile, die Antwort mit der JSON-Öffnung zu beginnen; Code aus den top_logprobs des ersten Tokens nach der Öffnung (sonst aus dem Text); ohne Kalibrierung: Lane = Lesarten-Regel (durchgelassen, wenn die zwei Code-Reihenfolgen übereinstimmen oder eine Lesart mit p ≥ 0.9); gepaart gegen die S25-Entscheide (Prefill) auf denselben Geschäften",
    "result": {
@@ -2570,7 +2570,7 @@
    "gold": "human",
    "subject": "Apertus",
    "title_de": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): aus dem französischen Text gelesen, gegen das ausgelieferte Design auf dem deutschen Text (S33)",
-   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 nouveaux objets fédéraux (hors échantillon) : lus dans le texte français, contre le design livré sur le texte allemand (S33)",
+   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon) : lus dans le texte français, contre le design livré sur le texte allemand (S33)",
    "n": 927,
    "design": "die 927 S25-Geschäfte, Gold = APS-Kapitel der Redaktion; Input aus OPD: französischer Titel (+ Langtitel, bei keinem vorhanden) + französischer eingereichter Text («Texte déposé», erste 1'500 Zeichen) bei 580, nur Titel bei 347 (davon 291 auf Deutsch mit Dokumenttext gelesen); Design wie die Produktion ein französisches Bundesgeschäft heute liest: Beispiele nur für deutschen Bundestext, also D1 ohne Beispiele im französischen Rahmen (Kapitelnamen französisch, Unterthemen deutsch wie publiziert), zweite Code-Reihenfolge, wenn die erste Lesart p < 0.9 hat, Kapitel aus dem Unterthema zurückgelesen; Entscheide komponiert wie im Export (compose.decide); gepaart gegen die S25-Entscheide (D4 auf dem deutschen Text) auf denselben Geschäften",
    "result": {
@@ -3372,7 +3372,7 @@
    "gold": "human",
    "subject": "trained classifier (scikit-learn, no Apertus)",
    "title_de": "APS-Kapitel gegen APS-Redaktion, dieselben 927 neuen Bundesgeschäfte (hold-out): ein Klassifikator, trainiert auf den 1'654 APS-Labels des ausgelieferten Designs, gegen das ausgelieferte Design (S34)",
-   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 nouveaux objets fédéraux (hors échantillon) : un classifieur entraîné sur les 1 654 étiquettes APS du design livré, contre le design livré (S34)",
+   "title_fr": "Chapitre APS contre la rédaction APS, les mêmes 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon) : un classifieur entraîné sur les 1 654 étiquettes APS du design livré, contre le design livré (S34)",
    "n": 927,
    "design": "die trainierte Basislinie auf denselben Labels: die 1'654 APS-gelabelten Geschäfte des Beispielpools des ausgelieferten Designs (data/eval/aps_pool.jsonl; S9 1'357 + S5 297, keines in S25) als Trainingsdaten; Text wie das Modell ihn sieht (Titel + Langtitel + Text der Produktions-Inputs); TF-IDF (Wort-1–2-Gramme und Zeichen-2–5-Gramme), logistische Regression, C per 5-facher Kreuzvalidierung auf dem Pool gewählt (C = 30); nichts auf S25 abgestimmt; gepaart gegen die S25-Entscheide auf denselben Geschäften; keine Modellaufrufe",
    "result": {
@@ -6944,8 +6944,8 @@
    "id": "aps_hierarchical_heldout_s25",
    "gold": "human",
    "subject": "Apertus",
-   "title_de": "APS-Unterthema und Hierarchie, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen berechnet, nicht vorregistriert)",
-   "title_fr": "Sous-thème APS et hiérarchie, 927 nouveaux objets fédéraux (hors échantillon) : design livré (calculé après S25 à partir de ses lignes, non préenregistré)",
+   "title_de": "APS-Unterthema und Hierarchie, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen berechnet, nicht vorregistriert)",
+   "title_fr": "Sous-thème APS et hiérarchie, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon) : design livré (calculé après S25 à partir de ses lignes, non préenregistré)",
    "n": 891,
    "design": "die S25-Geschäfte mit Hauptunterthema unter den 190 Namen (891 von 927); Entscheide der Produktionspipeline wie in S25 (Unterthema-Rangliste neu komponiert, keine neuen Aufrufe); Definitionen wie eval/s16/hierarchical.py: hierarchisches P/R/F1 nach Kiritchenko (Mengen um Vorfahren ergänzt; Ebenen Kapitel + Unterthema; mikro); Kapitel-F1 je Kapitel, Makro über alle 927 Geschäfte",
    "result": {
@@ -7156,7 +7156,7 @@
    "model": "swiss-ai/apertus-v1.5-8b",
    "date": "2026-10-15",
    "shipped": "ranked subtopic suggestions (federal affairs)",
-   "test": "APS-Unterthema und Hierarchie, 927 neue Bundesgeschäfte (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen berechnet, nicht vorregistriert)",
+   "test": "APS-Unterthema und Hierarchie, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen berechnet, nicht vorregistriert)",
    "interval": [
     0.575,
     0.633

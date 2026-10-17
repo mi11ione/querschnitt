@@ -10,32 +10,32 @@ const DOC = 'https://github.com/mi11ione/querschnitt/blob/main/docs/PRUEFSTAND.m
 const LS = {
   de: {
     intro: 'Wie gut ordnet Apertus zu? Verglichen mit Fachleuten, die dieselben Geschäfte von Hand eingeordnet haben:',
-    fed: n => `der ${n} neuen Bundesgeschäfte bekommen von Apertus dasselbe Themenkapitel, das ihnen die Redaktion der Année politique suisse (APS) gegeben hat; keines davon wurde beim Entwickeln benutzt.`,
+    fed: n => `der ${n} Bundesgeschäfte, die beim Entwickeln nie benutzt wurden (eingereicht 1990–2025), bekommen von Apertus dasselbe Themenkapitel, das ihnen die Redaktion der Année politique suisse (APS) gegeben hat.`,
     fedSub: (lp, kw, tr) => [lp != null ? `nur Kapitelliste ${pct(lp)}` : '', tr != null ? `trainiert auf 1'654 APS-Labels ${pct(tr)}` : '', kw != null ? `Stichwortsuche ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'Vergleich:',
-    lane: (n, ok, chk) => [`der ${n} neuen Bundesgeschäfte gehen ohne Prüfung durch, und davon sind `, nw(ok), ` richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort `, nw(chk), ` richtig).`],
+    lane: (n, ok, chk) => [`dieser ${n} Bundesgeschäfte gehen ohne Prüfung durch, und davon sind `, nw(ok), ` richtig; den Rest legt Querschnitt `, h('span', { class: 'rtick' }), ` einer Person vor (dort `, nw(chk), ` richtig).`],
     laneSub: 'Regel: rekalibriertes p ≥ 0.7, vor dem Test festgelegt',
     cols: ['Parlament', 'eigenes Schema', 'n', 'top-1 [95 %]', 'Stichwort', 'Datei'],
     be: ['Bern, Grosser Rat', k => `${k} Direktionen`],
     bs: ['Basel-Stadt, Grosser Rat', k => `${k} Themen der Kantons- und Stadtentwicklung`],
     ti: ['Tessin, Gran Consiglio', k => `${k} Stellen, italienisch; Text nennt keine`],
-    dig: (a, ka, p, kp) => `«Digitalisierung»: ${a} DVS-Geschäfte gefunden (Stichwort ${ka}) · Präzision ${p} gegen KI-Richter (Stichwort ${kp})`,
+    dig: (a, ka, p, kp) => `«Digitalisierung»: ${a} DVS-Geschäfte gefunden (Stichwort ${ka}; Frage an dieser Liste abgestimmt) · Präzision ${p} gegen KI-Richter (Stichwort ${kp})`,
     doc: 'Alle Tests mit Stichprobe, Intervall, Vergleich und Quelldatei: ',
     internal: 'intern',
     codes: { D0: 'Listen-Prompt', D1: 'ohne Beispiele', D2: 'DE + FR gemittelt', D3: 'fünf Beispiele', D4: 'mit Beispielen, zwei Lesarten', D4s: 'Variante' },
   },
   fr: {
     intro: 'Le classement d’Apertus est-il bon ? Comparé à des spécialistes qui ont classé les mêmes objets à la main :',
-    fed: n => `des ${n} nouveaux objets fédéraux reçoivent d’Apertus le chapitre thématique que leur a attribué la rédaction de l’Année politique suisse (APS) ; aucun n’a servi pendant le développement.`,
+    fed: n => `des ${n} objets fédéraux jamais utilisés pendant le développement (déposés de 1990 à 2025) reçoivent d’Apertus le chapitre thématique que leur a attribué la rédaction de l’Année politique suisse (APS).`,
     fedSub: (lp, kw, tr) => [lp != null ? `liste des chapitres seule ${pct(lp)}` : '', tr != null ? `entraîné sur 1 654 étiquettes APS ${pct(tr)}` : '', kw != null ? `mots-clés ${pct(kw)}` : ''].filter(Boolean).join(' · '),
     cmp: 'comparaison :',
-    lane: (n, ok, chk) => [`des ${n} nouveaux objets fédéraux passent sans vérification, dont `, nw(ok), ` sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, `, nw(chk), ` justes).`],
+    lane: (n, ok, chk) => [`de ces ${n} objets fédéraux passent sans vérification, dont `, nw(ok), ` sont justes ; Querschnitt soumet le reste `, h('span', { class: 'rtick' }), ` à une personne (là, `, nw(chk), ` justes).`],
     laneSub: 'règle : p recalibré ≥ 0,7, fixée avant le test',
     cols: ['parlement', 'schéma propre', 'n', 'top-1 [95 %]', 'mots-clés', 'fichier'],
     be: ['Berne, Grand Conseil', k => `${k} directions`],
     bs: ['Bâle-Ville, Grand Conseil', k => `${k} thèmes du développement cantonal et urbain`],
     ti: ['Tessin, Gran Consiglio', k => `${k} unités, en italien ; le texte n’en nomme aucune`],
-    dig: (a, ka, p, kp) => `« numérique » : ${a} objets DVS trouvés (mots-clés ${ka}) · précision ${p} contre juge IA (mots-clés ${kp})`,
+    dig: (a, ka, p, kp) => `« numérique » : ${a} objets DVS trouvés (mots-clés ${ka} ; question réglée sur cette liste) · précision ${p} contre juge IA (mots-clés ${kp})`,
     doc: 'Tous les tests avec échantillon, intervalle, référence et fichier source : ',
     internal: 'interne',
     codes: { D0: 'liste', D1: 'sans exemples', D2: 'DE + FR moyennés', D3: 'cinq exemples', D4: 'avec exemples, deux lectures', D4s: 'variante' },
@@ -128,6 +128,7 @@ export function renderPruef(root) {
   const rows = Array.isArray(P) ? P : P.rows || [];
   const ld = lead(rows);
   if (ld) left.append(ld);
+  left.append(...allTests(rows));
   if (SRC['pruefstand.json'] === 'data-fixture/') left.append(h('p', { class: 'tm mono dim', style: 'font-size:12px' }, `pruefstand.json ${L.fromFixture}`));
   if (P.curve) {
     // held out first: the S25 curve (black, red dot at the shipped lane); the design-set curve stays as a grey reference
@@ -135,7 +136,7 @@ export function renderPruef(root) {
     right.append(chart(cv));
   }
   if (D.conf && D.conf.m) right.append(confusion(D.conf));
-  bindTips(right);
+  bindTips(right); bindTips(left);
 }
 
 function chart(cv) {
@@ -194,3 +195,32 @@ function confusion(cf) {
     h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, `${L.rowsGold} · ${L.colsPred} · n ${num(cf.n)}`), h('div', { style: 'max-width:360px' }, svg));
 }
 const CONF = { de: 'Welches Kapitel statt welchem', fr: 'Quel chapitre à la place de quel autre' };
+
+// every test, as one ruled table each: human labels first, then the blind AI judge (pruefstand.json rows; design codes
+// and test ids leave the visible text, see plain())
+function allTests(rows) {
+  const L = t(), fr = UI.lang === 'fr', tests = new Map(), out = [];
+  for (const r of rows) { if (!tests.has(r.test)) tests.set(r.test, []); tests.get(r.test).push(r); }
+  const order = [...tests.entries()].sort((a, b) => (a[1][0].gold === 'human' ? 0 : 1) - (b[1][0].gold === 'human' ? 0 : 1));
+  out.push(h('h2', { style: 'margin:32px 0 12px;font:600 var(--f4)/1.2 var(--sans)' }, ALL[fr ? 'fr' : 'de']));
+  let lastGold = null;
+  for (const [name, rs] of order) {
+    const r0 = rs[0];
+    if (r0.gold && r0.gold !== lastGold) { out.push(h('p', { class: 'grp' }, r0.gold === 'human' ? L.human : r0.gold === 'judge' ? L.judge : r0.gold)); lastGold = r0.gold; }
+    const [title, titleTip] = plain((fr && r0.test_fr) || name);
+    const tb = h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, L.design), h('th', { class: 'n' }, 'n'), h('th', {}, L.result), h('th', {}, L.ci), h('th', {}, L.baseline))));
+    const body = h('tbody');
+    for (const r of rs) {
+      const ci = Array.isArray(r.interval) && r.interval[0] === r.interval[1] ? L.noCi : Array.isArray(r.interval) ? `[${r.interval.map(v => typeof v === 'number' ? v.toFixed(3) : v).join(', ')}]` : (r.interval || '–');
+      const [des, desTip] = plain((fr && r.design_fr) || r.design), [base, baseTip] = plain((fr && r.baseline_fr) || r.baseline || '–');
+      body.append(h('tr', {}, h('td', { 'data-tip': desTip }, des), h('td', { class: 'n' }, num(r.n)), h('td', { class: 'res' }, String((fr && r.result_fr) || r.result)),
+        h('td', { class: 'res' }, ci), h('td', { class: 'base', 'data-tip': baseTip }, base)));
+    }
+    tb.append(body);
+    out.push(h('section', { class: 'test' }, h('h3', { 'data-tip': titleTip }, title),
+      h('p', { class: 'tm' }, [r0.split ? `${L.split}: ${(fr && r0.split_fr) || r0.split}` : '', r0.file ? `${L.file}: ${r0.file}` : ''].filter(Boolean).join(' · ')),
+      h('div', { class: 'tw' }, tb)));
+  }
+  return out;
+}
+const ALL = { de: 'Alle Tests', fr: 'Tous les tests' };

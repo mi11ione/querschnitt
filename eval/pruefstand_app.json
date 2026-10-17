@@ -1,8 +1,8 @@
 {
  "rows": [
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
-   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon, S25)",
    "gold": "human",
    "design": "Produktionspipeline wie ausgeliefert (D4; D1 ohne Beispiele: 10 Geschäfte ohne passendes APS-Beispiel, einwortige Titel wie «Vereidigung»)",
    "design_fr": "pipeline de production tel que livré (D4 ; D1 sans exemples : 10 objets sans exemple APS adéquat, titres d'un mot comme « Vereidigung »)",
@@ -20,8 +20,8 @@
    "file": "eval/s25/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
-   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon, S25)",
    "gold": "human",
    "design": "ausgeliefert: rekalibriertes p ≥ 0.7 (67.3% der Geschäfte)",
    "design_fr": "livré : p recalibré ≥ 0,7 (67,3% des objets)",
@@ -39,8 +39,8 @@
    "file": "eval/s25/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
-   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon, S25)",
    "gold": "human",
    "design": "Lesarten einig (bisherige Regel; 65.1% der Geschäfte)",
    "design_fr": "lectures concordantes (règle précédente ; 65,1% des objets)",
@@ -58,8 +58,8 @@
    "file": "eval/s25/results.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
-   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon, S25)",
    "gold": "human",
    "design": "Unterthema, durchgehend, ausgeliefertes Design (nicht vorregistriert, nach S25 berechnet)",
    "design_fr": "sous-thème, de bout en bout, design livré (non préenregistré, calculé après S25)",
@@ -77,8 +77,8 @@
    "file": "eval/s25/hierarchical.json"
   },
   {
-   "test": "APS-Kapitel vs. APS-Redaktion, 927 neue Bundesgeschäfte (hold-out, S25)",
-   "test_fr": "Chapitre APS vs rédaction APS, 927 nouveaux objets fédéraux (hors échantillon, S25)",
+   "test": "APS-Kapitel vs. APS-Redaktion, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out, S25)",
+   "test_fr": "Chapitre APS vs rédaction APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon, S25)",
    "gold": "human",
    "design": "hierarchisches F1 (Kapitel + Unterthema) · Kapitel-F1 makro (nicht vorregistriert, nach S25 berechnet)",
    "design_fr": "F1 hiérarchique (chapitre + sous-thème) · F1 macro par chapitre (non préenregistré, calculé après S25)",

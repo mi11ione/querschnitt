@@ -826,8 +826,8 @@ dif25b = {"metric": "paired Δ top-1 shipped − D0 (same affairs)", "value": df
           "at": loc(S25BR, "shipped_minus_D0")}
 tests.append(dict(
     id="aps_chapter_heldout_s25", gold="human", subject="Apertus",
-    title_de=f"APS-Kapitel gegen APS-Redaktion, {N25} neue Bundesgeschäfte (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
-    title_fr=f"Chapitre APS contre la rédaction APS, {N25} nouveaux objets fédéraux (hors échantillon) : design livré, pipeline de production "
+    title_de=f"APS-Kapitel gegen APS-Redaktion, {N25} Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out): ausgeliefertes Design, Produktionspipeline unverändert (S25)",
+    title_fr=f"Chapitre APS contre la rédaction APS, {N25} objets fédéraux jamais utilisés pendant le développement (hors échantillon) : design livré, pipeline de production "
              "inchangé (S25)",
     n=N25, design=f"Bundesgeschäfte mit APS-Kapitel der Redaktion aus Wayback-Aufnahmen der Prozessseiten von anneepolitique.swiss, keines in den "
     "S5- oder S9-Sets oder im Beispielpool (S9-Regeln: Kapitel + Hauptunterthema); Produktions-Input aus OPD; Produktionspipeline wie ausgeliefert: "
@@ -905,9 +905,9 @@ mf25 = dict(h25b("chapter_macro_f1", metric="per-chapter F1, macro over the chap
 assert mf25["chapters"] == len(gc25), (mf25["chapters"], len(gc25))
 tests.append(dict(
     id="aps_hierarchical_heldout_s25", gold="human", subject="Apertus",
-    title_de=f"APS-Unterthema und Hierarchie, {N25} neue Bundesgeschäfte (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen "
+    title_de=f"APS-Unterthema und Hierarchie, {N25} Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out): ausgeliefertes Design (nach S25 aus seinen Zeilen "
              "berechnet, nicht vorregistriert)",
-    title_fr=f"Sous-thème APS et hiérarchie, {N25} nouveaux objets fédéraux (hors échantillon) : design livré (calculé après S25 à partir de "
+    title_fr=f"Sous-thème APS et hiérarchie, {N25} objets fédéraux jamais utilisés pendant le développement (hors échantillon) : design livré (calculé après S25 à partir de "
              "ses lignes, non préenregistré)",
     n=NH25, design=f"die S25-Geschäfte mit Hauptunterthema unter den 190 Namen ({NH25} von {N25}); Entscheide der Produktionspipeline wie in S25 "
     "(Unterthema-Rangliste neu komponiert, keine neuen Aufrufe); Definitionen wie eval/s16/hierarchical.py: hierarchisches P/R/F1 nach "
@@ -966,7 +966,7 @@ tests.append(dict(
     id="aps_chapter_heldout_s28_no_prefill", gold="human", subject="Apertus",
     title_de=f"APS-Kapitel gegen APS-Redaktion, dieselben {N25} neuen Bundesgeschäfte (hold-out): ohne Prefill (Endpunkt-Fallback "
              "QS_PREFILL=0) gegen das ausgelieferte Prefill (S28)",
-    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} nouveaux objets fédéraux (hors échantillon) : sans prefill (repli pour "
+    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} objets fédéraux jamais utilisés pendant le développement (hors échantillon) : sans prefill (repli pour "
              "l'endpoint, QS_PREFILL=0) contre le prefill livré (S28)",
     n=N25, design="eine Prüfung der Endpunkt-Fähigkeit, kein neues Design: Produktionspipeline wie ausgeliefert (D4 / D1 wie S25), aber mit "
     "QS_PREFILL=0: eine Nutzernachricht = der gemessene Prompt + eine Zeile, die Antwort mit der JSON-Öffnung zu beginnen; Code aus den "
@@ -1063,7 +1063,7 @@ tests.append(dict(
     id="aps_chapter_heldout_s33_french", gold="human", subject="Apertus",
     title_de=f"APS-Kapitel gegen APS-Redaktion, dieselben {N25} neuen Bundesgeschäfte (hold-out): aus dem französischen Text gelesen, "
              "gegen das ausgelieferte Design auf dem deutschen Text (S33)",
-    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} nouveaux objets fédéraux (hors échantillon) : lus dans le texte "
+    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} objets fédéraux jamais utilisés pendant le développement (hors échantillon) : lus dans le texte "
              "français, contre le design livré sur le texte allemand (S33)",
     n=N25, design=f"die {N25} S25-Geschäfte, Gold = APS-Kapitel der Redaktion; Input aus OPD: französischer Titel (+ Langtitel, bei keinem "
     f"vorhanden) + französischer eingereichter Text («Texte déposé», erste 1'500 Zeichen) bei {in33['with_french_text']}, nur Titel bei "
@@ -1145,7 +1145,7 @@ tests.append(dict(
     id="aps_chapter_heldout_s34_trained", gold="human", subject="trained classifier (scikit-learn, no Apertus)",
     title_de=f"APS-Kapitel gegen APS-Redaktion, dieselben {N25} neuen Bundesgeschäfte (hold-out): ein Klassifikator, trainiert auf den "
              f"{F.t(N34, sep="'")} APS-Labels des ausgelieferten Designs, gegen das ausgelieferte Design (S34)",
-    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} nouveaux objets fédéraux (hors échantillon) : un classifieur entraîné "
+    title_fr=f"Chapitre APS contre la rédaction APS, les mêmes {N25} objets fédéraux jamais utilisés pendant le développement (hors échantillon) : un classifieur entraîné "
              f"sur les {F.t(N34, sep=' ')} étiquettes APS du design livré, contre le design livré (S34)",
     n=N25, design=f"die trainierte Basislinie auf denselben Labels: die {F.t(N34, sep="'")} APS-gelabelten Geschäfte des Beispielpools des ausgelieferten "
     "Designs (data/eval/aps_pool.jsonl; S9 1'357 + S5 297, keines in S25) als Trainingsdaten; Text wie das Modell ihn sieht (Titel + Langtitel + "
@@ -2435,8 +2435,8 @@ row(*APS, "human", "Design-Suche (S31): 5 Varianten gegen D4, keine besser; best
 # S25: the held-out test of the shipped design (its own table, right after the design set above)
 T25 = TD["aps_chapter_heldout_s25"]; m25 = T25["results_more"]; b25 = T25["breakdowns"]; l25 = b25["lanes"]
 d0b25, kw25 = T25["baselines"][0], T25["baselines"][1]
-APS25 = (f"APS-Kapitel vs. APS-Redaktion, {p3(N25)} neue Bundesgeschäfte (hold-out, S25)",
-         f"Chapitre APS vs rédaction APS, {F.t(N25, sep=' ')} nouveaux objets fédéraux (hors échantillon, S25)")
+APS25 = (f"APS-Kapitel vs. APS-Redaktion, {p3(N25)} Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out, S25)",
+         f"Chapitre APS vs rédaction APS, {F.t(N25, sep=' ')} objets fédéraux jamais utilisés pendant le développement (hors échantillon, S25)")
 SPLIT_S25 = ("held-out, vorregistriert (S25): kein Geschäft in S5, S9 oder im Beispielpool; nichts darauf abgestimmt; Kalibrierkarte nur aus S16",
              "hors échantillon, préenregistré (S25) : aucun objet de S5, S9 ni du pool d'exemples ; rien d'ajusté ; carte de calibration tirée de S16 seulement")
 dd25 = {c["cell"]: c for c in b25["by_design"]["cells"]}

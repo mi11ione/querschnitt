@@ -7,6 +7,7 @@ import { renderPruef } from './pruef.js';
 import { Atlas } from './atlas.js';
 import { renderAnb } from './anb.js';
 import { Woche } from './woche.js';
+import { bindTips } from './viz.js';
 
 const VIEWS = ['woche', 'ueber', 'karte', 'neu', 'pruef', 'anb'];
 let view = 'woche', karte = null, neu = null, atlas = null, woche = null;
@@ -47,10 +48,11 @@ function renderShell() {
   const items = [
     [num(T.affairs), L.affairs],
     [num(parlCount()[0]), L.parls(parlCount()[1])],
-    [num(T.check), L.pendingAll],
+    // the work a person gets: please-check affairs per week over the period (the total on hover)
+    [`≈ ${num(Math.floor(T.check / Math.max(1, Math.floor((D.dmax - D.dmin) / 7) + 1)))}`, L.perWeekCheck, false, `${num(T.check)} ${L.pendingAll}`],
   ].filter(Boolean);
-  $('#facts').replaceChildren(...items.map(([v, k, pre]) => h('span', {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));
-  fitFacts();
+  $('#facts').replaceChildren(...items.map(([v, k, pre, tip]) => h('span', tip ? { 'data-tip': tip } : {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));
+  fitFacts(); const fe = $('#facts'); if (!fe.dataset.tips) { bindTips(fe); fe.dataset.tips = '1'; }
   // footer: provenance + keys
   const gen = (m.generated_at || '').replace('T', ' ').slice(0, 16);
   $('#prov').textContent = [`${L.prov1}, Export ${gen} UTC`, `${L.engine} ${m.model || ''}, Build ${m.build_short || String(m.build || '').slice(-8)}`, L.geo].join(' · ');

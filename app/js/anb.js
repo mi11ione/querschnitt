@@ -38,7 +38,11 @@ export async function renderAnb(root) {
   const dmy = iso => String(iso || '').slice(0, 10).split('-').reverse().join('.');
   const cost = C && C.usd_per_1000_affairs != null ? h('span', { 'data-tip': `${L.anbCost(num(1000))} · ${C.file}` },
     `USD ${tr(Number(C.usd_per_1000_affairs), 3).toFixed(3)} ${PER[UI.lang === 'fr' ? 'fr' : 'de'](num(1000))}`) : '';
-  const parts = ng ? [dmy(ng.date), `${L.anbNew} ${num(ng.new_affairs ?? 0)}`, ng.wall_min ? `${num(Math.floor(ng.wall_min))} min` : ''].filter(Boolean) : [];
+  // the night's own figures (its cost, the queue it left, a hand stop), then the measured corpus average on its own line
+  const SM = { de: ['bewertet', 'offen', 'von Hand gestoppt', 'gemessen über den Korpus'], fr: ['évalués', 'en attente', 'arrêté à la main', 'mesuré sur le corpus'] }[UI.lang === 'fr' ? 'fr' : 'de'];
+  const parts = ng ? [dmy(ng.date), `${L.anbNew} ${num(ng.new_affairs ?? 0)}`, ng.scored != null && !ng.note ? `${SM[0]} ${num(ng.scored)}` : '',
+    ng.pending != null ? `${SM[1]} ${num(ng.pending)}` : '', ng.wall_min ? `${num(Math.floor(ng.wall_min))} min` : '',
+    ng.usd != null ? `USD ${tr(Number(ng.usd), 4).toFixed(4)}` : '', ng.note ? SM[2] : ''].filter(Boolean) : [];
   // the last real outage (meta.nightly_outage): one line, queue before → after, minutes to drain, cost
   const O = m.nightly_outage;
   const outage = O ? h('p', { class: 'tm mono dim' }, `${L.anbOutage(dmy(O.date))} ${L.anbQueue} ${num(O.pending_after_cut ?? O.pending ?? 0)} → ${num(O.pending_after_drain ?? 0)} · ${L.anbDrain} ${O.drain_minutes != null ? tr(O.drain_minutes, 1) : '–'} min`) : '';
@@ -47,7 +51,7 @@ export async function renderAnb(root) {
   const foot = F ? h('p', { class: 'tm mono dim' }, `${L.anbFoot}: full ≈ ${num(Math.floor(F.full_mib))} MiB · lite ≈ ${num(Math.floor(F.lite_mib || 0))} MiB · image ${num(F.image_mb)} MB`,
     F.run_url ? [' · ', h('a', { href: F.run_url, target: '_blank', rel: 'noopener' }, `CI ↗`)] : '') : '';
   if (parts.length || cost) right.append(h('div', { class: 'anb-sec anb-first' }, ng ? h('h2', {}, L.night) : '',
-    h('p', { class: 'tm mono' }, parts.join(' · '), parts.length && cost ? ' · ' : '', cost), outage, foot));
+    h('p', { class: 'tm mono' }, parts.join(' · ')), cost ? h('p', { class: 'tm mono' }, `${SM[3]}: `, cost) : '', outage, foot));
   // (3) the Hop load: the pipeline file and the command
   right.append(h('div', { class: 'anb-sec' }, h('h2', {}, L.anbHop), h('p', { class: 'tm mono dim' }, `Apache Hop · ${I.hop.file}`),
     h('p', { class: 'tm mono' }, I.hop.steps.map(st => st.name).join(' → ')),

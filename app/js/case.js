@@ -230,7 +230,10 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
       const box = h('div', {}), pc = c.lane[i] === 1;
       const more = h('button', { class: 'tb', type: 'button', 'aria-expanded': 'false' }, '[+]');
       more.addEventListener('click', () => { more.remove(); box.append(chart.el); bindTips(box); grow(box); });
-      add(L.chapter, h('span', {}, chapterName(c.ch[i]), pc ? h('span', { class: 'sig' }, ` · ${L.lanes.please_check}`) : '', ' ', more), box);
+      // why a person checks, in a few words: the German and French readings differ, else the model was unsure
+      const bl = aps && aps.bilingual, why = !pc ? '' : bl && bl.lane === 'please_check' && bl.top
+        ? ` (DE ${chapterName(bl.top.de)} · FR ${chapterName(bl.top.fr)})` : ` (${ws().unsure.replace(/^\S+\s/, '')})`;
+      add(L.chapter, h('span', {}, chapterName(c.ch[i]), pc ? h('span', { class: 'sig' }, ` · ${L.lanes.please_check}`) : '', why ? h('span', { class: 'dim' }, why) : '', ' ', more), box);
       tsec2.append(facts);
     } else { tsec2.append(facts); if (chart) tsec2.append(chart.el); }
   }

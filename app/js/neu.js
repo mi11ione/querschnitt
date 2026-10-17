@@ -42,11 +42,11 @@ const termsText = tr => {
 
 // strings of the replay (kept here: util.js holds the shared ones)
 const R = {
-  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', recCut: n => `Aufzeichnung, gekürzt auf ${n}`, last: 'zuletzt gelesen, neueste zuerst', cand: 'Kandidaten zuerst (Begriffe, Unterthemen)',
+  de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', recCut: n => `Aufzeichnung, gekürzt auf ${n}`, last: 'zuletzt gelesen, neueste zuerst', cand: 'Kandidaten zuerst (Begriffe, Unterthemen)', ofWeek: n => `von ${n} im Zeitraum`,
     line: (d, m, b) => `Aufzeichnung eines echten Laufs, ${d} · ${m}, Build ${b}. Ein eigenes Thema rechnet nur der Live-Dienst.`,
     down: 'Der Modell-Endpunkt antwortet nicht.', slow: s => `seit ${s} s keine Entscheidung vom Modell-Endpunkt`, fall: 'Aufzeichnung abspielen', back: 'zurück zur Eingabe',
     fallLine: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}, keine Live-Antwort: der Modell-Endpunkt antwortet gerade nicht.` },
-  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', recCut: n => `enregistrement, réduit à ${n}`, last: 'derniers lus, le plus récent en haut', cand: 'candidats d’abord (termes, sous-thèmes)',
+  fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', recCut: n => `enregistrement, réduit à ${n}`, last: 'derniers lus, le plus récent en haut', cand: 'candidats d’abord (termes, sous-thèmes)', ofWeek: n => `sur ${n} dans la période`,
     line: (d, m, b) => `Enregistrement d’une exécution réelle, ${d} · ${m}, build ${b}. Seul le service en ligne calcule un thème propre.`,
     down: 'Le modèle ne répond pas.', slow: s => `aucune décision du modèle depuis ${s} s`, fall: 'Rejouer l’enregistrement', back: 'retour à la saisie',
     fallLine: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}, pas une réponse en direct : le modèle ne répond pas en ce moment.` },
@@ -274,9 +274,11 @@ export class Neu {
     };
     showPeriod(res.period);
     const t0 = performance.now(); let read = 0, flagged = 0, outside = 0, total = null, done = false, order = null, lastT = rec ? t0 : this.t0;
+    // a capped run reads only part of the period: say how many affairs the period holds (the recording's summary or the done event)
+    let inP = rec && rec.summary ? rec.summary.in_period : null;
     const line = () => {
       const secs = Math.floor(rec && this.es && this.es.clock ? Math.min(this.es.clock(), rec.summary.seconds) : done && rec ? rec.summary.seconds : (performance.now() - t0) / 1000);
-      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b> · ${L.flagged} ${num(flagged)}${order === 'candidates first' ? ` · ${r().cand}` : ''} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${recTag()}` : ''}${done ? '' : ' · …'}`;
+      this.run.innerHTML = `<b>${L.read} ${num(read)}${total ? ' / ' + num(total) : ''}</b>${inP && total && inP > total ? ` ${r().ofWeek(num(inP))}` : ''} · ${L.flagged} ${num(flagged)}${order === 'candidates first' ? ` · ${r().cand}` : ''} · ${secs} ${L.secs}${outside ? ` · +${num(outside)}` : ''}${rec ? ` · ${recTag()}` : ''}${done ? '' : ' · …'}`;
     };
     this.lineNow = () => { if (!done) line(); };
     let pend = false;
@@ -297,7 +299,7 @@ export class Neu {
       if (type === 'topic' && d.period) showPeriod(d.period);
       if (type === 'terms' && d.terms) { const x = termsText(d.terms); this.terms.hidden = !x; this.terms.value = x; }
       if (type === 'error') { stopWhy = d.error || L.apiErr; finish(); return; }
-      if (d.done || type === 'done') { if (d.error) stopWhy = d.error; if (d.in_period != null && total == null) total = d.in_period; finish(); }
+      if (d.done || type === 'done') { if (d.error) stopWhy = d.error; if (d.in_period != null) { inP = d.in_period; if (total == null) total = d.in_period; } finish(); }
     };
     let stopWhy = null;
     const finish = () => {

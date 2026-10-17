@@ -43,11 +43,11 @@ const termsText = tr => {
 // strings of the replay (kept here: util.js holds the shared ones)
 const R = {
   de: { lim: n => (n ? `höchstens ${n} Geschäfte` : 'alle Geschäfte'), play: 'Aufzeichnung abspielen', again: 'nochmals abspielen', speed: 'Tempo', rec: 'Aufzeichnung', recCut: n => `Aufzeichnung, gekürzt auf ${n}`, last: 'zuletzt gelesen, neueste zuerst', cand: 'Kandidaten zuerst (Begriffe, Unterthemen)',
-    line: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}. Ein eigenes Thema liest nur der Live-Dienst; hier ist nichts eingebbar.`,
+    line: (d, m, b) => `Aufzeichnung eines echten Laufs, ${d} · ${m}, Build ${b}. Eigene Themen: im Live-Dienst.`,
     down: 'Der Modell-Endpunkt antwortet nicht.', slow: s => `seit ${s} s keine Entscheidung vom Modell-Endpunkt`, fall: 'Aufzeichnung abspielen', back: 'zurück zur Eingabe',
     fallLine: (d, m, b) => `Aufzeichnung eines echten Laufs vom ${d}, Route ${m}, Build ${b}, keine Live-Antwort: der Modell-Endpunkt antwortet gerade nicht.` },
   fr: { lim: n => (n ? `au plus ${n} objets` : 'tous les objets'), play: 'Rejouer l’enregistrement', again: 'rejouer encore', speed: 'vitesse', rec: 'enregistrement', recCut: n => `enregistrement, réduit à ${n}`, last: 'derniers lus, le plus récent en haut', cand: 'candidats d’abord (termes, sous-thèmes)',
-    line: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}. Seul le service en ligne lit un thème propre ; ici, rien n’est saisissable.`,
+    line: (d, m, b) => `Enregistrement d’une exécution réelle, ${d} · ${m}, build ${b}. Thèmes propres : dans le service en ligne.`,
     down: 'Le modèle ne répond pas.', slow: s => `aucune décision du modèle depuis ${s} s`, fall: 'Rejouer l’enregistrement', back: 'retour à la saisie',
     fallLine: (d, m, b) => `Enregistrement d’une exécution réelle du ${d}, route ${m}, build ${b}, pas une réponse en direct : le modèle ne répond pas en ce moment.` },
 };

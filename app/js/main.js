@@ -39,26 +39,18 @@ function renderShell() {
   $('#fixture').hidden = SRC['meta.json'] !== 'data-fixture/';
   $('#fixture').textContent = L.fixture;
   $('#build').replaceChildren();
-  // fact line: affairs, parliaments, scored share, build, last night's new rows, pending rows
-  // «letzte Nacht: 412 neu · 8 min»; nothing when the night added no rows
-  // last night in affairs (new in OPD's export, scored that night), not topic rows
-  const ng = m.nightly || null, nNew = ng ? (ng.new_affairs ?? null) : (API.metrics && (API.metrics.rows_last_night ?? API.metrics.new_rows));
-  const night = nNew ? [`${num(nNew)} ${ng ? L.newAff : L.newW}${ng && ng.scored != null ? ` · ${num(ng.scored)} ${L.scored}` : ''}`, `${L.night}:`, true] : null;
-  // the counts of D.tally: the same numbers as the Überblick and the Karte (docs/APP.md «Zählweisen»)
-  const T = D.tally, dig = TOPIC_BY_ID.get('adhoc/digitalisierung');
+  // fact line: affairs, parliaments, the affairs waiting for a person (APS lane); the same counts as D.tally everywhere
+  const T = D.tally;
   const items = [
     [num(T.affairs), L.affairs],
     [num(parlCount()[0]), L.parls(parlCount()[1])],
-    [num(T.aps), L.scoredAps],
-    T.dig && dig ? [num(T.dig), L.scoredTopic(dig.names[UI.lang] || dig.names.de)] : null,
     [num(T.check), L.pendingAll],
-    night,
   ].filter(Boolean);
   $('#facts').replaceChildren(...items.map(([v, k, pre]) => h('span', {}, pre ? `${k} ` : '', h('b', {}, v), pre ? '' : ` ${k}`)));
   fitFacts();
   // footer: provenance + keys
   const gen = (m.generated_at || '').replace('T', ' ').slice(0, 16);
-  $('#prov').textContent = [`${L.prov1}, Export ${gen} UTC`, `${L.engine} ${m.model || ''}, Build ${m.build_short || String(m.build || '').slice(-8)}`, `Querschnitt ${m.version || ''}`, L.geo].join(' · ');
+  $('#prov').textContent = [`${L.prov1}, Export ${gen} UTC`, `${L.engine} ${m.model || ''}, Build ${m.build_short || String(m.build || '').slice(-8)}`, L.geo].join(' · ');
   $('#keys').replaceChildren(...L.keys.map(([k, v]) => h('span', {}, h('kbd', {}, k), ` ${v}`)));
 }
 
@@ -74,7 +66,8 @@ addEventListener('resize', () => fitFacts());
 
 function show(v) {
   view = v;
-  document.body.classList.toggle('v-ueber', v === 'ueber' || v === 'woche');
+  document.body.classList.toggle('v-ueber', v === 'woche');
+  $('#keys').hidden = !(v === 'karte' || v === 'neu');   // the keys act on the list and the Pult only
   for (const x of VIEWS) { $(`#v-${x}`).hidden = x !== v; $(`#t-${x}`).setAttribute('aria-selected', String(x === v)); }
   if (v === 'pruef') renderPruef($('#v-pruef'));
   if (v === 'ueber') atlas.render();

@@ -1,11 +1,10 @@
-// Neueste Woche (view id `woche`): what Swiss parliaments did in one week, for a reader who has 30 seconds. First the one
-// line that says what the tool does (24 APS topics, the supporting sentence where there is one, red = a person checks),
-// then one plain sentence (affairs, parliaments, the three biggest chapters), the week by level and language, then the 6
-// APS chapters with the most affairs, ranked: count by level as hairline bars and up to 3 example affairs from different
+// Neueste Woche (view id `woche`): what Swiss parliaments did in one week, for a reader who has 30 seconds. One line that
+// says what the tool does, the week stepper, one sentence (affairs, parliaments), the week by level and language as one
+// mono line, then the 6 APS chapters with the most affairs, ranked, each with up to 3 example affairs from different
 // parliaments and languages, each with the quoted sentence that supports the topic and a red tick when a person should
-// check. Digitalisierung and saved ad-hoc topics are not APS chapters: they follow in their own unranked section
-// («Querschnittsthemen»: Digitalisierung as a row with examples, saved topics as one line), never in the ranking. Default week = the newest week with complete data (data.js newestFullWeek: ≥ 50 % of the median of
-// the 8 weeks before, so an export-lagged week is not the opener); ‹ › step weeks, later lagged weeks say so quietly.
+// check. Digitalisierung is not an APS chapter: it follows in its own section («Querschnittsthemen»), never in the
+// ranking. Default week = the newest week with complete data (data.js newestFullWeek: ≥ 50 % of the median of the 8
+// weeks before, so an export-lagged week is not the opener); ‹ › step weeks, later lagged weeks say so quietly.
 // Examples come from the pass lane; a please-check row only fills a slot that pass-lane rows cannot.
 // Detail files are per 1000 ids: only the buckets that hold this week's candidates are fetched.
 import { D, TOPIC_BY_ID, FL_KEY, detail, norm, lastCompleteWeek, newestFullWeek, priorMedian, weekCounts } from './data.js';
@@ -14,7 +13,6 @@ import { bodyName } from './case.js';
 import { bindTips } from './viz.js';
 
 const NTOP = 6, NEX = 3, QMAX = 160;
-const LV = ['federal', 'cantonal', 'communal', 'other'];
 const ABBR = /\b(art|artt|cpv|al|cfr|cf|lett|let|cap|ecc|ca|bzw|vgl|etc|nr|no|n|abs|ziff|inkl|resp|seg|ss|sig|sigg|dott|avv|prof|dr|st|ev|lit|chap|ch|p|pp|s|vol|mio|mia|fr|chf|sen|on|dipl|ing|lic|phil|jur|med)\.$/i;
 
 // the quote as one clean line: whitespace collapsed, PDF line-break hyphens joined, the most prose-like sentence of it,
@@ -179,7 +177,7 @@ export class Woche {
     const top = tps.slice(0, NTOP), more = tps.slice(NTOP);
     // Digitalisierung gets a full row; saved ad-hoc topics one quiet line (name and count) under it
     const crsAll = this.cross().map(count).filter(x => x.hits.length);
-    const crs = crsAll.filter(x => !x.tp.saved), svd = crsAll.filter(x => x.tp.saved).sort((a, b) => b.hits.length - a.hits.length);
+    const crs = crsAll.filter(x => !x.tp.saved);
     const name = tp => tp.names[UI.lang] || tp.names.de;
     const [, k] = isoWeek(d0);
 
@@ -191,26 +189,24 @@ export class Woche {
       h('button', { class: 'tb', type: 'button', disabled: last || null, 'aria-label': L.wkNext, 'data-tip': last ? null : `${L.wkNext} [›]`, onclick: () => this.step(1) }, '›'));
     // the Landtag FL is not a Swiss parliament: named apart («35 Parlamenten und dem Landtag FL»)
     const fl = bodies.has(FL_KEY), nCH = bodies.size - (fl ? 1 : 0);
-    const head = h('h2', { class: 'wo-h' }, rows.length ? L.wkLine(k, num(rows.length), num(nCH), nCH, fl, top.slice(0, 3).map(x => name(x.tp))) : L.wkNone(k));
+    const head = h('h2', { class: 'wo-h' }, rows.length ? L.wkLine(k, num(rows.length), num(nCH), nCH, fl, []) : L.wkNone(k));
     // what the page is, in one line, before anything else
     const intro = h('p', { class: 'wo-lede' }, L.wkIntro[0], h('span', { class: 'k' }, h('span', { class: 'rtick', role: 'img', 'aria-label': L.wkCheck }), L.wkIntro[1]));
     // a week after the newest complete one: the export has not caught up yet (quiet, not red)
     const md = lag ? priorMedian(w) : null;
     const lagNote = lag ? h('p', { class: 'wo-lag', 'data-tip': L.wkLagTip(num(weekCounts()[w]), md == null ? '–' : num(Math.round(md))) }, L.wkLag) : '';
-    const mxL = Math.max(1, ...lv);
-    const langs = ['de', 'fr', 'it', 'rm'].filter(l => lg.get(l)).map(l => `${num(lg.get(l))} ${L.wkIn[l]}`);
-    const sub = h('div', { class: 'wo-sub' },
-      levelBars(lv, mxL, L, 'wo-lv wide'),
-      h('p', { class: 'wo-lg' }, langs.join(' · ')));
+    // the week by level and language: one mono line
+    const lab = [L.federal, L.cantonal, L.communal, 'FL'];
+    const lvs = [0, 1, 2, 3].filter(l => lv[l]).map(l => `${num(lv[l])} ${lab[l]}`);
+    const langs = ['de', 'fr', 'it', 'rm'].filter(l => lg.get(l)).map(l => `${num(lg.get(l))} ${l.toUpperCase()}`);
+    const sub = h('p', { class: 'wo-lg wo-sub' }, [...lvs, ...langs].join(' · '));
     // topic rows; examples fill in once their detail buckets are in. One bar scale for chapters and cross-cutting topics
-    const mx = Math.max(1, ...top.concat(crs).flatMap(x => x.l4));
     const row = (x, list) => {
       const ex = h('div', { class: 'wo-ex' }, h('p', { class: 'wo-wait' }, '…'));
       list.append(h('li', { class: 'wo-row' },
         h('div', { class: 'wo-tp' },
           h('button', { class: 'wo-name', type: 'button', 'data-tip': L.wkMap, onclick: () => this.openTopic(x.tp, w) }, name(x.tp)),
-          h('p', { class: 'wo-n' }, h('b', {}, num(x.hits.length)), ` ${x.hits.length === 1 ? L.affair1 : L.affairs}`, x.tp.saved ? ` · ${L.savedMark}` : ''),
-          levelBars(x.l4, mx, L, 'wo-lv')),
+          h('p', { class: 'wo-n' }, h('b', {}, num(x.hits.length)), ` ${x.hits.length === 1 ? L.affair1 : L.affairs}`, x.tp.saved ? ` · ${L.savedMark}` : '')),
         ex));
       return ex;
     };
@@ -219,11 +215,8 @@ export class Woche {
       h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp, w) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
     // cross-cutting topics: own heading, own list (ul, unranked), after the chapters
     const xlist = h('ul', { class: 'wo-list' }), xslots = crs.map(x => row(x, xlist));
-    const svLine = svd.length ? h('p', { class: 'wo-more' }, `${L.savedTopics}: `, ...svd.flatMap((x, j) => [j ? ' · ' : '',
-      h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp, w) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
-    const crossSec = crsAll.length ? h('section', { class: 'wo-x' }, h('h3', { class: 'wo-xh' }, L.wkCross, h('span', {}, L.wkCrossSub)), crs.length ? xlist : '', svLine) : '';
-    const note = h('p', { class: 'wo-note' }, L.wkNote);
-    root.replaceChildren(h('div', { class: 'wo' }, intro, nav, head, lagNote, sub, rows.length ? list : '', tail, crossSec, note));
+    const crossSec = crs.length ? h('section', { class: 'wo-x' }, h('h3', { class: 'wo-xh' }, L.wkCross), xlist) : '';
+    root.replaceChildren(h('div', { class: 'wo' }, intro, nav, head, lagNote, sub, rows.length ? list : '', tail, crossSec));
     const all = top.concat(crs);
     if (!all.length) { window.__wocheReady = Promise.resolve(); return; }
     window.__wocheReady = this.fill(all, slots.concat(xslots), tok, w);
@@ -319,14 +312,6 @@ export class Woche {
 const bare = s => String(s || '').replace(/^\[(.*)\]$/, '$1');
 // OPD marks some bilingual parliaments' French titles as German: the version whose text equals the title wins
 const langOf = (i, d) => (d && d.title_alt && d.alt_lang && norm(d.title_alt) === norm(bare(D.c.title[i])) ? d.alt_lang : D.c.lang[i]);
-
-function levelBars(lv, mx, L, cls) {
-  const lab = [L.federal, L.cantonal, L.communal, L.other];
-  return h('div', { class: cls }, ...[0, 1, 2, 3].filter(l => l < 3 || lv[l]).map(l => h('div', { class: 'lr', 'data-tip': `${L.lvl1[LV[l]]}: ${num(lv[l])}` },
-    h('span', { class: 'lk' }, lab[l]),
-    h('span', { class: 'lt' }, h('span', { class: 'lb', style: `width:${(lv[l] / mx) * 100}%` })),
-    h('span', { class: 'lv' }, num(lv[l])))));
-}
 
 // «5.–11. Oktober 2026» / «5–11 octobre 2026»
 function span(a, b) {

@@ -112,7 +112,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     h2.textContent = d.title_alt; h2.lang = d.alt_lang;
     altP.hidden = false; altP.replaceChildren(h('span', { class: 'mono dim' }, `${lang} · `), h('span', { lang }, c.title[i]));
   }
-  if (ev && ev.field === 'title') tsec.append(highlight(c.title[i], ev, 'title', lang));   // the quote sits under «Beleg», not only in the heading
+  if (ev && ev.field === 'title') tsec.append(h('p', { class: 'txt sm dim' }, L.wkOnTitle));   // the heading is the evidence: said, not repeated
   const evLong = ev && ev.field === 'title_long';
   const tl = useAlt && d.title_long_alt && !evLong ? d.title_long_alt : d && d.title_long;
   const tlShown = useAlt && !evLong ? d.title_alt : c.title[i];
@@ -121,7 +121,11 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     tsec.append(highlight(tl, ev, 'title_long', useAlt && !evLong ? d.alt_lang : lang));
   }
   const text = d && (d.text || d.text_excerpt);
-  if (text) {
+  if (text && !(ev && ev.field === 'text')) {   // the text holds no evidence: behind [+] only, no excerpt
+    const more = h('button', { class: 'tb more', type: 'button' }, `[+] ${L.fullText}`);
+    more.addEventListener('click', () => { more.replaceWith(highlight(text, null, 'text', lang) || h('p')); });
+    tsec.append(more);
+  } else if (text) {
     tsec.append(h('div', { class: 'sl' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, `${L.text}${d.text_src ? ' · ' + d.text_src : ''}`)));
     // a document that opens with a file path or file name (a letterhead) is shown only on request, never as the first lines
     const junk = !(ev && ev.field === 'text') && /^[\s\S]{0,200}?([A-Za-z]:\\|\\\\|\.(docx?|pdf|xlsx?)\b)/i.test(text);
@@ -227,15 +231,9 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   if (chart && chart.subs) holder.append(h('div', { class: 'sec' }, chart.subs));
   if (groupSec) holder.append(groupSec);
   // provenance
-  const pv = h('dl', { class: 'facts' });
-  pv.append(h('dt', {}, L.meta), h('dd', {}, refFull));
-  const addp = (k, ...v) => pv.append(h('dt', {}, k), h('dd', {}, ...v));
-  if (d && d.url) addp(L.page, h('a', { href: d.url, target: '_blank', rel: 'noopener' }, d.url.replace(/^https?:\/\//, '').slice(0, 64) + ' ↗'));
-  addp('OPD', h('span', { class: 'mono' }, `#${id} · ${c.body[i]}`));
-  // the route name Public AI serves under; it does not fix the model size (docs/APERTUS-NOTES.md)
-  if (d) addp(L.build, h('span', { class: 'mono' }, `${(d.build || '').slice(-8)}${d.model ? ` · ${L.engine} ${d.model}` : ''}`));
-  const pids = d && ((d.aps && d.aps.pids) || d.prompt_ids || []);
-  if (pids && pids.length) addp('prompt', h('span', { class: 'mono' }, pids.join(' ')));
+  // provenance: the affair's facts, then one line with its OPD id and the parliament's page (model and build: footer)
+  const pv = h('div', { class: 'pv' }, refFull, h('p', { class: 'ref mono' }, `OPD #${id} · ${c.body[i]}`,
+    d && d.url ? [' · ', h('a', { href: d.url, target: '_blank', rel: 'noopener' }, d.url.replace(/^https?:\/\//, '').replace(/\/.*$/, '') + ' ↗')] : ''));
   holder.append(h('div', { class: 'sec' }, h('div', { class: 'sl' }, L.prov), pv));
   // similar affairs: one strip per level on the main timeline's weeks, then the titles
   const sim = similar(i, tp);

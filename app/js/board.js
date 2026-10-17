@@ -61,17 +61,18 @@ export class Board {
   // ------------------------------------------------------------ filters
   buildFilters() {
     const L = t(), c = D.c, F = this.S.f;
+    this.stLab = this.stLab || new Map();
     const opts = (vals) => [...vals.entries()].sort((a, b) => b[1] - a[1]).slice(0, 60).map(([v]) => v);
     const types = new Map(), states = new Map(), parties = new Map();
     const scope = this.tp && this.tp.scope;
     for (let i = 0; i < D.n; i++) {
       if (scope && c.body[i] !== scope) continue;
       const ty = typeOf(i); if (ty) types.set(ty, (types.get(ty) || 0) + 1);
-      const st = c.state[i]; if (st) states.set(st, (states.get(st) || 0) + 1);
+      const st = c.state[i]; if (st) { const k = stKey(st); states.set(k, (states.get(k) || 0) + 1); if (!this.stLab.has(k)) this.stLab.set(k, st); }
       const pa = c.party[i]; if (pa) parties.set(pa, (parties.get(pa) || 0) + 1);
     }
     const sel = (key, label, vals) => {
-      const s = h('select', { 'aria-label': label }, h('option', { value: '' }, L.all), opts(vals).map(v => h('option', { value: v, selected: F[key] === v }, v)));
+      const s = h('select', { 'aria-label': label }, h('option', { value: '' }, L.all), opts(vals).map(v => h('option', { value: v, selected: F[key] === v }, key === 'status' ? this.stLab.get(v) || v : v)));
       s.addEventListener('change', () => { F[key] = s.value; this.refresh(); });
       return h('div', { class: 'fl' }, h('label', { class: 'k' }, label), s);
     };
@@ -94,7 +95,7 @@ export class Board {
     const qs = F.q ? F.q.split('|').map(norm).filter(Boolean) : null;
     for (let i = 0; i < n; i++) {
       if (F.type && typeOf(i) !== F.type) continue;
-      if (F.status && c.state[i] !== F.status) continue;
+      if (F.status && stKey(c.state[i]) !== F.status) continue;
       if (F.party && c.party[i] !== F.party) continue;
       if (qs) { const hay = norm(`${c.title[i]} ${c.submitter[i]} ${c.number[i] || ''} ${bodyName(c.body[i])}`); if (!qs.some(q => hay.includes(q))) continue; }
       m[i] = 1;
@@ -223,7 +224,7 @@ export class Board {
     this.list.set(rows, pos);
     this.listEmpty(rows.length ? null : (pult && S.tab === 'neu' ? L.noneOpenWeek : pult ? L.noneTab : L.none));
     this.renderHead(scoredSel, hitsSel); this.renderMode();
-    if (S.sel == null) this.summary(); // the «Auswahl» panel follows the brush and filters
+    if (S.sel == null) this.openFirst(); // nothing selected: the first affair that waits for a person opens
     this.onChange && this.onChange(this);
   }
 
@@ -237,6 +238,13 @@ export class Board {
   }
   perText(b) { const [a, z] = this.perDays(b); return `${isoOfDay(a)} – ${isoOfDay(z)}`; }
 
+  // Digitalisierung: the DVS office's own 30 hand-picked affairs, found by Apertus vs by keywords (Prüfstand row, as written there)
+  dvsLine(tp) {
+    if (!tp || tp.id !== 'adhoc/digitalisierung') return '';
+    const r = ((D.pruef && (D.pruef.rows || D.pruef)) || []).find(x => x.n === 30 && /DVS/.test(x.test || '') && /^\d+\/30$/.test(x.result || ''));
+    const kw = r && /(\d+\/30)/.exec(r.baseline || '');
+    return r ? ` · ${t().dvsFound(r.result, kw ? kw[1] : '–')}` : '';
+  }
   renderHead(scoredSel, hitsSel) {
     const L = t(), S = this.S, tp = this.tp;
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
@@ -251,9 +259,9 @@ export class Board {
       this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.affairs}${S.f.q || S.f.type || S.f.status || S.f.party ? ` ${L.of} ${num(scoredSel)} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)}` : ''} · ${per}`,
         bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`)) : '',
         S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.fixedPer = null; this.refresh(); } }, `[${L.reset}]`)) : '');
-    } else this.tsub.append(h('b', {}, num(hitsSel)), ` ${L.hits} ${L.of} ${num(scoredSel)} ${L.scoredBoard} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}`,
+    } else this.tsub.append(h('b', { 'data-tip': `${num(hitsSel)} ${L.of} ${num(scoredSel)} ${L.scoredBoard} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}` }, num(hitsSel)), ` ${L.hits}`,
       ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`),
-      tp && tp.scoredDays ? ` · ${L.scoredPeriod} ${fmtDay(tp.scoredDays[0])}–${fmtDay(tp.scoredDays[1])}` : '',
+      this.dvsLine(tp),
       bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
       S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.fixedPer = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     // legend
@@ -298,7 +306,8 @@ export class Board {
   renderMode() {
     if (!this.modeEl) return;
     const L = t(), mk = (m, lab) => h('button', { class: 'tb mono', type: 'button', 'aria-pressed': String(this.mapMode === m), onclick: () => this.setMapMode(m) }, lab);
-    this.modeEl.replaceChildren(mk('map', L.mapMode), ' ', mk('matrix', L.matrix), h('span', { class: 'dim' }, ' [x]'));
+    this.modeEl.replaceChildren(); // map / matrix: key [x] only (the toggle in the head read as a second product name)
+    void mk;
   }
   relang() { this.buildFilters(); if (this.picker) this.picker.set(this.tp); this.refresh(); this.renderCase(); }
 
@@ -348,7 +357,7 @@ export class Board {
   renderCase() {
     const id = this.S.sel, root = this.case;
     root.dataset.id = id == null ? '' : String(id);
-    if (id == null) { this.summary(); return; }
+    if (id == null) { this.openFirst(); return; }
     const i = D.rowOf.get(id);
     if (i == null) { root.replaceChildren(h('p', { class: 'empty' }, `#${id}`)); return; }
     this.pend = null; this.corr = null;
@@ -483,6 +492,14 @@ export class Board {
     if (note) this.stateLine(row, h('span', { class: 'sig' }, note));
   }
 
+  // nothing selected: open the first listed affair that waits for a person (else the first listed); on a phone the list
+  // stays in front and the detail column stays empty
+  openFirst() {
+    const rows = this.rows || [], tp = this.tp;
+    if (!rows.length || matchMedia('(max-width: 899px)').matches) { this.case.replaceChildren(); return; }
+    const first = rows.find(r => tp && tp.check && tp.check(r[0])) || rows[0];
+    this.select(D.c.id[first[0]]);
+  }
   // Überblick (nothing selected): weeks by level with the please-check share in red, the parliaments as a ranked bar
   // list (hatched where coverage is low), a few notable affairs. Every element filters or opens.
   summary() {
@@ -583,4 +600,5 @@ const fmtWhen = iso => { if (!iso) return '–'; const d = new Date(iso); return
 const shortName = k => { const b = D.B.get(k); if (!b) return k; if (b.level === 'federal') return bodyName(k);
   if (b.key === 'LIE') return 'Landtag FL'; const pl = UI.lang === 'fr' ? b.place_fr || b.place_de : b.place_de; return b.level === 'cantonal' ? `${b.key} ${pl}` : pl; };
 
-const fmtDay = d => { const x = isoOfDay(d); return `${x.slice(8, 10)}.${x.slice(5, 7)}.${x.slice(0, 4)}`; };
+// a status value whatever its case or spacing: OPD carries «Erledigt» and «erledigt», «In Bearbeitung» and «InBearbeitung»
+const stKey = v => String(v || '').toLowerCase().replace(/\s+/g, '');

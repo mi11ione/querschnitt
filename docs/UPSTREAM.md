@@ -8,7 +8,7 @@ is a draft for the event: shown at the deep dive and in the pitch, not sent anyw
 | `upstream/MERGE_REQUEST.md` | the merge-request description: what it adds, data model, measured quality, versioning, build changes, who owns a row, licensing, day-1 steps for the OPD admin, rollback, known gaps, open questions, a proposed CHANGELOG entry and issue text | OpenParlData (Christian Gutknecht) |
 | `upstream/opd/` | the merge request's files: `migrations/` (`NNNN_name.up.sql` / `.down.sql`: tables `topic_schemes`, `topic_codes`, `topics`, indexes; seed of every scheme the topics file carries; an optional per-body feed switch), `tools/gen_seed.py` (the seed, and later per-scheme migrations), `tests/smoke.sql`, `api/` (resource description for `/v1/topics/` and `/v1/affairs/{id}/topics`, Pydantic models, the read endpoints as a drop-in FastAPI router), `tests/test_router.py` (the router against the migrated tables), `export/` (`topics.ndjson.gz` spec, converter, samples) | OpenParlData |
 | `upstream/hop/` | Apache Hop 2.x project: `load_topics.hwf` + `load_topics.hpl` load `topics.jsonl.gz` into `topics`, skip unchanged rows, close superseded ones | OpenParlData's ETL |
-| `upstream/eval-task/` | the Prüfstand as a re-runnable task for any Apertus build: task card `TASK.md`, spec `task.yaml`, runner `run.py`, frozen items (1,357 APS-labelled federal affairs; the 30 DVS affairs), rendered prompts | the swiss-ai evaluation work |
+| `upstream/eval-task/` | the Prüfstand as a re-runnable task for any Apertus build: task card `TASK.md`, spec `task.yaml`, runner `run.py`, frozen items (1,357 APS-labelled federal affairs the design was chosen on; the 927 held out, split `heldout_s25`; the 30 DVS affairs), rendered prompts | the swiss-ai evaluation work |
 | `upstream/APERTUS-NOTES.md` | measured Apertus behaviour in a closed-choice classifier, each with n and source file | the swiss-ai team |
 
 ## State
@@ -21,7 +21,7 @@ is a draft for the event: shown at the deep dive and in the pitch, not sent anyw
   equal to the `to_opd.py` conversion (evidence text and document ids included), an identical reload that writes
   nothing, a changed row updated in place with a new `updated_at`, a newer row closing the old one, the API router's
   tests on the loaded rows (`upstream/opd/tests/test_router.py`), the down migrations with the rows in place. A published rejection left in place by a later load was checked by hand on 14 Oct.
-- `eval-task/run.py --score-only` on the stored S9/S16/S8 rows reproduces the published results; a smoke run against the
+- `eval-task/run.py --score-only` on the stored S9/S16/S8 rows reproduces the published results, and on the stored S25 rows the held-out 0.696; a smoke run against the
   repo's fake endpoint checked the call path and resume. No model was called while building the pack.
 - `python3 tools/claims_check.py upstream/APERTUS-NOTES.md` passes; its sources are rows in `eval/claims.tsv`.
 

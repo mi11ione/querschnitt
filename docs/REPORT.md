@@ -97,7 +97,6 @@ nothing about language. The language evidence on human labels comes from other d
 - Bern directorates, DE vs FR titles of the same affairs: +0.001 [−0.031, +0.034].
 - Federal APS chapters from German vs French text, one chapter call each: +0.016 [−0.003, +0.037] (S14).
 
-A held-out French or Italian federal slice for the shipped design is still to be measured.
 
 
 Language on the held-out set (S33): read from the French text, the 927 held-out affairs get 0.675 against 0.696 from the

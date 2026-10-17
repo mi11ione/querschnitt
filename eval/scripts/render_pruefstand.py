@@ -363,7 +363,7 @@ dn_ = b31["decision_rule_note"]; best_ = t31["result"]
 w(f"Outcome: no variant cleared the gate. The closest, V3 (the five examples in both code orders), is {r(best_, d=4, signed=True)} on all "
   f"{num(t31['n'], 0)} items; on the {L(num(n9_31['value']), n9_31['at'])} items stage 1 did not see, V1 {r(rest_['V1']['minus_D4'], d=4, signed=True)} "
   f"and V3 {r(rest_['V3']['minus_D4'], d=4, signed=True)}, both smaller than in stage 1. V3 also lowers top-3. So no test was run and D4 stays; "
-  f"the {num(h25['n'], 0)} S25 held-out affairs (§1b) were not used by any S31 call and stay unspent for one later pre-registered look at a "
+  f"the {num(h25['n'], 0)} S25 held-out affairs (§1b) were not used by any S31 call; no design has been chosen on them, and they stay available for one pre-registered look at a "
   f"single winner. Under the common rule D4 scores {r(t31['baselines'][0])}; §1 reports {r(d4['result'])} with the S16 rule, which has no "
   f"«no policy topic» check ({L(str(dn_['items_differ']), dn_['at'])} items differ). Fresh items for a new test: a Wayback listing of APS process "
   f"pages from 11 Oct 2026 on found {L(str(fi31['new_process_ids_with_200_capture']['value']), fi31['new_process_ids_with_200_capture']['at'])} new "
@@ -1169,7 +1169,7 @@ w(f"- New topics defined in one sentence are measured against the AI judge only.
   f"({r(pp['precision_diff'], signed=True)}) at a recall cost ({r(pp['recall_diff'], signed=True)}), on {cnt(pp['judge_positives'])} judge positives "
   f"in all; the frozen keyword lists were more precise still ({L(num(pp['kw']['precision']['value']), pp['kw']['precision']['at'])}).")
 w(f"- The federal design was chosen on the design set (§1). A search of five variants there (S31, §1d; dev only, not pre-registered) found none "
-  f"that clears the gate (best {r(t31['result'], d=4, signed=True)}); the S25 held-out items stay unspent for one pre-registered look at a single "
+  f"that clears the gate (best {r(t31['result'], d=4, signed=True)}); no design has been chosen on the S25 held-out items, which stay available for one pre-registered look at a single "
   f"winner, and no fresh APS-labelled items were available (§1d).")
 w(f"- The held-out test (S25, §1b) pre-registered the chapter, its lanes and plain list prompting (S25b); its subtopic and hierarchical "
   f"figures (subtopic top-1 {r(hm25['subtopic top-1 end to end (shipped, held out)'])}, hF {r(t25h['result'])}) were computed after the "

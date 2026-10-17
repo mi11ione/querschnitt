@@ -67,7 +67,7 @@ async function main() {
       await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] }, S);
       await send('Page.navigate', { url: src }, S);
       for (let i = 0; i < 100; i++) { if (await evalJs(`document.readyState === 'complete' && !(document.body && document.body.classList.contains('loading'))`)) break; await sleep(100); }
-      await sleep(1500);
+      await sleep(Number(opt('wait') || 1500));   // --wait ms: the app fetches its data after load
       const p = { format: 'png' };
       const c = opt('clip');
       if (c) { const [x, y, cw, chh] = c.split(',').map(Number); p.clip = { x, y, width: cw, height: chh, scale: 1 }; }

@@ -1328,7 +1328,7 @@ tests.append(dict(
                 "decision_rule_note": {"text": d31["note"], "s16_reported": float(m31.group(1)), "items_differ": int(m31.group(2)),
                                        "at": loc(S31R, "dev", "note")},
                 "heldout_unspent": {"test_run": False, "reason": x31["reason"], "at": loc(S31R, "test", "reason"),
-                                    "what": f"the {N25} S25 held-out affairs were not used by any S31 model call; they stay unspent for a later "
+                                    "what": f"the {N25} S25 held-out affairs were not used by any S31 model call; no design was chosen on them; they stay available for a later "
                                             "single pre-registered look at one winner (eval/s31/run.py, not run)"},
                 "fresh_items": {"searched": x31["fresh_items"]["searched"],
                                 "new_process_ids_with_200_capture": {"value": x31["fresh_items"]["new_process_ids_with_200_capture"],
@@ -1338,7 +1338,7 @@ tests.append(dict(
                                 "files": x31["fresh_items"]["files"]},
                 "calls": {"calls": d31["calls"]["calls"], "usd_list_price": d31["calls"]["usd_list_price"], "at": loc(S31R, "dev", "calls")}},
     split="design set (the S9 items D4 was chosen on), leave-one-out examples; dev only: not pre-registered as a test and not held out; "
-          "no variant cleared the gate, so no test was run and the S25 held-out items stay unspent",
+          "no variant cleared the gate, so no test was run and no design was chosen on the S25 held-out items",
     prereg=None, not_preregistered="dev only (eval/s31/DEV.md); the gate was written before any S31 call, but no pre-registration entry exists",
     sources=[S31R, S31M, f"{QE}/s31/analyze.py", f"{QE}/s31/dev.py", f"{QE}/s31/dev_raw.jsonl", f"{QE}/s31/ledger.jsonl",
              f"{QE}/s31/cdx_check/", f"{QE}/s31/run.py"],
@@ -2322,7 +2322,7 @@ out = {
         "judge precision on human negatives",
         "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
         "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
-        f"one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely "
+        f"one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the S25 items (likely "
         f"inconclusive at n = {N25}, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
         "a held-out Italian federal slice (S33 measured French on the S25 items; S22 measured Italian on the design set only)",
         "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",

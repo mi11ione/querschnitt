@@ -1,6 +1,6 @@
 {
  "schema": "querschnitt/pruefstand@1",
- "generated_utc": "2026-10-16T12:36:17Z",
+ "generated_utc": "2026-10-17T10:36:55Z",
  "paths_relative_to": "repository root (S1–S15 vendored under eval/spikes/)",
  "build": {
   "endpoint": "Public AI",
@@ -8328,7 +8328,7 @@
       "file": "eval/s31/results.json",
       "key": "test > reason"
      },
-     "what": "the 927 S25 held-out affairs were not used by any S31 model call; they stay unspent for a later single pre-registered look at one winner (eval/s31/run.py, not run)"
+     "what": "the 927 S25 held-out affairs were not used by any S31 model call; no design was chosen on them; they stay available for a later single pre-registered look at one winner (eval/s31/run.py, not run)"
     },
     "fresh_items": {
      "searched": "Wayback CDX prefix listings anneepolitique.swiss/prozesse/ and /fr/prozesse/ with from=20261011 (the S25 listings end at captures of 2026-10-11), via polite.py (RFC 9309 robots checked: web.archive.org robots.txt 404 = allow all)",
@@ -8363,7 +8363,7 @@
      }
     }
    },
-   "split": "design set (the S9 items D4 was chosen on), leave-one-out examples; dev only: not pre-registered as a test and not held out; no variant cleared the gate, so no test was run and the S25 held-out items stay unspent",
+   "split": "design set (the S9 items D4 was chosen on), leave-one-out examples; dev only: not pre-registered as a test and not held out; no variant cleared the gate, so no test was run and no design was chosen on the S25 held-out items",
    "prereg": null,
    "not_preregistered": "dev only (eval/s31/DEV.md); the gate was written before any S31 call, but no pre-registration entry exists",
    "sources": [
@@ -40593,7 +40593,7 @@
   "judge precision on human negatives",
   "a French-speaking parliament's own scheme (NE Grand Conseil leading_department; needs a mapping between department periods, eval/s29/SOURCES.md)",
   "a calibration map for the no-prefill fallback (its lane is the readings rule until then; S28)",
-  "one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the unspent S25 items (likely inconclusive at n = 927, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
+  "one pre-registered look at the closest S31 candidate (V3, examples in both code orders) on the S25 items (likely inconclusive at n = 927, eval/s31/DEV.md), or fresh APS-labelled items (none new on Wayback, S31)",
   "a held-out Italian federal slice (S33 measured French on the S25 items; S22 measured Italian on the design set only)",
   "human labels for new one-sentence topics (§15, S19–S30, is measured against the AI judge only)",
   "Romansh"

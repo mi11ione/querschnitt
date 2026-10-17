@@ -1,5 +1,6 @@
-// Anbindung: how Querschnitt lands in OpenParlData — the topics table, last night's run with the measured cost on one
-// line, the Apache Hop load (path and command), the /changes feed and the repository links. Everything comes from
+// Anbindung: how Querschnitt lands in OpenParlData — the topics table, last night's run with the measured cost, the last
+// outage and the compose footprint (one line each), the Apache Hop load (its steps on one line, path and command), the
+// /changes feed and the repository with its QR code. Everything comes from
 // app/data/integration.json (dev/make_integration.py) and meta.json; /changes is live when the API answers, otherwise
 // the stored sample marked «Beispiel».
 import { D, API, SRC } from './data.js';
@@ -38,10 +39,18 @@ export async function renderAnb(root) {
   const cost = C && C.usd_per_1000_affairs != null ? h('span', { 'data-tip': `${L.anbCost(num(1000))} · ${C.file}` },
     `USD ${tr(Number(C.usd_per_1000_affairs), 3).toFixed(3)} ${PER[UI.lang === 'fr' ? 'fr' : 'de'](num(1000))}`) : '';
   const parts = ng ? [dmy(ng.date), `${L.anbNew} ${num(ng.new_affairs ?? 0)}`, ng.wall_min ? `${num(Math.floor(ng.wall_min))} min` : ''].filter(Boolean) : [];
+  // the last real outage (meta.nightly_outage): one line, queue before → after, minutes to drain, cost
+  const O = m.nightly_outage;
+  const outage = O ? h('p', { class: 'tm mono dim' }, `${L.anbOutage(dmy(O.date))} ${L.anbQueue} ${num(O.pending_after_cut ?? O.pending ?? 0)} → ${num(O.pending_after_drain ?? 0)} · ${L.anbDrain} ${O.drain_minutes != null ? tr(O.drain_minutes, 1) : '–'} min`) : '';
+  // the compose footprint measured in CI: one line
+  const F = I.footprint;
+  const foot = F ? h('p', { class: 'tm mono dim' }, `${L.anbFoot}: full ≈ ${num(Math.floor(F.full_mib))} MiB · lite ≈ ${num(Math.floor(F.lite_mib || 0))} MiB · image ${num(F.image_mb)} MB`,
+    F.run_url ? [' · ', h('a', { href: F.run_url, target: '_blank', rel: 'noopener' }, `CI ↗`)] : '') : '';
   if (parts.length || cost) right.append(h('div', { class: 'anb-sec anb-first' }, ng ? h('h2', {}, L.night) : '',
-    h('p', { class: 'tm mono' }, parts.join(' · '), parts.length && cost ? ' · ' : '', cost)));
+    h('p', { class: 'tm mono' }, parts.join(' · '), parts.length && cost ? ' · ' : '', cost), outage, foot));
   // (3) the Hop load: the pipeline file and the command
   right.append(h('div', { class: 'anb-sec' }, h('h2', {}, L.anbHop), h('p', { class: 'tm mono dim' }, `Apache Hop · ${I.hop.file}`),
+    h('p', { class: 'tm mono' }, I.hop.steps.map(st => st.name).join(' → ')),
     h('pre', { class: 'run' }, I.hop.run || ''), h('p', { class: 'tm mono dim' }, I.hop.readme)));
   // (4) /changes
   const ch = h('div', { class: 'anb-sec' }, h('h2', {}, 'GET /changes?after='));
@@ -56,7 +65,7 @@ export async function renderAnb(root) {
   // (5) the repository: code and site
   const RP = I.repo;
   if (RP) tb.append(h('div', { class: 'anb-sec anb-repo' }, h('h2', {}, L.anbRepo),
-    h('div', { class: 'anb-repo-b' }, h('dl', { class: 'tm mono' }, h('dt', {}, L.anbCode), h('dd', {}, h('a', { href: RP.url, target: '_blank', rel: 'noopener' }, RP.url)),
+    h('div', { class: 'anb-repo-b' }, RP.qr ? h('img', { src: RP.qr, width: 120, height: 120, alt: `${L.anbQr} ${RP.url}`, style: 'display:block;margin:0 24px 0 0' }) : '', h('dl', { class: 'tm mono' }, h('dt', {}, L.anbCode), h('dd', {}, h('a', { href: RP.url, target: '_blank', rel: 'noopener' }, RP.url)),
       h('dt', {}, L.anbSite), h('dd', {}, h('a', { href: RP.site, target: '_blank', rel: 'noopener' }, RP.site))))));
   wrap.append(tb, right);
   bindTips(wrap);

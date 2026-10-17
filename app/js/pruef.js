@@ -134,6 +134,7 @@ export function renderPruef(root) {
     const hc = D.conf && D.conf.curve, cv = hc ? { ...hc, ref: P.curve.points, refLabel: [P.curve.test, P.curve.test_fr] } : { ...P.curve };
     right.append(chart(cv));
   }
+  if (D.conf && D.conf.m) right.append(confusion(D.conf));
   bindTips(right);
 }
 
@@ -173,3 +174,23 @@ function chart(cv) {
     h('p', { class: 'tm mono dim', style: 'font-size:12px;margin-top:8px' }, [cv.ref ? `${L.refCurve}: ${plain((fr && cv.refLabel[1]) || cv.refLabel[0])[0]}` : '', cv.file ? `${L.file}: ${cv.file}` : ''].filter(Boolean).join(' · ')));
 }
 
+// which chapter the editors gave (rows) against which Querschnitt gave (columns), the 927 held-out affairs; grey = the
+// row's share, diagonal outlined; each cell names both chapters and its count on hover
+function confusion(cf) {
+  const L = t(), m = cf.m, K = m.length, chs = D.scheme.chapters;
+  const nm = k => chs[k] ? (UI.lang === 'fr' ? chs[k].fr || chs[k].de : chs[k].de) : String(k);
+  const rows = [...Array(K).keys()].filter(r => m[r].some(v => v) || m.some(row => row[r]));
+  const n = rows.length, cs = 12, W = n * cs;
+  const svg = s('svg', { viewBox: `-1 -1 ${W + 2} ${W + 2}`, class: 'cf', role: 'img', 'aria-label': L.rowsGold });
+  rows.forEach((r, ri) => {
+    const tot = m[r].reduce((a, b) => a + b, 0);
+    rows.forEach((c, cj) => {
+      const v = m[r][c], sh = tot ? v / tot : 0, cls = v ? Math.min(5, 1 + Math.floor(sh * 5)) : 0;
+      svg.append(s('rect', { x: cj * cs, y: ri * cs, width: cs - 1, height: cs - 1, style: `fill:var(--r${cls})${r === c ? ';stroke:var(--ink);stroke-width:1' : ''}`,
+        'data-tip': `${L.gold}: ${nm(r)} → ${L.pred}: ${nm(c)} · ${num(v)} ${L.of} ${num(tot)}${tot ? ` (${pct(sh)})` : ''}` }));
+    });
+  });
+  return h('div', { style: 'margin-top:28px' }, h('h3', { style: 'margin:0;font:600 var(--f3)/1.3 var(--sans)' }, CONF[UI.lang === 'fr' ? 'fr' : 'de']),
+    h('p', { class: 'tm mono dim', style: 'font-size:12px;margin:4px 0 8px' }, `${L.rowsGold} · ${L.colsPred} · n ${num(cf.n)}`), h('div', { style: 'max-width:360px' }, svg));
+}
+const CONF = { de: 'Welches Kapitel statt welchem', fr: 'Quel chapitre à la place de quel autre' };

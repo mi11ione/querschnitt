@@ -1,10 +1,11 @@
 // Überblick: a statistical-atlas page. One small Switzerland per topic (cantons on one shared grey ramp = the topic's
 // share of the canton's scored affairs, the Federal Assembly as a thin band; communes omitted at this size); the saved
 // narrow topics in their own row. Click a map → the Karte on that topic.
-import { D, TOPIC_BY_ID } from './data.js';
-import { h, s, t, UI, num, pct } from './util.js';
+import { D, TOPIC_BY_ID, newestFullWeek } from './data.js';
+import { h, s, t, UI, num, pct, fmtDate, isoWeek } from './util.js';
 import { rampBreaks, rampClass } from './map.js';
 import { bindTips } from './viz.js';
+import { bodyName } from './case.js';
 
 const BAND = 26;
 
@@ -27,6 +28,31 @@ export class Atlas {
     if (!r) return null;
     const v = /^\s*(\d+[.,]\d+)/.exec(String((UI.lang === 'fr' && r.result_fr) || r.result || ''));
     return v ? { v: v[1], gold: r.gold } : null;
+  }
+  // the work a person gets, all levels, the whole period: share without a check, share to a person and per week, by level
+  load() {
+    const L = t(), c = D.c, T = D.tally, nS = T.aps, nC = T.check, weeks = Math.floor((D.dmax - D.dmin) / 7) + 1;
+    const lvOf = new Map(D.bodies.map(b => [b.key, b.level])), byLv = {};
+    for (let i = 0; i < D.n; i++) if (c.day[i] >= D.dmin && c.day[i] <= D.dmax && c.ch[i] >= 0 && c.lane[i] === 1) { const lv = lvOf.get(c.body[i]); byLv[lv] = (byLv[lv] || 0) + 1; }
+    const per = lv => num(Math.floor((byLv[lv] || 0) / weeks));
+    return h('p', { class: 'atl-load mono' }, L.atlLoad(pct(nS ? (nS - nC) / nS : NaN, 0), pct(nS ? nC / nS : NaN, 0), num(Math.floor(nC / weeks)), per('federal'), per('cantonal'), per('communal')),
+      h('i', { class: 'rtick', style: 'margin-left:6px' }));
+  }
+  // «Querschnitt»: one APS chapter in the newest complete week on two or three levels at once, its affair per level
+  across() {
+    const L = t(), c = D.c, w = newestFullWeek(), byCh = new Map();
+    const P = i => (Number.isNaN(c.chp[i]) ? 0 : c.chp[i]);
+    for (let i = 0; i < D.n; i++) {
+      if (c.week[i] !== w || c.day[i] > D.dmax || c.ch[i] < 0 || c.ch[i] === 24 || c.lvl[i] > 2 || c.lane[i] === 1) continue;
+      if (!byCh.has(c.ch[i])) byCh.set(c.ch[i], [null, null, null]);
+      const a = byCh.get(c.ch[i]), l = c.lvl[i]; if (a[l] == null || P(i) > P(a[l])) a[l] = i;
+    }
+    const best = [...byCh.entries()].map(([ch, a]) => [ch, a.filter(x => x != null)]).filter(([, a]) => a.length >= 2).sort((a, b) => b[1].length - a[1].length)[0];
+    if (!best) return '';
+    const [ch, a] = best, nm = D.scheme.chapters[ch], name = UI.lang === 'fr' ? nm.fr || nm.de : nm.de, [, k] = isoWeek(D.w0 + w * 7);
+    return h('div', { class: 'atl-x' }, h('p', { class: 'atl-load mono' }, L.atlAcross(k, name, a.length)),
+      ...a.map(i => h('button', { class: 'nt-a', type: 'button', lang: c.lang[i], onclick: () => this.openAffair(i) },
+        h('span', { class: 't' }, c.title[i]), h('span', { class: 'm' }, `${fmtDate(c.date[i])} · ${bodyName(c.body[i])}`))));
   }
   render() {
     const L = t(), c = D.c, root = this.root;
@@ -77,6 +103,6 @@ export class Atlas {
     const legend = h('p', { class: 'atl-leg' }, L.atlasLeg, ' ',
       ...[[1, '< 2.5'], [2, '2.5'], [3, '5'], [4, '10'], [5, '≥ 20']].map(([k, lab]) => h('span', { class: 'lk' }, h('span', { class: 'sw1', style: `background:var(--r${k})` }), lab)), h('span', {}, '%'),
       h('span', { class: 'lk' }, h('span', { class: 'sw1 hz' }), L.notScored));
-    root.replaceChildren(h('div', { class: 'atl' }, h('div', { class: 'atl-body one' }, h('div', { class: 'atl-main' }, legend, grid, savedSec)), defs));
+    root.replaceChildren(h('div', { class: 'atl' }, this.load(), this.across(), h('div', { class: 'atl-body one' }, h('div', { class: 'atl-main' }, legend, grid, savedSec)), defs));
   }
 }

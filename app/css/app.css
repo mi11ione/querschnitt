@@ -489,3 +489,7 @@ body.v-ueber .ctxw{display:none}
 #v-neu .tl{display:none}
 /* Prüfstand cantonal table on a phone: parliament, n, top-1, keywords (scheme and file columns hidden) */
 @media (max-width:599px){.pl .tw th:nth-child(2),.pl .tw td:nth-child(2),.pl .tw th:nth-child(6),.pl .tw td:nth-child(6){display:none}}
+/* Überblick: the load line and the cross-level row above the maps */
+.atl-load{margin:0 0 8px;font:400 var(--f1)/1.5 var(--mono);color:var(--ink)}
+.atl-x{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 24px;margin:0 0 20px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.atl-x .atl-load{grid-column:1/-1}

@@ -238,13 +238,6 @@ export class Board {
   }
   perText(b) { const [a, z] = this.perDays(b); return `${isoOfDay(a)} – ${isoOfDay(z)}`; }
 
-  // Digitalisierung: the DVS office's own 30 hand-picked affairs, found by Apertus vs by keywords (Prüfstand row, as written there)
-  dvsLine(tp) {
-    if (!tp || tp.id !== 'adhoc/digitalisierung') return '';
-    const r = ((D.pruef && (D.pruef.rows || D.pruef)) || []).find(x => x.n === 30 && /DVS/.test(x.test || '') && /^\d+\/30$/.test(x.result || ''));
-    const kw = r && /(\d+\/30)/.exec(r.baseline || '');
-    return r ? ` · ${t().dvsFound(r.result, kw ? kw[1] : '–')}` : '';
-  }
   renderHead(scoredSel, hitsSel) {
     const L = t(), S = this.S, tp = this.tp;
     const name = tp ? (tp.names[UI.lang] || tp.names.de) : '';
@@ -261,7 +254,6 @@ export class Board {
         S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.fixedPer = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     } else this.tsub.append(h('b', { 'data-tip': `${num(hitsSel)} ${L.of} ${num(scoredSel)} ${L.scoredBoard} · ${pct(scoredSel ? hitsSel / scoredSel : NaN)} · ${per}` }, num(hitsSel)), ` ${L.hits}`,
       ' · ', h('span', { class: this.tabsN.todo ? 'sig' : '' }, `${L.pending} ${num(this.tabsN.todo)}`),
-      this.dvsLine(tp),
       bsel ? h('span', {}, ' · ', h('b', {}, bodyName(S.body)), tp && tp.scope ? '' : h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.body = null; this.refresh(); } }, `[${L.clear}]`))) : '',
       S.brush ? h('span', {}, ' ', h('button', { class: 'tb', type: 'button', onclick: () => { S.brush = null; this.fixedPer = null; this.refresh(); } }, `[${L.reset}]`)) : '');
     // legend

@@ -1152,6 +1152,9 @@ w(f"- Recall for “Digitalisierung” on titles is {r(rc)} against the judge (f
   "among checked affairs that neither method flagged (4 among 180 in the S8 packet). The 30 DVS items are the human recall check; the yes/no prompt "
   "and the 0.5 cut-off were set on those same items (S3), so a held-out human recall test is the partner's full list (`make eval GOLD=…`).")
 w(f"- APS subtopics reach {r(sub['result'])} top-1 end to end and ship as ranked suggestions.")
+w("- S17 (communal affairs), S23 (evidence on production rows) and the 2026 Digitalisierung census were measured on the production "
+  "rows of 14–15 Oct. On 16 Oct the inputs whose document text opened with a letterhead were rebuilt to start at the title and "
+  "re-scored (`ops/pipeline.py` p1c, p1d); those three figures describe the rows before that rebuild.")
 b6_ = T["aps_cantonal_communal"]["breakdowns"]; s10_ = T["aps_bilingual"]
 w(f"- Short, title-only cantonal and communal affairs are the hardest input ({num(s10_['result']['value'])} / {num(s10_['results_more'][0]['value'])} "
   f"on bilingual titles; S6 {num(b6_['title_only']['value'])} title-only vs {num(b6_['with_text']['value'])} with text). Communal affairs in production: "

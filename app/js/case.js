@@ -226,7 +226,19 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
   else add(L.chapter, h('span', { class: 'dim' }, L.notScored));
   // order: the decision graphic first (the topic in view leads), then the quoted passage, subtopics, metadata
   const tsec2 = h('div', { class: 'sec first' });
-  if (chart && tp && (tp.kind === 'chapter' || tp.kind === 'sub')) tsec2.append(chart.el, facts); else { tsec2.append(facts); if (chart) tsec2.append(chart.el); }
+  // the chapter graphic leads when a chapter is in view (or no topic is, «Alle»); with another topic in view (Digitalisierung,
+  // a saved topic, a scheme) the chapter is one line with its graphic behind [+], so the quoted passage stays in sight
+  const chIn = !tp || tp.kind === 'chapter' || tp.kind === 'sub' || tp.kind === 'all';
+  if (chart && chIn) tsec2.append(chart.el, facts);
+  else {
+    if (chart && c.ch[i] >= 0) {
+      const box = h('div', {}), pc = c.lane[i] === 1;
+      const more = h('button', { class: 'tb', type: 'button', 'aria-expanded': 'false' }, '[+]');
+      more.addEventListener('click', () => { more.remove(); box.append(chart.el); bindTips(box); grow(box); });
+      add(L.chapter, h('span', {}, chapterName(c.ch[i]), pc ? h('span', { class: 'sig' }, ` · ${L.lanes.please_check}`) : '', ' ', more), box);
+      tsec2.append(facts);
+    } else { tsec2.append(facts); if (chart) tsec2.append(chart.el); }
+  }
   holder.append(tsec2); if (tsec.children.length > 1) holder.append(tsec);
   if (chart && chart.subs) holder.append(h('div', { class: 'sec' }, chart.subs));
   if (groupSec) holder.append(groupSec);

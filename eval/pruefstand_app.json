@@ -221,7 +221,7 @@
    ],
    "baseline": "Listen-Prompt 0.655 · Stichwort 0.191 · Mehrheit 0.079",
    "baseline_fr": "liste 0,655 · mots-clés 0,191 · majorité 0,079",
-   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 neue Geschäfte, unten)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 beim Entwickeln nie benutzte Geschäfte, unten)",
    "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (927 nouveaux objets, ci-dessous)",
    "file": "eval/s16/results.json"
   },
@@ -259,7 +259,7 @@
    ],
    "baseline": "uneinig → bitte prüfen: 0.586 [0.542, 0.630] (n 486)",
    "baseline_fr": "discordantes → à vérifier : 0,586 [0,542, 0,630] (n 486)",
-   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 neue Geschäfte, unten)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 beim Entwickeln nie benutzte Geschäfte, unten)",
    "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (927 nouveaux objets, ci-dessous)",
    "file": "eval/s16/results.json"
   },
@@ -294,7 +294,7 @@
    ],
    "baseline": "D3 0.722",
    "baseline_fr": "D3 0,722",
-   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 neue Geschäfte, unten)",
+   "split": "vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); Hold-out-Test: S25 (927 beim Entwickeln nie benutzte Geschäfte, unten)",
    "split_fr": "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; test hors échantillon : S25 (927 nouveaux objets, ci-dessous)",
    "file": "eval/s16/results.json"
   },

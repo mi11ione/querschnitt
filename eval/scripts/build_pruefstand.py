@@ -2342,7 +2342,7 @@ sciv = lambda c, d=3: f"[{F.signed(F.lo(c[0], d))}, {F.signed(F.hi(c[1], d))}]"
 rel = lambda f: f[len("bern/"):] if f.startswith("bern/") else f
 SPLIT_S9 = ("held-out, vorregistriert", "hors échantillon, préenregistré")
 SPLIT_S16 = ("vorregistriert (S16), gemessen auf den S9-Geschäften; Design nach S9 auf denselben Geschäften gewählt (D4 = D1 + D3); "
-             f"Hold-out-Test: S25 ({N25} neue Geschäfte, unten)",
+             f"Hold-out-Test: S25 ({N25} beim Entwickeln nie benutzte Geschäfte, unten)",
              "préenregistré (S16), mesuré sur les objets S9 ; design choisi après S9 sur les mêmes objets (D4 = D1 + D3) ; "
              f"test hors échantillon : S25 ({F.t(N25, sep=' ')} nouveaux objets, ci-dessous)")
 rows = []

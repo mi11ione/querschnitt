@@ -48,11 +48,11 @@ def held_out():
         if i % 5 == 0 or i == n:
             pts.append([round(i / n, 4), round(k / i, 4)])
     pas = lane([r for r in rows if r["lane"] == "pass"], n)
-    curve = dict(points=pts, n=n, file=f, test="APS-Kapitel, 927 neue Bundesgeschäfte (hold-out), ausgeliefert",
-                 test_fr="Chapitre APS, 927 nouveaux objets fédéraux (hors échantillon), livré",
+    curve = dict(points=pts, n=n, file=f, test="APS-Kapitel, 927 Bundesgeschäfte, beim Entwickeln nie benutzt (hold-out), ausgeliefert",
+                 test_fr="Chapitre APS, 927 objets fédéraux jamais utilisés pendant le développement (hors échantillon), livré",
                  op=dict(coverage=pas["coverage"], precision=pas["precision"], n=pas["n"], label_de="ausgeliefert: p ≥ 0.7", label_fr="livré : p ≥ 0,7"))
     return dict(design="D4", heldout=True, curve=curve, n=n, correct=sum(m[i][i] for i in range(25)), m=m, file=f,
-                title_de="Verwechslungen (ausgeliefert, 927 neue Geschäfte)", title_fr="Confusions (livré, 927 nouveaux objets)",
+                title_de="Verwechslungen (ausgeliefert, 927 beim Entwickeln nie benutzte Geschäfte)", title_fr="Confusions (livré, 927 objets jamais utilisés pendant le développement)",
                 lanes_tau=dict(pass_=lane([r for r in rows if r["lane"] == "pass"], n), check=lane([r for r in rows if r["lane"] != "pass"], n),
                                readings_agree=lane([r for r in rows if r["readings"] == "agree"], n), file=f))
 

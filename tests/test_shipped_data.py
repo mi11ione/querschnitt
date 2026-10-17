@@ -25,3 +25,17 @@ def test_shipped_affairs_match_meta():
     inper = [i for i, d in enumerate(c["date"]) if m["since"] <= d <= m["until"]]
     have = sum(c["ch"][i] is not None for i in inper)
     assert have >= 0.95 * len(inper), f"affairs.json: chapters for {have:,} of {len(inper):,} affairs (meta says {m['scored']:,})"
+
+
+HEAD = META.parent / "affairs_head.json"
+
+
+@pytest.mark.skipif(not (AFFAIRS.exists() and HEAD.exists()), reason="no first-screen slice in app/data")
+def test_first_screen_slice_matches_affairs():
+    """affairs_head.json (Neueste Woche renders from it first) holds exactly the affairs of affairs.json dated from its
+    `since` on, with the same values; a slice from another export would show other counts than the views that follow."""
+    hd = json.loads(HEAD.read_text()); c = json.loads(AFFAIRS.read_text())["cols"]; hc = hd["cols"]
+    want = [i for i, d in enumerate(c["date"]) if d and d >= hd["since"]]
+    assert hc["id"] == [c["id"][i] for i in want]
+    for k in ("ch", "lane", "dig_flag", "title"):
+        assert hc[k] == [c[k][i] for i in want], k

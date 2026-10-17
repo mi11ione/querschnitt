@@ -1,17 +1,20 @@
 {
  "files": {
   "aps_s9.jsonl.gz": "039beaaab6db165f5738b396908455226b3bc37483ca9d71e875fefa1b6e13e6",
-  "dvs30.jsonl": "37b7c1f6f538aa7d7f01265ec27f5a85a234afb5be2cebea3b9e4088e6c5668c"
+  "dvs30.jsonl": "37b7c1f6f538aa7d7f01265ec27f5a85a234afb5be2cebea3b9e4088e6c5668c",
+  "aps_heldout_s25.jsonl.gz": "e947c3f4aa66271afa04791bde150f9764fb7e1eef659d306f09497f290dcaac"
  },
  "example_pool": {
   "data/eval/aps_pool.jsonl": "345bf1dc4e4cf0c5e3cce576e9360d4629403bc03b5b7d4382307e5d531626b4"
  },
  "sources": {
-  "aps_s9": "ideation2/spikes/s9-aps/data/items.json",
-  "dvs30": "ideation2/spikes/s8-dvs/items_cache.json"
+  "aps_s9": "eval/spikes/s9-aps/data/items.json",
+  "dvs30": "eval/spikes/s8-dvs/items_cache.json.gz",
+  "heldout_s25": "eval/s25/items.jsonl; inputs ../data/inputs.jsonl.gz; document heads ../data/opd-new/docs_slim.jsonl.gz"
  },
  "counts": {
   "aps_s9": 1357,
-  "dvs30": 30
+  "dvs30": 30,
+  "heldout_s25": 927
  }
 }

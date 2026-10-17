@@ -3,14 +3,45 @@ subtopic steps, S3 E6 / S8 yes/no, S12 evidence); tests/test_prompts.py pins the
 prompt id changes, so rows made with it are re-scored, never mixed.
 
 All classification calls end with an assistant prefill that opens a JSON value (`{"kapitel": "`), so the next token is
-the code; the engine reads that token's top log-probabilities (or, without them, the generated code)."""
+the code; the engine reads that token's top log-probabilities (or, without them, the generated code).
+
+QS_PREFILL=0 selects the no-prefill mode for endpoints that cannot continue an assistant message: one user message, the
+measured prompt plus a line asking the answer to begin with the prefill text (`no_prefill_user`). It is a fallback measured on
+the held-out set (S28), without a calibration map; its prompt ids differ from every measured one (`pid` hashes the message actually sent), so its rows never mix with measured
+rows, and compose applies no calibration to them."""
 from __future__ import annotations
 
 import hashlib
 import random
 import re
 
+from .client import prefill_from_env
 from .scheme import APS
+
+NO_PREFILL = "no-prefill"
+
+
+def prefill_on() -> bool:
+    """True = the measured prefill design (default); False = the no-prefill mode (QS_PREFILL=0)."""
+    return prefill_from_env()
+
+
+def mode() -> str | None:
+    """None for the measured design, "no-prefill" otherwise (stored in row meta, the run lock and export meta)."""
+    return None if prefill_on() else NO_PREFILL
+
+
+NOPRE = {"de": "Beginne deine Antwort genau mit `{pre}` und schreibe nichts davor.",
+         "fr": "Commence ta réponse exactement par `{pre}` sans rien écrire avant.",
+         "it": "Inizia la risposta esattamente con `{pre}` senza scrivere nulla prima."}
+
+
+def no_prefill_user(user: str, prefill: str) -> str:
+    """The no-prefill mode's single user message: the measured prompt, then one line (in the language of its answer
+    format line) asking the answer to begin with the prefill text."""
+    last = user.rstrip().rsplit("\n", 1)[-1]
+    lang = "fr" if last.startswith("Réponds") else "it" if last.startswith("Rispondi") else "de"
+    return user + "\n\n" + NOPRE[lang].format(pre=prefill)
 
 CODES = [chr(ord("A") + i) for i in range(25)]                     # A..Y: 24 chapters + none
 CODES_EXT = [chr(ord("A") + i) for i in range(26)] + ["a", "b", "c", "d", "e"]
@@ -32,8 +63,12 @@ T = {
 }
 
 
-def pid(user: str, prefill: str) -> str:
-    """Prompt identity: sha256 of the exact messages (first 12 hex)."""
+def pid(user: str, prefill: str, prefill_mode: bool | None = None) -> str:
+    """Prompt identity: sha256 of the exact messages sent (first 12 hex). In the no-prefill mode (QS_PREFILL=0, or
+    `prefill_mode=False`) that is `no_prefill_user(user, prefill)` with no assistant message, so the id can never equal
+    a measured one (those always hash a non-empty prefill after the separator)."""
+    if not (prefill_on() if prefill_mode is None else prefill_mode):
+        user, prefill = no_prefill_user(user, prefill), ""
     return hashlib.sha256((user + "\x00" + prefill).encode()).hexdigest()[:12]
 
 
@@ -162,12 +197,16 @@ def evidence_parts(a: dict) -> list[tuple[str, str]]:
     return parts
 
 
+PATHLIKE = re.compile(r"[A-Za-z]:\\|\\[^\s]|\.(docx?|pdf|xlsx?)\b|https?://", re.I)
+
+
 def sentences(a: dict) -> list[tuple[str, str]]:
+    """Candidate evidence sentences (≥ 25 characters); file paths, document names and URLs are never offered."""
     out = []
     for src, part in evidence_parts(a):
         for s in SPLIT.split(part):
             s = s.strip()
-            if len(s) >= 25:
+            if len(s) >= 25 and not PATHLIKE.search(s):
                 out.append((src, s))
     return out[:40]
 
@@ -193,3 +232,79 @@ def flat_prompt(scheme: dict, title: str, lang: str) -> tuple[str, str, list[str
     lines.append(f"{codes[len(opts)]} = {scheme['none']['name'][lang]}")
     user = f"{f['ask']}\n\n{f['head']}:\n" + "\n".join(lines) + f"\n\n{f['item']}:\n{f['title']}: {title}\n\n{f['fmt']}"
     return user, '{"' + f["key"] + '": "', codes
+
+
+# ---- named schemes from a file (a list of topic names, e.g. Basel-Stadt's own themes, S20): A–Z then a–z, last = none
+CODES_NAMED = [chr(ord("A") + i) for i in range(26)] + [chr(ord("a") + i) for i in range(26)]
+
+
+def named_perm(n: int) -> list[int]:
+    p = list(range(n)); random.Random(7).shuffle(p)
+    return p
+
+
+def named_prompt(scheme: dict, a: dict, perm: list[int] | None = None,
+                 examples: list[tuple[str, int]] | None = None) -> tuple[str, str, list[str]]:
+    """perm[i] = the option (index into options + none) listed under code i; the input block as in the chapter step.
+    `examples` = [(title, option index)] shown between list and item in the S9 D3 shape (S21)."""
+    f = scheme["frame"]["de"]
+    names = [o["name"]["de"] for o in scheme["options"]] + [scheme["none"]["name"]["de"]]
+    perm = perm or list(range(len(names)))
+    codes = CODES_NAMED[:len(names)]
+    lines = "\n".join(f"{codes[i]} = {names[perm[i]]}" for i in range(len(names)))
+    ex = ""
+    if examples:
+        inv = {perm[i]: i for i in range(len(names))}
+        ex = f"{EX_HEAD}\n" + "\n".join(f"- {ti}\n  → Thema: {codes[inv[c]]} ({names[c]})" for ti, c in examples) + "\n\n"
+    user = f"{f['ask']}\n\n{f['head']}:\n{lines}\n\n{ex}Geschäft:\n{affair_block(a, 'de')}\n\n{f['fmt']}"
+    return user, '{"' + f["key"] + '": "', codes
+
+
+# ---- verification for ad-hoc flags (S27): is the topic central, not just touched on or merely similar?
+VERIFY = {"de": ("Ist «{name}» ein zentrales Thema dieses Geschäfts – nicht nur am Rande erwähnt oder bloss ähnlich?", "Ja, zentral", "Nein"),
+          "fr": ("« {name} » est-il un thème central de cet objet – et non seulement mentionné en passant ou simplement voisin ?", "Oui, central", "Non"),
+          "it": ("«{name}» è un tema centrale di questo oggetto – non solo menzionato di passaggio o semplicemente affine?", "Sì, centrale", "No")}
+
+
+def verify_prompt(topic: dict, lang: str, title: str, title_long: str, order: str = "a") -> tuple[str, str]:
+    item, ti, tl, _no, fmt, key = YN[lang]
+    q, yes, no = VERIFY[lang]
+    q = q.format(name=topic["names"][lang])
+    opts = [("A", yes), ("B", no)] if order == "a" else [("A", no), ("B", yes)]
+    blk = f"{ti}: {title[:400]}" + (f"\n{tl}: {title_long[:400]}" if title_long and title_long != title else "")
+    u = f"{q}\n\n" + "\n".join(f"{c} = {s}" for c, s in opts) + f"\n\n{item}:\n{blk}\n\n{fmt}"
+    return u, '{"' + key + '": "'
+
+
+# ---- scope check for ad-hoc flags (S30): the topic with a generated include / exclude list (adhoc.SCOPE_PROMPT, stored in the
+# topic file as `include` / `exclude` per language); asked on flags together with the S27 check, a flag is verified only if
+# both say yes. Topics without these fields (Digitalisierung, the S19 files) never ask it.
+SCOPE_CHECK = {
+ "de": dict(incl="Dazu gehört:", excl="Nicht dazu gehört:", untitled="Geschäfte, deren Titel das Thema nicht erkennen lässt",
+            ask="Gehört das folgende parlamentarische Geschäft zum Thema «{name}»?", yes="Ja, das Geschäft gehört zum Thema «{name}»"),
+ "fr": dict(incl="En font partie :", excl="N'en font pas partie :", untitled="objets dont le titre ne laisse pas reconnaître le thème",
+            ask="L'objet parlementaire suivant relève-t-il du thème « {name} » ?", yes="Oui, l'objet relève du thème « {name} »"),
+ "it": dict(incl="Ne fanno parte:", excl="Non ne fanno parte:", untitled="oggetti il cui titolo non lascia riconoscere il tema",
+            ask="Il seguente oggetto parlamentare rientra nel tema «{name}»?", yes="Sì, l'oggetto rientra nel tema «{name}»"),
+}
+
+
+def has_scope_check(topic: dict) -> bool:
+    """True when flags of this topic get the S30 scope check (a verified topic with a generated include/exclude list)."""
+    return bool(topic.get("verify")) and bool(topic.get("include") or topic.get("exclude"))
+
+
+def scope_check_prompt(topic: dict, lang: str, title: str, title_long: str, order: str = "a") -> tuple[str, str]:
+    """S30 (eval/s30/common.scope_prompt, byte-identical): «does the affair belong to «name»?», the include line, the
+    exclude line ending in «affairs whose title does not show the topic», A/B as in the yes/no step."""
+    item, ti, tl, no, fmt, key = YN[lang]
+    f = SCOPE_CHECK[lang]; nm = topic["names"][lang]
+    inc = (topic.get("include") or {}).get(lang) or (topic.get("include") or {}).get("de") or ""
+    exc = (topic.get("exclude") or {}).get(lang) or (topic.get("exclude") or {}).get("de") or ""
+    exc = (exc.rstrip(" .;,") + ", " if exc else "") + f["untitled"]
+    lines = (f"{f['incl']} {inc.rstrip(' .')}.\n" if inc else "") + f"{f['excl']} {exc}."
+    yes = f["yes"].format(name=nm)
+    opts = [("A", yes), ("B", no)] if order == "a" else [("A", no), ("B", yes)]
+    blk = f"{ti}: {title[:400]}" + (f"\n{tl}: {title_long[:400]}" if title_long and title_long != title else "")
+    u = f"{f['ask'].format(name=nm)}\n{lines}\n\n" + "\n".join(f"{c} = {s}" for c, s in opts) + f"\n\n{item}:\n{blk}\n\n{fmt}"
+    return u, '{"' + key + '": "'

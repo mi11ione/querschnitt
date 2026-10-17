@@ -1,0 +1,224 @@
+{
+ "build": "vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840",
+ "models": [
+  "swiss-ai/apertus-v1.5-8b"
+ ],
+ "calls": 3673,
+ "logprobs": false,
+ "split": "heldout_s25",
+ "aps": {
+  "n": 927,
+  "n_items": 927,
+  "designs": {
+   "D0": {
+    "n": 918,
+    "top1": 0.6546,
+    "top1_ci": [
+     0.6233,
+     0.6848
+    ],
+    "top3": 0.8082,
+    "top3_ci": [
+     0.7815,
+     0.8325
+    ],
+    "ece_raw": 0.2556,
+    "ece_isotonic_crossfit": 0.047
+   },
+   "D1": {
+    "n": 369,
+    "top1": 0.7371,
+    "top1_ci": [
+     0.6899,
+     0.7795
+    ],
+    "top3": 0.8563,
+    "top3_ci": [
+     0.8169,
+     0.8885
+    ],
+    "ece_raw": 0.2549,
+    "ece_isotonic_crossfit": 0.049
+   },
+   "D3": {
+    "n": 918,
+    "top1": 0.6819,
+    "top1_ci": [
+     0.651,
+     0.7113
+    ],
+    "top3": 0.8431,
+    "top3_ci": [
+     0.8181,
+     0.8653
+    ],
+    "ece_raw": 0.2555,
+    "ece_isotonic_crossfit": 0.0622
+   },
+   "D4": {
+    "n": 918,
+    "top1": 0.7037,
+    "top1_ci": [
+     0.6733,
+     0.7324
+    ],
+    "top3": 0.8398,
+    "top3_ci": [
+     0.8147,
+     0.8622
+    ],
+    "ece_raw": 0.2783,
+    "ece_isotonic_crossfit": 0.0287
+   },
+   "D4E": {
+    "n": 927,
+    "top1": 0.6968,
+    "top1_ci": [
+     0.6665,
+     0.7256
+    ],
+    "top3": 0.8392,
+    "top3_ci": [
+     0.8142,
+     0.8616
+    ],
+    "ece_raw": 0.2823,
+    "ece_isotonic_crossfit": 0.0443
+   },
+   "D4S": {
+    "n": 346,
+    "top1": 0.6387,
+    "top1_ci": [
+     0.5868,
+     0.6876
+    ],
+    "top3": 0.8092,
+    "top3_ci": [
+     0.7645,
+     0.8472
+    ],
+    "ece_raw": 0.3417,
+    "ece_isotonic_crossfit": 0.0839
+   }
+  },
+  "baseline_majority": {
+   "chapter": 2,
+   "top1": 0.1165
+  },
+  "paired": {
+   "D1-D0": {
+    "n": 369,
+    "diff": -0.0054,
+    "ci": [
+     -0.038,
+     0.0272
+    ]
+   },
+   "D3-D0": {
+    "n": 918,
+    "diff": 0.0272,
+    "ci": [
+     0.0054,
+     0.048
+    ]
+   },
+   "D4-D0": {
+    "n": 918,
+    "diff": 0.049,
+    "ci": [
+     0.025,
+     0.0741
+    ]
+   },
+   "D4-D3": {
+    "n": 918,
+    "diff": 0.0217,
+    "ci": [
+     0.0,
+     0.0458
+    ]
+   },
+   "D4-D1": {
+    "n": 369,
+    "diff": -0.0027,
+    "ci": [
+     -0.0082,
+     0.0
+    ]
+   },
+   "D4E-D4": {
+    "n": 918,
+    "diff": -0.0076,
+    "ci": [
+     -0.0142,
+     -0.0021
+    ]
+   },
+   "D4S-D0": {
+    "n": 346,
+    "diff": 0.0404,
+    "ci": [
+     -0.0029,
+     0.0839
+    ]
+   },
+   "D4S-D3": {
+    "n": 346,
+    "diff": 0.0289,
+    "ci": [
+     -0.0145,
+     0.0694
+    ]
+   },
+   "D4S-D1": {
+    "n": 140,
+    "diff": 0.0,
+    "ci": [
+     -0.0215,
+     0.0215
+    ]
+   }
+  },
+  "lanes_D0": {
+   "n": 918,
+   "agree_share": 0.6285,
+   "agree_share_ci": [
+    0.5968,
+    0.6593
+   ],
+   "precision_agree": 0.766,
+   "precision_disagree": 0.4662
+  },
+  "lanes_D4": {
+   "n": 918,
+   "agree_share": 0.6481,
+   "agree_share_ci": [
+    0.6166,
+    0.6784
+   ],
+   "precision_agree": 0.7932,
+   "precision_disagree": 0.5386
+  },
+  "lanes_D4E": {
+   "n": 927,
+   "agree_share": 0.6515,
+   "agree_share_ci": [
+    0.6203,
+    0.6816
+   ],
+   "precision_agree": 0.7864,
+   "precision_disagree": 0.5294
+  }
+ },
+ "dvs": {
+  "n": 0,
+  "n_items": 0,
+  "found": 0,
+  "recall": null,
+  "recall_ci": [
+   null,
+   null
+  ],
+  "misses": []
+ }
+}

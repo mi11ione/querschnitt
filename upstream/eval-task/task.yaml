@@ -2,7 +2,7 @@
 # Shape follows lm-evaluation-harness task configs (group / task / dataset / doc_to_* / metric_list); it does not depend
 # on the harness. Reference implementation: run.py (querschnitt.prompts, querschnitt.client). Card: TASK.md.
 group: querschnitt_pruefstand
-version: 1.0
+version: 1.1                                 # 1.1: split heldout_s25; designs D4, D4E; figures truncated, intervals outward
 reference_build: vllm-0.23.1rc1.dev1029+ga601a9d99-tp8-pp2-dd237840   # Public AI swiss-ai/apertus-v1.5-8b, Oct 2026
 request:
   api: openai-chat-completions
@@ -36,27 +36,59 @@ task:
       d3m: {prompt: prompts.chapter_prompt_examples(doc.de, identity, doc.examples), file: prompts/aps_d3m.txt}
       sub: {prompt: "prompts.subtopic_prompt(doc.de, subtopic_chapters(prior))", file: prompts/aps_subtopic.txt,
             note: "one request over the subtopics of the top 2-3 chapters of the prior; last code = none of these"}
-    designs:
+    designs: &aps_designs
       D0: geometric mean of d0a and d0b                                        # plain list prompting, two code orders
       D1: chapter read back from sub, prior = mean(d0a, d0b)
       D3: geometric mean of d3m and d0b                                        # five APS-labelled examples
-      D4S: chapter read back from sub, prior = d3m if max(d3m) >= 0.9 else mean(d3m, d0b)   # shipped design
-    calls_per_item: "3 chapter + 1-2 subtopic (identical prompts sent once)"
-    metric_list:
+      D4: chapter read back from sub, prior = mean(d3m, d0b)                   # S16 D4 as pre-registered
+      D4E: "D4 as the engine composes it (compose.chapter_decision): 'no policy topic' first in geo(d3m, d0b) -> that, no read-back; no d0b for an item without examples whose first reading has max >= 0.9"   # shipped design
+      D4S: chapter read back from sub, prior = d3m if max(d3m) >= 0.9 else mean(d3m, d0b)   # S16 secondary, not shipped
+    calls_per_item: "3 chapter + 1-3 subtopic (identical prompts sent once)"
+    metric_list: &aps_metrics
       - {metric: top1_accuracy, interval: wilson_95}
       - {metric: top3_accuracy, interval: wilson_95}
-      - {metric: paired_difference_top1, pairs: [D1-D0, D3-D0, D4S-D0, D4S-D3, D4S-D1], interval: bootstrap_2000_percentile, seed: 2026}
+      - {metric: paired_difference_top1, pairs: [D1-D0, D3-D0, D4-D0, D4-D3, D4-D1, D4E-D4, D4S-D0, D4S-D3, D4S-D1], interval: bootstrap_2000_percentile, seed: 2026}
       - {metric: ece_10_bins, of: top-1 confidence}
       - {metric: ece_isotonic_crossfit, folds: 2, seed: 3}
-      - {metric: order_agreement, of: [d0a, d0b], with: precision_when_agree_and_disagree}
+      - {metric: order_agreement, of: [[d0a, d0b], [d3m, d0b]], with: precision_when_agree_and_disagree}
     baselines:
       majority_chapter: computed by run.py
-      keywords: 0.192 on the reference items (S9, ideation2/spikes/s9-aps/data/keywords_frozen.json); not re-run
-    reference_results:                                      # build above; eval/s16/results.md, ideation2/spikes/s9-aps/results.md
-      D0: {top1: 0.655, top1_ci: [0.629, 0.680], ece_raw: 0.2623}
-      D1: {top1: 0.7038, top1_ci: [0.679, 0.727], ece_raw: 0.2791, ece_isotonic_crossfit: 0.0319}
-      D3: {top1: 0.7222, top1_ci: [0.698, 0.745]}
-      D4S: {top1: 0.7487, top1_ci: [0.725, 0.771]}
+      keywords: 0.192 on the reference items (S9, eval/spikes/s9-aps/data/keywords_frozen.json); not re-run
+    reference_results:                                      # build above; reference/stored_s9.json (stored S9/S16 rows re-scored by run.py)
+      D0: {top1: 0.6551, top1_ci: [0.6294, 0.6800], ece_raw: 0.2623, ece_isotonic_crossfit: 0.0351}
+      D1: {top1: 0.7037, top1_ci: [0.6789, 0.7275], ece_raw: 0.2791, ece_isotonic_crossfit: 0.0319}
+      D3: {top1: 0.7221, top1_ci: [0.6977, 0.7454], ece_raw: 0.2212, ece_isotonic_crossfit: 0.0167}
+      D4: {top1: 0.7406, top1_ci: [0.7166, 0.7633], ece_raw: 0.2462, ece_isotonic_crossfit: 0.0211}
+      D4E: {top1: 0.7376, top1_ci: [0.7136, 0.7604], ece_raw: 0.2475, ece_isotonic_crossfit: 0.0332}
+      D4S: {top1: 0.7487, top1_ci: [0.7249, 0.7711], ece_raw: 0.2416, ece_isotonic_crossfit: 0.0573}
+
+  - task: aps_chapter_heldout_s25
+    description: >-
+      APS chapter of 927 federal affairs filed 1990-2025, labelled by APS editors, never used while designing: the held-out
+      test of the shipped design (S25, pre-registered in eval/PREREG-BUILD.md 2026-10-14 20:20 CEST). None is in the
+      example pool data/eval/aps_pool.jsonl (build_items.py asserts it).
+    dataset_path: data/aps_heldout_s25.jsonl.gz
+    dataset_manifest: data/MANIFEST.json
+    test_split: all                          # run.py --split heldout_s25
+    doc_to_input: "{{doc[doc.lang].title}} / {{doc[doc.lang].title_long}} / {{doc[doc.lang].text[:1500]}}"   # the production input (lang: de 926, fr 1)
+    doc_to_target: gold_chapter
+    output_type: closed_choice_logprobs
+    choices: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y]
+    readings:
+      d0a: {prompt: "prompts.chapter_prompt(doc[doc.lang], identity)"}
+      d0b: {prompt: "prompts.chapter_prompt(doc[doc.lang], S1PERM)", file: prompts/heldout_s25_d0b.txt}
+      d3m: {prompt: "prompts.chapter_prompt_examples(doc.de, identity, doc.examples) if doc.examples else d0a", file: prompts/heldout_s25_d3m.txt,
+            note: "10 items without examples (9 one-word procedural titles, the French affair): d0a's prompt, as the engine sends it; prompts/heldout_s25_d3m_noexamples.txt, prompts/heldout_s25_d3m_fr.txt"}
+      sub: {prompt: "prompts.subtopic_prompt(doc[doc.lang], subtopic_chapters(prior))"}
+    designs: *aps_designs
+    calls_per_item: "2-3 chapter + 1-3 subtopic (identical prompts sent once)"
+    metric_list: *aps_metrics
+    baselines:
+      majority_chapter: computed by run.py
+      keywords: 0.186 on these items (frozen S9 rule; eval/s25/results.json); not re-run
+    reference_results:
+      shipped: {top1: 0.696, top1_ci: [0.666, 0.726], k: 646, n: 927, top3: 0.839, top3_ci: [0.814, 0.862]}   # eval/s25/results.json (as the app composes it)
+      D4E: {top1: 0.6968, top1_ci: [0.6665, 0.7256], n: 927}   # reference/stored_heldout_s25.json: the stored S25 rows re-scored by run.py
 
   - task: dvs_digitalisierung_30
     description: Recall of the ad-hoc topic "Digitalisierung" on the 30 affairs on the public DVS list (all positives).
@@ -76,4 +108,4 @@ task:
       The question and the 0.5 cut-off were written on these same items (S3), so this is a recall check, not a held-out
       test; a held-out recall test needs the full POLITmonitor list.
     reference_results:
-      recall: {found: 27, n: 30, ci: [0.744, 0.965]}                          # ideation2/spikes/s8-dvs/results.md
+      recall: {found: 27, n: 30, ci: [0.7437, 0.9655]}                        # eval/spikes/s8-dvs/results.md; reference/stored_s9.json

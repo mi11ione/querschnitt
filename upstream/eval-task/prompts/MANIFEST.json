@@ -5,7 +5,11 @@
  "aps_subtopic.txt": "012f45102c72fb09e07353a6812c9da55b6df85df0c239505962a3857835424e",
  "dvs_yesno_a.txt": "3f5ba2e4688b3fdf8a3cda608b50b6af2f1a5db8794caa9ab97a4c63d792043b",
  "dvs_yesno_b.txt": "3d39ab660b69e0da28c053cc50ccd1ef795343b26613845b85311bd4efa78cf7",
- "prompts.py": "6b96ef615583c2abc51687e4532cbaeaa1318b265f2e8573e8b3b70c8bccea13",
+ "heldout_s25_d0b.txt": "0ac66de59388f786e242e658f254f41b77bb5f41ff257eb6ffcbdad312f164b0",
+ "heldout_s25_d3m.txt": "9b0b9bbaa51b7fe0cac3227706842d4f2ffbfe2c3a1f6486a82f5e304e59a3b0",
+ "heldout_s25_d3m_fr.txt": "ad2f8bf4bf17285365238e49c07ee19b351482511762abc39c9532e680ad5975",
+ "heldout_s25_d3m_noexamples.txt": "bc469ce75de78cf5eed0726bccada22480fd2bb786fd36a8619e525c138e838a",
+ "prompts.py": "2a505fc3fcdb9c537e0691629aee07ae33194a6f2e07a24fde5d2407abe9f38f",
  "yesno_frame_fr_a.txt": "4b59a63fdeefc847dc1668c787879cf73af7c03e9eb89093204bb00933fab744",
  "yesno_frame_it_a.txt": "d79947b51a8cbd63a16160e25b8eb2799428f7a59497a10ff36528f12022a10a"
 }

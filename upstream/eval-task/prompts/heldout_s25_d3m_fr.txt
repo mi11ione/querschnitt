@@ -1,0 +1,39 @@
+# held-out APS item 153932 (Curia 18.463, split heldout_s25): French affair (the one of 927): frame and chapter names in French, no examples
+# prompt_id 91fce2e253c6 = sha256(user + '\x00' + prefill)[:12]
+[user]
+Attribue l'objet parlementaire suivant à exactement un thème de l'Année politique suisse.
+
+Thèmes:
+A = Problèmes politiques fondamentaux (Verfassungsfragen; Nationale Identität; Landes- und Weltausstellungen; Staatsjubiläen; Image der Schweiz im Ausland; Stimmung in der Bevölkerung)
+B = Ordre juridique (Bürgerrecht; Niederlassungsrecht; Stimm- und Wahlrecht; Datenschutz und Statistik; Grundrechte; Öffentliche Ordnung; Innere Sicherheit; Kriminalität; Polizei; Äussere Sicherheit; Rechtshilfe; Strafrecht; Privatrecht)
+C = Institutions et droits populaires (Bundesrat; Regierungspolitik; Bundesverwaltung - Organisation; Bundesverwaltung - Personal; Parlamentsmandat; Parlamentsorganisation; Organisation der Bundesrechtspflege; Volksrechte; Wahl- und Abstimmungsverfahren)
+D = Structures fédéralistes (Beziehungen zwischen Bund und Kantonen; Interkantonale Zusammenarbeit; Städte, Regionen, Gemeinden; Territorialfragen; Jurafrage)
+E = Elections (Wahlen in kantonale Parlamente; Wahlen in kantonale Regierungen; Kantonale Ersatzwahlen; Kommunale Wahlen; Kommunale Ersatzwahlen; Eidgenössische Wahlen; Ständeratsersatzwahlen)
+F = Politique étrangère (Beziehungen zur EU; Beziehungen zu internationalen Organisationen; Zwischenstaatliche Beziehungen; Gute Dienste; Auslandschweizer; Entwicklungspolitik; Aussenwirtschaftspolitik)
+G = Armée (Landesverteidigung und Gesellschaft; Militäreinsätze; Militärorganisation; Ausrüstung und Beschaffung; Zivildienst und Dienstverweigerung; Bevölkerungsschutz)
+H = Politique économique (Konjunkturlage- und politik; Strukturpolitik; Wettbewerb; Gesellschaftsrecht; Wirtschaftsordnung)
+I = Crédit et monnaie (Finanzmarkt; Geldpolitik; Makroprudenzielle Regulierung; Nationalbank; Internationale Finanzinstitutionen; Wettbewerbsfähigkeit; Banken; Börsen; Versicherungen; Kapitalmarkt)
+J = Agriculture (Agrarpolitik; Internationale Landwirtschaftspolitik; Landwirt (Beruf); Landwirtschaft und Umweltschutz; Agrarprodukte; Tierische Produktion; Pflanzliche Produktion; Lebensmittel; Tierhaltung, -versuche und -schutz; Forstwirtschaft; Fischerei; Jagd)
+K = Finances publiques (Direkte Steuern; Indirekte Steuern; Finanz- und Ausgabenordnung; Finanzplan und Sanierungsmassnahmen; Staatsrechnung; Voranschlag; Finanzausgleich; Finanzhaushalt der Kantone und Gemeinden)
+L = Energie (Energiepolitik; Netz und Vertrieb; Wasserkraft; Kernenergie; Alternativenergien; Erdöl und Erdgas)
+M = Transports et communications (Verkehrspolitik; Strassenverkehr; Eisenbahn; Agglomerationsverkehr, öffentlicher Verkehr; Schiffahrt; Luftfahrt; Post und Telekommunikation)
+N = Aménagement du territoire et logement (Mietwesen; Raumplanung; Bodenrecht; Wohnungsbau und -eigentum; Wohnqualität)
+O = Protection de l'environnement (Naturschutz; Naturgefahren; Gewässerschutz; Luftreinhaltung; Lärmschutz; Bodenschutz; Allgemeiner Umweltschutz; Klimapolitik; Abfälle)
+P = Population et travail (Bevölkerungsentwicklung; Arbeitsmarkt; Löhne; Arbeitszeit; Kollektive Arbeitsbeziehungen; Arbeitnehmerschutz; Arbeitsrecht)
+Q = Santé, assistance sociale, sport (Gesundheitspolitik; Ärzte und Pflegepersonal; Medikamente; Epidemien; Medizinische Forschung; Suchtmittel; Sozialhilfe; Sport)
+R = Assurances sociales (Alters- und Hinterlassenenversicherung (AHV); Invalidenversicherung (IV); Ergänzungsleistungen (EL); Erwerbsersatzordnung (EO); Berufliche Vorsorge; Private Vorsorge; Krankenversicherung; Unfallversicherung; Arbeitslosenversicherung (ALV))
+S = Groupes sociaux (Migrationspolitik; Asylpolitik; Familienpolitik; Frauen und Gleichstellungspolitik; Kinder- und Jugendpolitik; Alterspolitik; Menschen mit Behinderungen; LGBTQIA+)
+T = Enseignement et recherche (Grundschulen; Mittelschulen; Berufsbildung; Hochschulen; Forschung)
+U = Culture, langues, églises (Kulturpolitik; Urheberrecht; Heimatschutz und Denkmalpflege; Archive, Bibliotheken, Museen; Buchmarkt; Musik; Film; Sprachen; Fahrende; Kirchen und religionspolitische Fragen)
+V = Médias (Radio und Fernsehen; Presse; Medienpolitische Grundfragen; Telekommunikation; Neue Medien; Meinungsforschung)
+W = Partis (Parteiensystem; Grosse Parteien; Linke und ökologische Parteien; Liberale Parteien; Konservative und Rechte Parteien; Andere Parteien)
+X = Associations (Industrie, Handel und Unternehmer; Arbeitgeber; Landwirtschaft; Gewerbe, Dienstleistungen, Konsum; Arbeitnehmer, Gewerkschaften; Gesundheit; Sozialwesen, Soziale Gruppen; Raumplanung und Wohnungswesen; Verkehr; Energie; Natur und Umwelt; Bildung; Kultur, Medien und Sprachen; Kirche, Religion; Freizeit, Tourismus, Gastgewerbe; Überparteiliche politische Interessen / Think Tanks)
+Y = Aucun thème politique (élection ou nomination de personnes, naturalisation, démission, procédure du conseil)
+
+Objet:
+Titre: Anciens conseillers fédéraux. Délai d'attente
+Texte (extrait): On créera les bases légales garantissant que les conseillers fédéraux qui quittent leurs fonctions ne puissent accepter, après leur départ, des mandats ou des fonctions rémunérés dans des entreprises dont les activités ont un rapport étroit avec les tâches des départements dirigés par lesdits conseillers fédéraux sortants ou qui reçoivent d'importantes commandes de la Confédération ou des entreprises qui lui sont proches. Le délai d'attente avant l'exercice d'un mandat ou d'une fonction rémunérée sera limité à un délai raisonnable.
+
+Réponds uniquement par la lettre du thème en JSON : {"chapitre": "<lettre>"}
+[assistant prefill]
+{"chapitre": "

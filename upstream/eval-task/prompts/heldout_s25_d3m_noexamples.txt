@@ -1,0 +1,38 @@
+# held-out APS item 62392 (Curia 18.202, split heldout_s25): no APS-labelled neighbour in the pool: the first reading is the plain identity-order prompt (as the engine sends it; = d0a)
+# prompt_id 84b1f3bbd205 = sha256(user + '\x00' + prefill)[:12]
+[user]
+Ordne das folgende parlamentarische Geschäft genau einem Thema der Année Politique Suisse zu.
+
+Themen:
+A = Politische Grundfragen (Verfassungsfragen; Nationale Identität; Landes- und Weltausstellungen; Staatsjubiläen; Image der Schweiz im Ausland; Stimmung in der Bevölkerung)
+B = Rechtsordnung (Bürgerrecht; Niederlassungsrecht; Stimm- und Wahlrecht; Datenschutz und Statistik; Grundrechte; Öffentliche Ordnung; Innere Sicherheit; Kriminalität; Polizei; Äussere Sicherheit; Rechtshilfe; Strafrecht; Privatrecht)
+C = Institutionen und Volksrechte (Bundesrat; Regierungspolitik; Bundesverwaltung - Organisation; Bundesverwaltung - Personal; Parlamentsmandat; Parlamentsorganisation; Organisation der Bundesrechtspflege; Volksrechte; Wahl- und Abstimmungsverfahren)
+D = Föderativer Aufbau (Beziehungen zwischen Bund und Kantonen; Interkantonale Zusammenarbeit; Städte, Regionen, Gemeinden; Territorialfragen; Jurafrage)
+E = Wahlen (Wahlen in kantonale Parlamente; Wahlen in kantonale Regierungen; Kantonale Ersatzwahlen; Kommunale Wahlen; Kommunale Ersatzwahlen; Eidgenössische Wahlen; Ständeratsersatzwahlen)
+F = Aussenpolitik (Beziehungen zur EU; Beziehungen zu internationalen Organisationen; Zwischenstaatliche Beziehungen; Gute Dienste; Auslandschweizer; Entwicklungspolitik; Aussenwirtschaftspolitik)
+G = Landesverteidigung (Landesverteidigung und Gesellschaft; Militäreinsätze; Militärorganisation; Ausrüstung und Beschaffung; Zivildienst und Dienstverweigerung; Bevölkerungsschutz)
+H = Wirtschaftspolitik (Konjunkturlage- und politik; Strukturpolitik; Wettbewerb; Gesellschaftsrecht; Wirtschaftsordnung)
+I = Geld, Währung und Kredit (Finanzmarkt; Geldpolitik; Makroprudenzielle Regulierung; Nationalbank; Internationale Finanzinstitutionen; Wettbewerbsfähigkeit; Banken; Börsen; Versicherungen; Kapitalmarkt)
+J = Landwirtschaft (Agrarpolitik; Internationale Landwirtschaftspolitik; Landwirt (Beruf); Landwirtschaft und Umweltschutz; Agrarprodukte; Tierische Produktion; Pflanzliche Produktion; Lebensmittel; Tierhaltung, -versuche und -schutz; Forstwirtschaft; Fischerei; Jagd)
+K = Öffentliche Finanzen (Direkte Steuern; Indirekte Steuern; Finanz- und Ausgabenordnung; Finanzplan und Sanierungsmassnahmen; Staatsrechnung; Voranschlag; Finanzausgleich; Finanzhaushalt der Kantone und Gemeinden)
+L = Energie (Energiepolitik; Netz und Vertrieb; Wasserkraft; Kernenergie; Alternativenergien; Erdöl und Erdgas)
+M = Verkehr und Kommunikation (Verkehrspolitik; Strassenverkehr; Eisenbahn; Agglomerationsverkehr, öffentlicher Verkehr; Schiffahrt; Luftfahrt; Post und Telekommunikation)
+N = Raumplanung und Wohnungswesen (Mietwesen; Raumplanung; Bodenrecht; Wohnungsbau und -eigentum; Wohnqualität)
+O = Umweltschutz (Naturschutz; Naturgefahren; Gewässerschutz; Luftreinhaltung; Lärmschutz; Bodenschutz; Allgemeiner Umweltschutz; Klimapolitik; Abfälle)
+P = Bevölkerung und Arbeit (Bevölkerungsentwicklung; Arbeitsmarkt; Löhne; Arbeitszeit; Kollektive Arbeitsbeziehungen; Arbeitnehmerschutz; Arbeitsrecht)
+Q = Gesundheit, Sozialhilfe, Sport (Gesundheitspolitik; Ärzte und Pflegepersonal; Medikamente; Epidemien; Medizinische Forschung; Suchtmittel; Sozialhilfe; Sport)
+R = Sozialversicherungen (Alters- und Hinterlassenenversicherung (AHV); Invalidenversicherung (IV); Ergänzungsleistungen (EL); Erwerbsersatzordnung (EO); Berufliche Vorsorge; Private Vorsorge; Krankenversicherung; Unfallversicherung; Arbeitslosenversicherung (ALV))
+S = Soziale Gruppen (Migrationspolitik; Asylpolitik; Familienpolitik; Frauen und Gleichstellungspolitik; Kinder- und Jugendpolitik; Alterspolitik; Menschen mit Behinderungen; LGBTQIA+)
+T = Bildung und Forschung (Grundschulen; Mittelschulen; Berufsbildung; Hochschulen; Forschung)
+U = Kultur, Sprache, Kirchen (Kulturpolitik; Urheberrecht; Heimatschutz und Denkmalpflege; Archive, Bibliotheken, Museen; Buchmarkt; Musik; Film; Sprachen; Fahrende; Kirchen und religionspolitische Fragen)
+V = Medien (Radio und Fernsehen; Presse; Medienpolitische Grundfragen; Telekommunikation; Neue Medien; Meinungsforschung)
+W = Parteien (Parteiensystem; Grosse Parteien; Linke und ökologische Parteien; Liberale Parteien; Konservative und Rechte Parteien; Andere Parteien)
+X = Verbände (Industrie, Handel und Unternehmer; Arbeitgeber; Landwirtschaft; Gewerbe, Dienstleistungen, Konsum; Arbeitnehmer, Gewerkschaften; Gesundheit; Sozialwesen, Soziale Gruppen; Raumplanung und Wohnungswesen; Verkehr; Energie; Natur und Umwelt; Bildung; Kultur, Medien und Sprachen; Kirche, Religion; Freizeit, Tourismus, Gastgewerbe; Überparteiliche politische Interessen / Think Tanks)
+Y = Kein Sachthema (Wahl oder Ernennung von Personen, Einbürgerung, Rücktritt, Verfahrensfragen des Rats)
+
+Geschäft:
+Titel: Vereidigungen
+
+Antworte nur mit dem Buchstaben des Themas als JSON: {"kapitel": "<Buchstabe>"}
+[assistant prefill]
+{"kapitel": "

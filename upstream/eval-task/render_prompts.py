@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Write prompts/: a verbatim copy of src/querschnitt/prompts.py and every prompt the task sends, rendered for one APS item
-and one DVS item. No model calls.
+of each split (s9; heldout_s25, plus its two kinds of item without examples) and one DVS item. No model calls.
 
     python upstream/eval-task/render_prompts.py
 
@@ -42,6 +42,17 @@ def main() -> int:
     # the subtopic prompt for a fixed chapter list (in a run the list follows from the chapter readings)
     write("aps_subtopic.txt", T.p_sub(it, [18, 17, 16])[0],
           f"APS item {it['id']}: subtopics of the top chapters (here chapters 18, 17, 16), top chapter first; last code = none")
+    h = T.aps_items(split="heldout_s25")
+    hx = next(x for x in h if x["examples"])
+    hn = next(x for x in h if not x["examples"] and x["lang"] == "de")
+    hf = next(x for x in h if x["lang"] == "fr")
+    for s, x, note in (("d3m", hx, "first reading: chapter with the item's five APS-labelled examples, identity order"),
+                       ("d0b", hx, "second reading: chapter, S1 code permutation, no examples"),
+                       ("d3m_noexamples", hn, "no APS-labelled neighbour in the pool: the first reading is the plain "
+                                              "identity-order prompt (as the engine sends it; = d0a)"),
+                       ("d3m_fr", hf, "French affair (the one of 927): frame and chapter names in French, no examples")):
+        write(f"heldout_s25_{s}.txt", T.p_ch(x, s.split("_")[0])[0],
+              f"held-out APS item {x['id']} (Curia {x['curia_number']}, split heldout_s25): {note}")
     dv = T.dvs_items()[0]
     for o in ("a", "b"):
         write(f"dvs_yesno_{o}.txt", T.p_yn(dv, o)[0],

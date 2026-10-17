@@ -135,13 +135,8 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
       let a = ev.start ?? ev.char_start, b = ev.end ?? ev.char_end;
       if (!(a >= 0 && b > a && text.slice(a, b) === ev.quote) && ev.quote) { a = text.indexOf(ev.quote); b = a + (ev.quote || '').length; }
       if (a >= 0 && b > a) {
-        let w0 = Math.max(0, a - 180), w1 = Math.min(text.length, b + 180);
-        if (w0 > 0) w0 = text.indexOf(' ', w0) + 1 || w0;
-        // context before the quote starts at a sentence end, and is dropped when it is letterhead (letter-spaced words,
-        // reference numbers): the quote then opens the window
-        const pre = text.slice(w0, a), cut = Math.max(pre.lastIndexOf('. '), pre.lastIndexOf('\n'));
-        if (cut >= 0) w0 += cut + 2;
-        if (/(?:\b\p{L} ){4,}|\b\d+\/\d{4}\b/u.test(text.slice(w0, a))) w0 = a;
+        // the window opens with the quote (what came before is mostly letterhead and the title again) and runs on a little
+        let w0 = a, w1 = Math.min(text.length, b + 180);
         if (w1 < text.length) w1 = text.lastIndexOf(' ', w1) > b ? text.lastIndexOf(' ', w1) : w1;
         win = { text: (w0 > 0 ? '… ' : '') + text.slice(w0, w1) + (w1 < text.length ? ' …' : ''), ev: { ...ev, start: a - w0 + (w0 > 0 ? 2 : 0), end: b - w0 + (w0 > 0 ? 2 : 0), char_start: undefined, char_end: undefined } };
       }

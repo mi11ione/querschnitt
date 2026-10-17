@@ -10,6 +10,9 @@ import { Woche } from './woche.js';
 
 const VIEWS = ['woche', 'ueber', 'karte', 'neu', 'pruef', 'anb'];
 let view = 'woche', karte = null, neu = null, atlas = null, woche = null;
+// every view but Neueste Woche waits for the full data (D.full) and the boards built on it
+let READY_DONE = false, readyOk;
+const READY = new Promise(r => { readyOk = r; });
 
 function setLang(l) {
   UI.lang = l; document.documentElement.lang = l;
@@ -65,6 +68,7 @@ function fitFacts() {
 addEventListener('resize', () => fitFacts());
 
 function show(v) {
+  if (!READY_DONE && v !== 'woche') { READY.then(() => show(v)); return; }
   view = v;
   document.body.classList.toggle('v-ueber', v === 'woche');
   $('#keys').hidden = !(v === 'karte' || v === 'neu');   // the keys act on the list and the Pult only
@@ -148,8 +152,28 @@ async function boot() {
     await syncDecisions();
     setInterval(async () => { if (await syncDecisions() && karte) { karte.refresh(); } }, 60000);
   }
-  loadSaved();
   const { view: v0, p } = readHash();
+  // Neueste Woche can render from the first-screen slice; its links carry the affair id, the topic id and the week's
+  // Monday (day number), so they still hold once the full data has replaced the slice
+  const wk = day => Math.floor((day - D.w0) / 7);
+  const toWeek = (x, w) => { karte.S.mode = 'list'; show('karte'); karte.setTopic(x); karte.S.brush = [w, w]; karte.refresh(); };
+  woche = new Woche($('#v-woche'), {
+    openTopic: (id, day) => READY.then(() => toWeek(TOPIC_BY_ID.get(id), wk(day))),
+    openAffair: (aid, id, day) => READY.then(() => { toWeek(TOPIC_BY_ID.get(id), wk(day)); karte.select(aid); }) });
+  if (v0 === 'woche') woche.setDate(p.get('d'));
+  for (const x of VIEWS) $(`#t-${x}`).addEventListener('click', () => show(x));
+  $('#l-de').addEventListener('click', () => setLang('de'));
+  $('#l-fr').addEventListener('click', () => setLang('fr'));
+  document.addEventListener('keydown', keys);
+  // a link pasted into the address bar (make demo prints one per pitch beat) changes only the hash: open it as a fresh load;
+  // the app itself writes the hash with replaceState, which fires no hashchange
+  addEventListener('hashchange', () => location.reload());
+  const early = D.partial && v0 === 'woche';
+  if (early) { renderShell(); show('woche'); document.body.classList.remove('loading'); }
+  const w0h = D.w0;
+  await D.full;
+  woche.rebase(w0h);
+  loadSaved();
   // an affair link without a topic (#karte?a=96375) opens on the affair's own topic, as from the Überblick: Digitalisierung
   // when it is flagged, else its APS chapter
   const ownTopic = () => {
@@ -161,10 +185,6 @@ async function boot() {
   atlas = new Atlas($('#v-ueber'), {
     openTopic: x => { karte.S.brush = null; karte.S.mode = 'list'; show('karte'); karte.setTopic(x); },
     openAffair: i => { const c = D.c; const x = c.df[i] ? TOPIC_BY_ID.get('adhoc/digitalisierung') : (c.ch[i] >= 0 ? TOPIC_BY_ID.get(D.scheme.chapters[c.ch[i]].code) : karte.tp); karte.S.brush = null; show('karte'); karte.setTopic(x); karte.select(c.id[i]); } });
-  // Neueste Woche → the Karte on that topic, brushed to that week
-  const toWeek = (x, w) => { karte.S.mode = 'list'; show('karte'); karte.setTopic(x); karte.S.brush = [w, w]; karte.refresh(); };
-  woche = new Woche($('#v-woche'), { openTopic: toWeek, openAffair: (i, x, w) => { toWeek(x, w); karte.select(D.c.id[i]); } });
-  if (v0 === 'woche') woche.setDate(p.get('d'));
   if (p.get('p')) karte.S.body = p.get('p');
   if (p.get('w')) { const [a, b] = p.get('w').split('-').map(Number); if (b >= a) karte.S.brush = [a, b]; }
   else if (tp.scoredDays) karte.S.brush = [Math.floor((tp.scoredDays[0] - D.w0) / 7), Math.floor((tp.scoredDays[1] - D.w0) / 7)];
@@ -173,15 +193,9 @@ async function boot() {
   karte.refresh();
   if (p.get('v') === 'matrix') karte.setMapMode('matrix');
   if (p.get('a')) karte.select(+p.get('a')); else karte.renderCase();
-  for (const x of VIEWS) $(`#t-${x}`).addEventListener('click', () => show(x));
-  $('#l-de').addEventListener('click', () => setLang('de'));
-  $('#l-fr').addEventListener('click', () => setLang('fr'));
-  document.addEventListener('keydown', keys);
-  // a link pasted into the address bar (make demo prints one per pitch beat) changes only the hash: open it as a fresh load;
-  // the app itself writes the hash with replaceState, which fires no hashchange
-  addEventListener('hashchange', () => location.reload());
+  READY_DONE = true; readyOk();
   renderShell();
-  show(v0);
+  if (!early || view !== 'woche') show(early ? view : v0);
   document.body.classList.remove('loading');
   window.__qs = { D, karte, API }; // for the headless checks in dev/
 }

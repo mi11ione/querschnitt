@@ -134,6 +134,8 @@ export class Woche {
     const w = Math.floor((dayNum(iso) - D.w0) / 7);
     if (w >= D.mainW && w <= this.lastFull()) this.w = w;
   }
+  // the full data replaced the slice: the same week under the new week numbering
+  rebase(oldW0) { if (this.w != null) this.w = Math.floor((oldW0 + this.w * 7 - D.w0) / 7); }
   hashQ() { return this.w != null && this.w !== this.home() ? `d=${isoOfDay(D.w0 + this.w * 7)}` : ''; }
   step(d) {
     const w = (this.w ?? this.home()) + d;
@@ -158,6 +160,7 @@ export class Woche {
 
   render() {
     const L = t(), c = D.c, root = this.root, tok = ++this.tok;
+    this.c = c; this.w0 = D.w0;   // this render's data: the first-screen slice may be replaced by the full data meanwhile
     if (this.w == null) this.w = this.home();
     const w = this.w, d0 = D.w0 + w * 7, d1 = d0 + 6;
     // the week's affairs
@@ -205,14 +208,14 @@ export class Woche {
       const ex = h('div', { class: 'wo-ex' }, h('p', { class: 'wo-wait' }, '…'));
       list.append(h('li', { class: 'wo-row' },
         h('div', { class: 'wo-tp' },
-          h('button', { class: 'wo-name', type: 'button', 'data-tip': L.wkMap, onclick: () => this.openTopic(x.tp, w) }, name(x.tp)),
+          h('button', { class: 'wo-name', type: 'button', 'data-tip': L.wkMap, onclick: () => this.openTopic(x.tp.id, this.w0 + w * 7) }, name(x.tp)),
           h('p', { class: 'wo-n' }, h('b', {}, num(x.hits.length)), ` ${x.hits.length === 1 ? L.affair1 : L.affairs}`, x.tp.saved ? ` · ${L.savedMark}` : '')),
         ex));
       return ex;
     };
     const list = h('ol', { class: 'wo-list' }), slots = top.map(x => row(x, list));
     const tail = more.length ? h('p', { class: 'wo-more' }, `${L.wkMore}: `, ...more.slice(0, 12).flatMap((x, j) => [j ? ' · ' : '',
-      h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp, w) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
+      h('button', { class: 'tb', type: 'button', onclick: () => this.openTopic(x.tp.id, this.w0 + w * 7) }, name(x.tp)), ` ${num(x.hits.length)}`])) : '';
     // cross-cutting topics: own heading, own list (ul, unranked), after the chapters
     const xlist = h('ul', { class: 'wo-list' }), xslots = crs.map(x => row(x, xlist));
     const crossSec = crs.length ? h('section', { class: 'wo-x' }, h('h3', { class: 'wo-xh' }, L.wkCross), xlist) : '';
@@ -224,7 +227,7 @@ export class Woche {
 
   // load the buckets that hold the candidates (largest first; a thin bucket only when a topic still lacks examples)
   async fill(top, slots, tok, w) {
-    const c = D.c, L = t();
+    const c = this.c, L = t();
     const bk = id => Math.floor(id / 1000);
     const cand = new Map(); // bucket -> ids
     for (const x of top) for (const i of x.hits) { const b = bk(c.id[i]); if (!cand.has(b)) cand.set(b, new Set()); cand.get(b).add(c.id[i]); }
@@ -254,7 +257,7 @@ export class Woche {
 
   // up to 3 examples per topic: quoted rows only, each from another parliament, preferably another language and level
   async pick(top) {
-    const c = D.c, used = new Set(), out = [];
+    const c = this.c, used = new Set(), out = [];
     for (const x of top) {
       const cands = [];
       for (const i of x.hits) {
@@ -269,7 +272,7 @@ export class Woche {
         // a clean title beats a weak fragment (letterhead, form fields, mid-sentence start); a quote that shares a word
         // with the topic or its subtopics comes first
         const score = (onTitle ? 0 : weak ? -1 : 1) + qual + (!onTitle && sig ? 0.75 : 0) + (Number.isNaN(p) ? 0 : p * 0.5);
-        cands.push({ i, d, q, onTitle, proc, weak, score, lang: langOf(i, d), chk: !!x.tp.check(i) });
+        cands.push({ i, d, q, onTitle, proc, weak, score, lang: langOf(c, i, d), chk: !!x.tp.check(i) });
       }
       cands.sort((a, b) => b.score - a.score || c.day[b.i] - c.day[a.i]);
       // diversity first among good quoted sentences, then titles and fragments as evidence: new language and level, new language, new parliament;
@@ -292,7 +295,7 @@ export class Woche {
   }
 
   example({ i, d, q, onTitle, proc, lang }, tp, w) {
-    const c = D.c, L = t();
+    const c = this.c, L = t();
     // the title in the interface language where the parliament publishes that version, else the original with its language
     const alt = d && d.title_alt && d.alt_lang === UI.lang && d.alt_lang !== lang;
     const tl = alt ? d.title_alt : bare(c.title[i]), tlLang = alt ? d.alt_lang : lang;
@@ -302,7 +305,7 @@ export class Woche {
       `${bodyName(c.body[i]).trim()} · ${fmtDate(c.date[i])}`,
       check ? h('span', { class: 'rtick', role: 'img', 'aria-label': L.wkCheck, 'data-tip': L.wkCheck }) : '');
     // the topic rests on the title alone: the title is marked, no second copy of it
-    return h('button', { class: 'wo-a', type: 'button', 'data-id': D.c.id[i], onclick: () => this.openAffair(i, tp, w) },
+    return h('button', { class: 'wo-a', type: 'button', 'data-id': c.id[i], onclick: () => this.openAffair(c.id[i], tp.id, this.w0 + w * 7) },
       h('span', { class: 't', lang: tlLang }, onTitle && !alt ? h('mark', {}, tl) : tl),
       meta,
       (onTitle && !alt) || proc ? h('span', { class: 'q dim' }, L.wkOnTitle) : h('span', { class: 'q' }, `«${q}»`));
@@ -311,7 +314,7 @@ export class Woche {
 
 const bare = s => String(s || '').replace(/^\[(.*)\]$/, '$1');
 // OPD marks some bilingual parliaments' French titles as German: the version whose text equals the title wins
-const langOf = (i, d) => (d && d.title_alt && d.alt_lang && norm(d.title_alt) === norm(bare(D.c.title[i])) ? d.alt_lang : D.c.lang[i]);
+const langOf = (c, i, d) => (d && d.title_alt && d.alt_lang && norm(d.title_alt) === norm(bare(c.title[i])) ? d.alt_lang : c.lang[i]);
 
 // «5.–11. Oktober 2026» / «5–11 octobre 2026»
 function span(a, b) {

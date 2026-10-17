@@ -362,3 +362,9 @@ not use them for counts. Labels name what they count:
   bracketed question text. A procedural quote is never shown: the row counts as title evidence («Beleg: der Titel» /
   «Extrait : le titre») and, like other title evidence, only fills a slot no clean quote can. Among clean quotes, one
   that shares a stem with the topic ranks first (+0.75). The bottom note says so.
+
+## First screen (17 Oct)
+- The export also writes `affairs_head.json`: the affairs of the last 13 weeks, same columns (about 15 % of
+  `affairs.json`). The app renders Neueste Woche from it and loads `affairs.json` in the background (`D.partial`,
+  `D.full`); every other view waits for the full data. Woche's links carry the affair id, the topic id and the week's
+  Monday, so they hold once the full data has replaced the slice.

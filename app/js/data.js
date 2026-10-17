@@ -60,14 +60,15 @@ export async function apiPost(path, body) {
 }
 
 // ---------------------------------------------------------------- the store
-export const D = { meta: null, bodies: [], B: new Map(), scheme: null, pruef: null, geo: null, n: 0, c: null };
+export const D = { meta: null, bodies: [], B: new Map(), scheme: null, pruef: null, geo: null, n: 0, c: null, partial: false, full: null };
 
 function laneBit(v) { return v === 1 || v === true || v === 'please_check' ? 1 : (v == null ? -1 : 0); }
 
 export async function load() {
-  // one round trip for every boot file (the two Prüfstand files used to follow the others, one after the other)
-  const [meta, bodies, affairs, scheme, geo, pruef, conf] = await Promise.all([
-    loadFile('meta.json'), loadFile('bodies.json'), loadFile('affairs.json'), loadFile('scheme_aps.json'), loadFile('geo.json'),
+  // one round trip for every boot file; the first screen's slice (affairs_head.json, the last 13 weeks) comes with it
+  // and the full affairs.json follows in the background (D.full resolves when it is in; D.partial until then)
+  const [meta, bodies, head, scheme, geo, pruef, conf] = await Promise.all([
+    loadFile('meta.json'), loadFile('bodies.json'), loadFile('affairs_head.json', true), loadFile('scheme_aps.json'), loadFile('geo.json'),
     loadFile('pruefstand.json', true), loadFile('pruef_confusion.json', true)]);
   D.conf = conf;
   D.meta = meta; D.scheme = scheme; D.geo = geo; D.pruef = pruef;
@@ -81,6 +82,16 @@ export async function load() {
     if (b.covered_from != null && !(+b.covered_from >= 1800)) b.covered_from = null;
     D.B.set(b.key, b);
   }
+  if (head) {
+    ingest(head, head.since); D.partial = true;
+    D.full = loadFile('affairs.json').then(a => { ingest(a); D.partial = false; });
+  } else { ingest(await loadFile('affairs.json')); D.partial = false; D.full = Promise.resolve(); }
+}
+
+// the columns of affairs.json (or of its first-screen slice, whose period starts at `since`) → D.c and everything
+// derived from it (weeks, the period, row index, counts, topics)
+function ingest(affairs, since) {
+  const meta = D.meta; WK = null;
   // affairs (columnar)
   const c = affairs.cols || affairs;
   const n = c.id.length; D.n = n;
@@ -107,7 +118,6 @@ export async function load() {
     kw[i] = c.kw && c.kw[i] ? 1 : 0;
   }
   if (meta.until) dmax = Math.min(dmax, dayNum(meta.until)); // future-dated affairs stay listed, the period ends today
-  if (meta.until) dmax = Math.min(dmax, dayNum(meta.until)); // future-dated affairs stay listed, the period ends today
   const w0 = mondayOf(dmin);
   const week = new Int16Array(n);
   for (let i = 0; i < n; i++) week[i] = Math.floor((day[i] - w0) / 7);
@@ -117,7 +127,7 @@ export async function load() {
     bodyIdx, bodyKeys, day, week, ch, chp, lane, dp, df, dl, kw, lvl };
   D.w0 = w0; D.nWeeks = Math.floor((dmax - w0) / 7) + 1; D.dmax = dmax;
   // the main slice (meta.since …); extra affairs before it (e.g. Basel-Stadt 2019–24 for its own scheme) only show in their scheme's view
-  D.dminAll = dmin; D.dmin = meta.since ? Math.max(dmin, dayNum(meta.since)) : dmin;
+  D.dminAll = dmin; D.dmin = Math.max(dmin, ...[meta.since, since].filter(Boolean).map(dayNum));
   D.mainW = Math.floor((D.dmin - w0) / 7); D.lastW = Math.floor((dmax - w0) / 7);
   D.rowOf = new Map(); for (let i = 0; i < n; i++) D.rowOf.set(c.id[i], i);
   D.anyCh = ch.some(v => v >= 0);

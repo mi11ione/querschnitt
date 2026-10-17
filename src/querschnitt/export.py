@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import datetime
 import gzip
 import json
 import os
@@ -204,6 +205,12 @@ def run(args):
         tfile.close()
         ttmp.rename(out / "topics.jsonl.gz")
     jdump(out / "affairs.json", dict(n=len(cols["id"]), cols=cols))
+    # the first screen's slice: the affairs of the last 13 weeks (the newest week and the 8 weeks its completeness is
+    # judged on, with room), same columns; the app renders Neueste Woche from it while affairs.json loads
+    until_ = min(max((d for d in cols["date"] if d), default=time.strftime("%Y-%m-%d")), time.strftime("%Y-%m-%d"))
+    hs = (datetime.date.fromisoformat(until_) - datetime.timedelta(days=91)).isoformat()
+    keep = [j for j, d in enumerate(cols["date"]) if d and d >= hs]
+    jdump(out / "affairs_head.json", dict(n=len(keep), since=hs, cols={k: [v[j] for j in keep] for k, v in cols.items()}))
     for k, v in detail.items():
         jdump(out / "detail" / f"{k}.json", v)
     bodies = []

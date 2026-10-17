@@ -51,6 +51,12 @@ Per outcome (`prefill` · `logprobs` in the probe's summary line):
 - Use the printed `QS_MAX_RATE` and batch `--conc … --max-rate …` (`0.8 ×` the best rate without a `429`).
 - A batch that stops with `# Endpoint capability` in `STOP.md` is never resumed automatically: re-probe, decide as above.
 
+- Public AI was down on Sat 17 Oct from about 16:30 (HTTP 404 «Model 'alias-apertus' not found» for
+  `swiss-ai/apertus-v1.5-8b`, 429s; `/v1/models` still listed the route). The nightly's queue held the affairs; nothing
+  scored on another model. Order if it happens on site: CSCS → Public AI `swiss-ai/apertus-v1.5-8b` → the recording and
+  the precomputed data. `swiss-ai/apertus-8b-instruct` is another model: the build lock refuses it, and no cut-off of ours
+  holds for it; never a `-70b` name.
+
 ## Variants
 | Variant | Lead screen | What changes | Rework | Commands |
 |---|---|---|---|---|

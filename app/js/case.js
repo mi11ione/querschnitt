@@ -126,7 +126,7 @@ export async function renderCase(root, i, tp, { onOpen, decideBar, group }) {
     more.addEventListener('click', () => { more.replaceWith(highlight(text, null, 'text', lang) || h('p')); });
     tsec.append(more);
   } else if (text) {
-    tsec.append(h('div', { class: 'sl' }, h('span', { class: 'mono', style: 'font-weight:400;font-size:12px;color:var(--ink2)' }, `${L.text}${d.text_src ? ' · ' + d.text_src : ''}`)));
+    // the «Beleg» header already names the field and the offsets: no second label over the quoted text
     // a document that opens with a file path or file name (a letterhead) is shown only on request, never as the first lines
     const junk = !(ev && ev.field === 'text') && /^[\s\S]{0,200}?([A-Za-z]:\\|\\\\|\.(docx?|pdf|xlsx?)\b)/i.test(text);
     // a long text with the quote in it: a window around the quote (letterheads and boilerplate stay behind [+])

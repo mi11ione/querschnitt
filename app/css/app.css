@@ -487,3 +487,5 @@ body.v-ueber .ctxw{display:none}
 .case .pv .ref{margin:2px 0}
 /* Neues Thema reads one week: no period brush, no federal band of its own */
 #v-neu .tl{display:none}
+/* Prüfstand cantonal table on a phone: parliament, n, top-1, keywords (scheme and file columns hidden) */
+@media (max-width:599px){.pl .tw th:nth-child(2),.pl .tw td:nth-child(2),.pl .tw th:nth-child(6),.pl .tw td:nth-child(6){display:none}}

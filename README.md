@@ -17,7 +17,7 @@ Tests marked pre-registered were written down and hashed before their result ([e
 
 | Test | n | Querschnitt | Baseline on the same items |
 |---|---|---|---|
-| APS chapter vs APS editors, federal affairs never used while designing (pre-registered) | 927 | **0.696** [0.666, 0.726]; top 3 0.839; the 67.3% that pass without a check 0.812 [0.779, 0.842], the rest 0.458 | plain list prompting 0.654 [0.623, 0.685] (n 918; paired +0.041 [+0.016, +0.067]) · TF-IDF classifier trained on the shipped design's 1,654 APS labels 0.563 [0.530, 0.595] (paired +0.133 [+0.098, +0.172]) · keywords 0.186 |
+| APS chapter vs APS editors, federal affairs never used while designing (pre-registered) | 927 | **0.696** [0.666, 0.726]; top 3 0.839; the 67.3% that pass without a check (recalibrated p ≥ 0.7, a rule committed before the first call) 0.812 [0.779, 0.842], the rest 0.458 | plain list prompting 0.654 [0.623, 0.685] (n 918; paired +0.041 [+0.016, +0.067]) · TF-IDF classifier trained on the shipped design's 1,654 APS labels 0.563 [0.530, 0.595] (paired +0.133 [+0.098, +0.172]) · keywords 0.186 |
 | The same 927, read from the French text | 927 | 0.675 [0.644, 0.705]; French − German −0.021 [−0.050, +0.007] | — |
 | Bern's 8 directorates as a scheme file vs the Grand Council's lead directorate, DE / FR titles | 531 | 0.651 [0.610, 0.691] / 0.650 | keywords 0.525 / 0.512 · majority 0.214 |
 | Basel-Stadt's 46 themes vs the canton's «Thema 1»; names only / with five of Basel's labelled affairs as examples | 2,437 | 0.498 [0.478, 0.518] / 0.526 [0.506, 0.547] | keywords 0.181 · majority 0.053 |
